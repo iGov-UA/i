@@ -654,16 +654,17 @@ public class ActionEventController {
 //                        }
 //                    }
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
-                    List<SubjectMessageFeedback> oSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
-                    LOG.info("aSubjectMessageFeedback: " + oSubjectMessageFeedback);
-//                    LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
-//                    Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
-//                    for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
-//                    LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId(): " + oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId());
+                    List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
+                    LOG.info("aSubjectMessageFeedback: " + aSubjectMessageFeedback);
+                    LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
+                    Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
+                    for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
+                    LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId(): " + oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId());
 //                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
-//                        mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
+                        mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
 //                        }
-//                    }
+                        LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
+                    }
                     List<String> asCell = new LinkedList<>();
                     // sID_Order
                     asCell.add(oHistoryEvent_Service.getsID_Order() != null ? oHistoryEvent_Service.getsID_Order() : "");
@@ -679,17 +680,17 @@ public class ActionEventController {
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
 //                    SubjectMessageFeedback oSubjectMessageFeedback = new SubjectMessageFeedback();
-                    LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
+//                    LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
                     String sTextFeedback = "";
                     LOG.info("sTextFeedback: " + sTextFeedback);
-//                    LOG.info("mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()): " + mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()));
-//                    if (mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()) != null) {
+                    LOG.info("mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()): " + mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()));
+                    if (mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()) != null) {
 //                        sTextFeedback = mSubjectMessage.get(oHistoryEvent_Service.getId()).getBody();
-                            sTextFeedback = oSubjectMessageFeedback.get(0).getoSubjectMessage().getBody();
+                            sTextFeedback = mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()).getoSubjectMessage().getBody();
                             LOG.info("sTextFeedback" + sTextFeedback);
-//                    } else {
+                    } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
-//                    }
+                    }
                     // sTextFeedback
                     asCell.add(sTextFeedback);
                     // sUserTaskName
