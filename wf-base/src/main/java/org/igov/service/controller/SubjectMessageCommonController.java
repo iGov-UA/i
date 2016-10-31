@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
+import org.igov.util.JSON.JsonRestUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Api(tags = { "SubjectMessageCommonController -- Сообщения субьектов" })
@@ -49,9 +51,9 @@ public class SubjectMessageCommonController {
      * 
      * @param soData_JSON
      */
-    @RequestMapping(value = "/sentSms", method = {RequestMethod.POST,
-	    RequestMethod.GET}, produces = "text/plain;charset=UTF-8")
-    public @ResponseBody String sentSms(String number, String message) throws Exception {
+    @RequestMapping(value = "/sentSms", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    public @ResponseBody String sentSms(@RequestParam(value = "number", required = false) 
+            String number, @RequestParam(value = "message", required = false) String message) throws Exception {
 	
         String resp = "[none]";
         String URL = "https://api.life.com.ua./ip2sms/";
@@ -64,7 +66,7 @@ public class SubjectMessageCommonController {
                     .append("<body content-type=\"text-plain\">").append(message).append("</body>")
                     .append("<message>").toString();
             
-            resp = oHttpRequester.postInside(URL, null, body, "text/xml; charset=utf-8");
+            //resp = oHttpRequester.postInside(URL, null, body, "text/xml; charset=utf-8");
         }
         
 	return resp;
