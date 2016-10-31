@@ -51,9 +51,10 @@ public class SubjectMessageCommonController {
      * 
      * @param soData_JSON
      */
-    @RequestMapping(value = "/sentSms", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/sentSms", method = { RequestMethod.POST,
+	    RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
     public @ResponseBody String sentSms(@RequestParam(value = "number", required = false) 
-            String number, @RequestParam(value = "message", required = false) String message) throws Exception {
+            String number, @RequestParam(value = "message", required = false) String message){
 	
         String resp = "[none]";
         String URL = "https://api.life.com.ua./ip2sms/";
