@@ -110,10 +110,7 @@ public class BpServiceHandler {
             variables.put("region", processVariables.get("region"));
             variables.put("info", processVariables.get("info"));
             variables.put("nasPunkt", processVariables.get("nasPunkt"));
-            HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery()
-                    .processInstanceId(sID_task).singleResult();
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            variables.put("sDate_BP", formatter.format(processInstance.getStartTime().getTime()));
+            variables.put("sDate_BP", processVariables.get("sDate_BP"));
             variables.put("sBody", processVariables.get("sBody"));
             variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
             variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly"));
