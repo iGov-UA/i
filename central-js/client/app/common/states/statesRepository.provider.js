@@ -73,7 +73,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
 
     if (domen.split(':')[0] !== 'localhost') {
-      if (domen.indexOf('kievcity') >= 0 || domen.indexOf('kiev.test') >= 0) {
+      if (domen.indexOf('kievcity') >= 0 || domen.indexOf('kiev.test.') >= 0 || domen.indexOf('test.kiev.') >= 0) {
         //https://es.kievcity.gov.ua
         this.mode = 'kyiv';
         //this.mode = modes.kyiv;
