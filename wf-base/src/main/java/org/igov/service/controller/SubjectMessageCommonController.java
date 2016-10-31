@@ -72,10 +72,10 @@ public class SubjectMessageCommonController {
                     .append("<body content-type=\"text/plain\">").append(new String(utf8Message, "UTF-8")).append("</body>")
                     .append("</message>").toString();
             
-            //resp = oHttpRequester.postInside(URL, null, body, "text/xml; charset=utf-8", "trywWDjcF27368908", "Vf2k8ip1xvzgscqoo");
+            resp = oHttpRequester.postInside(URL, null, new String(body.getBytes("UTF-8"), "UTF-8"), "text/xml; charset=utf-8", "trywWDjcF27368908", "Vf2k8ip1xvzgscqoo");
         //}
         
-	return body;
+	return resp;
     }
     
     
