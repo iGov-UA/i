@@ -743,7 +743,7 @@ public class ActionEventController {
                     
                     DateTimeFormatter uDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         
-                    if ((sDateCreate == null || sDateClose == null)&&(!Objects.equals(oHistoryEvent_Service.getnID_StatusType(), HistoryEvent_Service_StatusType.ABSENT.getnID())))
+                    if (sDateCreate == null || sDateClose == null)//&&(!Objects.equals(oHistoryEvent_Service.getnID_StatusType(), HistoryEvent_Service_StatusType.ABSENT.getnID())))
                     {
                         try{
 
@@ -769,7 +769,7 @@ public class ActionEventController {
                         }
                         catch (Exception ex)
                         {
-                            oHistoryEvent_Service.setnID_StatusType(HistoryEvent_Service_StatusType.ABSENT.getnID());
+                            //oHistoryEvent_Service.setnID_StatusType(HistoryEvent_Service_StatusType.ABSENT.getnID());
                         }
                     }
                                                            
