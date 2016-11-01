@@ -18,8 +18,9 @@ router.get('/:nID_Process/getOrderMessages', controller.getOrderMessages);
 router.get('/:taskId/attachments/:attachmentId/content/:nFile', controller.getAttachmentContent);
 router.get('/:taskId/attachments/:attachmentId/table', controller.getAttachmentContentTable);
 router.post('/:taskId/attachments',controller.uploadFile);
-router.post('/:taskId/form', controller.submitForm);
-router.put('/:taskId', controller.updateTask);
+router.post('/:taskId/form', controller.submitForm); // опрацювати
+router.put('/:taskId/form', controller.saveChangesTaskForm); // оновити редагуємі поля
+router.put('/:taskId', controller.updateTask); // взяти в роботу
 router.put('/:taskId/unassign', controller.unassign);
 router.get('/:taskId', controller.getTask);
 router.get('/search/byOrder/:orderId', controller.getTasksByOrder);
