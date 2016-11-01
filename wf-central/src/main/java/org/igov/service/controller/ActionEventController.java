@@ -770,11 +770,12 @@ public class ActionEventController {
                         catch (Exception ex)
                         {
                             oHistoryEvent_Service.setnID_StatusType(HistoryEvent_Service_StatusType.ABSENT.getnID());
+                            historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
                         }
                     }
                                                            
-                    asCell.add(sDateCreate != null ? uDateFormat.format(sDateCreate) : "");
-                    asCell.add(sDateClose != null ? uDateFormat.format(sDateClose) : "");
+                    asCell.add(sDateCreate != null ? uDateFormat.format(sDateCreate.toDate()) : "");
+                    asCell.add(sDateClose != null ? uDateFormat.format(sDateClose.toDate()) : "");
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
