@@ -398,6 +398,7 @@
           <activiti:value id="other" name="інша причина"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateAplication" name="Дата та час ознайомлення зі справою" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateAplicationNew" name="Дата та час ознайомлення зі справою у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="укажіть причину" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAkt" name="Сканкопія акту Суду про те, що документи надіслані користувачем до суду не можуть бути визнані як такі, що надійшли до суду" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/CourtOfCassation_print.html]" type="invisible" default="Супровідний лист" writable="false"></activiti:formProperty>
@@ -473,7 +474,7 @@
 Процесуальні документи, що Ви подавали по справі ${sNumberCase} зареєстровані і передані на розгляд судді.<br />
 Супроводний лист щодо отриманих документів знаходиться у додатку до листа.<br />
 Реєстраційний номер ${sNumberAplication}<br />
-Дата та час ознайомлення зі справою value{[sDateAplication]}<br />
+Дата та час ознайомлення зі справою ${sDateAplicationNew}<br />
 Телефон для довідок:(044) 536-18-01 та (044) 536-18-23
 <br />
 [pattern/mail/_common_signature_start.html]
@@ -917,7 +918,7 @@ execution.setVariable('sListDocumentsLetter', res)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask2" name="дату в письмо делаем красивой" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable('sDateAplication', execution.getVariable('sDateAplication').format("dd.MM.yyyy HH:mm:ss"))</script>
+      <script>execution.setVariable('sDateAplicationNew', execution.getVariable('sDateAplication').format("dd.MM.yyyy HH:mm:ss"))</script>
     </scriptTask>
     <sequenceFlow id="flow35" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
