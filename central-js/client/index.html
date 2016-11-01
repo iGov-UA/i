@@ -6,30 +6,33 @@
 <!--[if IE 8]>
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js"> <!--<![endif]-->
+<html class="no-js" ng-app="app"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible"
           content="IE=edge">
     <base href="/">
-    <title>iGov – Портал державних послуг</title>
+    <title ng-if="profile.isKyivCity">Портал державних послуг</title>
+    <title ng-if="!profile.isKyivCity">iGov – Портал державних послуг</title>
     <meta name="description"
           content="">
     <meta name="viewport"
           content="width=device-width">
 
     <!-- Facebook Graph Properties -->
-    <!-- <meta property="og:url" content="http://igov.org.ua" /> -->
-    <meta property="og:site_name" content="igov.org.ua — Портал державних послуг"/>
-    <meta property="og:image" content="https://igov.org.ua/assets/images/1b3b16cb.icon-476x476.png" />
-    <meta property="og:description" content="На порталі зібрано послуги державних органів України для громадян та бізнесу. Робота проводиться волонтерською командою iGov в рамках боротьби з корупцією в Україні та вдосконалення бізнес-процесів в державних органах. " />
+    <meta ng-if="!profile.isKyivCity" property="og:site_name" content="igov.org.ua — Портал державних послуг"/>
+    <meta ng-if="!profile.isKyivCity" property="og:image" content="https://igov.org.ua/assets/images/1b3b16cb.icon-476x476.png" />
+    <meta ng-if="!profile.isKyivCity" property="og:description" content="На порталі зібрано послуги державних органів України для громадян та бізнесу. Робота проводиться волонтерською командою iGov в рамках боротьби з корупцією в Україні та вдосконалення бізнес-процесів в державних органах. " />
+    <meta ng-if="profile.isKyivCity" property="og:site_name" content="es.kievcity.gov.ua — Портал державних послуг"/>
+    <meta ng-if="profile.isKyivCity" property="og:image" content="http://new.kievcity.gov.ua/logo.png" />
+    <meta ng-if="profile.isKyivCity" property="og:description" content="На порталі зібрано послуги державних органів України для громадян та бізнесу." />
     <!-- End Of Facebook Graph Properties -->
 
     <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="assets/images/apple-touch-icon-60x60.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="assets/images/apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="assets/images/apple-touch-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="assets/images/apple-touch-icon-152x152.png">
+    <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" href="assets/images/apple-touch-icon-60x60.png" />
+    <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="76x76" href="assets/images/apple-touch-icon-76x76.png">
+    <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="120x120" href="assets/images/apple-touch-icon-120x120.png">
+    <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="152x152" href="assets/images/apple-touch-icon-152x152.png">
     <!-- End of Apple Touch Icons -->
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -55,7 +58,7 @@
 
 </head>
 
-<body ng-app="app" errors-container>
+<body errors-container>
 
 <!-- Google Tag Manager -->
 <noscript>

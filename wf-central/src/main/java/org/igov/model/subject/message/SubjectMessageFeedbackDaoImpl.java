@@ -81,13 +81,13 @@ private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.
 
     @Override
     public List<SubjectMessageFeedback> findByOrder(String sID_Order) {
-    List<SubjectMessageFeedback> findAll = findAllBy("sID_Order", sID_Order);
-    LOG.info("sID_Order: "+sID_Order);
-        return findAllBy("sID_Order", sID_Order); 
+    return findAllBy("sID_Order", sID_Order);
     }
 
     @Override
     public String setsID_Order(String sID_Order) {
-       return sID_Order;
+        return sID_Order;
     }
+
+    
 }

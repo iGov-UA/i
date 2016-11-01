@@ -11,6 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
+import java.net.URLEncoder;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import org.igov.io.GeneralConfig;
+import org.igov.io.web.HttpRequester;
+import org.igov.util.JSON.JsonRestUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Api(tags = { "SubjectMessageCommonController -- Сообщения субьектов" })
@@ -20,6 +27,12 @@ public class SubjectMessageCommonController {
 
     @Autowired
     private ManagerSMS_New managerSMS;
+    
+    @Autowired
+    GeneralConfig generalConfig;
+    
+    @Autowired
+    private HttpRequester oHttpRequester;
 
     /**
      * Колбек для сервиса отправки СМС
@@ -35,5 +48,36 @@ public class SubjectMessageCommonController {
 
 	return "";
     }
+
+    /**
+     * Колбек для сервиса отправки СМС
+     * 
+     * @param soData_JSON
+     */
+    @RequestMapping(value = "/sentSms", method = { RequestMethod.POST,
+	    RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+    public @ResponseBody String sentSms(@RequestParam(value = "number", required = false) 
+            String number, @RequestParam(value = "message", required = false) String message) throws Exception{
+	
+        String resp = "Error: number is not equal mask";
+        String URL = "https://api.life.com.ua./ip2sms/";
+        
+        byte[] utf8Message = message.getBytes("UTF-8");
+        
+        //if (number.startsWith("+38063")||number.startsWith("+38093"))
+        //{
+            String body = new StringBuilder("<message>")
+                    .append("<service id='single' source='iGov'/>")
+                    .append("<to>").append(number).append("</to>")
+                    .append("<body content-type=\"text/plain\">").append(new String(utf8Message, "UTF-8")).append("</body>")
+                    .append("</message>").toString();
+            
+            resp = oHttpRequester.postInside(URL, null, new String(body.getBytes("UTF-8"), "UTF-8"), "text/xml; charset=utf-8", "trywWDjcF27368908", "Vf2k8ip1xvzgscqoo");
+        //}
+        
+	return resp;
+    }
+    
+    
 
 }

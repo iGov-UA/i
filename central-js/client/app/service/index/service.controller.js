@@ -16,6 +16,7 @@ angular.module('app')
     $scope.bAdmin = AdminService.isAdmin();
     $scope.recalcCounts = true;
     $scope.mainSpinner = true;
+    $scope.isKyivCity = !!statesRepository.isKyivCity();
 
     /*$scope.isCatalogCategoryShowAll = function(nID){
         return statesRepository.isSearch(nID);
@@ -79,6 +80,11 @@ angular.module('app')
       else {
         return $rootScope.catalogTab;
       }
+    };
+
+    $scope.isSubdomain = function () {
+      var idPlaces = statesRepository.getIDPlaces();
+      return idPlaces.length > 0
     };
 
     $scope.$on('$stateChangeStart', function(event, toState) {
