@@ -53,7 +53,7 @@
     <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="parallelgateway1" targetRef="usertask16"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask3" name="10. Ознайомлення з документом начальника інсп. відділу та визначення відповідального співробітника" activiti:candidateGroups="kyiv_dabi_insp_boss">
+    <userTask id="usertask3" name="10. Ознайомлення з документом начальника інсп. відділу та визначення відповідального співробітника">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -64,12 +64,6 @@
         <activiti:formProperty id="sLoginAsignee_step11" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step11" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_step11" name="Група виконавців наступного кроку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossInspectionDepartment" name="Коментар начальника Інспекційного відділу" type="textArea"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee_step10]]></activiti:expression>
@@ -86,10 +80,16 @@
             <activiti:expression><![CDATA[sID_Group_step11]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow8" sourceRef="usertask1" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask4" name="9. Перевірка наявності об'єкту. Зв'язування з карткою об'єкту, у разі відсутності - створення  нової картки" activiti:candidateGroups="kyiv_dabi_permit_empl">
+    <userTask id="usertask4" name="9. Перевірка наявності об'єкту. Зв'язування з карткою об'єкту, у разі відсутності - створення  нової картки">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -102,7 +102,11 @@
           <activiti:value id="sEnumDecision_yes" name="Рішення прийнято"></activiti:value>
           <activiti:value id="sEnumDecision_no" name="Рішення не прийнято"></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee_step9]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>      
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
@@ -114,11 +118,6 @@
           </activiti:field>
           <activiti:field name="paramVal">
             <activiti:expression><![CDATA[true]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${assignUser}">
-          <activiti:field name="loginAssignee">
-            <activiti:expression><![CDATA[sLoginAsignee_step9]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -428,6 +427,9 @@
         <activiti:formProperty id="sBody_protocolAdmin" name="[pattern/print/kiev/DABI_insp_protokol_admin_1.html]" type="invisible" default="Протокол про адміністративне правопорушення" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_protocolUrban" name="[pattern/print/kiev/DABI_insp_protokol_mistobud_1.html]" type="invisible" default="Протокол про порушення у сфері містобудівної діяльності" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_resolutionAdmin" name="[pattern/print/kiev/DABI_insp_postanova_admin.html]" type="invisible" default="Постанова по справі про адміністративне правопорушення" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_resolutionCloseAdmin" name="[pattern/print/kiev/DABI_insp_postanova_zakruta_admin.html]" type="invisible" default="Постанова про закриття справи по правопорушення" writable="false"></activiti:formProperty>       
+        <activiti:formProperty id="sBody_resolutionFine" name="[pattern/print/kiev/DABI_insp_postanova_mistobud.html]" type="invisible" default="Постанова про накладання штрафу за правопорушення в сфері містобудівної діяльності" writable="false"></activiti:formProperty>       
+        
         <activiti:formProperty id="markers4_req" name="requiredFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_4_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="hideShowFields5" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_5.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5_req" name="requiredFields5" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_5_required.json')}"></activiti:formProperty>
@@ -458,7 +460,7 @@
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow20" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask8" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка" activiti:candidateGroups="kyiv_dabi_insp_empl">
+    <userTask id="usertask8" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -730,6 +732,9 @@
         <activiti:formProperty id="sFine" name="Штраф у розмірі" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPaymentDetails" name="Реквізити для оплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDecidedControl" name="Установив" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_resolutionAdmin" name="[pattern/print/kiev/DABI_insp_postanova_admin.html]" type="invisible" default="Постанова по справі про адміністративне правопорушення" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_resolutionCloseAdmin" name="[pattern/print/kiev/DABI_insp_postanova_zakruta_admin.html]" type="invisible" default="Постанова про закриття справи по правопорушення" writable="false"></activiti:formProperty>             
+        <activiti:formProperty id="sBody_resolutionFine" name="[pattern/print/kiev/DABI_insp_postanova_mistobud.html]" type="invisible" default="Постанова про накладання штрафу за правопорушення в сфері містобудівної діяльності" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4_req" name="requiredFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_4_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="hideShowFields5" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_5.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5_req" name="requiredFields5" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_5_required.json')}"></activiti:formProperty>
