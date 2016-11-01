@@ -741,7 +741,7 @@ public class ActionEventController {
                     DateTime sDateCreate = oHistoryEvent_Service.getsDateCreate();
                     DateTime sDateClose = oHistoryEvent_Service.getsDateClose();
                     
-                    //DateTimeFormatter uDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat uDateFormat = new SimpleDateFormat("yyyy.MM.dd");
         
                     if ((sDateCreate == null || sDateClose == null)&&(oHistoryEvent_Service.getnID_StatusType() != HistoryEvent_Service_StatusType.ABSENT.getnID()))
                     {
@@ -770,11 +770,12 @@ public class ActionEventController {
                         catch (Exception ex)
                         {
                             oHistoryEvent_Service.setnID_StatusType(HistoryEvent_Service_StatusType.ABSENT.getnID());
+                            historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
                         }
                     }
                                                            
-                    asCell.add(sDateCreate != null ? sDateCreate.toString() : "");
-                    asCell.add(sDateClose != null ? sDateClose.toString() : "");
+                    asCell.add(sDateCreate != null ? uDateFormat.format(sDateCreate.toDate()) : "");
+                    asCell.add(sDateClose != null ? uDateFormat.format(sDateClose.toDate()) : "");
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
