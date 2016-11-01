@@ -316,10 +316,10 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
     $scope.isStatisticLoading.bState = !$scope.isStatisticLoading.bState
   };
 
-  var result;
-  var dateFrom;
-  var dateTo;
-  var exclude;
+  $scope.result = "";
+  $scope.dateFrom = "";
+  $scope.dateTo = "";
+  $scope.exclude = "";
 
   // конвертируем дату и время с datepicker'а в нужный для запроса формат YYYY-MM-DD hh:mm:ss
   $scope.getTimeInterval = function (date) {
@@ -338,8 +338,8 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
         selectedMonth = '0' + selectedMonth;
       }
     }
-    result = selectedYear + '-' + selectedMonth + '-' + selectedDay + ' ' + selectedTime;
-    return result
+    $scope.result = selectedYear + '-' + selectedMonth + '-' + selectedDay + ' ' + selectedTime;
+    return $scope.result
 
   };
 
@@ -365,11 +365,11 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
     //блокируем возможность повторно нажатия "Завантажити" пока предыдущий запрос находиться в работе
     $scope.switchStatisticLoadingStatus();
 
-    dateFrom = $scope.getTimeInterval($scope.statisticDateBegin);
-    dateTo = $scope.getTimeInterval($scope.statisticDateEnd);
-    exclude = $scope.sanIDServiceExclude;
+    $scope.dateFrom = $scope.getTimeInterval($scope.statisticDateBegin);
+    $scope.dateTo = $scope.getTimeInterval($scope.statisticDateEnd);
+    $scope.exclude = $scope.sanIDServiceExclude;
 
-    ServiceService.getServiceHistoryReport(dateFrom, dateTo, exclude).then(function (res) {
+    ServiceService.getServiceHistoryReport($scope.dateFrom, $scope.dateTo, $scope.exclude).then(function (res) {
       var resp = res.data;
       var responseSplited = resp.split(';');
       var correct = responseSplited[12].split('\n');
