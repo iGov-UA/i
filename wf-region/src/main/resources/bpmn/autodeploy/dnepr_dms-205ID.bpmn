@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms_205ID" name="Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки" isExecutable="true">
+  <process id="dnepr_dms-205ID" name="Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="Дана послуга доступна лише за місцем реєстрації, якщо Ви не можете обрати свій район, то у ньому послуга на iGov відсутня"></activiti:formProperty>
@@ -114,7 +114,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -127,7 +127,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
-										<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 16-річного віку:</b><br>
+										<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 14-річного віку:</b><br>
 										<ul>
 										${sDocID}
                                         <li>довідка про реєстрацію місця проживання (довідка з органу реєстрації або будинкова книга);</li>
@@ -158,7 +158,7 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -176,7 +176,7 @@ ${sNameOrgan},<br>
 Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
-										<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 16-річного віку:</b><br>
+										<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 14-річного віку:</b><br>
 										<ul>
 										${sDocID}
                                         <li>довідка про реєстрацію місця проживання (довідка з органу реєстрації або будинкова книга);</li>
@@ -306,13 +306,13 @@ execution.setVariable('sCustom', custom)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                              		Ви отримали послугу "Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки".
+                              		Ви отримали послугу "Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки".
                               		</p>
                               		<p>
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
@@ -329,8 +329,8 @@ execution.setVariable('sCustom', custom)</script>
     <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms_205ID">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms_205ID" id="BPMNPlane_dnepr_dms_205ID">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-205ID">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-205ID" id="BPMNPlane_dnepr_dms-205ID">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="16.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
