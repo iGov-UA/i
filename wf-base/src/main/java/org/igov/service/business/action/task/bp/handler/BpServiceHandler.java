@@ -91,6 +91,7 @@ public class BpServiceHandler {
         variables.put("processName", processName);
         Integer nID_Server = generalConfig.getSelfServerId();
         String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
+        LOG.info("get sID_Order:(sID_Order={})", sID_Order);
         //get process variables
         HistoricTaskInstance details = historyService
                 .createHistoricTaskInstanceQuery()
@@ -110,7 +111,12 @@ public class BpServiceHandler {
             variables.put("region", processVariables.get("region"));
             variables.put("info", processVariables.get("info"));
             variables.put("nasPunkt", processVariables.get("nasPunkt"));
-            variables.put("sDate_BP", processVariables.get("sDate_BP"));
+            HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery()
+                    .processInstanceId(sID_task).singleResult();
+            LOG.info("get HistoricProcessInstance:(HistoricProcessInstance={})", processInstance.getStartTime());
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            variables.put("sDate_BP", formatter.format(processInstance.getStartTime().getTime()));
+           // variables.put("sDate_BP", processVariables.get("sDate_BP"));
             variables.put("sBody", processVariables.get("sBody"));
             variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
             variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly"));
