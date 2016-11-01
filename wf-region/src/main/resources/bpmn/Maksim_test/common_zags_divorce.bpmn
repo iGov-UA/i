@@ -90,6 +90,9 @@ execution.setVariable('sCountPayment', src)</script>
     <sequenceFlow id="flow42" sourceRef="exclusivegateway6" targetRef="servicetask16"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow43" sourceRef="servicetask16" targetRef="endevent4"></sequenceFlow>
+    <serviceTask id="servicetask17" name="Повідомлення пільговику"></serviceTask>
+    <sequenceFlow id="flow44" sourceRef="exclusivegateway3" targetRef="servicetask17"></sequenceFlow>
+    <sequenceFlow id="flow45" sourceRef="servicetask17" targetRef="usertask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_divorce">
     <bpmndi:BPMNPlane bpmnElement="common_zags_divorce" id="BPMNPlane_common_zags_divorce">
@@ -195,6 +198,9 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="218.0" y="592.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask17" id="BPMNShape_servicetask17">
+        <omgdc:Bounds height="55.0" width="105.0" x="877.0" y="440.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="339.0" y="142.0"></omgdi:waypoint>
         <omgdi:waypoint x="338.0" y="176.0"></omgdi:waypoint>
@@ -207,7 +213,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="510.0" y="102.0"></omgdi:waypoint>
         <omgdi:waypoint x="560.0" y="102.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="510.0" y="102.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="14.0" x="510.0" y="102.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -357,6 +363,15 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="235.0" y="723.0"></omgdi:waypoint>
         <omgdi:waypoint x="235.0" y="627.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="812.0" y="356.0"></omgdi:waypoint>
+        <omgdi:waypoint x="929.0" y="440.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="877.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="773.0" y="466.0"></omgdi:waypoint>
+        <omgdi:waypoint x="612.0" y="448.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
