@@ -1,6 +1,5 @@
 package org.igov.model.subject.message;
 
-import com.google.common.base.Optional;
 import org.igov.model.core.EntityDao;
 
 import java.util.List;
