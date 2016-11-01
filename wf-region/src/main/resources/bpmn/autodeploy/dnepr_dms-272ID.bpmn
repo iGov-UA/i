@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-227ID" name="Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові" isExecutable="true">
+  <process id="dnepr_dms-272ID" name="Видача паспорта громадянина України замість утраченого або викраденого" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="Дана послуга доступна лише за місцем реєстрації, якщо Ви не можете обрати свій район, то у ньому послуга на iGov відсутня"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Ваш документ; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Дані документу для обміну; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яка буде отримувати паспорт"></activiti:formProperty>
@@ -99,7 +99,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість утраченого або викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -107,7 +107,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 <p>
 	Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].<br>
 	Чекаємо Вас за адресою: ${sAddress}<br>
-	для обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові
+	для обміну паспорта громадянина України у разі непридатності для користування.
 </p>
 <p>
 	Дата та час візиту: ${date_of_visit}.
@@ -142,7 +142,7 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість утраченого або викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -153,7 +153,7 @@ ${sNameOrgan},<br>
 <p>
 	Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].<br>
 	Чекаємо Вас за адресою: ${sAddress}<br>
-	для обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові
+	для обміну паспорта громадянина України у разі непридатності для користування.
 </p>
 <p>
 	Дата та час візиту: ${date_of_visit}.
@@ -189,8 +189,8 @@ ${sNameOrgan},<br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1_yellow"></sequenceFlow>
-    <userTask id="usertask1_yellow" name="Заявка прийнята" activiti:candidateGroups="id_card_${sID_Public_SubjectOrganJoin}">
+    <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1_green"></sequenceFlow>
+    <userTask id="usertask1_green" name="Заявка прийнята" activiti:candidateGroups="id_card_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
@@ -211,12 +211,12 @@ ${sNameOrgan},<br>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1_yellow" cancelActivity="true">
+    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1_green" cancelActivity="true">
       <timerEventDefinition>
         <timeDate>${sEndDay}</timeDate>
       </timerEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow4" sourceRef="usertask1_yellow" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="usertask1_green" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="escalationTimer" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var delta='10';
@@ -275,13 +275,13 @@ execution.setVariable('sCustom', custom)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість утраченого або викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                              		Ви отримали послугу "Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові".<br>
+                              		Ви отримали послугу "Видача паспорта громадянина України замість утраченого або викраденого".
                               		Якщо для замовлення послуги Ви використовували BankID, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
                               		</p>
                               		<p>
@@ -299,8 +299,8 @@ execution.setVariable('sCustom', custom)</script>
     <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-227ID">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-227ID" id="BPMNPlane_dnepr_dms-227ID">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-272ID">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-272ID" id="BPMNPlane_dnepr_dms-272ID">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="16.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -331,7 +331,7 @@ execution.setVariable('sCustom', custom)</script>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="58.0" width="105.0" x="395.0" y="78.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1_yellow" id="BPMNShape_usertask1_yellow">
+      <bpmndi:BPMNShape bpmnElement="usertask1_green" id="BPMNShape_usertask1_green">
         <omgdc:Bounds height="55.0" width="105.0" x="520.0" y="79.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="escalationTimer" id="BPMNShape_escalationTimer">
