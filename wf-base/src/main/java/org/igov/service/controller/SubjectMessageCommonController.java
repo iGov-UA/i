@@ -11,73 +11,73 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
-import java.net.URLEncoder;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
-import org.igov.util.JSON.JsonRestUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@Api(tags = { "SubjectMessageCommonController -- Сообщения субьектов" })
+@Api(tags = {"SubjectMessageCommonController -- Сообщения субьектов"})
 @RequestMapping(value = "/subject/message")
 public class SubjectMessageCommonController {
+
     private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageCommonController.class);
 
     @Autowired
     private ManagerSMS_New managerSMS;
-    
+
     @Autowired
     GeneralConfig generalConfig;
-    
+
     @Autowired
     private HttpRequester oHttpRequester;
 
     /**
      * Колбек для сервиса отправки СМС
-     * 
+     *
      * @param soData_JSON
+     * @return 
      */
-    @RequestMapping(value = "/getCallbackSMS_PB", method = { RequestMethod.POST,
-	    RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
-    public @ResponseBody String callbackSMS(@RequestBody String soData_JSON) {
-	LOG.debug("callback JSON={}", soData_JSON);
-	String ret = managerSMS.saveCallbackSMS(soData_JSON);
-	LOG.info("save callback JSON={}", ret);
+    @RequestMapping(value = "/getCallbackSMS_PB", method = {RequestMethod.POST,
+        RequestMethod.GET}, produces = "text/plain;charset=UTF-8")
+    public @ResponseBody
+    String callbackSMS(@RequestBody String soData_JSON) {
+        LOG.debug("callback JSON={}", soData_JSON);
+        String ret = managerSMS.saveCallbackSMS(soData_JSON);
+        LOG.info("save callback JSON={}", ret);
 
-	return "";
+        return "";
     }
 
     /**
      * Колбек для сервиса отправки СМС
-     * 
-     * @param soData_JSON
+     *
+     * @param number
+     * @param message
+     * @return
      */
-    @RequestMapping(value = "/sentSms", method = { RequestMethod.POST,
-	    RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
-    public @ResponseBody String sentSms(@RequestParam(value = "number", required = false) 
-            String number, @RequestParam(value = "message", required = false) String message) throws Exception{
-	
-        String resp = "Error: number is not equal mask";
-        String URL = "https://api.life.com.ua./ip2sms/";
-        
+    @RequestMapping(value = "/sentSms", method = {RequestMethod.POST,
+        RequestMethod.GET}, produces = "text/plain;charset=UTF-8")
+    public @ResponseBody
+    String sentSms(@RequestParam(value = "number", required = false) String number, 
+            @RequestParam(value = "message", required = false) String message) throws Exception {
+
+        String resp;
+
         byte[] utf8Message = message.getBytes("UTF-8");
-        
+
         //if (number.startsWith("+38063")||number.startsWith("+38093"))
         //{
-            String body = new StringBuilder("<message>")
-                    .append("<service id='single' source='iGov'/>")
-                    .append("<to>").append(number).append("</to>")
-                    .append("<body content-type=\"text/plain\">").append(new String(utf8Message, "UTF-8")).append("</body>")
-                    .append("</message>").toString();
-            
-            resp = oHttpRequester.postInside(URL, null, new String(body.getBytes("UTF-8"), "UTF-8"), "text/xml; charset=utf-8", "trywWDjcF27368908", "Vf2k8ip1xvzgscqoo");
-        //}
-        
-	return resp;
-    }
-    
-    
+        String body = new StringBuilder("<message>")
+                .append("<service id='single' source='iGov'/>")
+                .append("<to>").append(number).append("</to>")
+                .append("<body content-type=\"text/plain\" encoding=\"plain\">").append(new String(utf8Message, "UTF-8"))
+                .append("</body>")
+                .append("</message>").toString();
 
+        resp = oHttpRequester.postInside(generalConfig.getLifeURL(), null, body, "text/xml; charset=utf-8",
+                generalConfig.getLifeLogin(), generalConfig.getLifePassword());
+        //}
+
+        return resp;
+    }
 }
