@@ -102,12 +102,14 @@ public class BpServiceHandler {
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
             variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
             variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName"));
+            LOG.info(String.format(" bankIdmiddleName [%s] ", processVariables.get("bankIdmiddleName")));
             variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
             variables.put("Place", getPlaceByProcess(snID_Process));
-            variables.put("clfio", processVariables.get("bankIdfirstName") + " "+processVariables.get("bankIdmiddleName"+ " "+processVariables.get("bankIdlastName")));
+            variables.put("clfio", processVariables.get("bankIdlastName") + " "+processVariables.get("bankIdfirstName"));
+            LOG.info(String.format(" clfio [%s] ", processVariables.get("bankIdlastName") + " "+processVariables.get("bankIdfirstName")));
             variables.put("region", processVariables.get("region"));
             variables.put("info", processVariables.get("info"));
             variables.put("nasPunkt", processVariables.get("nasPunkt"));
