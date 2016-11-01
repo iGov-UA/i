@@ -100,18 +100,18 @@ public class BpServiceHandler {
         if (details != null && details.getProcessVariables() != null) {
             Map<String, Object> processVariables = details.getProcessVariables();
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
+            variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
             variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
             variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName"));
-            variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
             variables.put("Place", getPlaceByProcess(snID_Process));
-            variables.put("clfio", processVariables.get("bankIdfirstName") + " "+processVariables.get("bankIdmiddleName"+ " "+processVariables.get("bankIdlastName")));
+            variables.put("clfio", processVariables.get("bankIdlastName") + " "+processVariables.get("bankIdfirstName")+ " "+processVariables.get("bankIdmiddleName"));
             variables.put("region", processVariables.get("region"));
             variables.put("info", processVariables.get("info"));
             variables.put("nasPunkt", processVariables.get("nasPunkt"));
-            variables.put("sDate_BP", processVariables.get("sDate_BP"));
+            
             variables.put("sBody", processVariables.get("sBody"));
             variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
             variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly"));
@@ -125,6 +125,7 @@ public class BpServiceHandler {
                 LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonHistoryEvent);
                 JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
                 variables.put("nID_Rate", historyEvent.get("nRate"));
+                variables.put("sDate_BP", historyEvent.get("sDate"));
                 nID_Server = historyEvent.getInt("nID_Server");
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
@@ -138,6 +139,7 @@ public class BpServiceHandler {
         try {
             String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
             feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
+            LOG.info(String.format(" >> start feedbackProcess [%s] ", feedbackProcess));
         } catch (Exception oException) {
             LOG.error("error during starting feedback process!: {}", oException.getMessage());
             LOG.debug("FAIL:", oException);
