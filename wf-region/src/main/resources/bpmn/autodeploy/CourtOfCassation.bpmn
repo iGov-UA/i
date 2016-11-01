@@ -4,7 +4,6 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTable1" name="інфо; ;nRowsLimit=0" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;info_1&quot;,&quot;name&quot;:&quot;Звернення, що подані до 16 години 00 хвилин, будуть невідкладно опрацьовані працівником служби діловодства в день надходження звернення у продовж робочого часу, а ті звернення, які подані після 16 години 00 хвилин, будуть невідкладно опрацьовані на наступний робочий день.&quot;,&quot;type&quot;:&quot;label&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище особи, яка внесла дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я особи, яка внесла дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові особи, яка внесла дані" type="string"></activiti:formProperty>
@@ -432,7 +431,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1},${sDoc2},${sDoc3},${sDoc4},${sDoc5},${sDoc6},${sDoc7},${sDoc8},${sDoc9},${sDoc10},${sDoc11},${sDoc12},${sDoc13},${sDoc14},${sDoc15}</activiti:expression>
+            <activiti:expression>${form_signed_all},${sDoc1},${sDoc2},${sDoc3},${sDoc4},${sDoc5},${sDoc6},${sDoc7},${sDoc8},${sDoc9},${sDoc10},${sDoc11},${sDoc12},${sDoc13},${sDoc14},${sDoc15}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -479,7 +478,7 @@
 Процесуальні документи, що Ви подавали по справі ${sNumberCase} зареєстровані і передані на розгляд судді.&lt;br /&gt;
 Супроводний лист щодо отриманих документів знаходиться у додатку до листа.&lt;br /&gt;
 Реєстраційний номер ${sNumberAplication}&lt;br /&gt;
-Дата та час ознайомлення зі справою ${sDateAplication}&lt;br /&gt;
+Дата та час ознайомлення зі справою value{[sDateAplication]}&lt;br /&gt;
 Телефон для довідок:(044) 536-18-01 та (044) 536-18-23
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
