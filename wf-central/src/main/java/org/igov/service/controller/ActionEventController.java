@@ -769,7 +769,7 @@ public class ActionEventController {
                         }
                         catch (Exception ex)
                         {
-                            //oHistoryEvent_Service.setnID_StatusType(HistoryEvent_Service_StatusType.ABSENT.getnID());
+                            oHistoryEvent_Service.setnID_StatusType(HistoryEvent_Service_StatusType.ABSENT.getnID());
                         }
                     }
                                                            
