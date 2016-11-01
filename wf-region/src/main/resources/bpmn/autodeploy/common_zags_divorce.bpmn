@@ -3,31 +3,23 @@
   <process id="common_zags_divorce" name="Подати заяву про державну реєстрацію шлюбу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-         <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу" type="enum" required="true">
+        <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу" type="enum" required="true">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
           <activiti:value id="sEnum2" name="на підставі рішення суду (здійснене судом до набрання чинності Законом України «Про державну реєстрацію актів цивільного стану» (27.07.2010))"></activiti:value>
           <activiti:value id="sEnum3" name="відповідно до статті 107 Сімейного кодексу України (якщо один із подружжя визнаний у встановленому законом порядку безвісно відсутнім, недієздатним)"></activiti:value>
         </activiti:formProperty>
-          
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписаної обома нареченими заяви. Ви матимете можливість підписати заяву за допомогою ЕЦП або в продовж 3 днів з моменту замовлення послуги приїхати особисто до відділу ДРАЦС і підписати паперовий екземпляр заяви."></activiti:formProperty>
         <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть відділ ДРАЦС за місцем свого проживання" type="select" default="0" required="true"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sText6" name="Зверніть увагу" type="label" default="&lt;b&gt;Реквізити для сплати обраного типу обряду Ви отримаєте в електронному листі після перевірки данних реєстратором&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита (0,51 грн.);Ви можете сплатити цю суму через Інтернет банківською карткою або зробити звичайний банківський платіж за реквізитами. Якщо Ви маєте пільгу, оплата не потрібна" type="enum" required="true">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
           <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
           <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="asCategoryPrivileges" name="Категорія" type="enum" required="true">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
           <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -35,12 +27,7 @@
           <activiti:value id="sEnum4" name="інваліди Великої Вітчизняної війни та сім'ї воїнів (партизанів), які загинули чи пропали безвісти, і прирівняні до них у встановленому порядку особи"></activiti:value>
           <activiti:value id="sEnum5" name="інваліди I та II груп"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію" type="file"></activiti:formProperty>
-        
-        
-        
-        
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса " type="invisible"></activiti:formProperty>
@@ -54,22 +41,15 @@
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
-        
         <activiti:formProperty id="asSourceType" name="Джерело надходження звернення" type="enum">
           <activiti:value id="MinUst" name="Заявка подана через портал minjust.gov.ua"></activiti:value>
           <activiti:value id="Personal" name="Заявка подана громадянами під час візиту до ДРАЦСу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sSourceType" name="Обране Джерело надходження звернення" type="invisible"></activiti:formProperty>
-       
-       
-        
         <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1" type="invisible" default="0"></activiti:formProperty>
-        
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення обряду" type="queueData" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="date_of_visit" name="Бажана дата розлучення" type="invisible"></activiti:formProperty>
-        
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="_____________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Власне ім'я" type="string"></activiti:formProperty>
@@ -89,27 +69,19 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK1" name="Назва та адреса РВК де перебуваєте на обліку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary1" name="Назва міста та номер поштової скриньки військової частини" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="sNumberOfMarriages1" name="Який за рахунком шлюб; перший, другий тощо" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMarriagesDoc1" name="Місце державної реєстрації шлюбу, що розривається. Номер та дата актового запису" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleCourt1" name="Назва суду; яким було розірвано шлюб" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateSolutions1" name="Дата ухвалення рішення; яким було розірвано шлюб" type="string"></activiti:formProperty>
         <activiti:formProperty id="sQuantityChildren1" name="Кількість спільних дітей віком до 18 років" type="string"></activiti:formProperty>
-
-        
         <activiti:formProperty id="sPassport1" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName1" name="Після розірвання шлюбу бажає мати прізвище; дошлюбне чи взяте при державній реєстрації шлюбу" type="string"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sFemaleData" name="Дані нареченої" type="label" default="_____________________________________________________"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Власне ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBirthDate2" name="Дата народження" type="date"></activiti:formProperty>
-        
         <activiti:formProperty id="sBornPlace2" name="Місце народження; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact2" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sWithoutCitizenship2" name="Чи є Ви особою без громадянства або біженцем" type="enum">
@@ -124,18 +96,14 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="sNumberOfMarriages2" name="Який за рахунком шлюб; перший, другий тощо" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMarriagesDoc2" name="Місце державної реєстрації шлюбу, що розривається. Номер та дата актового запису" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleCourt2" name="Назва суду; яким було розірвано шлюб" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateSolutions2" name="Дата ухвалення рішення; яким було розірвано шлюб" type="string"></activiti:formProperty>
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років" type="string"></activiti:formProperty>
-
-        
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажає мати прізвище; дошлюбне чи взяте при державній реєстрації шлюбу" type="string"></activiti:formProperty>
-       
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг" type="file"></activiti:formProperty>
@@ -144,9 +112,7 @@
         <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Referent fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="invisible"></activiti:formProperty>
-      </extensionElements>  
-        
-        
+      </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Service Task" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask2">
@@ -236,6 +202,9 @@ execution.setVariable('sCountPayment', src)</script>
     <sequenceFlow id="flow42" sourceRef="exclusivegateway6" targetRef="servicetask16"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow43" sourceRef="servicetask16" targetRef="endevent4"></sequenceFlow>
+    <serviceTask id="servicetask17" name="Сповіщення пільговика" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow44" sourceRef="exclusivegateway3" targetRef="servicetask17"></sequenceFlow>
+    <sequenceFlow id="flow45" sourceRef="servicetask17" targetRef="usertask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_divorce">
     <bpmndi:BPMNPlane bpmnElement="common_zags_divorce" id="BPMNPlane_common_zags_divorce">
@@ -341,6 +310,9 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="218.0" y="592.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask17" id="BPMNShape_servicetask17">
+        <omgdc:Bounds height="55.0" width="105.0" x="877.0" y="449.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="339.0" y="142.0"></omgdi:waypoint>
         <omgdi:waypoint x="338.0" y="176.0"></omgdi:waypoint>
@@ -353,7 +325,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="510.0" y="102.0"></omgdi:waypoint>
         <omgdi:waypoint x="560.0" y="102.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="510.0" y="102.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="14.0" x="510.0" y="102.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -503,6 +475,15 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="235.0" y="723.0"></omgdi:waypoint>
         <omgdi:waypoint x="235.0" y="627.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="812.0" y="356.0"></omgdi:waypoint>
+        <omgdi:waypoint x="896.0" y="390.0"></omgdi:waypoint>
+        <omgdi:waypoint x="929.0" y="449.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="877.0" y="476.0"></omgdi:waypoint>
+        <omgdi:waypoint x="612.0" y="448.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
