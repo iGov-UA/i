@@ -681,18 +681,15 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getnID_Subject() != null ? oHistoryEvent_Service.getnID_Subject().toString() : "");
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
-                    // sBody
-                    asCell.add(oHistoryEvent_Service.getsBody() != null ? oHistoryEvent_Service.getsBody() : "");
-                    // nRate
-                    asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
+                    
 //                    SubjectMessageFeedback oSubjectMessageFeedback = new SubjectMessageFeedback();
 //                    LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
                     String sTextFeedback = "";
                     LOG.info("1sTextFeedback: " + sTextFeedback);
-                    LOG.info("mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()): " + mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()));
+                    LOG.info("oHistoryEvent_Service.getId(): " + oHistoryEvent_Service.getId());
                     if (oHistoryEvent_Service.getId() != null) {
 //                        sTextFeedback = mSubjectMessage.get(oHistoryEvent_Service.getId()).getBody();
-                            sTextFeedback = oHistoryEvent_Service.getsBody();
+                            sTextFeedback = mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()).getoSubjectMessage().getBody();
                             LOG.info("2sTextFeedback" + sTextFeedback);
                     } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
@@ -704,7 +701,7 @@ public class ActionEventController {
                     // sHead
                     asCell.add(oHistoryEvent_Service.getsHead());
                     // sBody
-                    asCell.add(oHistoryEvent_Service.getsBody());
+                    asCell.add(oHistoryEvent_Service.getsBody() != null ? oHistoryEvent_Service.getsBody() : "");
                     // nTimeMinutes
                     asCell.add(oHistoryEvent_Service.getnTimeMinutes() != null ? oHistoryEvent_Service.getnTimeMinutes().toString() : "");
                     
