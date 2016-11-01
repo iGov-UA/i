@@ -87,7 +87,6 @@ public class BpServiceHandler {
 
     public String startFeedbackProcess(String sID_task, String snID_Process, String processName) {
         Map<String, Object> variables = new HashMap<>();
-        variables.put("nID_Proccess_Feedback", snID_Process);
         variables.put("processName", processName);
         Integer nID_Server = generalConfig.getSelfServerId();
         String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
@@ -97,6 +96,8 @@ public class BpServiceHandler {
                 .createHistoricTaskInstanceQuery()
                 .includeProcessVariables().taskId(sID_task)
                 .singleResult();
+        LOG.info("sID_taskkkkkkkkkkkkkkk:(sID_task={})", sID_task);
+        LOG.info("details.getProcessVariablesssssssssssssssssss():(details.getProcessVariables()={})", details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
             Map<String, Object> processVariables = details.getProcessVariables();
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
@@ -139,6 +140,7 @@ public class BpServiceHandler {
         try {
             String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
             feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
+            variables.put("nID_Proccess_Feedback", feedbackProcessId);
             LOG.info(String.format(" >> start feedbackProcess [%s] ", feedbackProcess));
         } catch (Exception oException) {
             LOG.error("error during starting feedback process!: {}", oException.getMessage());
@@ -151,9 +153,6 @@ public class BpServiceHandler {
         String feedbackProcessId = null;
             
             Map<String, Object> variables = new HashMap<>();
-           // variables.put("nID_Proccess_Feedback", snID_Process); И этот параметр мы ж вроде получаем после старта процесса по фидбеку. Потому при старте никак его не сможем передавать
-            
-
             Integer nID_Server = generalConfig.getSelfServerId();
             String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
 
@@ -173,29 +172,20 @@ public class BpServiceHandler {
             Map<String, Object> processVariables = oHistoricTaskInstance.getProcessVariables();
             
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
-            variables.put("bankIdfirstName", processVariables.get("bankIdfirstName") != null ? String.valueOf(processVariables.get("bankIdfirstName")) : null);
-            variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName") != null ? String.valueOf(processVariables.get("bankIdmiddleName")) : null);
-            variables.put("bankIdlastName", processVariables.get("bankIdlastName") != null ? String.valueOf(processVariables.get("bankIdlastName")) : null);
-            LOG.info(String.format(" >> bankIdfirstName [%s] bankIdmiddleName: %s bankIdlastName: %s", processVariables.get("bankIdfirstName"), processVariables.get("bankIdmiddleName"),processVariables.get("bankIdlastName")));
+            variables.put("clfio", processVariables.get("bankIdlastName") + " "+processVariables.get("bankIdfirstName")+ " "+processVariables.get("bankIdmiddleName"));
+            LOG.info(String.format(" >> bankIdlastName [%s] bankIdfirstName: %s bankIdmiddleName: %s", processVariables.get("bankIdfirstName"), processVariables.get("bankIdmiddleName"),processVariables.get("bankIdmiddleName")));
             variables.put("phone", "" + processVariables.get("phone") != null ? String.valueOf(processVariables.get("phone")) : null);
             LOG.info("phone: (phone={})", processVariables.get("phone"));
             variables.put("email", processVariables.get("email") != null ? String.valueOf(processVariables.get("email")) : null);
             LOG.info("email: (email={}) ", processVariables.get("email"));
             variables.put("Place", getPlaceByProcess(snID_Process));
-            
-            LOG.info("Place: (Place={})", getPlaceByProcess(snID_Process));
-          //  variables.put("clfio", processVariables.get("clfio")); TODO: под вопросом так как есть bankIdfirstName,bankIdmiddleName,bankIdlastName
-            //  variables.put("region", processVariables.get("region")); TODO: под вопросом так как есть Place
-            //  variables.put("info", processVariables.get("info"));TODO: не понятно что передавать
-            //  variables.put("nasPunkt", processVariables.get("nasPunkt"));TODO: под вопросом так как есть Place
-            HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery()
-                    .processInstanceId(tasks.get(0).getProcessInstanceId()).singleResult();
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            variables.put("sDate_BP", formatter.format(processInstance.getStartTime().getTime()));
-          //  variables.put("sBody", processVariables.get("sBody"));TODO: не понятно что передавать
+            variables.put("region", processVariables.get("region")); 
+            variables.put("info", processVariables.get("info"));
+            variables.put("nasPunkt", processVariables.get("nasPunkt"));
+            variables.put("sBody", processVariables.get("sBody"));
             variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
-          //  variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly")); TODO: эти поля ж вроде волонтер заполняет. их тоже вроде как при старте процесса нечем заполнять
-          //  variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));TODO: эти поля ж вроде волонтер заполняет. их тоже вроде как при старте процесса нечем заполнять
+            variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly")); 
+            variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));
             Set<String> organ = new TreeSet<>();
             Set<String> sLoginAssigned = new TreeSet<>();
             //get process variables
@@ -216,6 +206,7 @@ public class BpServiceHandler {
                 LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonHistoryEvent);
                 JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
                 variables.put("nID_Rate", historyEvent.get("nRate"));
+                variables.put("sDate_BP", historyEvent.get("sDate"));
                 nID_Server = historyEvent.getInt("nID_Server");
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
@@ -227,6 +218,7 @@ public class BpServiceHandler {
             try {
                 String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
                 feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
+                variables.put("nID_Proccess_Feedback", feedbackProcessId);
             } catch (Exception oException) {
                 LOG.error("error during starting feedback process!: {}", oException.getMessage());
                 LOG.debug("FAIL:", oException);
