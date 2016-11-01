@@ -97,6 +97,7 @@ public class BpServiceHandler {
                 .includeProcessVariables().taskId(sID_task)
                 .singleResult();
         LOG.info("sID_taskkkkkkkkkkkkkkk:(sID_task={})", sID_task);
+        LOG.info("snID_Processsssssssssssssss:(snID_Process={})", snID_Process);
         LOG.info("details.getProcessVariablesssssssssssssssssss():(details.getProcessVariables()={})", details.getProcessVariables());
         String feedbackProcessId = null;
         if (details != null && details.getProcessVariables() != null) {
@@ -164,7 +165,7 @@ public class BpServiceHandler {
             LOG.info("get tasks for bp:(tasks={})", tasks);
             
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
-                    .taskId(tasks.get(0).getId()).singleResult();
+                    .taskId(tasks.get(0).getTaskDefinitionKey()).singleResult();
             
             LOG.info("get oHistoricTaskInstance for bp:(oHistoricTaskInstance={})", oHistoricTaskInstance);
             
