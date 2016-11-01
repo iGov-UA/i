@@ -98,6 +98,7 @@ public class BpServiceHandler {
                 .singleResult();
         LOG.info("sID_taskkkkkkkkkkkkkkk:(sID_task={})", sID_task);
         LOG.info("details.getProcessVariablesssssssssssssssssss():(details.getProcessVariables()={})", details.getProcessVariables());
+        String feedbackProcessId = null;
         if (details != null && details.getProcessVariables() != null) {
             Map<String, Object> processVariables = details.getProcessVariables();
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
@@ -119,8 +120,7 @@ public class BpServiceHandler {
             variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
-            setSubjectParams(sID_task, processName, variables, processVariables);
-            LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
+            
             try {//issue 1006
                 String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                 LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonHistoryEvent);
@@ -134,19 +134,20 @@ public class BpServiceHandler {
 
             }
 
-        }
-        LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
-        String feedbackProcessId = null;
+      
         try {
             String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
             feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
             variables.put("nID_Proccess_Feedback", feedbackProcessId);
+            setSubjectParams(sID_task, processName, variables, processVariables);
             LOG.info(String.format(" >> start feedbackProcess [%s] ", feedbackProcess));
         } catch (Exception oException) {
             LOG.error("error during starting feedback process!: {}", oException.getMessage());
             LOG.debug("FAIL:", oException);
         }
-        return feedbackProcessId;
+        }
+		return feedbackProcessId;
+       
     }
 
     public String startFeedbackProcessNew(String snID_Process) {
