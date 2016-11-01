@@ -59,25 +59,23 @@ public class SubjectMessageCommonController {
     public @ResponseBody String sentSms(@RequestParam(value = "number", required = false) 
             String number, @RequestParam(value = "message", required = false) String message) throws Exception{
 	
-        String resp = "Error: number is not equal mask";
-        String URL = "https://api.life.com.ua./ip2sms/";
+        String resp = "[none]";
         
         byte[] utf8Message = message.getBytes("UTF-8");
-        //generalConfig.getURL_Send_SMS().
-        if (number.startsWith("+38063")||number.startsWith("+38093"))
-        {
+ 
+        //if (number.startsWith("+38063")||number.startsWith("+38093"))
+        //{
             String body = new StringBuilder("<message>")
                     .append("<service id='single' source='iGov'/>")
                     .append("<to>").append(number).append("</to>")
-                    .append("<body content-type=\"text/plain\">").append(new String(utf8Message, "UTF-8")).append("</body>")
+                    .append("<body content-type=\"text/plain\" encoding=\"plain\">").append(new String(utf8Message, "UTF-8"))
+                    .append("</body>")
                     .append("</message>").toString();
             
-            resp = oHttpRequester.postInside(URL, null, body, "text/xml; charset=utf-8", "trywWDjcF27368908", "Vf2k8ip1xvzgscqoo");
-        }
+            resp = oHttpRequester.postInside(generalConfig.getLifeURL(), null, body, "text/xml; charset=utf-8", 
+            generalConfig.getLifeLogin(), generalConfig.getLifePassword());
+        //}
         
 	return resp;
     }
-    
-    
-
 }
