@@ -169,6 +169,8 @@ public class Cherg {
 	    
 	} catch (ParseException e) {
             LOG.error("Error parsing response = {}", sReturn, e);
+            throw new Exception("Error parsing response for: [sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
+                    + oHttpEntityCover.nStatus());
 	}
 
         return oaJSONArrayReturn;
@@ -177,10 +179,6 @@ public class Cherg {
     public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
         JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
         
-        if (oaJSONArray == null ) {
-            throw new Exception("");            
-        }
-                
 	JSONObject oJSONObjectReturn = new JSONObject();
 	oJSONObjectReturn.put("aDate", oaJSONArray);
         LOG.info("Workdays only work days:{}", oJSONObjectReturn.toJSONString());
@@ -189,35 +187,6 @@ public class Cherg {
 
     }
 
-//    public static void main(String[] args) {
-//	try {
-//	    JSONParser parser = new JSONParser();
-//	    JSONObject result;
-//	    result = (JSONObject) parser.parse("{\"data\":[{    \"date\": \"2016-10-21\",    \"work_day\": 1  },  {    \"date\": \"2016-10-22\",    \"work_day\": 1  },]}");
-//	    JSONArray dates = (JSONArray) result.get("data");
-//
-//	    JSONArray retJSONArray = new JSONArray();
-//	    for(Object o:dates) {
-//		JSONObject jo = (JSONObject) o;
-//		String date = jo.get("date").toString();
-//		String work_day = jo.get("work_day").toString();
-//		
-//		if ( work_day.equals("1")) {
-//		    retJSONArray.add(date);
-//		    System.out.println(date +" " +work_day);
-//		}
-//	    }
-//	    JSONObject retJSON = new JSONObject();
-//	    retJSON.put("aDate", retJSONArray);
-//	    
-//	    System.out.println(retJSON.toString());
-//	    
-//	    
-//	} catch (Exception e) {
-//	    e.printStackTrace();
-//	}
-//    }
-    
     public JSONObject setReserve(String serviceId, String dateTime, String phone, String passport, String lastName,
             String name, String patronymic) throws Exception {
 
