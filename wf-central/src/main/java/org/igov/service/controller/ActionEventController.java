@@ -605,13 +605,13 @@ public class ActionEventController {
         oHttpServletResponse.setHeader("Content-disposition", "attachment; filename="
                 + "serviceHistoryReport.csv");
         oHttpServletResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
-
+        oHttpServletResponse.setCharacterEncoding("UTF-8");
         CSVWriter oCSVWriter;
         try {
             oCSVWriter = new CSVWriter(oHttpServletResponse.getWriter(), ';',
                     CSVWriter.NO_QUOTE_CHARACTER);
             oCSVWriter.writeNext(asHeader.toArray(new String[asHeader.size()]));
-
+            
             List<Long> anID_Service_Exclude = null;
 
             if (sanID_Service_Exclude != null && sanID_Service_Exclude.length > 0) {

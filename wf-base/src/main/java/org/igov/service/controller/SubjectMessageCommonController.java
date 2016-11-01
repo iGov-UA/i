@@ -21,7 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SubjectMessageCommonController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageCommonController.class);
-
+ private static final String body = new StringBuilder("<message>")
+                .append("<service id='single' source='iGov'/>")
+                .append("<to>").append("%s").append("</to>")
+                .append("<body content-type=\"text/plain\" encoding=\"plain\">").append("%s")
+                .append("</body>")
+                .append("</message>").toString();
     @Autowired
     private ManagerSMS_New managerSMS;
 
@@ -73,7 +78,7 @@ public class SubjectMessageCommonController {
                 .append("<body content-type=\"text/plain\" encoding=\"plain\">").append(new String(utf8Message, "UTF-8"))
                 .append("</body>")
                 .append("</message>").toString();
-
+        String result = String.format(body, number, message);
         resp = oHttpRequester.postInside(generalConfig.getLifeURL(), null, body, "text/xml; charset=utf-8",
                 generalConfig.getLifeLogin(), generalConfig.getLifePassword());
         //}
