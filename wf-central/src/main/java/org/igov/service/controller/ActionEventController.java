@@ -654,7 +654,7 @@ public class ActionEventController {
 //                        }
 //                    }
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
-                    List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
+                    List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(aHistoryEvent_Service.get(0).getsID_Order());
                     LOG.info("aSubjectMessageFeedback: " + aSubjectMessageFeedback);
                     LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
                     Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
@@ -682,12 +682,12 @@ public class ActionEventController {
 //                    SubjectMessageFeedback oSubjectMessageFeedback = new SubjectMessageFeedback();
 //                    LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
                     String sTextFeedback = "";
-                    LOG.info("sTextFeedback: " + sTextFeedback);
+                    LOG.info("1sTextFeedback: " + sTextFeedback);
                     LOG.info("mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()): " + mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()));
                     if (mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()) != null) {
 //                        sTextFeedback = mSubjectMessage.get(oHistoryEvent_Service.getId()).getBody();
                             sTextFeedback = mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()).getoSubjectMessage().getBody();
-                            LOG.info("sTextFeedback" + sTextFeedback);
+                            LOG.info("2sTextFeedback" + sTextFeedback);
                     } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
                     }
