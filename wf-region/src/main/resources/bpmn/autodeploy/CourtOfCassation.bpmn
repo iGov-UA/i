@@ -3,6 +3,7 @@
   <process id="CourtOfCassation" name="Подання процесуальних документів у відкритому касаційному провадженні" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sTable1" name="інфо; ;nRowsLimit=0" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;info_1&quot;,&quot;name&quot;:&quot;Звернення, що подані до 16 години 00 хвилин, будуть невідкладно опрацьовані працівником служби діловодства в день надходження звернення у продовж робочого часу, а ті звернення, які подані після 16 години 00 хвилин, будуть невідкладно опрацьовані на наступний робочий день.&quot;,&quot;type&quot;:&quot;label&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище особи, яка внесла дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я особи, яка внесла дані" type="string"></activiti:formProperty>
@@ -397,7 +398,9 @@
           <activiti:value id="reject" name="документи отримані судом адресовані не суду"></activiti:value>
           <activiti:value id="other" name="інша причина"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment" name="укажіть причину" type="string" default=" "></activiti:formProperty>
+         <activiti:formProperty id="sDateAplication" name="Дата та час ознайомлення зі справою" type="date" required="true"></activiti:formProperty>
+         
+        <activiti:formProperty id="sComment" name="укажіть причину" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAkt" name="Сканкопія акту Суду про те, що документи надіслані користувачем до суду не можуть бути визнані як такі, що надійшли до суду" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/CourtOfCassation_print.html]" type="invisible" default="Супровідний лист" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/CourtOfCassation_print.html" type="file"></activiti:formProperty>
@@ -420,8 +423,10 @@
         <activiti:formProperty id="markers18" name="якщо 4 додаткових документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;sDoc11&quot;,&quot;sCategoryDoc12&quot;,&quot;sDoc12&quot;,&quot;sCategoryDoc13&quot;,&quot;sDoc13&quot;,&quot;sCategoryDoc14&quot;,&quot;sDoc14&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'four'||[sReason] == '4'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers19" name="якщо 5 додаткових документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;sDoc11&quot;,&quot;sCategoryDoc12&quot;,&quot;sDoc12&quot;,&quot;sCategoryDoc13&quot;,&quot;sDoc13&quot;,&quot;sCategoryDoc14&quot;,&quot;sDoc14&quot;,&quot;sCategoryDoc15&quot;,&quot;sDoc15&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'five'||[sReason] == '5'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers20" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;reject_1&quot;,&quot;sAkt&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відхилити звернення'&quot;}}}"></activiti:formProperty>
+      
         <activiti:formProperty id="markers21" name="якщо інша причина" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;reject_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'||[sReason] == 'інша причина'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers22" name="заховати маркери" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;markers0&quot;,&quot;markers1&quot;,&quot;markers2&quot;,&quot;markers3&quot;,&quot;markers4&quot;,&quot;markers5&quot;,&quot;markers6&quot;,&quot;markers7&quot;,&quot;markers8&quot;,&quot;markers9&quot;,&quot;markers10&quot;,&quot;markers11&quot;,&quot;markers12&quot;,&quot;markers13&quot;,&quot;markers14&quot;,&quot;markers15&quot;,&quot;markers16&quot;,&quot;markers17&quot;,&quot;markers18&quot;,&quot;markers19&quot;,&quot;markers20&quot;,&quot;markers21&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc10&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'картошечка'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers23" name="якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;sDateAplication&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'документи зарєєстровано'&quot;}}}"></activiti:formProperty>
       
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -474,6 +479,7 @@
 Процесуальні документи, що Ви подавали по справі ${sNumberCase} зареєстровані і передані на розгляд судді.&lt;br /&gt;
 Супроводний лист щодо отриманих документів знаходиться у додатку до листа.&lt;br /&gt;
 Реєстраційний номер ${sNumberAplication}&lt;br /&gt;
+Дата та час ознайомлення зі справою ${sDateAplication}&lt;br /&gt;
 Телефон для довідок:(044) 536-18-01 та (044) 536-18-23
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
