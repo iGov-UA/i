@@ -774,7 +774,7 @@ public class ActionEventController {
                     }
                                                            
                     asCell.add(sDateCreate != null ? sDateCreate.toString() : HistoryEvent_Service_StatusType.ABSENT.getnID().toString());
-                    asCell.add(sDateClose != null ? sDateClose.toString() : HistoryEvent_Service_StatusType.ABSENT.getnID().toString());
+                    asCell.add(sDateClose != null ? sDateClose.toString() : HistoryEvent_Service_StatusType.ABSENT.getsID().toString());
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
