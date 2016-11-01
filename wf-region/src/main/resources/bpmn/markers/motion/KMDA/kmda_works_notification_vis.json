@@ -32,10 +32,21 @@
          "sCondition": "[sCondit] == 'sEnumPerson'||[sCondit] == 'Фізична особа'"
         },
             
-      "ShowFieldsOnCondition_GenLegal": 
-        {"aField_ID": 	["sGenLegalName", "sGenLegalAddress", "sGenLegalEDRPOU", "sGenLegalPhone"], 
+    "ShowFieldsOnCondition_GenLegal": 
+        {"aField_ID": 	["sGenLegalName", "sGenLegalAddress", "sGenLegalEDRPOU", "workPhone"], 
          "asID_Field": 	{"sCondit":"asGeneralContractor"},
          "sCondition": 	"[sCondit] == 'sEnumLegalEntity'||[sCondit] == 'Юридична особа'"
-        }
+        },
+    "ShowFieldsOnCondition_Decision_OK": 
+        {"aField_ID": 	["sID_NumberDABI"], 
+         "asID_Field": 	{"sCondit":"asDecision"},
+         "sCondition": 	"[sCondit] == 'sEnumDecisionOK'||[sCondit] == 'Надана повна інформація. Зареєструвати у реєстрі ДАБІ'"
+        },
+    "ShowFieldsOnCondition_Decision_Return": 
+        {"aField_ID": 	["sRejectionReason"], 
+         "asID_Field": 	{"sCondit":"asDecision"},
+         "sCondition": 	"[sCondit] == 'sEnumDecisionReturn'||[sCondit] == 'Відправити на доопрацювання. Підготувати інформаційний лист'"
+        }                           
+        
     }
 }
