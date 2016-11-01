@@ -5,8 +5,6 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.task.Attachment;
 import org.apache.commons.mail.ByteArrayDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.igov.io.mail.Mail;
 
@@ -17,8 +15,6 @@ import static org.igov.util.ToolLuna.getProtectedNumber;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.mail.MultiPartEmail;
-import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 //import org.igov.io.sms.ManagerSMS_New;
 
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
