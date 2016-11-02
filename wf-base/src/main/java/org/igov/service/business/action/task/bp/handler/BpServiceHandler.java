@@ -99,17 +99,20 @@ public class BpServiceHandler {
                 .singleResult();
         TaskQuery oTaskQuery = taskService.createTaskQuery()
                 .processDefinitionKey(snID_Process);
+        
+        LOG.info("TaskQueryyyyyyyyyyyyyyyyyy:(oTaskQuery={})", oTaskQuery);
         Integer nRowStart = 0;
         Integer nRowsMax = 1000;
         List<Task> aTask = oTaskQuery.listPage(nRowStart, nRowsMax);
+        LOG.info("aTaskListtttttttttttttttttttt:(ListaTask={})", aTask);
         for(Task task:aTask) {
-        LOG.info("aTaskkkkkkkkkkkkkkkkkkkkkkk:(task.getAssignee()={})", task.getAssignee());
-        LOG.info("aTaskkkkkkkkkkkkkkkkkkkkkkk:(task.getId()={})", task.getId());
+        LOG.info("getAssigneeaTaskkkkkkkkkkkkkkkkkkkkkkk:(task.getAssignee()={})", task.getAssignee());
+        LOG.info("getIdaTaskkkkkkkkkkkkkkkkkkkkkkk:(task.getId()={})", task.getId());
         }
         LOG.info("sID_taskkkkkkkkkkkkkkk:(sID_task={})", sID_task);
         LOG.info("snID_Processsssssssssssssss:(snID_Process={})", snID_Process);
         LOG.info("details.getProcessVariablesssssssssssssssssss():(details.getProcessVariables()={})", details.getProcessVariables());
-        String feedbackProcessId = null;
+       
         if (details != null && details.getProcessVariables() != null) {
             Map<String, Object> processVariables = details.getProcessVariables();
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
@@ -145,7 +148,7 @@ public class BpServiceHandler {
 
             }
 
-      
+            String feedbackProcessId  = null;
         try {
         	feedbackProcessId = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
           //  feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
@@ -158,7 +161,6 @@ public class BpServiceHandler {
         }
         return feedbackProcessId;
         }
-		return feedbackProcessId;
        
     }
 
