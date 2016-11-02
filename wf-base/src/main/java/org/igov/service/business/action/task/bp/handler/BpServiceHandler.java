@@ -161,14 +161,14 @@ public class BpServiceHandler {
             LOG.info("sID_Orderrrrrrrr:(sID_Order={})", sID_Order);
             List<HistoricTaskInstance> tasks = historyService
                     .createHistoricTaskInstanceQuery()
-                    .processInstanceId(sID_Order.substring(2))
+                    .processInstanceId(snID_Process)
                     .list();
             LOG.info("get tasks for bp:(tasks={})", tasks);
             
             /*HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(tasks.get(0).getTaskDefinitionKey()).singleResult();*/
             
-            
+           if(tasks!=null && !tasks.isEmpty()) { 
             variables.put("processName", tasks.get(0).getProcessDefinitionId());
             
             Map<String, Object> processVariables = tasks.get(0).getProcessVariables();
@@ -227,7 +227,7 @@ public class BpServiceHandler {
                 LOG.error("error during starting feedback process!: {}", oException.getMessage());
                 LOG.debug("FAIL:", oException);
             }
-
+           }
         return feedbackProcessId;
     }
 
