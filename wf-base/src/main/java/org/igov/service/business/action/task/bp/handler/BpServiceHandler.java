@@ -122,14 +122,13 @@ public class BpServiceHandler {
             variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
-            
+            setSubjectParams(sID_task, processName, variables, processVariables);
             try {//issue 1006
                 String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                 LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonHistoryEvent);
                 JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
                 variables.put("nID_Rate", historyEvent.get("nRate"));
                 variables.put("sDate_BP", historyEvent.get("sDate"));
-                setSubjectParams(sID_task, processName, variables, processVariables);
                 nID_Server = historyEvent.getInt("nID_Server");
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
