@@ -1,41 +1,38 @@
 package org.igov.service.business.action.task.bp.handler;
 
-import org.igov.service.business.escalation.EscalationHistoryService;
-import org.igov.service.business.action.event.HistoryEventService;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
-import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.escalation.EscalationHistory;
+import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.service.business.action.task.bp.BpService;
+import org.igov.service.business.escalation.EscalationHistoryService;
+import org.igov.service.exchange.SubjectCover;
 import org.igov.util.ToolLuna;
 import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import org.activiti.engine.TaskService;
-import org.activiti.engine.form.FormProperty;
-import org.activiti.engine.form.StartFormData;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskQuery;
-import org.igov.service.exchange.SubjectCover;
-import org.igov.model.action.event.HistoryEvent_Service_StatusType;
-import org.igov.service.business.action.task.bp.BpService;
-import org.igov.service.business.place.PlaceService;
-import org.activiti.engine.history.HistoricProcessInstance;
 
 /**
  * @author OlgaPrylypko
@@ -161,10 +158,10 @@ public class BpServiceHandler {
             Map<String, Object> variables = new HashMap<>();
             Integer nID_Server = generalConfig.getSelfServerId();
             String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
-
+            LOG.info("sID_Orderrrrrrrr:(sID_Order={})", sID_Order);
             List<HistoricTaskInstance> tasks = historyService
                     .createHistoricTaskInstanceQuery()
-                    .processInstanceId(snID_Process)
+                    .processInstanceId(sID_Order.substring(2))
                     .list();
             LOG.info("get tasks for bp:(tasks={})", tasks);
             
