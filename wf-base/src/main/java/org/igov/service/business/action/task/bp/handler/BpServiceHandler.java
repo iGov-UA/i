@@ -30,6 +30,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.igov.service.exchange.SubjectCover;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.service.business.action.task.bp.BpService;
@@ -97,8 +98,9 @@ public class BpServiceHandler {
                 .includeProcessVariables().taskId(sID_task)
                 .singleResult();
         LOG.info("sID_taskkkkkkkkkkkkkkk:(sID_task={})", sID_task);
+        LOG.info("snID_Processsssssssssssssss:(snID_Process={})", snID_Process);
         LOG.info("details.getProcessVariablesssssssssssssssssss():(details.getProcessVariables()={})", details.getProcessVariables());
-        String feedbackProcessId = null;
+        String feedbackProcessId  = null;
         if (details != null && details.getProcessVariables() != null) {
             Map<String, Object> processVariables = details.getProcessVariables();
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
@@ -120,7 +122,7 @@ public class BpServiceHandler {
             variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
-            
+            setSubjectParams(sID_task, processName, variables, processVariables);
             try {//issue 1006
                 String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                 LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonHistoryEvent);
@@ -134,17 +136,20 @@ public class BpServiceHandler {
 
             }
 
-      
+            
         try {
-            String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
-            feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
+        	String feedbackProcessIdJson = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
+            feedbackProcessId = new JSONObject(feedbackProcessIdJson).get("id").toString();
             variables.put("nID_Proccess_Feedback", feedbackProcessId);
-            setSubjectParams(sID_task, processName, variables, processVariables);
-            LOG.info(String.format(" >> start feedbackProcess [%s] ", feedbackProcess));
+           
+            LOG.info(String.format(" >> start feedbackProcess [%s] ", feedbackProcessId));
         } catch (Exception oException) {
             LOG.error("error during starting feedback process!: {}", oException.getMessage());
             LOG.debug("FAIL:", oException);
         }
+        LOG.info(String.format(" >> variablesssssssssssssssssss [%s] ", variables));
+        LOG.info(String.format(" >> feedbackProcessIdddddddddddddddd [%s] ", feedbackProcessId));
+        return feedbackProcessId;
         }
 		return feedbackProcessId;
        
@@ -164,7 +169,7 @@ public class BpServiceHandler {
             LOG.info("get tasks for bp:(tasks={})", tasks);
             
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
-                    .taskId(tasks.get(0).getId()).singleResult();
+                    .taskId(tasks.get(0).getTaskDefinitionKey()).singleResult();
             
             LOG.info("get oHistoricTaskInstance for bp:(oHistoricTaskInstance={})", oHistoricTaskInstance);
             

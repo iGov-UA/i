@@ -605,13 +605,13 @@ public class ActionEventController {
         oHttpServletResponse.setHeader("Content-disposition", "attachment; filename="
                 + "serviceHistoryReport.csv");
         oHttpServletResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
-
+        oHttpServletResponse.setCharacterEncoding("UTF-8");
         CSVWriter oCSVWriter;
         try {
             oCSVWriter = new CSVWriter(oHttpServletResponse.getWriter(), ';',
                     CSVWriter.NO_QUOTE_CHARACTER);
             oCSVWriter.writeNext(asHeader.toArray(new String[asHeader.size()]));
-
+            
             List<Long> anID_Service_Exclude = null;
 
             if (sanID_Service_Exclude != null && sanID_Service_Exclude.length > 0) {
@@ -656,7 +656,7 @@ public class ActionEventController {
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     LOG.info("oHistoryEvent_Service.getsID_Order(): " + oHistoryEvent_Service.getsID_Order());
                     List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
-                    LOG.info("aSubjectMessageFeedback: " + aSubjectMessageFeedback);
+                    LOG.info("aSubjectMessageFeedback: " + aSubjectMessageFeedback); 
                     LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
                     Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
                     for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
@@ -692,7 +692,7 @@ public class ActionEventController {
                     LOG.info("mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()): " + mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()));
                     if (oHistoryEvent_Service.getId() != null) {
 //                        sTextFeedback = mSubjectMessage.get(oHistoryEvent_Service.getId()).getBody();
-                            sTextFeedback = oHistoryEvent_Service.getsBody();
+                            sTextFeedback = mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()).getoSubjectMessage().getBody();
                             LOG.info("2sTextFeedback" + sTextFeedback);
                     } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
