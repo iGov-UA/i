@@ -103,7 +103,6 @@ public class BpServiceHandler {
                 .includeProcessVariables().taskId(snID_Process)
                 .singleResult();
         LOG.info("details.getProcessVariablesssssssssssssssssss():(details.getProcessVariables()={})", details.getProcessVariables());
-        LOG.info("details.getProcessVariablesssssssssssssssssss():(details1.getProcessVariables()={})", details1.getProcessVariables());
         String feedbackProcessId = null;
         if (details != null && details.getProcessVariables() != null) {
             Map<String, Object> processVariables = details.getProcessVariables();
