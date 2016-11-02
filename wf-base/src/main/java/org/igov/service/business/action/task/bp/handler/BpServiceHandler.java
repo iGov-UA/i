@@ -97,16 +97,6 @@ public class BpServiceHandler {
                 .createHistoricTaskInstanceQuery()
                 .includeProcessVariables().taskId(sID_task)
                 .singleResult();
-        TaskQuery oTaskQuery = taskService.createTaskQuery()
-                .processDefinitionKey(snID_Process);
-        
-        LOG.info("TaskQueryyyyyyyyyyyyyyyyyy:(oTaskQuery={})", oTaskQuery);
-        List<Task> aTask = oTaskQuery.list();
-        LOG.info("aTaskListtttttttttttttttttttt:(ListaTask={})", aTask);
-        for(Task task:aTask) {
-        LOG.info("getAssigneeaTaskkkkkkkkkkkkkkkkkkkkkkk:(task.getAssignee()={})", task.getAssignee());
-        LOG.info("getIdaTaskkkkkkkkkkkkkkkkkkkkkkk:(task.getId()={})", task.getId());
-        }
         LOG.info("sID_taskkkkkkkkkkkkkkk:(sID_task={})", sID_task);
         LOG.info("snID_Processsssssssssssssss:(snID_Process={})", snID_Process);
         LOG.info("details.getProcessVariablesssssssssssssssssss():(details.getProcessVariables()={})", details.getProcessVariables());
@@ -139,6 +129,7 @@ public class BpServiceHandler {
                 JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
                 variables.put("nID_Rate", historyEvent.get("nRate"));
                 variables.put("sDate_BP", historyEvent.get("sDate"));
+                setSubjectParams(sID_task, processName, variables, processVariables);
                 nID_Server = historyEvent.getInt("nID_Server");
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
@@ -151,12 +142,14 @@ public class BpServiceHandler {
         	String feedbackProcessIdJson = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
             feedbackProcessId = new JSONObject(feedbackProcessIdJson).get("id").toString();
             variables.put("nID_Proccess_Feedback", feedbackProcessId);
-            setSubjectParams(sID_task, processName, variables, processVariables);
+           
             LOG.info(String.format(" >> start feedbackProcess [%s] ", feedbackProcessId));
         } catch (Exception oException) {
             LOG.error("error during starting feedback process!: {}", oException.getMessage());
             LOG.debug("FAIL:", oException);
         }
+        LOG.info(String.format(" >> variablesssssssssssssssssss [%s] ", variables));
+        LOG.info(String.format(" >> feedbackProcessIdddddddddddddddd [%s] ", feedbackProcessId));
         return feedbackProcessId;
         }
 		return feedbackProcessId;
