@@ -159,19 +159,19 @@ public class BpServiceHandler {
             Integer nID_Server = generalConfig.getSelfServerId();
             String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
             LOG.info("sID_Orderrrrrrrr:(sID_Order={})", sID_Order);
-            List<HistoricTaskInstance> tasks = historyService
+            HistoricTaskInstance details = historyService
                     .createHistoricTaskInstanceQuery()
-                    .processInstanceId(snID_Process)
-                    .list();
-            LOG.info("get tasks for bp:(tasks={})", tasks);
+                    .includeProcessVariables().taskId(snID_Process)
+                    .singleResult();
+            LOG.info("get tasks for bp:(tasks={})", details);
             
             /*HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(tasks.get(0).getTaskDefinitionKey()).singleResult();*/
             
-           if(tasks!=null && !tasks.isEmpty()) { 
-            variables.put("processName", tasks.get(0).getProcessDefinitionId());
+           if(details!=null) { 
+            variables.put("processName", details.getProcessDefinitionId());
             
-            Map<String, Object> processVariables = tasks.get(0).getProcessVariables();
+            Map<String, Object> processVariables = details.getProcessVariables();
             
             LOG.info("processVariablesssssssssssssssssssss:(processVariables={})", processVariables);
             
@@ -193,16 +193,16 @@ public class BpServiceHandler {
             Set<String> organ = new TreeSet<>();
             Set<String> sLoginAssigned = new TreeSet<>();
             //get process variables
-            for (HistoricTaskInstance task : tasks) {
-                organ.addAll(getCandidateGroups(tasks.get(0).getProcessDefinitionId(), task.getId(), processVariables));
-                sLoginAssigned.add(task.getAssignee());
-            }
+            //for (HistoricTaskInstance task : tasks) {
+                organ.addAll(getCandidateGroups(details.getProcessDefinitionId(), details.getId(), processVariables));
+                sLoginAssigned.add(details.getAssignee());
+          //  }
             LOG.info("get organ:(organ={})", organ);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             variables.put("sLoginAssigned", sLoginAssigned.isEmpty()?"":sLoginAssigned);
-            for (HistoricTaskInstance task : tasks) {
-                setSubjectParams(task.getId(), tasks.get(0).getProcessDefinitionId(), variables, processVariables);
-            }
+         //   for (HistoricTaskInstance task : tasks) {
+                setSubjectParams(details.getId(), details.getProcessDefinitionId(), variables, processVariables);
+         //   }
             LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
 
             try {//issue 1006
