@@ -94,9 +94,6 @@ public class BpServiceHandler {
                 .createHistoricTaskInstanceQuery()
                 .includeProcessVariables().taskId(sID_task)
                 .singleResult();
-        LOG.info("sID_taskkkkkkkkkkkkkkk:(sID_task={})", sID_task);
-        LOG.info("snID_Processsssssssssssssss:(snID_Process={})", snID_Process);
-        LOG.info("details.getProcessVariablesssssssssssssssssss():(details.getProcessVariables()={})", details.getProcessVariables());
         String feedbackProcessId  = null;
         if (details != null && details.getProcessVariables() != null) {
             Map<String, Object> processVariables = details.getProcessVariables();
@@ -144,8 +141,6 @@ public class BpServiceHandler {
             LOG.error("error during starting feedback process!: {}", oException.getMessage());
             LOG.debug("FAIL:", oException);
         }
-        LOG.info(String.format(" >> variablesssssssssssssssssss [%s] ", variables));
-        LOG.info(String.format(" >> feedbackProcessIdddddddddddddddd [%s] ", feedbackProcessId));
         return feedbackProcessId;
         }
 		return feedbackProcessId;
@@ -163,26 +158,16 @@ public class BpServiceHandler {
                     .includeProcessVariables().taskId(snID_Process)
                     .list();
             String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(details.get(0).getProcessInstanceId()));
-            LOG.info("get tasks for bp:(tasks={})", details);
-            LOG.info("sID_Orderrrrrrrr:(sID_Order={})", sID_Order);
-            
-            /*HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
-                    .taskId(tasks.get(0).getTaskDefinitionKey()).singleResult();*/
             
             if (details != null && details.get(0).getProcessVariables() != null) {
             variables.put("processName", details.get(0).getProcessDefinitionId());
             
             Map<String, Object> processVariables = details.get(0).getProcessVariables();
             
-            LOG.info("processVariablesssssssssssssssssssss:(processVariables={})", processVariables);
-            
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(details.get(0).getProcessInstanceId())));
             variables.put("clfio", processVariables.get("bankIdlastName") + " "+processVariables.get("bankIdfirstName")+ " "+processVariables.get("bankIdmiddleName"));
-            LOG.info(String.format(" >> bankIdlastName [%s] bankIdfirstName: %s bankIdmiddleName: %s", processVariables.get("bankIdfirstName"), processVariables.get("bankIdmiddleName"),processVariables.get("bankIdmiddleName")));
             variables.put("phone", "" + processVariables.get("phone") != null ? String.valueOf(processVariables.get("phone")) : null);
-            LOG.info("phone: (phone={})", processVariables.get("phone"));
             variables.put("email", processVariables.get("email") != null ? String.valueOf(processVariables.get("email")) : null);
-            LOG.info("email: (email={}) ", processVariables.get("email"));
             variables.put("Place", getPlaceByProcess(details.get(0).getProcessInstanceId()));
             variables.put("region", processVariables.get("region")); 
             variables.put("info", processVariables.get("info"));
@@ -218,7 +203,6 @@ public class BpServiceHandler {
                 LOG.debug("FAIL:", oException);
 
             }
-
 
             try {
                 String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
