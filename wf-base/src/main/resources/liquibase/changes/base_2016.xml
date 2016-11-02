@@ -360,5 +360,50 @@
                              tableName="DocumentStepSubjectRightField"
                              columnNames="nID_DocumentStepSubjectRight, sMask_FieldID, bWrite"/>
     </changeSet>
+    
+    <!--changeSet id="issue-1404-table_SubjectGroup" author="olga">
+        
+        <createTable tableName="SubjectGroup">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sName" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sID_Group_Activiti" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sChain" type="varchar(55)">
+                <constraints nullable="false"/>
+            </column>    
+        </createTable>
+        
+        <createTable tableName="SubjectGroupTree">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="nID_SubjectGroup_Parent" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_SubjectGroupTree_P"
+                             referencedTableName    ="SubjectGroup"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+            <column name="nID_SubjectGroup_Child" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_SubjectGroupTree_C"
+                             referencedTableName    ="SubjectGroup"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="SubjectGroupTree_Unique"
+                             columnNames="nID_SubjectGroup_Parent, nID_SubjectGroup_Child"
+                             tableName="SubjectGroupTree"/>
+        
+        <addAutoIncrement tableName="SubjectGroupTree" columnName="nID" startWith="1000" columnDataType="bigint"/>
+  
+    </changeSet--> 
 
 </databaseChangeLog>
