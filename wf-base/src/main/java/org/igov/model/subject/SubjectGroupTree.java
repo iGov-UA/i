@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.model.document;
+package org.igov.model.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.JoinColumn;
