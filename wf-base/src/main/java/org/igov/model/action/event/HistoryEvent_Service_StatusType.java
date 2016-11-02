@@ -3,7 +3,7 @@ package org.igov.model.action.event;
 /**
  * Created by grigoriy-romanenko on 28.12.2015.
  */
-public enum HistoryEvent_Service_StatusType{
+public enum HistoryEvent_Service_StatusType{ //--
 
     CREATED(0L,
             "Created",
