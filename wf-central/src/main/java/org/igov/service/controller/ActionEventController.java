@@ -44,6 +44,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
+import org.igov.service.business.subject.SubjectMessageService;
 import org.joda.time.format.DateTimeFormatter;
 
 @Controller
@@ -72,6 +73,8 @@ public class ActionEventController {
     private DocumentDao documentDao;
     @Autowired
     private ActionProcessCountDao actionProcessCountDao;
+    @Autowired
+    private SubjectMessageService oSubjectMessageService;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -641,59 +644,34 @@ public class ActionEventController {
                     anID_HistoryEvent_Service.add(oHistoryEvent_Service.getId());
                 }
                 LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service);
-//                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
-//                String sID_Order = subjectMessageFeedbackDao.findAll().get(0).getsID_Order();
-//                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
-//                HistoryEvent_Service oHistoryEvent_Service = new HistoryEvent_Service();
-//                List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(aHistoryEvent_Service.get(0).getsID_Order());
-//                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
-//                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
-//                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
-//                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
-//                        mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
-//                        }
-//                    }
+
+
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
-                    LOG.info("oHistoryEvent_Service.getsID_Order(): " + oHistoryEvent_Service.getsID_Order());
-                    List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
-                    LOG.info("aSubjectMessageFeedback: " + aSubjectMessageFeedback); 
-                    LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
-                    Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
-                    for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
-                    LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId(): " + oSubjectMessageFeedback.getoSubjectMessage()
-                            .getSubjectMessageType().getId());
-//                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
-                        mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
-//                        }
-                        LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
-                    }
+                    //               List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
+                List<SubjectMessageFeedback> aSubjectMessage = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
+                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessage.size());
+                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
+                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessage) {
+//                    if (oSubjectMessage.getSubjectMessageType().getId() == 2) {
+                        mSubjectMessageFeedback.put(oHistoryEvent_Service.getId(), oSubjectMessageFeedback);
+//                    }
+                }
                     List<String> asCell = new LinkedList<>();
                     // sID_Order
-                    asCell.add(oHistoryEvent_Service.getsID_Order() != null ? oHistoryEvent_Service.getsID_Order() : "");
-                    LOG.info("getsID_Order(): "+oHistoryEvent_Service.getsID_Order());
+                    asCell.add(oHistoryEvent_Service.getsID_Order());
                     // nID_Server
                     asCell.add(oHistoryEvent_Service.getnID_Server() != null ? oHistoryEvent_Service.getnID_Server().toString() : "");
                     // nID_Service
                     asCell.add(oHistoryEvent_Service.getnID_Service() != null ? oHistoryEvent_Service.getnID_Service().toString() : "");
                     // sID_Place
-                    asCell.add(oHistoryEvent_Service.getsID_UA()); 
+                    asCell.add(oHistoryEvent_Service.getsID_UA());
                     // nID_Subject
                     asCell.add(oHistoryEvent_Service.getnID_Subject() != null ? oHistoryEvent_Service.getnID_Subject().toString() : "");
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
-                    // sBody
-                    asCell.add(oHistoryEvent_Service.getsBody() != null ? oHistoryEvent_Service.getsBody() : "");
-                    // nRate
-                    asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
-//                    SubjectMessageFeedback oSubjectMessageFeedback = new SubjectMessageFeedback();
-//                    LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
                     String sTextFeedback = "";
-                    LOG.info("1sTextFeedback: " + sTextFeedback);
-                    LOG.info("mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()): " + mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()));
-                    if (oHistoryEvent_Service.getId() != null) {
-//                        sTextFeedback = mSubjectMessage.get(oHistoryEvent_Service.getId()).getBody();
-                            sTextFeedback = oHistoryEvent_Service.getsBody();
-                            LOG.info("2sTextFeedback" + sTextFeedback);
+                    if (mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()) != null) {
+                        sTextFeedback = mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()).getsBody();
                     } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
                     }
