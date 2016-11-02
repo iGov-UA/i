@@ -88,6 +88,4 @@ private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.
     public String setsID_Order(String sID_Order) {
         return sID_Order;
     }
-
-    
 }

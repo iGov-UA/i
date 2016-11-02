@@ -677,7 +677,7 @@ public class ActionEventController {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
                     }
                     // sTextFeedback
-                    asCell.add(sTextFeedback);
+                    asCell.add(sTextFeedback);   
                     // sUserTaskName
                     asCell.add(oHistoryEvent_Service.getsUserTaskName());
                     // sHead
