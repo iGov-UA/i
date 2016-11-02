@@ -3,14 +3,14 @@
   <process id="_test_skuhtin" name="_test_skuhtin" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="Start" name="Start" default="Start"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Приклад поля; ;nRowsLimit=5" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sField1&quot;,&quot;name&quot;:&quot;Поле 1&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sField2&quot;,&quot;name&quot;:&quot;Поле2&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;}]}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <userTask id="usertask1" name="Збереження полів" activiti:candidateGroups="kyiv_dabi_permit_boss">
+    <userTask id="usertask1" name="Поля Table" activiti:candidateGroups="kyiv_dabi_permit_boss">
       <extensionElements>
-        <activiti:formProperty id="sID_Group" name="Група виконавців" type="string" default="kyiv_dabi_permit_empl"></activiti:formProperty>
-        <activiti:formProperty id="sSecondField" name="Друге поле" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Поля з форми користувача" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sField1&quot;,&quot;name&quot;:&quot;Поле 1&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sField2&quot;,&quot;name&quot;:&quot;Поле2&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Поле Table2" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNameOfProc&quot;,&quot;name&quot;:&quot;Поле цієї форми 1&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sSecond&quot;,&quot;name&quot;:&quot;Поле цієї форми2&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;}]}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
