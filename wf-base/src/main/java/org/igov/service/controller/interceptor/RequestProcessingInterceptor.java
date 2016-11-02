@@ -235,7 +235,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("saveUpdatedTaskInfo block started");
                 saveUpdatedTaskInfo(sResponseBody, mRequestParam);
                 LOG.info("saveUpdatedTaskInfo block finished");
-            }
+            } else if (isSaveChangesTask(oRequest)) { //skuhtin
+                sType = "Change";
+                LOG.info("updateTaskVariables block started");
+                updateTaskVariables(sRequestBody);
+                LOG.info("updateTaskVariables block finished");
+            } // end of my changes
         } catch (Exception oException) {
             LOG_BIG.error("Can't save service-history record: {}", oException.getMessage());
             LOG_BIG.error("FAIL:", oException);
@@ -258,6 +263,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
         LOG.info("Method 'protocolize' finished");
     }
+    // skuhtin addeed isSaveChangesTask
+    private boolean isSaveChangesTask(HttpServletRequest oRequest) {
+        return oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0
+                && "PUT".equalsIgnoreCase(oRequest.getMethod().trim());
+    } //
 
     private boolean isUpdateTask(HttpServletRequest oRequest) {
         return oRequest.getRequestURL().toString().indexOf("/runtime/tasks") > 0
@@ -623,6 +633,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("Method saveClosedTaskInfo finished");
             }
         }
+    }
+    // skuhtin added updateTaskVariables
+    private void updateTaskVariables(String sRequestBody) throws Exception {
+        JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+        LOG.info("JSON Request: " + omRequestBody.toJSONString());
     }
 
     private void saveUpdatedTaskInfo(String sResponseBody, Map<String, String> mRequestParam) throws Exception {
