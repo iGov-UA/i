@@ -168,14 +168,15 @@ public class BpServiceHandler {
                     .list();
             LOG.info("get tasks for bp:(tasks={})", tasks);
             
-            HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
-                    .taskId(tasks.get(0).getTaskDefinitionKey()).singleResult();
+            /*HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                    .taskId(tasks.get(0).getTaskDefinitionKey()).singleResult();*/
             
-            LOG.info("get oHistoricTaskInstance for bp:(oHistoricTaskInstance={})", oHistoricTaskInstance);
             
-            variables.put("processName", oHistoricTaskInstance.getProcessDefinitionId());
+            variables.put("processName", tasks.get(0).getProcessDefinitionId());
             
-            Map<String, Object> processVariables = oHistoricTaskInstance.getProcessVariables();
+            Map<String, Object> processVariables = tasks.get(0).getProcessVariables();
+            
+            LOG.info("processVariablesssssssssssssssssssss:(processVariables={})", processVariables);
             
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
             variables.put("clfio", processVariables.get("bankIdlastName") + " "+processVariables.get("bankIdfirstName")+ " "+processVariables.get("bankIdmiddleName"));
@@ -196,14 +197,14 @@ public class BpServiceHandler {
             Set<String> sLoginAssigned = new TreeSet<>();
             //get process variables
             for (HistoricTaskInstance task : tasks) {
-                organ.addAll(getCandidateGroups(oHistoricTaskInstance.getProcessDefinitionId(), task.getId(), processVariables));
+                organ.addAll(getCandidateGroups(tasks.get(0).getProcessDefinitionId(), task.getId(), processVariables));
                 sLoginAssigned.add(task.getAssignee());
             }
             LOG.info("get organ:(organ={})", organ);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             variables.put("sLoginAssigned", sLoginAssigned.isEmpty()?"":sLoginAssigned);
             for (HistoricTaskInstance task : tasks) {
-                setSubjectParams(task.getId(), oHistoricTaskInstance.getProcessDefinitionId(), variables, processVariables);
+                setSubjectParams(task.getId(), tasks.get(0).getProcessDefinitionId(), variables, processVariables);
             }
             LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
 
