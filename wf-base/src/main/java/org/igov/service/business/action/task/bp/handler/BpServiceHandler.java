@@ -112,7 +112,7 @@ public class BpServiceHandler {
         LOG.info("sID_taskkkkkkkkkkkkkkk:(sID_task={})", sID_task);
         LOG.info("snID_Processsssssssssssssss:(snID_Process={})", snID_Process);
         LOG.info("details.getProcessVariablesssssssssssssssssss():(details.getProcessVariables()={})", details.getProcessVariables());
-       
+        String feedbackProcessId  = null;
         if (details != null && details.getProcessVariables() != null) {
             Map<String, Object> processVariables = details.getProcessVariables();
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
@@ -148,7 +148,7 @@ public class BpServiceHandler {
 
             }
 
-            String feedbackProcessId  = null;
+            
         try {
         	feedbackProcessId = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
           //  feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
@@ -161,6 +161,7 @@ public class BpServiceHandler {
         }
         return feedbackProcessId;
         }
+		return feedbackProcessId;
        
     }
 
