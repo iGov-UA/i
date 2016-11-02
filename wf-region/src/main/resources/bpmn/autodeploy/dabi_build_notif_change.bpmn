@@ -147,7 +147,7 @@
         <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBuildNotifRegistrationDate" name="Дата реєстрації повідомлення про початок виконання будівельних робіт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBuildNotifRegistrationDate" name="Дата реєстрації повідомлення про початок виконання будівельних робіт" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" required="true">
           <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
           <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
@@ -175,7 +175,6 @@
         <activiti:formProperty id="sAdminDocDate" name="Дата видачі розпорядчого документу" type="date"></activiti:formProperty>
         <activiti:formProperty id="sKeyIndicators" name="Основні показники" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNumberOfFloors&quot;,&quot;name&quot;:&quot;Кількість поверхів&quot;,&quot;type&quot;:&quot;long&quot;},{&quot;id&quot;:&quot;sTotalArea&quot;,&quot;name&quot;:&quot;Загальна площа, кВ.метрів&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sResidentialSpace&quot;,&quot;name&quot;:&quot;Житлова площа, кВ.м&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sNonResidentialSpace&quot;,&quot;name&quot;:&quot;Нежитлова площа, кВ.м&quot;,&quot;type&quot;:&quot;string&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sTotalNonResidentialArea" name="Загальна площа нежитлових будівель, кВ.м" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sExpertOrgName" name="Найменування експертної організації, яка проводила експертизу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sExpertOrgINN" name="Код згідно з ЄДРПОУ експертної організації" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRespExpertName" name="ПІБ відповідального експерта" type="string"></activiti:formProperty>
@@ -206,7 +205,7 @@
         <activiti:formProperty id="sGenLegalForm" name="Організаційно-правова форма юридичної особи" type="string" default="Потрібна інтеграція з обліковою системою"></activiti:formProperty>
         <activiti:formProperty id="sGenLegalName" name="Найменування юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGenLegalAddress" name="Місцезнаходження" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGenLegalINN" name="Код платника податків згідно з ЄДРПОУ або податковий номе" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGenLegalINN" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
@@ -218,10 +217,6 @@
         <activiti:formProperty id="sID_NumberDABI" name="Реєстраційний номер з реєстру ДАБІ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="asSignatory" name="Особа, якій необхідно підписати документ" type="enum">
-          <activiti:value id="sEnumSignDirector" name="Директор"></activiti:value>
-          <activiti:value id="sEnumSignDeputy" name="Заступник директора"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notif_change_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notif_change_req.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
@@ -265,7 +260,7 @@
           <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sObjectCode" name="Код об’єкта (згідно з Державним класифікатором будівель та споруд ДК 018-2000)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChangeDocName" name="Найменування документу, що є підставою для зміни даних" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChangeDocNumb" name="Дата видачі та номер документу, що є підставою для зміни даних" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChangeDocGiven" name="Ким виданий документ, що є підставою для зміни даних" type="string" writable="false"></activiti:formProperty>
@@ -284,7 +279,6 @@
         <activiti:formProperty id="sAdminDocDate" name="Дата видачі розпорядчого документу" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKeyIndicators" name="Основні показники" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNumberOfFloors&quot;,&quot;name&quot;:&quot;Кількість поверхів&quot;,&quot;type&quot;:&quot;long&quot;},{&quot;id&quot;:&quot;sTotalArea&quot;,&quot;name&quot;:&quot;Загальна площа, кВ.метрів&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sResidentialSpace&quot;,&quot;name&quot;:&quot;Житлова площа, кВ.м&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sNonResidentialSpace&quot;,&quot;name&quot;:&quot;Нежитлова площа, кВ.м&quot;,&quot;type&quot;:&quot;string&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sTotalNonResidentialArea" name="Загальна площа нежитлових будівель, кВ.м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExpertOrgName" name="Найменування експертної організації, яка проводила експертизу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExpertOrgINN" name="Код згідно з ЄДРПОУ експертної організації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRespExpertName" name="ПІБ відповідального експерта" type="string" writable="false"></activiti:formProperty>
@@ -315,7 +309,7 @@
         <activiti:formProperty id="sGenLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sGenLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sGenLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGenLegalINN" name="Код платника податків згідно з ЄДРПОУ або податковий номе" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sGenLegalINN" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
@@ -459,7 +453,7 @@
           <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sObjectCode" name="Код об’єкта (згідно з Державним класифікатором будівель та споруд ДК 018-2000)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChangeDocName" name="Найменування документу, що є підставою для зміни даних" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChangeDocNumb" name="Дата видачі та номер документу, що є підставою для зміни даних" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChangeDocGiven" name="Ким виданий документ, що є підставою для зміни даних" type="string" writable="false"></activiti:formProperty>
@@ -478,7 +472,6 @@
         <activiti:formProperty id="sAdminDocDate" name="Дата видачі розпорядчого документу" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKeyIndicators" name="Основні показники" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNumberOfFloors&quot;,&quot;name&quot;:&quot;Кількість поверхів&quot;,&quot;type&quot;:&quot;long&quot;},{&quot;id&quot;:&quot;sTotalArea&quot;,&quot;name&quot;:&quot;Загальна площа, кВ.метрів&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sResidentialSpace&quot;,&quot;name&quot;:&quot;Житлова площа, кВ.м&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sNonResidentialSpace&quot;,&quot;name&quot;:&quot;Нежитлова площа, кВ.м&quot;,&quot;type&quot;:&quot;string&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sTotalNonResidentialArea" name="Загальна площа нежитлових будівель, кВ.м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExpertOrgName" name="Найменування експертної організації, яка проводила експертизу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExpertOrgINN" name="Код згідно з ЄДРПОУ експертної організації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRespExpertName" name="ПІБ відповідального експерта" type="string" writable="false"></activiti:formProperty>
@@ -509,7 +502,7 @@
         <activiti:formProperty id="sGenLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sGenLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sGenLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGenLegalINN" name="Код платника податків згідно з ЄДРПОУ або податковий номе" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sGenLegalINN" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
