@@ -256,7 +256,7 @@
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener>        
+        </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nBuildNotif}]]></activiti:expression>
@@ -366,7 +366,7 @@
         <timeDuration>PT15M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <userTask id="usertask_step_6.1" name="6.1 Повідомлення про невиконання завдання" activiti:candidateGroups="kyiv_dabi_permit_doc_boss">
+    <userTask id="usertask_step_6.1_red" name="6.1 Повідомлення про невиконання завдання" activiti:candidateGroups="kyiv_dabi_permit_doc_boss">
       <extensionElements>
         <activiti:formProperty id="sAssigneeName" name="ПІБ відповідального виконавця" type="string" expression="${sLoginAsignee}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
@@ -382,13 +382,13 @@
         <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow27" sourceRef="boundarytimer1" targetRef="usertask_step_6.1"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="boundarytimer1" targetRef="usertask_step_6.1_red"></sequenceFlow>
     <boundaryEvent id="boundarytimer2" name="Timer" attachedToRef="usertask_step6" cancelActivity="false">
       <timerEventDefinition>
         <timeDuration>PT10M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <userTask id="usertask_step_6.2" name="6.2 Повідомлення про невиконання завдання">
+    <userTask id="usertask_step_6.2_red" name="6.2 Повідомлення про невиконання завдання">
       <extensionElements>
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
@@ -408,7 +408,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow29" sourceRef="boundarytimer2" targetRef="usertask_step_6.2"></sequenceFlow>
+    <sequenceFlow id="flow29" sourceRef="boundarytimer2" targetRef="usertask_step_6.2_red"></sequenceFlow>
     <sequenceFlow id="flow31" name="Зареєстровано" sourceRef="exclusivegateway1" targetRef="usertask_step14">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEnumDecisionOK'}]]></conditionExpression>
     </sequenceFlow>
@@ -618,10 +618,10 @@
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1160.0" y="207.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask_step_6.1" id="BPMNShape_usertask_step_6.1">
+      <bpmndi:BPMNShape bpmnElement="usertask_step_6.1_red" id="BPMNShape_usertask_step_6.1_red">
         <omgdc:Bounds height="78.0" width="105.0" x="530.0" y="300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask_step_6.2" id="BPMNShape_usertask_step_6.2">
+      <bpmndi:BPMNShape bpmnElement="usertask_step_6.2_red" id="BPMNShape_usertask_step_6.2_red">
         <omgdc:Bounds height="78.0" width="105.0" x="647.0" y="300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
