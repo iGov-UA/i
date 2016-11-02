@@ -75,7 +75,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
@@ -86,7 +86,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask7" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="OSBB_test">
+    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="Bux_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOSBB" name="Назва ОСББ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEdrpouOSBB" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
@@ -131,6 +131,8 @@ ${sNameOrgan}.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
