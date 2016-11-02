@@ -3,7 +3,7 @@
   <process id="CourtOfCassation" name="Подання процесуальних документів у відкритому касаційному провадженні" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sTable1" name="інфо; ;nRowsLimit=0" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;info_1&quot;,&quot;name&quot;:&quot;Звернення, що подані до 16 години 00 хвилин, будуть невідкладно опрацьовані працівником служби діловодства в день надходження звернення у продовж робочого часу, а ті звернення, які подані після 16 години 00 хвилин, будуть невідкладно опрацьовані на наступний робочий день.&quot;,&quot;type&quot;:&quot;label&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="info" name="Звернення, що подані до 16 години 00 хвилин, будуть невідкладно опрацьовані працівником служби діловодства в день надходження звернення у продовж робочого часу" type="label" default="а ті звернення, які подані після 16 години 00 хвилин, будуть невідкладно опрацьовані на наступний робочий день"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище особи, яка внесла дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я особи, яка внесла дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові особи, яка внесла дані" type="string"></activiti:formProperty>
@@ -397,8 +397,7 @@
           <activiti:value id="reject" name="документи отримані судом адресовані не суду"></activiti:value>
           <activiti:value id="other" name="інша причина"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDateAplication" name="Дата та час ознайомлення зі справою" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateAplicationNew" name="Дата та час ознайомлення зі справою у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateAplication" name="Дата та час ознайомлення зі справою" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="укажіть причину" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAkt" name="Сканкопія акту Суду про те, що документи надіслані користувачем до суду не можуть бути визнані як такі, що надійшли до суду" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/CourtOfCassation_print.html]" type="invisible" default="Супровідний лист" writable="false"></activiti:formProperty>
@@ -474,7 +473,7 @@
 Процесуальні документи, що Ви подавали по справі ${sNumberCase} зареєстровані і передані на розгляд судді.<br />
 Супроводний лист щодо отриманих документів знаходиться у додатку до листа.<br />
 Реєстраційний номер ${sNumberAplication}<br />
-Дата та час ознайомлення зі справою ${sDateAplicationNew}<br />
+Дата та час ознайомлення зі справою ${sDateAplication}<br />
 Телефон для довідок:(044) 536-18-01 та (044) 536-18-23
 <br />
 [pattern/mail/_common_signature_start.html]
@@ -917,11 +916,7 @@ execution.setVariable('sListDocumentsLetter', res)
     <sequenceFlow id="flow34" name="+" sourceRef="exclusivegateway1" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask2" name="дату в письмо делаем красивой" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable('sDateAplicationNew', execution.getVariable('sDateAplication').format("dd.MM.yyyy HH:mm:ss"))</script>
-    </scriptTask>
-    <sequenceFlow id="flow35" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
-    <sequenceFlow id="flow36" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_CourtOfCassation">
     <bpmndi:BPMNPlane bpmnElement="CourtOfCassation" id="BPMNPlane_CourtOfCassation">
@@ -954,9 +949,6 @@ execution.setVariable('sListDocumentsLetter', res)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="127.0" y="298.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="161.0" x="420.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="96.0" y="57.0"></omgdi:waypoint>
@@ -1003,10 +995,7 @@ execution.setVariable('sListDocumentsLetter', res)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="500.0" y="165.0"></omgdi:waypoint>
-        <omgdi:waypoint x="500.0" y="200.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="420.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="227.0"></omgdi:waypoint>
         <omgdi:waypoint x="384.0" y="227.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
