@@ -3,6 +3,10 @@
   <process id="common_zags_divorce" name="Подати заяву про розірвання шлюбу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+          
         <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу" type="enum" required="true">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
           <activiti:value id="sEnum2" name="на підставі рішення суду (здійснене судом до набрання чинності Законом України «Про державну реєстрацію актів цивільного стану» (27.07.2010))"></activiti:value>
@@ -21,7 +25,7 @@
         <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть відділ ДРАЦС за місцем свого проживання" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText6" name="Зверніть увагу" type="label" default="&lt;b&gt;Реквізити для сплати обраного типу обряду Ви отримаєте в електронному листі після перевірки данних реєстратором&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита (0,51 грн.);Ви можете сплатити цю суму через Інтернет банківською карткою або зробити звичайний банківський платіж за реквізитами. Якщо Ви маєте пільгу, оплата не потрібна" type="enum" required="true">
+        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита;Ви можете сплатити цю суму через Інтернет банківською карткою або зробити звичайний банківський платіж за реквізитами. Якщо Ви маєте пільгу, оплата не потрібна" type="enum" required="true">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
           <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
           <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
@@ -34,7 +38,7 @@
           <activiti:value id="sEnum5" name="інваліди I та II груп"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса " type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
@@ -217,7 +221,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
- <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
+ <h3>Шановний (а) ${firstName_UA1} ${middleName_UA1}.</h3>
                                     
 Ваше звернення [sID_Order] успішно зареєстровано. <br />
 Результат обробки звернення будуть спрямовані на цей е-мейл протягом 3-х днів. <br />
@@ -367,7 +371,10 @@ ${sMail_Signature}<br /><br />
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
         
-         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума державного мита, яку необхідно сплатити" type="string"></activiti:formProperty>
+        <activiti:formProperty id="commentTax" name="Коментар до суми сплати (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
+        
+         <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
@@ -400,7 +407,7 @@ ${sMail_Signature}<br /><br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
-<h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
+<h3>Шановний (а) ${firstName_UA1} ${middleName_UA1}.</h3>
 <br />
 На жаль, Вам відмовлено в наданні послуги.<br>
 Підстава: <br>
@@ -431,29 +438,157 @@ ${sMail_Signature}<br /><br />
     <serviceTask id="servicetask11" name="Звільнення черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
     <sequenceFlow id="flow31" sourceRef="servicetask11" targetRef="endevent3"></sequenceFlow>
     
+        <sequenceFlow id="flow20" sourceRef="exclusivegateway3" targetRef="servicetask7">
+           <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept2'}]]></conditionExpression> 
+        </sequenceFlow>
     
-    <serviceTask id="servicetask7" name="Офлайн оплата" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway3" targetRef="servicetask7"></sequenceFlow>
-    <serviceTask id="servicetask8" name="Онлайн оплата" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <sequenceFlow id="flow21" sourceRef="exclusivegateway3" targetRef="servicetask8"></sequenceFlow>
+    <serviceTask id="servicetask7" name="Офлайн оплата" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+       
+        <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Подати заяву про розірвання шлюбу]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний (-а) ${firstName_UA1} ${middleName_UA1}.</h3>  
+Ваша заявка успішно пройшла первинну первірку вхідних даних та документів.         
+Вам необхідно сплатити державне мито.<br />
+Реквізити: ${sBankDetails2} 
+Сума державного мита: ${sSum}
+Коментар співробітника ДРАЦС: ${commentTax}
+<br /><br />
+Після отримання оплати Ваша заявка буде прийнята в роботу працівникам обраного Вами ДРАЦСу для первинної перевірки вхідних данних та документів.<br />
+Якщо впродовж 2-х днів з моменту отримання листа оплата не надійде,Ваше звернення буде відхилено.<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  Vam potribno splatyty derzhavne myto. Detali na igov.org.ua/journal abo u Vashomy email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+             
+        
+    </serviceTask>
+    
+     <sequenceFlow id="flow21" sourceRef="exclusivegateway3" targetRef="servicetask8">
+       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>  
+     </sequenceFlow>
+    <serviceTask id="servicetask8" name="Онлайн оплата" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+         <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Подати заяву про розірвання шлюбу]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний (-а) ${firstName_UA1} ${middleName_UA1}.</h3>  
+Ваша заявка успішно пройшла первинну первірку вхідних даних та документів.         
+Вам необхідно сплатити державне мито.<br />
+Для сплати державного мита скористуйтесь, будь ласка, кнопкою:<br />
+[paymentButton_LiqPay]<br />
+У разі необхідності - підтвердіть перехід на зовнішню сторінку.<br />
+Вас буде перенаправлено на сформований платіж у liqPay.<br />
+Оберіть зручний для Вас спосіб оплати (ввести номер та реквізити карти, через гаманець liqPay, Приват24 тощо) та підтвердіть платіж.<br /><br />
+Коментар співробітника ДРАЦС: ${commentTax}
+<br /><br />
+Після отримання оплати Ваша заявка буде прийнята в роботу працівникам обраного Вами ДРАЦСу для первинної перевірки вхідних данних та документів.<br />
+Якщо впродовж 2-х днів з моменту отримання листа оплата не надійде, Ваше звернення буде відхилено.<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  Vam potribno splatyty derzhavne myto. Detali na igov.org.ua/journal abo u Vashomy email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+        
+    </serviceTask>
+   
+    <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
         <timeDuration>PT1H</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
-    <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+   <sequenceFlow id="flow23" sourceRef="timerintermediatecatchevent1" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('sCountPayment')
 src=(+src + +1)
 execution.setVariable('sCountPayment', src)</script>
     </scriptTask>
-    <sequenceFlow id="flow23" sourceRef="timerintermediatecatchevent1" targetRef="scripttask2"></sequenceFlow>
+    
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow24" sourceRef="scripttask2" targetRef="exclusivegateway4"></sequenceFlow>
-    <serviceTask id="servicetask9" name="Оплата не надійшла" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow25" sourceRef="exclusivegateway4" targetRef="servicetask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""&& sCountPayment =='48'}]]></conditionExpression>
     </sequenceFlow>
+    <serviceTask id="servicetask9" name="Оплата не надійшла" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+        <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Подати заяву про розірвання шлюбу]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний (-а) ${firstName_UA1} ${middleName_UA1}.</h3>
+На жаль, Ваше звернення відхилено.
+Причина: впродовж 2-х днів з моменту подання звернення, не надішла оплата державного мита за отримання послуги.<br />
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
+<br />
+Телефони для довідок: ${sPhoneOrgan}<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno cherez vidsutnist oplaty. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>  
+    </serviceTask>
+    
+    <serviceTask id="servicetask17" name="Сповіщення пільговика" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+   
+    <sequenceFlow id="flow45" sourceRef="servicetask17" targetRef="usertask5"></sequenceFlow>
+
+
     <userTask id="usertask4" name="Прийнятя рішення щодо сплачених коштів"></userTask>
     <sequenceFlow id="flow26" sourceRef="exclusivegateway4" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow27" sourceRef="exclusivegateway4" targetRef="timerintermediatecatchevent1"></sequenceFlow>
@@ -483,9 +618,7 @@ execution.setVariable('sCountPayment', src)</script>
     <sequenceFlow id="flow42" sourceRef="exclusivegateway6" targetRef="servicetask16"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow43" sourceRef="servicetask16" targetRef="endevent4"></sequenceFlow>
-    <serviceTask id="servicetask17" name="Сповіщення пільговика" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <sequenceFlow id="flow44" sourceRef="exclusivegateway3" targetRef="servicetask17"></sequenceFlow>
-    <sequenceFlow id="flow45" sourceRef="servicetask17" targetRef="usertask4"></sequenceFlow>
+
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_divorce">
     <bpmndi:BPMNPlane bpmnElement="common_zags_divorce" id="BPMNPlane_common_zags_divorce">
@@ -763,8 +896,10 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="929.0" y="449.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="877.0" y="476.0"></omgdi:waypoint>
-        <omgdi:waypoint x="612.0" y="448.0"></omgdi:waypoint>
+        <omgdi:waypoint x="929.0" y="504.0"></omgdi:waypoint>
+        <omgdi:waypoint x="815.0" y="675.0"></omgdi:waypoint>
+        <omgdi:waypoint x="629.0" y="704.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="655.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
