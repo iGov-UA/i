@@ -98,13 +98,8 @@ public class BpServiceHandler {
                 .singleResult();
         LOG.info("sID_taskkkkkkkkkkkkkkk:(sID_task={})", sID_task);
         LOG.info("snID_Processsssssssssssssss:(snID_Process={})", snID_Process);
-        HistoricTaskInstance details1 = historyService
-                .createHistoricTaskInstanceQuery()
-                .includeProcessVariables().taskId(snID_Process)
-                .singleResult();
         LOG.info("details.getProcessVariablesssssssssssssssssss():(details.getProcessVariables()={})", details.getProcessVariables());
-        LOG.info("details.getProcessVariablesssssssssssssssssss():(details1.getProcessVariables()={})", details1.getProcessVariables());
-        String feedbackProcessId = null;
+        String feedbackProcess = null;
         if (details != null && details.getProcessVariables() != null) {
             Map<String, Object> processVariables = details.getProcessVariables();
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
@@ -142,9 +137,9 @@ public class BpServiceHandler {
 
       
         try {
-            String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
-            feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
-            variables.put("nID_Proccess_Feedback", feedbackProcessId);
+            feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
+           // feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
+            variables.put("nID_Proccess_Feedback", feedbackProcess);
             setSubjectParams(sID_task, processName, variables, processVariables);
             LOG.info(String.format(" >> start feedbackProcess [%s] ", feedbackProcess));
         } catch (Exception oException) {
@@ -152,7 +147,7 @@ public class BpServiceHandler {
             LOG.debug("FAIL:", oException);
         }
         }
-		return feedbackProcessId;
+		return feedbackProcess;
        
     }
 
