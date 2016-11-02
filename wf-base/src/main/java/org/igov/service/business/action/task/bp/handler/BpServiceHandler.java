@@ -101,9 +101,7 @@ public class BpServiceHandler {
                 .processDefinitionKey(snID_Process);
         
         LOG.info("TaskQueryyyyyyyyyyyyyyyyyy:(oTaskQuery={})", oTaskQuery);
-        Integer nRowStart = 0;
-        Integer nRowsMax = 1000;
-        List<Task> aTask = oTaskQuery.listPage(nRowStart, nRowsMax);
+        List<Task> aTask = oTaskQuery.list();
         LOG.info("aTaskListtttttttttttttttttttt:(ListaTask={})", aTask);
         for(Task task:aTask) {
         LOG.info("getAssigneeaTaskkkkkkkkkkkkkkkkkkkkkkk:(task.getAssignee()={})", task.getAssignee());
@@ -150,8 +148,8 @@ public class BpServiceHandler {
 
             
         try {
-        	feedbackProcessId = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
-          //  feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
+        	String feedbackProcessIdJson = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
+            feedbackProcessId = new JSONObject(feedbackProcessIdJson).get("id").toString();
             variables.put("nID_Proccess_Feedback", feedbackProcessId);
             setSubjectParams(sID_task, processName, variables, processVariables);
             LOG.info(String.format(" >> start feedbackProcess [%s] ", feedbackProcessId));
