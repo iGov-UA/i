@@ -147,8 +147,8 @@ public class BpServiceHandler {
 
       
         try {
-            String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
-            feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
+        	feedbackProcessId = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
+          //  feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
             variables.put("nID_Proccess_Feedback", feedbackProcessId);
             setSubjectParams(sID_task, processName, variables, processVariables);
             LOG.info(String.format(" >> start feedbackProcess [%s] ", feedbackProcessId));
