@@ -1,8 +1,6 @@
 package org.igov.model.document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.CascadeType;
