@@ -80,8 +80,8 @@ private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.
     }
 
     @Override
-    public List<SubjectMessageFeedback> findByOrder(String sID_Order) {
-    return findAllBy("sID_Order", sID_Order);
+    public Optional<SubjectMessageFeedback> findByOrder(String sID_Order) {
+    return findBy("sID_Order", sID_Order);
     }
 
     @Override

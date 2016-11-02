@@ -648,8 +648,8 @@ public class ActionEventController {
 
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     //               List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
-                List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
-                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
+                Optional<SubjectMessageFeedback> oSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
+//                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
 //                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
 //                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessage) {
 ////                    if (oSubjectMessage.getSubjectMessageType().getId() == 2) {
@@ -670,9 +670,9 @@ public class ActionEventController {
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
                     String sTextFeedback = "";
-                    SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(oHistoryEvent_Service.getId());
-                    if (oSubjectMessageFeedback.getsID_Order() != null) {
-                        sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
+//                    SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(oHistoryEvent_Service.getId());
+                    if (oSubjectMessageFeedback.isPresent() && oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service() != null) {
+                        sTextFeedback = oSubjectMessageFeedback.get().getoSubjectMessage().getBody();
                     } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
                     }
