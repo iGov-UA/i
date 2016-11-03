@@ -674,7 +674,8 @@ public class ActionEventController {
                     if (oSubjectMessageFeedback.isPresent() && oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service() != null) {
                         sTextFeedback = oSubjectMessageFeedback.get().getoSubjectMessage().getBody();
                     } else {
-                        LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
+//                        LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
+                        sTextFeedback = " ";
                     }
                     // sTextFeedback
                     asCell.add(sTextFeedback);   
