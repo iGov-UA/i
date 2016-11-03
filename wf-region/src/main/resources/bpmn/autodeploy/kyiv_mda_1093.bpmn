@@ -11,7 +11,7 @@
         <activiti:formProperty id="email" name="E-mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel_2" name=" " type="label" default="&lt;b&gt;Ініціювання процесу обробки звернення:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Документ" type="file" required="true"></activiti:formProperty>
       </extensionElements>
@@ -120,7 +120,7 @@
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="usertask4" targetRef="parallelgateway2"></sequenceFlow>
-    <userTask id="usertask5" name="12. Процес перевірки" activiti:candidateGroups="kyiv_dabi_insp1">
+    <userTask id="usertask5" name="12. Процес перевірки">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -184,18 +184,17 @@
         <activiti:formProperty id="markers2_req" name="requiredFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_2_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideShowFields3" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3_req" name="requiredFields3" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_3_required.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>    
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1},${PrintForm_direct},${nOrderSchedule}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${assignUser}">
-          <activiti:field name="loginAssignee">
-            <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
+        </extensionElements>    
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway" default="flow14"></exclusiveGateway>
     <sequenceFlow id="flow12" sourceRef="usertask5" targetRef="exclusivegateway2"></sequenceFlow>
@@ -205,7 +204,7 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway" default="flow52"></exclusiveGateway>
     <sequenceFlow id="flow14" sourceRef="exclusivegateway2" targetRef="usertask6"></sequenceFlow>
-    <userTask id="usertask6" name="14. Формування, друк документів та зберігання їх в обліковій системі з ЕЦП" activiti:candidateGroups="kyiv_dabi_insp_empl">
+    <userTask id="usertask6" name="14. Формування, друк документів та зберігання їх в обліковій системі з ЕЦП">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -439,6 +438,12 @@
         <activiti:formProperty id="markers9" name="hideShowFields9" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_9.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers9_req" name="requiredFields9" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_9_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="hideShowFields10" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_10.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
