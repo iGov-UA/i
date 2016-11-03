@@ -649,6 +649,8 @@ public class ActionEventController {
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     //               List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
                 Optional<SubjectMessageFeedback> oSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
+                LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback.get());
+                LOG.info("sID_Order: " + oHistoryEvent_Service.getsID_Order()); 
 //                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
 //                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
 //                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessage) {
@@ -673,13 +675,13 @@ public class ActionEventController {
 //                    SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(oHistoryEvent_Service.getId());
                     LOG.info("oSubjectMessageFeedback.isPresent(): " + oSubjectMessageFeedback.isPresent());
                     LOG.info("oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service(): " + oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service());
-                    if (oSubjectMessageFeedback.isPresent() && oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service() != null) {
+//                    if (oSubjectMessageFeedback.isPresent() && oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service() != null) {
                         sTextFeedback = oSubjectMessageFeedback.get().getoSubjectMessage().getBody();
-                    } else {
+//                    } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
-                    }
+//                    }
                     // sTextFeedback
-                    asCell.add(sTextFeedback);   
+                    asCell.add(sTextFeedback != null ? oSubjectMessageFeedback.get().getoSubjectMessage().getBody() : "");   
                     // sUserTaskName
                     asCell.add(oHistoryEvent_Service.getsUserTaskName());
                     // sHead
