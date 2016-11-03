@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms_205ID" name="Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки" isExecutable="true">
+  <process id="dnepr_dms-205ID" name="Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="Дана послуга доступна лише за місцем реєстрації, якщо Ви не можете обрати свій район, то у ньому послуга на iGov відсутня"></activiti:formProperty>
@@ -114,35 +114,36 @@ execution.setVariable('sEndDay', timerEnd)</script>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p>
-Чекаємо Вас за адресою: ${sAddress}<br>
-для оформлення паспорта громадянина України формі ID-картки
+	Чекаємо Вас за адресою: ${sAddress}.<br>
+	для оформлення паспорта громадянина України формі ID-картки.<br>
+	Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
-Дата та час візиту: ${date_of_visit}.
+	<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 14-річного віку:</b>
+	<ul>
+		${sDocID}
+		<li>довідка про реєстрацію місця проживання (довідка з органу реєстрації або будинкова книга);</li>
+		<li>свідоцтво про народження оригінал та копія;</li>
+		<li>оригінал та копію ІПН дитини (за наявності);</li>
+		<li>оригінали та копії паспортів обох батьків;</li>
+		<li>довідку про взяття на облік внутрішньо переміщеної особи (для внутрішньо переміщених осіб);</li>
+		<li>За відсутності батька або матері до підрозділу подається оригінал та копія одного з такі документи:</li>
+		<ul>
+			<li>свідоцтво про смерть другого з батьків;</li>
+			<li>рішення суду про позбавлення батьківських прав другого з батьків;</li>
+			<li>рішення суду про визнання другого з батьків безвісно відсутнім;</li>
+			<li>витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України</li>
+         </ul>
+     </ul>
 </p>
-<p>
-										<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 16-річного віку:</b><br>
-										<ul>
-										${sDocID}
-                                        <li>довідка про реєстрацію місця проживання (довідка з органу реєстрації або будинкова книга);</li>
-										<li>свідоцтво про народження оригінал та копія;</li>
-										<li>оригінал та копію ІПН дитини (за наявності);</li>
-										<li>оригінали та копії паспортів обох батьків;</li>
-										<li>За відсутності батька або матері до підрозділу подається оригінал та копія одного з такі документи:</li>
-										<ul>
-										<li>свідоцтво про смерть другого з батьків;</li>
-										<li>рішення суду про позбавлення батьківських прав другого з батьків;</li>
-										<li>рішення суду про визнання другого з батьків безвісно відсутнім;</li>
-										<li>витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України</li>
-                                        </ul>
-										</ul>
-									</p>
+<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
+<p>[cancelTask]</p>                
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/_common_signature_end.html]
@@ -158,45 +159,46 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-									<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-									<p>
-										Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
-										<p>
-Чекаємо Вас за адресою: ${sAddress}<br>
-для оформлення паспорта громадянина України формі ID-картки
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>
+	Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
+	Чекаємо Вас за адресою: ${sAddress}<br>
+	для оформлення паспорта громадянина України формі ID-картки.
 </p>
 <p>
-Дата та час візиту: ${date_of_visit}.
+	Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
-										<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 16-річного віку:</b><br>
-										<ul>
-										${sDocID}
-                                        <li>довідка про реєстрацію місця проживання (довідка з органу реєстрації або будинкова книга);</li>
-										<li>свідоцтво про народження оригінал та копія;</li>
-										<li>оригінал та копію ІПН дитини (за наявності);</li>
-										<li>оригінали та копії паспортів обох батьків;</li>
-										<li>За відсутності батька або матері до підрозділу подається оригінал та копія одного з такі документи:</li>
-										<ul>
-										<li>свідоцтво про смерть другого з батьків;</li>
-										<li>рішення суду про позбавлення батьківських прав другого з батьків;</li>
-										<li>рішення суду про визнання другого з батьків безвісно відсутнім;</li>
-										<li>витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України</li>
-                                        </ul>
-										</ul>
-									</p>
-									<p>[cancelTask]</p>                
-									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+	<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 14-річного віку:</b>
+	<ul>
+		${sDocID}
+		<li>довідка про реєстрацію місця проживання (довідка з органу реєстрації або будинкова книга);</li>
+		<li>свідоцтво про народження оригінал та копія;</li>
+		<li>оригінал та копію ІПН дитини (за наявності);</li>
+		<li>оригінали та копії паспортів обох батьків;</li>
+		<li>довідку про взяття на облік внутрішньо переміщеної особи (для внутрішньо переміщених осіб);</li>
+		<li>За відсутності батька або матері до підрозділу подається оригінал та копія одного з такі документи:</li>
+		<ul>
+			<li>свідоцтво про смерть другого з батьків;</li>
+			<li>рішення суду про позбавлення батьківських прав другого з батьків;</li>
+			<li>рішення суду про визнання другого з батьків безвісно відсутнім;</li>
+			<li>витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України</li>
+         </ul>
+     </ul>
+</p>
+<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
+<p>[cancelTask]</p>                
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -306,13 +308,13 @@ execution.setVariable('sCustom', custom)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                              		Ви отримали послугу "Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки".
+                              		Ви отримали послугу "Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки".
                               		</p>
                               		<p>
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
@@ -329,8 +331,8 @@ execution.setVariable('sCustom', custom)</script>
     <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms_205ID">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms_205ID" id="BPMNPlane_dnepr_dms_205ID">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-205ID">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-205ID" id="BPMNPlane_dnepr_dms-205ID">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="16.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
