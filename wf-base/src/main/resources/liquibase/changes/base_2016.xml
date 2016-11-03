@@ -405,5 +405,72 @@
         <addAutoIncrement tableName="SubjectGroupTree" columnName="nID" startWith="1000" columnDataType="bigint"/>
   
     </changeSet> 
+    
+    <changeSet id="issue-1404-createTablesForProcessSubject" author="skuhtin" runOnChange="true">
+        <createTable tableName="ProcessSubjectStatus">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="ProcessSubject">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="snID_Process_Activiti" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_ProcessSubjectStatus" type="bigint">
+                <constraints nullable=               "false"
+                             foreignKeyName=         "FK_ProcessSubject_ProcessSubjectStatus"
+                             referencedTableName=    "ProcessSubjectStatus"
+                             referencedColumnNames=  "nID"
+                             deleteCascade=          "true"/>
+            </column>
+            <column name="nOrder" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sLogin" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sDateEdit" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sDatePlan" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        
+        <addUniqueConstraint constraintName="ProcessSubject_Unique" 
+                             tableName="ProcessSubject"
+                             columnNames="nOrder, snID_Process_Activiti"/>
+        
+        <createTable tableName="ProcessSubjectTree">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_ProcessSubject_Child" type="bigint">
+                <constraints nullable=               "false"
+                             foreignKeyName=         "FK_ProcessSubjectTree_C"
+                             referencedTableName=    "ProcessSubject"
+                             referencedColumnNames=  "nID"
+                             deleteCascade=          "true"/>
+            </column>
+            <column name="nID_ProcessSubject_Parent" type="bigint">
+                <constraints nullable=               "false"
+                             foreignKeyName=         "FK_ProcessSubjectTree_P"
+                             referencedTableName=    "ProcessSubject"
+                             referencedColumnNames=  "nID"
+                             deleteCascade=          "true"/>
+            </column>
+        </createTable>
+        
+        <addUniqueConstraint constraintName="ProcessSubjectTree_Unique" 
+                             tableName="ProcessSubjectTree"
+                             columnNames="FK_ProcessSubjectTree_P, FK_ProcessSubjectTree_C"/>
+    </changeSet>
 
 </databaseChangeLog>
