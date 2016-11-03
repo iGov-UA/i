@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="common_zags_divorce" name="Подати заяву про розірвання шлюбу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
-      <extensionElements>
+            <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -27,7 +27,7 @@
           <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
           <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asCategoryPrivileges" name="Категорія" type="enum" required="true">
+        <activiti:formProperty id="asCategoryPrivileges" name="Категорія" type="enum">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
           <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
           <activiti:value id="sEnum3" name="4 категорія  потерпілих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -53,8 +53,8 @@
           <activiti:value id="Personal" name="Заявка подана громадянами під час візиту до ДРАЦСу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sSourceType" name="Обране Джерело надходження звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1" type="invisible" default="0"></activiti:formProperty>
+        
+        <activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний відділ ДРАЦС" type="select" required="true"></activiti:formProperty> 
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення реєстрації розлучення" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата розлучення" type="invisible"></activiti:formProperty>
@@ -221,7 +221,7 @@ ${sMail_Signature}<br /><br />
     <userTask id="usertask3" name="Перевірка вхідних данних" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum" required="true">
+        <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
           <activiti:value id="sEnum2" name="на підставі рішення суду (здійснене судом до набрання чинності Законом України «Про державну реєстрацію актів цивільного стану» (27.07.2010))"></activiti:value>
           <activiti:value id="sEnum3" name="відповідно до статті 107 Сімейного кодексу України (якщо один із подружжя визнаний у встановленому законом порядку безвісно відсутнім, недієздатним)"></activiti:value>
@@ -242,11 +242,11 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
+        
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1" type="invisible" default="0"></activiti:formProperty>
+        
+       
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення реєстрації розірвання шлюбу" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата розлучення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані чоловіка" type="label" default="_____________________________________________________"></activiti:formProperty>
@@ -260,7 +260,7 @@ ${sMail_Signature}<br /><br />
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string" default="Україна"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -288,7 +288,7 @@ ${sMail_Signature}<br /><br />
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string" default="Україна"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -333,7 +333,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_divorce_107.html]" type="invisible" default="заява громадян_107" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_divorce_court.html]" type="invisible" default="заява громадян_sud" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
@@ -537,7 +537,7 @@ ${sNameOrgan}<br />
       <extensionElements>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum" required="true">
+        <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
           <activiti:value id="sEnum2" name="на підставі рішення суду (здійснене судом до набрання чинності Законом України «Про державну реєстрацію актів цивільного стану» (27.07.2010))"></activiti:value>
           <activiti:value id="sEnum3" name="відповідно до статті 107 Сімейного кодексу України (якщо один із подружжя визнаний у встановленому законом порядку безвісно відсутнім, недієздатним)"></activiti:value>
@@ -560,8 +560,8 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1" type="invisible" default="0"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення реєстрації розірвання шлюбу" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата розлучення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані чоловіка" type="label" default="_____________________________________________________"></activiti:formProperty>
@@ -575,7 +575,7 @@ ${sNameOrgan}<br />
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string" default="Україна"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -603,7 +603,7 @@ ${sNameOrgan}<br />
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string" default="Україна"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -642,7 +642,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
+       
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
@@ -840,7 +840,7 @@ ${sMail_Signature} <br><br>
       <extensionElements>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum" required="true">
+        <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
           <activiti:value id="sEnum2" name="на підставі рішення суду (здійснене судом до набрання чинності Законом України «Про державну реєстрацію актів цивільного стану» (27.07.2010))"></activiti:value>
           <activiti:value id="sEnum3" name="відповідно до статті 107 Сімейного кодексу України (якщо один із подружжя визнаний у встановленому законом порядку безвісно відсутнім, недієздатним)"></activiti:value>
@@ -863,8 +863,8 @@ ${sMail_Signature} <br><br>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1" type="invisible" default="0"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення реєстрації розірвання шлюбу" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата розлучення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані чоловіка" type="label" default="_____________________________________________________"></activiti:formProperty>
@@ -878,7 +878,7 @@ ${sMail_Signature} <br><br>
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string" default="Україна"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -906,7 +906,7 @@ ${sMail_Signature} <br><br>
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string" default="Україна"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -945,7 +945,7 @@ ${sMail_Signature} <br><br>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
@@ -1009,7 +1009,7 @@ ${sMail_Signature}<br /><br />
        <extensionElements>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum" required="true">
+        <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
           <activiti:value id="sEnum2" name="на підставі рішення суду (здійснене судом до набрання чинності Законом України «Про державну реєстрацію актів цивільного стану» (27.07.2010))"></activiti:value>
           <activiti:value id="sEnum3" name="відповідно до статті 107 Сімейного кодексу України (якщо один із подружжя визнаний у встановленому законом порядку безвісно відсутнім, недієздатним)"></activiti:value>
@@ -1032,8 +1032,8 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1" type="invisible" default="0"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення реєстрації розірвання шлюбу" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата розлучення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані чоловіка" type="label" default="_____________________________________________________"></activiti:formProperty>
@@ -1047,7 +1047,7 @@ ${sMail_Signature}<br /><br />
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string" default="Україна"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -1075,7 +1075,7 @@ ${sMail_Signature}<br /><br />
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string" default="Україна"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -1114,7 +1114,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
