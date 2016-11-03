@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-227ID" name="Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові" isExecutable="true">
+  <process id="dnepr_dms-280ID" name="Вклеювання фотокарток при досягненні особою віку 25 або 45 років" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="Дана послуга доступна лише за місцем реєстрації, якщо Ви не можете обрати свій район, то у ньому послуга на iGov відсутня"></activiti:formProperty>
@@ -17,6 +17,7 @@
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС району (міста), до якого належить Ваше місце реєстрації" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Ви можете отримати ID-карту замість вклеювання фото, але послуга платна"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ДМС" type="invisible"></activiti:formProperty>
@@ -99,7 +100,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -107,7 +108,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 <p>
 	Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].<br>
 	Чекаємо Вас за адресою: ${sAddress}<br>
-	для обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові
+	для вклеювання фотокарток при досягненні особою віку 25 або 45 років
 </p>
 <p>
 	Дата та час візиту: ${date_of_visit}.
@@ -120,10 +121,11 @@ execution.setVariable('sEndDay', timerEnd)</script>
 	<b>Необхідні документи, які треба принести до підрозділу ДМС:</b>
 	<ul>
 		<li>оригінал та копію документу, на основі якого відбулася зміна (переміна) прізвища, ім'я або по батькові;</li>
-		<li>паспорт, що підлягає обміну;</li>
+		<li>паспорт, для вклеювання фотокартки або обміну на ID-картку;</li>
 		<li>оригінал та копію ІПН;</li>
+		<li>при вклеюванні фото дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);</li>
 		<li>довідку про взяття на облік внутрішньо переміщеної особи (для внутрішньо переміщених осіб);</li>
-		<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
+		<li>при оформленні ID-картки квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
 	</ul>
 </p>
 <p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
@@ -143,7 +145,7 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -154,7 +156,7 @@ ${sNameOrgan},<br>
 <p>
 	Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].<br>
 	Чекаємо Вас за адресою: ${sAddress}<br>
-	для обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові
+	для вклеювання фотокарток при досягненні особою віку 25 або 45 років
 </p>
 <p>
 	Дата та час візиту: ${date_of_visit}.
@@ -167,10 +169,11 @@ ${sNameOrgan},<br>
 	<b>Необхідні документи, які треба принести до підрозділу ДМС:</b>
 	<ul>
 		<li>оригінал та копію документу, на основі якого відбулася зміна (переміна) прізвища, ім'я або по батькові;</li>
-		<li>паспорт, що підлягає обміну;</li>
+		<li>паспорт, для вклеювання фотокартки або обміну на ID-картку;</li>
 		<li>оригінал та копію ІПН;</li>
+		<li>при вклеюванні фото дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);</li>
 		<li>довідку про взяття на облік внутрішньо переміщеної особи (для внутрішньо переміщених осіб);</li>
-		<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
+		<li>при оформленні ID-картки квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
 	</ul>
 </p>
 <p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
@@ -277,14 +280,14 @@ execution.setVariable('sCustom', custom)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                              		Ви отримали послугу "Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові".<br>
-                              		Якщо для замовлення послуги Ви використовували BankID, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
+                              		Ви отримали послугу "Вклеювання фотокарток при досягненні особою віку 25 або 45 років".<br>
+                              		Якщо для замовлення послуги Ви використовували BankID та отримували ID-картку, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
                               		</p>
                               		<p>
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
@@ -301,8 +304,8 @@ execution.setVariable('sCustom', custom)</script>
     <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-227ID">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-227ID" id="BPMNPlane_dnepr_dms-227ID">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-280ID">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-280ID" id="BPMNPlane_dnepr_dms-280ID">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="16.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
