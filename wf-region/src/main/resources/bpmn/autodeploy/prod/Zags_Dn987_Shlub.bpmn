@@ -7,7 +7,8 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sbankIdPassport" name="Паспортні дані заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassportNom" name="Паспортні дані: Серія та номер" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassportVud" name="Паспортні дані: Ким видано паспорт і коли" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocPassport" name="Копія паспорту;(завантажте ZIP архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
@@ -111,7 +112,8 @@ ${sNameOrgan}.&lt;br /&gt;
     <userTask id="usertask1" name="Опрацювання звернення, перевірка наявності відомостей" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        <activiti:formProperty id="sbankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassportNom" name="Паспортні дані: Серія та номер; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassportVud" name="Паспортні дані: Ким видано паспорт і коли; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sbankIdAdressFactual" name="Адреса (місце реєстрації); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -367,7 +369,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
     <userTask id="usertask2" name="Надання відповіді" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sbankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassportNom" name="Паспортні дані: Серія та номер; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassportVud" name="Паспортні дані: Ким видано паспорт і коли; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sbankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>

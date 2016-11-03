@@ -1,7 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="myProcess" name="My process" isExecutable="true">
-    <startEvent id="startevent1" name="Start"></startEvent>
+  <process id="lebedyn_mvk_1193" name="Видача дозволу на видалення зелених насаджень" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+    <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень" type="enum" required="true">
+          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
+          <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
+          <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
+          <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
+          <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні "></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень або прив'язка (місце розташування)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень" type="enum" required="true">
+          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="asChoicePay" name="Вказати за чий рахунок буде проводитися зрізка зелених насаджень" type="enum" required="true">
+          <activiti:value id="sEnum1" name="За власний рахунок"></activiti:value>
+          <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Документи, що підтверджують право користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Схема розташування зелених насаджень" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Документ про сплату відновної вартості після рішення виконавчого комітету;(за виключенням випадків, коли сплата відновної вартості зелених насаджень не проводиться)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
     <serviceTask id="servicetask1" name="Лист адміністратору про нове звернення"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення громадянину про успішну доставку до ЦНАПу"></serviceTask>
@@ -33,8 +77,8 @@
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
-    <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_lebedyn_mvk_1193">
+    <bpmndi:BPMNPlane bpmnElement="lebedyn_mvk_1193" id="BPMNPlane_lebedyn_mvk_1193">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
