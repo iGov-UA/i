@@ -80,11 +80,11 @@
             <activiti:expression><![CDATA[sID_Group_step11]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <!--activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener!-->        
+        </activiti:taskListener>        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow8" sourceRef="usertask1" targetRef="usertask3"></sequenceFlow>
@@ -494,6 +494,11 @@
         <activiti:formProperty id="sBody_direct" name="[pattern/print/kiev/DABI_insp_napravlennya.html]" type="invisible" default="Направлення" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_direct" name="Направлення;Направлення;pattern/print/kiev/DABI_insp_napravlennya.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_1.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>        
         <activiti:executionListener event="end" delegateExpression="${chekForCompleteParallelProcess}">
           <activiti:field name="paramName">
             <activiti:expression><![CDATA[sOpenGate]]></activiti:expression>
@@ -505,15 +510,9 @@
             <activiti:expression><![CDATA[Неможливо опрацювати задачу. Будь ласка, зачекайте інформацію про об'єкт від співробітника відділу дозвільних документів.]]></activiti:expression>
           </activiti:field>
         </activiti:executionListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${assignUser}">
-          <activiti:field name="loginAssignee">
-            <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
