@@ -1,42 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-205ID" name="Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки" isExecutable="true">
+  <process id="dnepr_dms-280ID" name="Вклеювання фотокарток при досягненні особою віку 25 або 45 років" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="Дана послуга доступна лише за місцем реєстрації, якщо Ви не можете обрати свій район, то у ньому послуга на iGov відсутня"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Ваш документ; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яка буде отримувати паспорт"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Нове прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Нове ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="Нове по батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт (так як записано у свідоцтві про народження)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Sex" name="Стать" type="enum" required="true">
-          <activiti:value id="man" name="Чоловіча"></activiti:value>
-          <activiti:value id="woman" name="Жіноча"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження; Серія та номер документу, дата і орган, що його видав" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС району (міста), до якого належить місце реєстрації отримувача паспорта" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС району (міста), до якого належить Ваше місце реєстрації" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lable2" name="Зверніть увагу" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA4" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA4" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA4" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA3" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA3" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA3" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Inozem" name="Чи є один з батьків громадянином іншої держави?" type="enum" required="true">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Ви можете отримати ID-карту замість вклеювання фото, але послуга платна"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdminID" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocID" name="Документи для оформлення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски" type="invisible"></activiti:formProperty>
@@ -114,39 +100,39 @@ execution.setVariable('sEndDay', timerEnd)</script>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p>
-	Чекаємо Вас за адресою: ${sAddress}.<br>
-	для оформлення паспорта громадянина України формі ID-картки.<br>
+	Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].<br>
+	Чекаємо Вас за адресою: ${sAddress}<br>
+	для вклеювання фотокарток при досягненні особою віку 25 або 45 років
+</p>
+<p>
 	Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
-	<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 14-річного віку:</b>
+	Реквізити для сплати адмінсбору за оформлення ID-картки доступні за <a href="${sAdminID}" target="_blank">посиланням</a>.<br>
+	<b>Зверніть увагу:</b> В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу). В іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.
+</p>
+<p>
+	<b>Необхідні документи, які треба принести до підрозділу ДМС:</b>
 	<ul>
-		${sDocID}
-		<li>довідка про реєстрацію місця проживання (довідка з органу реєстрації або будинкова книга);</li>
-		<li>свідоцтво про народження оригінал та копія;</li>
-		<li>оригінал та копію ІПН дитини (за наявності);</li>
-		<li>оригінали та копії паспортів обох батьків;</li>
+		<li>оригінал та копію документу, на основі якого відбулася зміна (переміна) прізвища, ім'я або по батькові;</li>
+		<li>паспорт, для вклеювання фотокартки або обміну на ID-картку;</li>
+		<li>оригінал та копію ІПН;</li>
+		<li>при вклеюванні фото дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);</li>
 		<li>довідку про взяття на облік внутрішньо переміщеної особи (для внутрішньо переміщених осіб);</li>
-		<li>За відсутності батька або матері до підрозділу подається оригінал та копія одного з такі документи:</li>
-		<ul>
-			<li>свідоцтво про смерть другого з батьків;</li>
-			<li>рішення суду про позбавлення батьківських прав другого з батьків;</li>
-			<li>рішення суду про визнання другого з батьків безвісно відсутнім;</li>
-			<li>витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України</li>
-         </ul>
-     </ul>
+		<li>при оформленні ID-картки квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
+	</ul>
 </p>
 <p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
 <p>[cancelTask]</p>                
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan},<br>
-[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -159,7 +145,7 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -168,36 +154,33 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p>
-	Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
+	Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].<br>
 	Чекаємо Вас за адресою: ${sAddress}<br>
-	для оформлення паспорта громадянина України формі ID-картки.
+	для вклеювання фотокарток при досягненні особою віку 25 або 45 років
 </p>
 <p>
 	Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
-	<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 14-річного віку:</b>
+	Реквізити для сплати адмінсбору за оформлення ID-картки доступні за <a href="${sAdminID}" target="_blank">посиланням</a>.<br>
+	<b>Зверніть увагу:</b> В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу). В іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.
+</p>
+<p>
+	<b>Необхідні документи, які треба принести до підрозділу ДМС:</b>
 	<ul>
-		${sDocID}
-		<li>довідка про реєстрацію місця проживання (довідка з органу реєстрації або будинкова книга);</li>
-		<li>свідоцтво про народження оригінал та копія;</li>
-		<li>оригінал та копію ІПН дитини (за наявності);</li>
-		<li>оригінали та копії паспортів обох батьків;</li>
+		<li>оригінал та копію документу, на основі якого відбулася зміна (переміна) прізвища, ім'я або по батькові;</li>
+		<li>паспорт, для вклеювання фотокартки або обміну на ID-картку;</li>
+		<li>оригінал та копію ІПН;</li>
+		<li>при вклеюванні фото дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);</li>
 		<li>довідку про взяття на облік внутрішньо переміщеної особи (для внутрішньо переміщених осіб);</li>
-		<li>За відсутності батька або матері до підрозділу подається оригінал та копія одного з такі документи:</li>
-		<ul>
-			<li>свідоцтво про смерть другого з батьків;</li>
-			<li>рішення суду про позбавлення батьківських прав другого з батьків;</li>
-			<li>рішення суду про визнання другого з батьків безвісно відсутнім;</li>
-			<li>витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України</li>
-         </ul>
-     </ul>
+		<li>при оформленні ID-картки квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
+	</ul>
 </p>
 <p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
 <p>[cancelTask]</p>                
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan},<br>
-[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
@@ -211,31 +194,20 @@ ${sNameOrgan},<br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="id_card_${sID_Public_SubjectOrganJoin}">
+    <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1_yellow"></sequenceFlow>
+    <userTask id="usertask1_yellow" name="Заявка прийнята" activiti:candidateGroups="id_card_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Ваш документ; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Прізвище отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Ім'я отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="По батькові отримувача паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Нове прізвище отримувача паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Нове ім'я отримувача паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="Нове по батькові отримувача паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Areabirth" name="Місце народження отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Sex" name="Стать" type="enum" writable="false">
-          <activiti:value id="man" name="Чоловіча"></activiti:value>
-          <activiti:value id="woman" name="Жіноча"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження; Серія та номер документу, дата і орган, що його видав" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="parent2" name="ПІБ2" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Inozem" name="Чи є один з батьків громадянином іншої держави?" type="enum" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат візиту" type="enum" required="true">
           <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
@@ -244,12 +216,12 @@ ${sNameOrgan},<br>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1_yellow" cancelActivity="true">
       <timerEventDefinition>
         <timeDate>${sEndDay}</timeDate>
       </timerEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="usertask1_yellow" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="escalationTimer" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var delta='10';
@@ -308,13 +280,14 @@ execution.setVariable('sCustom', custom)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                              		Ви отримали послугу "Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки".
+                              		Ви отримали послугу "Вклеювання фотокарток при досягненні особою віку 25 або 45 років".<br>
+                              		Якщо для замовлення послуги Ви використовували BankID та отримували ID-картку, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
                               		</p>
                               		<p>
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
@@ -331,8 +304,8 @@ execution.setVariable('sCustom', custom)</script>
     <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-205ID">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-205ID" id="BPMNPlane_dnepr_dms-205ID">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-280ID">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-280ID" id="BPMNPlane_dnepr_dms-280ID">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="16.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -363,7 +336,7 @@ execution.setVariable('sCustom', custom)</script>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="58.0" width="105.0" x="395.0" y="78.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+      <bpmndi:BPMNShape bpmnElement="usertask1_yellow" id="BPMNShape_usertask1_yellow">
         <omgdc:Bounds height="55.0" width="105.0" x="520.0" y="79.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="escalationTimer" id="BPMNShape_escalationTimer">
