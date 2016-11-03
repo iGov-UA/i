@@ -40,8 +40,9 @@ public class SubjectMessageService {
     @Autowired
     private SubjectContactTypeDao subjectContactTypeDao;
     @Autowired
-    private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
+    private SubjectMessagesDao subjectMessagekDao;
     @Autowired
+    private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
     private SubjectMessageFeedbackAnswerDao subjectMessageFeedbackAnswerDao;
 
     @Autowired
@@ -268,6 +269,7 @@ public class SubjectMessageService {
                 subjectMessage.setsSubjectInfo(sAuthorFIO);
                 subjectMessage.setMail(sMail);
                 subjectMessage.setId_subject(nID_Subject);
+                subjectMessage = subjectMessagekDao.saveOrUpdate(subjectMessage);
                 messageFeedback.setoSubjectMessage(subjectMessage);
             }
 
