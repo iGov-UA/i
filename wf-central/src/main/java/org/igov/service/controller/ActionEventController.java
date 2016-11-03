@@ -675,7 +675,7 @@ public class ActionEventController {
                         sTextFeedback = oSubjectMessageFeedback.get().getoSubjectMessage().getBody();
                     } else {
 //                        LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
-                        sTextFeedback = " ";
+                        sTextFeedback = "+";
                     }
                     // sTextFeedback
                     asCell.add(sTextFeedback);   
