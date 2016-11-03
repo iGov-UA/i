@@ -268,6 +268,7 @@ public class SubjectMessageService {
                 subjectMessage.setsSubjectInfo(sAuthorFIO);
                 subjectMessage.setMail(sMail);
                 subjectMessage.setId_subject(nID_Subject);
+                messageFeedback.setoSubjectMessage(subjectMessage);
             }
 
             return subjectMessageFeedbackDao.save(messageFeedback);
