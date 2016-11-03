@@ -246,7 +246,7 @@ public class SubjectMessageService {
         SubjectMessageFeedback messageFeedback;
         SubjectMessage subjectMessage;
         if (nId == null) {
-            LOG.info("!!!nId is null");
+            LOG.info("!!!nId is null sID_Order = " + sID_Order);
             messageFeedback = new SubjectMessageFeedback();
             messageFeedback.setsID_Source(sID_Source);
             messageFeedback.setsAuthorFIO(sAuthorFIO);
@@ -277,7 +277,8 @@ public class SubjectMessageService {
             return subjectMessageFeedbackDao.save(messageFeedback);
         } else {
             messageFeedback = subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
-            LOG.info("!!!nId = " + nId + " sAnswer = " + sAnswer);
+            messageFeedback.setsID_Order(sID_Order);
+            LOG.info("!!!nId = " + nId + " sAnswer = " + sAnswer+ " sID_Order = " + sID_Order);
             if (StringUtils.isEmpty(sAnswer)) {
                 messageFeedback.setsID_Source(sID_Source);
                 messageFeedback.setsAuthorFIO(sAuthorFIO);
