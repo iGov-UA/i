@@ -671,6 +671,8 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
                     String sTextFeedback = "";
 //                    SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(oHistoryEvent_Service.getId());
+                    LOG.info("oSubjectMessageFeedback.isPresent(): " + oSubjectMessageFeedback.isPresent());
+                    LOG.info("oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service(): " + oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service());
                     if (oSubjectMessageFeedback.isPresent() && oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service() != null) {
                         sTextFeedback = oSubjectMessageFeedback.get().getoSubjectMessage().getBody();
                     } else {
