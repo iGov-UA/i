@@ -1,20 +1,20 @@
 package org.igov.model.document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Type;
 import org.igov.model.core.AbstractEntity;
 import org.joda.time.DateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class DocumentStepSubjectRight extends AbstractEntity {
 
-    @ManyToOne(targetEntity = DocumentStep.class)
-    @JsonProperty(value = "nID_DocumentStep")
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "nID_DocumentStep")
     private DocumentStep documentStep;
 
     @JsonProperty(value = "sKey_GroupPostfix")
@@ -33,7 +33,7 @@ public class DocumentStepSubjectRight extends AbstractEntity {
     @Type(type = DATETIME_TYPE)
     private DateTime sDate;
 
-    @OneToMany(mappedBy = "documentStepSubjectRight")
+    @OneToMany(mappedBy = "documentStepSubjectRight", cascade = CascadeType.ALL)
     private List<DocumentStepSubjectRightField> documentStepSubjectRightFields;
 
     public List<DocumentStepSubjectRightField> getDocumentStepSubjectRightFields() {

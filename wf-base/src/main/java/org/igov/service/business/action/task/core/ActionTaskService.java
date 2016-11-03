@@ -1432,19 +1432,20 @@ public class ActionTaskService {
         String sName = ProcessDefinition.getName();
         LOG.info("название услуги (БП) sName={}", sName);
         
-        HistoricProcessInstance HistoricProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().
+        HistoricProcessInstance historicProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().
         		processInstanceId(oHistoricTaskInstance.getProcessInstanceId()).
         		includeProcessVariables().singleResult();
-        String sPlace = HistoricProcessInstance.getProcessVariables().containsKey("sPlace") ? (String) HistoricProcessInstance.getProcessVariables().get("sPlace") : "";
+        String sPlace = historicProcessInstance.getProcessVariables().containsKey("sPlace") ? (String) historicProcessInstance.getProcessVariables().get("sPlace") : "";
         LOG.info("Found process instance with variables. sPlace {}", sPlace);
         
-        ProcessInstanceHistoryLog ProcessInstanceHistoryLog = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
-                nID_Task.toString())).singleResult();
+        //ProcessInstanceHistoryLog ProcessInstanceHistoryLog = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
+        //        nID_Task.toString())).singleResult();
+        
         DateTimeFormatter oDateTimeFormatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
-        Date oDateCreate = ProcessInstanceHistoryLog.getStartTime();
+        Date oDateCreate = historicProcessInstance.getStartTime();
         String sDateCreate = oDateTimeFormatter.print(oDateCreate.getTime());
         LOG.info("дата создания процесса sDateCreate={}", sDateCreate);
-        Date oDateClose = ProcessInstanceHistoryLog.getEndTime();
+        Date oDateClose = historicProcessInstance.getEndTime();
         String sDateClose = oDateClose==null ? null : oDateTimeFormatter.print(oDateClose.getTime());
         LOG.info("дата создания процесса sDateClose={}", sDateClose);
 

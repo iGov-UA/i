@@ -933,4 +933,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       $scope.rowLengthCheckLimit = function (table) {
         return table.aRow.length >= table.nRowsLimit
       };
+
+      $scope.isFieldWritable = function (field) {
+      // включил проверку тк иногда передается false/true как строка 'false'/'true'.
+        if(typeof field === 'string' || field instanceof String) {
+          if(field === 'true') return true;
+          if(field === 'false') return false;
+        } else if (typeof field === 'boolean') {
+          return field;
+        }
+      };
     });

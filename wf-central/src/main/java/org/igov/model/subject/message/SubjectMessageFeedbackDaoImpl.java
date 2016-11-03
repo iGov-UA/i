@@ -15,10 +15,13 @@ import org.hibernate.criterion.Restrictions;
 import static org.hibernate.criterion.Restrictions.eq;
 import static org.hibernate.criterion.Restrictions.in;
 import org.springframework.util.Assert;
+import org.igov.service.controller.ActionEventController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Repository
 public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, SubjectMessageFeedback> implements SubjectMessageFeedbackDao {
-
+private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.class);
     protected SubjectMessageFeedbackDaoImpl() {
         super(SubjectMessageFeedback.class);
     }
@@ -74,5 +77,15 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
     public SubjectMessageFeedback update(SubjectMessageFeedback subjectMessageFeedback) {
         getSession().update(subjectMessageFeedback);
         return subjectMessageFeedback;
+    }
+
+    @Override
+    public Optional<SubjectMessageFeedback> findByOrder(String sID_Order) {
+    return findBy("sID_Order", sID_Order);
+    }
+
+    @Override
+    public String setsID_Order(String sID_Order) {
+        return sID_Order;
     }
 }

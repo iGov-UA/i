@@ -1,16 +1,17 @@
 package org.igov.model.document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.igov.model.core.AbstractEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class DocumentStepSubjectRightField extends AbstractEntity {
 
-    @ManyToOne(targetEntity = DocumentStepSubjectRight.class)
-    @JsonProperty(value = "nID_DocumentStepSubjectRight")
+    @JsonIgnore
+    @ManyToOne(targetEntity = DocumentStepSubjectRight.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "nID_DocumentStepSubjectRight")
     private DocumentStepSubjectRight documentStepSubjectRight;
 
     @JsonProperty(value = "sMask_FieldID")

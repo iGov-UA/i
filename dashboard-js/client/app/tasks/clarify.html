@@ -15,94 +15,40 @@
 <form name="form" novalidate>
   <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item)">
 
-    <!--поле типа simple-field-->
-    <div ng-if="isClarify(item.name)" class="row">
-      <div ng-if="['string', 'long'].indexOf(item.type) > -1" class="col-sm-12 form-field">
-          <span class="col-sm-3 task-form-title" style="padding-right: 0">
-            <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
-          </span>
-        <div class="col-sm-1" style="padding-right: 0;">
-            <div ng-if="clarify && item.writable && (item.type==='string' || item.type==='textArea' || item.type==='date')"> <!--item.writable-->
-              <input type="checkbox" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
-            </div>
-        </div>
-          <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
-            <div ng-if="isFormPropertyDisabled(item)">
-                <span class="task-form-written-right-sight"
-                      name="{{item.id}}"
-                      ng-readonly="isFormPropertyDisabled(item)"
-                      ng-required="{{item.required}}">{{item.value}}
-                </span>
-            </div>
+    <!--поля для уточнения-->
+    <div ng-if="isClarify(item.name)" class="row col-sm-12 form-field">
 
-          </div>
+      <!--лейбы полей-->
+      <span class="col-sm-3 task-form-title" style="padding-right: 0">
+        <label>{{sFieldLabel(item.name)}}</label>
+      </span>
 
-        <div class="col-sm-4" style="padding-right: 0">
-          <div ng-if="clarifyFields[item.id].clarify">
-            <input type="text" style="width:100%; font-style: italic; font-size: 12px; padding: 3px" ng-model="clarifyFields[item.id].text" placeholder="Вкажіть зауваження до цього поля">
-          </div>
+      <!--чекбоксы для отмечания полей-->
+      <div class="col-sm-1" style="padding-right: 0;">
+        <div ng-if="clarify && item.writable && ['string', 'long', 'textArea', 'date', 'double'].indexOf(item.type) > -1"> <!--item.writable-->
+          <input type="checkbox" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
         </div>
       </div>
-    </div>
 
-    <!--поле типа date-->
-    <div ng-if="isClarify(item.name)" class="row">
-      <div ng-if="['date'].indexOf(item.type) > -1" class="col-sm-12 form-field">
-            <span class="col-sm-6 task-form-title">
-              <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
+      <!--типы полей для уточнения-->
+      <div ng-if="['string', 'long', 'textArea', 'date', 'double'].indexOf(item.type) > -1">
+        <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
+          <div ng-if="isFormPropertyDisabled(item)">
+            <span class="task-form-written-right-sight"
+                  name="{{item.id}}"
+                  ng-readonly="isFormPropertyDisabled(item)"
+                  ng-required="{{item.required}}">{{item.value}}
             </span>
-        <div class="col-sm-6">
-          <div class="input-group" ng-if="!isFormPropertyDisabled(item)">
-            <input datetimepicker
-                   class="form-control date-picker"
-                   name="{{item.id}}"
-                   ng-readonly="isFormPropertyDisabled(item)"
-                   ng-required="{{item.required}}"
-                   ng-model="item.value"
-                   format="DD/MM/YYYY"
-                   ng-class="{submitted:item.required && isTaskSubmitted()}"/>
-
-            <span class="input-group-addon"
-                  ng-if="isFormPropertyDisabled(item)"
-                  clip-copy="item.value">
-                  <i class="glyphicon glyphicon-copy"></i>
-                </span>
-          </div>
-          <div ng-if="isFormPropertyDisabled(item) && item.value">
-              <span class="task-form-written-right-sight"
-                    name="{{item.id}}"
-                    ng-model="item.value">
-                {{item.value}}
-              </span>
           </div>
         </div>
       </div>
-    </div>
 
-    <!--поле типа text-area-->
-    <div ng-if="isClarify(item.name)" class="row">
-      <div ng-if="item.type == 'textArea'" class="col-sm-12 form-field">
-        <div class="col-sm-6 task-form-title">
-          <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
-        </div>
-        <div class="col-sm-6">
-              <textarea ng-if="!isFormPropertyDisabled(item)"
-                        ng-readonly="isFormPropertyDisabled(item)"
-                        name="{{item.id}}"
-                        ng-required="isRequired(item)"
-                        ng-model="item.value"
-                        style="width:100%;"
-                        ng-class="{submitted:item.required && isTaskSubmitted()}">
-              </textarea>
-          <span class="task-form-written-right-sight"
-                ng-if="isFormPropertyDisabled(item) && item.value"
-                name="{{item.id}}"
-                ng-model="item.value">{{item.value}}
-              </span>
+      <div class="col-sm-4" style="padding-right: 0">
+        <div ng-if="clarifyFields[item.id].clarify">
+          <input type="text" style="width:100%; font-style: italic; font-size: 12px; padding: 3px" ng-model="clarifyFields[item.id].text" placeholder="Вкажіть зауваження до цього поля">
         </div>
       </div>
     </div>
-
   </div>
 
   <div class="control-form-fields" ng-if="!inUnassigned()">
@@ -121,7 +67,7 @@
           </div>
           <div class="row" style="margin-right: 0">
             <div class="col-sm-offset-3 col-sm-6" style="margin-top: 10px; margin-bottom: 20px">
-              <a style="background: #337ACF;outline: none;border-color: #337ACF;" class="btn btn-info" ng-click="clarifySend()">Відправити зауваження</a>
+              <a ng-disabled="isClarifySending" style="background: #337ACF;outline: none;border-color: #337ACF;" class="btn btn-info" ng-click="clarifySend()">Відправити зауваження</a>
               <a style="margin: 0" class="btn btn-link attach-btn" ng-click="clarifyToggle()">Скасувати</a>
             </div>
           </div>
@@ -129,6 +75,6 @@
       </div>
     </div>
 
-    </div>
+  </div>
 
 </form>

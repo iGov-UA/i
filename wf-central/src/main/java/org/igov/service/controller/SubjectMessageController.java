@@ -591,7 +591,9 @@ public class SubjectMessageController {
             HttpServletResponse oResponse
     ) throws CommonServiceException, IOException {
 
-        LOG.info("Started! (sID_Source={}, nID_Service={}, nID={})", sID_Source, nID_Service, nID);
+        LOG.info("Started! (sID_Source={}, nID_Service={}, nID={}, sID_Order={})", sID_Source, nID_Service, nID, sID_Order);
+        subjectMessageFeedbackDao.setsID_Order(sID_Order);
+        
         String responseMessage = null;
         
         /*if(nID_Rate==null){
@@ -600,6 +602,7 @@ public class SubjectMessageController {
         //String sURL_Redirect = null;
         JSONObject oJSONObject = new JSONObject();
         Boolean bExist = false;
+        LOG.info("sID_Order: "+sID_Order);
         if(sID_Order!=null){
             Map<String,Object> m = mInitOrderMessageFeedback(sID_Order, Integer.valueOf(""+nID_Rate));
             //sURL_Redirect = m.get("sURL_Redirect");
@@ -637,9 +640,8 @@ public class SubjectMessageController {
                     feedback.setoSubjectMessageFeedbackAnswers(answers);
                     subjectMessageFeedbackDao.update(feedback);
                 }*/
-
-                LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
-                        sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
+                LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {}, sID_Order: {}",
+                        sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token(), oSubjectMessageFeedback.getsID_Order());
 
                 responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
                         generalConfig.getSelfHost(), nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());

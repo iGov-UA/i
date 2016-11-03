@@ -3,6 +3,7 @@ package org.igov.model.document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.igov.model.core.AbstractEntity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
@@ -19,7 +20,7 @@ public class DocumentStep extends AbstractEntity {
     @JsonProperty(value = "snID_Process_Activiti")
     private String snID_Process_Activiti;
 
-    @OneToMany(mappedBy = "documentStep")
+    @OneToMany(targetEntity = DocumentStepSubjectRight.class, mappedBy = "documentStep", cascade = CascadeType.ALL)
     private List<DocumentStepSubjectRight> rights;
 
     public List<DocumentStepSubjectRight> getRights() {
