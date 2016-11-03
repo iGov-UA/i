@@ -50,8 +50,10 @@
         <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/gni_69_start.json')}"></activiti:formProperty>
 
 <!--  Вставка автоподписания ЭЦП начало -->
-	    <activiti:formProperty id="form_signed" name="Заявлення на реєстрацію" type="file" required="true"></activiti:formProperty>
+	    <activiti:formProperty id="form_signed_all" name="Заявлення на реєстрацію" type="file" required="true"></activiti:formProperty>
+
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/gni_69_print_ecp.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_2" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/gni_69_print_ecp2.html"></activiti:formProperty>
 <!--  Вставка автоподписания ЭЦП конец  -->
 
       </extensionElements>
@@ -158,12 +160,14 @@
         <activiti:formProperty id="sAvtor" name="Автор звернення" type="invisible"></activiti:formProperty>
 
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/gni_69_user.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dfs/gni_69_print_ecp2.html]" type="invisible" default="Заява громадянина (нова)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/gni_69_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${form_signed},${zapit}</activiti:expression>
+            <activiti:expression>${form_signed_all},${zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
