@@ -12,7 +12,11 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNamePassport" name="Назва документу;(у випадку якщо вашу особу посвідчує НЕ паспорт)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDaniPassport" name="Серія, номер документа, дата видачі, ким видано документ" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sDaniPassportNom" name="Серія та номер докуменнта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassportVud" name="Ким видано документ і коли" type="string" required="true"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу;(завантажте ZIP архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/Vutiag.json')}"></activiti:formProperty>
@@ -242,7 +246,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNamePassport" name="Назва документу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDaniPassport" name="Серія, номер документа, дата видачі, ким видано документ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassportNom" name="Серія та номер докуменнта; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassportVud" name="Ким видано документ і коли; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSub_Name" name="Повне найменування органу чи юридичної особи; ;writable=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="AdressFact" name="Адреса місця проживання; ;writable=false" type="string" default="${AdressInd} ${AdressCountry} ${AdressOBL} ${AdressRay} ${AdressMisto} ${AdressVul} ${AdressBud} кв.${AdressKimn}"></activiti:formProperty>
@@ -645,7 +650,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNamePassport" name="Назва документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDaniPassport" name="Серія, номер документа, дата видачі, ким видано документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassportNom" name="Серія та номер докуменнта; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassportVud" name="Ким видано документ і коли; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSub_Name" name="Повне найменування органу чи юридичної особи" type="string" default=" " writable="false"></activiti:formProperty>
         <activiti:formProperty id="AdressFact" name="Адреса місця проживання" type="string" default="${AdressInd} ${AdressCountry} ${AdressOBL} ${AdressRay} ${AdressMisto} ${AdressVul} ${AdressBud} кв.${AdressKimn}" writable="false"></activiti:formProperty>
