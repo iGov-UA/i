@@ -42,7 +42,7 @@ public class SubjectMessageService {
     @Autowired
     private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
     @Autowired
-    private SubjectMessageDao subjectMessageDao;
+    private SubjectMessagesDao subjectMessageDao;
     @Autowired
     private SubjectMessageFeedbackAnswerDao subjectMessageFeedbackAnswerDao;
 
