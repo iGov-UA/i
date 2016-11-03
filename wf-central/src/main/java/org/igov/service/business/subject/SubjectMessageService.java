@@ -241,7 +241,7 @@ public class SubjectMessageService {
     public SubjectMessageFeedback setSubjectMessageFeedback(String sID_Source, String sAuthorFIO, String sMail,
             String sHead, String sBody, String sPlace, String sEmployeeFIO,
             Long nID_Rate, Long nID_Service, String sAnswer, Long nId,
-            Long nID_Subject) {
+            Long nID_Subject, String sID_Order) {
 
         SubjectMessageFeedback messageFeedback;
         SubjectMessage subjectMessage;
@@ -259,6 +259,7 @@ public class SubjectMessageService {
             messageFeedback.setnID_Service(nID_Service);
             messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
             messageFeedback.setsAnswer(sAnswer);
+            messageFeedback.setsID_Order(sID_Order);
             if (!isEmpty(sHead) || !isEmpty(sBody)) {
                 LOG.info("!!!sHead = " + sHead);
                 SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(2L);
@@ -288,6 +289,7 @@ public class SubjectMessageService {
                 messageFeedback.setnID_Rate(nID_Rate);
                 messageFeedback.setnID_Service(nID_Service);
                 messageFeedback.setsAnswer(sAnswer);
+                messageFeedback.setsID_Order(sID_Order);
                 subjectMessage = messageFeedback.getoSubjectMessage();
                 if (subjectMessage == null) {
                     SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(2L);

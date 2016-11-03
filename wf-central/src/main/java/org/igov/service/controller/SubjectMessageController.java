@@ -592,8 +592,7 @@ public class SubjectMessageController {
     ) throws CommonServiceException, IOException {
 
         LOG.info("Started! (sID_Source={}, nID_Service={}, nID={}, sID_Order={})", sID_Source, nID_Service, nID, sID_Order);
-        subjectMessageFeedbackDao.setsID_Order(sID_Order);
-        
+       
         String responseMessage = null;
         
         /*if(nID_Rate==null){
@@ -625,7 +624,7 @@ public class SubjectMessageController {
                 String sAnswer=null;
                 SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
                         sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nID,
-                        nID_Subject);
+                        nID_Subject, sID_Order);
                 if (nID!=null && (sID_Token==null || sID_Token.equals(oSubjectMessageFeedback.getsID_Token()))) {
                     throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "sID_Token not equal or absant! sID_Token="+sID_Token+", nID="+nID, HttpStatus.NOT_FOUND);

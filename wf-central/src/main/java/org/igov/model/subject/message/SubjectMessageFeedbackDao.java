@@ -17,7 +17,5 @@ public interface SubjectMessageFeedbackDao extends EntityDao<Long, SubjectMessag
     
     SubjectMessageFeedback update(SubjectMessageFeedback subjectMessageFeedback);
     
-    String setsID_Order(String sID_Order); 
-    
     Optional<SubjectMessageFeedback> findByOrder(String sID_Order);
 }

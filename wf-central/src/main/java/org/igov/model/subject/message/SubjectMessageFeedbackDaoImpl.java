@@ -1,19 +1,13 @@
 package org.igov.model.subject.message;
 
 import com.google.common.base.Optional;
-import java.util.Collection;
 import org.igov.model.core.GenericEntityDao;
-import org.igov.service.exception.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import static org.hibernate.criterion.Restrictions.eq;
-import static org.hibernate.criterion.Restrictions.in;
 import org.springframework.util.Assert;
 import org.igov.service.controller.ActionEventController;
 import org.slf4j.Logger;
@@ -84,8 +78,4 @@ private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.
     return findBy("sID_Order", sID_Order);
     }
 
-    @Override
-    public String setsID_Order(String sID_Order) {
-        return sID_Order;
-    }
 }
