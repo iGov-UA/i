@@ -674,7 +674,7 @@ public class ActionEventController {
 //                    LOG.info("oSubjectMessageFeedback.isPresent(): "+oSubjectMessageFeedback.isPresent());
 //                    LOG.info("oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service(): "+oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service());
                     if (oSubjectMessageFeedback.isPresent() && oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service() != null) {
-                        sTextFeedback = oSubjectMessageFeedback.get().getoSubjectMessage().getBody();
+                        sTextFeedback = oSubjectMessageFeedback.get().getoSubjectMessage().getsBody_Indirectly();
                     } else {
 //                        LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
                         sTextFeedback = "";
