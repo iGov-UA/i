@@ -649,8 +649,6 @@ public class ActionEventController {
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     //               List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
                 Optional<SubjectMessageFeedback> oSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
-//                LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback.get());
-                LOG.info("sID_Order: " + oHistoryEvent_Service.getsID_Order()); 
 //                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
 //                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
 //                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessage) {
@@ -660,7 +658,7 @@ public class ActionEventController {
 //                }
                     List<String> asCell = new LinkedList<>();
                     // sID_Order
-                    asCell.add(oHistoryEvent_Service.getsID_Order() != null ? oHistoryEvent_Service.getsID_Order() : "");
+                    asCell.add(oHistoryEvent_Service.getsID_Order());
                     // nID_Server
                     asCell.add(oHistoryEvent_Service.getnID_Server() != null ? oHistoryEvent_Service.getnID_Server().toString() : "");
                     // nID_Service
@@ -673,13 +671,10 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
                     String sTextFeedback = "";
 //                    SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(oHistoryEvent_Service.getId());
-                    LOG.info("oSubjectMessageFeedback.isPresent(): " + oSubjectMessageFeedback.isPresent());
-                    LOG.info("oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service(): " + oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service());
-                    if (oSubjectMessageFeedback.isPresent()) {
+                    if (oSubjectMessageFeedback.isPresent() && oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service() != null) {
                         sTextFeedback = oSubjectMessageFeedback.get().getoSubjectMessage().getBody();
                     } else {
-                        sTextFeedback = "нет фидбека";  
-//                        LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
+                        LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
                     }
                     // sTextFeedback
                     asCell.add(sTextFeedback);   
