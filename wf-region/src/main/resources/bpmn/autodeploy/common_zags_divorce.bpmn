@@ -941,7 +941,7 @@ ${sMail_Signature} <br><br>
         </activiti:formProperty>
         <activiti:formProperty id="decide3" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept33" name="Звернення підписано."></activiti:value>
-          <activiti:value id="reject22" name="Звернення не підписано."></activiti:value>
+          <activiti:value id="reject33" name="Звернення не підписано."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment3" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
@@ -959,7 +959,7 @@ ${sMail_Signature} <br><br>
     <sequenceFlow id="flow39" sourceRef="usertask5" targetRef="exclusivegateway6"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow40" sourceRef="exclusivegateway6" targetRef="servicetask15">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept33'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject33'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask15" name="Заява не підписана" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -1000,8 +1000,13 @@ ${sMail_Signature}<br /><br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow41" sourceRef="servicetask15" targetRef="servicetask11"></sequenceFlow>
-    <serviceTask id="servicetask16" name="Запрошення прийти у зазаначений час " activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <sequenceFlow id="flow42" sourceRef="exclusivegateway6" targetRef="servicetask16"></sequenceFlow>
+     <sequenceFlow id="flow42" sourceRef="exclusivegateway6" targetRef="servicetask16">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept33'}]]></conditionExpression> 
+     </sequenceFlow>
+    <serviceTask id="servicetask16" name="Запрошення прийти у зазаначений час " activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+        
+    </serviceTask>
+    
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow43" sourceRef="servicetask16" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow47" sourceRef="servicetask17" targetRef="usertask5"></sequenceFlow>
