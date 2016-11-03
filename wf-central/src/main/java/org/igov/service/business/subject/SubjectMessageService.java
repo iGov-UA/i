@@ -259,7 +259,9 @@ public class SubjectMessageService {
             messageFeedback.setnID_Service(nID_Service);
             messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
             messageFeedback.setsAnswer(sAnswer);
-            messageFeedback.setsID_Order(sID_Order);
+            if(sID_Order != null){
+                messageFeedback.setsID_Order(sID_Order);
+            }
             if (!isEmpty(sHead) || !isEmpty(sBody)) {
                 LOG.info("!!!sHead = " + sHead);
                 SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(2L);
@@ -277,7 +279,9 @@ public class SubjectMessageService {
             return subjectMessageFeedbackDao.save(messageFeedback);
         } else {
             messageFeedback = subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
-            messageFeedback.setsID_Order(sID_Order);
+            if(sID_Order != null){
+                messageFeedback.setsID_Order(sID_Order);
+            }
             LOG.info("!!!nId = " + nId + " sAnswer = " + sAnswer+ " sID_Order = " + sID_Order);
             if (StringUtils.isEmpty(sAnswer)) {
                 messageFeedback.setsID_Source(sID_Source);
