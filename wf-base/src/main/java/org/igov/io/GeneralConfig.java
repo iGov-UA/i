@@ -367,6 +367,7 @@ public class GeneralConfig {
                 }
             }
         }
+        //System.out.println("mServerReplace: " + mServerReplace);
         LOG.info("nID_Server={}, mServerReplace={}", nID_Server, mServerReplace);
         Integer nID_Server_Return = nID_Server;
         if(mServerReplace!=null&&!mServerReplace.isEmpty()&&nID_Server!=null){

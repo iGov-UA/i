@@ -10,17 +10,12 @@ import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.*;
-import org.igov.io.GeneralConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * User: goodg_000 Date: 04.05.2015 Time: 23:52
  */
 @javax.persistence.Entity
 public class ServiceData extends AbstractEntity {
-    
-    @Autowired
-    private transient GeneralConfig generalConfig;
 
     @JsonProperty(value = "nID_Service")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -185,9 +180,10 @@ public class ServiceData extends AbstractEntity {
     }
 
     public Long getnID_Server() {
+        /*System.out.println("!!!!!!!!!!!!!!!!!!!!!! " + GeneralConfig.mServerReplace);
         if(nID_Server != null){
-           nID_Server = generalConfig.getServerId(nID_Server.intValue()).longValue();
-        }
+           nID_Server = GeneralConfig.getServerId(nID_Server.intValue()).longValue();
+        }*/
         return nID_Server;
     }
 
