@@ -640,9 +640,6 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             }
             String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId()));
             if (sID_Order != null) {
-                if (sID_Order.startsWith("5")) {
-                    sID_Order = sID_Order.replaceFirst("5", "0");
-                }
                 sQueryParam = sQueryParam + "&sID_Order=" + sID_Order;
             }
             sQueryParam = sQueryParam
