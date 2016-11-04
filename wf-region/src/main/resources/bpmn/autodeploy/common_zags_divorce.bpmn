@@ -131,7 +131,9 @@
     </startEvent>
     <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Отримання часу подання" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())</script>
+      <script>execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())
+      var sum =' ' execution.setVariable('sSum', sum)
+      </script>
     </scriptTask>
     <sequenceFlow id="flow12" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
