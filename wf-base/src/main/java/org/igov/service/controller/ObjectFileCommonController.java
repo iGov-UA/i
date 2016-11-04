@@ -582,9 +582,6 @@ public class ObjectFileCommonController {
                 description, file.getInputStream());
 
         AttachmentCover oAttachmentCover = new AttachmentCover();
-        //AttachmentEntityI oAttachmentEntityI=oAttachmentCover.apply(oAttachment);
-        //LOG.info("(oAttachmentEntityI={})", oAttachmentEntityI.toString());
-        //return JsonRestUtils.toJsonResponse(oAttachmentEntityI);
         return oAttachmentCover.apply(oAttachment);
     }
 
