@@ -544,11 +544,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
                                 Long countClaim = Long.valueOf(sResponse);
                                 LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
-                                if (countClaim.compareTo(50L)>0) {
-                             //  String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
+                                if (countClaim.compareTo(50L)<0) {
+                               String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Task);
                                
-                         String snID_Proccess_Feedback = bpHandler
-                                                              .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
+                        /* String snID_Proccess_Feedback = bpHandler
+                                                              .startFeedbackProcess(snID_Task, snID_Process, sProcessName);*/
                                     
                                     if(snID_Proccess_Feedback!=null) {
                                     mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);

@@ -7,11 +7,11 @@ package org.igov.model.action.task.core;
  */
 public class ProcessDTOCover {
 
-    private String sName;
-    private String sBP;
-    private Long nID;
-    private String sDateCreate;
-    private String sDateClose;
+    private final String sName;
+    private final String sBP;
+    private final Long nID;
+    private final String sDateCreate;
+    private final String sDateClose;
 
     public ProcessDTOCover(String sName, String sBP, Long nID, String sDateCreate, String sDateClose) {
         this.sName = sName;

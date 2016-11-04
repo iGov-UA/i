@@ -44,6 +44,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
+import org.igov.service.business.subject.SubjectMessageService;
 import org.joda.time.format.DateTimeFormatter;
 
 @Controller
@@ -72,6 +73,8 @@ public class ActionEventController {
     private DocumentDao documentDao;
     @Autowired
     private ActionProcessCountDao actionProcessCountDao;
+    @Autowired
+    private SubjectMessageService oSubjectMessageService;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -605,13 +608,13 @@ public class ActionEventController {
         oHttpServletResponse.setHeader("Content-disposition", "attachment; filename="
                 + "serviceHistoryReport.csv");
         oHttpServletResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
-
+        oHttpServletResponse.setCharacterEncoding("UTF-8");
         CSVWriter oCSVWriter;
         try {
             oCSVWriter = new CSVWriter(oHttpServletResponse.getWriter(), ';',
                     CSVWriter.NO_QUOTE_CHARACTER);
             oCSVWriter.writeNext(asHeader.toArray(new String[asHeader.size()]));
-
+            
             List<Long> anID_Service_Exclude = null;
 
             if (sanID_Service_Exclude != null && sanID_Service_Exclude.length > 0) {
@@ -641,57 +644,43 @@ public class ActionEventController {
                     anID_HistoryEvent_Service.add(oHistoryEvent_Service.getId());
                 }
                 LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service);
-//                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
-//                String sID_Order = subjectMessageFeedbackDao.findAll().get(0).getsID_Order();
-//                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
-//                HistoryEvent_Service oHistoryEvent_Service = new HistoryEvent_Service();
-//                List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(aHistoryEvent_Service.get(0).getsID_Order());
+
+
+                for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
+                    //               List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
+                Optional<SubjectMessageFeedback> oSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
 //                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
 //                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
-//                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
-//                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
-//                        mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
-//                        }
-//                    }
-                for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) { 
-                    List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
-                LOG.info("getsID_Order()", oHistoryEvent_Service.getsID_Order());    
-                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback);
-                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
-//                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
-//                    LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId(): " + oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId());
-////                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
-//                        mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
-//                        LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(): " + oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service() );
-//                        LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
-////                        }
-//                    }
+//                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessage) {
+////                    if (oSubjectMessage.getSubjectMessageType().getId() == 2) {
+//                        mSubjectMessageFeedback.put(oHistoryEvent_Service.getId(), oSubjectMessageFeedback);
+////                    }
+//                }
                     List<String> asCell = new LinkedList<>();
                     // sID_Order
-                    asCell.add(oHistoryEvent_Service.getsID_Order() != null ? oHistoryEvent_Service.getsID_Order() : "");
-                    LOG.info("getsID_Order(): "+oHistoryEvent_Service.getsID_Order());
+                    asCell.add(oHistoryEvent_Service.getsID_Order());
                     // nID_Server
                     asCell.add(oHistoryEvent_Service.getnID_Server() != null ? oHistoryEvent_Service.getnID_Server().toString() : "");
                     // nID_Service
                     asCell.add(oHistoryEvent_Service.getnID_Service() != null ? oHistoryEvent_Service.getnID_Service().toString() : "");
                     // sID_Place
-                    asCell.add(oHistoryEvent_Service.getsID_UA()); 
+                    asCell.add(oHistoryEvent_Service.getsID_UA());
                     // nID_Subject
                     asCell.add(oHistoryEvent_Service.getnID_Subject() != null ? oHistoryEvent_Service.getnID_Subject().toString() : "");
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
-                    SubjectMessageFeedback oSubjectMessageFeedback = new SubjectMessageFeedback();
-                    String sTextFeedback = "";
-                    LOG.info("oHistoryEvent_Service.getId(): " + mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()));
-//                    if (mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()) != null) {
-//                        sTextFeedback = mSubjectMessage.get(oHistoryEvent_Service.getId()).getBody();
-                            sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
-                            LOG.info("sTextFeedback" + sTextFeedback);
-//                    } else {
-                        LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
-//                    }
+                    String sTextFeedback;
+//                    SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(oHistoryEvent_Service.getId());
+                    LOG.info("oSubjectMessageFeedback.isPresent(): "+oSubjectMessageFeedback.isPresent());
+//                    LOG.info("oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service(): "+oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service());
+                    if (oSubjectMessageFeedback.isPresent() && oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service() != null) {
+                        sTextFeedback = oSubjectMessageFeedback.get().getoSubjectMessage().getBody();
+                    } else {
+//                        LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
+                        sTextFeedback = "";
+                    }
                     // sTextFeedback
-                    asCell.add(sTextFeedback);
+                    asCell.add(sTextFeedback);   
                     // sUserTaskName
                     asCell.add(oHistoryEvent_Service.getsUserTaskName());
                     // sHead
@@ -734,9 +723,9 @@ public class ActionEventController {
                     DateTime sDateCreate = oHistoryEvent_Service.getsDateCreate();
                     DateTime sDateClose = oHistoryEvent_Service.getsDateClose();
                     
-                    DateTimeFormatter uDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat uDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         
-                    if ((sDateCreate == null || sDateClose == null)&&(!Objects.equals(oHistoryEvent_Service.getnID_StatusType(), HistoryEvent_Service_StatusType.ABSENT.getnID())))
+                    if ((sDateCreate == null || sDateClose == null)&&(oHistoryEvent_Service.getnID_StatusType() != HistoryEvent_Service_StatusType.ABSENT.getnID()))
                     {
                         try{
 
@@ -763,11 +752,12 @@ public class ActionEventController {
                         catch (Exception ex)
                         {
                             oHistoryEvent_Service.setnID_StatusType(HistoryEvent_Service_StatusType.ABSENT.getnID());
+                            historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
                         }
                     }
                                                            
-                    asCell.add(sDateCreate != null ? sDateCreate.toString() : "");
-                    asCell.add(sDateClose != null ? sDateClose.toString() : "");
+                    asCell.add(sDateCreate != null ? uDateFormat.format(sDateCreate.toDate()) : "");
+                    asCell.add(sDateClose != null ? uDateFormat.format(sDateClose.toDate()) : "");
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
