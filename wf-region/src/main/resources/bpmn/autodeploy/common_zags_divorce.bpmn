@@ -20,13 +20,14 @@
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписаної подружжям заяви. Ви матимете можливість в продовж 3 днів з моменту замовлення послуги приїхати особисто до відділу ДРАЦС і підписати паперовий екземпляр заяви."></activiti:formProperty>
          
-                    
-        <activiti:formProperty id="sText6" name="Зверніть увагу" type="label" default="&lt;b&gt;Реквізити для сплати держ.мита Ви отримаєте в електронному листі після перевірки данних реєстратором&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита;Ви можете сплатити цю суму через Інтернет банківською карткою або зробити звичайний банківський платіж за реквізитами. Якщо Ви маєте пільгу, оплата не потрібна" type="enum" required="true">
+         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита;Ви можете сплатити цю суму через Інтернет банківською карткою або зробити звичайний банківський платіж за реквізитами. Якщо Ви маєте пільгу, оплата не потрібна" type="enum" required="true">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
           <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
           <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
         </activiti:formProperty>
+        
+        
+        
         <activiti:formProperty id="asCategoryPrivileges" name="Категорія" type="enum">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
           <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -34,7 +35,10 @@
           <activiti:value id="sEnum4" name="інваліди Великої Вітчизняної війни та сім'ї воїнів (партизанів), які загинули чи пропали безвісти, і прирівняні до них у встановленому порядку особи"></activiti:value>
           <activiti:value id="sEnum5" name="інваліди I та II груп"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію" type="file"></activiti:formProperty>
+         <activiti:formProperty id="sText6" name="Зверніть увагу" type="label" default="&lt;b&gt;Реквізити для сплати держ.мита Ви отримаєте в електронному листі після перевірки данних реєстратором&lt;/b&gt;"></activiti:formProperty>
+         
         <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса " type="invisible"></activiti:formProperty>
@@ -57,6 +61,7 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний відділ ДРАЦС" type="select" required="true"></activiti:formProperty> 
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення реєстрації розлучення" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата розлучення" type="invisible"></activiti:formProperty>
+        
         <activiti:formProperty id="sMaleData" name="Дані чоловіка" type="label" default="_____________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Власне ім'я" type="string"></activiti:formProperty>
@@ -78,14 +83,12 @@
         <activiti:formProperty id="sPlaceMilitary1" name="Назва міста та номер поштової скриньки військової частини" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberOfMarriages1" name="Який за рахунком шлюб; перший, другий тощо" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMarriagesDoc1" name="Місце державної реєстрації шлюбу, що розривається. Номер та дата актового запису" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleCourt1" name="Назва суду; яким було розірвано шлюб" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateSolutions1" name="Дата ухвалення рішення; яким було розірвано шлюб" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="sQuantityChildren1" name="Кількість спільних дітей віком до 18 років" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport1" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName1" name="Після розірвання шлюбу бажає мати прізвище; дошлюбне чи взяте при державній реєстрації шлюбу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGuardianFullName1" name="Прізвище, власне ім’я, по батькові опікуна недієздатного подружжя" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGuardianAddress1" name="Місце проживання опікуна недієздатного подружжя; повна адреса із зазначенням індексу" type="string"></activiti:formProperty>
+       
         <activiti:formProperty id="sFemaleData" name="Дані дружини" type="label" default="_____________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Власне ім'я" type="string"></activiti:formProperty>
@@ -107,25 +110,32 @@
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberOfMarriages2" name="Який за рахунком шлюб; перший, другий тощо" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMarriagesDoc2" name="Місце державної реєстрації шлюбу, що розривається. Номер та дата актового запису" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleCourt2" name="Назва суду; яким було розірвано шлюб" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажає мати прізвище; дошлюбне чи взяте при державній реєстрації шлюбу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGuardianFullName2" name="Прізвище, власне ім’я, по батькові опікуна недієздатного подружжя" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGuardianAddress2" name="Місце проживання опікуна недієздатного подружжя; повна адреса із зазначенням індексу" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує наявність пільг" type="file"></activiti:formProperty>
-        <activiti:formProperty id="ScancopyDoc2" name="Cвідоцтво про шлюб" type="file"></activiti:formProperty>
-        <activiti:formProperty id="ScancopyDoc1" name="Копія рішення суду (витяг з рішення суду) про визнання другого з подружжя безвісно відсутнім чи недієздатним, що набрало законної сили" type="file"></activiti:formProperty>
-        <activiti:formProperty id="ScancopyDoc3" name="Копії рішення суду (витягу з рішення суду) про розірвання шлюбу, що набрало законної сили" type="file"></activiti:formProperty>
+        
+        <activiti:formProperty id="sTitleCourt1" name="Назва суду; яким було розірвано шлюб" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateSolutions1" name="Дата ухвалення рішення; яким було розірвано шлюб" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGuardianFullName1" name="Прізвище, власне ім’я, по батькові опікуна недієздатного подружжя" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGuardianAddress1" name="Місце проживання опікуна недієздатного подружжя; повна адреса із зазначенням індексу" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="ScancopyDoc2" name="Cвідоцтво про шлюб" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ScancopyDoc1" name="Копія рішення суду (витяг з рішення суду) про визнання другого з подружжя безвісно відсутнім чи недієздатним, що набрало законної сили" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ScancopyDoc3" name="Копії рішення суду (витягу з рішення суду) про розірвання шлюбу, що набрало законної сили" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="invisible"></activiti:formProperty>
+         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_show.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Отримання часу подання" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())</script>
+      <script>execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())
+      var sum =' ' execution.setVariable('sSum', sum)
+      </script>
     </scriptTask>
     <sequenceFlow id="flow12" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -297,12 +307,11 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberOfMarriages2" name="Який за рахунком шлюб; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMarriagesDoc2" name="Місце державної реєстрації шлюбу, що розривається. Номер та дата актового запису; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleCourt2" name="Назва суду; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажає мати прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGuardianFullName2" name="Прізвище, власне ім’я, по батькові опікуна недієздатного подружжя; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGuardianAddress2" name="Місце проживання опікуна недієздатного подружжя; ;writable=false" type="string"></activiti:formProperty>
+       
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
         
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита ; ;writable=false" type="enum">
@@ -612,12 +621,11 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberOfMarriages2" name="Який за рахунком шлюб; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMarriagesDoc2" name="Місце державної реєстрації шлюбу, що розривається. Номер та дата актового запису; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleCourt2" name="Назва суду; ;writable=false" type="string"></activiti:formProperty>
+       
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажає мати прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGuardianFullName2" name="Прізвище, власне ім’я, по батькові опікуна недієздатного подружжя; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGuardianAddress2" name="Місце проживання опікуна недієздатного подружжя; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
        
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита; ;writable=false" type="enum">
@@ -915,12 +923,11 @@ ${sMail_Signature} <br><br>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberOfMarriages2" name="Який за рахунком шлюб; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMarriagesDoc2" name="Місце державної реєстрації шлюбу, що розривається. Номер та дата актового запису; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleCourt2" name="Назва суду; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажає мати прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGuardianFullName2" name="Прізвище, власне ім’я, по батькові опікуна недієздатного подружжя; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGuardianAddress2" name="Місце проживання опікуна недієздатного подружжя; ;writable=false" type="string"></activiti:formProperty>
+       
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
        
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита; ;writable=false" type="enum">
@@ -1084,12 +1091,11 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberOfMarriages2" name="Який за рахунком шлюб; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMarriagesDoc2" name="Місце державної реєстрації шлюбу, що розривається. Номер та дата актового запису; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleCourt2" name="Назва суду; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажає мати прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGuardianFullName2" name="Прізвище, власне ім’я, по батькові опікуна недієздатного подружжя; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGuardianAddress2" name="Місце проживання опікуна недієздатного подружжя; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
         
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита; ;writable=false" type="enum">
