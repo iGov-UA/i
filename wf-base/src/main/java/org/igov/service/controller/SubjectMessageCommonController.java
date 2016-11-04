@@ -82,7 +82,7 @@ public class SubjectMessageCommonController {
         
         String result = String.format(body, number, message);
         
-        resp = managerSMS.sendSMS(number, message);//oHttpRequester.postInside(generalConfig.getLifeURL(), null, body, "text/xml; charset=utf-8",
+        resp = managerSMS.sendSMS("+" + number, message);//oHttpRequester.postInside(generalConfig.getLifeURL(), null, body, "text/xml; charset=utf-8",
                // generalConfig.getLifeLogin(), generalConfig.getLifePassword());
         //}
 
