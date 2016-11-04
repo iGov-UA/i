@@ -3,18 +3,17 @@
   <process id="dnepr_dms-227ID" name="Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
-        <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="Дана послуга доступна лише за місцем реєстрації, якщо Ви не можете обрати свій район, то у ньому послуга на iGov відсутня"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport" name="Ваш документ; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яка буде отримувати паспорт"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Нове прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Нове ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="Нове по батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="&lt;b&gt;Дана послуга доступна лише за місцем реєстрації, якщо Ви не можете обрати свій район, то у ньому послуга на iGov відсутня&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС району (міста), до якого належить Ваше місце реєстрації" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
@@ -105,7 +104,8 @@ execution.setVariable('sEndDay', timerEnd)</script>
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p>
-	Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].<br>
+	Ваш запит успішно зареєстровано у нашій системі.<br>
+	Номер Вашого звернення: <a href="https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">[sID_Order].</a><br>
 	Чекаємо Вас за адресою: ${sAddress}<br>
 	для обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові
 </p>
@@ -114,7 +114,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 </p>
 <p>
 	Реквізити для сплати адмінсбору за оформлення ID-картки доступні за <a href="${sAdminID}" target="_blank">посиланням</a>.<br>
-	<b>Зверніть увагу:</b> В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу). В іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.
+	<b>Зверніть увагу:</b>, що Вам потрібно принести з собою квітанції банку (із “мокрим” штампом) про сплату цих платежів. В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу).
 </p>
 <p>
 	<b>Необхідні документи, які треба принести до підрозділу ДМС:</b>
@@ -122,10 +122,17 @@ execution.setVariable('sEndDay', timerEnd)</script>
 		<li>оригінал та копію документу, на основі якого відбулася зміна (переміна) прізвища, ім'я або по батькові;</li>
 		<li>паспорт, що підлягає обміну;</li>
 		<li>оригінал та копію ІПН;</li>
-		<li>довідку про взяття на облік внутрішньо переміщеної особи (для внутрішньо переміщених осіб);</li>
 		<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
 	</ul>
 </p>
+<p>
+	<b>Зверніть увагу:</b> 
+	<ul>
+		<li>Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не спізнюватись, бо електронна черга має доволі чіткий крок.</li>
+		<li>Якщо Ви є внутрішньо переміщеною особою, тобто адреса Вашої реєстрації (прописки) відноситься до тимчасово окупованої території або районів проведення антитерористичної операції (АТО), то Вам потрібно додатково принести ксерокопію та оригінал довідки про взяття на облік внутрішньо переміщеної особи</li>
+	</ul>
+</p>
+<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
 <p>[cancelTask]</p>                
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan},<br>
@@ -151,7 +158,8 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p>
-	Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].<br>
+	Ваш запит успішно зареєстровано у нашій системі.<br>
+	Номер Вашого звернення: <a href="https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">[sID_Order].</a><br>
 	Чекаємо Вас за адресою: ${sAddress}<br>
 	для обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові
 </p>
@@ -160,7 +168,7 @@ ${sNameOrgan},<br>
 </p>
 <p>
 	Реквізити для сплати адмінсбору за оформлення ID-картки доступні за <a href="${sAdminID}" target="_blank">посиланням</a>.<br>
-	<b>Зверніть увагу:</b> В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу). В іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.
+	<b>Зверніть увагу:</b>, що Вам потрібно принести з собою квітанції банку (із “мокрим” штампом) про сплату цих платежів. В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу).
 </p>
 <p>
 	<b>Необхідні документи, які треба принести до підрозділу ДМС:</b>
@@ -168,10 +176,17 @@ ${sNameOrgan},<br>
 		<li>оригінал та копію документу, на основі якого відбулася зміна (переміна) прізвища, ім'я або по батькові;</li>
 		<li>паспорт, що підлягає обміну;</li>
 		<li>оригінал та копію ІПН;</li>
-		<li>довідку про взяття на облік внутрішньо переміщеної особи (для внутрішньо переміщених осіб);</li>
 		<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
 	</ul>
 </p>
+<p>
+	<b>Зверніть увагу:</b> 
+	<ul>
+		<li>Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не спізнюватись, бо електронна черга має доволі чіткий крок.</li>
+		<li>Якщо Ви є внутрішньо переміщеною особою, тобто адреса Вашої реєстрації (прописки) відноситься до тимчасово окупованої території або районів проведення антитерористичної операції (АТО), то Вам потрібно додатково принести ксерокопію та оригінал довідки про взяття на облік внутрішньо переміщеної особи</li>
+	</ul>
+</p>
+<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
 <p>[cancelTask]</p>                
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan},<br>
@@ -195,7 +210,7 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Ваш документ; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Ваш старий документ; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Нове прізвище отримувача паспорта" type="string" writable="false"></activiti:formProperty>
