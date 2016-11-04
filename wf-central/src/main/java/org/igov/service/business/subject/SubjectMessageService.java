@@ -279,10 +279,10 @@ public class SubjectMessageService {
             return subjectMessageFeedbackDao.save(messageFeedback);
         } else {
             messageFeedback = subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
-            if(sID_Order != null){
+            /*if(sID_Order != null){
                 messageFeedback.setsID_Order(sID_Order);
-            }
-            LOG.info("!!!nId = " + nId + " sAnswer = " + sAnswer+ " sID_Order = " + sID_Order);
+            }*/
+            LOG.info("!!!nId = " + nId + " sAnswer = " + sAnswer+ " sID_Order = " + messageFeedback.getsID_Order());
             if (StringUtils.isEmpty(sAnswer)) {
                 messageFeedback.setsID_Source(sID_Source);
                 messageFeedback.setsAuthorFIO(sAuthorFIO);
@@ -294,7 +294,6 @@ public class SubjectMessageService {
                 messageFeedback.setnID_Rate(nID_Rate);
                 messageFeedback.setnID_Service(nID_Service);
                 messageFeedback.setsAnswer(sAnswer);
-                messageFeedback.setsID_Order(sID_Order);
                 subjectMessage = messageFeedback.getoSubjectMessage();
                 if (subjectMessage == null) {
                     SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(2L);
