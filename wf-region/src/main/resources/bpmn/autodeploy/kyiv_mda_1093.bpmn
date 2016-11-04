@@ -221,17 +221,17 @@
           <activiti:value id="sEnumDecisionRemarkYes" name="Є зауваження"></activiti:value>
           <activiti:value id="sEnumDecisionRemarkNo" name="Немає зауважень"></activiti:value>
         </activiti:formProperty>
-<activiti:formProperty id="asTypeAct" name="Вид акту" type="enum" required="true">
+        <activiti:formProperty id="asTypeAct" name="Вид акту" type="enum" required="true">
           <activiti:value id="sEnumTypeActNoVisit" name="Акт про недопуск на об’єкт"></activiti:value>
           <activiti:value id="sEnumTypeActVisit" name="Акт проведення перевірки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDateDraftingAct" name="Дата складання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateDraftingAct" name="Дата складання" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceDraftingAct" name="Місце складання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTextAudit" name="За результатами перевірки встановлено" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPosition_1" name="Посада, ПІБ першої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosition_2" name="Посада, ПІБ другої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosition_3" name="Посада, ПІБ третьої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonsInvolvedAudit" name="Особи, які залучені до перевірки (посади, прізвища та ініціали)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPersonsInvolvedAudit" name="Особи, які залучені до перевірки (посади, прізвища та ініціали)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPresenceOf" name="У присутності кого (посада, прізвище, ім’я, по батькові (уповноваженої ним особи) юридичної особи, фізичної особи/фізичної особи - підприємця, що перевіряється)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReasonInspection" name="Підстава проведення перевірки" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSubjectCityPlanning" name="Суб’єкт містобудування" type="string"></activiti:formProperty>
@@ -256,7 +256,7 @@
                 
         <activiti:formProperty id="sBody_pripisEliminate_1" name="[pattern/print/kiev/DABI_insp_pripis_pro_usunennya_porushennya_1.html]" type="invisible" default="Припис про усунення порушення 1"></activiti:formProperty>
         <activiti:formProperty id="sBody_pripisEliminate_2" name="[pattern/print/kiev/DABI_insp_pripis_pro_usunennya_porushennya_2.html]" type="invisible" default="Припис про усунення порушення 2"></activiti:formProperty>
-        
+        <activiti:formProperty id="markers4" name="ShowFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_4.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
