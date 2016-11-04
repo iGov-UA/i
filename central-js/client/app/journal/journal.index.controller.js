@@ -20,6 +20,9 @@ angular.module('journal').controller('JournalController', function ($rootScope, 
   $scope.sSearch = '';
 
   $scope.getAuthMethods = function () {
+    if($rootScope.profile.isKyivCity){
+      return "BankID,EDS,BankID-NBU"
+    }
     return "BankID,EDS,mpbds,KK,BankID-NBU"
   };
   $scope.searchOrder = function (sID_Order_New, sToken_New) {//arguments.callee.toString()

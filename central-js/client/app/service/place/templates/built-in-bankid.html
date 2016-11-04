@@ -22,7 +22,10 @@
 
   <div class="list-group-item disabled" ng-if="!spinner">
     <div class="row no-margin-bottom">
-      <div class="col-md-11">Крок 2. Ви увійшли як
+      <div ng-if="!profile.isKyivCity" class="col-md-11">Крок 2. Ви увійшли як
+        {{account.customer.firstName}} {{account.customer.middleName}} {{account.customer.lastName}}
+      </div>
+      <div ng-if="profile.isKyivCity" class="col-md-11">Крок 1. Ви увійшли як
         {{account.customer.firstName}} {{account.customer.middleName}} {{account.customer.lastName}}
       </div>
       <div class="col-md-1">
@@ -35,7 +38,10 @@
 
   <div class="list-group-item" ng-if="!spinner">
     <div class="row">
-      <div class="col-md-6 pull-left">Крок 3.
+      <div ng-if="!profile.isKyivCity" class="col-md-6 pull-left">Крок 3.
+        {{data.formData.params["processName"].name==null?"":data.formData.params["processName"].name}}
+      </div>
+      <div ng-if="profile.isKyivCity" class="col-md-6 pull-left">Крок 2.
         {{data.formData.params["processName"].name==null?"":data.formData.params["processName"].name}}
       </div>
       <div ng-show="bAdmin" class="col-md-6 pull-right">
@@ -152,7 +158,7 @@
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
                 <label style="color: red;"
                        ng-if="isFieldRequired(property)==true">* </label>
-                {{property.sFieldLabel}}:
+                <span ng-if="property.sFieldLabel">{{property.sFieldLabel}} :</span>
 
                 <div class="s-field-notes"
                      ng-if="property.sFieldNotes!=null">
@@ -502,6 +508,7 @@
                        ng-model="data.formData.params[property.id].value"
                        ng-required="isFieldRequired(property)"
                        ng-class="getBpAndFieldID(property)"
+                       ng-pattern="/^\d+$/"
                        class="form-control"
                        value="">
 

@@ -591,7 +591,8 @@ public class SubjectMessageController {
             HttpServletResponse oResponse
     ) throws CommonServiceException, IOException {
 
-        LOG.info("Started! (sID_Source={}, nID_Service={}, nID={})", sID_Source, nID_Service, nID);
+        LOG.info("Started! (sID_Source={}, nID_Service={}, nID={}, sID_Order={})", sID_Source, nID_Service, nID, sID_Order);
+       
         String responseMessage = null;
         
         /*if(nID_Rate==null){
@@ -623,7 +624,7 @@ public class SubjectMessageController {
                 String sAnswer=null;
                 SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
                         sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nID,
-                        nID_Subject);
+                        nID_Subject, sID_Order);
                 if (nID!=null && (sID_Token==null || sID_Token.equals(oSubjectMessageFeedback.getsID_Token()))) {
                     throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "sID_Token not equal or absant! sID_Token="+sID_Token+", nID="+nID, HttpStatus.NOT_FOUND);
@@ -638,10 +639,8 @@ public class SubjectMessageController {
                     feedback.setoSubjectMessageFeedbackAnswers(answers);
                     subjectMessageFeedbackDao.update(feedback);
                 }*/
-                subjectMessageFeedbackDao.setsID_Order(sID_Order);
-                LOG.info("setsID_Order: "+subjectMessageFeedbackDao.setsID_Order(sID_Order));
                 LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {}, sID_Order: {}",
-                        sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
+                        sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token(), oSubjectMessageFeedback.getsID_Order());
 
                 responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
                         generalConfig.getSelfHost(), nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());

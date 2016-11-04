@@ -361,6 +361,7 @@ public class SubjectMessageControllerScenario {
                 feedback.getnID_Service(),
                 null, // sAnswer
                 null, // nId
+                null,
                 null))// nID_Subject
                  .thenReturn(feedback);
 
@@ -485,6 +486,7 @@ public class SubjectMessageControllerScenario {
                 expectedFeedback.getnID_Service(),
                 "feedbackAfterInit",
                 null,
+                null,
                 null))
                 .thenCallRealMethod();
 
@@ -536,7 +538,7 @@ public class SubjectMessageControllerScenario {
                 expectedFeedback.getnID_Service(),
                 "feedbackAfterInit",
                 expectedFeedback.getId(),
-                null))
+                null, null))
                 .thenCallRealMethod();
 
 
