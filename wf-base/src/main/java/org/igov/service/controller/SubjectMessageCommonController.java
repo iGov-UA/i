@@ -63,9 +63,15 @@ public class SubjectMessageCommonController {
         RequestMethod.GET}, produces = "text/plain;charset=UTF-8")
     public @ResponseBody
     String sentSms(@RequestParam(value = "number", required = false) String number, 
-            @RequestParam(value = "message", required = false) String message) throws Exception {
-
-        String resp = smsManager.sentSms(number, message, true); 
+            @RequestParam(value = "message", required = false) String message,
+            @RequestParam(value = "oldApiFlag", required = false) Boolean apiFlag) throws Exception {
+    
+       if (apiFlag == null)
+       {
+            apiFlag = false;
+       }
+        
+       String resp = smsManager.sentSms(number, message, apiFlag); 
 
         return resp;
     }

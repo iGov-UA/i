@@ -54,8 +54,8 @@ public class ManagerSMS {
     
     private String SentLifeCellSms(String phone, String message) throws Exception
     {
-        String result = String.format(LIFEBODY, "+" + phone, message);
-        return oHttpRequester.postInside(generalConfig.getLifeURL(), null, LIFEBODY, "text/xml; charset=utf-8",
+        String bodyResult = String.format(LIFEBODY, "+" + phone, message);
+        return oHttpRequester.postInside(generalConfig.getLifeURL(), null, bodyResult, "text/xml; charset=utf-8",
             generalConfig.getLifeLogin(), generalConfig.getLifePassword());
     }
     
