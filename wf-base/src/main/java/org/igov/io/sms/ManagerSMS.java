@@ -43,8 +43,9 @@ public class ManagerSMS {
         String resp = "[none]";
         
         if (oldApiFlag == false){
-            if (regexpLifeCell.matcher(phone).matches()){
-               resp = SentLifeCellSms(phone, message);
+            //if (regexpLifeCell.matcher(phone).matches()){
+            if (message.startsWith("38092")){  
+                resp = SentLifeCellSms(phone, message);
             }
         }
         else{
