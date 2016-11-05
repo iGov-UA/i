@@ -37,7 +37,7 @@ public class ManagerSMS {
     
     public String sentSms(String phone, String message, boolean oldApiFlag) throws Exception
     {
-        Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*))");
+        Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)");
         //Pattern regexpLifeCell = Pattern.compile("38092(.*)");
         
         String resp = message;
