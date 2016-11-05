@@ -66,12 +66,12 @@ public class SubjectMessageCommonController {
             @RequestParam(value = "message", required = false) String message,
             @RequestParam(value = "oldApiFlag", required = false) Boolean apiFlag) throws Exception {
     
-       if (apiFlag == null)
-       {
+        if (apiFlag == null)
+        {
             apiFlag = false;
-       }
+        }
         
-       String resp = smsManager.sentSms(number, message, apiFlag); 
+        String resp = smsManager.sentSms(number, message, apiFlag); 
 
         return resp;
     }
