@@ -67,7 +67,7 @@ public class SubjectMessageCommonController {
     String sentSms(@RequestParam(value = "number", required = false) String number, 
             @RequestParam(value = "message", required = false) String message) throws Exception {
 
-        String resp;
+        String resp=" ";
 
         byte[] utf8Message = message.getBytes("UTF-8");
 
@@ -82,8 +82,7 @@ public class SubjectMessageCommonController {
         
         String result = String.format(body, number, message);
         
-        resp = managerSMS.sendSMS("+" + number, message);//oHttpRequester.postInside(generalConfig.getLifeURL(), null, body, "text/xml; charset=utf-8",
-               // generalConfig.getLifeLogin(), generalConfig.getLifePassword());
+        //resp = managerSMS.sendSMS("+" + number, message);//
         //}
 
         return resp;
