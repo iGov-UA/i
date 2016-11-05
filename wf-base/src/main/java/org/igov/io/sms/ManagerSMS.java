@@ -38,13 +38,12 @@ public class ManagerSMS {
     public String sentSms(String phone, String message, boolean oldApiFlag) throws Exception
     {
         //Pattern regexpLifeCell = Pattern.compile("^(38093|38063)");
-        //Pattern regexpLifeCell = Pattern.compile("^(38092)");
+        Pattern regexpLifeCell = Pattern.compile("^(38092)");
         
         String resp = message;
         
         if (oldApiFlag == false){
-            //if (regexpLifeCell.matcher(phone).matches()){
-            if (phone.startsWith("38092")){  
+            if (regexpLifeCell.matcher(phone).matches()){
                 resp = SentLifeCellSms(phone, message);
             }
         }
