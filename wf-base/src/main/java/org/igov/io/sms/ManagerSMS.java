@@ -34,11 +34,12 @@ public class ManagerSMS {
                 .append("</body>")
                 .append("</message>").toString();
     
+    private static final String KYIVSTAR = new StringBuilder();
     
     public String sentSms(String phone, String message, boolean oldApiFlag) throws Exception
     {
-        //Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)");
-        Pattern regexpLifeCell = Pattern.compile("38092(.*)");
+        Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)");
+        //Pattern regexpLifeCell = Pattern.compile("38092(.*)");
         
         String resp = "[none]";
         
