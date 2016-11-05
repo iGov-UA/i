@@ -40,11 +40,11 @@ public class ManagerSMS {
         //Pattern regexpLifeCell = Pattern.compile("^(38093|38063)");
         //Pattern regexpLifeCell = Pattern.compile("^(38092)");
         
-        String resp = "[none]";
+        String resp = message;
         
         if (oldApiFlag == false){
             //if (regexpLifeCell.matcher(phone).matches()){
-            if (message.startsWith("38092")){  
+            if (phone.startsWith("38092")){  
                 resp = SentLifeCellSms(phone, message);
             }
         }
