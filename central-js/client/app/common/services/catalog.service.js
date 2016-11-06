@@ -90,13 +90,22 @@ angular.module('app')
     }
 
     if(catalog.aService) {
-      angular.forEach(catalog.aService, function(aServiceItem) {
+      angular.forEach(catalog.aService, function (aServiceItem) {
         if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
           catalogCounts[aServiceItem.nStatus] = 0;
         }
         ++catalogCounts[aServiceItem.nStatus];
       });
-    } else {
+      } else if(catalog[0].aService){
+        angular.forEach(catalog, function (service) {
+          angular.forEach(service.aService, function (aServiceItem) {
+            if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
+              catalogCounts[aServiceItem.nStatus] = 0;
+            }
+            ++catalogCounts[aServiceItem.nStatus];
+          });
+        })
+      } else {
       angular.forEach(catalog, function(category) {
         angular.forEach(category.aSubcategory, function(subItem) {
           angular.forEach(subItem.aService, function(aServiceItem) {

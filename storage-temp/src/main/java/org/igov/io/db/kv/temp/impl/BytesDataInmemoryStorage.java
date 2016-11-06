@@ -36,7 +36,12 @@ public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
     public String putBytes(byte[] aByte) throws RecordInmemoryException {
         String sKey = null;
         try {
+            if(aByte == null){
+                LOG.error("FAIL: aByte is null");
+                throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[putBytes](aByte is null");
+            }
             sKey = UUID.randomUUID().toString();
+            LOG.info("sKey ={} sValueLength ={}", sKey, aByte.length);
             while (oTemplateByteArray.hasKey(sKey)) {
                 sKey = UUID.randomUUID().toString();
             }
@@ -56,6 +61,10 @@ public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
         byte[] aByte;
         try {
             aByte = oTemplateByteArray.boundValueOps(sKey).get();
+            if(aByte == null){
+                LOG.error("FAIL: aByte is null sKey={}", sKey);
+                throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[getBytes](aByte is null sKey=" + sKey + "):");
+            }
         } catch (Exception oException) {
             LOG.error("FAIL: {} (sKey={})", oException.getMessage(), sKey);
             throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[getBytes](sKey=" + sKey + "):" + oException.getMessage(), oException);
@@ -66,6 +75,11 @@ public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
     @Override
     public String putString(String sKey, String sValue) throws RecordInmemoryException {
         try {
+            if(sValue == null){
+                LOG.error("FAIL: sValue is null");
+                throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[putString](sValue is null");
+            }
+            LOG.info("sKey ={} sValueLength ={}", sKey, sValue.length());
             oTemplateString.boundValueOps(sKey).set(sValue);
             oTemplateString.expire(sKey, Long.valueOf(nStorageTimeMinutes), TimeUnit.MINUTES);
         } catch (Exception oException) {
@@ -81,6 +95,10 @@ public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
         String sReturn = null;
         try {
             sReturn = oTemplateString.boundValueOps(sKey).get();
+            if(sReturn == null){
+                LOG.error("FAIL: sReturn is null sKey={}", sKey);
+                throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[getString](sReturn is null sKey=" + sKey + "):");
+            }
         } catch (Exception oException) {
             LOG.error("FAIL: {} (sKey={})", oException.getMessage(), sKey);
             throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[getString](sKey=" + sKey + "):" + oException.getMessage(), oException);
