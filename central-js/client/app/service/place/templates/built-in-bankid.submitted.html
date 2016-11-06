@@ -4,7 +4,9 @@
 
     <div class="list-group-item disabled">
         <div class="row no-margin-bottom">
-            <div class="col-md-11">Крок 2. Ви увійшли як {{account.customer.firstName}} {{account.customer.middleName}} {{account.customer.lastName}}
+            <div ng-if="!profile.isKyivCity" class="col-md-11">Крок 2. Ви увійшли як {{account.customer.firstName}} {{account.customer.middleName}} {{account.customer.lastName}}
+            </div>
+            <div ng-if="profile.isKyivCity" class="col-md-11">Крок 1. Ви увійшли як {{account.customer.firstName}} {{account.customer.middleName}} {{account.customer.lastName}}
             </div>
             <div class="col-md-1" ng-if="authControlIsComplete()">
                 <div class="link-button">

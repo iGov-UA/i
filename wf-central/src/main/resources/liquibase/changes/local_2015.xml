@@ -1544,5 +1544,17 @@
                                  deferrable="true" deleteCascade="false"/>
 
     </changeSet>
+    
+    <changeSet id="issue-1397" author="HavrylinSerhii">
+        <addColumn tableName="SubjectMessageFeedback">
+            <column name="sID_Order" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>       
+    </changeSet>
+
+    <changeSet id="ServiceData_asAuth-size" author="bw">
+        <modifyDataType tableName="ServiceData" columnName="asAuth" newDataType="varchar(100)" />
+    </changeSet>
 
 </databaseChangeLog>

@@ -129,6 +129,7 @@
         $scope.nID_Process = oTask.processInstanceId;
         $scope.markers = ValidationService.getValidationMarkers();
         $scope.bHasEmail = false;
+        $scope.isClarifySending = false;
 
         $scope.validateForm = function(form) {
           var bValid = true;
@@ -251,6 +252,7 @@
         };
 
         $scope.clarifySend = function () {
+          $scope.isClarifySending = true;
 
           var oData = {
             nID_Process: $scope.nID_Process,
@@ -312,12 +314,14 @@
             oData.nID_Process = oData.nID_Process + lunaService.getLunaValue(oData.nID_Process);
             tasks.postServiceMessages(oData).then(function () {
               $scope.clarify = false;
+              $scope.isClarifySending = false;
               Modal.inform.success(function () {
               })('Коментар відправлено успішно');
             });
           } else {
             tasks.setTaskQuestions(oData).then(function () {
               $scope.clarify = false;
+              $scope.isClarifySending = false;
               Modal.inform.success(function () {
               })('Зауваження відправлено успішно');
             });

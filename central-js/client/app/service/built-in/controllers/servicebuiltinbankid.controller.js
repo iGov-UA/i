@@ -653,8 +653,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         var b = FieldMotionService.FieldMentioned.inRequired(property.id) ?
             FieldMotionService.isFieldRequired(property.id, $scope.data.formData.params) : property.required;
         if($scope.data.formData.params[property.id] instanceof SignFactory){
-          $scope.sign.checked = b;
           $scope.isSignNeededRequired = b;
+          if(!($scope.isSignNeeded && !$scope.isSignNeededRequired)){
+            $scope.sign.checked = b;
+          }
         }
         return b;
       };
@@ -930,5 +932,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       };
       $scope.rowLengthCheckLimit = function (table) {
         return table.aRow.length >= table.nRowsLimit
+      };
+
+      $scope.isFieldWritable = function (field) {
+      // включил проверку тк иногда передается false/true как строка 'false'/'true'.
+        if(typeof field === 'string' || field instanceof String) {
+          if(field === 'true') return true;
+          if(field === 'false') return false;
+        } else if (typeof field === 'boolean') {
+          return field;
+        }
       };
     });

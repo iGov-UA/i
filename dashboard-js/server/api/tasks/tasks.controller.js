@@ -10,6 +10,8 @@ var tasksService = require('./tasks.service');
 var environment = require('../../config/environment');
 var config = require(__dirname + '/../../..' + '/process.json').env;
 var request = require('request');
+var pdf = require('html-pdf');
+
 /*
 var nodeLocalStorage = require('node-localstorage').LocalStorage;
 var localStorage = new nodeLocalStorage('./scratch');
@@ -20,10 +22,10 @@ function createHttpError(error, statusCode) {
 
 function step(input, lowerFunction, withoutResult) {
   return withoutResult ? function (callback) {
-    lowerFunction(callback, input)
+    lowerFunction(callback, input);
   } : function (result, callback) {
     lowerFunction(result, callback, input);
-  }
+  };
 }
 
 function loadGroups(wfCallback, assigneeID) {
@@ -46,7 +48,7 @@ function loadTasksForOtherUsers(usersIDs, wfCallback, currentUserID) {
   var tasks = [];
   usersIDs = usersIDs
     .filter(function (usersID) {
-      return usersID !== currentUserID
+      return usersID !== currentUserID;
     });
 
   async.forEach(usersIDs, function (usersID, frCallback) {
@@ -280,9 +282,9 @@ exports.getAttachmentContentTable = function (req, res) {
   };
   activiti.get(options, function (error, statusCode, result) {
     if(error) {
-      res.send(error)
+      res.send(error);
     } else if (statusCode == 500) {
-      console.log(statusCode, "isn't table attachment")
+      console.log(statusCode, "isn't table attachment");
     }else {
       res.status(statusCode).json(result);
     }
@@ -424,7 +426,7 @@ exports.getProcesses = function (req, res) {
     ], function (error, result) {
       authService.setCashedUserGroups(currentUser, currentUser.roles);
       error ? res.send(error) : res.json(result);
-    })
+    });
   }
 };
 
@@ -448,31 +450,47 @@ exports.getPatternFile = function (req, res) {
     }
   };
 
-  options.query.sPathFile = options.query.sPathFile.replace(/^sPrintFormFileAsIs=pattern\//, '');
-  if(options.query.sPathFile.indexOf('sPrintFormFileAsPDF=pattern/') == 0){
-    options.query.sPathFile = options.query.sPathFile.replace(/^sPrintFormFileAsPDF=pattern\//, '');
-    activiti.filedownloadPDF(req, res, options);
-  } else {
-    activiti.filedownload(req, res, options);
-  }
-
+  options.query.sPathFile = options.query.sPathFile.replace(/^sPrintFormFileAsPDF=pattern\/|^sPrintFormFileAsIs=pattern\//, '');
+  activiti.filedownload(req, res, options);
 };
 
+/**
+ * https://github.com/e-government-ua/i/issues/1382
+ * added pdf conversion if file name is sPrintFormFileAsPDF
+ */
 exports.upload_content_as_attachment = function (req, res) {
-  activiti.post({
-    path: 'object/file/upload_content_as_attachment',
-    query: {
-      nTaskId: req.params.taskId,
-      sContentType: 'text/html',
-      sDescription: req.body.sDescription,
-      sFileName: req.body.sFileName
+  async.waterfall([
+    function(callback){
+      if(req.body.sFileName === 'sPrintFormFileAsPDF'){
+        var options = {
+          "format": "A4",        // allowed units: A3, A4, A5, Legal, Letter, Tabloid
+          "orientation": "landscape" // portrait or landscape
+        };
+        pdf.create(req.body.sContent, options)
+        .toBuffer(function (err, buffer) {
+          callback(err, buffer);
+        });
+      }else{
+        callback(null, req.body.sContent);
+      }
     },
-    headers: {
-      'Content-Type': 'text/html;charset=utf-8'
+    function (content, callback) {
+      activiti.post({
+        path: 'object/file/upload_content_as_attachment',
+        query: {
+          nTaskId: req.params.taskId,
+          sContentType: 'text/html',
+          sDescription: req.body.sDescription,
+          sFileName: req.body.sFileName
+        },
+        headers: {
+          'Content-Type': 'text/html;charset=utf-8'
+        }
+      }, function (error, statusCode, result) {
+        error ? res.send(error) : res.status(statusCode).json(result);
+      }, content, false);
     }
-  }, function (error, statusCode, result) {
-    error ? res.send(error) : res.status(statusCode).json(result);
-  }, req.body.sContent, false);
+  ]);
 };
 
 exports.setTaskQuestions = function (req, res) {

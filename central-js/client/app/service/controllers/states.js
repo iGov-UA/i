@@ -1,11 +1,17 @@
 angular.module('app')
 .controller('ServiceFormController', function ($scope, service, regions, AdminService,
                                                ServiceService, TitleChangeService, CatalogService,
-                                               $anchorScroll, $rootScope, feedback) {
+                                               $anchorScroll, $rootScope, feedback, statesRepository) {
   $scope.spinner = true;
   $scope.service = service;
   $scope.regions = regions;
   $scope.bAdmin = AdminService.isAdmin();
+
+  if(statesRepository.isKyivCity()){
+    $scope.bHideTab = true;
+  } else {
+    $scope.bHideTab = false;
+  }
 
   //TODO should be refactored after refactoring for single controller for app/service/index.html
   $scope.feedback = feedback;
@@ -32,7 +38,7 @@ angular.module('app')
   $anchorScroll();
 });
 
-angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope, $anchorScroll, TitleChangeService) {
+angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope, $anchorScroll, statesRepository, TitleChangeService) {
   var subscriptions = [];
   messageBusService.subscribe('catalog:update', function (data) {
     $scope.mainSpinner = false;
@@ -41,6 +47,8 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
     $scope.spinner = false;
     $rootScope.rand = (Math.random() * 10).toFixed(2);
   }, false);
+
+  $scope.isKyivCity = !!statesRepository.isKyivCity();
 
   $scope.$on('$destroy', function () {
     subscriptions.forEach(function (item) {
@@ -96,7 +104,7 @@ angular.module('app').controller('OldBusinessController', function ($scope, Admi
   $anchorScroll();
 });
 
-angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce, $anchorScroll, TitleChangeService, $location) {
+angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, statesRepository, $rootScope, $sce, $anchorScroll, TitleChangeService, $location) {
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
 
@@ -123,7 +131,15 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
     $scope.category = $scope.catalog;
   }
   $scope.trustAsHtml = function (string) {
-    return $sce.trustAsHtml(string);
+    if(statesRepository.isKyivCity()){
+      return $sce.trustAsHtml(string.replace(new RegExp('igov.org.ua', 'g'), 'es.kievcity.gov.ua').
+        replace(new RegExp('iGov.org.ua', 'g'), 'es.kievcity.gov.ua').
+        replace(new RegExp('iGOV.org.ua', 'g'), 'es.kievcity.gov.ua').
+        replace(/\b[Ii][Gg][Oo][Vv]\b/g, 'KievCity').
+        replace(new RegExp('es\.kievcity\.gov\.ua\/wf\/', 'g'), 'igov.org.ua/wf/'));
+    } else {
+      return $sce.trustAsHtml(string);
+    }
   };
   $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {

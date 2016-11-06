@@ -123,7 +123,13 @@ public class GeneralConfig {
     private String sMerchantPassword_SMS;
     @Value("${general.SMS.nID_Shema}")
     private String snID_Shema;
-
+    @Value("${general.SMS.lifeURL}")
+    private String lifeURL;
+    @Value("${general.SMS.lifeLogin}")
+    private String lifeLogin;
+    @Value("${general.SMS.lifePassword}")
+    private String lifePassword;
+            
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
     @Value("${general.LiqPay.bTest}")
@@ -283,6 +289,18 @@ public class GeneralConfig {
     public String getChemaId()  {
         return snID_Shema;
     }
+
+    public String getLifeURL() {
+        return lifeURL;
+    }
+
+    public String getLifeLogin() {
+        return lifeLogin;
+    }
+
+    public String getLifePassword() {
+        return lifePassword;
+    }
     
     public Boolean isEnable_UniSender_Mail() {
         return Boolean.valueOf(sbEnable_UniSender_Mail);
@@ -349,6 +367,7 @@ public class GeneralConfig {
                 }
             }
         }
+        //System.out.println("mServerReplace: " + mServerReplace);
         LOG.info("nID_Server={}, mServerReplace={}", nID_Server, mServerReplace);
         Integer nID_Server_Return = nID_Server;
         if(mServerReplace!=null&&!mServerReplace.isEmpty()&&nID_Server!=null){

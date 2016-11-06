@@ -180,6 +180,10 @@ public class ServiceData extends AbstractEntity {
     }
 
     public Long getnID_Server() {
+        /*System.out.println("!!!!!!!!!!!!!!!!!!!!!! " + GeneralConfig.mServerReplace);
+        if(nID_Server != null){
+           nID_Server = GeneralConfig.getServerId(nID_Server.intValue()).longValue();
+        }*/
         return nID_Server;
     }
 
