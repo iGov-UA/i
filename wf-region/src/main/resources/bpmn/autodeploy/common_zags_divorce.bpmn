@@ -9,11 +9,11 @@
         <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу" type="enum" required="true">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей"></activiti:value>
           <activiti:value id="sEnum2" name="на підставі рішення суду"></activiti:value>
-          <activiti:value id="sEnum3" name="відповідно до статті 107 Сімейного кодексу України"></activiti:value>
+          <activiti:value id="sEnum3" name="другий з подружжя безвісно відсутній або недієздатний"></activiti:value>
         </activiti:formProperty>
         
         <activiti:formProperty id="sTextEnum1" name="Зверніть увагу" type="label" default="Для подачі заяви про розірвання шлюбу відповідно статті 106 Сімейного кодексу України повинна існувати взаємна згода подружжя на розірвання шлюбу."></activiti:formProperty>
-        <activiti:formProperty id="sTextEnum2" name="Зверніть увагу" type="label" default="Рішення суду повинно бути здійснено до набрання чинності Законом України «Про державну реєстрацію актів цивільного стану» (27.07.2010)"></activiti:formProperty>
+        <activiti:formProperty id="sTextEnum2" name="Зверніть увагу" type="label" default="Рішення суду повинно винесено до набрання чинності Закону України «Про державну реєстрацію актів цивільного стану» (27.07.2010)"></activiti:formProperty>
         <activiti:formProperty id="sTextEnum3" name="Зверніть увагу" type="label" default="Заява про розірвання шлюбу відповідно статті 107 Сімейного кодексу України подається, якщо один із подружжя визнаний у встановленому законом порядку безвісно відсутнім або недієздатним."></activiti:formProperty>
         
         <activiti:formProperty id="asSideSelection" name="Подає заяву" type="enum">
@@ -43,7 +43,7 @@
         </activiti:formProperty>
         
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію" type="file"></activiti:formProperty>
-         <activiti:formProperty id="sText6" name="Зверніть увагу" type="label" default="&lt;b&gt;Реквізити для сплати держ.мита Ви отримаєте в електронному листі після перевірки данних реєстратором&lt;/b&gt;"></activiti:formProperty>
+         <activiti:formProperty id="sText6" name="Зверніть увагу" type="label" default="&lt;b&gt;Реквізити для сплати держ.мита Ви отримаєте в електронному листі після перевірки даних реєстратором&lt;/b&gt;"></activiti:formProperty>
          
         <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
@@ -65,7 +65,7 @@
         </activiti:formProperty>
        
         <activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний відділ ДРАЦС" type="select" required="true"></activiti:formProperty> 
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть відділ ДРАЦС за Вашаим місцем проживання або другого з подружжя" type="select" required="true"></activiti:formProperty> 
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення реєстрації розлучення" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата розлучення" type="invisible"></activiti:formProperty>
         
@@ -108,7 +108,7 @@
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCitizenship2" name="Громадянство" type="string" default="Україна"></activiti:formProperty>
-        <activiti:formProperty id="asMilitary2" name="Відношення до військової служби" type="enum" >
+        <activiti:formProperty id="asMilitary2" name="Відношення до військової служби" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
           <activiti:value id="sEnumMilitary" name="перебуваю на військовій службі"></activiti:value>
@@ -216,7 +216,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
- <h3>Шановний (а) ${firstName_UA1} ${middleName_UA1}.</h3>
+ <h3>Шановний (а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     
 Ваше звернення [sID_Order] успішно зареєстровано. <br />
 Результат обробки звернення будуть спрямовані на цей е-мейл протягом 3-х днів. <br />
@@ -343,15 +343,14 @@ ${sMail_Signature}<br /><br />
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума державного мита, яку необхідно сплатити" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="commentTax" name="Коментар до суми сплати (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума державного мита, яку необхідно сплатити" type="string"></activiti:formProperty>
+        <activiti:formProperty id="commentTax" name="Коментар до суми сплати (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_divorce_106.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_divorce_106.html]" type="invisible" default="заява громадян_106" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_divorce_107.html]" type="invisible" default="заява громадян_107" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_divorce_court.html]" type="invisible" default="заява громадян_sud" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
-        
+         <activiti:formProperty id="markers4" name="Required_dash" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_req_dash.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
@@ -377,7 +376,7 @@ ${sMail_Signature}<br /><br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
-<h3>Шановний (а) ${firstName_UA1} ${middleName_UA1}.</h3>
+<h3>Шановний (а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <br />
 На жаль, Вам відмовлено в наданні послуги.<br>
 Підстава: <br>
@@ -421,7 +420,7 @@ ${sMail_Signature}<br /><br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний (-а) ${firstName_UA1} ${middleName_UA1}.</h3>  
+<h3>Шановний (-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>  
 Ваша заявка успішно пройшла первинну первірку вхідних даних та документів.         
 Вам необхідно сплатити державне мито.<br />
 Реквізити: ${sBankDetails2} 
@@ -462,7 +461,7 @@ ${sNameOrgan}<br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний (-а) ${firstName_UA1} ${middleName_UA1}.</h3>  
+<h3>Шановний (-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>  
 Ваша заявка успішно пройшла первинну первірку вхідних даних та документів.         
 Вам необхідно сплатити державне мито.<br />
 Для сплати державного мита скористуйтесь, будь ласка, кнопкою:<br />
@@ -520,7 +519,7 @@ execution.setVariable('sCountPayment', src)</script>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний (-а) ${firstName_UA1} ${middleName_UA1}.</h3>
+<h3>Шановний (-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 На жаль, Ваше звернення відхилено.
 Причина: впродовж 2-х днів з моменту подання звернення, не надішла оплата державного мита за отримання послуги.<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
@@ -685,7 +684,7 @@ ${sNameOrgan}<br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний (-а) ${firstName_UA1} ${middleName_UA1}.</h3>
+<h3>Шановний (-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 На жаль, Ваше звернення відхилено.
 Причина: впродовж 2-х днів з моменту подання звернення, не надішла оплата державного мита за отримання послуги.<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
@@ -820,7 +819,7 @@ ${sMail_Signature} <br><br>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
-<h3>Шановни (-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<h3>Шановний (-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 
 <br><br>
 
