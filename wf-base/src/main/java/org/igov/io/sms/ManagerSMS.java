@@ -34,35 +34,44 @@ public class ManagerSMS {
                 .append("</body>")
                 .append("</message>").toString();
     
-    private static final String KYIVSTAR = new StringBuilder();
-    
-    public String sentSms(String phone, String message, boolean oldApiFlag) throws Exception
+           
+    public String sendSms(String phone, String message, boolean oldApiFlag) throws Exception
     {
-        Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)");
-        //Pattern regexpLifeCell = Pattern.compile("38092(.*)");
-        
+        Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)|38073");
+        Pattern regexKyivStar = Pattern.compile("38067(.*)|38096(.*)");
+
         String resp = "[none]";
         
         if (oldApiFlag == false){
             if (regexpLifeCell.matcher(phone).matches()){
-                resp = SentLifeCellSms(phone, message);
+                resp = SendLifeCellSms(phone, message);
+            }
+            else{
+                resp = SendSenderSms(phone, message);
             }
         }
         else{
-            resp = SentSenderSms(phone, message);
+            resp = SendSenderSms(phone, message);
         }
         
         return resp;
     }
     
-    private String SentLifeCellSms(String phone, String message) throws Exception
+    private String SendLifeCellSms(String phone, String message) throws Exception
     {
         String bodyResult = String.format(LIFEBODY, "+" + phone, message);
         return oHttpRequester.postInside(generalConfig.getLifeURL(), null, bodyResult, "text/xml; charset=utf-8",
             generalConfig.getLifeLogin(), generalConfig.getLifePassword());
     }
     
-    private String SentSenderSms(String phone, String message)
+    /*private String SendKyivStarSms(String phone, String message) throws Exception
+    {
+        String bodyResult = String.format(KYIVSTARBODY, "+" + phone, message);
+        return oHttpRequester.postInside(generalConfig.getKyivStarURL(), null, bodyResult, "text/xml; charset=utf-8",
+            generalConfig.getKyivStarLogin(), generalConfig.getKyivStarPassword());
+    }*/
+    
+    private String SendSenderSms(String phone, String message)
     {
         return managerSMS.sendSMS("+" + phone, message);
     }

@@ -71,7 +71,7 @@ public class SubjectMessageCommonController {
             apiFlag = false;
         }
         
-        String resp = smsManager.sentSms(number, message, apiFlag); 
+        String resp = smsManager.sendSms(number, message, apiFlag); 
 
         return resp;
     }
