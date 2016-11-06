@@ -345,7 +345,8 @@ public class Mail extends Abstract_Mail {
                 LOG.info("(oUniResponse_Subscribe={})", oUniResponse_Subscribe);
             }
 
-            String sBody = getBody();
+            String sBody =  getBody();
+            sBody = sBody + "" + "<br>Для отписки перейдите по <a href=\"{{UnsubscribeUrl}}\">ссылке</a>";
 
             CreateEmailMessageRequest.Builder oBuilder = CreateEmailMessageRequest
                     //.getBuilder(sKey_Sender, "en")
