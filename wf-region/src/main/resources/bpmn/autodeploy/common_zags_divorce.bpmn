@@ -81,10 +81,11 @@
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCitizenship1" name="Громадянство" type="string" default="Україна"></activiti:formProperty>
-        <activiti:formProperty id="asMilitary1" name="Відношення до військової служби" type="enum">
+        <activiti:formProperty id="asMilitary1" name="Відношення до військової служби" type="enum" default="sEnumDef">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
           <activiti:value id="sEnumMilitary" name="перебуваю на військовій службі"></activiti:value>
+          <activiti:value id="sEnumDef" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK1" name="Назва та адреса РВК де перебуваєте на обліку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary1" name="Назва міста та номер поштової скриньки військової частини" type="string"></activiti:formProperty>
@@ -108,11 +109,12 @@
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCitizenship2" name="Громадянство" type="string" default="Україна"></activiti:formProperty>
-        <activiti:formProperty id="asMilitary2" name="Відношення до військової служби" type="enum">
+         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби" type="enum" default="sEnumDef">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
           <activiti:value id="sEnumMilitary" name="перебуваю на військовій службі"></activiti:value>
-        </activiti:formProperty>
+          <activiti:value id="sEnumDef" name=" "></activiti:value>
+         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberOfMarriages2" name="Який за рахунком шлюб; перший, другий тощо" type="string"></activiti:formProperty>
@@ -144,7 +146,13 @@
     <scriptTask id="scripttask1" name="Отримання часу подання" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script> <![CDATA[ execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())
       def sum =' ' 
-      execution.setVariable('sSum', sum)]]> 
+      execution.setVariable('sSum', sum)
+       if(execution.getVariable('sWithoutCitizenship1') == 'sEnum1'  { 
+        execution.setVariable('sCitizenship1', ' ');
+        if(execution.getVariable('sWithoutCitizenship2') == 'sEnum1'  { 
+        execution.setVariable('sCitizenship2', ' ')
+        
+       ]]> 
       </script>
     </scriptTask>
     <sequenceFlow id="flow12" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
@@ -281,9 +289,10 @@ ${sMail_Signature}<br /><br />
         </activiti:formProperty>
         <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
-          <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
+           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
           <activiti:value id="sEnumMilitary" name="перебуваю на військовій службі"></activiti:value>
+          <activiti:value id="sEnumDef" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK1" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary1" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
@@ -309,9 +318,10 @@ ${sMail_Signature}<br /><br />
         </activiti:formProperty>
         <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
-          <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
+           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
           <activiti:value id="sEnumMilitary" name="перебуваю на військовій службі"></activiti:value>
+          <activiti:value id="sEnumDef" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
@@ -595,9 +605,10 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
-          <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
+           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
           <activiti:value id="sEnumMilitary" name="перебуваю на військовій службі"></activiti:value>
+          <activiti:value id="sEnumDef" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK1" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary1" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
@@ -623,9 +634,10 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
-          <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
+            <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
           <activiti:value id="sEnumMilitary" name="перебуваю на військовій службі"></activiti:value>
+          <activiti:value id="sEnumDef" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
@@ -897,9 +909,10 @@ ${sMail_Signature} <br><br>
         </activiti:formProperty>
         <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
-          <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
+            <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
           <activiti:value id="sEnumMilitary" name="перебуваю на військовій службі"></activiti:value>
+          <activiti:value id="sEnumDef" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK1" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary1" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
@@ -925,9 +938,10 @@ ${sMail_Signature} <br><br>
         </activiti:formProperty>
         <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
-          <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
+           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
           <activiti:value id="sEnumMilitary" name="перебуваю на військовій службі"></activiti:value>
+          <activiti:value id="sEnumDef" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
@@ -1065,9 +1079,10 @@ ${sMail_Signature}<br /><br />
         </activiti:formProperty>
         <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
-          <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
+            <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
           <activiti:value id="sEnumMilitary" name="перебуваю на військовій службі"></activiti:value>
+          <activiti:value id="sEnumDef" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK1" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary1" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
@@ -1093,9 +1108,10 @@ ${sMail_Signature}<br /><br />
         </activiti:formProperty>
         <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
-          <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
+            <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
           <activiti:value id="sEnumMilitary" name="перебуваю на військовій службі"></activiti:value>
+          <activiti:value id="sEnumDef" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
