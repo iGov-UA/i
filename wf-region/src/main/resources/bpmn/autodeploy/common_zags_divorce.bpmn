@@ -140,6 +140,7 @@
          <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_show.json')}"></activiti:formProperty>
          <activiti:formProperty id="markers2" name="show-hide2" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_show_2.json')}"></activiti:formProperty>
          <activiti:formProperty id="markers3" name="Required" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_req.json')}"></activiti:formProperty>
+         <activiti:formProperty id="markers5" name="value" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_val.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
@@ -438,7 +439,13 @@ ${sMail_Signature}<br /><br />
 Сума державного мита: ${sSum}
 Коментар співробітника ДРАЦС: ${commentTax}
 <br /><br />
-Після отримання оплати Ваша заявка буде прийнята в роботу працівникам обраного Вами ДРАЦСу для первинної перевірки вхідних данних та документів.<br />
+Після сплати Вам потрібно зайти у розділ <a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">Мій журнал</a> та відправити квитанцію співробітнику відділу ДРАЦС:
+<ul>
+<li>праворуч Вашого звернення натисніть на посилання “Детальніше” Ви опинитесь на сторінці діалогу с співробітником відділу ДРАЦС;</li>
+<li>в полі залиште коментар, який побачить співробітник відділу ДРАЦС;</li>
+<li>нижче поля натисніть “Додати файл” та оберіть файл з квитанцією;</li>
+<li>натисніть кнопку “Відправити”.</li>
+<br />
 Якщо впродовж 2-х днів з моменту отримання листа оплата не надійде,Ваше звернення буде відхилено.<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
