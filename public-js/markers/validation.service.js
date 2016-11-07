@@ -72,7 +72,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     // поместил в проверку тк ранее при сабмите, если параметр data не передавали, formData не могла взять параметры с undefined
     // и были ошибки
     if (data) {
-      self.oFormDataParams = data.formData.params || {};
+      self.oFormDataParams = data || {};
     }
 
     angular.forEach(markers.validate, function (marker, markerName) {
