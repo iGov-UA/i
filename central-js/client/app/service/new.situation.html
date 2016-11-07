@@ -30,7 +30,9 @@
           <br>
           <ul class="similar-situation">
             <li ng-repeat="relatedServices in category.aService | orderBy: 'nOrder'">
-              <a ui-sref="index.service.general({'id': relatedServices.nID })">{{relatedServices.sName}}</a>
+              <p>
+                <a ui-sref="index.service.general({'id': relatedServices.nID })" ng-href="/service/{{relatedServices.nID}}/general">{{relatedServices.sName}}</a>
+              </p>
             </li>
           </ul>
         </div>
@@ -45,7 +47,9 @@
           <div class="col-sm-12 catalog-with-search-result">
             <ul style="padding-left: 3px">
               <li ng-repeat="relatedServices in category.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
-                <a ui-sref="index.service.general({'id': relatedServices.nID })">{{relatedServices.sName}}</a>
+                <p>
+                  <a ui-sref="index.service.general({'id': relatedServices.nID })" ng-href="/service/{{relatedServices.nID}}/general">{{relatedServices.sName}}</a>
+                </p>
               </li>
             </ul>
           </div>
