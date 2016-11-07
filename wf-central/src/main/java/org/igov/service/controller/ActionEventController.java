@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -50,7 +51,7 @@ import org.joda.time.format.DateTimeFormatter;
 @Controller
 @Api(tags = {"ActionEventController -- События по действиям и статистика"})
 @RequestMapping(value = "/action/event")
-public class ActionEventController {
+public class ActionEventController implements ControllerConstants {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.class);
     @Autowired
@@ -573,30 +574,27 @@ public class ActionEventController {
         }
     }
 
-    @ApiOperation(value = "Получение отчета о поданных заявках", notes
-            = "##### Возвращает csv файл с информацией о задачах за указанный период на основании HistoryEventService записей.\n"
-            + "В результате возвращаются следующий набор полей - sID_Order, nID_Server, nID_Service, sID_Place, nID_Subject, nRate, sTextFeedback, sUserTaskName, sHead, sBody, nTimeMinutes, sPhone\n"
-            + "Результат для колонки sTextFeedback возвращается из сущности SubjectMessage, у которой nID_SubjectMessageType = 2\n"
-            + "Результат для колонки sPhone возвращается из стартовой формы процесса из поля phone соответствующего регионального сервера\n"
-            + "Примеры:\n"
-            + "https://test.igov.org.ua/wf/service/action/event/getServiceHistoryReport?sDateAt=2016-02-09 00:00:00&sDateTo=2016-02-11 00:00:00&sanID_Service_Exclude=1,5,24,56\n\n"
-            + "Результат\n"
-            + "\n```csv\n"
-            + "sID_Order,nID_Server,nID_Service,sID_Place,nID_Subject,nRate,sTextFeedback,sUserTaskName,sHead,sBody,nTimeMinutes,sPhone\n"
-            + "0-88625055,0,740,6500000000,20045,,,,,Необхідно уточнити дані, за коментарем: не вірно вказані дані членів родини. Син - не відповідні ПІБ, бат - відсутні обов'язкові дані,,+380 97 225 5363\n"
-            + "\n```\n")
+    @ApiOperation(value = SERVICE_HISTORY_REPORT, notes = SERVICE_HISTORY_REPORT_NOTES)
     @RequestMapping(value = "/getServiceHistoryReport", method = RequestMethod.GET)
     public void getServiceHistoryReport(
-            @ApiParam(value = "строка-Дата начала выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateAt") String sDateAt,
-            @ApiParam(value = "строка-Дата окончания выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateTo") String sDateTo,
-            @ApiParam(value = "строка, указывающая на тип даты, по которой идет выгрузка данных", required = false) @RequestParam(value = "sID_FilterDateType", required = false, defaultValue = "Edit") String sID_FilterDateType,
-            @ApiParam(value = "загрузка данных из заявок", required = false) @RequestParam(value = "bIncludeTaskInfo", required = false, defaultValue = "false") Boolean bIncludeTaskInfo,
-            @ApiParam(value = "строка-массив(перечисление) ИД услуг, которые нужно исключить", required = false) @RequestParam(value = "sanID_Service_Exclude", required = false) String[] sanID_Service_Exclude,
+            @ApiParam(value = SERVICE_HISTORY_REPORT_DATE_AT, required = true)
+            @RequestParam(value = "sDateAt") String sDateAt,
+            @ApiParam(value = SERVICE_HISTORY_REPORT_DATE_TO, required = true)
+            @RequestParam(value = "sDateTo") String sDateTo,
+            @ApiParam(value = SERVICE_HISTORY_REPORT_ID_FILTER_DATE_TYPE, required = false)
+            @RequestParam(value = "sID_FilterDateType", required = false, defaultValue = "Edit") String sID_FilterDateType,
+            @ApiParam(value = SERVICE_HISTORY_REPORT_INCLUDE_TASK_INFO, required = false)
+            @RequestParam(value = "bIncludeTaskInfo", required = false, defaultValue = "false") Boolean bIncludeTaskInfo,
+            @ApiParam(value = SERVICE_HISTORY_REPORT_ID_SERVICE_EXCLUDE, required = false)
+            @RequestParam(value = "sanID_Service_Exclude", required = false) String[] sanID_Service_Exclude,
+            @ApiParam(value = SERVICE_HISTORY_REPORT_CODEPAGE, required = false)
+            @RequestParam(value = "sCodepage", required = false, defaultValue = "windows-1251") String sCodepage,
             HttpServletResponse oHttpServletResponse) {
         LOG.info("{Enter into function}");
         DateTimeFormatter oDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         DateTime oDateAt = oDateFormat.parseDateTime(sDateAt);
         DateTime oDateTo = oDateFormat.parseDateTime(sDateTo);
+        Charset charset = Charset.availableCharsets().getOrDefault(sCodepage, Charset.forName("windows-1251"));
         List<HistoryEvent_Service> aHistoryEvent_Service = new ArrayList<>();
 
         String[] headersMainField = {"sID_Order", "nID_Server",
@@ -607,8 +605,8 @@ public class ActionEventController {
 
         oHttpServletResponse.setHeader("Content-disposition", "attachment; filename="
                 + "serviceHistoryReport.csv");
-        oHttpServletResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
-        oHttpServletResponse.setCharacterEncoding("UTF-8");
+        oHttpServletResponse.setHeader("Content-Type", "text/csv; charset=" + charset.displayName());
+        oHttpServletResponse.setCharacterEncoding(charset.displayName());
         CSVWriter oCSVWriter;
         try {
             oCSVWriter = new CSVWriter(oHttpServletResponse.getWriter(), ';',

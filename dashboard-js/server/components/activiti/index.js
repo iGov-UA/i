@@ -8,85 +8,79 @@ var url = require('url');
 var Buffer = require('buffer').Buffer;
 
 var authBase = 'Basic ' + new Buffer(
-			config.activiti.username +
-			':' +
-			config.activiti.password)
-		.toString('base64');
+    config.activiti.username +
+    ':' +
+    config.activiti.password)
+    .toString('base64');
 
 var httpProxy = require('http-proxy');
 var default_headers = {
-	'Authorization': authBase,
+  'Authorization': authBase
 };
-/*	'Authorization': config.activiti.auth.basic*/
+
+/* 'Authorization': config.activiti.auth.basic */
 
 request.debug = config.request.debug;
 
-var createUploadProxy = function() {
-	var uploadProxy = httpProxy.createProxyServer({});
-	uploadProxy.on('proxyReq', function(proxyReq, req, res, options) {
-		proxyReq.path = options.target.path;
-		proxyReq.setHeader('Authorization', authBase);
-		/*proxyReq.setHeader('Authorization', config.activiti.auth.basic);*/
-	});
-	uploadProxy.on('proxyRes', function(proxyRes, req, res) {
+var createUploadProxy = function () {
+  var uploadProxy = httpProxy.createProxyServer({});
+  uploadProxy.on('proxyReq', function (proxyReq, req, res, options) {
+    proxyReq.path = options.target.path;
+    proxyReq.setHeader('Authorization', authBase);
+    /*proxyReq.setHeader('Authorization', config.activiti.auth.basic);*/
+  });
+  uploadProxy.on('proxyRes', function (proxyRes, req, res) {
 
-	});
-	return uploadProxy;
+  });
+  return uploadProxy;
 };
 
-var getRequestURL = function(options) {
-  //console.log('getRequestURL options:' + angular.toString(options));
-        console.log('getRequestURL options:' + JSON.stringify(options));
+var getRequestURL = function (options) {
 
-	 var requestURL = url.format({
-		protocol: config.activiti.prot,
-		hostname: config.activiti.host,
-                port: config.activiti.port,
-		pathname: '/' + (options.root || config.activiti.rest) + '/' + options.path,
-		query: options.query
-	});
+  var requestURL = url.format({
+    protocol: config.activiti.prot,
+    hostname: config.activiti.host,
+    port: config.activiti.port,
+    pathname: '/' + (options.root || config.activiti.rest) + '/' + options.path,
+    query: options.query
+  });
 
-  if (options.doNotUseActivityConfigUrl){
+  if (options.doNotUseActivityConfigUrl) {
     requestURL = options.path;
   }
-        console.log('config.activiti.prot=' + config.activiti.prot);
-        console.log('config.activiti.host=' + config.activiti.host);
-        console.log('path=' + '/' + (options.root || config.activiti.rest) + '/' + options.path);
 
-  //console.log('getRequestURL requestURL:' + angular.toString(requestURL));
-	console.log('getRequestURL requestURL:' + JSON.stringify(requestURL));
-	return requestURL;
+  return requestURL;
 };
 
-var getRequestOptions = function(options) {
-	var headers = options.headers;
-	/*if (config.activiti.auth.basic) {*/
-	if (config.activiti.password) {
-		headers = _.merge(options.headers, default_headers) || default_headers;
-	}
+var getRequestOptions = function (options) {
+  var headers = options.headers;
+  /*if (config.activiti.auth.basic) {*/
+  if (config.activiti.password) {
+    headers = _.merge(options.headers, default_headers) || default_headers;
+  }
 
-	return {
-		url: getRequestURL(options),
-		headers: headers,
-    json : options.json ? options.json : false
-	};
+  return {
+    url: getRequestURL(options),
+    headers: headers,
+    json: options.json ? options.json : false
+  };
 };
 
-var prepareRequest = function(req, options, data) {
-	var r = null;
-	if (req.method === 'POST') {
-		r = request.post(_.merge(getRequestOptions(options),
-			data ? {
-				json: true,
-				body: data
-			} : {
-				json: true,
-				body: req.body
-			}));
-	} else {
-		r = request(getRequestOptions(options));
-	}
-	return r;
+var prepareRequest = function (req, options, data) {
+  var r = null;
+  if (req.method === 'POST') {
+    r = request.post(_.merge(getRequestOptions(options),
+      data ? {
+        json: true,
+        body: data
+      } : {
+        json: true,
+        body: req.body
+      }));
+  } else {
+    r = request(getRequestOptions(options));
+  }
+  return r;
 };
 
 var uploadProxy = createUploadProxy();
@@ -94,93 +88,85 @@ var uploadProxy = createUploadProxy();
 exports.getRequestURL = getRequestURL;
 exports.getRequestOptions = getRequestOptions;
 
-exports.get = function(options, onResult) {
-	request.get(getRequestOptions(options), function(error, response, body) {
-			if (!error) {
-				onResult(null, response.statusCode, body, response.headers);
-			} else {
-				onResult(error, null, null);
-			}
-		});
+exports.get = function (options, onResult) {
+  request.get(getRequestOptions(options), function (error, response, body) {
+    if (!error) {
+      onResult(null, response.statusCode, body, response.headers);
+    } else {
+      onResult(error, null, null);
+    }
+  });
 };
 
-exports.filedownload = function(req, res, options) {
-	var r = prepareRequest(req, options);
-	req.pipe(r).on('response', function(response) {
-		response.headers['content-type'] = 'application/octet-stream';
-	}).pipe(res);
-};
-
-exports.filedownloadPDF = function(req, res, options){
+exports.filedownload = function (req, res, options) {
   var r = prepareRequest(req, options);
-  // todo сделать конвертацию HTML в PDF https://github.com/e-government-ua/i/issues/1382
-  req.pipe(r).on('response', function(response) {
+  req.pipe(r).on('response', function (response) {
     response.headers['content-type'] = 'application/octet-stream';
   }).pipe(res);
 };
 
 //downloads the file with the specified content type
-exports.typedfiledownload = function(req, res, options) {
-	var r = prepareRequest(req, options);
-	req.pipe(r).on('response', function(response) {
-		response.headers['content-type'] = options.contentType;
-	}).pipe(res);
+exports.typedfiledownload = function (req, res, options) {
+  var r = prepareRequest(req, options);
+  req.pipe(r).on('response', function (response) {
+    response.headers['content-type'] = options.contentType;
+  }).pipe(res);
 };
 
-exports.fileupload = function(req, res, options) {
-	uploadProxy.web(req, res, {
-		target: options.url,
-		secure: false
-	}, function(e) {
-		if (e) {
+exports.fileupload = function (req, res, options) {
+  uploadProxy.web(req, res, {
+    target: options.url,
+    secure: false
+  }, function (e) {
+    if (e) {
 
-		}
-	});
+    }
+  });
 };
 
-exports.pipe = function(req, res, options, data) {
-	var r = null;
-	if (req.method === 'POST') {
-		r = request.post(_.merge(getRequestOptions(options),
-			data ? {
-				json: true,
-				body: data
-			} : {
-				json: true,
-				body: req.body
-			}));
-	} else {
-		r = request(getRequestOptions(options));
-	}
-	req.pipe(r).pipe(res);
+exports.pipe = function (req, res, options, data) {
+  var r = null;
+  if (req.method === 'POST') {
+    r = request.post(_.merge(getRequestOptions(options),
+      data ? {
+        json: true,
+        body: data
+      } : {
+        json: true,
+        body: req.body
+      }));
+  } else {
+    r = request(getRequestOptions(options));
+  }
+  req.pipe(r).pipe(res);
 };
 
-exports.post = function(options, onResult, data, json) {
+exports.post = function (options, onResult, data, json) {
   if (typeof(json) == 'undefined')
     json = true;
-	request.post(_.merge(getRequestOptions(options), data ? {
-			json: json,
-			body: data
-		} : {
-			json: json
-		}),
-		function(error, response, body) {
-			if (!error) {
-				onResult(null, response.statusCode, body, response.headers);
-			} else {
-				onResult(error, null, null);
-			}
-		});
+  request.post(_.merge(getRequestOptions(options), data ? {
+      json: json,
+      body: data
+    } : {
+      json: json
+    }),
+    function (error, response, body) {
+      if (!error) {
+        onResult(null, response.statusCode, body, response.headers);
+      } else {
+        onResult(error, null, null);
+      }
+    });
 };
 
-exports.put = function(options, onResult, data) {
+exports.put = function (options, onResult, data) {
   request.put(_.merge(getRequestOptions(options), data ? {
       json: true,
       body: data
     } : {
       json: true
     }),
-    function(error, response, body) {
+    function (error, response, body) {
       if (!error) {
         onResult(null, response.statusCode, body, response.headers);
       } else {
@@ -189,12 +175,12 @@ exports.put = function(options, onResult, data) {
     });
 };
 
-exports.del = function(options, onResult) {
-  request.del(getRequestOptions(options), function(error, response, body) {
-      if (!error) {
-        onResult(null, response.statusCode, body, response.headers);
-      } else {
-        onResult(error, null, null);
-      }
-    });
+exports.del = function (options, onResult) {
+  request.del(getRequestOptions(options), function (error, response, body) {
+    if (!error) {
+      onResult(null, response.statusCode, body, response.headers);
+    } else {
+      onResult(error, null, null);
+    }
+  });
 };

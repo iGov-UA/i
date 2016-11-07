@@ -14,6 +14,7 @@ import io.swagger.annotations.Api;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.igov.io.sms.ManagerSMS;
 
 @Controller
 @Api(tags = {"SubjectMessageCommonController -- Сообщения субьектов"})
@@ -22,12 +23,6 @@ public class SubjectMessageCommonController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageCommonController.class);
     
-    /*private static final String body = new StringBuilder("<message>")
-                .append("<service id='single' source='iGov'/>")
-                .append("<to>").append("%s").append("</to>")
-                .append("<body content-type=\"text/plain\" encoding=\"plain\">").append("%s")
-                .append("</body>")
-                .append("</message>").toString();*/
     @Autowired
     private ManagerSMS_New managerSMS;
 
@@ -36,6 +31,9 @@ public class SubjectMessageCommonController {
 
     @Autowired
     private HttpRequester oHttpRequester;
+    
+    @Autowired
+    private ManagerSMS smsManager;
 
     /**
      * Колбек для сервиса отправки СМС
@@ -65,26 +63,15 @@ public class SubjectMessageCommonController {
         RequestMethod.GET}, produces = "text/plain;charset=UTF-8")
     public @ResponseBody
     String sentSms(@RequestParam(value = "number", required = false) String number, 
-            @RequestParam(value = "message", required = false) String message) throws Exception {
-
-        String resp;
-
-        byte[] utf8Message = message.getBytes("UTF-8");
-
-        //if (number.startsWith("+38063")||number.startsWith("+38093"))
-        //{
-        String body = new StringBuilder("<message>")
-                .append("<service id='single' source='iGov'/>")
-                .append("<to>").append(number).append("</to>")
-                .append("<body content-type=\"text/plain\" encoding=\"plain\">").append(message).append(new String(utf8Message, "UTF-8"))
-                .append("</body>")
-                .append("</message>").toString();
+            @RequestParam(value = "message", required = false) String message,
+            @RequestParam(value = "oldApiFlag", required = false) Boolean apiFlag) throws Exception {
+    
+        if (apiFlag == null)
+        {
+            apiFlag = false;
+        }
         
-        String result = String.format(body, number, message);
-        
-        resp = oHttpRequester.postInside(generalConfig.getLifeURL(), null, body, "text/xml; charset=utf-8",
-                generalConfig.getLifeLogin(), generalConfig.getLifePassword());
-        //}
+        String resp = smsManager.sendSms(number, message, apiFlag); 
 
         return resp;
     }
