@@ -6,16 +6,13 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яка прийде на прийом"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Стать" type="enum" required="true">
           <activiti:value id="man" name="Чоловіча"></activiti:value>
           <activiti:value id="woman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть медичний заклад, в який Ви бажаєте записатись на прийом" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
@@ -153,8 +150,11 @@ ${sNameOrgan},<br>
 									<p>
 										Для того щоб закінчити процедуру необхідно:<br>
 										<ul>
-										<li>У будь-якому банку зробити необхідні платежі та отримати квитанції про сплату.</li>
-										<li>Прийти за адресою: ${sAddress} з необхідними документами.</li>
+										<li>Прийти за адресою: ${sAddress}.</li>
+										<li>При собі мати:
+										- Направлення;
+										- Флюрографію та ренген;
+										- Первинна документація (за навності)</li>
 										</ul>
 									</p>
 									<p>
@@ -164,21 +164,6 @@ ${sNameOrgan},<br>
                                        <p>
                                        Дата та час візиту: ${date_of_visit}.
                                        </p>
-                                       <p>
-										<b>Необхідні документи, які треба принести до ${sOrganType} при оформленні паспорта громадянина України по досягненні 16-річного віку:</b><br>
-										<ul>
-										${sDocID}
-                                        <ul>
-										<li>свідоцтво про народження оригінал та копія;</li>
-										<li>оригінали та копії паспортів обох батьків;</li>
-										<li>оригінали та копії ІПН обох батьків;</li>
-										<li>За відсутності батька або матері до підрозділу подаються такі документи:</li>
-										<ul>
-										<li>свідоцтво про смерть другого з батьків;</li>
-										<li>рішення суду про позбавлення батьківських прав другого з батьків;</li>
-										<li>рішення суду про визнання другого з батьків безвісно відсутнім;</li>
-                                        <ul>
-										</ul>
 										</ul>         
 									<p>[cancelTask]</p>                
 									[pattern/mail/_common_signature_start.html]
@@ -198,17 +183,14 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="dms_id_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="med_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Прізвище отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Ім'я отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="По батькові отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Registrationservice" name="Орган, що оформлює паспорт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Registrationservice" name="Орган, що здійснює прийом" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин подав заяву"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
@@ -238,7 +220,7 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                              		Ви отримали послугу "Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID картки".
+                              		Ви отримали послугу "Записатись на прийом до лікаря".
                               		</p>
                               		<p>
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
