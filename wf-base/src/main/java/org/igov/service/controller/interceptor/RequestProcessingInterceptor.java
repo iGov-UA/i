@@ -64,7 +64,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     private static final Long SubjectMessageType_CommentEscalation = 11L;
     private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
-    private static final String URI_COUNT_CLAIM_HISTORY = "/action/event/getCountClaimHistory";
+    private static final String URI_COUNT_CLAIM_HISTORY = "/wf/service/action/event/getCountClaimHistory";
 
     @Autowired
     protected RuntimeService runtimeService;
@@ -235,12 +235,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("saveUpdatedTaskInfo block started");
                 saveUpdatedTaskInfo(sResponseBody, mRequestParam);
                 LOG.info("saveUpdatedTaskInfo block finished");
-            } else if (isSaveChangesTask(oRequest)) { //skuhtin
-                sType = "Change";
-                LOG.info("updateTaskVariables block started");
-                updateTaskVariables(sRequestBody);
-                LOG.info("updateTaskVariables block finished");
-            } // end of my changes
+            }
         } catch (Exception oException) {
             LOG_BIG.error("Can't save service-history record: {}", oException.getMessage());
             LOG_BIG.error("FAIL:", oException);
@@ -263,11 +258,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
         LOG.info("Method 'protocolize' finished");
     }
-    // skuhtin addeed isSaveChangesTask
-    private boolean isSaveChangesTask(HttpServletRequest oRequest) {
-        return oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0
-                && "PUT".equalsIgnoreCase(oRequest.getMethod().trim());
-    } //
 
     private boolean isUpdateTask(HttpServletRequest oRequest) {
         return oRequest.getRequestURL().toString().indexOf("/runtime/tasks") > 0
@@ -531,31 +521,34 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                         LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                       if (!generalConfig.isSelfTest()) {
+/*                       if (!generalConfig.isSelfTest()) {
                             String snID_Proccess_Feedback = bpHandler
-                                    .startFeedbackProcessNew(snID_Process);
+                                    .startFeedbackProcessNew(snID_Process);*/
                         String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
-                        org.activiti.engine.impl.util.json.JSONObject historyEvent = new org.activiti.engine.impl.util.json.JSONObject(jsonHistoryEvent);
-                        	Integer nID_Server = historyEvent.getInt("nID_Server");
-                        	String sID_UA = historyEvent.getString("sID_UA");
+                        JSONObject ojsonHistoryEvent = (JSONObject) oJSONParser.parse(jsonHistoryEvent);
+                        LOG.info("ojsonHistoryEventmmmmmmmmmmmmmmmmmmmm = {}", ojsonHistoryEvent);
+                        	Long nID_Service = (Long)ojsonHistoryEvent.get("nID_Service");
+                        	String sID_UA = (String)ojsonHistoryEvent.get("sID_UA");
                         	Map<String, String> mParamforcountClaim = new HashMap<>();
                         	mParamforcountClaim.put("sID_UA", sID_UA);
-                        	mParamforcountClaim.put("nID_Server", String.valueOf(nID_Server));
+                        	mParamforcountClaim.put("nID_Service", String.valueOf(nID_Service));
                         	mParamforcountClaim.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
 
                             String sURL = generalConfig.getSelfHostCentral() + URI_COUNT_CLAIM_HISTORY;
 
                             try {
                                 String sResponse = httpRequester.getInside(sURL, mParamforcountClaim);
-                                LOG.info("mParamforcountClaimmmmmmmmmmmmmmmmmmmm ", sResponse);
+                                LOG.info("mParamforcountClaimmmmmmmmmmmmmmmmmmmm = {}", sResponse);
 
                                 LOG_BIG.debug("sResponse = {}", sResponse);
 
-                                JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
-                                LOG.info("oResponseJsonnnnnnnnnnnnnnnnnnn ", oResponseJson);
-                                Long countClaim = (Long) oResponseJson.get("countClaim");
+                                Long countClaim = Long.valueOf(sResponse);
+                                LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
                                 if (countClaim.compareTo(50L)<0) {
-//                                String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
+                               String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Task);
+                               
+                        /* String snID_Proccess_Feedback = bpHandler
+                                                              .startFeedbackProcess(snID_Task, snID_Process, sProcessName);*/
                                     
                                     if(snID_Proccess_Feedback!=null) {
                                     mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
@@ -574,7 +567,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                             }
                         	
                         	
-                       } 
+                  //     } 
 //                       else {
 //                            LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
 //                        }
@@ -633,11 +626,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("Method saveClosedTaskInfo finished");
             }
         }
-    }
-    // skuhtin added updateTaskVariables
-    private void updateTaskVariables(String sRequestBody) throws Exception {
-        JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
-        LOG.info("JSON Request: " + omRequestBody.toJSONString());
     }
 
     private void saveUpdatedTaskInfo(String sResponseBody, Map<String, String> mRequestParam) throws Exception {

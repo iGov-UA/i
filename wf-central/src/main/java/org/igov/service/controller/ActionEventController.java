@@ -43,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
+import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.joda.time.format.DateTimeFormatter;
 
 @Controller
@@ -781,5 +782,13 @@ public class ActionEventController {
             @ApiParam(required = true) @RequestParam(value = "sID_BP", required = false) String sID_BP) {
         int res = actionProcessCountDao.deleteBy("sID_BP", sID_BP);
         LOG.info("Removed {} entities", res);
+    }
+    
+    //test LinkProcess
+    @ApiOperation(value = "testServicet", notes = "testService")
+    @RequestMapping(value = "/testService", method = RequestMethod.GET)
+    public void testService(
+            @ApiParam(required = false) @RequestParam(value = "msg", required = false) String sMsg) {
+        throw new IllegalArgumentException("errMsg=The button is working!!!");
     }
 }
