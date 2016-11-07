@@ -187,6 +187,13 @@
         <activiti:formProperty id="sDateRegistrationBuild" name="Дата реєстрації Декларації про початок виконання будівельних робіт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistrationPrepare" name="Дата реєстрації Декларації про початок виконання підготовчих робіт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberDeclaration" name="Номер зареєстрованої Декларації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTypeBuilding" name="Вид будівництва" type="enum" required="true">
+          <activiti:value id="sEnumNew" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnumReconstruction" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnumRe" name="Технічне переоснащення діючих підприємств"></activiti:value>
+          <activiti:value id="sEnumRestoration" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnumOverhaul" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sLabel1" name=" " type="label" default="---- Причини зміни даних ----"></activiti:formProperty>
         <activiti:formProperty id="saReasonChange1" name="Право на будівництво передано іншому замовникові; ;sID_CheckboxTrue=yes" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -209,21 +216,25 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPIBprevious" name="ПІБ попереднього замовника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCode" name="Код об’єктау (згідно з Державним класифікатором будівель та споруд ДК 018-2000)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта (згідно з Державним класифікатором будівель та споруд ДК 018-2000)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSupervisionPib" name="ПІБ особи, яка здійснює технічний нагляд" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSupervisionCertificate" name="Серія та номер кваліфікаційного сертифікату особи, яка здійснює технічний нагляд" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSupervisionPhone" name="Номер телефону особи, яка здійснює технічний нагляд" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asTypeBuilding" name="Вид будівництва" type="enum" required="true">
-          <activiti:value id="sEnumNew" name="Нове будівництво"></activiti:value>
-          <activiti:value id="sEnumReconstruction" name="Реконструкція"></activiti:value>
-          <activiti:value id="sEnumRe" name="Технічне переоснащення діючих підприємств"></activiti:value>
-          <activiti:value id="sEnumRestoration" name="Реставрація"></activiti:value>
-          <activiti:value id="sEnumOverhaul" name="Капітальний ремонт"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sSupervisionPhone" name="Номер телефону особи, яка здійснює технічний нагляд" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel_11" name=" " type="label" default="---- Інформація про проектувальника ----"></activiti:formProperty>
+       
         <activiti:formProperty id="sProjectOrganizationName" name="Найменування проектувальника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sProjectOrganizationInn" name="Код згідно ЄДРПОУ проектувальника" type="string" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="asProjectApprove" name="Особа, яка затвердила проект" type="enum" required="true">
+          <activiti:value id="sEnumIndividual" name="Фізична особа"></activiti:value>
+          <activiti:value id="sEnumCompany" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sProjectPibApprove" name="ПІБ особи, яка затвердила проект" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sProjectPositionApprove" name="Посада особи, яка затвердила проект" type="string" required="true"></activiti:formProperty>
+       
         <activiti:formProperty id="sArchitectPosition" name="Найменування посади відповідальної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sArchitectPib" name="ПІБ відповідальної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sArchitectPhone" name="Номер телефону відповідальної особи" type="string" default="+380" required="true"></activiti:formProperty>
@@ -329,7 +340,8 @@
         <activiti:formProperty id="markers3" name="Якщо пілготовчі роботи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sDateRegistrationBuild&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeChange&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumPrepare' || [sClient] == 'підготовчі роботи'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Якщо будівельні роботи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sDateRegistrationPrepare&quot;,&quot;saReasonChange3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeChange&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumBuild' || [sClient] == 'будівельні роботи' &quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="Якщо право на будівництво передано іншому замовникові" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sPIBprevious&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saReasonChange1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes' || [sClient] == 'так' &quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="Якщо виправлення технічної помилки" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sSupervisionPib&quot;,&quot;sSupervisionCertificate&quot;,&quot;sSupervisionCertificate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saReasonChange5&quot;,&quot;sClient1&quot;:&quot;asTypeChange&quot;},&quot;sCondition&quot;:&quot;([sClient] == 'yes' || [sClient] == 'так') &amp;&amp; ([sClient1] == 'sEnumBuild' || [sClient1] == 'будівельні роботи')&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Якщо виправлення технічної помилки та будівельні" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sSupervisionPib&quot;,&quot;sSupervisionCertificate&quot;,&quot;sSupervisionCertificate&quot;,&quot;sSupervisionPhone&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saReasonChange5&quot;,&quot;sClient1&quot;:&quot;asTypeChange&quot;},&quot;sCondition&quot;:&quot;([sClient] == 'yes' || [sClient] == 'так') &amp;&amp; ([sClient1] == 'sEnumBuild' || [sClient1] == 'будівельні роботи')&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Якщо виправлення технічної помилки" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sSupervisionPib&quot;,&quot;sSupervisionCertificate&quot;,&quot;sSupervisionCertificate&quot;,&quot;sSupervisionPhone&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saReasonChange5&quot;},&quot;sCondition&quot;:&quot;([sClient] == 'yes' || [sClient] == 'так')&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
     </userTask>
