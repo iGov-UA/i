@@ -6,10 +6,10 @@
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', '$rootScope',
+      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', '$rootScope', 'lunaService',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state, stateModel, ValidationService, FieldMotionService, $rootScope) {
+                $state, stateModel, ValidationService, FieldMotionService, $rootScope, lunaService) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -264,18 +264,16 @@
           var sClientFIO = null;
           var sClientName = null;
           var sClientSurname = null;
-          var bCheckGeneralComment = false;
 
           angular.forEach($scope.taskForm, function (item) {
             if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
               aFields.push({
-                sID: item.id,
-                sName: $scope.sFieldLabel(item.name),
-                sType: item.type,
-                sValue: item.value,
-                sValueNew: item.value,
-                sNotify: $scope.clarifyFields[item.id].text,
-                sGeneralComment: $scope.clarifyModel.sBody
+                sID: item.id !== null ? item.id : "",
+                sName: $scope.sFieldLabel(item.name) !== null ? $scope.sFieldLabel(item.name) : "",
+                sType: item.type !== null ? item.type : "",
+                sValue: item.value !== null ? item.value : "",
+                sValueNew: item.value !== null ? item.value : "",
+                sNotify: $scope.clarifyFields[item.id].text !== null ? $scope.clarifyFields[item.id].text : ""
               });
 
             if (item.id === 'email') {
@@ -291,15 +289,6 @@
             }
           });
 
-          if(aFields.length === 0){
-            bCheckGeneralComment = true;
-          }
-          if(bCheckGeneralComment && $scope.clarifyModel.sBody !== ''){
-            aFields.push({
-              sType: 'string',
-              sGeneralComment: $scope.clarifyModel.sBody
-            });
-          }
           if ($scope.clarifyModel.sBody.trim().length === 0 && aFields.length === 0) {
             Modal.inform.warning()('Треба ввести коментар або обрати поле/ля');
             return;
@@ -318,11 +307,20 @@
 
           oData.saField = JSON.stringify(aFields);
           oData.soParams = JSON.stringify(soParams);
-          tasks.setTaskQuestions(oData).then(function () {
-            $scope.clarify = false;
-            Modal.inform.success(function () {
-            })('Зауваження відправлено успішно');
-          });
+          if(oData.saField === "[]") {
+            oData.nID_Process = oData.nID_Process + lunaService.getLunaValue(oData.nID_Process);
+            tasks.postServiceMessages(oData).then(function () {
+              $scope.clarify = false;
+              Modal.inform.success(function () {
+              })('Коментар відправлено успішно');
+            });
+          } else {
+            tasks.setTaskQuestions(oData).then(function () {
+              $scope.clarify = false;
+              Modal.inform.success(function () {
+              })('Зауваження відправлено успішно');
+            });
+          }
         };
 
         $scope.checkSignState = {inProcess: false, show: false, signInfo: null, attachmentName: null};
@@ -695,25 +693,32 @@
           })
         };
 
+        // при наличии полей типа "table" загружаем их с редиса и наполняем массив aTable.
         $scope.getListOfTables = function () {
           var itemsProcessed = 0;
           $scope.taskData.aTable = [];
-          if($scope.taskData.aAttachment.length > 0)
-          angular.forEach($scope.taskData.aAttachment, function (attach) {
-            tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
-              ++itemsProcessed;
-              try {
-                var table = {};
-                table.name = attach.description;
-                table.id = attach.id;
-                table.content = JSON.parse(res);
-                $scope.taskData.aTable.push(table);
-              } catch (e) {
+          if($scope.taskData.aAttachment && $scope.taskData.aAttachment.length > 0)
+            angular.forEach($scope.taskData.aAttachment, function (attach) {
+              tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
+                ++itemsProcessed;
+                try {
+                  var table = {};
+                  table.name = attach.description;
+                  table.id = attach.id;
+                  table.content = JSON.parse(res);
+                  for(var i=0; i<table.content.length; i++) {
+                    if(typeof table.content[i] === "string") {
+                      table.idName = table.content[i];
+                      delete table.content[i];
+                    }
+                  }
+                  $scope.taskData.aTable.push(table);
+                } catch (e) {
 
-              }
-              if(itemsProcessed === $scope.taskData.aAttachment.length) fixFieldsForTable();
-            })
-          });
+                }
+                if(itemsProcessed === $scope.taskData.aAttachment.length) fixFieldsForTable();
+              })
+            });
         };
         $scope.getListOfTables();
       }

@@ -510,9 +510,13 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             try {
                 soResponse = httpRequester.getInside(sURL, mParam);
                 LOG.info("soResponse={}", soResponse);
-                Map mReturn = JsonRestUtils.readObject(soResponse, Map.class);
-                LOG.info("mReturn={}" + mReturn);
-                sName = (String) mReturn.get("sName");
+                if(soResponse==null){
+                    sName = "";
+                }else{
+                    Map mReturn = JsonRestUtils.readObject(soResponse, Map.class);
+                    LOG.info("mReturn={}" + mReturn);
+                    sName = (String) mReturn.get("sName");
+                }
                 LOG.info("sName={}", sName);
             } catch (Exception ex) {
                 LOG.error("", ex);
@@ -557,19 +561,19 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                             if (oFormProperty != null) {
                                     String sID = oFormProperty.getId();
                                     //LOG.info("(id={})", id);
-                                    if ("email".equals(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
+                                    if ("email".equalsIgnoreCase(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
                                             sAuthorMail = oFormProperty.getValue();
                                     }
-                                    if ("bankIdlastName".equals(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
+                                    if ("bankIdlastName".equalsIgnoreCase(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
                                             sAuthorLastName = oFormProperty.getValue();
                                     }
-                                    if ("bankIdfirstName".equals(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
+                                    if ("bankIdfirstName".equalsIgnoreCase(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
                                             sAuthorFirstName = oFormProperty.getValue();
                                     }
-                                    if ("bankIdmiddleName".equals(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
+                                    if ("bankIdmiddleName".equalsIgnoreCase(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
                                             sAuthorMiddleName = oFormProperty.getValue();
                                     }
-                                    if ("clFIO".equals(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
+                                    if ("clFIO".equalsIgnoreCase(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
                                             sAuthorFIO_Original = oFormProperty.getValue();
                                             //LOG.info("(sAuthorFIO_Original={})", sAuthorFIO_Original);
 

@@ -99,7 +99,8 @@
         } else {
           tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.tasksSearch.archive)
             .then(function(res, aIds) {
-              $scope.tasksSearch.count = aIds.length;
+              // $scope.tasksSearch.count = aIds.length;
+              $scope.tasksSearch.count = res.length;
             })
             .finally(function(res) {
               $scope.tasksSearch.loading=false;

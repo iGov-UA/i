@@ -139,6 +139,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="markerUr_Fiz" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zemlia/Prodaj_Ur_Fiz.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNazvaUr" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_R" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_Zem" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObject_Zem" name="Назва об'єкта що розташований на земельній ділянці; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSvidit_Object" name="Дата і номер Свідоцтва про права власності на нерухомість; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBank_Rekvizit" name="Реквізит банківського рахунку покупця; ;writable=false" type="string"></activiti:formProperty>
@@ -147,7 +149,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBodyP11" name="[pattern/print/AK/Neruhomist/Privitiz_kom_Jutlo/Pid_zabudov.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBodyP11" name="[pattern/print/AK/Zemelni_Poslugi/Privitiz_kom_zemla/Pid_zabudov.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -168,6 +170,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="markerUr_Fiz" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zemlia/Prodaj_Ur_Fiz.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNazvaUr" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_R" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_Zem" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlosh_Zem" name="Орієнтовна площа земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMeta_Zem" name="Мета придбання ділянки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
@@ -175,7 +179,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBodyP11" name="[pattern/print/Neruhomist/Privitiz_kom_Jutlo/Na_auktion.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBodyP11" name="[pattern/print/Zemelni_Poslugi/Privitiz_kom_zemla/Na_auktion.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -314,6 +318,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="markerUr_Fiz" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zemlia/Prodaj_Ur_Fiz.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNazvaUr" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_R" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept2" name="Заява оформлена вірно"></activiti:value>
           <activiti:value id="reject2" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
@@ -339,6 +344,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="markerUr_Fiz" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zemlia/Prodaj_Ur_Fiz.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNazvaUr" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_R" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept2" name="Заява оформлена вірно"></activiti:value>
           <activiti:value id="reject2" name="Заява оформлена НЕ вірно, відмова"></activiti:value>

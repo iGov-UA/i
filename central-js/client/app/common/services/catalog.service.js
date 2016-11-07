@@ -3,7 +3,7 @@ angular.module('app')
 
   var servicesCache = {};
 
-  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, category, subcat, situation) {
+  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, category, subcat, situation, filter) {
     var asIDPlaceUA = asIDPlacesUA && asIDPlacesUA.length > 0 ? asIDPlacesUA.reduce(function (ids, current, index) {
       return ids + ',' + current;
     }) : null;
@@ -20,7 +20,7 @@ angular.module('app')
         && !subcat && category !== 'business') {
       // пока есть параметр bNew ввожу доп проверку, после нужно будет убрать
       // пока не реализованы теги нового бизнеса, вернул в проверку старый.
-      if(sFind) {
+      if(sFind || filter) {
         var data = {
           asIDPlaceUA: asIDPlaceUA,
           sFind: sFind || null,
@@ -89,16 +89,34 @@ angular.module('app')
       catalog = servicesCache;
     }
 
-    angular.forEach(catalog, function(category) {
-      angular.forEach(category.aSubcategory, function(subItem) {
-        angular.forEach(subItem.aService, function(aServiceItem) {
-          if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
-            catalogCounts[aServiceItem.nStatus] = 0;
-          }
-          ++catalogCounts[aServiceItem.nStatus];
+    if(catalog.aService) {
+      angular.forEach(catalog.aService, function (aServiceItem) {
+        if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
+          catalogCounts[aServiceItem.nStatus] = 0;
+        }
+        ++catalogCounts[aServiceItem.nStatus];
+      });
+      } else if(catalog[0].aService){
+        angular.forEach(catalog, function (service) {
+          angular.forEach(service.aService, function (aServiceItem) {
+            if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
+              catalogCounts[aServiceItem.nStatus] = 0;
+            }
+            ++catalogCounts[aServiceItem.nStatus];
+          });
+        })
+      } else {
+      angular.forEach(catalog, function(category) {
+        angular.forEach(category.aSubcategory, function(subItem) {
+          angular.forEach(subItem.aService, function(aServiceItem) {
+            if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
+              catalogCounts[aServiceItem.nStatus] = 0;
+            }
+            ++catalogCounts[aServiceItem.nStatus];
+          });
         });
       });
-    });
+    }
     return catalogCounts;
   };
 

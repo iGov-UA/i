@@ -22,8 +22,14 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
 
           FeedbackService.getFeedbackListForService($stateParams.id)
           .then(function (response) {
-            deferred.resolve({visible: response.data.length});
+            var messageList = _.filter(response.data, function (o) {
+              var filters = o.sAuthorFIO.trim().match(/null/gi);
+
+              return ((typeof o.sBody) === 'string' ? !!o.sBody.trim() : false)
+                && !(Array.isArray(filters) && filters[0] ? filters[0].trim() === 'null' : false);
             });
+            deferred.resolve({visible: messageList.length});
+          });
 
           return deferred.promise;
         }

@@ -25,6 +25,18 @@ function FieldMotionService(MarkersFactory) {
       .reduce(function(prev, curr) { return prev.concat(curr); }, []);
   };
 
+  this.getTargetFieldsIds = function (prefix) {
+    return grepByPrefix(prefix + 'FieldsOnCondition')
+      .map(function(e) {
+        if (e.aField_ID) {
+          return e.aField_ID;
+        } else {
+          return [];
+        }
+      })
+      .reduce(function(prev, curr) { return prev.concat(curr); }, []);
+  };
+
   this.isFieldWritable = function(fieldId, formData) {
     return grepByPrefix('WritableFieldsOnCondition_').some(function(entry) {
       return evalCondition(entry, fieldId, formData);
