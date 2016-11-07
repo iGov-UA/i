@@ -11,11 +11,13 @@ import static org.igov.util.ToolLuna.getProtectedNumber;
 import javax.annotation.PostConstruct;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import org.springframework.context.annotation.Scope;
 
 /**
  * @author bw
  */
 @Component("generalConfig")
+@Scope("prototype")
 public class GeneralConfig {
 
     private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);

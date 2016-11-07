@@ -797,9 +797,8 @@ public class ObjectFileCommonController {
     //+ PERIOD_MONTH(2) + PERIOD_YEAR(4)
     //+ C_STI_ORIG(4, містять код територіального органу отримувача, до якого подається оригінал документа. если оригинал, то = C_REG(2) + C_RAJ(2))
     private String buildFileName(Map<String, String> mField) {
-        String result = "23013194700944F1301801100000000111220152301.xml"; //2301 3194700944 F1301801 1 00 0000001 1 12 2015 2301.xml
-        try {
-            result = new StringBuilder(mField.get("C_REG").trim())
+        //2301 3194700944 F1301801 1 00 0000001 1 12 2015 2301.xml
+        String result = new StringBuilder(mField.get("C_REG").trim())
                     .append(mField.get("C_RAJ").trim())
                     .append(mField.get("TIN").trim())
                     .append(mField.get("C_DOC").trim())
@@ -812,9 +811,6 @@ public class ObjectFileCommonController {
                     .append(mField.get("PERIOD_MONTH").trim())
                     .append(mField.get("PERIOD_YEAR").trim())
                     .append(mField.get("C_STI_ORIG").trim()).append(".xml").toString();
-        } catch (Exception ex) {
-            LOG.error("buildFileName error: ", ex);
-        }
         LOG.info("buildFileName result: " + result);
         return result;
     }
