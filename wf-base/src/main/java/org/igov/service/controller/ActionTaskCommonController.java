@@ -2548,4 +2548,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         return JsonRestUtils.toJsonResponse(response);
     }
+    
+    //test LinkProcess
+    @ApiOperation(value = "testServicet", notes = "testService")
+    @RequestMapping(value = "/testService", method = RequestMethod.GET)
+    public void testService(
+            @ApiParam(required = false) @RequestParam(value = "msg", required = false) String sMsg) {
+        throw new IllegalArgumentException("errMsg=The button is working!!!");
+    }
 }
