@@ -55,9 +55,9 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     LOG.info("(sReturn={})", sReturn);
                 }
             }
-            LOG.info("sAttachmentsForSend...");
-            String sAttachmentsForSend = this.saAttachmentsForSend == null || "".equals(this.saAttachmentsForSend) ? "" : getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
-            LOG.info("(sAttachmentsForSend={})", sAttachmentsForSend);
+            LOG.info("sAttachmentsForSend..." + oMail.getTo());
+            String sAttachmentsForSend = (this.saAttachmentsForSend == null || "".equals(this.saAttachmentsForSend)) ? "" : getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
+            LOG.info("(sAttachmentsForSend={})", sAttachmentsForSend + " on email " + oMail.getTo());
             List<Attachment> aAttachment = new ArrayList<>();
             String[] asID_Attachment = sAttachmentsForSend.split(",");
             for (String sID_Attachment : asID_Attachment) {
@@ -113,7 +113,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     LOG.info("oMultiPartEmail.attach: Ok!");
                 }
             }
-            LOG.info("sAttachmentsForSend ok!");
+            LOG.info("sAttachmentsForSend ok!" + " on email " + oMail.getTo());
             LOG.info("email send...");
             oMail.send();
             LOG.info("email send ok!");
