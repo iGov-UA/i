@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
+import org.igov.io.GeneralConfig;
 import org.igov.io.Log;
 import org.igov.service.business.action.task.form.TableFormType;
 
@@ -46,6 +47,9 @@ public abstract class AbstractModelTask {
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
 
+    @Autowired
+    GeneralConfig generalConfig;    
+    
     /**
      * Возвращает сложгый ключ переменной бизнес-процесса
      *
