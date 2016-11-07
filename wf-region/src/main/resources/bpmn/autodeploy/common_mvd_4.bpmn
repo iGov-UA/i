@@ -17,11 +17,11 @@
           <activiti:value id="tf_01" name="Так"></activiti:value>
           <activiti:value id="tf_02" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAdress1" name="Вкажіть Вашу повну поштову адресу реєстрації (з паспорту), для оформлення заяви; наприклад, 49000, м.Дніпро, пр.Яворницького буд.100, кв.777" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="Info_11" name="УВАГА - Зазначена адреса буде вважатися місцем де планується зберігати придбану зброю." type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAdress2" name="Вкажіть Вашу повну поштову адресу постійного місцеперебування, для оформлення заяви; наприклад, 49000, м.Дніпро, пр.Яворницького буд.100, кв.777" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="Info_12" name="УВАГА - необхідно додатково надати документ, підтверджуючий фактичне місце проживання (договір оренди житлового приміщення, свідоцтво про право власності на житлове приміщення тощо)." type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="fDoc_06" name="Документ на користування приміщенням" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress1" name="Вкажіть Вашу повну поштову адресу реєстрації (з паспорту), для оформлення заяви; наприклад, 49000, м.Дніпро, пр.Яворницького буд.100, кв.777." type="string" default=" " required="true"></activiti:formProperty>
+<!--        <activiti:formProperty id="Info_11" name="УВАГА - Зазначена адреса буде вважатися місцем де планується зберігати придбану зброю." type="label" default=" "></activiti:formProperty> -->
+        <activiti:formProperty id="sAdress2" name="Вкажіть Вашу повну поштову адресу постійного місцеперебування, для оформлення заяви; наприклад, 49000, м.Дніпро, пр.Яворницького буд.100, кв.777. <br>Зазначена адреса буде вважатися місцем де планується зберігати придбану зброю." type="string" default=" " required="true"></activiti:formProperty>
+<!--        <activiti:formProperty id="Info_12" name="УВАГА - необхідно додатково надати документ, підтверджуючий фактичне місце проживання (договір оренди житлового приміщення, свідоцтво про право власності на житлове приміщення тощо)." type="label" default=" "></activiti:formProperty> -->
+        <activiti:formProperty id="fDoc_06" name="Необхідно надати документ, підтверджуючий фактичне місце проживання; (договір оренди житлового приміщення, свідоцтво про право власності на житлове приміщення тощо)" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="asSelectWeapon_01" name="Тип зброї для придбання" type="enum" default=" " required="true">
           <activiti:value id="tf_01" name="Мисливська нарізна зброя"></activiti:value>
           <activiti:value id="tf_02" name="Мисливська гладкоствольна/пневматична зброя"></activiti:value>
@@ -117,16 +117,14 @@
         <activiti:formProperty id="fDoc_03" name="Довідка про вивчення матеріальної частини зброї, спеціальних засобів, правил поводження з ними та їх застосування" type="file" default=" " required="true"></activiti:formProperty>
 <!--        <activiti:formProperty id="Info_14" name="Завантажити квітанції для сплати" type="label" default="Ви можете скористатися наступним &lt;a href=&quot;https://drive.google.com/open?id=0B9UDkfHM4vkrbEhEQWtNdEFQbG8&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty> -->
 <!--        <activiti:formProperty id="fDoc_04" name="Квитанція про сплату вартості послуги; з відміткою банка (за наявності)" type="file" default=" "></activiti:formProperty> -->
-        <activiti:formProperty id="asSelectWeapon_05" name="Бажаєте замовити довідку про відсутність/наявність судимості" type="enum" default="tf_03" required="true">
+        <activiti:formProperty id="asSelectWeapon_05" name="Бажаєте замовити довідку про відсутність/наявність судимості" type="enum" required="true">
           <activiti:value id="tf_01" name="Так"></activiti:value>
           <activiti:value id="tf_02" name="Ні"></activiti:value>
-          <activiti:value id="tf_03" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Info_07" name="Замовити довідку про відсутність/наявність судимості" type="label" default="Ви можете скористатися наступним &lt;a href=&quot;https://igov.org.ua/service/1/general&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
-        <activiti:formProperty id="asSelectWeapon_06" name="Бажаєте завантажити довідку про відсутність/наявність судимості" type="enum" default="tf_03" required="true">
+        <activiti:formProperty id="asSelectWeapon_06" name="Бажаєте завантажити довідку про відсутність/наявність судимості" type="enum" required="true">
           <activiti:value id="tf_01" name="Так"></activiti:value>
           <activiti:value id="tf_02" name="Ні"></activiti:value>
-          <activiti:value id="tf_03" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="fDoc_05" name="Довідка про відсутність/наявність судимості" type="file" default=" " required="true"></activiti:formProperty>
 <!-- -->
@@ -361,7 +359,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fDoc_06},${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01}</activiti:expression>
+            <activiti:expression>${fDoc_06},${fDoc_05},${fDoc_03},${fDoc_02},${fDoc_01}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
