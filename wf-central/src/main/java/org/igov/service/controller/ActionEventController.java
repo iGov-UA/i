@@ -641,7 +641,7 @@ public class ActionEventController implements ControllerConstants {
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     anID_HistoryEvent_Service.add(oHistoryEvent_Service.getId());
                 }
-                LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service);
+                LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service); 
 
 
                 
