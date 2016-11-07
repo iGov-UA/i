@@ -647,7 +647,7 @@ public class ActionEventController implements ControllerConstants {
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     //               List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
                 Optional<SubjectMessageFeedback> oSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
-                LOG.info("1sID_Order: "+oHistoryEvent_Service.getsID_Order());
+                LOG.info("1sID_Order: "+oHistoryEvent_Service.getsID_Order()+"!");
 //                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
 //                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
 //                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessage) {
@@ -658,7 +658,7 @@ public class ActionEventController implements ControllerConstants {
                     List<String> asCell = new LinkedList<>();
                     // sID_Order
                     asCell.add(oHistoryEvent_Service.getsID_Order());
-                    LOG.info("2sID_Order: "+oHistoryEvent_Service.getsID_Order());
+                    LOG.info("2sID_Order: "+oHistoryEvent_Service.getsID_Order()+"!");
                     // nID_Server
                     asCell.add(oHistoryEvent_Service.getnID_Server() != null ? oHistoryEvent_Service.getnID_Server().toString() : "");
                     // nID_Service
