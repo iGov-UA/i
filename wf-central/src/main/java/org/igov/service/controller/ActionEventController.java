@@ -725,7 +725,7 @@ public class ActionEventController implements ControllerConstants {
                     DateTime sDateCreate = oHistoryEvent_Service.getsDateCreate();
                     DateTime sDateClose = oHistoryEvent_Service.getsDateClose();
                     
-                    SimpleDateFormat uDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat uDateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
         
                     if ((sDateCreate == null || sDateClose == null)&&(oHistoryEvent_Service.getnID_StatusType() != HistoryEvent_Service_StatusType.ABSENT.getnID()))
                     {
