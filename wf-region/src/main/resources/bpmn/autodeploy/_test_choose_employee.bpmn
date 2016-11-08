@@ -27,7 +27,15 @@
         <activiti:formProperty id="sText" name="Поле string" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginAsignee" name="Исполнитель;Выбор исполнителя;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step2,sEnumFieldID=asEmployee" type="select"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_step2" name="Група виконавців" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/kiev/_test_formula.html]" type="invisible" default="Документ для тестування" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asReportCount" name="Кількість звітів" type="enum" writable="false">
+          <activiti:value id="sEnumCount0" name="0"></activiti:value>
+          <activiti:value id="sEnumCount1" name="1"></activiti:value>
+          <activiti:value id="sEnumCount2" name="2"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sBody_1" name="[pattern/print/kiev/_test_formula.html]" type="invisible" default="Звіт 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/kiev/_test_formula.html]" type="invisible" default="Звіт 2" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="marker_1" name="formula_marker" type="markers" default="${markerService.loadFromFile('KMDA/_test_formula.json')}"></activiti:formProperty>
         
         <activiti:taskListener event="assignment" delegateExpression="${assignGroupByPrefix}">
