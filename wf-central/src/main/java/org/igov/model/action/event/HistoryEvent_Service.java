@@ -25,7 +25,7 @@ public class HistoryEvent_Service extends AbstractEntity {
 
     @JsonProperty(value = "nID_Task")
     @Column
-    private Long nID_Task;
+    private Long nID_Process;
 
     @JsonProperty(value = "nID_Subject")
     @Column
@@ -144,12 +144,12 @@ public class HistoryEvent_Service extends AbstractEntity {
         this.nID_Protected = nID_Protected;
     }
 
-    public Long getnID_Task() {
-        return nID_Task;
+    public Long getnID_Process() {
+        return nID_Process;
     }
 
-    public void setnID_Task(Long nID_Task) {
-        this.nID_Task = nID_Task;
+    public void nID_Process(Long nID_Process) {
+        this.nID_Process = nID_Process;
     }
 
     public Long getnID_Subject() {
@@ -330,7 +330,7 @@ public class HistoryEvent_Service extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "HistoryEvent_Service [sID=" + sID + ", nID_Task=" + nID_Task
+        return "HistoryEvent_Service [sID=" + sID + ", nID_Task=" + nID_Process
                 + ", nID_Subject=" + nID_Subject + ", sUserTaskName="
                 + sUserTaskName + ", sDate=" + sDate + ", nID_Service="
                 + nID_Service + ", nID_Region=" + nID_Region + ", sID_UA="

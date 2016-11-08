@@ -53,7 +53,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     public HistoryEvent_Service addHistoryEvent_Service(HistoryEvent_Service historyEventService) {
 
         try {//check on duplicates
-            HistoryEvent_Service duplicateEvent = getHistoryEvent_service(historyEventService.getnID_Task(),
+            HistoryEvent_Service duplicateEvent = getHistoryEvent_service(historyEventService.getnID_Process(),
                     historyEventService.getnID_Server());
             if (duplicateEvent != null) {
                 throw new IllegalArgumentException(
@@ -64,7 +64,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         }
         historyEventService.setsDate(new DateTime());
         historyEventService.setsDateCreate(new DateTime());
-        Long nID_Protected = ToolLuna.getProtectedNumber(historyEventService.getnID_Task());
+        Long nID_Protected = ToolLuna.getProtectedNumber(historyEventService.getnID_Process());
         historyEventService.setnID_Protected(nID_Protected);
         historyEventService.setsID_Order(historyEventService.getnID_Server() + DASH + nID_Protected);
         Session session = getSession();
@@ -238,7 +238,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         criteria.setMaxResults(1);
         HistoryEvent_Service event_service = (HistoryEvent_Service) criteria.uniqueResult();
         if (event_service != null) {
-            event_service.setnID_Protected(ToolLuna.getProtectedNumber(event_service.getnID_Task()));
+            event_service.setnID_Protected(ToolLuna.getProtectedNumber(event_service.getnID_Process()));
         }
         return event_service;
     }
