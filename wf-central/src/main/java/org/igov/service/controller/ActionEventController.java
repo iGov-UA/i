@@ -667,14 +667,15 @@ public class ActionEventController implements ControllerConstants {
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
                     String sTextFeedback;
-                    LOG.info("SubjectMessageFeedback get by order " + oHistoryEvent_Service.getsID_Order() + "!");
+                    LOG.info("SubjectMessageFeedback get by orderSubjectMessageFeedback get by order " + oHistoryEvent_Service.getsID_Order() + "!");
                     SubjectMessageFeedback oSubjectMessageFeedback
                             = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
                     LOG.info("found oSubjectMessageFeedback: " + oSubjectMessageFeedback);
-                    if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service() != null) {
+                    if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null 
+                            && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
                     } else {
-                        sTextFeedback = "";
+                        sTextFeedback = (oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
                     }
                     // sTextFeedback
                     asCell.add(sTextFeedback);
