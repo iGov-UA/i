@@ -6,6 +6,8 @@
 package org.igov.model.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.igov.model.core.AbstractEntity;
@@ -14,9 +16,15 @@ import org.igov.model.core.AbstractEntity;
  *
  * @author olga
  */
+@Entity
 public class SubjectGroupTree extends AbstractEntity{
     
-    @JsonProperty(value = "oSubjectGroup_Child")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@JsonProperty(value = "oSubjectGroup_Child")
     @ManyToOne(targetEntity = SubjectGroup.class)
     @JoinColumn(name="nID_SubjectGroup_Child", nullable = false, updatable = false)
     private SubjectGroup oSubjectGroup_Child;

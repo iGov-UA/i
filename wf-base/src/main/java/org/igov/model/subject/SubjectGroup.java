@@ -6,15 +6,24 @@
 package org.igov.model.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.Entity;
+
 import org.igov.model.core.NamedEntity;
 
 /**
  *
  * @author olga
  */
+@Entity
 public class SubjectGroup extends NamedEntity{
     
-    @JsonProperty(value = "sID_Group_Activiti")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@JsonProperty(value = "sID_Group_Activiti")
     private String sID_Group_Activiti;
     
     @JsonProperty(value = "sChain")
