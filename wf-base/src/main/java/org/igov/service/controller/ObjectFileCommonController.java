@@ -838,7 +838,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
             @ApiParam(value = "файл html. в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
             @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "description") String description,
-            @ApiParam(value = "порядковый номер прикрепленного файла", required = true) @RequestParam(required = false, value = "nFile") Integer nFile)
+            @ApiParam(value = "порядковый номер прикрепленного файла", required = true) @RequestParam(value = "nFile") Integer nFile)
             throws IOException {
 
         String processInstanceId = null;
