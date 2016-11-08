@@ -46,8 +46,11 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     String sReturn;
                     sPhone_SMS_Value = sPhone_SMS_Value.replaceAll("\\ ", "");
 
-                    sReturn = oManagerSMS.sendSMS(generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))),
-                            sPhone_SMS_Value, sText_SMS_Value);
+                    //sReturn = oManagerSMS.sendSMS(generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))),
+                    //        sPhone_SMS_Value, sText_SMS_Value);
+                    
+                    sReturn = ManagerSMS.sendSms(sPhone_SMS_Value, sText_SMS_Value, true);
+                    
                     LOG.info("(sReturn={})", sReturn);
                 }
             }

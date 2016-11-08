@@ -60,7 +60,7 @@ public class SubjectMessageCommonController {
     public @ResponseBody
     String sendSms(@ApiParam(value = "Номер телефона в формате 380XXXXXXXXX", required = true)@RequestParam(value = "phone") String phone, 
             @ApiParam(value = "Текст сообщения", required = true) @RequestParam(value = "message") String message,
-            @ApiParam(value = "Если значение флага true - отправка смс идет через старое api, независимо от оператора", required = false) @RequestParam(value = "oldApiFlag") Boolean apiFlag){
+            @ApiParam(value = "Если значение флага true - отправка смс идет через старое api, независимо от оператора", required = false) @RequestParam(value = "oldApiFlag", required = false) Boolean apiFlag){
     
         if (apiFlag == null)
         {
