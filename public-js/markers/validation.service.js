@@ -772,8 +772,11 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
       var params = self.oFormDataParams;
       for(var paramObj in params) if (params.hasOwnProperty(paramObj)){
-        if(params[paramObj].value && params[paramObj].value.id && params[paramObj].fileName){
+        if(params[paramObj].value && params[paramObj].fileName){
           if(modelValue.id === params[paramObj].value.id){
+            sFileName = params[paramObj].fileName;
+            break;
+          } else if (modelValue.id === params[paramObj].value) {
             sFileName = params[paramObj].fileName;
             break;
           }
