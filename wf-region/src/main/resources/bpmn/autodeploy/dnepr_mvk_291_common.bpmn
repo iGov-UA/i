@@ -4801,35 +4801,31 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='noSendEmail'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow94" sourceRef="servicetask12" targetRef="usertask3"></sequenceFlow>
-    <serviceTask id="servicetask13" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask13" name="письмо с ошибкой" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[ТЕСТ]]></activiti:string>
+          <activiti:string><![CDATA[ОШИБКА dnepr_mvk_291_common]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+<b>Ответ УкрДока с ошибкой.</b><br><br>
 <p>
-Ваше звернення до Дніпропетровської міської ради - опрацьовано.<br><br>
-Рішення міської ради: ${sDocument_Body_UkrDoc}<br><br>
+Номер звернення ДМР: ${sID_Order_GovPublic}<br>
+Шаблон ответного документа: ${nID_DocumentTemplate_UkrDoc}<br>
+Статус УкрДок: ${sStatusName_UkrDoc}<br>
 Номер документа: ${sID_Document_UkrDoc}<br>
 </p>
-Телефони для довідок:<br>
-+380 56 732 12 12<br>
-‎+390 95 732 12 12<br>
-‎+380 96 732 12 12<br>
-‎+380 73 732 12 12<br>
+
 <br>
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,<br>
+<br>
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
