@@ -19,8 +19,7 @@ public class SubjectGroupDaoImpl extends GenericEntityDao<Long, SubjectGroup> im
 	@Override
 	public SubjectGroup getSubjectGroupsByGroupActiviti(String sID_Group_Activiti) {
 		
-		
-		return findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+		return findBy("sID_Group_Activiti", sID_Group_Activiti).orNull();
 	}
 	
 	
