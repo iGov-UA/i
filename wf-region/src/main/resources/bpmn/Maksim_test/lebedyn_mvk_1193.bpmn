@@ -3,7 +3,6 @@
   <process id="lebedyn_mvk_1193" name="Видача дозволу на видалення зелених насаджень" isExecutable="true">
     <startEvent id="startevent1" name="Start">
     <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -32,18 +31,13 @@
           <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Документи, що підтверджують право користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Схема розташування зелених насаджень" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Документ про сплату відновної вартості після рішення виконавчого комітету;(за виключенням випадків, коли сплата відновної вартості зелених насаджень не проводиться)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Документи, що підтверджують право користування земельною ділянкою у відповідності до генерального плану забудови міста" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="зареєстрована інспекцією державного архітектурно-будівельного контролю у Сумській обл. декларація про початок виконання будівельних робіт;або дозвіл на виконання будівельних робіт" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Фотографія зазначених зелених насаджень" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Висновок Лебединського міськрайонного управління Головного управління Держсанепідслужби про заміри коефіцієнта природного освітлення уприміщенні" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Звернення балансоутримувача з відповідним обгрунтуванням необхідності виконання зазначенних робіт" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Заява з відповідним обгрунтуванням необхідності виконання зазначенних робіт" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Лист адміністратору про нове звернення"></serviceTask>

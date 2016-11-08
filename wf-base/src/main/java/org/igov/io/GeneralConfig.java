@@ -394,6 +394,18 @@ public class GeneralConfig {
     public String getOrderId_ByProcess(Integer nID_Server, Long nID_Process) {
         return getOrderId_ByOrder(getSelfServerId(), getProtectedNumber(nID_Process));
     }
+    public Long getOrderId_ByProcess(String snID_Process) {
+        if(snID_Process==null){
+            return null;
+        }
+        Long nID_Process = null;
+        try{
+            nID_Process = Long.valueOf(snID_Process);
+        }catch(Exception oException){
+            LOG.warn(oException.getMessage());
+        }
+        return nID_Process;
+    }
     
     @PostConstruct
     // Вывод всех переменных с аннотацией @Value

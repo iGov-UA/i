@@ -510,9 +510,13 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             try {
                 soResponse = httpRequester.getInside(sURL, mParam);
                 LOG.info("soResponse={}", soResponse);
-                Map mReturn = JsonRestUtils.readObject(soResponse, Map.class);
-                LOG.info("mReturn={}" + mReturn);
-                sName = (String) mReturn.get("sName");
+                if(soResponse==null){
+                    sName = "";
+                }else{
+                    Map mReturn = JsonRestUtils.readObject(soResponse, Map.class);
+                    LOG.info("mReturn={}" + mReturn);
+                    sName = (String) mReturn.get("sName");
+                }
                 LOG.info("sName={}", sName);
             } catch (Exception ex) {
                 LOG.error("", ex);
