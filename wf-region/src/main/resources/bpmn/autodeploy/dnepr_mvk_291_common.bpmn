@@ -4709,7 +4709,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
     </scriptTask>
     <serviceTask id="servicetask10" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
     <sequenceFlow id="flow87" sourceRef="servicetask10" targetRef="scripttask5"></sequenceFlow>
-    <sequenceFlow id="flow88" sourceRef="scripttask5" targetRef="servicetask11"></sequenceFlow>
+    <sequenceFlow id="flow88" sourceRef="scripttask5" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask11" name="Service Task (Corezoid)" activiti:delegateExpression="#{SendObject_Corezoid_New}">
       <extensionElements>
         <activiti:field name="soJSON">
@@ -4723,7 +4723,6 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow89" sourceRef="servicetask11" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291_common" id="BPMNPlane_dnepr_mvk_291_common">
@@ -5157,11 +5156,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="372.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow88" id="BPMNEdge_flow88">
-        <omgdi:waypoint x="425.0" y="37.0"></omgdi:waypoint>
-        <omgdi:waypoint x="470.0" y="38.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow89" id="BPMNEdge_flow89">
-        <omgdi:waypoint x="522.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="65.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="162.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
