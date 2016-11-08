@@ -3,8 +3,9 @@ package org.igov.model.subject;
 import java.util.List;
 
 import org.igov.model.core.GenericEntityDao;
+import org.springframework.stereotype.Repository;
 
-
+@Repository
 public class SubjectGroupTreeDaoImpl extends GenericEntityDao<Long, SubjectGroupTree> implements SubjectGroupTreeDao{
 
     public SubjectGroupTreeDaoImpl() {
