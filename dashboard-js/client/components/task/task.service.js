@@ -195,6 +195,7 @@ angular.module('dashboardJsApp')
           },
           onCompleted: function (file, response) {
             scope.$apply(function () {
+              /*
               try {
                 deferred.resolve({
                   file: file,
@@ -204,6 +205,37 @@ angular.module('dashboardJsApp')
                 deferred.reject({
                   err: response
                 });
+              }
+              */
+
+              var oCheckSignReq = {};
+              try{
+                oCheckSignReq = angular.fromJson(response);
+              } catch (errParse){
+                self.value.signInfo = null;
+              }
+              if(oCheckSignReq.taskId && oCheckSignReq.id){
+                self.value = {id : oCheckSignReq.id, signInfo: null, fromDocuments: false};
+                simpleHttpPromise({
+                    method: 'GET',
+                    url: '/api/tasks/' + oCheckSignReq.taskId + '/attachments/' + oCheckSignReq.id + '/checkAttachmentSign'
+                  }
+                ).then(function (signInfo) {
+                  //self.value.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
+                  try {
+                    deferred.resolve({
+                      file: file,
+                      response: JSON.parse(response),
+                      signInfo: Object.keys(signInfo).length === 0 ? null : signInfo
+                    });
+                  } catch (e) {
+                    deferred.reject({
+                      err: response
+                    });
+                  }
+                }, function (err) {
+                  self.value.signInfo = null;
+                })
               }
             });
           }

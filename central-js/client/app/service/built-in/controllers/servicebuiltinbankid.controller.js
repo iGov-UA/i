@@ -341,7 +341,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       $scope.validateForm = function (form) {
         var bValid = true;
-        ValidationService.validateByMarkers(form, null, true, this.data);
+        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {});
         return form.$valid && bValid;
       };
 
@@ -911,7 +911,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       TableService.init($scope.activitiForm.formProperties);
 
       $scope.addRow = function (form, id, index) {
-        ValidationService.validateByMarkers(form, null, true, this.data, true);
+        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {}, true);
         if (!form.$invalid) {
           $scope.tableIsInvalid = false;
           TableService.addRow(id, $scope.activitiForm.formProperties);
