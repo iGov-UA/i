@@ -41,16 +41,15 @@ public abstract class AbstractModelTask {
             .getLogger(AbstractModelTask.class);
 
     @Autowired
-    GeneralConfig generalConfig;
-
-    
-    @Autowired
     protected FlowSlotDao flowSlotDao;
     @Autowired
     protected FlowSlotTicketDao oFlowSlotTicketDao;
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
 
+    @Autowired
+    GeneralConfig generalConfig;    
+    
     /**
      * Возвращает сложгый ключ переменной бизнес-процесса
      *

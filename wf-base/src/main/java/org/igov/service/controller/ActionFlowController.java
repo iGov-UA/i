@@ -1,6 +1,7 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+import static java.lang.Math.toIntExact;
 import org.igov.io.web.integration.queue.cherg.Cherg;
 import org.igov.model.flow.FlowProperty;
 import org.igov.model.flow.FlowSlotTicket;
@@ -34,6 +35,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.igov.model.flow.FlowServiceDataDao;
+import org.igov.model.flow.Flow_ServiceData;
+import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
+import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
+import static org.igov.run.schedule.JobBuilderFlowSlots.WORK_DAYS_NEEDED;
+import org.igov.service.business.flow.slot.Day;
 
 /**
  * User: goodg_000
@@ -46,11 +53,16 @@ import java.util.Map;
 public class ActionFlowController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionFlowController.class);
-	@Autowired
+    private static final String SUFFIX_AUTO = "auto";
+    
+    @Autowired
     private FlowService oFlowService;
 
-	@Autowired
-	Cherg cherg;
+    @Autowired
+    Cherg cherg;
+    
+    @Autowired
+    private FlowServiceDataDao flowServiceDataDao;
 
 
     /**
@@ -1091,4 +1103,54 @@ public class ActionFlowController {
 
 		return result.toString();
 	}
-}
+        
+        /**
+     * Генерация слотов на заданный интервал для заданного потока.
+     * 
+     * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
+     * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
+     * @param nID_SubjectOrganDepartment ИД номер-ИН департамента
+     * @param sDateStart строка дата "начиная с такого-то момента времени", в формате "2015-06-28 12:12:56.001" (опциональный)
+     * @param sDateStop строка дата "заканчивая к такому-то моменту времени", в формате "2015-07-28 12:12:56.001" (опциональный)
+     * @param nCountAutoGenerate кол-во дней (опциональный)
+     */
+        @ApiOperation(value = "Генерация слотов на заданный интервал для заданного потока", notes = "##### Пример:\n"
+                + " alpha.test.region.igov.org.ua/wf/service/action/flow/buildFlowSlot\n"
+	        + "- nID_Flow_ServiceData=1\n"
+	        + "- sDateStart=2015-06-01 00:00:00.000\n"
+	        + "- sDateStop=2015-06-07 00:00:00.000\n"
+	        + "Ответ: HTTP STATUS 200.\n"
+	        + "Ниже приведена часть json ответа:\n"
+	        + "\n```json\n"
+	        + "[\n"
+	        + "    {\n"
+	        + "        \"nID\": 1000,\n"
+	        + "        \"sTime\": \"08:00\",\n"
+	        + "        \"nMinutes\": 15,\n"
+	        + "        \"bFree\": true\n"
+	        + "    },\n"
+	        + "    {\n"
+	        + "        \"nID\": 1001,\n"
+	        + "        \"sTime\": \"08:15\",\n"
+	        + "        \"nMinutes\": 15,\n"
+	        + "        \"bFree\": true\n"
+	        + "    },\n"
+	        + "    {\n"
+	        + "        \"nID\": 1002,\n"
+	        + "        \"sTime\": \"08:30\",\n"
+	        + "        \"nMinutes\": 15,\n"
+	        + "        \"bFree\": true\n"
+	        + "    },\n"
+	        + "...\n"
+	        + "]\n"
+	        + "\n```\n" )
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "json перечисление всех сгенерированных слотов\n"
+            + "Если на указанные даты слоты уже сгенерены то они не будут генерится повторно, и в ответ включаться не будут.")})
+    @RequestMapping(value = "/buildFlowSlot", method = RequestMethod.GET)
+    public
+    @ResponseBody
+     void buildFlowSlot(){
+            oFlowService.buildFlowSlots();
+            }
+    
+ }

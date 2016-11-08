@@ -1,7 +1,6 @@
 'use strict';
 
 var service = require('./user.service');
-//var activiti = require('../../components/activiti');
 
 module.exports.index = function (req, res) {
   var callback = function (error, statusCode, result) {
@@ -29,10 +28,10 @@ module.exports.setGroup = function (req, res) {
   var callback = function (error, statusCode, result) {
     if (error) {
       res.send(error);
+    } else {
+      var jsonRes = result ? result : {id: req.query.sID, name: req.query.sName};
+      res.status(statusCode).json(jsonRes);
     }
-
-    var jsonRes = result ? result : {id: req.query.sID, name: req.query.sName};
-    res.status(statusCode).json(jsonRes);
   };
 
   service.setGroup(req.query.sID, req.query.sName, callback);
@@ -81,8 +80,9 @@ module.exports.removeUserGroup = function (req, res) {
 module.exports.deleteGroup = function (req, res) {
 
   var callback = function (error, statusCode, result) {
-    if (error) {
-      res.send(error);
+    if (error || (result && result.code === '500')) {
+      res.send(error || result);
+      res.end();
     } else {
       var jsonRes = result ? result : {id: req.query.sID};
       res.status(statusCode).json(jsonRes);
@@ -134,7 +134,7 @@ module.exports.deleteUser = function (req, res) {
   var callback = function (error, statusCode, result) {
     if (error) {
       res.send(error);
-    }else{
+    } else {
       var jsonRes = result ? result : {
         sLogin: req.query.sLogin
       };

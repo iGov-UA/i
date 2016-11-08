@@ -2,7 +2,7 @@ var nock = require('nock')
   , url = require('url')
   , urlencode = require('urlencode')
   , appUtil = require('../../app.util.spec.js')
-  , bankidNBUData = require('./../../../server/auth/bankid-nbu/bankid.data.spec.js')
+  , bankidNBUData = require('./bankid.data.spec.js')
   , bankidNBUUtil = require('./../../../server/auth/bankid-nbu/bankid.util.js');
 
 var baseUrls = bankidNBUUtil.getBaseURLs();

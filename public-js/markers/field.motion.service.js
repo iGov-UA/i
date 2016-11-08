@@ -72,6 +72,7 @@ function FieldMotionService(MarkersFactory) {
     });
     return b;
   };
+
   var fieldId_entryTriggered = {};
   var aFieldIDs = [];
   this.calcFieldValue = function(fieldId, formData, formProperties) {
@@ -121,13 +122,6 @@ function FieldMotionService(MarkersFactory) {
       }, {});
   };
 
-  // this.getReplacingRules = function() {
-  //   return grepByPrefix(/*'ReplaceTextLastSymbols_'*/'ReplaceTextSymbols_').reduce(function(p, c) {
-  //       p[c.sID_Field] = c;
-  //       return p;
-  //     }, {});
-  // };
-
   this.getReplacingRules = function () {
     return grepByPrefix('ReplaceTextSymbols_').reduce(function(p, c) {
      p[c.sID_Field] = {symbols: c.nSymbols, valueNew: c.sValueNew, el_id1: c.sID_Field, el_id2: c.sID_Element_sValue};
@@ -136,9 +130,6 @@ function FieldMotionService(MarkersFactory) {
   };
 
   function evalCondition(entry, fieldId, formData, mentioned) {
-    if(fieldId === 'sTestRequired'){
-      debugger;
-    }
     if (!_.contains(entry.aField_ID || entry.aElement_ID, fieldId)) {
       return false;
     } else if(mentioned) {

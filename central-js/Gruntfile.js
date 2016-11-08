@@ -503,7 +503,7 @@ module.exports = function (grunt) {
           reporter: 'spec',
           ui: 'tdd'
         },
-        src: ['server/**/*.test.js']
+        src: ['server-test/**/*.test.js']
       },
 
       mochaTest: {
@@ -511,7 +511,7 @@ module.exports = function (grunt) {
           reporter: 'spec',
           ui: 'bdd'
         },
-        src: ['server/**/*.spec.js']
+        src: ['server-test/**/*.spec.js']
       }
     },
 

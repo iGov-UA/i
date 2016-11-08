@@ -729,28 +729,62 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return new Process(pi.getProcessInstanceId());
     }
 
-//    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
-//    @ResponseBody
-//    public List<String> getProcessTasks(@RequestParam String processInstanceId)
-//            throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
-//        return getTasksByOrder(ToolLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
-//    }
     @RequestMapping(value = "/setVariable", method = RequestMethod.GET)
-    //public void setVariableToProcessInstance(
     @ResponseBody
     public String setVariableToProcessInstance(
-            //public void setVariableToProcessInstance(
             @RequestParam(value = "processInstanceId", required = true) String snID_Process,
             @RequestParam(value = "key", required = true) String sKey,
             @RequestParam(value = "value", required = true) String sValue
-    //@RequestParam String processInstanceId,
-    //@RequestParam String key,
-    //@RequestParam String value
     ) {
         try {
             runtimeService.setVariable(snID_Process, sKey, sValue);
         } catch (Exception oException) {
             LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(), snID_Process, sKey, sValue);
+        }
+        return "";
+    }
+
+    /**
+     * Method takes current value of process variable and if its value doesn't contain sInsertValue method appends it.
+     * Also if it contains sRemoveValue it will be removed.
+     * Can be used only with Strings
+     * @param snID_Process - id of Activiti Process
+     * @param sKey - name of Variable on Activiti Process
+     * @param sInsertValues - values which should be added.
+     * @param sRemoveValues - values which should be deleted.
+     * @return
+     */
+    @RequestMapping(value = "/mergeVariable", method = RequestMethod.GET)
+    @ResponseBody
+    public String mergeVariableValueOnProcessInstance(
+            @RequestParam(value = "processInstanceId", required = true) String snID_Process,
+            @RequestParam(value = "key", required = true) String sKey,
+            @RequestParam(value = "removeValues", required = false) String[] sRemoveValues,
+            @RequestParam(value = "insertValues", required = false) String[] sInsertValues
+    ) {
+        try {
+            Object currentValueObject = runtimeService.getVariable(snID_Process, sKey);
+            String currentValue = currentValueObject == null ? "" : currentValueObject.toString();
+            LOG.info("removeValues={} insertValues={}", sRemoveValues, sInsertValues);
+            if (sInsertValues != null) {
+                for (String sInsertValue : sInsertValues) {
+                    if(!currentValue.contains(sInsertValue)){
+                        currentValue = (currentValue.trim() + " " + sInsertValue).trim();
+                    }
+                }
+            }
+            if (sRemoveValues != null ) {
+                for (String sRemoveValue : sRemoveValues) {
+                    if(currentValue.contains(sRemoveValue)){
+                        currentValue = currentValue.replace(sRemoveValue, "");
+                    }
+                }
+            }
+            runtimeService.setVariable(snID_Process, sKey, currentValue.trim());
+            LOG.info("currentValue={}", currentValue);
+        } catch (Exception oException) {
+            LOG.error("ERROR:{} (snID_Process={},sKey={},sInsertValue={}, sRemoveValue={})",
+                    oException.getMessage(), snID_Process, sKey, sInsertValues, sRemoveValues);
         }
         return "";
     }
@@ -1403,7 +1437,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param saField -- строка-массива полей (например:
      * "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
      * ) // * @param nID_Process - ид заявки
-     * @param soParams
+     * @param soParams 
      * @param sMail -- строка электронного адреса гражданина // * @param
      * nID_Server - ид сервера
      * @param sHead -- строка заголовка письма //опциональный (если не задан, то
@@ -1440,7 +1474,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     void setTaskQuestions(
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
             @ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
-            @ApiParam(value = "строка-массива параметров", required = true) @RequestParam(value = "soParams") String soParams,
+            @ApiParam(value = "строка-обьекта параметров", required = true) @RequestParam(value = "soParams") String soParams,
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
@@ -1450,6 +1484,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         String sToken = Tool.getGeneratedToken();
         try {
+            String processId = String.valueOf(nID_Process);
+            String variableName = "saTaskStatus";
+            String waitsAnswerTag = "WaitAnswer";
+            String gotAnswerTag = "GotAnswer";
+            Object taskStatus = runtimeService.getVariable(processId, variableName);
+            String tags = taskStatus == null ? "" : String.valueOf(taskStatus);
+            LOG.info("set_tags: {}, processId={}, waitsAnswerTag={}", tags, processId, waitsAnswerTag);
+            if (!tags.contains(waitsAnswerTag)) {
+                tags = (tags.trim() + " " + waitsAnswerTag).trim();
+            }
+            if (tags.contains(gotAnswerTag)) {
+                tags = tags.replace(gotAnswerTag, "").trim();
+            }
+            runtimeService.setVariable(processId, variableName, tags);
+
             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             String sReturn = oActionTaskService.updateHistoryEvent_Service(
                     HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION,

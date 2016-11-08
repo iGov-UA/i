@@ -1,19 +1,23 @@
 var passport = require('passport')
   , errors = require('../../components/errors')
-  , authService = require('../auth.service');
+  , authService = require('../auth.service')
+  , logger = require('../../components/logger').createLogger(module);
 
 module.exports.authenticate = function (req, res, next) {
+  logger.info('authenticate bankid request', { query : req.query });
   passport.authenticate('oauth2', {
     callbackURL: '/auth/bankID/callback?link=' + req.query.link
   })(req, res, next);
 };
 
 module.exports.token = function (req, res, next) {
+  logger.info('token bankid request', { query : req.query });
   passport.authenticate('oauth2', {
     session: false,
     code: req.query.code,
     callbackURL: '/auth/bankID/callback?link=' + req.query.link
   }, function (err, user, info) {
+    logger.info('token bankid result', { error : err, user : user, info : info });
     var error;
 
     if (err) {
@@ -28,14 +32,16 @@ module.exports.token = function (req, res, next) {
       error = {error: 'Cant sync user'};
     }
 
-
     if (error) {
       var errString = encodeURIComponent(JSON.stringify(error));
-      console.log('bankid authentication error : ' + errString);
+      logger.info('token bankid error, redirect back to initial page', { error : error, link : req.query.link });
       res.redirect(req.query.link + '?error=' + errString);
     } else {
-      req.session = authService.createSessionObject('bankid', user, info);
+      var session = authService.createSessionObject('bankid', user, info);
+      req.session = session;
       delete req.session.prepare;
+      logger.info('bankid session is created', session);
+      logger.info('token bankid success, redirect back to initial page', { link : req.query.link });
       res.redirect(req.query.link);
     }
   })(req, res, next);

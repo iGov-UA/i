@@ -44,7 +44,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
   return {
     processPrintTemplate: function (task, form, printTemplate, reg, fieldGetter) {
       var _printTemplate = printTemplate;
-      var templates = [], ids = [], found;
+      var templates = [], ids = [], found, idArray = [];
       while (found = reg.exec(_printTemplate)) {
         templates.push(found[1]);
         ids.push(found[2]);
@@ -159,29 +159,29 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       }
 
 
-        function getLunaValue(id) {
+      function getLunaValue(id) {
 
-          // Number 2187501 must give CRC=3
-          // Check: http://planetcalc.ru/2464/
-          if(id===null || id === 0){
-            return null;
-          }
-          var n = parseInt(id);
-          var nFactor = 1;
-          var nCRC = 0;
-          var nAddend;
-
-          while (n !== 0) {
-            nAddend = Math.round(nFactor * (n % 10));
-            nFactor = (nFactor === 2) ? 1 : 2;
-            nAddend = nAddend > 9 ? nAddend - 9 : nAddend;
-            nCRC += nAddend;
-            n = parseInt(n / 10);
-          }
-
-          nCRC = nCRC % 10;
-          return nCRC;
+        // Number 2187501 must give CRC=3
+        // Check: http://planetcalc.ru/2464/
+        if(id===null || id === 0){
+          return null;
         }
+        var n = parseInt(id);
+        var nFactor = 1;
+        var nCRC = 0;
+        var nAddend;
+
+        while (n !== 0) {
+          nAddend = Math.round(nFactor * (n % 10));
+          nFactor = (nFactor === 2) ? 1 : 2;
+          nAddend = nAddend > 9 ? nAddend - 9 : nAddend;
+          nCRC += nAddend;
+          n = parseInt(n / 10);
+        }
+
+        nCRC = nCRC % 10;
+        return nCRC;
+      }
 
       var printTemplate = this.processPrintTemplate(task, form, originalPrintTemplate, /(\[(\w+)])/g, fieldGetter);
       // What is this for? // Sergey P

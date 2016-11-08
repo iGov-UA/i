@@ -2,6 +2,7 @@ package org.igov.model.action.event;
 
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -39,7 +40,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
 
     @Autowired
     private QueryLoader sqlStorage;
-    
+
     protected HistoryEvent_ServiceDaoImpl() {
         super(HistoryEvent_Service.class);
     }
@@ -74,7 +75,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     @Override
     public HistoryEvent_Service updateHistoryEvent_Service(HistoryEvent_Service event_service) {
         event_service.setsDate(new DateTime());
-        if(event_service.getnID_StatusType()!= null && event_service.getnID_StatusType() == 8){
+        if (event_service.getnID_StatusType() != null && event_service.getnID_StatusType() == 8) {
             event_service.setsDateClose(new DateTime());
         }
         return saveOrUpdate(event_service);
@@ -97,23 +98,23 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         criteria.setProjection(Projections.projectionList()
                 .add(Projections.groupProperty("nID_Region"))
                 .add(Projections.count("nID_Service"))
-                        .add(Projections.avg(RATE_FIELD)) //for issue 777
-                        .add(Projections.avg(TIME_MINUTES_FIELD))
+                .add(Projections.avg(RATE_FIELD)) //for issue 777
+                .add(Projections.avg(TIME_MINUTES_FIELD))
         );
         Object res = criteria.list();
-        LOG.info("Received result in getHistoryEvent_ServiceBynID_Service:{}",  res);
+        LOG.info("Received result in getHistoryEvent_ServiceBynID_Service:{}", res);
         if (res == null) {
-            LOG.warn("List of records based on nID_Service not found {}",  nID_Service);
+            LOG.warn("List of records based on nID_Service not found {}", nID_Service);
             throw new EntityNotFoundException("Record not found");
         }
         int i = 0;
         for (Object item : criteria.list()) {
             Object[] currValue = (Object[]) item;
             Long nID_Region = (long) 0x0;
-            if(currValue[0] != null){
+            if (currValue[0] != null) {
                 nID_Region = (Long) currValue[0];
             }
-            
+
             LOG.info(String.format("Line %s: %s, %s, %s, %s", i, nID_Region, currValue[1],
                     currValue[2] != null ? currValue[2] : "",
                     currValue[3] != null ? currValue[3] : ""));
@@ -128,12 +129,12 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
                     LOG.info("snRate={}", snRate);
                     if (snRate.contains(".")) {
                         rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
-                        LOG.info("total rate = {}",  rate);
+                        LOG.info("total rate = {}", rate);
                     }
                 }
             } catch (Exception oException) {
                 LOG.error("Error:{}, cannot get nRate! {}", oException.getMessage(), currValue[2]);
-                LOG.trace("FAIL:",oException);
+                LOG.trace("FAIL:", oException);
             }
             BigDecimal timeMinutes = null;
             try {
@@ -173,13 +174,13 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
 
         return servicesStatistics;
     }
-    
+
     @Override
     public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException, EntityNotFoundException, IllegalArgumentException {
         Integer nID_Server;
         Long nID_Order;
         try {
-            String[] as=sID_Order.split("\\-");
+            String[] as = sID_Order.split("\\-");
             nID_Server = Integer.parseInt(as[0]);
             nID_Order = Long.valueOf(as[1]);
             /*int dashPosition = sID_Order.indexOf(DASH);
@@ -248,17 +249,17 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         LOG.info(String.format("Start get orders history with parameters nID_Subject = %s, nID_Service = %s, sID_UA = %s", nID_Subject, nID_Service, sID_UA));
         Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
 
-        if(nID_Subject == null && nID_Service == null && sID_UA == null){
+        if (nID_Subject == null && nID_Service == null && sID_UA == null) {
             return new LinkedList<>();
         }
 
-        if(nID_Subject != null){
+        if (nID_Subject != null) {
             oCriteria.add(Restrictions.eq("nID_Subject", nID_Subject));
         }
-        if(nID_Service != null){
+        if (nID_Service != null) {
             oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
         }
-        if(sID_UA != null && !"".equals(sID_UA)){
+        if (sID_UA != null && !"".equals(sID_UA)) {
             oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
         }
 
@@ -272,13 +273,13 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         return aHistoryEvent_Service;
     }
 
-	@Override
-	public List<HistoryEvent_Service> getHistoryEventPeriod(DateTime dateAt,
-			DateTime dateTo, List<Long> anID_Service_Exclude) {
-		Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
+    @Override
+    public List<HistoryEvent_Service> getHistoryEventPeriod(DateTime dateAt,
+            DateTime dateTo, List<Long> anID_Service_Exclude) {
+        Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
         oCriteria.add(Restrictions.gt("sDate", dateAt));
         oCriteria.add(Restrictions.lt("sDate", dateTo));
-        if(anID_Service_Exclude != null && !anID_Service_Exclude.isEmpty()) {
+        if (anID_Service_Exclude != null && !anID_Service_Exclude.isEmpty()) {
             oCriteria.add(Restrictions.not(Restrictions.in("nID_Service", anID_Service_Exclude)));
         }
 
@@ -286,7 +287,72 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         if (aHistoryEvent_Service == null) {
             aHistoryEvent_Service = new LinkedList<>();
         }
-        
-		return aHistoryEvent_Service;
-	}
+
+        return aHistoryEvent_Service;
+    }
+
+    @Override
+    public List<HistoryEvent_Service> getHistoryEventPeriodByCreate(DateTime dateAt,
+            DateTime dateTo, List<Long> anID_Service_Exclude) {
+        Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
+        oCriteria.add(Restrictions.gt("sDateCreate", dateAt));
+        oCriteria.add(Restrictions.lt("sDateCreate", dateTo));
+        if (anID_Service_Exclude != null && !anID_Service_Exclude.isEmpty()) {
+            oCriteria.add(Restrictions.not(Restrictions.in("nID_Service", anID_Service_Exclude)));
+        }
+
+        List<HistoryEvent_Service> aHistoryEvent_Service = (List<HistoryEvent_Service>) oCriteria.list();
+        if (aHistoryEvent_Service == null) {
+            aHistoryEvent_Service = new LinkedList<>();
+        }
+
+        return aHistoryEvent_Service;
+    }
+    
+    @Override
+    public List<HistoryEvent_Service> getHistoryEventPeriodByClose(DateTime dateAt,
+            DateTime dateTo, List<Long> anID_Service_Exclude) {
+        Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
+        oCriteria.add(Restrictions.gt("sDateClose", dateAt));
+        oCriteria.add(Restrictions.lt("sDateClose", dateTo));
+        if (anID_Service_Exclude != null && !anID_Service_Exclude.isEmpty()) {
+            oCriteria.add(Restrictions.not(Restrictions.in("nID_Service", anID_Service_Exclude)));
+        }
+
+        List<HistoryEvent_Service> aHistoryEvent_Service = (List<HistoryEvent_Service>) oCriteria.list();
+        if (aHistoryEvent_Service == null) {
+            aHistoryEvent_Service = new LinkedList<>();
+        }
+
+        return aHistoryEvent_Service;
+    }
+
+    @Override
+    public Long getClaimCountHistory(String sID_UA, Long nID_Service, Long nID_StatusType) {
+        LOG.info(String.format("Start get getClaimCountHistory with parameters nID_StatusType = %s, nID_Service = %s, sID_UA = %s", nID_StatusType, nID_Service, sID_UA));
+
+        Long countClaim = 0L;
+        Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
+        oCriteria.setProjection(Projections.rowCount());
+
+        if (nID_StatusType == null && nID_Service == null && sID_UA == null) {
+            return countClaim;
+        }
+
+        if (sID_UA != null && !"".equals(sID_UA)) {
+            oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
+        }
+
+        if (nID_Service != null) {
+            oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
+        }
+
+        if (nID_StatusType != null) {
+            oCriteria.add(Restrictions.eq("nID_StatusType", nID_StatusType));
+        }
+
+        countClaim = (Long) oCriteria.uniqueResult();
+        LOG.info("countClaim size = " + countClaim);
+        return countClaim;
+    }
 }

@@ -8,5 +8,5 @@ package org.igov.io.log;
  * @since  08.01.2016
  */
 public interface Consumer {
-    void consume(String msg);
+    void consume(String msg); 
 }

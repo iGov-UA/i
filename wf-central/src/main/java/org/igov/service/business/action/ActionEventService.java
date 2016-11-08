@@ -33,6 +33,7 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricTaskInstance;
 
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
+import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
@@ -439,12 +440,17 @@ public class ActionEventService {
 
             if (nID_SubjectMessageType != null) {
                 LOG.info("nID_SubjectMessageType is not null");
-                osBody.append("<br/>").append(ActionTaskService.createTable_TaskProperties(soData, bQuestion)).append("<br/>");
+                List<Map<String,String>> amReturn = amFieldMessageQuestion(soData, bQuestion);//saField
+                String soTable=ActionTaskService.createTable_TaskProperties(amReturn, bQuestion, false);
+                
+                osBody.append("<br/>").append(soTable).append("<br/>");//soData
 
                 Map<String, String> mParamMessage = new HashMap<>();
                 mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
                 mParamMessage.put(HistoryEventMessage.S_BODY, sBody == null ? "" : sBody);
-                mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(soData, true));
+                //List<Map<String,String>> amReturnAnswer = amFieldMessageQuestion(soData, bQuestion);//saField
+                //mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(amReturnAnswer, true, false));//soData
+                mParamMessage.put(HistoryEventMessage.TABLE_BODY, soTable);//soData
                 setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, sSubjectInfo);
 
                 SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,

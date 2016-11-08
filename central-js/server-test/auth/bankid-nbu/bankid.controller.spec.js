@@ -2,7 +2,7 @@
 
 var should = require('should')
   , appTest = require('../../app.spec.js')
-  , bankidNBUData = require('./../../../server/auth/bankid-nbu/bankid.data.spec.js')
+  , bankidNBUData = require('./bankid.data.spec.js')
   , bankidNBUUtil = require('./../../../server/auth/bankid-nbu/bankid.util.js')
   , config = require('../../../server/config/environment/index');
 
@@ -40,15 +40,15 @@ describe('authorize with bankid nbu and encrypted customer data', function () {
   });
 
   it('should go without error and with encrypted customer data', function (done) {
-    var agent;
+    var loginCookie;
     appTest.loginWithBankIDNBU(function (error) {
       if (error) {
         done(error)
       } else {
         done();
       }
-    }, function (loginAgent) {
-      agent = loginAgent;
+    }, function (loginCookie) {
+      loginCookie = loginCookie;
     }, bankidNBUData.codes.forCustomerDataCryptoResponse);
   });
 
