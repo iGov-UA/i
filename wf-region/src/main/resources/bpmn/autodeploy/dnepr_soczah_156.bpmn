@@ -89,6 +89,7 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="asTransferType" name="спосіб перерахування коштів; ;writable=false" type="enum">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
@@ -105,7 +106,7 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="dVisit" name="Внесіть дату та час візиту громадянки для надання довідки про вагітність" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sRoom" name="укажіть кабінет - куди прийти громадянці" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRoom" name="укажіть кабінет - куди прийти громадянинові" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sComment1" name="Будь ласка, внесіть коментар" type="textArea"></activiti:formProperty>
 
@@ -159,8 +160,9 @@
         </activiti:formProperty>
 
         <activiti:formProperty id="sComment2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFileRishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersUser2" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_156_user2.json')}"></activiti:formProperty>
+
+        <activiti:formProperty id="nFileDecision" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
 
       </extensionElements>
     </userTask>
@@ -393,7 +395,7 @@
           <activiti:string><![CDATA[iGov: Щомісячна грошова допомога особі, яка проживає разом з інвалідом I чи II групи внаслідок психічного розладу. Оброблено]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFileRishen}"]]></activiti:expression>
+          <activiti:expression><![CDATA["${nFileDecision}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -465,7 +467,7 @@
 		  </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFileRishen}"]]></activiti:expression>
+          <activiti:expression><![CDATA["${nFileDecision}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
