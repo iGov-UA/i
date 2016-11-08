@@ -367,7 +367,7 @@ public class DebugCentralController {
         HistoryEvent_Service obj = historyEventServiceDao.getOrgerByID(sID_Order);
 
         result.put("sID_Order", obj.getsID_Order());
-        result.put("nID_Task", obj.getnID_Process());
+        result.put("nID_Task", obj.getnID_Task());
         result.put("nID_Service", obj.getnID_Service());
         result.put("nID_Subject", obj.getnID_Subject());
         result.put("sID_UA", obj.getsID_UA());
@@ -376,7 +376,7 @@ public class DebugCentralController {
 
         try{
             HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
-                    .taskId(obj.getnID_Process().toString()).singleResult();
+                    .taskId(obj.getnID_Task().toString()).singleResult();
 
             historicTaskInstance.getDeleteReason();
             result.put("TASK_HisoricTaskInstance", historicTaskInstance.getDeleteReason());
@@ -388,7 +388,7 @@ public class DebugCentralController {
 
         try {
             HistoricTaskInstance historicTaskInstanceQuery = oHistoryService
-                    .createHistoricTaskInstanceQuery().taskId(obj.getnID_Process().toString())
+                    .createHistoricTaskInstanceQuery().taskId(obj.getnID_Task().toString())
                     .singleResult();
             processInstanceId = historicTaskInstanceQuery
                     .getProcessInstanceId();

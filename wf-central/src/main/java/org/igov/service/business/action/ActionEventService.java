@@ -492,7 +492,7 @@ public class ActionEventService {
         Long nID_Process = ToolLuna.getOriginalNumber(nID_Order);
 
         HistoryEvent_Service oHistoryEvent_Service = new HistoryEvent_Service();
-        oHistoryEvent_Service.nID_Process(nID_Process);
+        oHistoryEvent_Service.setnID_Task(nID_Process);
         oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
         oHistoryEvent_Service.setnID_StatusType(nID_StatusType);
         oHistoryEvent_Service.setnID_Subject(nID_Subject);
