@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="lebedyn_mvk_1193" name="Видача дозволу на видалення зелених насаджень" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+    <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень" type="enum" required="true">
+          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
+          <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
+          <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
+          <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
+          <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні "></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень або прив'язка (місце розташування)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень" type="enum" required="true">
+          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="asChoicePay" name="Вказати за чий рахунок буде проводитися зрізка зелених насаджень" type="enum" required="true">
+          <activiti:value id="sEnum1" name="За власний рахунок"></activiti:value>
+          <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="nFile1" name="Документи, що підтверджують право користування земельною ділянкою у відповідності до генерального плану забудови міста" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="зареєстрована інспекцією державного архітектурно-будівельного контролю у Сумській обл. декларація про початок виконання будівельних робіт;або дозвіл на виконання будівельних робіт" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Фотографія зазначених зелених насаджень" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Висновок Лебединського міськрайонного управління Головного управління Держсанепідслужби про заміри коефіцієнта природного освітлення уприміщенні" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Звернення балансоутримувача з відповідним обгрунтуванням необхідності виконання зазначенних робіт" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Заява з відповідним обгрунтуванням необхідності виконання зазначенних робіт" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="Лист адміністратору про нове звернення"></serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Повідомлення громадянину про успішну доставку до ЦНАПу"></serviceTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <userTask id="usertask1" name="1. Перевірка даних адміністратором ЦНАПу"></userTask>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Повідомлення про відмову"></serviceTask>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
+    <userTask id="usertask2" name="2. Обробка після обстеження ЗН (видача рішення виконкому про видалення ЗН)"></userTask>
+    <serviceTask id="servicetask4" name="Повідомлення про реєстрацію звернення та передачу на комісію обстеження ЗН"></serviceTask>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
+    <serviceTask id="servicetask5" name="Повідомлення заявнику про слату відновної вартості ЗН"></serviceTask>
+    <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="servicetask5"></sequenceFlow>
+    <userTask id="usertask3" name="3. Очикування оплати відновної вартості ЗН"></userTask>
+    <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow11" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
+    <serviceTask id="servicetask6" name="Повідомлення заявнику про необхідність забрати ордер"></serviceTask>
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="servicetask6"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
+    <serviceTask id="servicetask7" name="Повідомлення про несплату та закриття заявки"></serviceTask>
+    <sequenceFlow id="flow14" sourceRef="exclusivegateway2" targetRef="servicetask7"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_lebedyn_mvk_1193">
+    <bpmndi:BPMNPlane bpmnElement="lebedyn_mvk_1193" id="BPMNPlane_lebedyn_mvk_1193">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="65.0" width="191.0" x="140.0" y="185.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="65.0" width="191.0" x="360.0" y="185.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="65.0" width="191.0" x="580.0" y="185.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="655.0" y="300.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="65.0" width="191.0" x="360.0" y="288.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="240.0" y="303.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="65.0" width="191.0" x="580.0" y="500.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="71.0" width="191.0" x="580.0" y="390.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="65.0" width="191.0" x="360.0" y="500.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="65.0" width="192.0" x="140.0" y="500.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="215.0" y="610.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="65.0" width="191.0" x="360.0" y="596.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="596.0" y="611.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="61.0" width="192.0" x="140.0" y="690.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="377.0" y="703.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="95.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="140.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="331.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="551.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="580.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="675.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="675.0" y="300.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="655.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="551.0" y="320.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="360.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="320.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="675.0" y="340.0"></omgdi:waypoint>
+        <omgdi:waypoint x="675.0" y="390.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="675.0" y="461.0"></omgdi:waypoint>
+        <omgdi:waypoint x="675.0" y="500.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="580.0" y="532.0"></omgdi:waypoint>
+        <omgdi:waypoint x="551.0" y="532.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="360.0" y="532.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="532.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="236.0" y="565.0"></omgdi:waypoint>
+        <omgdi:waypoint x="235.0" y="610.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="255.0" y="630.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="628.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="551.0" y="628.0"></omgdi:waypoint>
+        <omgdi:waypoint x="596.0" y="628.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="235.0" y="650.0"></omgdi:waypoint>
+        <omgdi:waypoint x="236.0" y="690.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="332.0" y="720.0"></omgdi:waypoint>
+        <omgdi:waypoint x="377.0" y="720.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
