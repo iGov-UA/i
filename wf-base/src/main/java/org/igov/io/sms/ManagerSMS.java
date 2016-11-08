@@ -34,6 +34,13 @@ public class ManagerSMS {
                 .append("</body>")
                 .append("</message>").toString();
     
+    /*private static final String KYIVSTARBODY = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+            .append("<message rid=\"id\" paid=\"false\" bearer=\"SMS\">")
+            .append("<sin>").append("%s").append("</sin>")
+            .append("<body content-type=\"text/plain\" encoding=\"plain\">").append("%s")
+            .append("</body>")
+            .append("</message>").toString();*/
+    
            
     public String sendSms(String phone, String message, boolean oldApiFlag) throws Exception
     {
@@ -46,6 +53,10 @@ public class ManagerSMS {
             if (regexpLifeCell.matcher(phone).matches()){
                 resp = SendLifeCellSms(phone, message);
             }
+            /*else if(regexKyivStar.matcher(phone).matches())
+            {
+                SendKyivStarSms(phone, message);
+            }*/
             else{
                 resp = SendSenderSms(phone, message);
             }
