@@ -461,7 +461,7 @@ exports.getPatternFile = function (req, res) {
 exports.upload_content_as_attachment = function (req, res) {
   async.waterfall([
     function(callback){
-      if(req.body.sFileName === 'sPrintFormFileAsPDF'){
+      if(req.body.sFileName === 'sPrintFormFileAsPDF.pdf'){
         var options = {
           "format": "A4",        // allowed units: A3, A4, A5, Legal, Letter, Tabloid
           "orientation": "landscape" // portrait or landscape
