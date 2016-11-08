@@ -3935,7 +3935,7 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow49" name="asStatusOperator=='sEnumSendInFrontOffice'" sourceRef="exclusivegateway1" targetRef="usertask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumSendInFrontOffice'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow50" name="asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway2" targetRef="usertask9">
+    <sequenceFlow id="flow50" name="asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway2" targetRef="exclusivegateway12">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw1'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
@@ -3950,7 +3950,7 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow57" name="asAnswerChannel=='sEnumAnsw3'" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw3'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow59" name="asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway2" targetRef="usertask3">
+    <sequenceFlow id="flow59" name="asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway2" targetRef="exclusivegateway13">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent10" name="End"></endEvent>
@@ -4785,6 +4785,58 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <exclusiveGateway id="exclusivegateway12" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow89" sourceRef="exclusivegateway12" targetRef="servicetask11">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='sendEmail'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow90" sourceRef="exclusivegateway12" targetRef="usertask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='noSendEmail'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow91" sourceRef="servicetask11" targetRef="usertask9"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway13" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow92" sourceRef="exclusivegateway13" targetRef="servicetask12">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='sendEmail'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow93" sourceRef="exclusivegateway13" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='noSendEmail'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow94" sourceRef="servicetask12" targetRef="usertask3"></sequenceFlow>
+    <serviceTask id="servicetask13" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[ТЕСТ]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+<p>
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.<br><br>
+Рішення міської ради: ${sDocument_Body_UkrDoc}<br><br>
+Номер документа: ${sID_Document_UkrDoc}<br>
+</p>
+Телефони для довідок:<br>
++380 56 732 12 12<br>
+‎+390 95 732 12 12<br>
+‎+380 96 732 12 12<br>
+‎+380 73 732 12 12<br>
+<br>
+[pattern/mail/_common_signature_start.html]
+Дніпропетровська міська рада,<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow95" sourceRef="exclusivegateway7" targetRef="servicetask13"></sequenceFlow>
+    <endEvent id="endevent12" name="End"></endEvent>
+    <sequenceFlow id="flow96" sourceRef="servicetask13" targetRef="endevent12"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291_common" id="BPMNPlane_dnepr_mvk_291_common">
@@ -4921,7 +4973,19 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdc:Bounds height="55.0" width="105.0" x="1208.0" y="750.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
-        <omgdc:Bounds height="55.0" width="105.0" x="1007.0" y="1020.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1100.0" y="1004.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway12" id="BPMNShape_exclusivegateway12">
+        <omgdc:Bounds height="40.0" width="40.0" x="1339.0" y="818.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway13" id="BPMNShape_exclusivegateway13">
+        <omgdc:Bounds height="40.0" width="40.0" x="1232.0" y="944.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
+        <omgdc:Bounds height="55.0" width="105.0" x="1369.0" y="739.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent12" id="BPMNShape_endevent12">
+        <omgdc:Bounds height="35.0" width="35.0" x="1507.0" y="731.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="36.0" y="160.0"></omgdi:waypoint>
@@ -5070,7 +5134,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="1633.0" y="717.0"></omgdi:waypoint>
         <omgdi:waypoint x="1468.0" y="838.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1112.0" y="839.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1379.0" y="838.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="1414.0" y="805.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -5097,8 +5161,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="1633.0" y="717.0"></omgdi:waypoint>
         <omgdi:waypoint x="1489.0" y="964.0"></omgdi:waypoint>
-        <omgdi:waypoint x="838.0" y="964.0"></omgdi:waypoint>
-        <omgdi:waypoint x="691.0" y="885.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1272.0" y="964.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="1391.0" y="963.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -5221,6 +5284,44 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNEdge bpmnElement="flow88" id="BPMNEdge_flow88">
         <omgdi:waypoint x="529.0" y="88.0"></omgdi:waypoint>
         <omgdi:waypoint x="529.0" y="113.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow89" id="BPMNEdge_flow89">
+        <omgdi:waypoint x="1359.0" y="818.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1359.0" y="778.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1313.0" y="777.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow90" id="BPMNEdge_flow90">
+        <omgdi:waypoint x="1339.0" y="838.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1112.0" y="839.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow91" id="BPMNEdge_flow91">
+        <omgdi:waypoint x="1208.0" y="777.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1060.0" y="778.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1059.0" y="802.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow92" id="BPMNEdge_flow92">
+        <omgdi:waypoint x="1252.0" y="984.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1252.0" y="1032.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1205.0" y="1031.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow93" id="BPMNEdge_flow93">
+        <omgdi:waypoint x="1232.0" y="964.0"></omgdi:waypoint>
+        <omgdi:waypoint x="840.0" y="963.0"></omgdi:waypoint>
+        <omgdi:waypoint x="691.0" y="885.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow94" id="BPMNEdge_flow94">
+        <omgdi:waypoint x="1100.0" y="1031.0"></omgdi:waypoint>
+        <omgdi:waypoint x="692.0" y="1031.0"></omgdi:waypoint>
+        <omgdi:waypoint x="691.0" y="885.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow95" id="BPMNEdge_flow95">
+        <omgdi:waypoint x="1338.0" y="716.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1338.0" y="766.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1369.0" y="766.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow96" id="BPMNEdge_flow96">
+        <omgdi:waypoint x="1474.0" y="766.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1507.0" y="748.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
