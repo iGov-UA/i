@@ -33,7 +33,7 @@ public class SubjectGroupDaoImpl extends GenericEntityDao<Long, SubjectGroup> im
 		List<SubjectGroup> subjectGroupList = new ArrayList<>();
 		
 		for(String nID:nIDChilds) {
-			SubjectGroup subjectGroup = findByExpected("nID", nID);
+			SubjectGroup subjectGroup = findBy("nID", nID).orNull();
 			subjectGroupList.add(subjectGroup);
 		}
 		
