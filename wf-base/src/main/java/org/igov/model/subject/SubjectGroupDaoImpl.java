@@ -30,7 +30,7 @@ public class SubjectGroupDaoImpl extends GenericEntityDao<Long, SubjectGroup> im
 	@Override
 	public List<SubjectGroup> getSubjectGroupsByIdChild(List<String> nIDChilds) {
 		
-		List<SubjectGroup> subjectGroupList = new ArrayList<SubjectGroup>();
+		List<SubjectGroup> subjectGroupList = new ArrayList<>();
 		
 		for(String nID:nIDChilds) {
 			SubjectGroup subjectGroup = findByExpected("nID", nID);
