@@ -646,8 +646,7 @@ public class ActionEventController implements ControllerConstants {
 
                 
                    //               List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
-                Optional<SubjectMessageFeedback> oSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(aHistoryEvent_Service.get(0).getsID_Order());
-                LOG.info("1sID_Order: "+aHistoryEvent_Service.get(0).getsID_Order());
+                
 //                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
 //                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
 //                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessage) {
@@ -656,23 +655,25 @@ public class ActionEventController implements ControllerConstants {
 ////                    }
 //                }
                     for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
-                    List<String> asCell = new LinkedList<>();
-                    // sID_Order
-                    asCell.add(oHistoryEvent_Service.getsID_Order());
-                    LOG.info("2sID_Order: " + oHistoryEvent_Service.getsID_Order());
-                    // nID_Server
-                    asCell.add(oHistoryEvent_Service.getnID_Server() != null ? oHistoryEvent_Service.getnID_Server().toString() : "");
-                    // nID_Service
-                    asCell.add(oHistoryEvent_Service.getnID_Service() != null ? oHistoryEvent_Service.getnID_Service().toString() : "");
-                    // sID_Place
-                    asCell.add(oHistoryEvent_Service.getsID_UA());
-                    // nID_Subject
-                    asCell.add(oHistoryEvent_Service.getnID_Subject() != null ? oHistoryEvent_Service.getnID_Subject().toString() : "");
-                    // nRate
-                    asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
-                    String sTextFeedback;
-//                    SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(oHistoryEvent_Service.getId());
-                    LOG.info("oSubjectMessageFeedback.isPresent(): "+oSubjectMessageFeedback.isPresent());
+                        Optional<SubjectMessageFeedback> oSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
+                        LOG.info("1sID_Order: "+aHistoryEvent_Service.get(0).getsID_Order());
+                        List<String> asCell = new LinkedList<>();
+                        // sID_Order
+                        asCell.add(oHistoryEvent_Service.getsID_Order());
+                        LOG.info("2sID_Order: " + oHistoryEvent_Service.getsID_Order());
+                        // nID_Server
+                        asCell.add(oHistoryEvent_Service.getnID_Server() != null ? oHistoryEvent_Service.getnID_Server().toString() : "");
+                        // nID_Service
+                        asCell.add(oHistoryEvent_Service.getnID_Service() != null ? oHistoryEvent_Service.getnID_Service().toString() : "");
+                        // sID_Place
+                        asCell.add(oHistoryEvent_Service.getsID_UA());
+                        // nID_Subject
+                        asCell.add(oHistoryEvent_Service.getnID_Subject() != null ? oHistoryEvent_Service.getnID_Subject().toString() : "");
+                        // nRate
+                        asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
+                        String sTextFeedback;
+    //                    SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(oHistoryEvent_Service.getId());
+                        LOG.info("oSubjectMessageFeedback.isPresent(): "+oSubjectMessageFeedback.isPresent());
 //                    LOG.info("oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service(): "+oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service());
                     if (oSubjectMessageFeedback.isPresent() && oSubjectMessageFeedback.get().getoSubjectMessage().getnID_HistoryEvent_Service() != null) {
                         sTextFeedback = oSubjectMessageFeedback.get().getoSubjectMessage().getBody();
