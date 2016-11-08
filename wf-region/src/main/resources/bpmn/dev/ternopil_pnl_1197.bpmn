@@ -13,18 +13,17 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть медичний заклад, в який Ви бажаєте записатись на прийом" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKab205" name="Номер кабінету" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/medicine.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -99,7 +98,6 @@ execution.setVariable('sNotification_day', timer)</script>
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p>
 Чекаємо Вас за адресою: ${sAddress}<br>
-для оформлення паспорта громадянина України
 </p>
 <p>
 Дата та час візиту: ${date_of_visit}.
@@ -109,16 +107,7 @@ execution.setVariable('sNotification_day', timer)</script>
 										<ul>
 										${sDocID}
                                         <ul>
-										<li>свідоцтво про народження оригінал та копія;</li>
-										<li>оригінали та копії паспортів обох батьків;</li>
-										<li>оригінали та копії ІПН обох батьків;</li>
-										<li>За відсутності батька або матері до підрозділу подаються такі документи:</li>
-										<ul>
-										<li>свідоцтво про смерть другого з батьків;</li>
-										<li>рішення суду про позбавлення батьківських прав другого з батьків;</li>
-										<li>рішення суду про визнання другого з батьків безвісно відсутнім;</li>
-                                        <ul>
-										</ul>
+										
 										</ul>
 									</p>
 [pattern/mail/_common_signature_start.html]
