@@ -165,7 +165,9 @@ public class GeneralConfig {
     
     @Value("${general.feedbackCountLimit}")
     private String feedbackCountLimit;
-   
+    
+    @Value("${general.Escalation.bTest}")
+    private String sbTest_Escalation;
     
     
     public boolean isSelfTest() {
@@ -337,7 +339,7 @@ public class GeneralConfig {
         return b;
     }
     
-
+    
     
     public Integer getServerId(Integer nID_Server) {
         if(mServerReplace==null){
@@ -516,6 +518,19 @@ public class GeneralConfig {
 
     public void setsSecretKey_Corezoid_Gorsovet_Exchange(String sSecretKey_Corezoid_Gorsovet_Exchange) {
         this.sSecretKey_Corezoid_Gorsovet_Exchange = sSecretKey_Corezoid_Gorsovet_Exchange;
+    }
+
+    
+    public boolean isTest_Escalation() {
+        boolean b = true;
+        try {
+            b = (sbTest_Escalation == null ? b : Boolean.valueOf(sbTest_Escalation));
+            //LOG.info("(sbTest_LiqPay={})", sbTest_LiqPay);
+        } catch (Exception oException) {
+            LOG.error("Bad: {} (sbTest_Escalation={})", oException.getMessage(), sbTest_Escalation);
+            LOG.debug("FAIL:", oException);
+        }
+        return b;
     }
     
 }
