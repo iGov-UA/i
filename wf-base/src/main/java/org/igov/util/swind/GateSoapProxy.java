@@ -1,8 +1,10 @@
 package org.igov.util.swind;
 
-public class GateSoapProxy implements org.igov.util.swind.GateSoap {
+import org.igov.util.swind.holders.*;
+
+public class GateSoapProxy implements GateSoap {
   private String _endpoint = null;
-  private org.igov.util.swind.GateSoap gateSoap = null;
+  private GateSoap gateSoap = null;
   
   public GateSoapProxy() {
     _initGateSoapProxy();
@@ -15,7 +17,7 @@ public class GateSoapProxy implements org.igov.util.swind.GateSoap {
   
   private void _initGateSoapProxy() {
     try {
-      gateSoap = (new org.igov.util.swind.GateLocator()).getGateSoap();
+      gateSoap = (new GateLocator()).getGateSoap();
       if (gateSoap != null) {
         if (_endpoint != null)
           ((javax.xml.rpc.Stub)gateSoap)._setProperty("javax.xml.rpc.service.endpoint.address", _endpoint);
@@ -38,43 +40,43 @@ public class GateSoapProxy implements org.igov.util.swind.GateSoap {
     
   }
   
-  public org.igov.util.swind.GateSoap getGateSoap() {
+  public GateSoap getGateSoap() {
     if (gateSoap == null)
       _initGateSoapProxy();
     return gateSoap;
   }
   
-  public org.igov.util.swind.ProcessResult send(java.lang.String fileName, java.lang.String senderEMail, byte[] data) throws java.rmi.RemoteException{
+  public ProcessResult send(java.lang.String fileName, java.lang.String senderEMail, byte[] data) throws java.rmi.RemoteException{
     if (gateSoap == null)
       _initGateSoapProxy();
     return gateSoap.send(fileName, senderEMail, data);
   }
   
-  public void getMessages(byte[] signedEDRPOU, org.igov.util.swind.holders.ProcessResultHolder getMessagesResult, org.igov.util.swind.holders.ArrayOfStringHolder messagesList) throws java.rmi.RemoteException{
+  public void getMessages(byte[] signedEDRPOU, ProcessResultHolder getMessagesResult, ArrayOfStringHolder messagesList) throws java.rmi.RemoteException{
     if (gateSoap == null)
       _initGateSoapProxy();
     gateSoap.getMessages(signedEDRPOU, getMessagesResult, messagesList);
   }
   
-  public void getMessagesEx(byte[] signedEDRPOU, java.lang.String senderEmail, org.igov.util.swind.holders.ProcessResultHolder getMessagesExResult, org.igov.util.swind.holders.ArrayOfStringHolder messagesList) throws java.rmi.RemoteException{
+  public void getMessagesEx(byte[] signedEDRPOU, java.lang.String senderEmail, ProcessResultHolder getMessagesExResult, ArrayOfStringHolder messagesList) throws java.rmi.RemoteException{
     if (gateSoap == null)
       _initGateSoapProxy();
     gateSoap.getMessagesEx(signedEDRPOU, senderEmail, getMessagesExResult, messagesList);
   }
   
-  public void receive(byte[] signedMsgId, org.igov.util.swind.holders.ProcessResultHolder receiveResult, javax.xml.rpc.holders.StringHolder fileName, javax.xml.rpc.holders.ByteArrayHolder messageData) throws java.rmi.RemoteException{
+  public void receive(byte[] signedMsgId, ProcessResultHolder receiveResult, javax.xml.rpc.holders.StringHolder fileName, javax.xml.rpc.holders.ByteArrayHolder messageData) throws java.rmi.RemoteException{
     if (gateSoap == null)
       _initGateSoapProxy();
     gateSoap.receive(signedMsgId, receiveResult, fileName, messageData);
   }
   
-  public void receiveAll(byte[] signedEmail, org.apache.axis.types.UnsignedByte needDelete, org.igov.util.swind.holders.ProcessResultHolder receiveAllResult, org.igov.util.swind.holders.ArrayOfMessageHolder messages, org.apache.axis.holders.UnsignedByteHolder complete) throws java.rmi.RemoteException{
+  public void receiveAll(byte[] signedEmail, org.apache.axis.types.UnsignedByte needDelete, ProcessResultHolder receiveAllResult, ArrayOfMessageHolder messages, org.apache.axis.holders.UnsignedByteHolder complete) throws java.rmi.RemoteException{
     if (gateSoap == null)
       _initGateSoapProxy();
     gateSoap.receiveAll(signedEmail, needDelete, receiveAllResult, messages, complete);
   }
   
-  public org.igov.util.swind.ProcessResult delete(byte[] signedMsgId) throws java.rmi.RemoteException{
+  public ProcessResult delete(byte[] signedMsgId) throws java.rmi.RemoteException{
     if (gateSoap == null)
       _initGateSoapProxy();
     return gateSoap.delete(signedMsgId);

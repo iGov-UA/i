@@ -7,7 +7,9 @@
 
 package org.igov.util.swind;
 
-public class GateSoapStub extends org.apache.axis.client.Stub implements org.igov.util.swind.GateSoap {
+import org.igov.util.swind.holders.*;
+
+public class GateSoapStub extends org.apache.axis.client.Stub implements GateSoap {
     private java.util.Vector cachedSerClasses = new java.util.Vector();
     private java.util.Vector cachedSerQNames = new java.util.Vector();
     private java.util.Vector cachedSerFactories = new java.util.Vector();
@@ -35,7 +37,7 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
         param.setOmittable(true);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("http://govgate/", "ProcessResult"));
-        oper.setReturnClass(org.igov.util.swind.ProcessResult.class);
+        oper.setReturnClass(ProcessResult.class);
         oper.setReturnQName(new javax.xml.namespace.QName("http://govgate/", "SendResult"));
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -46,7 +48,7 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "signedEDRPOU"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "base64Binary"), byte[].class, false, false);
         param.setOmittable(true);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "GetMessagesResult"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://govgate/", "ProcessResult"), org.igov.util.swind.ProcessResult.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "GetMessagesResult"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://govgate/", "ProcessResult"), ProcessResult.class, false, false);
         oper.addParameter(param);
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "messagesList"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://govgate/", "ArrayOfString"), java.lang.String[].class, false, false);
         param.setItemQName(new javax.xml.namespace.QName("http://govgate/", "string"));
@@ -65,7 +67,7 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "senderEmail"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
         param.setOmittable(true);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "GetMessagesExResult"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://govgate/", "ProcessResult"), org.igov.util.swind.ProcessResult.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "GetMessagesExResult"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://govgate/", "ProcessResult"), ProcessResult.class, false, false);
         oper.addParameter(param);
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "messagesList"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://govgate/", "ArrayOfString"), java.lang.String[].class, false, false);
         param.setItemQName(new javax.xml.namespace.QName("http://govgate/", "string"));
@@ -81,7 +83,7 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "signedMsgId"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "base64Binary"), byte[].class, false, false);
         param.setOmittable(true);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "ReceiveResult"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://govgate/", "ProcessResult"), org.igov.util.swind.ProcessResult.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "ReceiveResult"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://govgate/", "ProcessResult"), ProcessResult.class, false, false);
         oper.addParameter(param);
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "fileName"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
         param.setOmittable(true);
@@ -101,9 +103,9 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
         oper.addParameter(param);
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "needDelete"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "unsignedByte"), org.apache.axis.types.UnsignedByte.class, false, false);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "ReceiveAllResult"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://govgate/", "ProcessResult"), org.igov.util.swind.ProcessResult.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "ReceiveAllResult"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://govgate/", "ProcessResult"), ProcessResult.class, false, false);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "messages"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://govgate/", "ArrayOfMessage"), org.igov.util.swind.Message[].class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://govgate/", "messages"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://govgate/", "ArrayOfMessage"), Message[].class, false, false);
         param.setItemQName(new javax.xml.namespace.QName("http://govgate/", "Message"));
         param.setOmittable(true);
         oper.addParameter(param);
@@ -120,7 +122,7 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
         param.setOmittable(true);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("http://govgate/", "ProcessResult"));
-        oper.setReturnClass(org.igov.util.swind.ProcessResult.class);
+        oper.setReturnClass(ProcessResult.class);
         oper.setReturnQName(new javax.xml.namespace.QName("http://govgate/", "DeleteResult"));
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -159,7 +161,7 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
             qName = new javax.xml.namespace.QName("http://govgate/", "ArrayOfMessage");
             cachedSerQNames.add(qName);
-            cls = org.igov.util.swind.Message[].class;
+            cls = Message[].class;
             cachedSerClasses.add(cls);
             qName = new javax.xml.namespace.QName("http://govgate/", "Message");
             qName2 = new javax.xml.namespace.QName("http://govgate/", "Message");
@@ -177,14 +179,14 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
 
             qName = new javax.xml.namespace.QName("http://govgate/", "Message");
             cachedSerQNames.add(qName);
-            cls = org.igov.util.swind.Message.class;
+            cls = Message.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
             qName = new javax.xml.namespace.QName("http://govgate/", "ProcessResult");
             cachedSerQNames.add(qName);
-            cls = org.igov.util.swind.ProcessResult.class;
+            cls = ProcessResult.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(enumsf);
             cachedDeserFactories.add(enumdf);
@@ -255,7 +257,7 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
         }
     }
 
-    public org.igov.util.swind.ProcessResult send(java.lang.String fileName, java.lang.String senderEMail, byte[] data) throws java.rmi.RemoteException {
+    public ProcessResult send(java.lang.String fileName, java.lang.String senderEMail, byte[] data) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -279,9 +281,9 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
         else {
             extractAttachments(_call);
             try {
-                return (org.igov.util.swind.ProcessResult) _resp;
+                return (ProcessResult) _resp;
             } catch (java.lang.Exception _exception) {
-                return (org.igov.util.swind.ProcessResult) org.apache.axis.utils.JavaUtils.convert(_resp, org.igov.util.swind.ProcessResult.class);
+                return (ProcessResult) org.apache.axis.utils.JavaUtils.convert(_resp, ProcessResult.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -289,7 +291,7 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
 }
     }
 
-    public void getMessages(byte[] signedEDRPOU, org.igov.util.swind.holders.ProcessResultHolder getMessagesResult, org.igov.util.swind.holders.ArrayOfStringHolder messagesList) throws java.rmi.RemoteException {
+    public void getMessages(byte[] signedEDRPOU, ProcessResultHolder getMessagesResult, ArrayOfStringHolder messagesList) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -315,9 +317,9 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
             java.util.Map _output;
             _output = _call.getOutputParams();
             try {
-                getMessagesResult.value = (org.igov.util.swind.ProcessResult) _output.get(new javax.xml.namespace.QName("http://govgate/", "GetMessagesResult"));
+                getMessagesResult.value = (ProcessResult) _output.get(new javax.xml.namespace.QName("http://govgate/", "GetMessagesResult"));
             } catch (java.lang.Exception _exception) {
-                getMessagesResult.value = (org.igov.util.swind.ProcessResult) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://govgate/", "GetMessagesResult")), org.igov.util.swind.ProcessResult.class);
+                getMessagesResult.value = (ProcessResult) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://govgate/", "GetMessagesResult")), ProcessResult.class);
             }
             try {
                 messagesList.value = (java.lang.String[]) _output.get(new javax.xml.namespace.QName("http://govgate/", "messagesList"));
@@ -330,7 +332,7 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
 }
     }
 
-    public void getMessagesEx(byte[] signedEDRPOU, java.lang.String senderEmail, org.igov.util.swind.holders.ProcessResultHolder getMessagesExResult, org.igov.util.swind.holders.ArrayOfStringHolder messagesList) throws java.rmi.RemoteException {
+    public void getMessagesEx(byte[] signedEDRPOU, java.lang.String senderEmail, ProcessResultHolder getMessagesExResult, ArrayOfStringHolder messagesList) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -356,9 +358,9 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
             java.util.Map _output;
             _output = _call.getOutputParams();
             try {
-                getMessagesExResult.value = (org.igov.util.swind.ProcessResult) _output.get(new javax.xml.namespace.QName("http://govgate/", "GetMessagesExResult"));
+                getMessagesExResult.value = (ProcessResult) _output.get(new javax.xml.namespace.QName("http://govgate/", "GetMessagesExResult"));
             } catch (java.lang.Exception _exception) {
-                getMessagesExResult.value = (org.igov.util.swind.ProcessResult) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://govgate/", "GetMessagesExResult")), org.igov.util.swind.ProcessResult.class);
+                getMessagesExResult.value = (ProcessResult) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://govgate/", "GetMessagesExResult")), ProcessResult.class);
             }
             try {
                 messagesList.value = (java.lang.String[]) _output.get(new javax.xml.namespace.QName("http://govgate/", "messagesList"));
@@ -371,7 +373,7 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
 }
     }
 
-    public void receive(byte[] signedMsgId, org.igov.util.swind.holders.ProcessResultHolder receiveResult, javax.xml.rpc.holders.StringHolder fileName, javax.xml.rpc.holders.ByteArrayHolder messageData) throws java.rmi.RemoteException {
+    public void receive(byte[] signedMsgId, ProcessResultHolder receiveResult, javax.xml.rpc.holders.StringHolder fileName, javax.xml.rpc.holders.ByteArrayHolder messageData) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -397,9 +399,9 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
             java.util.Map _output;
             _output = _call.getOutputParams();
             try {
-                receiveResult.value = (org.igov.util.swind.ProcessResult) _output.get(new javax.xml.namespace.QName("http://govgate/", "ReceiveResult"));
+                receiveResult.value = (ProcessResult) _output.get(new javax.xml.namespace.QName("http://govgate/", "ReceiveResult"));
             } catch (java.lang.Exception _exception) {
-                receiveResult.value = (org.igov.util.swind.ProcessResult) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://govgate/", "ReceiveResult")), org.igov.util.swind.ProcessResult.class);
+                receiveResult.value = (ProcessResult) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://govgate/", "ReceiveResult")), ProcessResult.class);
             }
             try {
                 fileName.value = (java.lang.String) _output.get(new javax.xml.namespace.QName("http://govgate/", "fileName"));
@@ -417,7 +419,7 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
 }
     }
 
-    public void receiveAll(byte[] signedEmail, org.apache.axis.types.UnsignedByte needDelete, org.igov.util.swind.holders.ProcessResultHolder receiveAllResult, org.igov.util.swind.holders.ArrayOfMessageHolder messages, org.apache.axis.holders.UnsignedByteHolder complete) throws java.rmi.RemoteException {
+    public void receiveAll(byte[] signedEmail, org.apache.axis.types.UnsignedByte needDelete, ProcessResultHolder receiveAllResult, ArrayOfMessageHolder messages, org.apache.axis.holders.UnsignedByteHolder complete) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -443,14 +445,14 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
             java.util.Map _output;
             _output = _call.getOutputParams();
             try {
-                receiveAllResult.value = (org.igov.util.swind.ProcessResult) _output.get(new javax.xml.namespace.QName("http://govgate/", "ReceiveAllResult"));
+                receiveAllResult.value = (ProcessResult) _output.get(new javax.xml.namespace.QName("http://govgate/", "ReceiveAllResult"));
             } catch (java.lang.Exception _exception) {
-                receiveAllResult.value = (org.igov.util.swind.ProcessResult) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://govgate/", "ReceiveAllResult")), org.igov.util.swind.ProcessResult.class);
+                receiveAllResult.value = (ProcessResult) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://govgate/", "ReceiveAllResult")), ProcessResult.class);
             }
             try {
-                messages.value = (org.igov.util.swind.Message[]) _output.get(new javax.xml.namespace.QName("http://govgate/", "messages"));
+                messages.value = (Message[]) _output.get(new javax.xml.namespace.QName("http://govgate/", "messages"));
             } catch (java.lang.Exception _exception) {
-                messages.value = (org.igov.util.swind.Message[]) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://govgate/", "messages")), org.igov.util.swind.Message[].class);
+                messages.value = (Message[]) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://govgate/", "messages")), Message[].class);
             }
             try {
                 complete.value = (org.apache.axis.types.UnsignedByte) _output.get(new javax.xml.namespace.QName("http://govgate/", "complete"));
@@ -463,7 +465,7 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
 }
     }
 
-    public org.igov.util.swind.ProcessResult delete(byte[] signedMsgId) throws java.rmi.RemoteException {
+    public ProcessResult delete(byte[] signedMsgId) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -487,9 +489,9 @@ public class GateSoapStub extends org.apache.axis.client.Stub implements org.igo
         else {
             extractAttachments(_call);
             try {
-                return (org.igov.util.swind.ProcessResult) _resp;
+                return (ProcessResult) _resp;
             } catch (java.lang.Exception _exception) {
-                return (org.igov.util.swind.ProcessResult) org.apache.axis.utils.JavaUtils.convert(_resp, org.igov.util.swind.ProcessResult.class);
+                return (ProcessResult) org.apache.axis.utils.JavaUtils.convert(_resp, ProcessResult.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {

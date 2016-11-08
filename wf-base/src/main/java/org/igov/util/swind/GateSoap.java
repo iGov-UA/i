@@ -7,6 +7,9 @@
 
 package org.igov.util.swind;
 
+import org.igov.util.swind.holders.*;
+
+
 public interface GateSoap extends java.rmi.Remote {
 
     /**
@@ -17,7 +20,7 @@ public interface GateSoap extends java.rmi.Remote {
      * не вилучив викликом методу <b>Delete</b><br />
      * data - зміст документа в форматі електронного конверта шлюзу<br />
      */
-    public org.igov.util.swind.ProcessResult send(java.lang.String fileName, java.lang.String senderEMail, byte[] data) throws java.rmi.RemoteException;
+    public ProcessResult send(java.lang.String fileName, java.lang.String senderEMail, byte[] data) throws java.rmi.RemoteException;
 
     /**
      * <b>Отримати список кодів повідомлень для одержувача</b><br
@@ -26,7 +29,7 @@ public interface GateSoap extends java.rmi.Remote {
      * messagesList - перелік кодів повідомлень, у вигляді тексту, кожен
      * код з нового рядку<br />
      */
-    public void getMessages(byte[] signedEDRPOU, org.igov.util.swind.holders.ProcessResultHolder getMessagesResult, org.igov.util.swind.holders.ArrayOfStringHolder messagesList) throws java.rmi.RemoteException;
+    public void getMessages(byte[] signedEDRPOU, ProcessResultHolder getMessagesResult, ArrayOfStringHolder messagesList) throws java.rmi.RemoteException;
 
     /**
      * <b>Отримати список кодів повідомлень для одержувача з визначенням
@@ -37,7 +40,7 @@ public interface GateSoap extends java.rmi.Remote {
      * messagesList - перелік кодів повідомлень, у вигляді тексту, кожен
      * код з нового рядку<br />
      */
-    public void getMessagesEx(byte[] signedEDRPOU, java.lang.String senderEmail, org.igov.util.swind.holders.ProcessResultHolder getMessagesExResult, org.igov.util.swind.holders.ArrayOfStringHolder messagesList) throws java.rmi.RemoteException;
+    public void getMessagesEx(byte[] signedEDRPOU, java.lang.String senderEmail, ProcessResultHolder getMessagesExResult, ArrayOfStringHolder messagesList) throws java.rmi.RemoteException;
 
     /**
      * <b>Отримати повідомлення</b><br />
@@ -46,7 +49,7 @@ public interface GateSoap extends java.rmi.Remote {
      * messageData - зміст повідомлення в форматі електронного конверта шлюзу<br
      * />
      */
-    public void receive(byte[] signedMsgId, org.igov.util.swind.holders.ProcessResultHolder receiveResult, javax.xml.rpc.holders.StringHolder fileName, javax.xml.rpc.holders.ByteArrayHolder messageData) throws java.rmi.RemoteException;
+    public void receive(byte[] signedMsgId, ProcessResultHolder receiveResult, javax.xml.rpc.holders.StringHolder fileName, javax.xml.rpc.holders.ByteArrayHolder messageData) throws java.rmi.RemoteException;
 
     /**
      * <b>Отримати всі повідомлення</b><br />
@@ -57,12 +60,12 @@ public interface GateSoap extends java.rmi.Remote {
      * complete - ознака відсутності на час виклику повідомлень, що не повернуті
      * користувачу<br />
      */
-    public void receiveAll(byte[] signedEmail, org.apache.axis.types.UnsignedByte needDelete, org.igov.util.swind.holders.ProcessResultHolder receiveAllResult, org.igov.util.swind.holders.ArrayOfMessageHolder messages, org.apache.axis.holders.UnsignedByteHolder complete) throws java.rmi.RemoteException;
+    public void receiveAll(byte[] signedEmail, org.apache.axis.types.UnsignedByte needDelete, ProcessResultHolder receiveAllResult, ArrayOfMessageHolder messages, org.apache.axis.holders.UnsignedByteHolder complete) throws java.rmi.RemoteException;
 
     /**
      * <b>Вилучити повідомлення</b><br />
      * signedMsgId - перелік кодів повідомлень, у вигляді тексту, кожен код
      * з нового рядку, підписаний ЕЦП (блок XXX_SIGN)<br />
      */
-    public org.igov.util.swind.ProcessResult delete(byte[] signedMsgId) throws java.rmi.RemoteException;
+    public ProcessResult delete(byte[] signedMsgId) throws java.rmi.RemoteException;
 }

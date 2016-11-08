@@ -7,7 +7,7 @@
 
 package org.igov.util.swind;
 
-public class GateLocator extends org.apache.axis.client.Service implements org.igov.util.swind.Gate {
+public class GateLocator extends org.apache.axis.client.Service implements Gate {
 
 /**
  * <h1>WEB-сервіс обміну документами та квитанціями з приймальним
@@ -80,7 +80,7 @@ public class GateLocator extends org.apache.axis.client.Service implements org.i
         GateSoapWSDDServiceName = name;
     }
 
-    public org.igov.util.swind.GateSoap getGateSoap() throws javax.xml.rpc.ServiceException {
+    public GateSoap getGateSoap() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
             endpoint = new java.net.URL(GateSoap_address);
@@ -91,9 +91,9 @@ public class GateLocator extends org.apache.axis.client.Service implements org.i
         return getGateSoap(endpoint);
     }
 
-    public org.igov.util.swind.GateSoap getGateSoap(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public GateSoap getGateSoap(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
-            org.igov.util.swind.GateSoapStub _stub = new org.igov.util.swind.GateSoapStub(portAddress, this);
+            GateSoapStub _stub = new GateSoapStub(portAddress, this);
             _stub.setPortName(getGateSoapWSDDServiceName());
             return _stub;
         }
@@ -113,8 +113,8 @@ public class GateLocator extends org.apache.axis.client.Service implements org.i
      */
     public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
-            if (org.igov.util.swind.GateSoap.class.isAssignableFrom(serviceEndpointInterface)) {
-                org.igov.util.swind.GateSoapStub _stub = new org.igov.util.swind.GateSoapStub(new java.net.URL(GateSoap_address), this);
+            if (GateSoap.class.isAssignableFrom(serviceEndpointInterface)) {
+                GateSoapStub _stub = new GateSoapStub(new java.net.URL(GateSoap_address), this);
                 _stub.setPortName(getGateSoapWSDDServiceName());
                 return _stub;
             }

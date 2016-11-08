@@ -51,7 +51,7 @@ public interface Gate extends javax.xml.rpc.Service {
  */
     public java.lang.String getGateSoapAddress();
 
-    public org.igov.util.swind.GateSoap getGateSoap() throws javax.xml.rpc.ServiceException;
+    public GateSoap getGateSoap() throws javax.xml.rpc.ServiceException;
 
-    public org.igov.util.swind.GateSoap getGateSoap(java.net.URL portAddress) throws javax.xml.rpc.ServiceException;
+    public GateSoap getGateSoap(java.net.URL portAddress) throws javax.xml.rpc.ServiceException;
 }
