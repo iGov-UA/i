@@ -467,28 +467,44 @@ exports.upload_content_as_attachment = function (req, res) {
           "orientation": "landscape" // portrait or landscape
         };
         pdf.create(req.body.sContent, options)
-        .toBuffer(function (err, buffer) {
-          callback(err, buffer);
+        .toStream(function (err, stream) {
+          callback(err, {content: stream, contentType: 'application/json', url:'upload_file_as_attachment'});
         });
       }else{
-        callback(null, req.body.sContent);
+        callback(null, {content: req.body.sContent, contentType: 'text/html', url:'upload_content_as_attachment'});
       }
     },
-    function (content, callback) {
-      activiti.post({
-        path: 'object/file/upload_content_as_attachment',
-        query: {
-          nTaskId: req.params.taskId,
-          sContentType: 'text/html',
-          sDescription: req.body.sDescription,
-          sFileName: req.body.sFileName
-        },
-        headers: {
-          'Content-Type': 'text/html;charset=utf-8'
-        }
-      }, function (error, statusCode, result) {
-        error ? res.send(error) : res.status(statusCode).json(result);
-      }, content, false);
+    function (data, callback) {
+      if(data.url === 'upload_content_as_attachment'){
+        activiti.post({
+          path: 'object/file/' + data.url,
+          query: {
+            nTaskId: req.params.taskId,
+            sContentType: data.contentType,
+            sDescription: req.body.sDescription,
+            sFileName: req.body.sFileName
+          },
+          headers: {
+            'Content-Type': data.contentType+';charset=utf-8'
+          }
+        }, function (error, statusCode, result) {
+          error ? res.send(error) : res.status(statusCode).json(result);
+        }, data.content, false);
+      }
+
+      if(data.url === 'upload_file_as_attachment'){
+        activiti.uploadStream({
+          path: 'object/file/' + data.url,
+          taskId: req.params.taskId,
+          stream: data.content,
+          description: req.body.sDescription,
+          headers: {
+            'Content-Type': data.contentType+';charset=utf-8'
+          }
+        },function (error, statusCode, result) {
+          error ? res.send(error) : res.status(statusCode).json(result);
+        });
+      }
     }
   ]);
 };
