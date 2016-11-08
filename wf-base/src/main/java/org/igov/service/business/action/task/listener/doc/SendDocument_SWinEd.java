@@ -58,9 +58,10 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
             if (oFile_XML_SWinEd != null) {
                 GateSoapProxy gate = new GateSoapProxy(URL);
                 LOG.info("!!! Before sending request to gate web service. sID_File_XML_SWinEdValue:" + oByteArrayMultipartFile.getOriginalFilename() + 
-                		" sEmailValue:" + sEmailValue);
+                		" sEmailValue:" + sEmailValue + " endpoint:" + gate.getEndpoint() + " content:" + oByteArrayMultipartFile.getBytes());
                 ProcessResult result = gate.send(oByteArrayMultipartFile.getOriginalFilename(), sEmailValue, oByteArrayMultipartFile.getBytes());
                 LOG.info("!!!response:" + result.getValue());
+                resp = result.getValue();
             } else {
                 LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " oFile_XML_SWinEd is null!!!");
             }
