@@ -21,7 +21,7 @@
 <!--        <activiti:formProperty id="Info_11" name="УВАГА - Зазначена адреса буде вважатися місцем де планується зберігати придбану зброю." type="label" default=" "></activiti:formProperty> -->
         <activiti:formProperty id="sAdress2" name="Вкажіть Вашу повну поштову адресу постійного місцеперебування, для оформлення заяви; наприклад, 49000, м.Дніпро, пр.Яворницького буд.100, кв.777. Зазначена адреса буде вважатися місцем де планується зберігати придбану зброю." type="string" default=" " required="true"></activiti:formProperty>
 <!--        <activiti:formProperty id="Info_12" name="УВАГА - необхідно додатково надати документ, підтверджуючий фактичне місце проживання (договір оренди житлового приміщення, свідоцтво про право власності на житлове приміщення тощо)." type="label" default=" "></activiti:formProperty> -->
-        <activiti:formProperty id="fDoc_06" name="Необхідно надати документ, підтверджуючий фактичне місце проживання; (договір оренди житлового приміщення, свідоцтво про право власності на житлове приміщення тощо)" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_06" name="Необхідно надати документ, підтверджуючий фактичне місце проживання; договір оренди житлового приміщення, свідоцтво про право власності на житлове приміщення, тощо" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="asSelectWeapon_01" name="Тип зброї для придбання" type="enum" default=" " required="true">
           <activiti:value id="tf_01" name="Мисливська нарізна зброя"></activiti:value>
           <activiti:value id="tf_02" name="Мисливська гладкоствольна/пневматична зброя"></activiti:value>
@@ -112,7 +112,7 @@
         <activiti:formProperty id="dDateDozv_05" name="Cтрок дії дозвілу до" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="Info_04" name="======================================" type="label" default="======================================"></activiti:formProperty>
         <activiti:formProperty id="Info_05" name="Прикріпіть скани документів" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="fDoc_01" name="Громадянський паспорт; сторінки 1, 2 та сторінку з даними реєстрації" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_01" name="Громадянський паспорт; перша та друга сторінки паспорту, а також сторінки з реєстрацією" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="fDoc_02" name="Медична довідка; форма №127/о" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="fDoc_03" name="Довідка про вивчення матеріальної частини зброї, спеціальних засобів, правил поводження з ними та їх застосування" type="file" default=" " required="true"></activiti:formProperty>
 <!--        <activiti:formProperty id="Info_14" name="Завантажити квітанції для сплати" type="label" default="Ви можете скористатися наступним &lt;a href=&quot;https://drive.google.com/open?id=0B9UDkfHM4vkrbEhEQWtNdEFQbG8&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty> -->
@@ -383,17 +383,23 @@
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 
 Ви подавали заявку щодо Отримання дозволу на придбання зброї. &lt;br/&gt;&lt;br/&gt;
-Зауваження до наданих документів відсутні. &lt;br/&gt;&lt;br/&gt;
+Співробітник МВС перевірив надані Вами документи и до них відсутні зауваження. &lt;br/&gt;&lt;br/&gt;
 
-              Адреса обраного Вами регіонального відділення: &lt;br/&gt;
-               &lt;b&gt;${sRajAdress}&lt;/b&gt; &lt;br/&gt;&lt;br/&gt;
+Просимо підготувати наступний пакет документів:&lt;br/&gt;
+1. Оригінал медичної довідки ф127/о&lt;br/&gt;
+2. Оригінал довідки про вивчення матеріальної частини зброї, спеціальних засобів, правил користування ними та їх застосування&lt;br/&gt;
+3. Ксерокопія паспорту&lt;br/&gt;
+4. Платіжне доручення або квитанція (реквізити отримуйте або обов'язково перевіряйте в органах внутрішніх справ безпосередньо перед сплатою за послугу)&lt;br/&gt;
+5. Довідка про відсутність (наявність) судимості&lt;br/&gt;
 
-              Телефон для довідок: &lt;br/&gt;
-               &lt;b&gt;${sRajPhone}&lt;/b&gt; &lt;br/&gt;&lt;br/&gt;
+              &lt;b&gt;Адреса обраного Вами регіонального відділення: &lt;/b&gt;&lt;br/&gt;
+               ${sRajAdress}&lt;br/&gt;
 
-              Графік прийому громадян: &lt;br/&gt;&lt;br/&gt;
-               &lt;b&gt;${sRajTimeWork}&lt;/b&gt; &lt;br/&gt;
+              Прийомний час: &lt;br/&gt;
+               ${sRajTimeWork}&lt;br/&gt;
 
+			   Телефон для довідок: &lt;br/&gt;
+               ${sRajPhone}&lt;br/&gt;&lt;br/&gt;
 
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
@@ -466,16 +472,15 @@ ${sNameOrgan}
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 
 Ви подавали заявку для оцінки якості надання послуги Отримання дозволу на придбання зброї. &lt;br/&gt;&lt;br/&gt;
-              Адреса обраного Вами регіонального відділення: &lt;br/&gt;
-               &lt;b&gt;${sRajAdress}&lt;/b&gt; &lt;br/&gt;&lt;br/&gt;
 
-              Телефон для довідок: &lt;br/&gt;
-               &lt;b&gt;${sRajPhone}&lt;/b&gt; &lt;br/&gt;&lt;br/&gt;
+              &lt;b&gt;Адреса обраного Вами регіонального відділення: &lt;/b&gt;&lt;br/&gt;
+               ${sRajAdress}&lt;br/&gt;
 
-              Графік прийому громадян: &lt;br/&gt;&lt;br/&gt;
-               &lt;b&gt;${sRajTimeWork}&lt;/b&gt; &lt;br/&gt;
+              Прийомний час: &lt;br/&gt;
+               ${sRajTimeWork}&lt;br/&gt;
 
-
+			   Телефон для довідок: &lt;br/&gt;
+               ${sRajPhone}&lt;br/&gt;&lt;br/&gt;
 
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
@@ -519,16 +524,14 @@ ${sNameOrgan}&lt;br/&gt;
 Ви подавали заявку щодо Отримання дозволу на придбання зброї. &lt;br/&gt;&lt;br/&gt;
 Зауваження до наданих документів наступні: ${sComment}&lt;br/&gt;&lt;br/&gt;
 
-              Адреса обраного Вами регіонального відділення: &lt;br/&gt;
-               &lt;b&gt;${sRajAdress}&lt;/b&gt; &lt;br/&gt;&lt;br/&gt;
+              &lt;b&gt;Адреса обраного Вами регіонального відділення: &lt;/b&gt;&lt;br/&gt;
+               ${sRajAdress}&lt;br/&gt;
 
-              Телефон для довідок: &lt;br/&gt;
-               &lt;b&gt;${sRajPhone}&lt;/b&gt; &lt;br/&gt;&lt;br/&gt;
+              Прийомний час: &lt;br/&gt;
+               ${sRajTimeWork}&lt;br/&gt;
 
-              Графік прийому громадян: &lt;br/&gt;&lt;br/&gt;
-               &lt;b&gt;${sRajTimeWork}&lt;/b&gt; &lt;br/&gt;
-
-
+			   Телефон для довідок: &lt;br/&gt;
+               ${sRajPhone}&lt;br/&gt;&lt;br/&gt;
 
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
