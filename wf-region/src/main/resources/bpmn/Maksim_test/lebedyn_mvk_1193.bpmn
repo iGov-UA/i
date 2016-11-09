@@ -44,7 +44,51 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення громадянину про успішну доставку до ЦНАПу"></serviceTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <userTask id="usertask1" name="1. Перевірка даних адміністратором ЦНАПу"></userTask>
+    <userTask id="usertask1" name="1. Перевірка даних адміністратором ЦНАПу" activiti:candidateGroups="cnap_lebedyn">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень; ;writable=false" type="enum">
+          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
+          <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
+          <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
+          <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
+          <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні "></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень або прив'язка (місце розташування); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень; ;writable=false" type="enum">
+          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.); ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="asChoicePay" name="За чий рахунок буде проводитися зрізка зелених насаджень; ;writable=false" type="enum">
+          <activiti:value id="sEnum1" name="За власний рахунок"></activiti:value>
+          <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="accept" name="З документами все гаразд, документи відправлено на комісію"></activiti:value>
+          <activiti:value id="reject" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_503_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -52,13 +96,90 @@
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="2. Обробка після обстеження ЗН (видача рішення виконкому про видалення ЗН)"></userTask>
+    <userTask id="usertask2" name="2. Обробка після обстеження ЗН (видача рішення виконкому про видалення ЗН)" activiti:candidateGroups="cnap_lebedyn">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
+          <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
+          <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
+          <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
+          <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень або прив'язка (місце розташування)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="asChoicePay" name="За чий рахунок буде проводитися зрізка зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="За власний рахунок"></activiti:value>
+          <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="nFileResolution" name="Відсканована копія рішення виконкому про видалення зелених насаджень" type="file" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_503_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <serviceTask id="servicetask4" name="Повідомлення про реєстрацію звернення та передачу на комісію обстеження ЗН"></serviceTask>
     <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
     <serviceTask id="servicetask5" name="Повідомлення заявнику про слату відновної вартості ЗН"></serviceTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="servicetask5"></sequenceFlow>
-    <userTask id="usertask3" name="3. Очикування оплати відновної вартості ЗН"></userTask>
+    <userTask id="usertask3" name="3. Очикування оплати відновної вартості ЗН" activiti:candidateGroups="cnap_lebedyn">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
+          <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
+          <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
+          <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
+          <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень або прив'язка (місце розташування)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="asChoicePay" name="За чий рахунок буде проводитися зрізка зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="За власний рахунок"></activiti:value>
+          <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_503_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
