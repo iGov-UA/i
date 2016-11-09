@@ -41,7 +41,10 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
+import org.activiti.engine.task.Attachment;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectDao;
 import org.igov.model.subject.SubjectHuman;
@@ -852,9 +855,29 @@ public class ActionEventController implements ControllerConstants {
                 SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
                 LOG.info("subjectHuman: " + subjectHuman);
                 //получаем ответный файл
-                List<VariableMultipartFile> multipartFile = dfsService.getAnswer(subjectHuman.getsINN());
-                //крепим файл как атач 
+                List<ByteArrayMultipartFile> multipartFiles = dfsService.getAnswer(subjectHuman.getsINN());
+                StringBuilder anID_Attach_Dfs = new StringBuilder();
+                /*try {
+                    for (ByteArrayMultipartFile multipartFile : multipartFiles) {
 
+                        Attachment attachment = taskService.createAttachment(multipartFile.getContentType() + ";" + multipartFile.getExp(),
+                                delegateTask.getId(), execution.getProcessInstanceId(),
+                                fileNameOrigin, fileName, multipartFile.getInputStream());
+
+                        if (attachment != null) {
+                            anID_Attach_Dfs.append(attachment.getId()).append(",");
+                            LOG.info("attachment: " + attachment.getId());
+                        }
+                    }
+
+                } catch (Exception ex) {
+                    java.util.logging.Logger.getLogger(ActionEventController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (anID_Attach_Dfs.length() > 0) {
+                    String sID_Attach_UkrDoc = anID_Attach_Dfs.deleteCharAt(anID_Attach_Dfs.length() - 1).toString();
+                    runtimeService.setVariable(execution.getProcessInstanceId(), "anID_Attach_Dfs", sID_Attach_UkrDoc);
+                    taskService.setVariable(delegateTask.getId(), "anID_Attach_Dfs", sID_Attach_UkrDoc);
+                }*/
                 //закрываем таску
             }
         }

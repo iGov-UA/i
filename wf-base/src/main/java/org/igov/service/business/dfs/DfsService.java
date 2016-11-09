@@ -8,6 +8,7 @@ package org.igov.service.business.dfs;
 import java.util.ArrayList;
 import java.util.List;
 import org.igov.io.GeneralConfig;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.io.web.HttpRequester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,8 +57,10 @@ public class DfsService {
         return result;
     }
 
-    public List<VariableMultipartFile> getAnswer(String inn) throws Exception {
-        List<VariableMultipartFile> result = new ArrayList<>();
+    public List<ByteArrayMultipartFile> getAnswer(String inn) throws Exception {
+        List<ByteArrayMultipartFile> result = new ArrayList<>();
+        //ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(responseEntity.getBody(), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
+
         String responseBody = getMessages(inn);
         LOG.info("getMessages responseBody: " + responseBody);
         //parse if from result
