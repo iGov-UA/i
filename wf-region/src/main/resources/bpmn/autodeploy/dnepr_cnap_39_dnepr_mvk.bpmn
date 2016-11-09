@@ -18,7 +18,7 @@
           <activiti:value id="sDocTypeRent" name="передачу в оренду земельних ділянок, що перебувають у державній або комунальній власності"></activiti:value>
           <activiti:value id="sDocTypeOther" name="інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської (селищної) ради" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської ради" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObjAdress" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDavName" name="Зазначте у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string"></activiti:formProperty>
@@ -65,7 +65,7 @@
           <activiti:value id="sDocTypeRent" name="передачу в оренду земельних ділянок, що перебувають у державній або комунальній власності"></activiti:value>
           <activiti:value id="sDocTypeOther" name="інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської (селищної) ради; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської ради; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObjAdress" name="Місцезнаходження (адреса) об’єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDavName" name="Зазначте у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; ;writable=false" type="string"></activiti:formProperty>
@@ -118,7 +118,7 @@
           <activiti:value id="sDocTypeRent" name="передачу в оренду земельних ділянок, що перебувають у державній або комунальній власності"></activiti:value>
           <activiti:value id="sDocTypeOther" name="інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської (селищної) ради; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської ради; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObjAdress" name="Місцезнаходження (адреса) об’єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDavName" name="Зазначте у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; ;writable=false" type="string"></activiti:formProperty>
@@ -144,12 +144,15 @@
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації зверення у форматі ДД.ММ.РРРР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали співробітника, що опрацював звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asResultCNAP" name="Результат опрацювання" type="enum" required="true">
+        <activiti:formProperty id="asResultCNAP1" name="Результат опрацювання" type="enum">
           <activiti:value id="dozvMyself" name="Копія рішення готова, отримайте її у ЦНАП"></activiti:value>
+          <activiti:value id="reject" name="Неможливо видати копію рішень"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResultCNAP2" name="Результат опрацювання" type="enum">
           <activiti:value id="dozvPost" name="Копія рішення надіслана Вам поштою"></activiti:value>
           <activiti:value id="reject" name="Неможливо видати копію рішень"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment2" name="Коментар адміністратора у разі неможливості видати копію рішень міської (селищної) ради" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment2" name="Коментар адміністратора у разі неможливості видати копію рішень міської ради" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="ShowFields" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_39_dnepr_mvk_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="invisible"></activiti:formProperty>
@@ -181,13 +184,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської (селищної) ради]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 							    &lt;p&gt;
-							    Ваше звернення [sID_Order] щодо копії рішень міської (селищної) ради успішно зареєстроване.&lt;br&gt;
+							    Ваше звернення [sID_Order] щодо копії рішень міської ради успішно зареєстроване.&lt;br&gt;
 								Для того щоб закінчити процедуру Вам необхідно буде прийти (після підтвердження виготовлення копії рішення) за адресою: ${sAddress}&lt;br&gt;
 								З собою потрібно мати документ, що посвідчує особу.&lt;br&gt;
 								Графік прийому громадян:&lt;br&gt;
@@ -222,7 +225,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської (селищної) ради]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header_with_payment.html]
@@ -271,13 +274,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: Копії рішень міської (селищної) ради]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: Копії рішень міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Нажаль Ви не сплатили за послугу, тому не можемо надіслати Вам листа з копією рішення міської (селищної) ради.&lt;br&gt; 
+                              		Нажаль Ви не сплатили за послугу, тому не можемо надіслати Вам листа з копією рішення міської ради.&lt;br&gt; 
                               		Якщо потрібно, Ви можете подати ще одну заявку на порталі &lt;a href="igov.org.ua"&gt;igov.org.ua&lt;/a&gt; 
                               		&lt;/p&gt;
                               		[pattern/mail/_common_signature_start.html]
@@ -311,7 +314,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Опрацьовано звернення на тему: Копії рішень міської (селищної) ради]]></activiti:string>
+          <activiti:string><![CDATA[Опрацьовано звернення на тему: Копії рішень міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -396,6 +399,7 @@ var new_year = new_src.getFullYear();
 var new_hour = new_src.getHours();
 var new_minutes = new_src.getMinutes();
 var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
+timer = 'PT5M';
 execution.setVariable('sNotification_day', timer)
 </script>
     </scriptTask>
@@ -479,10 +483,10 @@ execution.setVariable('sNotification_day', timer)
     </serviceTask>
     <sequenceFlow id="flow44" sourceRef="usertask2" targetRef="exclusivegateway4"></sequenceFlow>
     <sequenceFlow id="flow45" sourceRef="exclusivegateway4" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultCNAP == 'dozvPost'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType == 'sPost' && asResultCNAP2 == 'dozvPost'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="exclusivegateway4" targetRef="servicetask12">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultCNAP == 'reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultCNAP1 == 'reject' || asResultCNAP2 == 'reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow47" sourceRef="servicetask12" targetRef="endevent2"></sequenceFlow>
     <serviceTask id="servicetask13" name="Копія рішення готова (особистий візит)+ СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -531,7 +535,7 @@ execution.setVariable('sNotification_day', timer)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow48" sourceRef="exclusivegateway4" targetRef="servicetask13">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultCNAP == 'dozvPost'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType == 'sMyself' && asResultCNAP1 == 'dozvPost'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow49" sourceRef="servicetask13" targetRef="endevent2"></sequenceFlow>
   </process>
