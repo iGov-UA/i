@@ -5,11 +5,17 @@
  */
 package org.igov.service.business.dfs;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.io.web.HttpRequester;
+import org.igov.service.exception.DocumentNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +23,10 @@ import org.springframework.stereotype.Service;
 import static org.igov.util.ToolWeb.base64_encode;
 import org.igov.util.VariableMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -60,22 +70,23 @@ public class DfsService {
     public List<ByteArrayMultipartFile> getAnswer(String inn) throws Exception {
         List<ByteArrayMultipartFile> result = new ArrayList<>();
         //ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(responseEntity.getBody(), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
-
         String responseBody = getMessages(inn);
         LOG.info("getMessages responseBody: " + responseBody);
-        //parse if from result
-        //идем в цикле
-        String massageID = "";
-        if (massageID != null) {
-            responseBody = receive(massageID);
-            LOG.info("receive responseBody: " + responseBody);
-            //парсинг ответа получения массива байтой атача
-            String fileName = "";
-            byte[] content = null;
-            if (content != null && content.length > 0) {
-                delete(massageID);
+        List<String> resultMessages = getSidFromXml(responseBody, "string");
+        LOG.info("getMessages resultMessage: " + resultMessages);
+        for (String resultMessage : resultMessages) {
+            if (resultMessage != null) {
+                responseBody = receive(resultMessage);
+                LOG.info("receive responseBody: " + responseBody);
+                //парсинг ответа получения массива байтой атача
+                String fileName = "";
+                byte[] content = null;
+                if (content != null && content.length > 0) {
+                    //delete(resultMessage);
+                }
             }
         }
+
         return result;
     }
 
@@ -130,6 +141,28 @@ public class DfsService {
                 .append("</Delete>")
                 .append("</soap12:Body>")
                 .append("</soap12:Envelope>").toString();
+        return result;
+    }
+
+    private static List<String> getSidFromXml(String xmlDocument, String tagName) {
+        List<String> result = new ArrayList<>();
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder;
+        org.w3c.dom.Document doc;
+        try {
+            builder = factory.newDocumentBuilder();
+            InputSource is = new InputSource(new StringReader(xmlDocument));
+            doc = builder.parse(is);
+            NodeList nodeList = doc.getElementsByTagName(tagName);
+            int length = nodeList.getLength();
+            for (int i = 0; i < length; i++) {
+                Node nodeId = nodeList.item(i);
+                result.add(nodeId.getNodeValue());
+                LOG.info("nodeId.value: " + nodeId.getNodeValue() + " nodeId.getAttributes: " + nodeId.getAttributes());
+            }
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new DocumentNotFoundException("Can't parse Session ID.", e);
+        }
         return result;
     }
 }
