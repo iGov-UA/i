@@ -27,6 +27,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  *
@@ -72,21 +73,29 @@ public class DfsService {
         //ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(responseEntity.getBody(), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
         String responseBody = getMessages(inn);
         LOG.info("getMessages responseBody: " + responseBody);
-        List<String> resultMessages = getSidFromXml(responseBody, "string");
+        List<String> resultMessages = getContentFromXml(responseBody, "string");
         LOG.info("getMessages resultMessage: " + resultMessages);
         for (String resultMessage : resultMessages) {
             if (resultMessage != null) {
                 responseBody = receive(resultMessage);
                 LOG.info("receive responseBody: " + responseBody);
-                //парсинг ответа получения массива байтой атача
-                String fileName = "";
-                byte[] content = null;
-                if (content != null && content.length > 0) {
-                    //delete(resultMessage);
+                List<String> fileNames = getContentFromXml(responseBody, "fileName");
+                List<String> fileContents = getContentFromXml(responseBody, "messageData");
+                LOG.info("receive fileNames: " + fileNames);
+                if (fileNames != null && fileNames.size() > 0 && fileContents != null && fileContents.size() > 0) {
+                    String fileName = fileNames.get(0);
+                    byte[] fileContent = Base64.decodeBase64(fileContents.get(0));
+                    if (fileName != null && fileContent != null && fileContent.length > 0) {
+                        ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(fileContent, fileName,
+                                fileName, "text/plain");
+                        result.add(oByteArrayMultipartFile);
+                        responseBody = delete(resultMessage);
+                        LOG.info("delete responseBody: " + responseBody);
+                        return result;
+                    }
                 }
             }
         }
-
         return result;
     }
 
@@ -144,7 +153,7 @@ public class DfsService {
         return result;
     }
 
-    private static List<String> getSidFromXml(String xmlDocument, String tagName) {
+    private static List<String> getContentFromXml(String xmlDocument, String tagName) {
         List<String> result = new ArrayList<>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
@@ -158,7 +167,7 @@ public class DfsService {
             for (int i = 0; i < length; i++) {
                 Node nodeId = nodeList.item(i);
                 result.add(nodeId.getTextContent());
-                LOG.info("nodeId.value: " + nodeId.getNodeValue() + " nodeId.getAttributes: " + nodeId.getAttributes().getLength() 
+                LOG.info("nodeId.value: " + nodeId.getNodeValue() + " nodeId.getAttributes: " + nodeId.getAttributes().getLength()
                         + " nodeId.getTextContent: " + nodeId.getTextContent() + " nodeId.getNodeName(): " + nodeId.getNodeName());
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {

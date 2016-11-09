@@ -856,6 +856,7 @@ public class ActionEventController implements ControllerConstants {
                 LOG.info("subjectHuman: " + subjectHuman);
                 //получаем ответный файл
                 List<ByteArrayMultipartFile> multipartFiles = dfsService.getAnswer(subjectHuman.getsINN());
+                LOG.info("multipartFiles.size: " + multipartFiles.size());
                 StringBuilder anID_Attach_Dfs = new StringBuilder();
                 /*try {
                     for (ByteArrayMultipartFile multipartFile : multipartFiles) {
