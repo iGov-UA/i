@@ -70,6 +70,8 @@ import static org.igov.service.business.action.task.core.ActionTaskService.DATE_
 import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import static org.igov.util.Tool.sO;
 import org.igov.util.db.queryloader.QueryLoader;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 //import com.google.common.base.Optional;
 
 /**
@@ -2550,15 +2552,35 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
     
     //test LinkProcess
-    @ApiOperation(value = "testService", notes = "testService")
-    @RequestMapping(value = "/testService", method = RequestMethod.GET)
-    public void testService(
-            @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task) {
-        //throw new IllegalArgumentException("errMsg=The button is working!!!");
-        Map<String, String> values = new HashMap<>();
-        values.put("sName","Tata");
-        values.put("sSecondName","Azaza");        
-        formService.saveFormData(nID_Task.toString(), values);        
+    @ApiOperation(value = "saveForm", notes = "saveForm")
+    @RequestMapping(value = "/saveForm", method = RequestMethod.POST)
+    public ResponseEntity testService(
+            @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "sParams", required = true) String sParams,
+            HttpServletRequest req) throws ParseException, CommonServiceException {
+        
+        try {
+            org.json.simple.JSONObject jsonObj = (org.json.simple.JSONObject) new JSONParser().parse(sParams);
+            String nID_Task = jsonObj.get("taskId").toString();
+            Map<String, String> values = new HashMap<>();
+            org.json.simple.JSONArray dates = (org.json.simple.JSONArray) jsonObj.get("properties");
+            org.json.simple.JSONObject result;
+            Iterator<org.json.simple.JSONObject> datesIterator = dates.iterator();
+            while (datesIterator.hasNext()) {
+                result = datesIterator.next();
+                values.put(result.get("id").toString(), (String) result.get("value"));
+            }
+            formService.saveFormData(nID_Task, values);
+            Map<String, Object> response = new HashMap<>();
+            response.put("sReturnSuccess", "OK");
+            return JsonRestUtils.toJsonResponse(response);
+        } catch (Exception e) {
+            String message = "The process of update variables fail.";
+            LOG.debug(message);
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    message,
+                    HttpStatus.FORBIDDEN);
+        }
         
     }
 }
