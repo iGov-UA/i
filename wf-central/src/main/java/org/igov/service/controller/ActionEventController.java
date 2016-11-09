@@ -43,9 +43,12 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.igov.model.subject.Subject;
+import org.igov.model.subject.SubjectDao;
 import org.igov.model.subject.SubjectHuman;
+import org.igov.model.subject.SubjectHumanDao;
 import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
+import org.igov.service.business.dfs.DfsService;
 import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.util.VariableMultipartFile;
 import org.joda.time.format.DateTimeFormatter;
@@ -78,6 +81,10 @@ public class ActionEventController implements ControllerConstants {
     private ActionProcessCountDao actionProcessCountDao;
     @Autowired
     private SubjectMessageService oSubjectMessageService;
+    @Autowired
+    private SubjectDao subjectDao; 
+    @Autowired
+    private SubjectHumanDao subjectHumanDao;
     @Autowired
     private DfsService dfsService; 
 
@@ -838,7 +845,7 @@ public class ActionEventController implements ControllerConstants {
     boolean getAnswer_DFS() throws Exception {
         List<HistoryEvent_Service> historyEvent_Services= historyEventServiceDao.getHistoryEvent_Service(null, new Long(3197), new Long(8));
         for(HistoryEvent_Service historyEvent_Service : historyEvent_Services){
-            Subject subject = subjectDao.findByIdExpected(historyEvent_Service.getnID_Subject());
+            Subject subject = subjectDao.findByIdExpected(historyEvent_Service.getnID_Subject()); //
             SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
             //получаем ответный файл
             VariableMultipartFile multipartFile = dfsService.getAnswer(subjectHuman.getsINN());
