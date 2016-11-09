@@ -6,16 +6,20 @@
 package org.igov.service.business.subject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.subject.SubjectGroup;
-import org.igov.model.subject.SubjectGroupDao;
+import org.igov.model.subject.SubjectGroupNode;
+import org.igov.model.subject.SubjectGroupResult;
 import org.igov.model.subject.SubjectGroupTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,40 +31,54 @@ import org.springframework.stereotype.Service;
 @Service
 public class SubjectGroupService {
 	private static final Log LOG = LogFactory.getLog(SubjectGroupService.class);
-
-	@Autowired
-    private SubjectGroupDao subjectGroupDao;
+	private static final long FAKE_ROOT_SUBJECT_ID  = 0;
 
 	 @Autowired
 	    private BaseEntityDao<Long> baseEntityDao;
 
-    public List<SubjectGroup> getSubjectGroups(String sID_Group_Activiti, Integer nDeepLevel) {
+    public SubjectGroupResult getSubjectGroups(String sID_Group_Activiti, Integer nDeepLevel) {
        /* if(nDeepLevel == null || nDeepLevel == 0){
             nDeepLevel = 1000;
         }*/
+    	List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
+    	Map<SubjectGroup, SubjectGroupNode> subjectToNodeMap = new HashMap<>();
+    	
+        Set<SubjectGroup> parentSubject = new LinkedHashSet<>();
+        Set<SubjectGroup> childSubject = new HashSet<>();
         
-        List<SubjectGroup>subjectGroupList =new ArrayList<>(baseEntityDao.findAll(SubjectGroup.class));
-        
-        LOG.info("SubjectGrouppppppppppppppppppp  " + subjectGroupList);
-        	
-        Set<SubjectGroup> parentTags = new LinkedHashSet<>();
-        Set<SubjectGroup> childTags = new HashSet<>();
-        
-        List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
-        	
+        SubjectGroupNode parentNode = null;	
         for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
             final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
-            parentTags.add(parent);
             final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
-            childTags.add(child);
+            
+            if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
+            	parentNode = subjectToNodeMap.get(parent);
+                if (parentNode == null) {
+                	parentSubject.add(parent);
+                	parentNode = new SubjectGroupNode(parent);
+                	subjectToNodeMap.put(parent, parentNode);
+                }
+            }
+            
+            SubjectGroupNode childNode = subjectToNodeMap.get(child);
+            if (childNode == null) {
+            	childSubject.add(child);
+                childNode = new SubjectGroupNode(child);
+                subjectToNodeMap.put(child, childNode);
+            }
 
+            if (parentNode != null) {
+                parentNode.addChild(childNode);
+            }
+            
         }
-        LOG.info("parentTagssssssssssssssss  " + parentTags);
-        LOG.info("childTagssssssssssssss  " + childTags);	
-        //получить по группе сабджектгрупп и по нему получ
-        //если nDeepLevel ноль или нал, то делаем его равного 1000
-        //из перентов получаем список детей. идем в цикле по детям и получаем список детей пока не получим ситуацию, когда ребенок не имеет родителя
-        return subjectGroupList;
+        Set<SubjectGroup> rootTags = new LinkedHashSet<>(parentSubject);
+        rootTags.removeAll(childSubject);
+    //    LOG.info("parentTagssssssssssssssss  " + parentTags);
+      //  LOG.info("childTagssssssssssssss  " + childTags);	
+        final List<SubjectGroupNode> rootSubjectNodes = rootTags.stream().map(subjectToNodeMap::get).collect(
+                Collectors.toList());
+        return new SubjectGroupResult(rootSubjectNodes);
     }
 
 }
