@@ -602,7 +602,7 @@ exports.getTaskData = function (req, res){
         return;
       }
 
-      if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
+      if (!req.session || tasksService.isTaskDataAllowedForUser(body, currentUser))
         res.status(200).send(body);
       else {
         error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
@@ -648,7 +648,7 @@ exports.getTaskData = function (req, res){
         return;
       }
       authService.setCashedUserGroups(currentUser, currentUser.roles);
-      if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
+      if (!req.session || tasksService.isTaskDataAllowedForUser(body, currentUser))
         res.status(200).send(body);
       else {
         error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
