@@ -2545,7 +2545,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         StringBuilder anID_Attach_Dfs = new StringBuilder();
         Task task = taskService.createTaskQuery().processInstanceId(sID_Process).singleResult();
         LOG.info("task.getId: " + (task!= null ? task.getId() : ""));
-        if (task != null) {
+        //if (task != null) {
             LOG.info("task.getId: " + task.getId());
             List<ByteArrayMultipartFile> multipartFiles = dfsService.getAnswer(INN);
             LOG.info("multipartFiles.size: " + multipartFiles.size());
@@ -2569,7 +2569,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 taskService.setVariable(task.getId(), "anID_Attach_Dfs", sID_Attach_Dfs);
                 //taskService.complete(task.getId());
             }
-        }
+        //}
         return anID_Attach_Dfs.toString();
     }
 
