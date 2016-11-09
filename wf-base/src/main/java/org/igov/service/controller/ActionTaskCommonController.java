@@ -2540,7 +2540,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getAnswer_DFS", method = RequestMethod.GET)
     public @ResponseBody
     String getAnswer_DFS(@ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String INN,
-            @ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String sID_Process) throws Exception {
+            @ApiParam(value = "ИНН", required = true) @RequestParam(value = "sID_Process", required = true) String sID_Process) throws Exception {
         //получаем ответные файлы
         StringBuilder anID_Attach_Dfs = new StringBuilder();
         Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
