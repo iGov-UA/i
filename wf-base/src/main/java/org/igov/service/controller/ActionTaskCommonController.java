@@ -2546,7 +2546,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Task task = taskService.createTaskQuery().processInstanceId(sID_Process).singleResult();
         LOG.info("task.getId: " + (task!= null ? task.getId() : ""));
         //if (task != null) {
-            LOG.info("task.getId: " + task.getId());
+            //LOG.info("task.getId: " + task.getId());
             List<ByteArrayMultipartFile> multipartFiles = dfsService.getAnswer(INN);
             LOG.info("multipartFiles.size: " + multipartFiles.size());
             try {
