@@ -17,16 +17,24 @@ public class ActionProcessCountUtils {
 	private static final String URI_SET_ACTION_PROCESS_COUNT = "/wf/service/action/event/setActionProcessCount";
 	private static final String URI_GET_ACTION_PROCESS_COUNT = "/wf/service/action/event/getActionProcessCount";
 	
-	public static void callSetActionProcessCount(HttpRequester httpRequester, GeneralConfig generalConfig, String sID_Process, Long nID_Service){
+	public static Integer callSetActionProcessCount(HttpRequester httpRequester, GeneralConfig generalConfig, String sID_BP, Long nID_Service){
     	Map<String, String> mParam = new HashMap<String, String>();
-    	mParam.put("sID_BP", sID_Process);
-    	mParam.put("nID_Service", nID_Service.toString());
+    	mParam.put("sID_BP", sID_BP);
+        if(nID_Service!=null){
+            mParam.put("nID_Service", nID_Service.toString());
+        }
     	try {
 			String soResponse = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI_SET_ACTION_PROCESS_COUNT, mParam);
 			LOG.info("Received response for updating ActionProcessCount {}", soResponse);
+			Map<String, Object> mReturn = (Map<String, Object>) JSONValue.parse(soResponse);
+			if (mReturn != null && mReturn.containsKey("nCountYear")){
+				return Integer.valueOf(mReturn.get("nCountYear").toString());
+			}
+                        
 		} catch (Exception e) {
 			LOG.info("Error occured while processing  {}", e.getMessage());
 		}
+        return 0;
     }
 	
 	public static Integer callGetActionProcessCount(HttpRequester httpRequester, GeneralConfig generalConfig, String sID_BP, Long nID_Service, Integer nYear){
@@ -46,9 +54,9 @@ public class ActionProcessCountUtils {
     	try {
 			String soResponse = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI_GET_ACTION_PROCESS_COUNT, mParam);
 			LOG.info("Received response for updating ActionProcessCount {}", soResponse);
-			Map<String, Object> res = (Map<String, Object>) JSONValue.parse(soResponse);
-			if (res != null && res.containsKey("nCountYear")){
-				return Integer.valueOf(res.get("nCountYear").toString());
+			Map<String, Object> mReturn = (Map<String, Object>) JSONValue.parse(soResponse);
+			if (mReturn != null && mReturn.containsKey("nCountYear")){
+				return Integer.valueOf(mReturn.get("nCountYear").toString());
 			}
 		} catch (Exception e) {
 			LOG.info("Error occured while processing  {}", e.getMessage());

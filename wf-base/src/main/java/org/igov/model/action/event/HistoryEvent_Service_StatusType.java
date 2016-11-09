@@ -3,7 +3,7 @@ package org.igov.model.action.event;
 /**
  * Created by grigoriy-romanenko on 28.12.2015.
  */
-public enum HistoryEvent_Service_StatusType {
+public enum HistoryEvent_Service_StatusType{ //--
 
     CREATED(0L,
             "Created",
@@ -73,7 +73,12 @@ public enum HistoryEvent_Service_StatusType {
     UNKNOWN(13L,
             "Unknown",
             "Заявка в неизвестном статусе",
-            "Заявка у невідомому статусі");
+            "Заявка у невідомому статусі"),
+    
+    ABSENT(14L,
+            "Absent",
+            "Отсутствует",
+            "Відсутня"); 
 
     private final Long nID;
     private final String sID;

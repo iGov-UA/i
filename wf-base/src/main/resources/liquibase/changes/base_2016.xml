@@ -280,5 +280,201 @@
             </column>
         </createTable>
     </changeSet>
+    
+    <changeSet id="issue-1385-AutogenerationFlowSlots" author="HavrylinSerhii">
+        <addColumn tableName="Flow_ServiceData">
+            <column name="nCountAutoGenerate" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1405-DocumentStep-fixed" author="taaraora" runOnChange="true">
+        <validCheckSum>7:02a56943d9b0eb178ebf572db650f66a</validCheckSum>
+        <createTable tableName="DocumentStep">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sKey_Step" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nOrder" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="snID_Process_Activiti" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="DocumentStep_nOrder_snID_Process_Activiti_unique"
+                             tableName="DocumentStep"
+                             columnNames="nOrder, snID_Process_Activiti"/>
+
+        <createTable tableName="DocumentStepSubjectRight">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_DocumentStep" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_DocumentStep_DocumentStepSubjectRight"
+                             referencedTableName="DocumentStep" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+            <column name="sKey_GroupPostfix" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(30)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="bWrite" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sLogin" type="varchar(30)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sDate" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="DocumentStepSubjectRight_sKey_GroupPostfix_nID_DocumentStep_unique"
+                             tableName="DocumentStepSubjectRight"
+                             columnNames="sKey_GroupPostfix, nID_DocumentStep"/>
+
+        <createTable tableName="DocumentStepSubjectRightField">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_DocumentStepSubjectRight" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_DocumentStepSubjectRightField_DocumentStepSubjectRight"
+                             referencedTableName="DocumentStepSubjectRight"
+                             referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+            <column name="sMask_FieldID" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bWrite" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="DocumentStepSubjectRightField_nID_DocumentStepSubjectRight_sMask_FieldID_unique"
+                             tableName="DocumentStepSubjectRightField"
+                             columnNames="nID_DocumentStepSubjectRight, sMask_FieldID, bWrite"/>
+    </changeSet>
+    
+    <changeSet id="issue-1404-table_SubjectGroup" author="olga">
+        
+        <createTable tableName="SubjectGroup">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sName" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sID_Group_Activiti" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sChain" type="varchar(55)">
+                <constraints nullable="false"/>
+            </column>    
+        </createTable>
+        
+        <createTable tableName="SubjectGroupTree">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="nID_SubjectGroup_Parent" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_SubjectGroupTree_P"
+                             referencedTableName    ="SubjectGroup"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+            <column name="nID_SubjectGroup_Child" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_SubjectGroupTree_C"
+                             referencedTableName    ="SubjectGroup"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="SubjectGroupTree_Unique"
+                             columnNames="nID_SubjectGroup_Parent, nID_SubjectGroup_Child"
+                             tableName="SubjectGroupTree"/>
+        
+        <addAutoIncrement tableName="SubjectGroupTree" columnName="nID" startWith="1000" columnDataType="bigint"/>
+  
+    </changeSet> 
+    
+    <changeSet id="issue-1404-createTablesForProcessSubject" author="skuhtin" runOnChange="true">
+        <createTable tableName="ProcessSubjectStatus">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="ProcessSubject">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="snID_Process_Activiti" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_ProcessSubjectStatus" type="bigint">
+                <constraints nullable=               "false"
+                             foreignKeyName=         "FK_ProcessSubject_ProcessSubjectStatus"
+                             referencedTableName=    "ProcessSubjectStatus"
+                             referencedColumnNames=  "nID"
+                             deleteCascade=          "true"/>
+            </column>
+            <column name="nOrder" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sLogin" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sDateEdit" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sDatePlan" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        
+        <addUniqueConstraint constraintName="ProcessSubject_Unique" 
+                             tableName="ProcessSubject"
+                             columnNames="nOrder, snID_Process_Activiti"/>
+        
+        <createTable tableName="ProcessSubjectTree">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_ProcessSubject_Child" type="bigint">
+                <constraints nullable=               "false"
+                             foreignKeyName=         "FK_ProcessSubjectTree_C"
+                             referencedTableName=    "ProcessSubject"
+                             referencedColumnNames=  "nID"
+                             deleteCascade=          "true"/>
+            </column>
+            <column name="nID_ProcessSubject_Parent" type="bigint">
+                <constraints nullable=               "false"
+                             foreignKeyName=         "FK_ProcessSubjectTree_P"
+                             referencedTableName=    "ProcessSubject"
+                             referencedColumnNames=  "nID"
+                             deleteCascade=          "true"/>
+            </column>
+        </createTable>
+        
+        <addUniqueConstraint constraintName="ProcessSubjectTree_Unique" 
+                             tableName="ProcessSubjectTree"
+                             columnNames="nID_ProcessSubject_Parent, nID_ProcessSubject_Child"/>
+    </changeSet>
+    
+    <changeSet id="issue-1404-AlterTable_SubjectGroup" author="olga">
+        <modifyDataType tableName="SubjectGroup" columnName="sName" newDataType="varchar(225)" />
+    </changeSet>
 
 </databaseChangeLog>

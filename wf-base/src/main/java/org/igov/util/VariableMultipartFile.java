@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class VariableMultipartFile implements MultipartFile {
@@ -41,7 +40,7 @@ public class VariableMultipartFile implements MultipartFile {
             this.exp = null;
         }
 
-        List<Byte> contentByteList = new ArrayList<Byte>();
+        List<Byte> contentByteList = new ArrayList<>();
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         try {
             int data = bufferedInputStream.read();

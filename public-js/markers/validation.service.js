@@ -49,7 +49,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
    * @param form - форма, яку треба валідувати за маркерами валідації. Обов'язковий параметр.
    * @param {object} markers - маркери валідації. Необов'язковий параметр. Якщо він відсутній, то спрацюють маркери за замовчуванням, див. _resolveValidationMarkers
    * @param {boolean} immediateValidation - необов'язковий, вказує, чи треба проводити першу валідацію одразу після призначення валідаторів.
-   * @param {object} data - необов'язковий, але необхідний, якщо значення, які необхідно провалыдувати, не передаються засобами сервісу штатного валідатора в параметрах modelValue та viewValue
+   * @param (object) data - необов'язковий, але необхідний, якщо значення, які необхідно провалыдувати, не передаються засобами сервісу штатного валідатора в параметрах modelValue та viewValue
    * @param {boolean} newRow - необов'язковий, використовується для валідації таблицi при додаваннi нового рядка
    */
   self.validateByMarkers = function (form, markers, immediateValidation, data, newRow) {
@@ -72,7 +72,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     // поместил в проверку тк ранее при сабмите, если параметр data не передавали, formData не могла взять параметры с undefined
     // и были ошибки
     if (data) {
-      self.oFormDataParams = data.formData.params || {};
+      self.oFormDataParams = data || {};
     }
 
     angular.forEach(markers.validate, function (marker, markerName) {
@@ -133,31 +133,34 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     // для того чтобы валидация работала в таблице, нужно добраться до полей, вводится доп проверка.
     if(!fieldNameIsListedInMarker) {
       angular.forEach(formField, function (field) {
-        if(field && typeof field === 'object' && field.$name && field.$name !== 'form') {
-          if(!newRow) field = formField;
+        if(typeof field === 'object') {
+          if(newRow) field = formField;
           angular.forEach(field, function (table) {
-            if(table && table.$name && table.$name !== 'form') {
-              for (var i = 0; i < marker.aField_ID.length; i++) {
-                if (table.$name.indexOf(marker.aField_ID[i]) !== -1) {
-                  var keyByMarkerName = self.validatorNameByMarkerName[markerName];
-                  var fieldNameIsListedInMarker = table;
-                  var existingValidator = table && table.$validators && table.$validators[keyByMarkerName];
-                  if ((fieldNameIsListedInMarker /* || forceValidation */ ) && !existingValidator) {
-                    var markerOptions = angular.copy(marker) || {};
-                    if (marker.aField_ID && !table.$name.indexOf(marker.aField_ID[i]) > -1) marker.aField_ID.push(table.$name);
-                    markerOptions.key = keyByMarkerName;
-                    if (!table.$validators) return true;
-                    table.$validators[keyByMarkerName] = self.getValidatorByName(markerName, markerOptions, table);
-                    if (immediateValidation === true) table.$validate();
-                    if (markerOptions.inheritedValidator && typeof markerOptions.inheritedValidator === 'string') {
-                      self.setValidatorByMarker(marker, markerOptions.inheritedValidator, table, immediateValidation, true);
+            angular.forEach(table, function (tableField) {
+              if (tableField && tableField.$name) {
+                for(var i=0; i<marker.aField_ID.length; i++){
+                  if(tableField.$name.indexOf(marker.aField_ID[i]) !== -1) {
+                    var keyByMarkerName = self.validatorNameByMarkerName[markerName];
+                    var fieldNameIsListedInMarker = tableField;
+                    var existingValidator = tableField && tableField.$validators && tableField.$validators[keyByMarkerName];
+                    if ((fieldNameIsListedInMarker /* || forceValidation */ ) && !existingValidator) {
+                      var markerOptions = angular.copy(marker) || {};
+                      if (marker.aField_ID && !tableField.$name.indexOf(marker.aField_ID[i]) > -1) marker.aField_ID.push(tableField.$name)
+                      markerOptions.key = keyByMarkerName;
+                      if (!tableField.$validators) return true;
+                      tableField.$validators[keyByMarkerName] = self.getValidatorByName(markerName, markerOptions, tableField);
+                      if (immediateValidation === true) tableField.$validate();
+                      if (markerOptions.inheritedValidator && typeof markerOptions.inheritedValidator === 'string') {
+                        self.setValidatorByMarker(marker, markerOptions.inheritedValidator, tableField, immediateValidation, true);
+                      }
+                    } else if (fieldNameIsListedInMarker && existingValidator) {
+                      if (immediateValidation === true) tableField.$validate();
                     }
-                  } else if (fieldNameIsListedInMarker && existingValidator) {
-                    if (immediateValidation === true) table.$validate();
                   }
+                  break
                 }
               }
-            }
+            })
           });
         }
       })
@@ -769,8 +772,11 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
       var params = self.oFormDataParams;
       for(var paramObj in params) if (params.hasOwnProperty(paramObj)){
-        if(params[paramObj].value && params[paramObj].value.id && params[paramObj].fileName){
+        if(params[paramObj].value && params[paramObj].fileName){
           if(modelValue.id === params[paramObj].value.id){
+            sFileName = params[paramObj].fileName;
+            break;
+          } else if (modelValue.id === params[paramObj].value) {
             sFileName = params[paramObj].fileName;
             break;
           }
@@ -835,20 +841,18 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      Логика: Не ипустота и не ноль
      */
     'FieldNotEmptyAndNonZero': function (modelValue) {
-      if(modelValue == null || modelValue == "" && !oSubjectOrganJoin.required){
-        return true
-      }
-
       var sValue = modelValue;
-
-      if (!sValue) {
-        return false;
-      }
-
       var oSubjectOrganJoin = this.oFormDataParams.sID_Public_SubjectOrganJoin;
 
       // if(options.original){
       sValue = oSubjectOrganJoin.value;
+
+      if(modelValue == null || modelValue == "" && !oSubjectOrganJoin.required){
+        return true
+      }
+      if (!sValue) {
+        return false;
+      }
 
       var bValid = true;
       bValid = bValid && (sValue !== null);
