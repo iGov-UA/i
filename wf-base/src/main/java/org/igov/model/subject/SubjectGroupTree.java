@@ -16,7 +16,7 @@ import org.igov.model.core.AbstractEntity;
  *
  * @author olga
  */
-@Entity
+@javax.persistence.Entity
 public class SubjectGroupTree extends AbstractEntity{
     
     /**
