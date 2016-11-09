@@ -8,6 +8,9 @@ package org.igov.service.business.subject;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.igov.model.core.EntityDaoQueriesTest;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupDao;
 import org.igov.model.subject.SubjectGroupTree;
@@ -21,7 +24,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SubjectGroupService {
-	
+	private static final Log LOG = LogFactory.getLog(SubjectGroupService.class);
 
 	@Autowired
     private SubjectGroupDao subjectGroupDao;
@@ -37,7 +40,7 @@ public class SubjectGroupService {
         List<SubjectGroup>subjectGroupList = new ArrayList<>();
         
         SubjectGroup subjectGroup = subjectGroupDao.getSubjectGroupsByGroupActiviti(sID_Group_Activiti);
-        if(nDeepLevel == 1){
+        LOG.info("SubjectGrouppppppppppppppppppp  " + subjectGroup.toString());
         	
         	List<SubjectGroupTree> subjectGroupTreeList = subjectGroupTreeDao.getSubjectChildByParentId(subjectGroup.getId());
         	
@@ -46,8 +49,7 @@ public class SubjectGroupService {
         	}
  
         	
-        }
-        
+        LOG.info("SubjectGrouppppppppppppppp  " + subjectGroupList);
         //получить по группе сабджектгрупп и по нему получ
         //если nDeepLevel ноль или нал, то делаем его равного 1000
         //из перентов получаем список детей. идем в цикле по детям и получаем список детей пока не получим ситуацию, когда ребенок не имеет родителя
