@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.igov.model.core.EntityDaoQueriesTest;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupDao;
 import org.igov.model.subject.SubjectGroupTree;
