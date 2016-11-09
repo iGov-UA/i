@@ -60,7 +60,7 @@ public class SubjectGroupService {
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 
-			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
+			if (parent.getId() != FAKE_ROOT_SUBJECT_ID && parent.getsID_Group_Activiti().equals(sID_Group_Activiti)) {
 				parentNode = subjectToNodeMap.get(parent);
 				if (parentNode == null) {
 					parentSubject.add(parent);
@@ -82,7 +82,7 @@ public class SubjectGroupService {
 
 		}
 		
-		List<SubjectGroup>listFilter = Lists.newArrayList(Collections2
+/*		List<SubjectGroup>listFilter = Lists.newArrayList(Collections2
 				.filter(new ArrayList<SubjectGroup>(parentSubject),
 						new Predicate<SubjectGroup>() {
 					@Override
@@ -90,9 +90,9 @@ public class SubjectGroupService {
 						// получить только отфильтрованные SubjectGroup по sID_Group_Activiti
 						return subjectGroup.getsID_Group_Activiti().equals(sID_Group_Activiti);
 					}
-				}));
+				}));*/
 		
-		Set<SubjectGroup> rootTags = new LinkedHashSet<>(new LinkedHashSet<SubjectGroup>(listFilter));
+		Set<SubjectGroup> rootTags = new LinkedHashSet<>(parentSubject);
 		
 		
 		LOG.info("SubjectGrouppppppSettttt"+ rootTags);
