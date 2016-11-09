@@ -2567,7 +2567,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 String sID_Attach_Dfs = anID_Attach_Dfs.deleteCharAt(anID_Attach_Dfs.length() - 1).toString();
                 runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", sID_Attach_Dfs);
                 taskService.setVariable(task.getId(), "anID_Attach_Dfs", sID_Attach_Dfs);
-                //taskService.complete(task.getId());
+                taskService.complete(task.getId());
             }
         }
         return anID_Attach_Dfs.toString();
