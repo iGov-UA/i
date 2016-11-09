@@ -2550,10 +2550,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
     
     //test LinkProcess
-    @ApiOperation(value = "testServicet", notes = "testService")
+    @ApiOperation(value = "testService", notes = "testService")
     @RequestMapping(value = "/testService", method = RequestMethod.GET)
     public void testService(
-            @ApiParam(required = false) @RequestParam(value = "msg", required = false) String sMsg) {
-        throw new IllegalArgumentException("errMsg=The button is working!!!");
+            @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task) {
+        //throw new IllegalArgumentException("errMsg=The button is working!!!");
+        Map<String, String> values = new HashMap<>();
+        values.put("sName","Tata");
+        values.put("sSecondName","Azaza");        
+        formService.saveFormData(nID_Task.toString(), values);        
+        
     }
 }
