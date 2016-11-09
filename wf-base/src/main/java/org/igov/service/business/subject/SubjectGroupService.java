@@ -85,10 +85,10 @@ public class SubjectGroupService {
 		Set<SubjectGroup> rootTags = new LinkedHashSet<>(parentSubject);
 		rootTags.removeAll(childSubject);
 		
-		/*final List<SubjectGroupNode> rootSubjectNodes = rootTags.stream().map(subjectToNodeMap::get)
-				.collect(Collectors.toList());*/
+		final List<SubjectGroupNode> rootSubjectNodes = rootTags.stream().map(subjectToNodeMap::get)
+				.collect(Collectors.toList());
 		
-		final List<SubjectGroupNode> rootSubjectNodesFiltr = Lists.newArrayList(Collections2
+/*		final List<SubjectGroupNode> rootSubjectNodesFiltr = Lists.newArrayList(Collections2
 				.filter(rootTags.stream().map(subjectToNodeMap::get)
 						.collect(Collectors.toList()),
 						new Predicate<SubjectGroupNode>() {
@@ -97,10 +97,10 @@ public class SubjectGroupService {
 						// получить только отфильтрованные SubjectGroup по sID_Group_Activiti
 						return subjectGroupNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
 					}
-				}));
+				}));*/
 		
 		
-		return new SubjectGroupResult(rootSubjectNodesFiltr);
+		return new SubjectGroupResult(rootSubjectNodes);
 	}
 
 	
