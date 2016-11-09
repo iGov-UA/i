@@ -69,20 +69,25 @@ execution.setVariable('sTicketCode', tickCode)
 										</ul>
 									</p>
 									<p>
-									<b>Деталі зустрічі:</b><br>
-									Номер талону - ${sTicketNumber}, орієнтовна дата та час візиту - ${sNotification_day}. 
+										<b>Деталі зустрічі:</b><br>
+										Дата та час візиту: ${date_of_visit}
 									</p>
 									<p>
 										У зв'язку з очікуванням зміни системи сплати за оформлення закордонного паспорту, ми не можемо надати реквізити.<br>
-										Для отримання реквізитів для сплати Вам потрібно з'явитись у підрозділ ДМС за 20-30 хвилин до обраного часу та сплатити за послугу.
+										Для отримання реквізитів для сплати Вам потрібно з'явитись у підрозділ ДМС за 20-30 хвилин до обраного часу та сплатити за послугу.<br>
+										<b>Зверніть увагу:</b> 
+										<ul>
+											<li>Оплата здійснюється від імені одного з батьків, чиї дані потрібно внести при формуванні квитанції;</li>
+											<li><b>У призначенні платежу слід вказати ПІБ дитини, для якої буде оформлюватись закордонний паспорт.</b></li>
+										</ul>
 									</p>
 									<p>
 										<b>Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон для дитини:</b>
 										<ul>
 										${sDocChild}
 										<li>оригінал та копію свідоцтва про народження та довідки про належність до громадянства України (якщо один із батьків іноземець);</li>
-										<li>квитанцію про сплату з мокрою печаткою банку;</li>
-										<li>якщо на момент подання документів дитині виповнилось 12 років присутність дитини є обов'язковою! (якщо дитині не виповнилось 12 років потрібно надати одну фотокартку розміром 10х15 сантиметрів для внесення відцифрованого зображення особи шляхом сканування (фото виконане на білому фоні, обличчя дитини займає не менше 80% фотографії,<a href="https://drive.google.com/open?id=0B68lQ-z45GpYZ01rS3ZFQUFvQ0FJWGRxcC05Rk5laUgzOGdN">зразок</a>), присутність дитини не обов'язкова)</li>
+										<li>квитанцію про сплату з мокрою печаткою банку, яка оформлена на одного з батьків з ким дитина зареєстрована (У призначенні платежу слід вказати ПІБ дитини, для якої буде оформлюватись закордонний паспорт!);</li>
+										<li>якщо на момент подання документів дитині виповнилось 12 років присутність дитини є обов'язковою! (якщо дитині не виповнилось 12 років потрібно надати 2 фотокартки 3,5х4,5 та одну фотокартку розміром 10х15 сантиметрів для внесення відцифрованого зображення особи шляхом сканування (фото виконане на білому фоні, обличчя дитини займає не менше 80% фотографії,<a href="https://drive.google.com/open?id=0B68lQ-z45GpYZ01rS3ZFQUFvQ0FJWGRxcC05Rk5laUgzOGdN">зразок</a>), присутність дитини не обов'язкова)</li>
 										<li>потрібна присутність обох батьків, а також оригінали та копії їх паспортів</li>
 										<li>оформлення паспорта для виїзду за кордон особі, що не досягла шістнадцятирічного віку та проживає з одним із батьків можливо, якщо заявник також подає оригінал та копію одного з таких документів:</li>
 										<ul>
@@ -102,8 +107,7 @@ execution.setVariable('sTicketCode', tickCode)
 										</ul>
 									</p>
 									<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>
-									<p>Якщо Вам потрібно скасувати заявку,  зверніться,  будь ласка, за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
-									При цьому потрібно буде вказати код талону = ${sTicketCode}.
+									<p>[cancelTask]</p>                
 									[pattern/mail/_common_signature_start.html]
 									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
@@ -134,6 +138,12 @@ execution.setVariable('sTicketCode', tickCode)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
+    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDate>${sEndDay}</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow42" sourceRef="escalationTimer" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var delta='10';
 var unixdate= Math.round((new Date()).getTime());
@@ -191,7 +201,6 @@ execution.setVariable('sNotification_day', timer)
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow42" sourceRef="usertask1" targetRef="exclusivegateway5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_dms-288">
     <bpmndi:BPMNPlane bpmnElement="kiev_dms-288" id="BPMNPlane_kiev_dms-288">
@@ -215,6 +224,9 @@ execution.setVariable('sNotification_day', timer)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="60.0" width="105.0" x="456.0" y="78.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer" id="BPMNShape_escalationTimer">
+        <omgdc:Bounds height="30.0" width="30.0" x="532.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="55.0" width="105.0" x="575.0" y="81.0"></omgdc:Bounds>
@@ -248,6 +260,11 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="436.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="456.0" y="108.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="547.0" y="70.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="46.0"></omgdi:waypoint>
+        <omgdi:waypoint x="627.0" y="81.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="680.0" y="108.0"></omgdi:waypoint>
         <omgdi:waypoint x="711.0" y="110.0"></omgdi:waypoint>
@@ -265,11 +282,6 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="784.0" y="227.0"></omgdi:waypoint>
         <omgdi:waypoint x="817.0" y="227.0"></omgdi:waypoint>
         <omgdi:waypoint x="817.0" y="185.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="508.0" y="78.0"></omgdi:waypoint>
-        <omgdi:waypoint x="635.0" y="44.0"></omgdi:waypoint>
-        <omgdi:waypoint x="731.0" y="90.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
