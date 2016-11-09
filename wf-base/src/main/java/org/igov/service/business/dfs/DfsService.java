@@ -157,8 +157,9 @@ public class DfsService {
             int length = nodeList.getLength();
             for (int i = 0; i < length; i++) {
                 Node nodeId = nodeList.item(i);
-                result.add(nodeId.getNodeValue());
-                LOG.info("nodeId.value: " + nodeId.getNodeValue() + " nodeId.getAttributes: " + nodeId.getAttributes());
+                result.add(nodeId.getTextContent());
+                LOG.info("nodeId.value: " + nodeId.getNodeValue() + " nodeId.getAttributes: " + nodeId.getAttributes().getLength() 
+                        + " nodeId.getTextContent: " + nodeId.getTextContent() + " nodeId.getNodeName(): " + nodeId.getNodeName());
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new DocumentNotFoundException("Can't parse Session ID.", e);
