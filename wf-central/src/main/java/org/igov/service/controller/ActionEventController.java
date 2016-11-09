@@ -14,7 +14,6 @@ import org.igov.model.action.task.core.entity.ActionProcessCountDao;
 import org.igov.model.document.DocumentDao;
 import org.igov.model.subject.Server;
 import org.igov.model.subject.ServerDao;
-import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CRCInvalidException;
@@ -43,9 +42,12 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.igov.model.subject.Subject;
+import org.igov.model.subject.SubjectHuman;
 import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
 import org.igov.service.business.subject.SubjectMessageService;
+import org.igov.util.VariableMultipartFile;
 import org.joda.time.format.DateTimeFormatter;
 
 @Controller
@@ -76,6 +78,8 @@ public class ActionEventController implements ControllerConstants {
     private ActionProcessCountDao actionProcessCountDao;
     @Autowired
     private SubjectMessageService oSubjectMessageService;
+    @Autowired
+    private DfsService dfsService; 
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -826,5 +830,22 @@ public class ActionEventController implements ControllerConstants {
             @ApiParam(required = true) @RequestParam(value = "sID_BP", required = false) String sID_BP) {
         int res = actionProcessCountDao.deleteBy("sID_BP", sID_BP);
         LOG.info("Removed {} entities", res);
+    }
+    
+    @ApiOperation(value = "/getAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")
+    @RequestMapping(value = "/getAnswer_DFS", method = RequestMethod.GET)
+    public @ResponseBody
+    boolean getAnswer_DFS() throws Exception {
+        List<HistoryEvent_Service> historyEvent_Services= historyEventServiceDao.getHistoryEvent_Service(null, new Long(3197), new Long(8));
+        for(HistoryEvent_Service historyEvent_Service : historyEvent_Services){
+            Subject subject = subjectDao.findByIdExpected(historyEvent_Service.getnID_Subject());
+            SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
+            //получаем ответный файл
+            VariableMultipartFile multipartFile = dfsService.getAnswer(subjectHuman.getsINN());
+            //крепим файл как атач 
+            
+            //закрываем таску
+}
+        return true;
     }
 }
