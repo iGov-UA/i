@@ -5,7 +5,6 @@
  */
 package org.igov.model.subject;
 
-import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -36,27 +35,13 @@ public class SubjectGroupTree extends AbstractEntity{
     private SubjectGroup oSubjectGroup_Parent;
     
     
-	@JsonProperty(value = "nID_SubjectGroup_Parent")
-	 @Column(name = "nID_SubjectGroup_Parent" , nullable = true, insertable = false, updatable=false)
-    private Long nID_SubjectGroup_Parent;
-
-
-	public Long getnID_SubjectGroup_Parent() {
-		return nID_SubjectGroup_Parent;
-	}
-
-
-	public void setnID_SubjectGroup_Parent(Long nID_SubjectGroup_Parent) {
-		this.nID_SubjectGroup_Parent = nID_SubjectGroup_Parent;
-	}
 
 
 	@Override
 	public String toString() {
 		return "SubjectGroupTree [oSubjectGroup_Child=" + oSubjectGroup_Child + ", oSubjectGroup_Parent="
-				+ oSubjectGroup_Parent + ", nID_SubjectGroup_Parent=" + nID_SubjectGroup_Parent + "]";
+				+ oSubjectGroup_Parent + "]";
 	}
-
 
 	public SubjectGroup getoSubjectGroup_Child() {
         return oSubjectGroup_Child;
