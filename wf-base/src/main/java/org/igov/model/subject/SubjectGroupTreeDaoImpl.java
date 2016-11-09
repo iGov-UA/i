@@ -18,9 +18,8 @@ public class SubjectGroupTreeDaoImpl extends GenericEntityDao<Long, SubjectGroup
      */
 	@Override
 	public List<SubjectGroupTree> getSubjectChildByParentId(Long nID_SubjectGroup_Parent) {
-		return null;
 		
-		//return findAllBy("nID_SubjectGroup_Parent", nID_SubjectGroup_Parent);
+		return findAllBy("nID_SubjectGroup_Parent", nID_SubjectGroup_Parent);
 	}
     
     
