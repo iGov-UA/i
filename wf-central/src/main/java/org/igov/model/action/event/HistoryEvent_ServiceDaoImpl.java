@@ -2,7 +2,6 @@ package org.igov.model.action.event;
 
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -354,5 +353,30 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         countClaim = (Long) oCriteria.uniqueResult();
         LOG.info("countClaim size = " + countClaim);
         return countClaim;
+    }
+    
+    @Override
+    public List<HistoryEvent_Service> getHistoryEvent_Service(String sID_UA, Long nID_Service, Long nID_StatusType) {
+        LOG.info(String.format("Start get getHistoryEvent_Service with parameters nID_StatusType = %s, nID_Service = %s, sID_UA = %s", nID_StatusType, nID_Service, sID_UA));
+
+        Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
+        
+        if (nID_StatusType == null && nID_Service == null && sID_UA == null) {
+            return null;
+        }
+
+        if (sID_UA != null && !"".equals(sID_UA)) {
+            oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
+        }
+
+        if (nID_Service != null) {
+            oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
+        }
+
+        if (nID_StatusType != null) {
+            oCriteria.add(Restrictions.eq("nID_StatusType", nID_StatusType));
+        }
+
+        return oCriteria.list();
     }
 }
