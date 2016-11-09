@@ -21,7 +21,6 @@ import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupNode;
 import org.igov.model.subject.SubjectGroupResult;
 import org.igov.model.subject.SubjectGroupTree;
-import org.igov.model.subject.SubjectGroupTreeResult;
 import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,22 +81,25 @@ public class SubjectGroupService {
 			}
 
 		}
-		Set<SubjectGroup> rootTags = new LinkedHashSet<>(parentSubject);
+		
+		List<SubjectGroup>listFilter = Lists.newArrayList(Collections2
+				.filter(new ArrayList<SubjectGroup>(parentSubject),
+						new Predicate<SubjectGroup>() {
+					@Override
+					public boolean apply(SubjectGroup subjectGroup) {
+						// получить только отфильтрованные SubjectGroup по sID_Group_Activiti
+						return subjectGroup.getsID_Group_Activiti().equals(sID_Group_Activiti);
+					}
+				}));
+		
+		Set<SubjectGroup> rootTags = new LinkedHashSet<>(new LinkedHashSet<SubjectGroup>(listFilter));
+		
+		
+		LOG.info("SubjectGrouppppppSettttt"+ rootTags);
 		rootTags.removeAll(childSubject);
 		
 		final List<SubjectGroupNode> rootSubjectNodes = rootTags.stream().map(subjectToNodeMap::get)
 				.collect(Collectors.toList());
-		
-/*		final List<SubjectGroupNode> rootSubjectNodesFiltr = Lists.newArrayList(Collections2
-				.filter(rootTags.stream().map(subjectToNodeMap::get)
-						.collect(Collectors.toList()),
-						new Predicate<SubjectGroupNode>() {
-					@Override
-					public boolean apply(SubjectGroupNode subjectGroupNode) {
-						// получить только отфильтрованные SubjectGroup по sID_Group_Activiti
-						return subjectGroupNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
-					}
-				}));*/
 		
 		
 		return new SubjectGroupResult(rootSubjectNodes);
@@ -105,13 +107,12 @@ public class SubjectGroupService {
 
 	
 	
-	 public List<SubjectGroupTreeResult> getSubjectGroupsByDeepLevel(String sID_Group_Activiti,Integer nDeepLevel) {
+	 public SubjectGroupResult getSubjectGroupResult(String sID_Group_Activiti) {
 		 
-		 List<SubjectGroupTreeResult> res = new ArrayList<>();
-		 SubjectGroupResult subjectGroupResult = getSubjectGroupResultCached(sID_Group_Activiti);
+		 SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti);
 		 
 		 
-		return res;
+		return tree;
 		 
 	 }
 	
