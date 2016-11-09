@@ -99,32 +99,11 @@ public class SubjectGroupService {
 
 	
 	
-	 public List<SubjectGroupTreeResult> getSubjectGroupResult(String sID_Group_Activiti) {
+	 public SubjectGroupResult getSubjectGroupResult(String sID_Group_Activiti) {
 		 
-		 
-		 List<SubjectGroupTreeResult> res = new ArrayList<>();
 		 SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti);
 		 
-		 for(SubjectGroupNode rootNode: tree.getRootSubjectNodes()) {
-			 final SubjectGroup subjectParentGroup = rootNode.getGroup();
-			 final String sIDGroupActiviti = subjectParentGroup.getsID_Group_Activiti();
-			 
-			/* if(!sIDGroupActiviti.equals(sID_Group_Activiti)) {
-				 continue;
-			 }*/
-			 
-			 SubjectGroupTreeResult subjectGroupTreeResult = new SubjectGroupTreeResult();
-			 subjectGroupTreeResult.setoSubjectGroup_Root(subjectParentGroup);
-			 for (SubjectGroupNode childNode : rootNode.getChildren()) {
-	                final SubjectGroup childGroup = childNode.getGroup();
-	                subjectGroupTreeResult.addChild(childGroup);
-	            }
-			 
-			 res.add(subjectGroupTreeResult);
-		 }
-		 
-		 
-		return res;
+		return tree;
 		 
 	 }
 	
