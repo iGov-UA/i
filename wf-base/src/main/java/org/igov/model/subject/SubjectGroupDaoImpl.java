@@ -16,17 +16,17 @@ public class SubjectGroupDaoImpl extends GenericEntityDao<Long, SubjectGroup> im
     /**
      * Получаем объект по sID_Group_Activiti
      */
-	@Override
+	/*@Override
 	public SubjectGroup getSubjectGroupsByGroupActiviti(String sID_Group_Activiti) {
 		
 		return findBy("sID_Group_Activiti", sID_Group_Activiti).orNull();
 	}
 	
 	
-	/**
+	*//**
 	 * Получаем список SubjectGroup по списку дочерних групп 
 	 * nIDChilds - ид дочерних групп
-	 */
+	 *//*
 	@Override
 	public List<SubjectGroup> getSubjectGroupsByIdChild(List<String> nIDChilds) {
 		
@@ -38,6 +38,6 @@ public class SubjectGroupDaoImpl extends GenericEntityDao<Long, SubjectGroup> im
 		}
 		
 		return subjectGroupList;
-	}
+	}*/
 
 }

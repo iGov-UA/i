@@ -30,8 +30,9 @@ public class SubjectGroup extends NamedEntity{
     @JsonProperty(value = "sChain")
     @Column
     private String sChain;
-
-    public String getsID_Group_Activiti() {
+    
+    
+	public String getsID_Group_Activiti() {
         return sID_Group_Activiti;
     }
 
@@ -53,7 +54,4 @@ public class SubjectGroup extends NamedEntity{
 				+ getName() + ", getId()=" + getId() + "]";
 	}
 
-    
-    
-    
 }

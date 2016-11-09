@@ -5,12 +5,12 @@
  */
 package org.igov.model.subject;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
 import org.igov.model.core.AbstractEntity;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *
