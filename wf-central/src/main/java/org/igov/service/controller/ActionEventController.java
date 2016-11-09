@@ -848,6 +848,11 @@ public class ActionEventController implements ControllerConstants {
                 ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
                 result = osResponseEntityReturn.getBody();
                 LOG.info(sURL + " result: " + result);
+                if(result != null && result.length() > 0){
+                   historyEvent_Service.setnID_StatusType(HistoryEvent_Service_StatusType.CLOSED.getnID());
+                   historyEventServiceDao.saveOrUpdate(historyEvent_Service);
+                   LOG.info(historyEvent_Service.getnID_Task() + " closed!!!");
+                }
             }
         }
         return result;
