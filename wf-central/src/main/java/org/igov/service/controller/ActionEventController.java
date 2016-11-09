@@ -826,11 +826,12 @@ public class ActionEventController implements ControllerConstants {
         LOG.info("Removed {} entities", res);
     }
 
-    @ApiOperation(value = "/getAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")
-    @RequestMapping(value = "/getAnswer_DFS", method = RequestMethod.GET)
+    @ApiOperation(value = "/sheduleAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")
+    @RequestMapping(value = "/sheduleAnswer_DFS", method = RequestMethod.GET)
     public @ResponseBody
-    String getAnswer_DFS() throws Exception {
-        String result = null;
+    String sheduleAnswer_DFS() throws Exception {
+        String result = "None";
+        LOG.info("sheduleAnswer_DFS... ");
         List<HistoryEvent_Service> historyEvent_Services = historyEventServiceDao.getHistoryEvent_Service(null, new Long(1549), null);
         LOG.info("historyEvent_Services.size: " + historyEvent_Services.size());
         for (HistoryEvent_Service historyEvent_Service : historyEvent_Services) {
