@@ -82,11 +82,11 @@ public class ActionEventController implements ControllerConstants {
     @Autowired
     private SubjectMessageService oSubjectMessageService;
     @Autowired
-    private SubjectDao subjectDao; 
+    private SubjectDao subjectDao;
     @Autowired
     private SubjectHumanDao subjectHumanDao;
     @Autowired
-    private DfsService dfsService; 
+    private DfsService dfsService;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -682,7 +682,7 @@ public class ActionEventController implements ControllerConstants {
                     SubjectMessageFeedback oSubjectMessageFeedback
                             = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
                     LOG.info("found oSubjectMessageFeedback: " + oSubjectMessageFeedback);
-                    if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null 
+                    if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null
                             && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
                     } else {
@@ -838,21 +838,26 @@ public class ActionEventController implements ControllerConstants {
         int res = actionProcessCountDao.deleteBy("sID_BP", sID_BP);
         LOG.info("Removed {} entities", res);
     }
-    
+
     @ApiOperation(value = "/getAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")
     @RequestMapping(value = "/getAnswer_DFS", method = RequestMethod.GET)
     public @ResponseBody
     boolean getAnswer_DFS() throws Exception {
-        List<HistoryEvent_Service> historyEvent_Services= historyEventServiceDao.getHistoryEvent_Service(null, new Long(3197), new Long(8));
-        for(HistoryEvent_Service historyEvent_Service : historyEvent_Services){
-            Subject subject = subjectDao.findByIdExpected(historyEvent_Service.getnID_Subject()); //
-            SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
-            //получаем ответный файл
-            VariableMultipartFile multipartFile = dfsService.getAnswer(subjectHuman.getsINN());
-            //крепим файл как атач 
-            
-            //закрываем таску
-}
+        List<HistoryEvent_Service> historyEvent_Services = historyEventServiceDao.getHistoryEvent_Service(null, new Long(3197), null);
+        LOG.info("historyEvent_Services.size: " + historyEvent_Services.size());
+        for (HistoryEvent_Service historyEvent_Service : historyEvent_Services) {
+            if (historyEvent_Service.getnID_StatusType() != 8) {
+                Subject subject = subjectDao.findByIdExpected(historyEvent_Service.getnID_Subject()); //
+                LOG.info("subject: " + subject);
+                SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
+                LOG.info("subjectHuman: " + subjectHuman);
+                //получаем ответный файл
+                List<VariableMultipartFile> multipartFile = dfsService.getAnswer(subjectHuman.getsINN());
+                //крепим файл как атач 
+
+                //закрываем таску
+            }
+        }
         return true;
     }
 }

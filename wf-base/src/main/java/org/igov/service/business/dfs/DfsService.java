@@ -5,9 +5,10 @@
  */
 package org.igov.service.business.dfs;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
-import static org.igov.util.ToolWeb.base64_encode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,18 +56,24 @@ public class DfsService {
         return result;
     }
 
-    public VariableMultipartFile getAnswer(String inn) throws Exception {
-        String result = getMessages(inn);
+    public List<VariableMultipartFile> getAnswer(String inn) throws Exception {
+        List<VariableMultipartFile> result = new ArrayList<>();
+        String responseBody = getMessages(inn);
+        LOG.info("getMessages responseBody: " + responseBody);
+        //parse if from result
+        //идем в цикле
         String massageID = "";
         if (massageID != null) {
-            result = receive(massageID);
+            responseBody = receive(massageID);
+            LOG.info("receive responseBody: " + responseBody);
+            //парсинг ответа получения массива байтой атача
             String fileName = "";
             byte[] content = null;
             if (content != null && content.length > 0) {
                 delete(massageID);
             }
         }
-        return null;
+        return result;
     }
 
     private String getMessages(String inn) throws Exception {
