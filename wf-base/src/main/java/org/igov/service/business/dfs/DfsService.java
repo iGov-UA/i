@@ -70,7 +70,6 @@ public class DfsService {
 
     public List<ByteArrayMultipartFile> getAnswer(String inn) throws Exception {
         List<ByteArrayMultipartFile> result = new ArrayList<>();
-        //ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(responseEntity.getBody(), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
         String responseBody = getMessages(inn);
         LOG.info("getMessages responseBody: " + responseBody);
         List<String> resultMessages = getContentFromXml(responseBody, "string");
@@ -91,7 +90,6 @@ public class DfsService {
                         result.add(oByteArrayMultipartFile);
                         responseBody = delete(resultMessage);
                         LOG.info("delete responseBody: " + responseBody);
-                        return result;
                     }
                 }
             }
@@ -138,7 +136,9 @@ public class DfsService {
     private String delete(String massageID) throws Exception {
         LOG.info("massageID: " + massageID);
         String body = createBody_Delete(massageID);
-        return oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
+        String result = "";
+        result = oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
+        return result;
     }
 
     private String createBody_Delete(String massageID) {
