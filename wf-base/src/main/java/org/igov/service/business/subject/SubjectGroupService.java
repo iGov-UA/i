@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
 public class SubjectGroupService {
 	private static final Log LOG = LogFactory.getLog(SubjectGroupService.class);
 	private static final long FAKE_ROOT_SUBJECT_ID = 0;
-	 private static final String GET_SERVICE_SUBJECT_GROUP_CACHE_KEY = "SubjectGroupService.getSubjectGroupsByGroupActiviti";
+	 private static final String GET_SERVICE_SUBJECT_GROUP_CACHE_KEY = "SubjectGroupService.getSubjectGroupResult";
 
 	@Autowired
 	private BaseEntityDao<Long> baseEntityDao;
@@ -55,7 +55,9 @@ public class SubjectGroupService {
 		SubjectGroupNode parentNode = null;
 		for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
+			LOG.info("SubjectGrouppppppparent "+ parent);
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
+			LOG.info("SubjectGrouppppppchild "+ child);
 
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
 				parentNode = subjectToNodeMap.get(parent);
@@ -81,6 +83,9 @@ public class SubjectGroupService {
 		
 		Set<SubjectGroup> rootTags = new LinkedHashSet<>(parentSubject);
 		
+		LOG.info("parentSubjecttttttttttttttt "+ parentSubject);
+		LOG.info("childSubjectttttttttttttttttt "+ childSubject);
+		
 		
 		LOG.info("SubjectGrouppppppSettttt"+ rootTags);
 		rootTags.removeAll(childSubject);
@@ -94,34 +99,11 @@ public class SubjectGroupService {
 
 	
 	
-	 public List<SubjectGroupTreeResult> getSubjectGroupResult(String sID_Group_Activiti) {
+	 public SubjectGroupResult getSubjectGroupResult(String sID_Group_Activiti) {
 		 
-		 
-		 List<SubjectGroupTreeResult> res = new ArrayList<>();
 		 SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti);
 		 
-		 for(SubjectGroupNode rootNode: tree.getRootSubjectNodes()) {
-			 final SubjectGroup subjectParentGroup = rootNode.getGroup();
-			 final String sIDGroupActiviti = subjectParentGroup.getsID_Group_Activiti();
-			 
-			 if(!sIDGroupActiviti.equals(sID_Group_Activiti)) {
-				 continue;
-			 }
-			 
-			 SubjectGroupTreeResult subjectGroupTreeResult = new SubjectGroupTreeResult();
-			 subjectGroupTreeResult.setoSubjectGroup_Root(subjectParentGroup);
-			 for (SubjectGroupNode childNode : rootNode.getChildren()) {
-	                final SubjectGroup childGroup = childNode.getGroup();
-
-
-	                subjectGroupTreeResult.addChild(childGroup);
-	            }
-			 
-			 res.add(subjectGroupTreeResult);
-		 }
-		 
-		 
-		return res;
+		return tree;
 		 
 	 }
 	
