@@ -2543,7 +2543,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String sID_Process) throws Exception {
         //получаем ответные файлы
         StringBuilder anID_Attach_Dfs = new StringBuilder();
-        Task task = taskService.createTaskQuery().processInstanceId(sID_Process).active().singleResult();
+        Task task = taskService.createTaskQuery().processInstanceId(sID_Process).singleResult();
+        LOG.info("task.getId: " + (task!= null ? task.getId() : ""));
         if (task != null) {
             LOG.info("task.getId: " + task.getId());
             List<ByteArrayMultipartFile> multipartFiles = dfsService.getAnswer(INN);
