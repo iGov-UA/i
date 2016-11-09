@@ -425,8 +425,8 @@ public class ObjectCustomsControllerTest
         
     }
     
-   @Test
-    public void setObjectCustomsSaveOrUpdateUniqueAndSetDuplicate()throws Exception
+    @Test
+    public void setObjectCustomsSaveOrUpdateUniqueAndSetDuplicate() throws Exception
     {
         //set duplicate sID_UA — must be error
         

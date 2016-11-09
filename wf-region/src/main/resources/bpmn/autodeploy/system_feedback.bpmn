@@ -3,40 +3,47 @@
   <process id="system_feedback" name="Відпрацювання зворотнюго зв'язку" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="nID_Protected" name="Номер первинного звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Place" name="Обраний населений пункт" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail адреса" type="string"></activiti:formProperty>
         <activiti:formProperty id="nID_Proccess_Feedback" name="ID бізнес-процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processName" name="Назва послуги" type="string"></activiti:formProperty>
         <activiti:formProperty id="region" name="Регіон" type="string"></activiti:formProperty>
         <activiti:formProperty id="nasPunkt" name="Населений пункт" type="string"></activiti:formProperty>
         <activiti:formProperty id="organ" name="Назва органу, який обробив звернення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEmployeeContacts" name="ПІБ та контактні телефони відповідальних посадовців" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate_BP" name="Дата подання звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="Коментар громадянина" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nID_Rate" name="Оцінка громадянина" type="long"></activiti:formProperty>
-        <activiti:formProperty id="nID_Protected" name="Важливе поле" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка волонтером" activiti:candidateGroups="volont_feedback">
       <extensionElements>
-        <activiti:formProperty id="nID_Protected" name="Важливе поле" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nID_Protected" name="Номер первинного звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Place" name="Обраний населений пункт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail адреса громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nID_Proccess_Feedback" name="ID бізнес-процесу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processName" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="region" name="Регіон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nasPunkt" name="Населений пункт" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="organ" name="Назва органу, який обробив звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="Коментар громадянина" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nID_Rate" name="Оцінка громадянина" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmployeeContacts" name="ПІБ та контактні телефони відповідальних посадовців" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_BP" name="Дата подання звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="Коментар громадянина" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nID_Rate" name="Оцінка громадянина" type="long"></activiti:formProperty>
         <activiti:formProperty id="sBody_Indirectly" name="Коментар волонтера" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nID_Rate_Indirectly" name="Оцінка волонтера" type="long"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${assignGroup}"></activiti:taskListener>
+        <activiti:formProperty id="info" name="речовий модуль" type="textArea" default=" Доброго дня! Мене звуть %ім'я%" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${assignGroup}">
+          <activiti:field name="group_prefix">
+            <activiti:string><![CDATA[Feedback_]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="servicetask1"></sequenceFlow>

@@ -18,7 +18,9 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
@@ -30,7 +32,6 @@ import javax.net.ssl.X509TrustManager;
 
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 
 import static org.igov.util.Tool.sCut;
 
@@ -46,12 +47,27 @@ public class HttpRequester {
 
     public String postInside(String sURL, Map<String, Object> mParam)
             throws Exception {
+        return postInside(sURL, mParam, null, null);
+    }
+    
+    public String postInside(String sURL, Map<String, Object> mParam, String sParam, String contentType)
+            throws Exception {
+        String sUser = generalConfig.getAuthLogin();
+        String sPassword = generalConfig.getAuthPassword();
         
+        return postInside(sURL, mParam, sParam, contentType, sUser, sPassword);
+    }
+
+    public String postInside(String sURL, Map<String, Object> mParam, String sParam, String contentType, String sUser, String sPassword)
+            throws Exception {
+
         boolean bSkipValidationSSL = generalConfig.isSelfTest();
         simplifySSLConnection(bSkipValidationSSL);
-        
+
         String saParam = "";
-        if (mParam != null) {
+        if (sParam != null) {
+            saParam = sParam;
+        } else if (mParam != null) {
             for (Map.Entry<String, Object> entry : mParam.entrySet()) {
                 if (entry.getValue() != null) {
                     String entryValue;
@@ -71,13 +87,18 @@ public class HttpRequester {
         StringBuilder osReturn = new StringBuilder();
         try {
             HttpURLConnection oConnection = (HttpURLConnection) oURL.openConnection();
-            String sUser = generalConfig.getAuthLogin();
-            String sPassword = generalConfig.getAuthPassword();
+            //String sUser = generalConfig.getAuthLogin();
+            //String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
 
             oConnection.setRequestMethod(RequestMethod.POST.name());
-            oConnection.setRequestProperty("Content-Type", "text/plain");
+            if(contentType != null){
+                oConnection.setRequestProperty("Content-Type", contentType);
+            } else{
+                oConnection.setRequestProperty("Content-Type", "text/plain");
+            }
+            
             oConnection.setDoOutput(true);
             DataOutputStream oDataOutputStream = new DataOutputStream(oConnection.getOutputStream());
             // Send post request
@@ -106,15 +127,14 @@ public class HttpRequester {
             new Log(oException, LOG)
                     ._Case("Web_PostSelf")
                     ._Head("[post]:BREAKED!")
-//                    ._Body(oException.getMessage())
+                    //                    ._Body(oException.getMessage())
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
                     ._Param("sURL", sURL)
                     ._Param("saParam", saParam)
                     ._LogTransit()
                     ._LogTrace()
-                    .save()
-                    ;
+                    .save();
             LOG.error("BREAKED: {} (sURL={},saParam={})", oException.getMessage(), sURL, saParam);
             //oLogBig_Web.error("BREAKED: {} (sURL={},saParam={})",oException.getMessage(),sURL,saParam);
             LOG_BIG.error("BREAKED: {} (sURL={},saParam={})", oException.getMessage(), sURL, saParam);
@@ -132,8 +152,7 @@ public class HttpRequester {
                     ._Param("saParam", saParam)
                     ._Param("osReturn", osReturn)
                     ._LogTransit()
-                    .save()
-                    ;
+                    .save();
             if (bExceptionOnNorSuccess) {
                 throw new Exception("nStatus=" + nStatus + "sURL=" + sURL + "saParam=" + saParam + "osReturn=" + osReturn);
             }
@@ -142,54 +161,51 @@ public class HttpRequester {
     }
 
     public String getInside(String sURL, Map<String, String> mParam) throws Exception {
-        
+
         boolean bSkipValidationSSL = generalConfig.isSelfTest();
         simplifySSLConnection(bSkipValidationSSL);
-        
+
         String requestMethod = RequestMethod.GET.name();
-        if (mParam.containsKey("RequestMethod")){
-        	requestMethod = mParam.get("RequestMethod");
-        	mParam.remove("RequestMethod");
+        if (mParam.containsKey("RequestMethod")) {
+            requestMethod = mParam.get("RequestMethod");
+            mParam.remove("RequestMethod");
         }
         URL oURL = null;
-        if (RequestMethod.GET.name().equals(requestMethod)){
-        	oURL = new URL(getFullURL(sURL, mParam));
+        if (RequestMethod.GET.name().equals(requestMethod)) {
+            oURL = new URL(getFullURL(sURL, mParam));
         } else {
-        	Map<String, String> params = new HashMap<String, String>();
-        	params.put("sID_Order", mParam.remove("sID_Order"));
-        	params.put("nID_SubjectMessageType", mParam.remove("nID_SubjectMessageType"));
-        	params.put("sBody", mParam.remove("sBody"));
-        	oURL = new URL(getFullURL(sURL, params));
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("sID_Order", mParam.remove("sID_Order"));
+            params.put("nID_SubjectMessageType", mParam.remove("nID_SubjectMessageType"));
+            params.put("sBody", mParam.remove("sBody"));
+            oURL = new URL(getFullURL(sURL, params));
         }
         InputStream oInputStream;
         BufferedReader oBufferedReader_InputStream;
         HttpURLConnection oConnection;
-        
-        
-        
+
         //HttpsURLConnection.verify(
         Integer nStatus;
         StringBuilder osReturn = new StringBuilder();
         try {
-
 
             URLConnection oConnectAbstract = oURL.openConnection();
             /*if (oConnectAbstract instanceof HttpsURLConnection) {
                 //simplifySSLConnection(bSkipValidationSSL ? null : (HttpsURLConnection) oConnectAbstract);
                 simplifySSLConnection(bSkipValidationSSL, (HttpsURLConnection) oConnectAbstract);
             }*/
-            
+
             //oConnection = (HttpURLConnection) oURL.openConnection();
             oConnection = (HttpURLConnection) oConnectAbstract;
-            
+
             String sUser = generalConfig.getAuthLogin();
             String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
-            if (RequestMethod.POST.name().equals(requestMethod)){
-            	for (Map.Entry<String, String> curr : mParam.entrySet()){
-            		oConnection.setRequestProperty(curr.getKey(), StringEscapeUtils.escapeJava(curr.getValue()));
-            	}
+            if (RequestMethod.POST.name().equals(requestMethod)) {
+                for (Map.Entry<String, String> curr : mParam.entrySet()) {
+                    oConnection.setRequestProperty(curr.getKey(), StringEscapeUtils.escapeJava(curr.getValue()));
+                }
             }
 
             oConnection.setRequestMethod(requestMethod);
@@ -215,7 +231,7 @@ public class HttpRequester {
             new Log(oException, LOG)
                     ._Case("Web_GetSelf")
                     ._Head("[get]:BREAKED!")
-//                    ._Body(oException.getMessage())
+                    //                    ._Body(oException.getMessage())
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
                     ._Param("sURL", sURL)
@@ -245,7 +261,33 @@ public class HttpRequester {
         }
         return osReturn.toString();
     }
-    
+
+    /**
+     * Method works only with GET http method
+     * @param sURL
+     * @param mParam
+     * @param multipleParam
+     * @return
+     * @throws Exception
+     */
+    public String getInside(String sURL, Map<String, String> mParam, Map<String, List<String>> multipleParam) throws Exception {
+        sURL = getFullURL(sURL, mParam);
+        StringBuilder multipleKeyValues = new StringBuilder();
+        for (Map.Entry<String, List<String>> entry :multipleParam.entrySet()) {
+            String key = entry.getKey();
+            for (String value : entry.getValue()){
+                multipleKeyValues.append("&");
+                multipleKeyValues.append(key);
+                multipleKeyValues.append("=");
+                multipleKeyValues.append(URLEncoder.encode(value, "UTF-8"));
+            }
+        }
+        String mKVs = multipleKeyValues.toString();
+        LOG.info("sURL={}", sURL);
+        LOG.info("multipleKeyValues={}", mKVs);
+        return getInside(sURL + mKVs, Collections.emptyMap());
+    }
+
     /**
      * Веривикация сертификата при HTTPS-соединении.
      *
@@ -255,7 +297,7 @@ public class HttpRequester {
     //public void simplifySSLConnection(HttpsURLConnection oConnectHTTPS) {
     //public void simplifySSLConnection(boolean bSkip, HttpsURLConnection oConnectHTTPS) {
     public void simplifySSLConnection(boolean bSkip) {
-        if(bSkip){
+        if (bSkip) {
             LOG.info("Skip Sertificate!");
             /*javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
                 new javax.net.ssl.HostnameVerifier(){
@@ -268,14 +310,14 @@ public class HttpRequester {
                         //return false;
                     }
                 });            
-            */
-            /*oConnectHTTPS.setHostnameVerifier(new HostnameVerifier() {
+             */
+ /*oConnectHTTPS.setHostnameVerifier(new HostnameVerifier() {
                 @Override
                 public boolean verify(String arg0, SSLSession arg1) {
                     return true;
                 }
             });*/
-            
+
             TrustManager[] trustAllCerts = {
                 new X509TrustManager() {
                     public X509Certificate[] getAcceptedIssuers() {
@@ -295,17 +337,17 @@ public class HttpRequester {
                 HttpsURLConnection.setDefaultSSLSocketFactory(oSSLContext.getSocketFactory());
             } catch (Exception oException) {
                 //_RiseWarn(oException, "simplifySSLConnection", "", "Fail getting SSLContext");
-                LOG.warn("simplifySSLConnection. Fail getting SSLContext: "+oException.getMessage());
+                LOG.warn("simplifySSLConnection. Fail getting SSLContext: " + oException.getMessage());
             }
             HostnameVerifier oHostnameVerifier = new HostnameVerifier() {
                 public boolean verify(String urlHostName, SSLSession session) {
                     //_RiseWarn("simplifySSLConnection", "URL Host(urlHostName)=" + urlHostName, " vs. " + session.getPeerHost());
-                    LOG.warn("simplifySSLConnection."+"(URL Host(urlHostName)=" + urlHostName, " vs. " + session.getPeerHost()+"): ");
+                    LOG.warn("simplifySSLConnection." + "(URL Host(urlHostName)=" + urlHostName, " vs. " + session.getPeerHost() + "): ");
                     return true;
                 }
             };
-            HttpsURLConnection.setDefaultHostnameVerifier(oHostnameVerifier);            
-            
+            HttpsURLConnection.setDefaultHostnameVerifier(oHostnameVerifier);
+
         }
         /*if (oConnectHTTPS != null) {
             //HttpsURLConnection oConnectHTTPS = (HttpsURLConnection) oConnectAbstract;
@@ -345,8 +387,7 @@ public class HttpRequester {
             HttpsURLConnection.setDefaultHostnameVerifier(oHostnameVerifier);
         }*/
     }
-    
-    
+
     public byte[] getInsideBytes(String sURL, Map<String, String> mParam) throws Exception {
         URL oURL = new URL(getFullURL(sURL, mParam));
         InputStream oInputStream;
@@ -381,7 +422,7 @@ public class HttpRequester {
             new Log(oException, LOG)
                     ._Case("Web_GetSelf")
                     ._Head("[get]:BREAKED!")
-//                    ._Body(oException.getMessage())
+                    //                    ._Body(oException.getMessage())
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
                     ._Param("sURL", sURL)

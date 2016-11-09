@@ -1,20 +1,20 @@
 angular.module('app')
-  .controller('ServiceFormController', function ($scope, service, regions, AdminService,
-                                                 ServiceService, TitleChangeService, CatalogService,
-                                                 $anchorScroll, $rootScope, feedback, statesRepository) {
-    $scope.spinner = true;
-    $scope.service = service;
-    $scope.regions = regions;
-    $scope.bAdmin = AdminService.isAdmin();
+.controller('ServiceFormController', function ($scope, service, regions, AdminService,
+                                               ServiceService, TitleChangeService, CatalogService,
+                                               $anchorScroll, $rootScope, feedback, statesRepository) {
+  $scope.spinner = true;
+  $scope.service = service;
+  $scope.regions = regions;
+  $scope.bAdmin = AdminService.isAdmin();
 
-    if(statesRepository.isKyivCity()){
-      $scope.bHideTab = true;
-    } else {
-      $scope.bHideTab = false;
-    }
+  if(statesRepository.isKyivCity()){
+    $scope.bHideTab = true;
+  } else {
+    $scope.bHideTab = false;
+  }
 
-    //TODO should be refactored after refactoring for single controller for app/service/index.html
-    $scope.feedback = feedback;
+  //TODO should be refactored after refactoring for single controller for app/service/index.html
+  $scope.feedback = feedback;
 
   var sServiceName = $scope.service.sName;
   var data = CatalogService.getServiceTags(sServiceName).then(function (res) {

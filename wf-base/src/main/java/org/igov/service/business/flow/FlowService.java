@@ -1,5 +1,6 @@
 package org.igov.service.business.flow;
 
+import static java.lang.Math.toIntExact;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
@@ -27,15 +28,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
 import javax.xml.datatype.Duration;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Map.Entry;
 import org.activiti.engine.FormService;
 import org.activiti.engine.form.FormProperty;
 import org.igov.service.business.action.task.form.QueueDataFormType;
+import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
+import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
 
 /**
  * User: goodg_000
@@ -49,10 +50,12 @@ public class FlowService implements ApplicationContextAware {
     private static final Logger LOG_BIG = LoggerFactory.getLogger("FlowServiceBig");
     
     private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
-
+    private static final String SUFFIX_AUTO = "auto";
+    public static final int DAYS_IN_MONTH = 30;
+    public static final int WORK_DAYS_NEEDED = 20;
+    public static final int DAYS_IN_HALF_YEAR = 180;
     @Autowired
     private FlowSlotDao flowSlotDao;
-
     
     @Autowired
     @Qualifier("flowPropertyDao")
@@ -799,5 +802,78 @@ public class FlowService implements ApplicationContextAware {
             result[i] = subjectOrganDepartment;
         }
         return result;
+    }
+      public List<FlowSlotVO> buildFlowSlotsTest(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate) {
+
+        Flow_ServiceData flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+
+        List<FlowSlotVO> res = new ArrayList<>();
+
+        for (FlowProperty flowProperty : flow.getFlowProperties()) {
+            if (flowProperty.getbExclude() == null || !flowProperty.getbExclude()) {
+                Class<FlowPropertyHandler> flowPropertyHandlerClass = getFlowPropertyHandlerClass(flowProperty);
+                if (BaseFlowSlotScheduler.class.isAssignableFrom(flowPropertyHandlerClass)) {
+
+                    BaseFlowSlotScheduler handler = getFlowPropertyHandlerInstance(
+                            flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
+                    handler.setStartDate(startDate);
+                    handler.setEndDate(stopDate);
+                    handler.setFlow(flow);
+
+                    LOG.info("(startDate={}, stopDate={}, flowProperty.getsData()={})",
+                            startDate, stopDate, flowProperty.getsData());
+
+                    if (flowProperty.getsData() != null && !"".equals(flowProperty.getsData().trim())) {
+                        List<FlowSlot> generatedSlots = handler.generateObjects(flowProperty.getsData());
+                        for (FlowSlot slot : generatedSlots) {
+                            res.add(new FlowSlotVO(slot));
+                        }
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+      
+    public void buildFlowSlots(){
+      DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
+        LOG.info(" oDateStart = {}", oDateStart);
+        List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
+        for (Flow_ServiceData flow : aFlowServiceData) {
+                if (flow.getsID_BP().endsWith(SUFFIX_AUTO) && flow.getnCountAutoGenerate() != null) {
+                LOG.info("Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
+                LOG.info("SUFFIX_AUTO: " + flow.getsID_BP().endsWith(SUFFIX_AUTO) + " flow.getnCountAutoGenerate(): " + flow.getnCountAutoGenerate());
+                
+                checkAndBuildFlowSlots(flow, oDateStart);
+            }
+        }
+        
+    } 
+    public void checkAndBuildFlowSlots(Flow_ServiceData flow, DateTime oDateStart) {
+        //Maxline: TODO добавить исключения
+        Long nID_Flow_ServiceData = flow.getId();
+        Long nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
+        Long nCountAutoGenerate = flow.getnCountAutoGenerate(); // nCountAutoGenerate данным параметром задаваем количество дней на которое генерируем
+        LOG.info("nCountAutoGenerate: " + nCountAutoGenerate);
+        Long nID_SubjectOrganDepartment = flow.getnID_SubjectOrganDepartment();
+        LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}",
+                nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
+
+        int nStartDay = 0;
+        DateTime dateStart;// = oDateStart.plusDays(0); //maxline: todo удалить комментарий после тестирования
+        DateTime dateEnd;
+        dateStart = oDateStart.plusDays(nStartDay);
+        int CountAutoGenerate = toIntExact(nCountAutoGenerate);
+        LOG.info("CountAutoGenerate: " + CountAutoGenerate);
+        dateEnd = oDateStart.plusDays(CountAutoGenerate);
+        LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
+        List<FlowSlotVO> resFlowSlotVO = buildFlowSlots(nID_Flow_ServiceData,
+                dateStart, dateEnd); // строит четко на месяц вперед (точнее dateStart - dateEnd) независимо от рабочих или нерабочих дней
+        LOG.info(" resFlowSlotVO.size() = {}", resFlowSlotVO.size());
+
+        nStartDay += DAYS_IN_MONTH;
+        boolean bEnoughFreeDays = nStartDay < DAYS_IN_HALF_YEAR;
+        LOG.info(" bEnoughFreeDays = {}", bEnoughFreeDays);
     }
 }

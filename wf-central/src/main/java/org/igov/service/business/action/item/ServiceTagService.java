@@ -64,7 +64,8 @@ public class ServiceTagService {
                     continue;
                 }
 
-                if (!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA)) {
+                if (!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
+                        includeTestEntities)) {
                     continue;
                 }
 
@@ -73,7 +74,7 @@ public class ServiceTagService {
 
             if (nodeVO.getaServiceTag_Child().isEmpty() &&
                     !isSuitable(parentTag, tagIdToServices.get(parentTag.getId()), nID_Category, sFind,
-                            asID_Place_UA)) {
+                            asID_Place_UA, includeTestEntities)) {
                 continue;
             }
 
@@ -91,7 +92,7 @@ public class ServiceTagService {
                 }
 
                 final List<Service> selectedServices = servicesStream
-                        .distinct().filter(s -> isSuitable(s, nID_Category, sFind, asID_Place_UA))
+                        .distinct().filter(s -> isSuitable(s, nID_Category, sFind, asID_Place_UA, includeTestEntities))
                         .collect(Collectors.toList());
 
                 nodeVO.setaService(selectedServices);
@@ -110,7 +111,8 @@ public class ServiceTagService {
     }
     
     private boolean isSuitable(ServiceTag serviceTag, List<Service> services,
-                               Long nID_Category, String sFind, List<String> asID_Place_UA) {
+                               Long nID_Category, String sFind, List<String> asID_Place_UA,
+                               boolean includeTestEntities) {
         if (CollectionUtils.isEmpty(services)) {
             return false;
         }
@@ -127,7 +129,7 @@ public class ServiceTagService {
 
         boolean res = false;
         for (Service service : services) {
-            if (isSuitable(service, nID_Category, sFindForServices, asID_Place_UA)) {
+            if (isSuitable(service, nID_Category, sFindForServices, asID_Place_UA, includeTestEntities)) {
                 res = true;
                 break;
             }
@@ -137,7 +139,8 @@ public class ServiceTagService {
     }
 
     private boolean isSuitable(Service service,
-                               Long nID_Category, String sFind, List<String> asID_Place_UA) {
+                               Long nID_Category, String sFind, List<String> asID_Place_UA,
+                               boolean includeTestEntities) {
         boolean res = true;
         if (nID_Category != null) {
             res = nID_Category.equals(service.getSubcategory().getCategory().getId());
@@ -151,6 +154,14 @@ public class ServiceTagService {
 
             boolean placeFound = false;
             for (ServiceData serviceData : service.getServiceDataList()) {
+                if (serviceData.isHidden()) {
+                    continue;
+                }
+
+                if (!includeTestEntities && serviceData.isTest()) {
+                    continue;
+                }
+
                 final Place place = serviceData.getoPlace();
                 if (place == null || placesSet.contains(place.getsID_UA())) {
                     placeFound = true;
