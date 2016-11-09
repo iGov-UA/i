@@ -41,7 +41,7 @@ public class SubjectGroupController {
             throws Exception  {
     	SubjectGroupResult subjectGroupResult = null;
     	try {
-    		subjectGroupResult = subjectGroupService.getSubjectGroups(sID_Group_Activiti,nDeepLevel);
+    		subjectGroupResult = subjectGroupService.getSubjectGroupsByGroupActiviti(sID_Group_Activiti);
     		
     		 LOG.info("SubjectGroupppppppppppppppp: "+subjectGroupResult);
     	} catch (Exception e) {
