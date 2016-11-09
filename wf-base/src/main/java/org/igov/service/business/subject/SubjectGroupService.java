@@ -21,13 +21,10 @@ import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupNode;
 import org.igov.model.subject.SubjectGroupResult;
 import org.igov.model.subject.SubjectGroupTree;
+import org.igov.model.subject.SubjectGroupTreeResult;
 import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 
 /**
  *
@@ -60,7 +57,7 @@ public class SubjectGroupService {
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 
-			if (parent.getId() != FAKE_ROOT_SUBJECT_ID && parent.getsID_Group_Activiti().equals(sID_Group_Activiti)) {
+			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
 				parentNode = subjectToNodeMap.get(parent);
 				if (parentNode == null) {
 					parentSubject.add(parent);
@@ -82,16 +79,6 @@ public class SubjectGroupService {
 
 		}
 		
-/*		List<SubjectGroup>listFilter = Lists.newArrayList(Collections2
-				.filter(new ArrayList<SubjectGroup>(parentSubject),
-						new Predicate<SubjectGroup>() {
-					@Override
-					public boolean apply(SubjectGroup subjectGroup) {
-						// получить только отфильтрованные SubjectGroup по sID_Group_Activiti
-						return subjectGroup.getsID_Group_Activiti().equals(sID_Group_Activiti);
-					}
-				}));*/
-		
 		Set<SubjectGroup> rootTags = new LinkedHashSet<>(parentSubject);
 		
 		
@@ -107,12 +94,34 @@ public class SubjectGroupService {
 
 	
 	
-	 public SubjectGroupResult getSubjectGroupResult(String sID_Group_Activiti) {
+	 public List<SubjectGroupTreeResult> getSubjectGroupResult(String sID_Group_Activiti) {
 		 
+		 
+		 List<SubjectGroupTreeResult> res = new ArrayList<>();
 		 SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti);
 		 
+		 for(SubjectGroupNode rootNode: tree.getRootSubjectNodes()) {
+			 final SubjectGroup subjectParentGroup = rootNode.getGroup();
+			 final String sIDGroupActiviti = subjectParentGroup.getsID_Group_Activiti();
+			 
+			 if(!sIDGroupActiviti.equals(sID_Group_Activiti)) {
+				 continue;
+			 }
+			 
+			 SubjectGroupTreeResult subjectGroupTreeResult = new SubjectGroupTreeResult();
+			 subjectGroupTreeResult.setoSubjectGroup_Root(subjectParentGroup);
+			 for (SubjectGroupNode childNode : rootNode.getChildren()) {
+	                final SubjectGroup childGroup = childNode.getGroup();
+
+
+	                subjectGroupTreeResult.addChild(childGroup);
+	            }
+			 
+			 res.add(subjectGroupTreeResult);
+		 }
 		 
-		return tree;
+		 
+		return res;
 		 
 	 }
 	
