@@ -141,6 +141,9 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
       return $sce.trustAsHtml(string);
     }
   };
+  $scope.goToService = function (nID) {
+    $location.path("/service/"+nID+"/general");
+  };
   $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {
       $scope.spinner = true;
