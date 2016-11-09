@@ -33,7 +33,15 @@ public class SubjectGroupTree extends AbstractEntity{
     @ManyToOne(targetEntity = SubjectGroup.class)
     @JoinColumn(name="nID_SubjectGroup_Parent", nullable = false, updatable = false)
     private SubjectGroup oSubjectGroup_Parent;
+    
+    
 
+
+	@Override
+	public String toString() {
+		return "SubjectGroupTree [oSubjectGroup_Child=" + oSubjectGroup_Child + ", oSubjectGroup_Parent="
+				+ oSubjectGroup_Parent + "]";
+	}
 
 	public SubjectGroup getoSubjectGroup_Child() {
         return oSubjectGroup_Child;
@@ -51,10 +59,5 @@ public class SubjectGroupTree extends AbstractEntity{
         this.oSubjectGroup_Parent = oSubjectGroup_Parent;
     }
     
-    @Override
-  	public String toString() {
-  		return "SubjectGroupTree [oSubjectGroup_Child=" + oSubjectGroup_Child + ", oSubjectGroup_Parent="
-  				+ oSubjectGroup_Parent + "]";
-  	}
     
 }

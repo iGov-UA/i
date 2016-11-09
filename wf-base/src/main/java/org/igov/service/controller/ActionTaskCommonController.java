@@ -64,10 +64,14 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import org.activiti.engine.task.Attachment;
 import org.apache.commons.mail.EmailException;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import org.igov.service.business.action.task.systemtask.DeleteProccess;
+import org.igov.service.business.dfs.DfsService;
 import static org.igov.util.Tool.sO;
 import org.igov.util.db.queryloader.QueryLoader;
 //import com.google.common.base.Optional;
@@ -118,6 +122,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private DeleteProccess deleteProccess;
+
+    @Autowired
+    private DfsService dfsService;
 
     /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
      @ResponseBody
@@ -745,9 +752,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     /**
-     * Method takes current value of process variable and if its value doesn't contain sInsertValue method appends it.
-     * Also if it contains sRemoveValue it will be removed.
-     * Can be used only with Strings
+     * Method takes current value of process variable and if its value doesn't
+     * contain sInsertValue method appends it. Also if it contains sRemoveValue
+     * it will be removed. Can be used only with Strings
+     *
      * @param snID_Process - id of Activiti Process
      * @param sKey - name of Variable on Activiti Process
      * @param sInsertValues - values which should be added.
@@ -768,14 +776,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("removeValues={} insertValues={}", sRemoveValues, sInsertValues);
             if (sInsertValues != null) {
                 for (String sInsertValue : sInsertValues) {
-                    if(!currentValue.contains(sInsertValue)){
+                    if (!currentValue.contains(sInsertValue)) {
                         currentValue = (currentValue.trim() + " " + sInsertValue).trim();
                     }
                 }
             }
-            if (sRemoveValues != null ) {
+            if (sRemoveValues != null) {
                 for (String sRemoveValue : sRemoveValues) {
-                    if(currentValue.contains(sRemoveValue)){
+                    if (currentValue.contains(sRemoveValue)) {
                         currentValue = currentValue.replace(sRemoveValue, "");
                     }
                 }
@@ -1437,7 +1445,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param saField -- строка-массива полей (например:
      * "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
      * ) // * @param nID_Process - ид заявки
-     * @param soParams 
+     * @param soParams
      * @param sMail -- строка электронного адреса гражданина // * @param
      * nID_Server - ид сервера
      * @param sHead -- строка заголовка письма //опциональный (если не задан, то
@@ -2477,7 +2485,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.debug(e.getMessage());
         }
     }
-    
+
     @ApiOperation(value = "/removeOldProcess", notes = "##### Удаление закрытых процессов из таблиц активити#####\n\n")
     @RequestMapping(value = "/removeOldProcess", method = RequestMethod.GET)
     public @ResponseBody
@@ -2517,16 +2525,52 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return result;
     }
 
-
     @ApiOperation(value = "/closeProcess", notes = "##### Закрытие всех инстансов бизнес-процесса#####\n\n")
     @RequestMapping(value = "/closeProcess", method = RequestMethod.GET)
     public @ResponseBody
     void closeProcess(@ApiParam(value = "ид бизнес-процесса", required = true) @RequestParam(value = "sID_Process_Def", required = true) String sID_Process_Def,
             @ApiParam(value = "лимит количества заявок для удаления", required = false) @RequestParam(value = "nLimitCountRowDeleted", required = false) Integer nLimitCountRowDeleted) {
-        if(nLimitCountRowDeleted != null){
+        if (nLimitCountRowDeleted != null) {
             deleteProccess.setLimitCountRowDeleted(nLimitCountRowDeleted);
         }
         deleteProccess.closeProcess(sID_Process_Def);
+    }
+
+    @ApiOperation(value = "/getAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")
+    @RequestMapping(value = "/getAnswer_DFS", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAnswer_DFS(@ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String INN,
+            @ApiParam(value = "ИНН", required = true) @RequestParam(value = "sID_Process", required = true) String sID_Process) throws Exception {
+        //получаем ответные файлы
+        StringBuilder anID_Attach_Dfs = new StringBuilder();
+        Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
+        LOG.info("task.getId: " + (task!= null ? task.getId() : "no active task for sID_Process = " + sID_Process));
+        if (task != null) {
+            //LOG.info("task.getId: " + task.getId());
+            List<ByteArrayMultipartFile> multipartFiles = dfsService.getAnswer(INN);
+            LOG.info("multipartFiles.size: " + multipartFiles.size());
+            try {
+                for (ByteArrayMultipartFile multipartFile : multipartFiles) {
+                    Attachment attachment = taskService.createAttachment(multipartFile.getContentType() + ";" + multipartFile.getExp(),
+                            task.getId(), sID_Process,
+                            multipartFile.getOriginalFilename(), multipartFile.getName(), multipartFile.getInputStream());
+
+                    if (attachment != null) {
+                        anID_Attach_Dfs.append(attachment.getId()).append(",");
+                        LOG.info("attachment: " + attachment.getId());
+                    }
+                }
+            } catch (Exception ex) {
+                java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (anID_Attach_Dfs.length() > 0) {
+                String sID_Attach_Dfs = anID_Attach_Dfs.deleteCharAt(anID_Attach_Dfs.length() - 1).toString();
+                runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", sID_Attach_Dfs);
+                taskService.setVariable(task.getId(), "anID_Attach_Dfs", sID_Attach_Dfs);
+                //taskService.complete(task.getId());
+            }
+        }
+        return anID_Attach_Dfs.toString();
     }
 
 }

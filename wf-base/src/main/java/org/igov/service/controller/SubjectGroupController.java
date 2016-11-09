@@ -1,9 +1,6 @@
 
 package org.igov.service.controller;
 
-import java.util.List;
-
-import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupResult;
 import org.igov.service.business.subject.SubjectGroupService;
 import org.slf4j.Logger;
@@ -41,7 +38,7 @@ public class SubjectGroupController {
             throws Exception  {
     	SubjectGroupResult subjectGroupResult = null;
     	try {
-    		subjectGroupResult = subjectGroupService.getSubjectGroupsByGroupActiviti(sID_Group_Activiti);
+    		subjectGroupResult = subjectGroupService.getSubjectGroupResult(sID_Group_Activiti);
     		
     		 LOG.info("SubjectGroupppppppppppppppp: "+subjectGroupResult);
     	} catch (Exception e) {

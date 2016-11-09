@@ -479,7 +479,6 @@ exports.upload_content_as_attachment = function (req, res) {
         };
         pdfConversion(options, function (err, pdf) {
           callback(err, {content: pdf.stream, contentType: 'application/json', url: 'upload_file_as_attachment'});
-          pdfConversion.kill();
         });
       } else {
         callback(null, {content: req.body.sContent, contentType: 'text/html', url: 'upload_content_as_attachment'});
@@ -513,6 +512,7 @@ exports.upload_content_as_attachment = function (req, res) {
             'Content-Type': data.contentType + ';charset=utf-8'
           }
         }, function (error, statusCode, result) {
+          pdfConversion.kill();
           error ? res.send(error) : res.status(statusCode).json(result);
         });
       }

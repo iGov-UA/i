@@ -11,10 +11,8 @@ import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
 import org.igov.model.action.task.core.entity.ActionProcessCount;
 import org.igov.model.action.task.core.entity.ActionProcessCountDao;
-import org.igov.model.document.DocumentDao;
 import org.igov.model.subject.Server;
 import org.igov.model.subject.ServerDao;
-import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
@@ -41,19 +39,13 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
-import org.activiti.engine.task.Attachment;
-import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectDao;
 import org.igov.model.subject.SubjectHuman;
 import org.igov.model.subject.SubjectHumanDao;
 import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
-import org.igov.service.business.dfs.DfsService;
-import org.igov.service.business.subject.SubjectMessageService;
-import org.igov.util.VariableMultipartFile;
 import org.joda.time.format.DateTimeFormatter;
 
 @Controller
@@ -75,21 +67,13 @@ public class ActionEventController implements ControllerConstants {
     @Autowired
     private HttpEntityInsedeCover oHttpEntityInsedeCover;
     @Autowired
-    private SubjectMessagesDao subjectMessagesDao;
-    @Autowired
     private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
     @Autowired
-    private DocumentDao documentDao;
-    @Autowired
     private ActionProcessCountDao actionProcessCountDao;
-    @Autowired
-    private SubjectMessageService oSubjectMessageService;
     @Autowired
     private SubjectDao subjectDao;
     @Autowired
     private SubjectHumanDao subjectHumanDao;
-    @Autowired
-    private DfsService dfsService;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -842,10 +826,12 @@ public class ActionEventController implements ControllerConstants {
         LOG.info("Removed {} entities", res);
     }
 
-    @ApiOperation(value = "/getAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")
-    @RequestMapping(value = "/getAnswer_DFS", method = RequestMethod.GET)
+    @ApiOperation(value = "/sheduleAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")
+    @RequestMapping(value = "/sheduleAnswer_DFS", method = RequestMethod.GET)
     public @ResponseBody
-    boolean getAnswer_DFS() throws Exception {
+    String sheduleAnswer_DFS() throws Exception {
+        String result = "None";
+        LOG.info("sheduleAnswer_DFS... ");
         List<HistoryEvent_Service> historyEvent_Services = historyEventServiceDao.getHistoryEvent_Service(null, new Long(1549), null);
         LOG.info("historyEvent_Services.size: " + historyEvent_Services.size());
         for (HistoryEvent_Service historyEvent_Service : historyEvent_Services) {
@@ -853,34 +839,17 @@ public class ActionEventController implements ControllerConstants {
                 Subject subject = subjectDao.findByIdExpected(historyEvent_Service.getnID_Subject()); //
                 LOG.info("subject: " + subject);
                 SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
-                LOG.info("subjectHuman: " + subjectHuman);
-                //получаем ответный файл
-                List<ByteArrayMultipartFile> multipartFiles = dfsService.getAnswer(subjectHuman.getsINN());
-                StringBuilder anID_Attach_Dfs = new StringBuilder();
-                /*try {
-                    for (ByteArrayMultipartFile multipartFile : multipartFiles) {
-
-                        Attachment attachment = taskService.createAttachment(multipartFile.getContentType() + ";" + multipartFile.getExp(),
-                                delegateTask.getId(), execution.getProcessInstanceId(),
-                                fileNameOrigin, fileName, multipartFile.getInputStream());
-
-                        if (attachment != null) {
-                            anID_Attach_Dfs.append(attachment.getId()).append(",");
-                            LOG.info("attachment: " + attachment.getId());
-                        }
-                    }
-
-                } catch (Exception ex) {
-                    java.util.logging.Logger.getLogger(ActionEventController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                if (anID_Attach_Dfs.length() > 0) {
-                    String sID_Attach_UkrDoc = anID_Attach_Dfs.deleteCharAt(anID_Attach_Dfs.length() - 1).toString();
-                    runtimeService.setVariable(execution.getProcessInstanceId(), "anID_Attach_Dfs", sID_Attach_UkrDoc);
-                    taskService.setVariable(delegateTask.getId(), "anID_Attach_Dfs", sID_Attach_UkrDoc);
-                }*/
-                //закрываем таску
+                LOG.info("subjectHuman.getsINN: " + subjectHuman.getsINN());
+                //вызываем сервис региона по закрыти процесса и сету ответа от ДФС
+                Server server = serverDao.findByIdExpected(new Long(historyEvent_Service.getnID_Server()));
+                String sURL = server.getsURL() + "/service/action/task/getAnswer_DFS?sID_Process=" + historyEvent_Service.getnID_Task()
+                        + "&INN=" + subjectHuman.getsINN();
+                LOG.info(sURL + "...");
+                ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+                result = osResponseEntityReturn.getBody();
+                LOG.info(sURL + " result: " + result);
             }
         }
-        return true;
+        return result;
     }
 }

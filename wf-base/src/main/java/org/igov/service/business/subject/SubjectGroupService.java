@@ -26,10 +26,6 @@ import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-
 /**
  *
  * @author inna
@@ -38,7 +34,7 @@ import com.google.common.collect.Lists;
 public class SubjectGroupService {
 	private static final Log LOG = LogFactory.getLog(SubjectGroupService.class);
 	private static final long FAKE_ROOT_SUBJECT_ID = 0;
-	 private static final String GET_SERVICE_SUBJECT_GROUP_CACHE_KEY = "SubjectGroupService.getSubjectGroupsByGroupActiviti";
+	 private static final String GET_SERVICE_SUBJECT_GROUP_CACHE_KEY = "SubjectGroupService.getSubjectGroupResult";
 
 	@Autowired
 	private BaseEntityDao<Long> baseEntityDao;
@@ -59,7 +55,9 @@ public class SubjectGroupService {
 		SubjectGroupNode parentNode = null;
 		for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
+			LOG.info("SubjectGrouppppppparent "+ parent);
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
+			LOG.info("SubjectGrouppppppchild "+ child);
 
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
 				parentNode = subjectToNodeMap.get(parent);
@@ -82,22 +80,18 @@ public class SubjectGroupService {
 			}
 
 		}
+		
 		Set<SubjectGroup> rootTags = new LinkedHashSet<>(parentSubject);
+		
+		LOG.info("parentSubjecttttttttttttttt "+ parentSubject);
+		LOG.info("childSubjectttttttttttttttttt "+ childSubject);
+		
+		
+		LOG.info("SubjectGrouppppppSettttt"+ rootTags);
 		rootTags.removeAll(childSubject);
 		
 		final List<SubjectGroupNode> rootSubjectNodes = rootTags.stream().map(subjectToNodeMap::get)
 				.collect(Collectors.toList());
-		
-/*		final List<SubjectGroupNode> rootSubjectNodesFiltr = Lists.newArrayList(Collections2
-				.filter(rootTags.stream().map(subjectToNodeMap::get)
-						.collect(Collectors.toList()),
-						new Predicate<SubjectGroupNode>() {
-					@Override
-					public boolean apply(SubjectGroupNode subjectGroupNode) {
-						// получить только отфильтрованные SubjectGroup по sID_Group_Activiti
-						return subjectGroupNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
-					}
-				}));*/
 		
 		
 		return new SubjectGroupResult(rootSubjectNodes);
@@ -105,13 +99,11 @@ public class SubjectGroupService {
 
 	
 	
-	 public List<SubjectGroupTreeResult> getSubjectGroupsByDeepLevel(String sID_Group_Activiti,Integer nDeepLevel) {
+	 public SubjectGroupResult getSubjectGroupResult(String sID_Group_Activiti) {
 		 
-		 List<SubjectGroupTreeResult> res = new ArrayList<>();
-		 SubjectGroupResult subjectGroupResult = getSubjectGroupResultCached(sID_Group_Activiti);
+		 SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti);
 		 
-		 
-		return res;
+		return tree;
 		 
 	 }
 	
