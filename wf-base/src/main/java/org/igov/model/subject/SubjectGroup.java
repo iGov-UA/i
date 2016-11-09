@@ -6,6 +6,8 @@
 package org.igov.model.subject;
 
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.igov.model.core.NamedEntity;
 
@@ -30,8 +32,22 @@ public class SubjectGroup extends NamedEntity{
     @JsonProperty(value = "sChain")
     @Column
     private String sChain;
+    
+    
+    @ManyToOne(targetEntity = SubjectGroupTree.class)
+    @JoinColumn(name="nID_SubjectGroup_Parent", nullable = true, updatable = false)
+    private SubjectGroupTree subjectGroupTree;
 
-    public String getsID_Group_Activiti() {
+
+	public SubjectGroupTree getSubjectGroupTree() {
+		return subjectGroupTree;
+	}
+
+	public void setSubjectGroupTree(SubjectGroupTree subjectGroupTree) {
+		this.subjectGroupTree = subjectGroupTree;
+	}
+
+	public String getsID_Group_Activiti() {
         return sID_Group_Activiti;
     }
 
@@ -49,11 +65,8 @@ public class SubjectGroup extends NamedEntity{
 
 	@Override
 	public String toString() {
-		return "SubjectGroup [sID_Group_Activiti=" + sID_Group_Activiti + ", sChain=" + sChain + ", getName()="
-				+ getName() + ", getId()=" + getId() + "]";
+		return "SubjectGroup [sID_Group_Activiti=" + sID_Group_Activiti + ", sChain=" + sChain + ", subjectGroupTree="
+				+ subjectGroupTree + "]";
 	}
 
-    
-    
-    
 }

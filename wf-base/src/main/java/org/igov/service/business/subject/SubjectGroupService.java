@@ -39,20 +39,19 @@ public class SubjectGroupService {
             nDeepLevel = 1000;
         }*/
         
-        List<SubjectGroup>subjectGroupList = new ArrayList<>();
+        List<SubjectGroup>subjectGroupList =new ArrayList<>(baseEntityDao.findAll(SubjectGroup.class));
         
-        SubjectGroup subjectGroup = subjectGroupDao.getSubjectGroupsByGroupActiviti(sID_Group_Activiti);
-        LOG.info("SubjectGrouppppppppppppppppppp  " + subjectGroup.toString());
+        LOG.info("SubjectGrouppppppppppppppppppp  " + subjectGroupList);
         	
         Set<SubjectGroup> parentTags = new LinkedHashSet<>();
         Set<SubjectGroup> childTags = new HashSet<>();
         
-        List<SubjectGroupTree> subjectGroupTrees = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
+        List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
         	
-        for (SubjectGroupTree subjectGroupTree : subjectGroupTrees) {
-            final SubjectGroup parent = subjectGroupTree.getoSubjectGroup_Parent();
+        for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
+            final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
             parentTags.add(parent);
-            final SubjectGroup child = subjectGroupTree.getoSubjectGroup_Child();
+            final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
             childTags.add(child);
 
         }
