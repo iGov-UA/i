@@ -14,16 +14,9 @@
                 <activiti:formProperty id="sCode" name="Код  територіального органу ДФС; ;writable=true,sID_Field_SWinEd=HKSTI" type="string"></activiti:formProperty>  
                 <activiti:formProperty id="HKBOS" name="Керівник (податковий номер або серія та номер паспорта*) ; ;writable=true,sID_Field_SWinEd=HKBOS" type="string"></activiti:formProperty>  
                 <activiti:formProperty id="HBOS" name="Керівник (ініціали та прізвище) ; ;writable=true,sID_Field_SWinEd=HBOS" type="string" default="Пупкин В. В."></activiti:formProperty>  
-                
                 <activiti:formProperty id="HZM" name="місяць звіту ; ;writable=true,sID_Field_SWinEd=HZM" type="string" default="12"></activiti:formProperty>  
                 <activiti:formProperty id="HZY" name="рік звіту ; ;writable=true,sID_Field_SWinEd=HZY" type="string" default="2016"></activiti:formProperty>  
                 <activiti:formProperty id="HZB" name="Форма №Д4 - початкова ; ;writable=true,sID_Field_SWinEd=HZB" type="string" default="1"></activiti:formProperty>  
-          
-          
-          
-          
-          
-        
                 <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Назва територіального органу ДФС; ;writable=true,sID_Field_SWinEd=HSTI" type="select" required="true"></activiti:formProperty>
                 <activiti:formProperty id="email" name="Електронна адреса; ;writable=true,sID_Field_SWinEd=HEMAIL" type="string" default="olga.kuzminova87@gmail.com"></activiti:formProperty>
                 <activiti:formProperty id="sNameCity" name="Назва населеного пункту; ;writable=true,sID_Field_SWinEd=HCITY" type="string" default="Дніпро"></activiti:formProperty>
@@ -33,10 +26,6 @@
                 <activiti:formProperty id="sStartYear" name="Рік;початок періоду;writable=true,sID_Field_SWinEd=R01G02" type="string" default="2015"></activiti:formProperty>
                 <activiti:formProperty id="sEndPeriod" name="Квартал;кінець періоду;writable=true,sID_Field_SWinEd=R02G01" type="string" default="1"></activiti:formProperty>
                 <activiti:formProperty id="sEndYear" name="Рік;кінець періоду;writable=true,sID_Field_SWinEd=R02G02" type="string" default="2016"></activiti:formProperty>
-
-
-
-        
                 <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG" type="string"></activiti:formProperty>
                 <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ" type="string"></activiti:formProperty>
                 <activiti:formProperty id="C_DOC" name="C_DOC;system;writable=true,sID_Field_SWinEd=C_DOC" type="string" default="F30"></activiti:formProperty>
@@ -64,6 +53,7 @@
         <userTask id="usertask1" name="Обробка звернення " activiti:candidateGroups="sales">
             <extensionElements>
                 <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
+                <activiti:formProperty id="anID_Attach_Dfs" name="Ответ" type="file"></activiti:formProperty>
                 <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
                     <activiti:field name="sID_File_XML_SWinEd">
                         <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
