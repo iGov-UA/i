@@ -2540,12 +2540,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getAnswer_DFS", method = RequestMethod.GET)
     public @ResponseBody
     String getAnswer_DFS(@ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String INN,
-            @ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String sID_Process) throws Exception {
+            @ApiParam(value = "ИНН", required = true) @RequestParam(value = "sID_Process", required = true) String sID_Process) throws Exception {
         //получаем ответные файлы
         StringBuilder anID_Attach_Dfs = new StringBuilder();
-        Task task = taskService.createTaskQuery().processInstanceId(sID_Process).singleResult();
-        LOG.info("task.getId: " + (task!= null ? task.getId() : ""));
-        //if (task != null) {
+        Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
+        LOG.info("task.getId: " + (task!= null ? task.getId() : "no active task for sID_Process = " + sID_Process));
+        if (task != null) {
             //LOG.info("task.getId: " + task.getId());
             List<ByteArrayMultipartFile> multipartFiles = dfsService.getAnswer(INN);
             LOG.info("multipartFiles.size: " + multipartFiles.size());
@@ -2569,7 +2569,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 taskService.setVariable(task.getId(), "anID_Attach_Dfs", sID_Attach_Dfs);
                 //taskService.complete(task.getId());
             }
-        //}
+        }
         return anID_Attach_Dfs.toString();
     }
 
