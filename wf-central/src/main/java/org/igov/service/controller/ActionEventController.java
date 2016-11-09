@@ -841,7 +841,8 @@ public class ActionEventController implements ControllerConstants {
                 SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
                 LOG.info("subjectHuman.getsINN: " + subjectHuman.getsINN());
                 //вызываем сервис региона по закрыти процесса и сету ответа от ДФС
-                String sURL = generalConfig.getSelfHost() + "/service/action/task/getAnswer_DFS?sID_Process=" + historyEvent_Service.getnID_Task()
+                Server server = serverDao.findByIdExpected(new Long(historyEvent_Service.getnID_Server()));
+                String sURL = server.getsURL() + "/service/action/task/getAnswer_DFS?sID_Process=" + historyEvent_Service.getnID_Task()
                         + "&INN=" + subjectHuman.getsINN();
                 LOG.info(sURL + "...");
                 ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
