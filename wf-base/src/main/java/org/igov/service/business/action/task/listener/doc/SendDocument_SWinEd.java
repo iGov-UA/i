@@ -4,16 +4,10 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
-import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
-import org.igov.io.web.HttpRequester;
 import org.igov.service.business.action.task.core.AbstractModelTask;
-import org.igov.util.swind.GateSoapProxy;
-import org.igov.util.swind.ProcessResult;
-
-import static org.igov.util.ToolWeb.base64_encode;
-
+import org.igov.service.business.dfs.DfsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,21 +20,15 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 
     private final static Logger LOG = LoggerFactory.getLogger(SendDocument_SWinEd.class);
     
-    //private final static String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
-    private final static String URL = "http://109.237.89.107:1220/gate.asmx";
-    
     private Expression sEmail;
     
     private Expression sID_File_XML_SWinEd;
     
     @Autowired
-    GeneralConfig generalConfig;
+    private DfsService dfsService;
 
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
-
-    @Autowired
-    private HttpRequester oHttpRequester;
 
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -56,12 +44,11 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
             LOG.info("sEmailValue : " + sEmailValue 
                     + " oByteArrayMultipartFile.getOriginalFilename(): " + oByteArrayMultipartFile.getOriginalFilename());
             if (oFile_XML_SWinEd != null) {
-                GateSoapProxy gate = new GateSoapProxy(URL);
-                LOG.info("!!! Before sending request to gate web service. sID_File_XML_SWinEdValue:" + oByteArrayMultipartFile.getOriginalFilename() + 
-                		" sEmailValue:" + sEmailValue + " endpoint:" + gate.getEndpoint() + " content:" + oByteArrayMultipartFile.getBytes());
-                ProcessResult result = gate.send(oByteArrayMultipartFile.getOriginalFilename(), sEmailValue, oByteArrayMultipartFile.getBytes());
-                LOG.info("!!!response:" + result.getValue());
-                resp = result.getValue();
+                String content = new String(oByteArrayMultipartFile.getBytes());
+                resp += " content: " + content;
+                LOG.info("content: " + content);
+                resp = dfsService.send(content, oByteArrayMultipartFile.getOriginalFilename(), sEmailValue);
+                LOG.info("!!!response:" + resp);
             } else {
                 LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " oFile_XML_SWinEd is null!!!");
             }
@@ -71,5 +58,5 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
             execution.setVariable("result", resp);
         }
     }
-
+    
 }

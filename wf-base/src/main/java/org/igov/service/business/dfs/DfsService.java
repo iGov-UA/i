@@ -35,13 +35,13 @@ public class DfsService {
     @Autowired
     private HttpRequester oHttpRequester;
 
-    /*public String send(String content, String fileName, String email) throws Exception {
+    public String send(String content, String fileName, String email) throws Exception {
         LOG.info("content: " + content + " fileName: " + fileName + " email: " + email);
         String body = createBody_Send(content, fileName, email);
         return oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
-    }*/
+    }
 
-    /*private String createBody_Send(String content, String fileName, String email) {
+    private String createBody_Send(String content, String fileName, String email) {
         String result = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
                 .append("<soap12:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">")
                 .append("<soap12:Body>")
@@ -53,7 +53,7 @@ public class DfsService {
                 .append("</soap12:Body>")
                 .append("</soap12:Envelope>").toString();
         return result;
-    }*/
+    }
 
     public VariableMultipartFile getAnswer(String inn) throws Exception {
         String result = getMessages(inn);
