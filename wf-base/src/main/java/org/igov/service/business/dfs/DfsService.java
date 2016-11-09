@@ -136,9 +136,7 @@ public class DfsService {
     private String delete(String massageID) throws Exception {
         LOG.info("massageID: " + massageID);
         String body = createBody_Delete(massageID);
-        String result = "";
-        result = oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
-        return result;
+        return oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
     }
 
     private String createBody_Delete(String massageID) {
