@@ -71,7 +71,7 @@
                 </div>
               </div>
             </div>
-            <form name="oQuestion" ng-if="bOrderQuestion && $index == 0 && !sServerReturnOnAnswer" style="padding: 20px" class="form-horizontal">
+            <form novalidate name="oQuestion" ng-if="bOrderQuestion && $index == 0 && !sServerReturnOnAnswer" style="padding: 20px" class="form-horizontal">
 
               <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID"
                    ng-switch on="oField.sType">
@@ -90,27 +90,45 @@
                              ng-required="true"
                              class="form-control">
 
-                        <p ng-switch-when="date" class="input-group ng-scope" style="width:150px;">
-                            <input
-                                   type="text"
-                                   name="{{oField.sID}}"
-                                   datepicker-popup="{{oField.oFactory.format}}"
-                                   is-open="oField.oFactory.opened"
-                                   datepicker-options="oField.oFactory.options"
-                                   ng-model="oField.oFactory.value"
-                                   ng-required="true"
-                                   close-text="Close"
-                                   ng-readonly="true"
-                                   class="form-control"
-                                   value="oField.oFactory.value">
+                        <input ng-switch-when="long"
+                               type="number"
+                               name="{{oField.sID}}"
+                               ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                               string-to-number
+                               ng-model="oField.sValueNew"
+                               ng-required="true"
+                               class="form-control">
 
-                            <span class="input-group-btn">
-                              <button type="button"
-                                      class="btn btn-default"
-                                      ng-click="oField.oFactory.open($event)">
-                                <i class="glyphicon glyphicon-calendar"></i>
-                              </button>
-                            </span>
+                        <input ng-switch-when="double"
+                               type="number"
+                               name="{{oField.sID}}"
+                               ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                               string-to-number
+                               ng-model="oField.sValueNew"
+                               ng-required="true"
+                               class="form-control">
+
+                        <p ng-switch-when="date" class="input-group ng-scope datepicker-central" style="width:150px;">
+                          <input
+                            type="text"
+                            name="{{oField.sID}}"
+                            datepicker-popup="{{oField.oFactory.format}}"
+                            is-open="oField.oFactory.opened"
+                            datepicker-options="oField.oFactory.options"
+                            ng-model="oField.oFactory.value"
+                            ng-required="true"
+                            close-text="Close"
+                            ng-readonly="true"
+                            class="form-control"
+                            value="oField.oFactory.value">
+
+                          <span class="input-group-btn">
+                            <button type="button"
+                                    class="btn btn-default"
+                                    ng-click="oField.oFactory.open($event)">
+                              <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                          </span>
                         </p>
 
                         <textarea ng-switch-when="textArea"
@@ -120,7 +138,6 @@
                               ng-required="true"
                               class="form-control">
                         </textarea>
-
                     </div>
               </div>
 

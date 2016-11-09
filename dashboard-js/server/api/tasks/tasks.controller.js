@@ -8,7 +8,9 @@ var authService = require('../../auth/activiti/basic');
 var async = require('async');
 var tasksService = require('./tasks.service');
 var environment = require('../../config/environment');
+var config = require(__dirname + '/../../..' + '/process.json').env;
 var request = require('request');
+var pdf = require('html-pdf');
 
 /*
 var nodeLocalStorage = require('node-localstorage').LocalStorage;
@@ -20,10 +22,10 @@ function createHttpError(error, statusCode) {
 
 function step(input, lowerFunction, withoutResult) {
   return withoutResult ? function (callback) {
-    lowerFunction(callback, input)
+    lowerFunction(callback, input);
   } : function (result, callback) {
     lowerFunction(result, callback, input);
-  }
+  };
 }
 
 function loadGroups(wfCallback, assigneeID) {
@@ -46,7 +48,7 @@ function loadTasksForOtherUsers(usersIDs, wfCallback, currentUserID) {
   var tasks = [];
   usersIDs = usersIDs
     .filter(function (usersID) {
-      return usersID !== currentUserID
+      return usersID !== currentUserID;
     });
 
   async.forEach(usersIDs, function (usersID, frCallback) {
@@ -118,7 +120,7 @@ exports.index = function (req, res) {
     } else if (req.query.filterType === 'unassigned') {
       query.candidateUser = user.id;
       query.unassigned = true;
-      query.includeProcessVariables_ = true;
+      query.includeProcessVariables = true;
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
       query.taskAssignee = user.id;
@@ -279,7 +281,13 @@ exports.getAttachmentContentTable = function (req, res) {
     }
   };
   activiti.get(options, function (error, statusCode, result) {
-    error ? res.send(error) : res.status(statusCode).json(result);
+    if(error) {
+      res.send(error);
+    } else if (statusCode == 500) {
+      console.log(statusCode, "isn't table attachment");
+    }else {
+      res.status(statusCode).json(result);
+    }
   });
 };
 
@@ -418,7 +426,7 @@ exports.getProcesses = function (req, res) {
     ], function (error, result) {
       authService.setCashedUserGroups(currentUser, currentUser.roles);
       error ? res.send(error) : res.json(result);
-    })
+    });
   }
 };
 
@@ -441,24 +449,64 @@ exports.getPatternFile = function (req, res) {
       'sPathFile': req.query.sPathFile
     }
   };
+
+  options.query.sPathFile = options.query.sPathFile.replace(/^sPrintFormFileAsPDF=pattern\/|^sPrintFormFileAsIs=pattern\//, '');
   activiti.filedownload(req, res, options);
 };
 
+/**
+ * https://github.com/e-government-ua/i/issues/1382
+ * added pdf conversion if file name is sPrintFormFileAsPDF
+ */
 exports.upload_content_as_attachment = function (req, res) {
-  activiti.post({
-    path: 'object/file/upload_content_as_attachment',
-    query: {
-      nTaskId: req.params.taskId,
-      sContentType: 'text/html',
-      sDescription: req.body.sDescription,
-      sFileName: req.body.sFileName
+  async.waterfall([
+    function(callback){
+      if(req.body.sFileName === 'sPrintFormFileAsPDF.pdf'){
+        var options = {
+          "format": "A4",        // allowed units: A3, A4, A5, Legal, Letter, Tabloid
+          "orientation": "landscape" // portrait or landscape
+        };
+        pdf.create(req.body.sContent, options)
+        .toStream(function (err, stream) {
+          callback(err, {content: stream, contentType: 'application/json', url:'upload_file_as_attachment'});
+        });
+      }else{
+        callback(null, {content: req.body.sContent, contentType: 'text/html', url:'upload_content_as_attachment'});
+      }
     },
-    headers: {
-      'Content-Type': 'text/html;charset=utf-8'
+    function (data, callback) {
+      if(data.url === 'upload_content_as_attachment'){
+        activiti.post({
+          path: 'object/file/' + data.url,
+          query: {
+            nTaskId: req.params.taskId,
+            sContentType: data.contentType,
+            sDescription: req.body.sDescription,
+            sFileName: req.body.sFileName
+          },
+          headers: {
+            'Content-Type': data.contentType+';charset=utf-8'
+          }
+        }, function (error, statusCode, result) {
+          error ? res.send(error) : res.status(statusCode).json(result);
+        }, data.content, false);
+      }
+
+      if(data.url === 'upload_file_as_attachment'){
+        activiti.uploadStream({
+          path: 'object/file/' + data.url,
+          taskId: req.params.taskId,
+          stream: data.content,
+          description: req.body.sDescription,
+          headers: {
+            'Content-Type': data.contentType+';charset=utf-8'
+          }
+        },function (error, statusCode, result) {
+          error ? res.send(error) : res.status(statusCode).json(result);
+        });
+      }
     }
-  }, function (error, statusCode, result) {
-    error ? res.send(error) : res.status(statusCode).json(result);
-  }, req.body.sContent, false);
+  ]);
 };
 
 exports.setTaskQuestions = function (req, res) {
@@ -475,14 +523,11 @@ exports.setTaskQuestions = function (req, res) {
 exports.postServiceMessage = function(req, res){
   var oData = req.body;
   var oDateNew = {
-    'sID_Order': environment.activiti.nID_Server + '-' + oData.nID_Process,
+    'sID_Order': config.Back_Region.nID_Server_Back_Region + '-' + oData.nID_Process,
     'sBody': oData.sBody,
-    'nID_SubjectMessageType' : 9,
-    'sMail': oData.sMail,
-    'soParams': oData.soParams
+    'nID_SubjectMessageType' : 9
   };
-  var central = environment.activiti_central;
-  var sURL = central.prot + '://' + central.host + ':' + central.port + '/' + central.rest + '/subject/message/setServiceMessage';
+  var sURL = config.Back_Central.sURL_Back_Central + '/subject/message/setServiceMessage';
   var callback = function(error, response, body) {
     res.send(body);
     res.end();
@@ -490,13 +535,12 @@ exports.postServiceMessage = function(req, res){
   return request.post({
     'url': sURL,
     'auth': {
-      'username': central.username,
-      'password': central.password
-    },
+    'username': config.Back_Central.sLogin_Back_Central,
+      'password': config.Back_Central.sPassword_Back_Central
+  },
     'qs': oDateNew
   }, callback);
 };
-
 
 exports.checkAttachmentSign = function (req, res) {
   var nID_Task = req.params.taskId;

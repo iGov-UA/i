@@ -1,4 +1,4 @@
-angular.module('app').directive('slotPicker', function($http, $filter, dialogs, ErrorsFactory) {
+angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFactory) {
 
   return {
     restrict: 'EA',
@@ -15,8 +15,6 @@ angular.module('app').directive('slotPicker', function($http, $filter, dialogs, 
         date: null,
         slot: null
       };
-
-      scope.isConnectionServer = false;
 
       scope.$watch('selected.date', function() {
         scope.selected.slot = null;
@@ -67,10 +65,8 @@ angular.module('app').directive('slotPicker', function($http, $filter, dialogs, 
               sSubjectPassport: getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value),
               sSubjectPhone: scope.formData.params.phone.value || ''
             };
-            scope.isConnectionServer = true;
             $http.post('/api/service/flow/DMS/setSlotHold', data).
             success(function(data, status, headers, config) {
-              scope.isConnectionServer = false;
               scope.ngModel = JSON.stringify({
                 reserved_to: data.reserved_to,
                 reserve_id: data.reserve_id,
@@ -79,29 +75,17 @@ angular.module('app').directive('slotPicker', function($http, $filter, dialogs, 
               console.info('Reserved slot: ' + angular.toJson(data));
             }).
             error(function(data, status, headers, config) {
-              scope.isConnectionServer = false;
               console.error('Error reserved slot ' + angular.toJson(data));
               var err = data.message.split(": response=");
-              if(data.message.indexOf('api.cherg.net') >= 0 && err[1]){
+              if(data.message.indexOf('tapi.cherg.net') >= 0 && err[1]){
                 if(data.message.indexOf('Время уже занято') >= 0){
-                  ErrorsFactory.push({
-                    type: 'warning',
-                    text: 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка'
-                  });
+                  dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка')
                 } else {
-                  ErrorsFactory.push({
-                    sType: 'danger',
-                    sBody: 'Помилка резервування слота на сервері ДМС.',
-                    sNote: 'Відповідь сервера: ' + err[1]
-                  });
+                  dialogs.error('Помилка', err[1])
                 }
                 scope.selected.slot = null;
               } else {
-                ErrorsFactory.push({
-                  sType: 'danger',
-                  sBody: 'Помилка при резервуванні слота.',
-                  sNote: 'Відповідь сервера: ' + data.message
-                });
+                dialogs.error('Помилка', data.message);
               }
             });
           }
@@ -113,23 +97,16 @@ angular.module('app').directive('slotPicker', function($http, $filter, dialogs, 
               if (nSlots > 1)
                 setFlowUrl += '&nSlots=' + nSlots;
             }
-            scope.isConnectionServer = true;
             $http.post(setFlowUrl).then(function (response) {
-              scope.isConnectionServer = false;
               scope.ngModel = JSON.stringify({
                 sID_Type: "iGov",
                 nID_FlowSlotTicket: response.data.nID_Ticket,
                 sDate: scope.selected.date.sDate + ' ' + scope.selected.slot.sTime + ':00.00'
               });
             }, function () {
-              scope.isConnectionServer = false;
               scope.selected.date.aSlot.splice(scope.selected.date.aSlot.indexOf(scope.selected.slot), 1);
               scope.selected.slot = null;
-              //dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
-              ErrorsFactory.push({
-                type: 'danger',
-                text: 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка'
-              });
+              dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
             });
           }
         }
@@ -214,35 +191,15 @@ angular.module('app').directive('slotPicker', function($http, $filter, dialogs, 
         }
 
         scope.slotsLoading = true;
-        scope.isConnectionServer = true;
 
-        return $http.get(sURL, {params:data}).
-        success(function (response) {
-          scope.isConnectionServer = false;
+        return $http.get(sURL, {params:data}).then(function(response) {
           if (isQueueDataType.DMS){
-            scope.slotsData = convertSlotsDataDMS(response);
+            scope.slotsData = convertSlotsDataDMS(response.data);
           } else if (isQueueDataType.iGov) {
-            scope.slotsData = response;
+            scope.slotsData = response.data;
           }
           scope.slotsLoading = false;
-        }).
-        error(function (err) {
-          scope.isConnectionServer = false;
-          scope.slotsLoading = false;
-          if (isQueueDataType.DMS){
-            ErrorsFactory.push({
-              sType: 'warning',
-              sBody: 'Виникла помилка при отриманні данних від сервера ДМС. Будь ласка, повторіть спробу пізніше.',
-              sNote: 'Детальніше: ' + JSON.toString(err)
-            });
-          } else if (isQueueDataType.iGov) {
-            ErrorsFactory.push({
-              sType: 'warning',
-              sBody: 'Виникла помилка при отриманні данних від сервера ДМС. Будь ласка, повторіть спробу пізніше.',
-              sNote: 'Детальніше: ' + JSON.toString(err)
-            });
-          }
-        }.bind(this));
+        });
       };
 
       function convertSlotsDataDMS(data) {
@@ -251,7 +208,7 @@ angular.module('app').directive('slotPicker', function($http, $filter, dialogs, 
         for (var sDate in data) if (data.hasOwnProperty(sDate)) {
           aDay.push({
             aSlot: [],
-            sDate: $filter('date')(new Date(sDate), 'yyyy-MM-dd')
+            sDate: sDate
           });
           angular.forEach(data[sDate], function (slot) {
             aDay[aDay.length - 1].aSlot.push({

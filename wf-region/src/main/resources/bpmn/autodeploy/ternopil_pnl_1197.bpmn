@@ -6,25 +6,21 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Sex" name="Стать" type="enum" required="true">
-          <activiti:value id="man" name="Чоловіча"></activiti:value>
-          <activiti:value id="woman" name="Жіноча"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть медичний заклад, в який Ви бажаєте записатись на прийом" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть медичний заклад, в який Ви бажаєте записатись на прийом" type="select" default="0"></activiti:formProperty>     
+        <activiti:formProperty id="sLikar" name="Оберіть лікаря до якого Ви бажаєте записатись на прийом" type="enum"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKab205" name="Номер кабінету" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/medicine.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -99,26 +95,18 @@ execution.setVariable('sNotification_day', timer)</script>
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p>
 Чекаємо Вас за адресою: ${sAddress}<br>
-для оформлення паспорта громадянина України
 </p>
 <p>
 Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
-										<b>Необхідні документи, які треба принести до ${sOrganType} при оформленні паспорта громадянина України по досягненні 16-річного віку:</b><br>
+										<b>Необхідні документи, які треба принести до ${sLikar}:</b><br>
 										<ul>
-										${sDocID}
-                                        <ul>
-										<li>свідоцтво про народження оригінал та копія;</li>
-										<li>оригінали та копії паспортів обох батьків;</li>
-										<li>оригінали та копії ІПН обох батьків;</li>
-										<li>За відсутності батька або матері до підрозділу подаються такі документи:</li>
-										<ul>
-										<li>свідоцтво про смерть другого з батьків;</li>
-										<li>рішення суду про позбавлення батьківських прав другого з батьків;</li>
-										<li>рішення суду про визнання другого з батьків безвісно відсутнім;</li>
-                                        <ul>
-										</ul>
+										<li>Прийти за адресою: ${sAddress}.</li>
+										<li>При собі мати:</li>
+										<li>- Направлення;</li>
+										<li>- Флюрографію та ренген;</li>
+										<li>- Первинну документацію (за навності)</li>
 										</ul>
 									</p>
 [pattern/mail/_common_signature_start.html]
@@ -145,16 +133,16 @@ ${sNameOrgan},<br>
 									<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 									<p>
 										Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
-										Ви записались до ____________.
+										Ви записались до ${sLikar}.
 									</p>
 									<p>
 										Для того щоб закінчити процедуру необхідно:<br>
 										<ul>
 										<li>Прийти за адресою: ${sAddress}.</li>
-										<li>При собі мати:
-										- Направлення;
-										- Флюрографію та ренген;
-										- Первинна документація (за навності)</li>
+										<li>При собі мати:</li>
+										<li>- Направлення;</li>
+										<li>- Флюрографію та ренген;</li>
+										<li>- Первинну документацію (за навності)</li>
 										</ul>
 									</p>
 									<p>
@@ -187,12 +175,13 @@ ${sNameOrgan},<br>
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLikar" name="Лікар до якого записались на прийом" type="enum" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Орган, що здійснює прийом" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
-          <activiti:value id="reestr" name="Громадянин подав заяву"></activiti:value>
+          <activiti:value id="reestr" name="Громадянин з'явився"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>

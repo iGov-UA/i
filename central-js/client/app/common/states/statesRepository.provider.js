@@ -188,9 +188,9 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
   StatesRepository.prototype.getOrgan = function () {
     if (!!modes[this.mode]) {
-      if(modes[this.mode].asOrgan.length>0){
-        return modes[this.mode].asOrgan[0];
-      }
+        if(modes[this.mode].asOrgan.length>0){
+            return modes[this.mode].asOrgan[0];
+        }
     }
     return "";
   };
@@ -214,7 +214,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     if (!!modes[this.mode] && nID) {
       angular.forEach(modes[this.mode].anID_CatalogCategoryShowAll, function (nID_CatalogCategoryShowAll) {
         if (nID_CatalogCategoryShowAll === nID) {
-          bAll=true;
+            bAll=true;
         }
         //return bAll;
       });

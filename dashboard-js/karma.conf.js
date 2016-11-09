@@ -3,6 +3,9 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
+      //solve PhantomJs .bind problem
+      './node_modules/phantomjs-polyfill/bind-polyfill.js',
+
       'client/bower_components/jquery/dist/jquery.js',
       'client/bower_components/angular/angular.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
@@ -10,11 +13,23 @@ module.exports = function(config) {
       'client/bower_components/angular-cookies/angular-cookies.js',
       'client/bower_components/angular-sanitize/angular-sanitize.js',
       'client/bower_components/angular-route/angular-route.js',
+      'client/bower_components/angular-ui-router/release/angular-ui-router.js',
       'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'client/bower_components/lodash/dist/lodash.compat.js',
       'client/bower_components/ng-idle/angular-idle.js',
       'client/bower_components/moment/moment.js',
       'client/bower_components/angular-moment/angular-moment.js',
+      'client/bower_components/ngstorage/ngStorage.js',
+      'client/bower_components/angular-ui-utils/ui-utils.js',
+      'client/bower_components/zeroclipboard/dist/ZeroClipboard.js',
+      'client/bower_components/ng-clip/src/ngClip.js',
+      'client/bower_components/ngstorage/ngStorage.js',
+      'client/bower_components/angular-ui-validate/dist/validate.js',
+      'client/bower_components/angular-messages/angular-messages.js',
+      'client/bower_components/angular-smart-table/dist/smart-table.js',
+
+      '../public-js/markers/module.js',
+
       'client/app/app.js',
       'client/app/**/*.js',
       'client/app/**/*.coffee',

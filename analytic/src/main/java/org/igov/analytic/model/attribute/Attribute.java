@@ -15,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessTask;
-import javax.persistence.Transient;
 import org.igov.model.core.NamedEntity;
 
 /**
