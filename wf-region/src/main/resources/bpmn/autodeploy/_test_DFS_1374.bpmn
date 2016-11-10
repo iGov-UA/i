@@ -68,11 +68,6 @@
             <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${TransferDocumentAnswer_SWinEd}">
-          <activiti:field name="sINN">
-            <activiti:expression>${bankIdinn}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
@@ -102,6 +97,13 @@
     <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
     <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${TransferDocumentAnswer_SWinEd}">
+          <activiti:field name="sINN">
+            <activiti:expression>${bankIdinn}</activiti:expression>
+          </activiti:field>
+        </activiti:executionListener>
+      </extensionElements>
       <timerEventDefinition>
         <timeDuration>PT7M</timeDuration>
       </timerEventDefinition>
