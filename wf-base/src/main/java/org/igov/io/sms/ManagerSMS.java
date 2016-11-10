@@ -82,7 +82,7 @@ public class ManagerSMS {
             generalConfig.getKyivStarLogin(), generalConfig.getKyivStarPassword());
     }*/
     
-    private String SendSenderSms(String phone, String message, String sID_Order)
+    private String SendSenderSms(String sID_Order, String phone, String message)
     {
         return managerSMS.sendSMS(sID_Order, "+" + phone, message);
     }
