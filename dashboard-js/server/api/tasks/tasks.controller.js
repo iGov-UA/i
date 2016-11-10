@@ -233,6 +233,22 @@ exports.getAttachments = function (req, res) {
     }
   });
 };
+exports.saveChangesTask = function (req, res) {
+  var options = {
+    path: '/action/task/saveForm',
+    query: {
+      sParams: req.body
+    }
+  };
+
+  activiti.post(options, function (error, statusCode, result) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.status(statusCode).json(result);
+    }
+  }, req.body);
+};
 
 exports.getOrderMessages = function (req, res) {
   var options = {

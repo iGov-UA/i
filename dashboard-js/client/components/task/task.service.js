@@ -200,7 +200,7 @@ angular.module('dashboardJsApp')
           return properties;
         };
 
-        //var deferred = $q.defer();
+        var deferred = $q.defer();
 
         // upload files before form submitting
         this.uploadTaskFiles(formProperties, task, taskId).then(function()
@@ -211,12 +211,10 @@ angular.module('dashboardJsApp')
           };
 
           var req = {
-            method: 'PUT',
-            url: '/api/tasks/' + taskId + '/form',
+            method: 'POST',
+            url: '/api/tasks/action/task/saveForm',
             data: submitTaskFormData
           };
-console.log("submitTaskFormData");
-console.log(submitTaskFormData);
           simpleHttpPromise(req).then(
             function(result) {
             deferred.resolve(result);
