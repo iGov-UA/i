@@ -330,7 +330,7 @@ public class HistoryEvent_Service extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "HistoryEvent_Service [sID=" + sID + ", nID_Process="  + nID_Process
+        return "HistoryEvent_Service [sID=" + sID + ", nID_Task="  + nID_Process
                 + ", nID_Subject=" + nID_Subject + ", sUserTaskName="
                 + sUserTaskName + ", sDate=" + sDate + ", nID_Service="
                 + nID_Service + ", nID_Region=" + nID_Region + ", sID_UA="

@@ -9,9 +9,13 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.io.web.HttpRequester;
@@ -21,13 +25,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import static org.igov.util.ToolWeb.base64_encode;
-import org.igov.util.VariableMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.apache.commons.codec.binary.Base64;
+import org.igov.service.controller.ActionTaskCommonController;
 
 /**
  *
@@ -46,7 +49,55 @@ public class DfsService {
     GeneralConfig generalConfig;
 
     @Autowired
+    private TaskService taskService;
+
+    @Autowired
     private HttpRequester oHttpRequester;
+
+    @Autowired
+    private RuntimeService runtimeService;
+
+    public String getAnswer(String sID_Task, String sID_Process, String sINN) {
+        StringBuilder asID_Attach_Dfs = new StringBuilder();
+        List<ByteArrayMultipartFile> multipartFiles = getAnswer(sINN);
+        LOG.info("multipartFiles.size: " + multipartFiles.size());
+        try {
+            Attachment attachmentDocument = taskService.getAttachment((String) runtimeService.getVariable(sID_Process, "oFile_XML_SWinEd"));
+            if (attachmentDocument != null) {
+                String attachmentDocumentName = attachmentDocument.getName();
+                LOG.info("attachmentDocumentName: " + attachmentDocumentName);
+                attachmentDocumentName = attachmentDocumentName.replaceAll(".xml", "");
+                for (ByteArrayMultipartFile multipartFile : multipartFiles) {
+                    LOG.info("multipartFile.getOriginalFilename(): " + multipartFile.getOriginalFilename()
+                            + " attachmentDocumentName: " + attachmentDocumentName);
+                    if (multipartFile.getOriginalFilename().contains(attachmentDocumentName)) {
+                        Attachment attachment = taskService.createAttachment(multipartFile.getContentType() + ";" + multipartFile.getExp(),
+                                sID_Task, sID_Process,
+                                multipartFile.getOriginalFilename(), multipartFile.getName(), multipartFile.getInputStream());
+                        if (attachment != null) {
+                            asID_Attach_Dfs.append(attachment.getId()).append(",");
+                            LOG.info("attachment: " + attachment.getId());
+                        }
+                    } else{
+                        LOG.info("SKIP multipartFile.getOriginalFilename(): " + multipartFile.getOriginalFilename()
+                            + " attachmentDocumentName: " + attachmentDocumentName);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (asID_Attach_Dfs.length() > 0) {
+            String sID_Attach_Dfs = asID_Attach_Dfs.deleteCharAt(asID_Attach_Dfs.length() - 1).toString();
+            runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", sID_Attach_Dfs);
+            taskService.setVariable(sID_Task, "anID_Attach_Dfs", sID_Attach_Dfs);
+            //taskService.complete(sID_Task);
+        } else{
+            runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", " ");
+            taskService.setVariable(sID_Task, "anID_Attach_Dfs", " ");
+        }
+        return asID_Attach_Dfs.toString();
+    }
 
     public String send(String content, String fileName, String email) throws Exception {
         LOG.info("content: " + content + " fileName: " + fileName + " email: " + email);
@@ -68,31 +119,35 @@ public class DfsService {
         return result;
     }
 
-    public List<ByteArrayMultipartFile> getAnswer(String inn) throws Exception {
+    public List<ByteArrayMultipartFile> getAnswer(String inn) {
         List<ByteArrayMultipartFile> result = new ArrayList<>();
-        String responseBody = getMessages(inn);
-        LOG.info("getMessages responseBody: " + responseBody);
-        List<String> resultMessages = getContentFromXml(responseBody, "string");
-        LOG.info("getMessages resultMessage: " + resultMessages);
-        for (String resultMessage : resultMessages) {
-            if (resultMessage != null) {
-                responseBody = receive(resultMessage);
-                LOG.info("receive responseBody: " + responseBody);
-                List<String> fileNames = getContentFromXml(responseBody, "fileName");
-                List<String> fileContents = getContentFromXml(responseBody, "messageData");
-                LOG.info("receive fileNames: " + fileNames);
-                if (fileNames != null && fileNames.size() > 0 && fileContents != null && fileContents.size() > 0) {
-                    String fileName = fileNames.get(0);
-                    byte[] fileContent = Base64.decodeBase64(fileContents.get(0));
-                    if (fileName != null && fileContent != null && fileContent.length > 0) {
-                        ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(fileContent, fileName,
-                                fileName, "text/plain");
-                        result.add(oByteArrayMultipartFile);
-                        responseBody = delete(resultMessage);
-                        LOG.info("delete responseBody: " + responseBody);
+        try {
+            String responseBody = getMessages(inn);
+            LOG.info("getMessages responseBody: " + responseBody);
+            List<String> resultMessages = getContentFromXml(responseBody, "string");
+            LOG.info("getMessages resultMessage: " + resultMessages);
+            for (String resultMessage : resultMessages) {
+                if (resultMessage != null) {
+                    responseBody = receive(resultMessage);
+                    LOG.info("receive responseBody: " + responseBody);
+                    List<String> fileNames = getContentFromXml(responseBody, "fileName");
+                    List<String> fileContents = getContentFromXml(responseBody, "messageData");
+                    LOG.info("receive fileNames: " + fileNames);
+                    if (fileNames != null && fileNames.size() > 0 && fileContents != null && fileContents.size() > 0) {
+                        String fileName = fileNames.get(0);
+                        byte[] fileContent = Base64.decodeBase64(fileContents.get(0));
+                        if (fileName != null && fileContent != null && fileContent.length > 0) {
+                            ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(fileContent, fileName,
+                                    fileName, "text/plain");
+                            result.add(oByteArrayMultipartFile);
+                            responseBody = delete(resultMessage);
+                            LOG.info("delete responseBody: " + responseBody);
+                        }
                     }
                 }
             }
+        } catch (Exception ex) {
+            LOG.error("getAnswer: ", ex);
         }
         return result;
     }
