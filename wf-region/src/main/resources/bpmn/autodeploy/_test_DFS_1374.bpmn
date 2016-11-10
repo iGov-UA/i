@@ -56,41 +56,41 @@
         <activiti:formProperty id="anID_Attach_Dfs" name="Ответ" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
           <activiti:field name="sID_File_XML_SWinEd">
-            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sEmail">
-            <activiti:expression>${email}</activiti:expression>
+            <activiti:expression><![CDATA[${email}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow6" sourceRef="escalationTimer2" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему Запит</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему Запит]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення на тему Запит до ДФС. &lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>Ви подавали звернення на тему Запит до ДФС. <br />
                         [pattern/mail/_common_signature_end.html]
-                        [pattern/mail/_common_footer.html]</activiti:expression>
+                        [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${anID_Attach_Dfs}</activiti:expression>
+          <activiti:expression><![CDATA[${anID_Attach_Dfs}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -98,22 +98,11 @@
     <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
     <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask1" cancelActivity="true">
-      <extensionElements>
-        <activiti:executionListener event="start" class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
-          <activiti:field name="script">
-            <activiti:string><![CDATA[import org.igov.service.business.dfs.DfsService;
-
-var sID_Process = execution.getProcessInstanceId()
-var sID_Task = delegateTask.getId()
-var sINN = execution.getVariable('bankIdinn')
-DfsService.getAnswer(sID_Task, sID_Process, sINN)]]></activiti:string>
-          </activiti:field>
-        </activiti:executionListener>
-      </extensionElements>
       <timerEventDefinition>
         <timeDuration>PT7M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
+    <sequenceFlow id="flow9" sourceRef="escalationTimer2" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_DFS_1374">
     <bpmndi:BPMNPlane bpmnElement="_test_DFS_1374" id="BPMNPlane__test_DFS_1374">
@@ -149,10 +138,6 @@ DfsService.getAnswer(sID_Task, sID_Process, sINN)]]></activiti:string>
         <omgdi:waypoint x="168.0" y="192.0"></omgdi:waypoint>
         <omgdi:waypoint x="77.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="480.0" y="148.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="146.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="645.0" y="146.0"></omgdi:waypoint>
         <omgdi:waypoint x="690.0" y="146.0"></omgdi:waypoint>
@@ -160,6 +145,10 @@ DfsService.getAnswer(sID_Task, sID_Process, sINN)]]></activiti:string>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="264.0" y="146.0"></omgdi:waypoint>
         <omgdi:waypoint x="360.0" y="146.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="480.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
