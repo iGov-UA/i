@@ -542,7 +542,7 @@ public class SubjectMessageController {
             }
 
             String mergeUrl = sHost + "/service/action/task/mergeVariable";
-            Long nID_Task = oHistoryEvent_Service.getnID_Task();
+            Long nID_Task = oHistoryEvent_Service.getnID_Process();
 //            Task task = taskService.createTaskQuery().taskId(String.valueOf(nID_Task)).singleResult();
 //            String processId = task.getProcessInstanceId();
 
@@ -670,7 +670,7 @@ public class SubjectMessageController {
     	        }
     	        String sURL = sHost + "/service/action/feedback/runFeedBack";
     	        Map<String, String> mParam = new HashMap<>();
-    	        mParam.put("snID_Process", String.valueOf(oHistoryEvent_Service.getnID_Task()));
+    	        mParam.put("snID_Process", String.valueOf(oHistoryEvent_Service.getnID_Process()));
     	        LOG.info("mParam={}", mParam);
     	        String sReturnRegion = httpRequester.getInside(sURL, mParam);
     	        LOG.info("(sReturnRegion={})", sReturnRegion);

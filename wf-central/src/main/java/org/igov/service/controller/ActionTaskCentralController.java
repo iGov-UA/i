@@ -99,7 +99,7 @@ public class ActionTaskCentralController {
                 sHost = oOptionalServer.get().getsURL();
             }
             String sURL = sHost + "/service/action/task/setTaskAnswer";
-            String processId = String.valueOf(oHistoryEvent_Service.getnID_Task());
+            String processId = String.valueOf(oHistoryEvent_Service.getnID_Process());
             LOG.info("sURL={}", sURL);
             Map<String, String> mParam = new HashMap<String, String>();
             mParam.put("nID_Process", processId);
@@ -252,7 +252,7 @@ public class ActionTaskCentralController {
             throw new RecordNotFoundException("HistoryEvent_Service wasn't found.");
         }
         
-        Long nID_Task = historyEventService.getnID_Task();
+        Long nID_Task = historyEventService.getnID_Process();
         nID_Server = historyEventService.getnID_Server();
         nID_Server = nID_Server == null ? 0 : nID_Server;
 
