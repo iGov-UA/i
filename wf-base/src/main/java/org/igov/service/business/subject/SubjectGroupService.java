@@ -43,17 +43,18 @@ public class SubjectGroupService {
 	//	Map<SubjectGroup, SubjectGroupNode> subjectToNodeMap = new HashMap<>();
 		
 		List<ParentSubjectGroup> parentSubjectGroups = new ArrayList<>();
+		List<ChildSubjectGroup> childSubjectGroups = new ArrayList<>();
 		
 		for(SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
-			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
+			if (parent.getId() != FAKE_ROOT_SUBJECT_ID && parent.getsID_Group_Activiti().equals(sID_Group_Activiti)) {
 				ParentSubjectGroup parentSubjectGroup = new ParentSubjectGroup(parent);
 				
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 				ChildSubjectGroup childSubjectGroup = new ChildSubjectGroup(child,deepLevel);
-				childSubjectGroup.addChildSubjectGroup(childSubjectGroup);
-				parentSubjectGroup.addChildSubjectGroup(childSubjectGroup);
+				childSubjectGroups.add(childSubjectGroup);
 				parentSubjectGroups.add(parentSubjectGroup);
+				childSubjectGroup.setChildrens(childSubjectGroups);
 			}
 		}
 
@@ -109,6 +110,8 @@ public class SubjectGroupService {
     	SubjectGroupTreeResult subjectGroupTreeResult = new SubjectGroupTreeResult();
     	subjectGroupResult.accept(subjectGroupTreeResult);
 		
+    	
+    	//return new SubjectGroupResult(rootSubjectNodes);
 		return subjectGroupResult;
 	}
 

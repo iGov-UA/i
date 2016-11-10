@@ -28,10 +28,7 @@ public class ChildSubjectGroup implements IVisitable {
 		visitor.deepLevel(this);
 		if (SubjectGroupTreeResult.getDeepLevelSubjectGroupResult().compareTo(getDeepLevel()) != 0
 				&& SubjectGroupTreeResult.getDeepLevelSubjectGroupResult().compareTo(getDeepLevel()) < 0) {
-			LOG.info("SubjectGroupTreeResult.getDeepLevelSubjectGroupResulttttttttttttttttt "+SubjectGroupTreeResult.getDeepLevelSubjectGroupResult());
-			LOG.info("getDeepLevellllllllllllllllllll "+getDeepLevel());
 		for(ChildSubjectGroup childSubjectGroup:childrens) {
-			LOG.info("ChildSubjectGroupppppppppppp "+childSubjectGroup.childSubjectGroup);
 			childSubjectGroup.accept(visitor);
 		}
 		}
