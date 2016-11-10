@@ -57,7 +57,7 @@ public class DfsService {
     @Autowired
     private RuntimeService runtimeService;
 
-    public String getAnswer(String sID_Task, String sID_Process, String sINN) throws Exception {
+    public String getAnswer(String sID_Task, String sID_Process, String sINN) {
         StringBuilder asID_Attach_Dfs = new StringBuilder();
         List<ByteArrayMultipartFile> multipartFiles = getAnswer(sINN);
         LOG.info("multipartFiles.size: " + multipartFiles.size());
@@ -119,31 +119,35 @@ public class DfsService {
         return result;
     }
 
-    public List<ByteArrayMultipartFile> getAnswer(String inn) throws Exception {
+    public List<ByteArrayMultipartFile> getAnswer(String inn) {
         List<ByteArrayMultipartFile> result = new ArrayList<>();
-        String responseBody = getMessages(inn);
-        LOG.info("getMessages responseBody: " + responseBody);
-        List<String> resultMessages = getContentFromXml(responseBody, "string");
-        LOG.info("getMessages resultMessage: " + resultMessages);
-        for (String resultMessage : resultMessages) {
-            if (resultMessage != null) {
-                responseBody = receive(resultMessage);
-                LOG.info("receive responseBody: " + responseBody);
-                List<String> fileNames = getContentFromXml(responseBody, "fileName");
-                List<String> fileContents = getContentFromXml(responseBody, "messageData");
-                LOG.info("receive fileNames: " + fileNames);
-                if (fileNames != null && fileNames.size() > 0 && fileContents != null && fileContents.size() > 0) {
-                    String fileName = fileNames.get(0);
-                    byte[] fileContent = Base64.decodeBase64(fileContents.get(0));
-                    if (fileName != null && fileContent != null && fileContent.length > 0) {
-                        ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(fileContent, fileName,
-                                fileName, "text/plain");
-                        result.add(oByteArrayMultipartFile);
-                        responseBody = delete(resultMessage);
-                        LOG.info("delete responseBody: " + responseBody);
+        try {
+            String responseBody = getMessages(inn);
+            LOG.info("getMessages responseBody: " + responseBody);
+            List<String> resultMessages = getContentFromXml(responseBody, "string");
+            LOG.info("getMessages resultMessage: " + resultMessages);
+            for (String resultMessage : resultMessages) {
+                if (resultMessage != null) {
+                    responseBody = receive(resultMessage);
+                    LOG.info("receive responseBody: " + responseBody);
+                    List<String> fileNames = getContentFromXml(responseBody, "fileName");
+                    List<String> fileContents = getContentFromXml(responseBody, "messageData");
+                    LOG.info("receive fileNames: " + fileNames);
+                    if (fileNames != null && fileNames.size() > 0 && fileContents != null && fileContents.size() > 0) {
+                        String fileName = fileNames.get(0);
+                        byte[] fileContent = Base64.decodeBase64(fileContents.get(0));
+                        if (fileName != null && fileContent != null && fileContent.length > 0) {
+                            ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(fileContent, fileName,
+                                    fileName, "text/plain");
+                            result.add(oByteArrayMultipartFile);
+                            responseBody = delete(resultMessage);
+                            LOG.info("delete responseBody: " + responseBody);
+                        }
                     }
                 }
             }
+        } catch (Exception ex) {
+            LOG.error("getAnswer: ", ex);
         }
         return result;
     }

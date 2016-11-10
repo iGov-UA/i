@@ -8,13 +8,11 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.io.web.HttpRequester;
-import org.igov.service.business.action.task.core.AbstractModelTask;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.igov.util.swind.GateSoapProxy;
 import org.igov.util.swind.ProcessResult;
 
-import static org.igov.util.ToolWeb.base64_encode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component("SendDocument_SWinEd")
-public class SendDocument_SWinEd extends AbstractModelTask implements TaskListener {
+public class SendDocument_SWinEd implements TaskListener {
 
     private static final long serialVersionUID = 1L;
 
