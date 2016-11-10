@@ -62,14 +62,26 @@ public class DfsService {
         List<ByteArrayMultipartFile> multipartFiles = getAnswer(sINN);
         LOG.info("multipartFiles.size: " + multipartFiles.size());
         try {
-            for (ByteArrayMultipartFile multipartFile : multipartFiles) {
-                Attachment attachment = taskService.createAttachment(multipartFile.getContentType() + ";" + multipartFile.getExp(),
-                        sID_Task, sID_Process,
-                        multipartFile.getOriginalFilename(), multipartFile.getName(), multipartFile.getInputStream());
-
-                if (attachment != null) {
-                    asID_Attach_Dfs.append(attachment.getId()).append(",");
-                    LOG.info("attachment: " + attachment.getId());
+            Attachment attachmentDocument = taskService.getAttachment((String) runtimeService.getVariable(sID_Process, "oFile_XML_SWinEd"));
+            if (attachmentDocument != null) {
+                String attachmentDocumentName = attachmentDocument.getName();
+                LOG.info("attachmentDocumentName: " + attachmentDocumentName);
+                attachmentDocumentName = attachmentDocumentName.replaceAll(".xml", "");
+                for (ByteArrayMultipartFile multipartFile : multipartFiles) {
+                    LOG.info("multipartFile.getOriginalFilename(): " + multipartFile.getOriginalFilename()
+                            + " attachmentDocumentName: " + attachmentDocumentName);
+                    if (multipartFile.getOriginalFilename().contains(attachmentDocumentName)) {
+                        Attachment attachment = taskService.createAttachment(multipartFile.getContentType() + ";" + multipartFile.getExp(),
+                                sID_Task, sID_Process,
+                                multipartFile.getOriginalFilename(), multipartFile.getName(), multipartFile.getInputStream());
+                        if (attachment != null) {
+                            asID_Attach_Dfs.append(attachment.getId()).append(",");
+                            LOG.info("attachment: " + attachment.getId());
+                        }
+                    } else{
+                        LOG.info("SKIP multipartFile.getOriginalFilename(): " + multipartFile.getOriginalFilename()
+                            + " attachmentDocumentName: " + attachmentDocumentName);
+                    }
                 }
             }
         } catch (Exception ex) {
