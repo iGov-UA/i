@@ -3953,7 +3953,6 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow62" name="asStatusOperator=='sEnumClose'" sourceRef="exclusivegateway1" targetRef="endevent10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumClose'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow63" sourceRef="usertask4" targetRef="exclusivegateway10"></sequenceFlow>
     <scriptTask id="scripttask3" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = 'channel'
           var per2 = 'channel RGA'
@@ -4077,7 +4076,6 @@ execution.setVariable('sStatusAppRGA', per3)</script>
       <script>execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
     <sequenceFlow id="flow76" sourceRef="scripttask4" targetRef="exclusivegateway6"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway10" name="Exclusive Gateway"></exclusiveGateway>
     <userTask id="usertask10" name="Перевірка запита юристом" activiti:candidateGroups="dmr_lawyer">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
@@ -4649,13 +4647,6 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow77" name="asTypeTr=='sEnumTypeRequest'" sourceRef="exclusivegateway10" targetRef="usertask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asTypeTr=='sEnumTypeRequest'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow78" sourceRef="usertask10" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow79" name="asTypeTr=='sEnumApplication'||asTypeTr=='sEnumClaim'||asTypeTr=='sEnumProposal'" sourceRef="exclusivegateway10" targetRef="usertask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asTypeTr=='sEnumApplication'||asTypeTr=='sEnumClaim'||asTypeTr=='sEnumProposal'}]]></conditionExpression>
-    </sequenceFlow>
     <serviceTask id="servicetask9" name="Письмо в ОДА с ответом" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
@@ -4720,6 +4711,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow89" sourceRef="servicetask11" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow90" sourceRef="usertask4" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291_common" id="BPMNPlane_dnepr_mvk_291_common">
@@ -4831,11 +4823,8 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="55.0" width="105.0" x="81.0" y="244.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway10" id="BPMNShape_exclusivegateway10">
-        <omgdc:Bounds height="40.0" width="40.0" x="832.0" y="341.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask10" id="BPMNShape_usertask10">
-        <omgdc:Bounds height="69.0" width="105.0" x="800.0" y="413.0"></omgdc:Bounds>
+        <omgdc:Bounds height="69.0" width="105.0" x="1007.0" y="341.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
         <omgdc:Bounds height="55.0" width="105.0" x="1459.0" y="721.0"></omgdc:Bounds>
@@ -4876,7 +4865,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="832.0" y="808.0"></omgdi:waypoint>
         <omgdi:waypoint x="716.0" y="808.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="734.0" y="787.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="734.0" y="787.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -4888,7 +4877,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="892.0" y="807.0"></omgdi:waypoint>
         <omgdi:waypoint x="1019.0" y="805.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="911.0" y="782.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="911.0" y="782.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
@@ -4899,21 +4888,21 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="691.0" y="248.0"></omgdi:waypoint>
         <omgdi:waypoint x="691.0" y="224.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="581.0" y="224.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="581.0" y="224.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="711.0" y="268.0"></omgdi:waypoint>
         <omgdi:waypoint x="800.0" y="268.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="705.0" y="247.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="705.0" y="247.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="852.0" y="828.0"></omgdi:waypoint>
         <omgdi:waypoint x="691.0" y="904.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="754.0" y="856.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="754.0" y="856.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
@@ -4924,7 +4913,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="852.0" y="788.0"></omgdi:waypoint>
         <omgdi:waypoint x="1059.0" y="564.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="918.0" y="578.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="918.0" y="578.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
@@ -4936,7 +4925,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="1466.0" y="268.0"></omgdi:waypoint>
         <omgdi:waypoint x="1337.0" y="267.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="1419.0" y="363.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1419.0" y="363.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -4953,14 +4942,14 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="1206.0" y="628.0"></omgdi:waypoint>
         <omgdi:waypoint x="1206.0" y="566.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="1280.0" y="602.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1280.0" y="602.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="852.0" y="788.0"></omgdi:waypoint>
         <omgdi:waypoint x="1059.0" y="734.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="884.0" y="713.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="884.0" y="713.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
@@ -4969,7 +4958,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="957.0" y="132.0"></omgdi:waypoint>
         <omgdi:waypoint x="852.0" y="232.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="96.0" width="100.0" x="1502.0" y="446.0"></omgdc:Bounds>
+          <omgdc:Bounds height="70.0" width="100.0" x="1502.0" y="446.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
@@ -4977,7 +4966,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="540.0" y="356.0"></omgdi:waypoint>
         <omgdi:waypoint x="852.0" y="304.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="500.0" y="628.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="500.0" y="628.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
@@ -4996,7 +4985,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="852.0" y="828.0"></omgdi:waypoint>
         <omgdi:waypoint x="1059.0" y="913.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="872.0" y="857.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="872.0" y="857.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
@@ -5006,7 +4995,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="1166.0" y="949.0"></omgdi:waypoint>
         <omgdi:waypoint x="1112.0" y="950.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="1335.0" y="934.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1335.0" y="934.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
@@ -5025,7 +5014,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="1633.0" y="828.0"></omgdi:waypoint>
         <omgdi:waypoint x="1630.0" y="1011.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="1582.0" y="904.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1582.0" y="904.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
@@ -5034,19 +5023,15 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="691.0" y="1097.0"></omgdi:waypoint>
         <omgdi:waypoint x="691.0" y="996.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="1391.0" y="1074.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1391.0" y="1074.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
         <omgdi:waypoint x="852.0" y="828.0"></omgdi:waypoint>
         <omgdi:waypoint x="852.0" y="933.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="813.0" y="891.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="813.0" y="891.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
-        <omgdi:waypoint x="852.0" y="304.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="341.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
         <omgdi:waypoint x="1124.0" y="805.0"></omgdi:waypoint>
@@ -5071,14 +5056,14 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="1315.0" y="199.0"></omgdi:waypoint>
         <omgdi:waypoint x="1259.0" y="199.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="1290.0" y="180.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1290.0" y="180.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
         <omgdi:waypoint x="1297.0" y="267.0"></omgdi:waypoint>
         <omgdi:waypoint x="905.0" y="268.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="96.0" width="100.0" x="1011.0" y="233.0"></omgdc:Bounds>
+          <omgdc:Bounds height="70.0" width="100.0" x="1011.0" y="233.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
@@ -5094,7 +5079,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="1541.0" y="693.0"></omgdi:waypoint>
         <omgdi:waypoint x="1581.0" y="693.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="1580.0" y="627.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1580.0" y="627.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow75" id="BPMNEdge_flow75">
@@ -5107,31 +5092,11 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="186.0" y="271.0"></omgdi:waypoint>
         <omgdi:waypoint x="221.0" y="271.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow77" id="BPMNEdge_flow77">
-        <omgdi:waypoint x="852.0" y="381.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="413.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="852.0" y="371.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
-        <omgdi:waypoint x="852.0" y="482.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="516.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow79" id="BPMNEdge_flow79">
-        <omgdi:waypoint x="832.0" y="361.0"></omgdi:waypoint>
-        <omgdi:waypoint x="677.0" y="361.0"></omgdi:waypoint>
-        <omgdi:waypoint x="677.0" y="561.0"></omgdi:waypoint>
-        <omgdi:waypoint x="800.0" y="562.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="112.0" width="100.0" x="621.0" y="406.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
         <omgdi:waypoint x="540.0" y="969.0"></omgdi:waypoint>
         <omgdi:waypoint x="540.0" y="1065.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="112.0" width="100.0" x="437.0" y="966.0"></omgdc:Bounds>
+          <omgdc:Bounds height="84.0" width="100.0" x="437.0" y="966.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow84" id="BPMNEdge_flow84">
@@ -5159,6 +5124,10 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNEdge bpmnElement="flow89" id="BPMNEdge_flow89">
         <omgdi:waypoint x="529.0" y="173.0"></omgdi:waypoint>
         <omgdi:waypoint x="529.0" y="224.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow90" id="BPMNEdge_flow90">
+        <omgdi:waypoint x="852.0" y="304.0"></omgdi:waypoint>
+        <omgdi:waypoint x="852.0" y="516.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
