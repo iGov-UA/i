@@ -43,7 +43,6 @@ public class SubjectGroupService {
 	//	Map<SubjectGroup, SubjectGroupNode> subjectToNodeMap = new HashMap<>();
 		
 		List<ParentSubjectGroup> parentSubjectGroups = new ArrayList<>();
-		List<ChildSubjectGroup> childSubjectGroups = new ArrayList<>();
 		
 		for(SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
@@ -52,8 +51,6 @@ public class SubjectGroupService {
 				
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 				ChildSubjectGroup childSubjectGroup = new ChildSubjectGroup(child,deepLevel);
-				childSubjectGroups.add(childSubjectGroup);
-				childSubjectGroup.setChildrens(childSubjectGroups);
 				parentSubjectGroup.addChildSubjectGroup(childSubjectGroup);
 				parentSubjectGroups.add(parentSubjectGroup);
 				
