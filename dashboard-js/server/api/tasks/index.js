@@ -14,6 +14,7 @@ router.get('/:taskId/events', controller.getAllTaskEvents);
 router.get('/:taskId/form', controller.getForm);
 router.get('/:taskId/form-from-history', controller.getFormFromHistory);
 router.get('/:taskId/attachments', controller.getAttachments);
+router.post('/action/task/saveForm', controller.saveChangesTask);
 router.get('/:nID_Process/getOrderMessages', controller.getOrderMessages);
 router.get('/:taskId/attachments/:attachmentId/content/:nFile', controller.getAttachmentContent);
 router.get('/:taskId/attachments/:attachmentId/table', controller.getAttachmentContentTable);
