@@ -2557,12 +2557,26 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public ResponseEntity saveForm(
             @ApiParam(value = "проперти формы", required = true) @RequestParam(value = "sParams", required = true) String sParams,
             HttpServletRequest req) throws ParseException, CommonServiceException {
-        
+
         try {
+            LOG.info("Input params - " + sParams);
             org.json.simple.JSONObject jsonObj = (org.json.simple.JSONObject) new JSONParser().parse(sParams);
-            String nID_Task = jsonObj.get("taskId").toString();
+            LOG.info("Succ. parsing of input data passed");
+            String nID_Task = null;
+            if (jsonObj.containsKey("taskId")) {
+                nID_Task = jsonObj.get("taskId").toString();
+            } else {
+                LOG.error("Variable \"taskId\" not found");
+            }
+            LOG.info("taskId = " + nID_Task);
             Map<String, String> values = new HashMap<>();
-            org.json.simple.JSONArray dates = (org.json.simple.JSONArray) jsonObj.get("properties");
+            org.json.simple.JSONArray dates = null;
+            if (jsonObj.containsKey("properties")) {
+                dates = (org.json.simple.JSONArray) jsonObj.get("properties");
+            } else {
+                LOG.error("Variable \"properties\" not found");
+            }
+            LOG.info("properties = " + dates);
             org.json.simple.JSONObject result;
             Iterator<org.json.simple.JSONObject> datesIterator = dates.iterator();
             while (datesIterator.hasNext()) {
@@ -2581,6 +2595,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     message,
                     HttpStatus.FORBIDDEN);
         }
-        
+
     }
 }
