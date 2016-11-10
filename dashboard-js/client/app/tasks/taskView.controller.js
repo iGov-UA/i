@@ -611,11 +611,9 @@
                 if(result.status == 500){
                   var message = result.data.message;
                   var errMsg = (message.includes("errMsg")) ? message.split(":")[1].split("=")[1] : message;
-
+                  $scope.taskForm.isInProcess = false;
                   $scope.convertDisabledEnumFiedsToReadonlySimpleText();
-
                   Modal.inform.error(function (result) {
-                    $scope.lightweightRefreshAfterSubmit();
                   })(errMsg + " " + (result && result.length > 0 ? (': ' + result) : ''));
                 } else {
                   var sMessage = "Форму відправлено.";
@@ -662,33 +660,20 @@
             $scope.taskForm.isInProcess = true;
 
             rollbackReadonlyEnumFields();
-            //tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask)
             tasks.saveChangesTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask)
               .then(function (result) {
+                $scope.taskForm.isInProcess = false;
                 if(result.status == 500){
                   var message = result.data.message;
                   var errMsg = (message.includes("errMsg")) ? message.split(":")[1].split("=")[1] : message;
 
                   $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
-                  Modal.inform.error(function (result) {
-                    $scope.lightweightRefreshAfterSubmit();
-                  })(errMsg + " " + (result && result.length > 0 ? (': ' + result) : ''));
+                  Modal.inform.error(function (result) {})(errMsg + " " + (result && result.length > 0 ? (': ' + result) : ''));
                 } else {
                   var sMessage = "Форму збережено.";
-                  //angular.forEach($scope.taskForm, function (oField) {
-                  //  if (oField.id === "sNotifyEvent_AfterSubmit") {
-                  //    sMessage = oField.value;
-                  //  }
-                  //});
-
                   $scope.convertDisabledEnumFiedsToReadonlySimpleText();
-
-                  Modal.inform.success(function (result) {
-                    $scope.lightweightRefreshAfterSubmit();
-                  })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
-
-                  //$scope.$emit('task-submitted', $scope.selectedTask);
+                  Modal.inform.success(function (result) {})(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
                 }
               })
               .catch(defaultErrorHandler);
