@@ -2,6 +2,7 @@
 package org.igov.service.controller;
 
 import org.igov.model.subject.SubjectGroupResult;
+import org.igov.model.subject.SubjectGroupResult1;
 import org.igov.service.business.subject.SubjectGroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +35,11 @@ public class SubjectGroupController {
     @RequestMapping(value = "/getSubjectGroups", method = RequestMethod.GET)
     @ResponseBody
     public SubjectGroupResult getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
-    		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Integer nDeepLevel)
+    		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel)
             throws Exception  {
     	SubjectGroupResult subjectGroupResult = null;
     	try {
-    		subjectGroupResult = subjectGroupService.getSubjectGroupResult(sID_Group_Activiti);
+    		subjectGroupResult = subjectGroupService.getSubjectGroupResult(sID_Group_Activiti,nDeepLevel);
     		
     		 LOG.info("SubjectGroupppppppppppppppp: "+subjectGroupResult);
     	} catch (Exception e) {

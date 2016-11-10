@@ -1,39 +1,59 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.igov.model.subject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-/**
- *
- * @author inna
- */
-public class SubjectGroupTreeResult implements Serializable {
-    
-	private SubjectGroup oSubjectGroup_Root;
-    private List<SubjectGroup> aSubjectGroup_Child = new ArrayList<>();
-    
-    
-	public SubjectGroup getoSubjectGroup_Root() {
-		return oSubjectGroup_Root;
+public class SubjectGroupTreeResult implements Serializable,IVisitor  {
+
+	private static Long deepLevelSubjectGroupResult = 0L;
+	private static Long deepLevelParentSubjectGroup = 0L;
+	private static Long deepLevelChildSubjectGroup = 0L;
+	
+	
+	
+	@Override
+	public void deepLevel(SubjectGroupResult subjectGroupResult) {
+		setDeepLevelSubjectGroupResult(deepLevelSubjectGroupResult+1);
+		
 	}
-	public void setoSubjectGroup_Root(SubjectGroup oSubjectGroup_Root) {
-		this.oSubjectGroup_Root = oSubjectGroup_Root;
+
+	@Override
+	public void deepLevel(ParentSubjectGroup parentSubjectGroup) {
+		setDeepLevelParentSubjectGroup(deepLevelParentSubjectGroup+1);
+		
 	}
-	public List<SubjectGroup> getaSubjectGroup_Child() {
-		return aSubjectGroup_Child;
+
+	@Override
+	public void deepLevel(ChildSubjectGroup childSubjectGroup) {
+		setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup+1);
+		
 	}
-	public void setaSubjectGroup_Child(List<SubjectGroup> aSubjectGroup_Child) {
-		this.aSubjectGroup_Child = aSubjectGroup_Child;
+	
+	
+	
+	public static Long getDeepLevelSubjectGroupResult() {
+		return deepLevelSubjectGroupResult;
 	}
-    
-    public void addChild(SubjectGroup child) {
-    	aSubjectGroup_Child.add(child);
-    }
-    
+
+	public static void setDeepLevelSubjectGroupResult(Long deepLevelSubjectGroupResult) {
+		SubjectGroupTreeResult.deepLevelSubjectGroupResult = deepLevelSubjectGroupResult;
+	}
+
+	public static Long getDeepLevelParentSubjectGroup() {
+		return deepLevelParentSubjectGroup;
+	}
+
+	public static void setDeepLevelParentSubjectGroup(Long deepLevelParentSubjectGroup) {
+		SubjectGroupTreeResult.deepLevelParentSubjectGroup = deepLevelParentSubjectGroup;
+	}
+
+	public static Long getDeepLevelChildSubjectGroup() {
+		return deepLevelChildSubjectGroup;
+	}
+
+	public static void setDeepLevelChildSubjectGroup(Long deepLevelChildSubjectGroup) {
+		SubjectGroupTreeResult.deepLevelChildSubjectGroup = deepLevelChildSubjectGroup;
+	}
+
+	
+
 }
