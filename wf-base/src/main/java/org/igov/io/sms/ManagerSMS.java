@@ -70,7 +70,7 @@ public class ManagerSMS {
     
     private String SendLifeCellSms(String phone, String message, String sID_Order) throws Exception
     {
-        String bodyResult = String.format(sID_Order, LIFEBODY, "+" + phone, message);
+        String bodyResult = String.format(LIFEBODY, sID_Order, "+" + phone, message);
         return oHttpRequester.postInside(generalConfig.getLifeURL(), null, bodyResult, "text/xml; charset=utf-8",
             generalConfig.getLifeLogin(), generalConfig.getLifePassword());
     }
