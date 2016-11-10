@@ -56,19 +56,19 @@
         <activiti:formProperty id="anID_Attach_Dfs" name="Ответ" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
           <activiti:field name="sID_File_XML_SWinEd">
-            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
+            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
           </activiti:field>
           <activiti:field name="sEmail">
-            <activiti:expression><![CDATA[${email}]]></activiti:expression>
+            <activiti:expression>${email}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
+            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}"></activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${TransferDocumentAnswer_SWinEd}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
@@ -77,20 +77,20 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему Запит]]></activiti:expression>
+          <activiti:expression>Звернення на тему Запит</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>Ви подавали звернення на тему Запит до ДФС. <br />
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;Ви подавали звернення на тему Запит до ДФС. &lt;br /&gt;
                         [pattern/mail/_common_signature_end.html]
-                        [pattern/mail/_common_footer.html]]]></activiti:expression>
+                        [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${anID_Attach_Dfs}]]></activiti:expression>
+          <activiti:expression>${anID_Attach_Dfs}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -121,14 +121,14 @@
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="67.0" width="105.0" x="360.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="escalationTimer2" id="BPMNShape_escalationTimer2">
-        <omgdc:Bounds height="30.0" width="30.0" x="450.0" y="133.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="67.0" width="105.0" x="540.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="690.0" y="129.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer2" id="BPMNShape_escalationTimer2">
+        <omgdc:Bounds height="30.0" width="30.0" x="450.0" y="133.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="98.0" y="146.0"></omgdi:waypoint>
