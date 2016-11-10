@@ -39,9 +39,9 @@ public class SubjectGroupService {
 	private CachedInvocationBean cachedInvocationBean;
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti,Long deepLevel) {
-		SubjectGroupTreeResult.setDeepLevelChildSubjectGroup(0L);
-		SubjectGroupTreeResult.setDeepLevelParentSubjectGroup(0L);
-		SubjectGroupTreeResult.setDeepLevelSubjectGroupResult(0L);
+		//SubjectGroupTreeResult.setDeepLevelChildSubjectGroup(0L);
+		//SubjectGroupTreeResult.setDeepLevelParentSubjectGroup(0L);
+		//SubjectGroupTreeResult.setDeepLevelSubjectGroupResult(0L);
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 	//	Map<SubjectGroup, SubjectGroupNode> subjectToNodeMap = new HashMap<>();
 		
@@ -50,7 +50,7 @@ public class SubjectGroupService {
 		for(SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
 	
-			if (parent.getId() != FAKE_ROOT_SUBJECT_ID && parent.getsID_Group_Activiti().equals(sID_Group_Activiti)) {
+			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
 				ParentSubjectGroup parentSubjectGroup = new ParentSubjectGroup(parent);
 				
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
@@ -104,7 +104,9 @@ public class SubjectGroupService {
 		final List<SubjectGroupNode> rootSubjectNodes = rootTags.stream().map(subjectToNodeMap::get)
 				.collect(Collectors.toList());*/
 		SubjectGroupResult subjectGroupResult = new SubjectGroupResult(sID_Group_Activiti);
-		subjectGroupResult.setParentSubjectGroups(parentSubjectGroups);
+		for(ParentSubjectGroup parentSubjectGroup:parentSubjectGroups) {
+			subjectGroupResult.addParentSubjectGroup(parentSubjectGroup);
+		}
     	
     	
     	SubjectGroupTreeResult subjectGroupTreeResult = new SubjectGroupTreeResult();
@@ -115,28 +117,4 @@ public class SubjectGroupService {
 
 	
 	
-	 public SubjectGroupResult getSubjectGroupResult(String sID_Group_Activiti,Long deepLevel) {
-		 
-		 SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti,deepLevel);
-		 
-		return tree;
-		 
-	 }
-	
-	/**
-	 * Кэш для SubjectGroupResult
-	 * @param sID_Group_Activiti
-	 * @param nDeepLevel
-	 * @return
-	 */
-	 public SubjectGroupResult getSubjectGroupResultCached(String sID_Group_Activiti,Long deepLevel) {
-		return cachedInvocationBean.invokeUsingCache(
-				new CachedInvocationBean.Callback<SubjectGroupResult>(GET_SERVICE_SUBJECT_GROUP_CACHE_KEY, sID_Group_Activiti) {
-					@Override
-					public SubjectGroupResult execute() {
-						return getSubjectGroupsByGroupActiviti(sID_Group_Activiti,deepLevel);
-					}
-				});
-	}
-
 }
