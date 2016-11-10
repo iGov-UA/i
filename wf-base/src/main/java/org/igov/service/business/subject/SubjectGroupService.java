@@ -39,6 +39,9 @@ public class SubjectGroupService {
 	private CachedInvocationBean cachedInvocationBean;
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti,Long deepLevel) {
+		SubjectGroupTreeResult.setDeepLevelChildSubjectGroup(0L);
+		SubjectGroupTreeResult.setDeepLevelParentSubjectGroup(0L);
+		SubjectGroupTreeResult.setDeepLevelSubjectGroupResult(0L);
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 	//	Map<SubjectGroup, SubjectGroupNode> subjectToNodeMap = new HashMap<>();
 		
@@ -49,10 +52,11 @@ public class SubjectGroupService {
 	
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID ) {
 				ParentSubjectGroup parentSubjectGroup = new ParentSubjectGroup(parent);
-				parentSubjectGroups.add(parentSubjectGroup);
+				
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 				ChildSubjectGroup childSubjectGroup = new ChildSubjectGroup(child,deepLevel);
 				parentSubjectGroup.addChildSubjectGroup(childSubjectGroup);
+				parentSubjectGroups.add(parentSubjectGroup);
 			}
 		}
 

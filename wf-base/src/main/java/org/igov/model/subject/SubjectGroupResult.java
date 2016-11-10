@@ -3,7 +3,12 @@ package org.igov.model.subject;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class SubjectGroupResult implements IVisitable {
+	
+	private static final Log LOG = LogFactory.getLog(SubjectGroupResult.class);
 
 	
 	private String nameGroupActiviti;
@@ -21,7 +26,10 @@ public class SubjectGroupResult implements IVisitable {
 	public void accept(IVisitor visitor) {
 		visitor.deepLevel(this);
 			for (ParentSubjectGroup c : parentSubjectGroups) {
+				LOG.info("c.getParentSubjectGroup().getsID_Group_Activiti()))))))))))))))))"+c.getParentSubjectGroup().getsID_Group_Activiti());
+				LOG.info("this.getNameGroupActiviti())))))))))))"+this.getNameGroupActiviti());
 				if(c.getParentSubjectGroup().getsID_Group_Activiti().equals(this.getNameGroupActiviti())) {
+					LOG.info("acceptttttttttttt "+this.getNameGroupActiviti());
 				c.accept(visitor);
 				}
 			}
