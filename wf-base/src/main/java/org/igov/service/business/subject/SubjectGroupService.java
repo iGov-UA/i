@@ -50,7 +50,7 @@ public class SubjectGroupService {
 		for(SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
 	
-			if (parent.getId() != FAKE_ROOT_SUBJECT_ID ) {
+			if (parent.getId() != FAKE_ROOT_SUBJECT_ID && parent.getsID_Group_Activiti().equals(sID_Group_Activiti)) {
 				ParentSubjectGroup parentSubjectGroup = new ParentSubjectGroup(parent);
 				
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
