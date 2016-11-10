@@ -2554,10 +2554,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //test LinkProcess
     @ApiOperation(value = "saveForm", notes = "saveForm")
     @RequestMapping(value = "/saveForm", method = RequestMethod.POST)
-    public ResponseEntity saveForm(
+   /* public ResponseEntity saveForm(
             @ApiParam(value = "проперти формы", required = false) @RequestParam(value = "sParams", required = false) String sParams,
-            HttpServletRequest req) throws ParseException, CommonServiceException {
-
+            HttpServletRequest req) throws ParseException, CommonServiceException { */
+    public ResponseEntity saveForm(
+            @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams)
+            throws ParseException, CommonServiceException {
         try {
             LOG.info("Input params - " + sParams);
             org.json.simple.JSONObject jsonObj = (org.json.simple.JSONObject) new JSONParser().parse(sParams);
