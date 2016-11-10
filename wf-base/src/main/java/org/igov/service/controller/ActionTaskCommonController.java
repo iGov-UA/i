@@ -72,6 +72,7 @@ import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import org.igov.service.business.dfs.DfsService;
+import org.igov.service.business.dfs.DfsService_New;
 import static org.igov.util.Tool.sO;
 import org.igov.util.db.queryloader.QueryLoader;
 //import com.google.common.base.Optional;
@@ -119,6 +120,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private DfsService dfsService;
+    
+    @Autowired
+    private DfsService_New dfsService_new;
 
     @Autowired
     private ActionTaskService oActionTaskService;
@@ -2532,6 +2536,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String asID_Attach_Dfs = "";
         if (task != null) {
             asID_Attach_Dfs = dfsService.getAnswer(task.getId(), sID_Process, INN);
+            if (asID_Attach_Dfs != null && asID_Attach_Dfs.length() > 0) {
+                taskService.complete(task.getId());
+            }
+        }
+        return asID_Attach_Dfs;
+    }
+    
+    @ApiOperation(value = "/getAnswer_DFS_New", notes = "##### Получение ответов по процессам ДФС#####\n\n")
+    @RequestMapping(value = "/getAnswer_DFS_New", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAnswer_DFS_New(@ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String INN,
+            @ApiParam(value = "ИНН", required = true) @RequestParam(value = "sID_Process", required = true) String sID_Process) throws Exception {
+        Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
+        LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
+        String asID_Attach_Dfs = "";
+        if (task != null) {
+            asID_Attach_Dfs = dfsService_new.getAnswer(task.getId(), sID_Process, INN);
             if (asID_Attach_Dfs != null && asID_Attach_Dfs.length() > 0) {
                 taskService.complete(task.getId());
             }
