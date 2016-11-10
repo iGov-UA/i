@@ -2555,7 +2555,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ApiOperation(value = "saveForm", notes = "saveForm")
     @RequestMapping(value = "/saveForm", method = RequestMethod.POST)
     public ResponseEntity saveForm(
-            @ApiParam(value = "проперти формы", required = true) @RequestParam(value = "sParams", required = true) String sParams,
+            @ApiParam(value = "проперти формы", required = false) @RequestParam(value = "sParams", required = false) String sParams,
             HttpServletRequest req) throws ParseException, CommonServiceException {
 
         try {
