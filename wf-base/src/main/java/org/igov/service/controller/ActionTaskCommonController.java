@@ -93,8 +93,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public GeneralConfig generalConfig;
     @Autowired
     private TaskService taskService;
-    //@Autowired
-    //private ExceptionCommonController exceptionController;
     @Autowired
     private RuntimeService runtimeService;
     @Autowired
@@ -103,14 +101,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private FormService formService;
     @Autowired
     private RepositoryService repositoryService;
-    //@Autowired
-    //private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
-    @Autowired
-    private HistoryEventService historyEventService;
+    
     @Autowired
     private IdentityService identityService;
-    //@Autowired
-    //private ExceptionCommonController exceptionController;
+    
     @Autowired
     private NotificationPatterns oNotificationPatterns;
 
@@ -126,14 +120,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Autowired
     private DfsService dfsService;
 
-    /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
-     @ResponseBody
-     public ResponseEntity<String> handleAccessException(Exception e) throws CommonServiceException {
-     return exceptionController.catchActivitiRestException(new CommonServiceException(
-     ExceptionCommonController.BUSINESS_ERROR_CODE,
-     e.getMessage(), e,
-     HttpStatus.FORBIDDEN));
-     }*/
     @Autowired
     private ActionTaskService oActionTaskService;
 
@@ -2541,36 +2527,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     String getAnswer_DFS(@ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String INN,
             @ApiParam(value = "ИНН", required = true) @RequestParam(value = "sID_Process", required = true) String sID_Process) throws Exception {
-        //получаем ответные файлы
-        StringBuilder anID_Attach_Dfs = new StringBuilder();
         Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
-        LOG.info("task.getId: " + (task!= null ? task.getId() : "no active task for sID_Process = " + sID_Process));
+        LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
+        String asID_Attach_Dfs = "";
         if (task != null) {
-            //LOG.info("task.getId: " + task.getId());
-            List<ByteArrayMultipartFile> multipartFiles = dfsService.getAnswer(INN);
-            LOG.info("multipartFiles.size: " + multipartFiles.size());
-            try {
-                for (ByteArrayMultipartFile multipartFile : multipartFiles) {
-                    Attachment attachment = taskService.createAttachment(multipartFile.getContentType() + ";" + multipartFile.getExp(),
-                            task.getId(), sID_Process,
-                            multipartFile.getOriginalFilename(), multipartFile.getName(), multipartFile.getInputStream());
-
-                    if (attachment != null) {
-                        anID_Attach_Dfs.append(attachment.getId()).append(",");
-                        LOG.info("attachment: " + attachment.getId());
-                    }
-                }
-            } catch (Exception ex) {
-                java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (anID_Attach_Dfs.length() > 0) {
-                String sID_Attach_Dfs = anID_Attach_Dfs.deleteCharAt(anID_Attach_Dfs.length() - 1).toString();
-                runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", sID_Attach_Dfs);
-                taskService.setVariable(task.getId(), "anID_Attach_Dfs", sID_Attach_Dfs);
+            asID_Attach_Dfs = dfsService.getAnswer(task.getId(), sID_Process, INN);
+            if (asID_Attach_Dfs != null && asID_Attach_Dfs.length() > 0) {
                 taskService.complete(task.getId());
             }
         }
-        return anID_Attach_Dfs.toString();
+        return asID_Attach_Dfs;
     }
 
 }

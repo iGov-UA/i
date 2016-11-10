@@ -9,9 +9,13 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.io.web.HttpRequester;
@@ -21,13 +25,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import static org.igov.util.ToolWeb.base64_encode;
-import org.igov.util.VariableMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.apache.commons.codec.binary.Base64;
+import org.igov.service.controller.ActionTaskCommonController;
 
 /**
  *
@@ -46,7 +49,40 @@ public class DfsService {
     GeneralConfig generalConfig;
 
     @Autowired
+    private TaskService taskService;
+
+    @Autowired
     private HttpRequester oHttpRequester;
+
+    @Autowired
+    private RuntimeService runtimeService;
+
+    public String getAnswer(String sID_Task, String sID_Process, String sINN) throws Exception {
+        StringBuilder asID_Attach_Dfs = new StringBuilder();
+        List<ByteArrayMultipartFile> multipartFiles = getAnswer(sINN);
+        LOG.info("multipartFiles.size: " + multipartFiles.size());
+        try {
+            for (ByteArrayMultipartFile multipartFile : multipartFiles) {
+                Attachment attachment = taskService.createAttachment(multipartFile.getContentType() + ";" + multipartFile.getExp(),
+                        sID_Task, sID_Process,
+                        multipartFile.getOriginalFilename(), multipartFile.getName(), multipartFile.getInputStream());
+
+                if (attachment != null) {
+                    asID_Attach_Dfs.append(attachment.getId()).append(",");
+                    LOG.info("attachment: " + attachment.getId());
+                }
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (asID_Attach_Dfs.length() > 0) {
+            String sID_Attach_Dfs = asID_Attach_Dfs.deleteCharAt(asID_Attach_Dfs.length() - 1).toString();
+            runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", sID_Attach_Dfs);
+            taskService.setVariable(sID_Task, "anID_Attach_Dfs", sID_Attach_Dfs);
+            taskService.complete(sID_Task);
+        }
+        return asID_Attach_Dfs.toString();
+    }
 
     public String send(String content, String fileName, String email) throws Exception {
         LOG.info("content: " + content + " fileName: " + fileName + " email: " + email);
