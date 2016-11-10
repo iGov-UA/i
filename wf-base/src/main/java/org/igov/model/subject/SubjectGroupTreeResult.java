@@ -12,19 +12,19 @@ public class SubjectGroupTreeResult implements Serializable,IVisitor  {
 	
 	@Override
 	public void deepLevel(SubjectGroupResult subjectGroupResult) {
-		setDeepLevelSubjectGroupResult(deepLevelSubjectGroupResult+1);
+		SubjectGroupTreeResult.setDeepLevelSubjectGroupResult(deepLevelSubjectGroupResult+1);
 		
 	}
 
 	@Override
 	public void deepLevel(ParentSubjectGroup parentSubjectGroup) {
-		setDeepLevelParentSubjectGroup(deepLevelParentSubjectGroup+1);
+		SubjectGroupTreeResult.setDeepLevelParentSubjectGroup(deepLevelParentSubjectGroup+1);
 		
 	}
 
 	@Override
 	public void deepLevel(ChildSubjectGroup childSubjectGroup) {
-		setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup+1);
+		SubjectGroupTreeResult.setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup+1);
 		
 	}
 	
