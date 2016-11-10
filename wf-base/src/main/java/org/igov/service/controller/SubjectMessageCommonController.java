@@ -69,7 +69,7 @@ public class SubjectMessageCommonController {
         }
         
         try{
-            String resp = smsManager.sendSms(sID_Order, phone, message, apiFlag);
+            String resp = smsManager.sendSms(phone, message, sID_Order, apiFlag);
             return resp;
         }
         catch (Exception ex)
