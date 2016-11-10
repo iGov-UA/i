@@ -2560,6 +2560,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public ResponseEntity saveForm(
             @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams)
             throws ParseException, CommonServiceException {
+        String key = null;
+        String value = null;
         try {
             LOG.info("Input params - " + sParams);
             org.json.simple.JSONObject jsonObj = (org.json.simple.JSONObject) new JSONParser().parse(sParams);
@@ -2583,7 +2585,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             Iterator<org.json.simple.JSONObject> datesIterator = dates.iterator();
             while (datesIterator.hasNext()) {
                 result = datesIterator.next();
-                values.put(result.get("id").toString(), (String) result.get("value"));
+                key = result.get("id").toString();
+                key = URLDecoder.decode(key, "UTF-8");
+                value = (String) result.get("value");
+                value = URLDecoder.decode(value, "UTF-8");
+                values.put(key, value);
             }
             formService.saveFormData(nID_Task, values);
             Map<String, Object> response = new HashMap<>();
