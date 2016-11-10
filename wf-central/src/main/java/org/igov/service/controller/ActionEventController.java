@@ -701,7 +701,7 @@ public class ActionEventController implements ControllerConstants {
                     String sURL = "";
 
                     if (bIncludeTaskInfo) {
-                        sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
+                        sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Process() + "&sVariableName=phone";
                         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
 
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
@@ -842,7 +842,7 @@ public class ActionEventController implements ControllerConstants {
                 LOG.info("subjectHuman.getsINN: " + subjectHuman.getsINN());
                 //вызываем сервис региона по закрыти процесса и сету ответа от ДФС
                 Server server = serverDao.findByIdExpected(new Long(historyEvent_Service.getnID_Server()));
-                String sURL = server.getsURL() + "/service/action/task/getAnswer_DFS?sID_Process=" + historyEvent_Service.getnID_Task()
+                String sURL = server.getsURL() + "/service/action/task/getAnswer_DFS?sID_Process=" + historyEvent_Service.getnID_Process()
                         + "&INN=" + subjectHuman.getsINN();
                 LOG.info(sURL + "...");
                 ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
@@ -851,7 +851,7 @@ public class ActionEventController implements ControllerConstants {
                 if(result != null && result.length() > 0){
                    historyEvent_Service.setnID_StatusType(HistoryEvent_Service_StatusType.CLOSED.getnID());
                    historyEventServiceDao.saveOrUpdate(historyEvent_Service);
-                   LOG.info(historyEvent_Service.getnID_Task() + " closed!!!");
+                   LOG.info(historyEvent_Service.getnID_Process() + " closed!!!");
                 }
             }
         }

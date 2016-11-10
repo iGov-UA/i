@@ -49,7 +49,8 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     //sReturn = oManagerSMS.sendSMS(generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))),
                     //        sPhone_SMS_Value, sText_SMS_Value);
                     
-                    sReturn = ManagerSMS.sendSms(sPhone_SMS_Value, sText_SMS_Value, true);
+                    sReturn = ManagerSMS.sendSms(sPhone_SMS_Value, sText_SMS_Value, 
+                            generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))), true);
                     
                     LOG.info("(sReturn={})", sReturn);
                 }
