@@ -53,8 +53,10 @@ public class SubjectGroupService {
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 				ChildSubjectGroup childSubjectGroup = new ChildSubjectGroup(child,deepLevel);
 				childSubjectGroups.add(childSubjectGroup);
-				parentSubjectGroups.add(parentSubjectGroup);
 				childSubjectGroup.setChildrens(childSubjectGroups);
+				parentSubjectGroup.addChildSubjectGroup(childSubjectGroup);
+				parentSubjectGroups.add(parentSubjectGroup);
+				
 			}
 		}
 
