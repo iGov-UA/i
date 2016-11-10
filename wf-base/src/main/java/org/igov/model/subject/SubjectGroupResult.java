@@ -26,12 +26,7 @@ public class SubjectGroupResult implements IVisitable {
 	public void accept(IVisitor visitor) {
 		visitor.deepLevel(this);
 			for (ParentSubjectGroup c : parentSubjectGroups) {
-				LOG.info("c.getParentSubjectGroup().getsID_Group_Activiti()))))))))))))))))"+c.getParentSubjectGroup().getsID_Group_Activiti());
-				LOG.info("this.getNameGroupActiviti())))))))))))"+this.getNameGroupActiviti());
-				if(c.getParentSubjectGroup().getsID_Group_Activiti().equals(this.getNameGroupActiviti())) {
-					LOG.info("acceptttttttttttt "+this.getNameGroupActiviti());
 				c.accept(visitor);
-				}
 			}
 
 	}
