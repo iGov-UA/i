@@ -741,4 +741,62 @@ public class ObjectFileCommonController {
         return result;
     }
     
+    @ApiOperation(value = "setTaskAttachment", notes =
+            "#####  Update/upload аттача таски в Mongo")
+    @RequestMapping(value = "/setTaskAttachment", method = RequestMethod.POST, produces = "application/json")
+    @Transactional
+    public
+    @ResponseBody
+    AttachmentEntityI setTaskAttachment(//ResponseEntity
+            @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
+            @ApiParam(value = "файл html. в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
+            @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "description") String description,
+            @ApiParam(value = "порядковый номер прикрепленного файла", required = true) @RequestParam(required = false, value = "nFile") Integer nFile)
+            throws IOException {
+
+        String processInstanceId = null;
+        String assignee = null;
+
+        List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
+        if (!tasks.isEmpty()) {
+            Task task = tasks.iterator().next();
+            processInstanceId = task.getProcessInstanceId();
+            assignee = task.getAssignee() != null ? task.getAssignee()
+                    : "kermit";
+            LOG.debug("(processInstanceId={}, taskId={}, assignee={})", processInstanceId, taskId, assignee);
+        } else {
+            LOG.error("There is no tasks at all!");
+        }
+
+        identityService.setAuthenticatedUserId(assignee);
+        
+        List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
+        for (Attachment oAttachment : attachments) {
+            try {
+                Attachment attachmentRequest = oActionTaskService.getAttachment(oAttachment.getId(), nFile, processInstanceId);
+                if (attachmentRequest != null) {
+                    taskService.deleteAttachment(attachmentRequest.getId());
+                    LOG.info("Attachment was deleted. nFile {} With name {} ",
+                            nFile, attachmentRequest.getName());
+                }
+            } catch (ActivitiObjectNotFoundException oException) {
+                LOG.info(oException.getMessage());
+            }
+        }
+
+        String sFilename = file.getOriginalFilename();
+        LOG.debug("(sFilename={})", file.getOriginalFilename());
+        sFilename = sTextTranslit(sFilename);
+        LOG.debug("(FileExtention:{}, fileContentType:{}, fileName:{}) ",
+                oActionTaskService.getFileExtention(file), file.getContentType(), sFilename);
+        LOG.debug("description: {}", description);
+
+        Attachment oAttachment = taskService.createAttachment(file.getContentType() + ";" + oActionTaskService.getFileExtention(file), taskId,
+                processInstanceId, sFilename,
+                description, file.getInputStream());
+
+        AttachmentCover oAttachmentCover = new AttachmentCover();
+        return oAttachmentCover.apply(oAttachment);
+    }
+    
 }
