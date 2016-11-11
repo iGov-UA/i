@@ -34,6 +34,7 @@ public class SubjectGroupService {
 	private static final Log LOG = LogFactory.getLog(SubjectGroupService.class);
 	private static final long FAKE_ROOT_SUBJECT_ID = 0;
 	private static final String GET_SERVICE_SUBJECT_GROUP_CACHE_KEY = "SubjectGroupService.getCatalogTreeSubjectGroups";
+	private static Long deepLevelChildSubjectGroup = 0L;
 
 	@Autowired
 	private BaseEntityDao<Long> baseEntityDao;
@@ -42,38 +43,45 @@ public class SubjectGroupService {
 	private CachedInvocationBean cachedInvocationBean;
 
 	public List<SubjectGroupsVO> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
-		List<SubjectGroupsVO> res = new ArrayList<>();
+		List<SubjectGroupsVO> subjectGroupsVOList = new ArrayList<>();
 
-		SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti,deepLevel);
+		SubjectGroupResult tree = getSubjectGroupsByGroupActiviti(sID_Group_Activiti,deepLevel);
 
-		for (SubjectGroupNode rootSubjectNode : tree.getRootSubjectNodes()) {
-			final SubjectGroup parentSubject = rootSubjectNode.getGroup();
-			LOG.info("parentSubjectttttttttttt "+parentSubject);
-
-			final String rootTagId = rootSubjectNode.getGroup().getsID_Group_Activiti();
-			LOG.info("rootTagIdddddddddddddddd "+rootTagId);
-			/*if (!rootTagId.equals(sID_Group_Activiti)) {
-				continue;
-			}*/
-
-			SubjectGroupsVO nodeVO = new SubjectGroupsVO();
-			nodeVO.setoSubjectGroup_Root(parentSubject);
-			for (SubjectGroupNode childNode : rootSubjectNode.getChildren()) {
-				final SubjectGroup childTag = childNode.getGroup();
-				LOG.info("childTagggggggggggggg "+childTag);
-				nodeVO.addChild(childTag);
-			}
-
-
-			if (!nodeVO.getaSubjectGroup_Child().isEmpty()) {
-				res.add(nodeVO);
-
+		
+		for(SubjectGroupNode subjectGroupNode:tree.getRootSubjectNodes()) {
+			SubjectGroupsVO subjectGroupsVO = new SubjectGroupsVO();
+			SubjectGroup subjectGroup = subjectGroupNode.getGroup();
+			if(subjectGroup.getsID_Group_Activiti().equals(sID_Group_Activiti)) {
+				subjectGroupsVO.setoSubjectGroup_Root(subjectGroup);
+				for(SubjectGroupNode childrens:subjectGroupNode.getChildren()) {
+					SubjectGroup subjectGroupChildren = childrens.getGroup();
+					subjectGroupsVO.addChild(subjectGroupChildren);
+				}
+				subjectGroupsVOList.add(subjectGroupsVO);
+			}else {
+				for(SubjectGroupNode childrensRoot:subjectGroupNode.getChildren()) {
+					if(childrensRoot.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti)) {
+						subjectGroupsVO.setoSubjectGroup_Root(childrensRoot.getGroup());
+						for(SubjectGroupNode childrens:subjectGroupNode.getChildren()) {
+							if(SubjectGroupService.getDeepLevelChildSubjectGroup().compareTo(deepLevel)==0) {
+								break;
+							}
+							SubjectGroup subjectGroupChildren = childrens.getGroup();
+							if(!childrensRoot.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti)) {
+							subjectGroupsVO.addChild(subjectGroupChildren);
+							SubjectGroupService.setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup+1);
+							}
+						}
+						subjectGroupsVOList.add(subjectGroupsVO);
+					}
+						break;
+				}
 			}
 			
-			LOG.info("ressssssssssssssssssssssss "+res);
+			
 		}
 
-		return res;
+		return subjectGroupsVOList;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
@@ -156,11 +164,18 @@ public class SubjectGroupService {
 		SubjectGroupResult subjectGroupResult=new SubjectGroupResult(rootSubjectNodes);
 		
 		LOG.info("subjectGroupResultttttttttttttttt " + subjectGroupResult);
-
 		return subjectGroupResult;
 
 	}
 	
+	public static Long getDeepLevelChildSubjectGroup() {
+		return deepLevelChildSubjectGroup;
+	}
+
+	public static void setDeepLevelChildSubjectGroup(Long deepLevelChildSubjectGroup) {
+		SubjectGroupService.deepLevelChildSubjectGroup = deepLevelChildSubjectGroup;
+	}
+
 	/**
 	 * Кэш для SubjectGroupResult
 	 * @param sID_Group_Activiti
