@@ -89,7 +89,7 @@
         <div class="highlight">
           <form name="form" novalidate>
             <div class="clearfix" ng-if="oServiceData.oPlace">
-                <a class="pull-right" ng-hide="paramsBackup !== null" href ng-click="fillSelfPrevious()">Заповнити даними попередньої заявки</a>
+                <a class="pull-right" ng-hide="paramsBackup !== null || oHystoryTaskData.bHideLink" href ng-click="fillSelfPrevious()">Заповнити даними попередньої заявки</a>
                 <a class="pull-right" ng-hide="paramsBackup === null" href ng-click="fillSelfPreviousBack()">Відмінити авто-заповнені дані</a>
             </div>
 
@@ -158,7 +158,7 @@
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
                 <label style="color: red;"
                        ng-if="isFieldRequired(property)==true">* </label>
-                <span ng-if="property.sFieldLabel">{{property.sFieldLabel}} :</span>
+                <span ng-if="property.sFieldLabel">{{property.sFieldLabel}}:</span>
 
                 <div class="s-field-notes"
                      ng-if="property.sFieldNotes!=null">

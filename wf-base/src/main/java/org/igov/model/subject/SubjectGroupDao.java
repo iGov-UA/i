@@ -8,8 +8,8 @@ import org.igov.model.core.EntityDao;
 public interface SubjectGroupDao extends EntityDao<Long, SubjectGroup>{
 	
 	
-	SubjectGroup getSubjectGroupsByGroupActiviti(String sID_Group_Activiti);
+//	SubjectGroup getSubjectGroupsByGroupActiviti(String sID_Group_Activiti);
 	
-	List<SubjectGroup> getSubjectGroupsByIdChild(List<String> idChild);
+//	List<SubjectGroup> getSubjectGroupsByIdChild(List<String> idChild);
     
 }

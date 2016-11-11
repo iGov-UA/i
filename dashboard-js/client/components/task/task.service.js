@@ -328,10 +328,19 @@ angular.module('dashboardJsApp')
              * parse name string property to get file names sPrintFormFileAsPDF and sPrintFormFileAsIs
              */
             var fileName = null;
+
             if (typeof templateResult.fileField.name === 'string') {
               fileName = templateResult.fileField.name.split(/;/).reduce(function (prev, current) {
                 return prev += current.match(/sPrintFormFileAsPDF/i) || current.match(/sPrintFormFileAsIs/i) || [];
               }, '');
+
+              if(fileName === 'sPrintFormFileAsPDF'){
+                fileName = fileName + '.pdf';
+              }
+
+              if(fileName === 'sPrintFormFileAsIs'){
+                fileName = fileName + '.html';
+              }
             }
 
             $timeout(function () {

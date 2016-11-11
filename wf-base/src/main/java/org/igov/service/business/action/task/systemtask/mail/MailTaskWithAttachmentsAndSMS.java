@@ -46,8 +46,12 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     String sReturn;
                     sPhone_SMS_Value = sPhone_SMS_Value.replaceAll("\\ ", "");
 
-                    sReturn = oManagerSMS.sendSMS(generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))),
-                            sPhone_SMS_Value, sText_SMS_Value);
+                    //sReturn = oManagerSMS.sendSMS(generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))),
+                    //        sPhone_SMS_Value, sText_SMS_Value);
+                    
+                    sReturn = ManagerSMS.sendSms(sPhone_SMS_Value, sText_SMS_Value, 
+                            generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))), true);
+                    
                     LOG.info("(sReturn={})", sReturn);
                 }
             }
@@ -83,7 +87,9 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     if (nAt >= 0) {
                         sExt = sFileName.substring(nAt);
                     }
-                    sFileName = "Attach_" + oAttachment.getId() + sExt; //
+                    if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml") && !sFileName.toLowerCase().endsWith(".RPL")) {
+                        sFileName = "Attach_"+oAttachment.getId()+sExt; //
+                    }
                     sFileExt = oAttachment.getType().split(";")[0];
                     sDescription = oAttachment.getDescription();
                     if (sDescription == null || "".equals(sDescription.trim())) {

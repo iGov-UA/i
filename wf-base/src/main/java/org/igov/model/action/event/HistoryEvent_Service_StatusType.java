@@ -80,6 +80,7 @@ public enum HistoryEvent_Service_StatusType{ //--
             "Отсутствует",
             "Відсутня"); 
 
+    
     private final Long nID;
     private final String sID;
     private final String sName_RU;

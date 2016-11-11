@@ -346,7 +346,8 @@ public class Mail extends Abstract_Mail {
             }
 
             String sBody =  getBody();
-            sBody = sBody + "" + "<br>Для отписки перейдите по <a href=\"{{UnsubscribeUrl}}\">ссылке</a>";
+            //sBody = sBody + "" + "<br>Для отписки перейдите по <a href=\"{{UnsubscribeUrl}}\">ссылке</a>";
+            sBody = sBody + "" + "<br>Якщо Ви бажаєте відмовитися від повідомлень, будь ласка, натисніть <a href=\"{{UnsubscribeUrl}}\"тут</a>/";
 
             CreateEmailMessageRequest.Builder oBuilder = CreateEmailMessageRequest
                     //.getBuilder(sKey_Sender, "en")
