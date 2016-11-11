@@ -1,4 +1,4 @@
-package org.igov.model.document;
+package org.igov.model.process;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.CascadeType;

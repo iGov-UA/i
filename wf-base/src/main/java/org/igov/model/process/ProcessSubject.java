@@ -1,14 +1,12 @@
-package org.igov.model.document;
+package org.igov.model.process;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import org.hibernate.annotations.Type;
 import org.igov.model.core.AbstractEntity;
 import org.joda.time.DateTime;
@@ -37,12 +35,14 @@ public class ProcessSubject extends AbstractEntity {
     @JsonProperty(value = "sDatePlan")
     @Type(type = DATETIME_TYPE)
     private DateTime sDatePlan;
-
+    
+    /*
     @OneToMany(targetEntity = ProcessSubjectTree.class, mappedBy = "processSubjectChild", cascade = CascadeType.ALL)
     private List<ProcessSubjectTree> processChild;
 
     @OneToMany(targetEntity = ProcessSubjectTree.class, mappedBy = "processSubjectParent", cascade = CascadeType.ALL)
-    private List<ProcessSubjectTree> processParent;
+    private List<ProcessSubjectTree> processParent;  
+    
 
     public List<ProcessSubjectTree> getProcessChild() {
         return processChild;
@@ -59,6 +59,7 @@ public class ProcessSubject extends AbstractEntity {
     public void setProcessParent(List<ProcessSubjectTree> processParent) {
         this.processParent = processParent;
     }
+    */
 
     public String getSnID_Process_Activiti() {
         return snID_Process_Activiti;

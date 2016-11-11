@@ -1,8 +1,8 @@
 package org.igov.model.subject;
 public interface IVisitor {
-	 public void deepLevel(SubjectGroupResult subjectGroupResult);
+	public void deepLevel(VSubjectGroupResultNode vSubjectGroupResult);
+	 public void deepLevel(VSubjectGroupParentNode vSubjectGroupResult);
+	 public void deepLevel(VSubjectGroupChildrenNode vSubjectGroupNode);
+	 public void deepLevel(SubjectGroup subjectGroup);
 	
-    public void deepLevel(ParentSubjectGroup parentSubjectGroup);
-
-    public void deepLevel(ChildSubjectGroup childSubjectGroup);
 }
