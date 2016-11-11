@@ -17,8 +17,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLikari" name="Лікарі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/medicine.json')}"></activiti:formProperty>
       </extensionElements>
@@ -100,13 +99,14 @@ execution.setVariable('sNotification_day', timer)</script>
 Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
-										<b>Необхідні документи, які треба принести до ${sLikar}:</b><br>
+										<b>Необхідні документи, які треба принести до ${sLikari} :</b><br>
+									    <ul>
+										Прийти за адресою: ${sAddress}.</ul>
 										<ul>
-										<li>Прийти за адресою: ${sAddress}.</li>
-										<li>При собі мати:</li>
-										<li>- Направлення;</li>
-										<li>- Флюрографію та ренген;</li>
-										<li>- Первинну документацію (за навності)</li>
+										При собі мати:</ul>
+										<ul><li>Направлення;</li>
+										<li>Флюрографію та ренген;</li>
+										<li>Первинну документацію (за навності)</li>
 										</ul>
 									</p>
 [pattern/mail/_common_signature_start.html]
@@ -133,16 +133,17 @@ ${sNameOrgan},<br>
 									<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 									<p>
 										Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
-										Ви записались до ${sLikar}.
+										Ви записались до ${sLikari} 
 									</p>
 									<p>
 										Для того щоб закінчити процедуру необхідно:<br>
 										<ul>
-										<li>Прийти за адресою: ${sAddress}.</li>
-										<li>При собі мати:</li>
-										<li>- Направлення;</li>
-										<li>- Флюрографію та ренген;</li>
-										<li>- Первинну документацію (за навності)</li>
+										Прийти за адресою: ${sAddress}.</ul>
+										<ul>
+										При собі мати:</ul>
+										<ul><li>Направлення;</li>
+										<li>Флюрографію та ренген;</li>
+										<li>Первинну документацію (за навності)</li>
 										</ul>
 									</p>
 									<p>
@@ -171,7 +172,7 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="med_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="${sLikari}" activiti:candidateGroups="med_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
@@ -180,6 +181,13 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Орган, що здійснює прийом" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLikar" name="Лікарі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин з'явився"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
