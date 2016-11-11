@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service;
 public class SubjectGroupService {
 	private static final Log LOG = LogFactory.getLog(SubjectGroupService.class);
 	private static final long FAKE_ROOT_SUBJECT_ID = 0;
-	private static final String GET_SERVICE_SUBJECT_GROUP_CACHE_KEY = "SubjectGroupService.getSubjectGroupResult";
+	private static final String GET_SERVICE_SUBJECT_GROUP_CACHE_KEY = "SubjectGroupService.getCatalogTreeSubjectGroups";
 
 	@Autowired
 	private BaseEntityDao<Long> baseEntityDao;
@@ -48,8 +48,10 @@ public class SubjectGroupService {
 
 		for (SubjectGroupNode rootSubjectNode : tree.getRootSubjectNodes()) {
 			final SubjectGroup parentSubject = rootSubjectNode.getGroup();
+			LOG.info("parentSubjectttttttttttt "+parentSubject);
 
 			final String rootTagId = rootSubjectNode.getGroup().getsID_Group_Activiti();
+			LOG.info("rootTagIdddddddddddddddd "+rootTagId);
 			/*if (!rootTagId.equals(sID_Group_Activiti)) {
 				continue;
 			}*/
@@ -58,6 +60,7 @@ public class SubjectGroupService {
 			nodeVO.setoSubjectGroup_Root(parentSubject);
 			for (SubjectGroupNode childNode : rootSubjectNode.getChildren()) {
 				final SubjectGroup childTag = childNode.getGroup();
+				LOG.info("childTagggggggggggggg "+childTag);
 				nodeVO.addChild(childTag);
 			}
 
@@ -66,6 +69,8 @@ public class SubjectGroupService {
 				res.add(nodeVO);
 
 			}
+			
+			LOG.info("ressssssssssssssssssssssss "+res);
 		}
 
 		return res;
@@ -147,8 +152,12 @@ public class SubjectGroupService {
 		 * subjectGroupResult.accept(subjectGroupTreeResult); return
 		 * subjectGroupResult;
 		 */
+		
+		SubjectGroupResult subjectGroupResult=new SubjectGroupResult(rootSubjectNodes);
+		
+		LOG.info("subjectGroupResultttttttttttttttt " + subjectGroupResult);
 
-		return new SubjectGroupResult(rootSubjectNodes);
+		return subjectGroupResult;
 
 	}
 	
