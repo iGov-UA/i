@@ -28,7 +28,7 @@ import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import patterns.kiev.inna.visitor_2.SubjectGroupTreeResult;
+
 
 /**
  *
