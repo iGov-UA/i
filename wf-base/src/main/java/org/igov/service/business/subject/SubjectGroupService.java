@@ -21,9 +21,14 @@ import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupNode;
 import org.igov.model.subject.SubjectGroupResult;
 import org.igov.model.subject.SubjectGroupTree;
+import org.igov.model.subject.VSubjectGroupNode;
+import org.igov.model.subject.VSubjectGroupResult;
+import org.igov.model.subject.VSubjectGroupTreeResult;
 import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import patterns.kiev.inna.visitor_2.SubjectGroupTreeResult;
 
 /**
  *
@@ -42,11 +47,32 @@ public class SubjectGroupService {
 	@Autowired
 	private CachedInvocationBean cachedInvocationBean;
 
-	public SubjectGroupResult getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+	public List<VSubjectGroupResult> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 
-		SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti,deepLevel);
+		/*SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti,deepLevel);
 
-		return tree;
+		return tree;*/
+		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
+		 List<VSubjectGroupResult> rootSubjectNodes = new ArrayList<>();
+		
+		for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
+			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
+			LOG.info("SubjectGrouppppppparent " + parent);
+			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
+			LOG.info("SubjectGrouppppppchild " + child);
+			VSubjectGroupNode vSubjectGroupNode = new VSubjectGroupNode();
+			vSubjectGroupNode.addChild(parent);
+			vSubjectGroupNode.addChild(child);
+			 VSubjectGroupResult parentNode = new VSubjectGroupResult();
+			parentNode.addChild(vSubjectGroupNode);
+			rootSubjectNodes.add(parentNode);
+			VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
+			parentNode.accept(subjectGroupTreeResult);
+		}
+		
+	
+		
+		return rootSubjectNodes;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
