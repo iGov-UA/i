@@ -54,8 +54,12 @@ public class SubjectGroupService {
 			if(subjectGroup.getsID_Group_Activiti().equals(sID_Group_Activiti)) {
 				subjectGroupsVO.setoSubjectGroup_Root(subjectGroup);
 				for(SubjectGroupNode childrens:subjectGroupNode.getChildren()) {
+					if(SubjectGroupService.getDeepLevelChildSubjectGroup().compareTo(deepLevel)>0) {
+						break;
+					}
 					SubjectGroup subjectGroupChildren = childrens.getGroup();
 					subjectGroupsVO.addChild(subjectGroupChildren);
+					SubjectGroupService.setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup+1);
 				}
 				subjectGroupsVOList.add(subjectGroupsVO);
 			}else {
@@ -63,7 +67,7 @@ public class SubjectGroupService {
 					if(childrensRoot.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti)) {
 						subjectGroupsVO.setoSubjectGroup_Root(childrensRoot.getGroup());
 						for(SubjectGroupNode childrens:subjectGroupNode.getChildren()) {
-							if(SubjectGroupService.getDeepLevelChildSubjectGroup().compareTo(deepLevel)==0) {
+							if(SubjectGroupService.getDeepLevelChildSubjectGroup().compareTo(deepLevel)>0) {
 								break;
 							}
 							SubjectGroup subjectGroupChildren = childrens.getGroup();
