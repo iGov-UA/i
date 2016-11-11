@@ -637,25 +637,25 @@
         };
 
       $scope.saveChangesTask = function (form) {
-          $scope.validateForm(form);
-          if(form.$invalid){
-            $scope.isFormInvalid = true;
-            return;
-          } else {
-            $scope.isFormInvalid = false;
-          }
+          //$scope.validateForm(form);
+          //if(form.$invalid){
+          //  $scope.isFormInvalid = true;
+          //  return;
+          //} else {
+          //  $scope.isFormInvalid = false;
+          //}
 
           if ($scope.selectedTask && $scope.taskForm) {
             $scope.taskForm.isSubmitted = true;
-
-            var unpopulatedFields = $scope.unpopulatedFields();
-            if (unpopulatedFields.length > 0) {
-              setTimeout(function () {
-                angular.element('.submitted').first().focus();
-              },100);
-
-              return;
-            }
+            //
+            //var unpopulatedFields = $scope.unpopulatedFields();
+            //if (unpopulatedFields.length > 0) {
+            //  setTimeout(function () {
+            //    angular.element('.submitted').first().focus();
+            //  },100);
+            //
+            //  return;
+            //}
 
             $scope.taskForm.isInProcess = true;
 
@@ -663,7 +663,7 @@
             tasks.saveChangesTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask)
               .then(function (result) {
                 $scope.taskForm.isInProcess = false;
-                if(result.status == 500){
+                if(result.status == 500 || result.status == 403){
                   var message = result.data.message;
                   var errMsg = (message.includes("errMsg")) ? message.split(":")[1].split("=")[1] : message;
 
