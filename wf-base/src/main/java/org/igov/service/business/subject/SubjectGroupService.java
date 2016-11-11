@@ -33,7 +33,8 @@ import org.springframework.stereotype.Service;
 public class SubjectGroupService {
 	private static final Log LOG = LogFactory.getLog(SubjectGroupService.class);
 	private static final long FAKE_ROOT_SUBJECT_ID = 0;
-	private static final String GET_SERVICE_SUBJECT_GROUP_CACHE_KEY = "SubjectGroupService.getSubjectGroupResult";
+	private static final String GET_SERVICE_SUBJECT_GROUP_CACHE_KEY = "SubjectGroupService.getCatalogTreeSubjectGroups";
+	private static Long deepLevelChildSubjectGroup = 0L;
 
 	@Autowired
 	private BaseEntityDao<Long> baseEntityDao;
@@ -41,57 +42,16 @@ public class SubjectGroupService {
 	@Autowired
 	private CachedInvocationBean cachedInvocationBean;
 
-	public List<SubjectGroupsVO> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
-		List<SubjectGroupsVO> res = new ArrayList<>();
+	public SubjectGroupResult getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 
 		SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti,deepLevel);
 
-		for (SubjectGroupNode rootSubjectNode : tree.getRootSubjectNodes()) {
-			final SubjectGroup parentSubject = rootSubjectNode.getGroup();
-
-			final String rootTagId = rootSubjectNode.getGroup().getsID_Group_Activiti();
-			/*if (!rootTagId.equals(sID_Group_Activiti)) {
-				continue;
-			}*/
-
-			SubjectGroupsVO nodeVO = new SubjectGroupsVO();
-			nodeVO.setoSubjectGroup_Root(parentSubject);
-			for (SubjectGroupNode childNode : rootSubjectNode.getChildren()) {
-				final SubjectGroup childTag = childNode.getGroup();
-				nodeVO.addChild(childTag);
-			}
-
-
-			if (!nodeVO.getaSubjectGroup_Child().isEmpty()) {
-				res.add(nodeVO);
-
-			}
-		}
-
-		return res;
+		return tree;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 		Map<SubjectGroup, SubjectGroupNode> subjectToNodeMap = new HashMap<>();
-
-		/*
-		 * List<ParentSubjectGroup> parentSubjectGroups = new ArrayList<>();
-		 * 
-		 * for(SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
-		 * final SubjectGroup parent =
-		 * subjectGroupRelation.getoSubjectGroup_Parent(); if (parent.getId() !=
-		 * FAKE_ROOT_SUBJECT_ID ) { ParentSubjectGroup parentSubjectGroup = new
-		 * ParentSubjectGroup(parent);
-		 * 
-		 * final SubjectGroup child =
-		 * subjectGroupRelation.getoSubjectGroup_Child(); ChildSubjectGroup
-		 * childSubjectGroup = new ChildSubjectGroup(child,deepLevel);
-		 * parentSubjectGroup.addChildSubjectGroup(childSubjectGroup);
-		 * parentSubjectGroups.add(parentSubjectGroup);
-		 * 
-		 * } }
-		 */
 
 		Set<SubjectGroup> parentSubject = new LinkedHashSet<>();
 		Set<SubjectGroup> childSubject = new HashSet<>();
@@ -131,27 +91,26 @@ public class SubjectGroupService {
 		LOG.info("childSubjectttttttttttttttttt " + childSubject);
 
 		LOG.info("SubjectGrouppppppSettttt" + rootTags);
-		rootTags.removeAll(childSubject);
+	//	rootTags.removeAll(childSubject);
 
 		final List<SubjectGroupNode> rootSubjectNodes = rootTags.stream().map(subjectToNodeMap::get)
 				.collect(Collectors.toList());
-		/*
-		 * SubjectGroupResult subjectGroupResult = new
-		 * SubjectGroupResult(sID_Group_Activiti); for(ParentSubjectGroup
-		 * parentSubjectGroup:parentSubjectGroups) {
-		 * subjectGroupResult.addParentSubjectGroup(parentSubjectGroup); }
-		 * 
-		 * 
-		 * SubjectGroupTreeResult subjectGroupTreeResult = new
-		 * SubjectGroupTreeResult();
-		 * subjectGroupResult.accept(subjectGroupTreeResult); return
-		 * subjectGroupResult;
-		 */
-
-		return new SubjectGroupResult(rootSubjectNodes);
+		
+		SubjectGroupResult subjectGroupResult=new SubjectGroupResult(rootSubjectNodes);
+		
+		LOG.info("subjectGroupResultttttttttttttttt " + subjectGroupResult);
+		return subjectGroupResult;
 
 	}
 	
+	public static Long getDeepLevelChildSubjectGroup() {
+		return deepLevelChildSubjectGroup;
+	}
+
+	public static void setDeepLevelChildSubjectGroup(Long deepLevelChildSubjectGroup) {
+		SubjectGroupService.deepLevelChildSubjectGroup = deepLevelChildSubjectGroup;
+	}
+
 	/**
 	 * Кэш для SubjectGroupResult
 	 * @param sID_Group_Activiti
