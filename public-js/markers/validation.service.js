@@ -127,11 +127,12 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     markerName = self.trimMarkerName(markerName);
 
     var keyByMarkerName = self.validatorNameByMarkerName[markerName];
-    var fieldNameIsListedInMarker = formField && formField.$name && _.indexOf(marker.aField_ID, formField.$name) !== -1;
+    var fieldNameIsListedInMarker = formField && formField.$name && (_.indexOf(marker.aField_ID, formField.$name) !== -1);
+    var fieldTypeIsListedInMarker = formField && formField.type && (_.indexOf(marker.aField_Type, formField.type) !== -1); 
     var existingValidator = formField && formField.$validators && formField.$validators[keyByMarkerName];
 
     // для того чтобы валидация работала в таблице, нужно добраться до полей, вводится доп проверка.
-    if(!fieldNameIsListedInMarker) {
+    if(!fieldNameIsListedInMarker && !fieldTypeIsListedInMarker) {
       angular.forEach(formField, function (field) {
         if(typeof field === 'object') {
           if(newRow) field = formField;
@@ -166,7 +167,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       })
     }
     // Встановлюємо валідатор Angular - тільки для поля, що згадується у маркері валідації, і тільки один раз.
-    if ((fieldNameIsListedInMarker /* || forceValidation */ ) && !existingValidator) {
+    if (( (fieldNameIsListedInMarker || fieldTypeIsListedInMarker) /* || forceValidation */ ) && !existingValidator) {
 
       // запам'ятовуємо опції маркера щоб передати параметри типу sMessage, sFormat, bFuture, bLess, nDays ітн.
       var markerOptions = angular.copy(marker) || {};
@@ -189,7 +190,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         // використати існуючий валідатор
         self.setValidatorByMarker(marker, markerOptions.inheritedValidator, formField, immediateValidation, true);
       }
-    } else if (fieldNameIsListedInMarker && existingValidator) {
+    } else if ( ( fieldNameIsListedInMarker || fieldTypeIsListedInMarker ) && existingValidator) {
       if (immediateValidation === true) {
         formField.$validate();
       }
@@ -216,8 +217,18 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     CustomFormat: 'CustomFormat',
     FileSign: 'FileSign',
     FileExtensions: 'FileExtensions',
-    FieldNotEmptyAndNonZero: 'FieldNotEmptyAndNonZero'
+    FieldNotEmptyAndNonZero: 'FieldNotEmptyAndNonZero',
+    LongNumber: 'long',
+    DoubleNumber: 'double',
+    StringRange: 'string'
   };
+
+  // Масив валідаторів за типом поля 
+  self.validatorNameByType = { 
+		  long: 'LongNumber',
+		  double: 'DoubleNumber',
+		  string: 'StringRange'
+  }; 
 
   /**
    * Отримати замикання функції-валідатора за назвою маркера валідації
@@ -589,7 +600,119 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
       return bValid;
     },
+    
+    /**
+     * 'StringRange' - строка з визначеною довжиною 
+     *   
+     * StringRange: { // Неподільне в діапазоні 
+     * 		aField_ID: ['long'],
+     * 		nMin: 1, 
+     * 		nMax: 3, 
+     * 		sMessage: '' 
+     * }  
+     */
+    'StringRange': function( modelValue, viewValue, options ) {
 
+    	if((modelValue === null) || modelValue === '') { 
+    		return true; 
+    	} 
+    	
+    	if(!options ) {
+    		return false; 
+    	}
+
+    	if(options.nMin === null || (options.nMax != null && options.nMin > options.nMax)) { 
+    		options.nMin = 0; 
+    	}
+
+    	if(options.nMax === null || (options.nMin != null && options.nMin > options.nMax)) { 
+    		options.nMax = 200; 
+    	}
+
+    	var bValid = modelValue.length >= options.nMin && modelValue.length <= options.nMax;  
+
+    	return bValue; 
+    }
+    
+    /**
+     * 'LongNumber' - неподільне число 
+     * Текст помилки: options.sMessage або 'Число має бути між ' + options.nMin + ' та ' + options.nMax;  
+     * Формат маркера: 
+     * 
+     * LongNumber: { // Неподільне в діапазоні 
+     * 		aField_ID: ['long'],
+     * 		aField_Type: ['long'], 
+     * 		nMin: 1, 
+     * 		nMax: 3, 
+     * 		sMessage: '' 
+     * } 
+     */
+    'LongNumber': function(modelValue, viewValue, options) { 
+    	
+    	if(modelValue === null || modelValue === '') {
+    		return true;
+    	}
+    	
+    	if(!options) { 
+    		return false; 
+    	}
+    	
+    	if(options.nMin === null || ( options.nMax != null && options.nMax < options.nMin )) {
+    		options.nMin = 0; 
+    	}
+    	
+    	if(options.nMax === null || { options.nMin != null && options.nMin > options.nMax }) { 
+    		options.nMax = Number.MAX_VALUE;
+    	}
+    	
+    	var bValid = (parseFloat(modelValue) - Math.floor(modelValue) == 0) && (parseInt(modelValue) >= options.nMin) && (parseInt(modelValue) <= options.nMax);
+    	
+    	if(bValid === false) {
+    		options.lastError = options.sMessage || ('Неподільне число між ' + options.nMin + ' та ' + options.nMax); 
+    	}
+    	
+    	return bValid; 
+    }, 
+    
+    /** 
+     * 'DoubleNumber' - подільне число 
+     * Текст помилки: options.sMessage або 'Подільне число має бути між ' + options.nMin + ' та ' + options.nMax;   
+     * 
+     * DoubleNumber: { // Подільне в діапазоні 
+     * 		aField_ID: ['double'],
+     * 		aFiled_Type: ['double'],
+     * 		nMin: 1, 
+     * 		nMax: 10000000, 
+     * 		sMessage: '' 
+     * } 
+     */
+    'DoubleNumber': function(modelValue, viewValue, options) { 
+    	
+    	if(modelValue === null) || modelValue == '') {
+    		return true;
+    	}
+    	
+    	if(!options) {
+    		return false;
+    	}
+    	
+    	if(options.nMin === null || ( options.nMax != null && options.nMax < options.nMin ) ) { 
+    		options.nMin = 0;
+    	}
+    	
+    	if(options.nMax === null || { options.nMin != null && options.nMin > options.nMax } ) { 
+    		options.nMax = 10000000;  
+    	}
+    	
+    	var bValid = (parseFloat(modelValue) - Math.floor(modelValue) != 0) && (parseFloat(modelValue) > options.nMin) && (parseFloat(modelValue < options.nMax));   
+
+    	if(bValid === null) { 
+    		options.lastError = options.sMessage || ('Подільне число має бути між ' + options.nMin + ' та ' + options.nMax); 
+    	}
+    	
+    	return bValue; 
+    }, 
+    
     /**
      'NumberBetween' - тільки цифри, максимум 3
      Текст помилки: options.sMessage або 'Число має бути між ' + options.nMin + ' та ' + options.nMax;

@@ -66,6 +66,28 @@ angular.module('iGovMarkers')
       ,CodeMFO: {
         aField_ID: ['mfo']
       }
+      ,StringRange: { 
+    	  aField_ID: ['string'],
+    	  aField_Type: ['string'], 
+    	  nMin: 0,
+    	  nMax: 200,
+    	  sMessage: 'Повинно бути від 0 до 200 символів'
+      }
+      ,LongNumber: {
+    	  aField_ID: ['long'],
+    	  aField_Type: ['long'],
+    	  nMin: 1,
+    	  nMax: 1000, 
+    	  sMessage: 'Повинно бути подільним числом від 1 до 1000 '
+      }
+      ,DoubleNumber: {
+    	  aField_ID: ['double'],
+    	  aField_Type: ['double'],
+    	  nMin: 1, 
+    	  nMax: 10000000,
+    	  sSeparator: '.',
+    	  sMessage: 'Повинно бути неподільним числом та розділене "."'
+      }
       ,NumberBetween: { //Целочисленное между
         aField_ID: ['numberBetween'],
         nMin: 1,
