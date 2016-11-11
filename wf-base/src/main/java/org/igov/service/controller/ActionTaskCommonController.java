@@ -2569,7 +2569,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             while ((line = oReader.readLine()) != null) {
                 osRequestBody.append(line);
             }
-            
+        }            
         try {
             
             LOG.info("osRequestBody " + osRequestBody.toString());
