@@ -26,8 +26,8 @@ public class ChildSubjectGroup implements IVisitable {
 	@Override
 	public void accept(IVisitor visitor) {
 		visitor.deepLevel(this);
-		if (SubjectGroupTreeResult.getDeepLevelSubjectGroupResult().compareTo(getDeepLevel()) != 0
-				&& SubjectGroupTreeResult.getDeepLevelSubjectGroupResult().compareTo(getDeepLevel()) < 0) {
+		if (SubjectGroupTreeResult_1.getDeepLevelSubjectGroupResult().compareTo(getDeepLevel()) != 0
+				&& SubjectGroupTreeResult_1.getDeepLevelSubjectGroupResult().compareTo(getDeepLevel()) < 0) {
 		for(ChildSubjectGroup childSubjectGroup:childrens) {
 			childSubjectGroup.accept(visitor);
 		}
