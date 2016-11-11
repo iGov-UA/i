@@ -2570,19 +2570,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 osRequestBody.append(line);
             }
         }            
-        try {
-            
-            LOG.info("osRequestBody " + osRequestBody.toString());
-            LOG.info("getCharacterEncoding() " + req.getCharacterEncoding());
-            LOG.info("req.getContentType() " + req.getContentType());
-            LOG.info("req.getContextPath() " + req.getContextPath());
-            LOG.info("req.getPathInfo() " + req.getPathInfo());
-            LOG.info("osRequestBody " + req.getAttributeNames());
+        try {           
+
             //LOG.info("osRequestBody " + );
             
             LOG.info("Input params - " + sParams);
             //sParams= new String(sParams.getBytes("UTF-8"),"Cp1252");
             LOG.info("After refactoring params - " + sParams);
+                        LOG.info("osRequestBody " + osRequestBody.toString());
+            LOG.info("getCharacterEncoding() " + req.getCharacterEncoding());
+            LOG.info("req.getContentType() " + req.getContentType());
+            LOG.info("req.getContextPath() " + req.getContextPath());
+            LOG.info("req.getPathInfo() " + req.getPathInfo());
+            LOG.info("osRequestBody " + req.getAttributeNames());
             org.json.simple.JSONObject jsonObj = (org.json.simple.JSONObject) new JSONParser().parse(sParams);
             LOG.info("Succ. parsing of input data passed");
             String nID_Task = null;
