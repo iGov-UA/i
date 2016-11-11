@@ -2284,7 +2284,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public String setBP(@ApiParam(value = "Cтрока-название файла", required = true) @RequestParam(value = "sFileName", required = true) String sFileName,
             @ApiParam(value = "Новий БП") @RequestParam("file") MultipartFile file,
             HttpServletRequest req) throws CommonServiceException {
-        try {
+        try {            
             InputStream inputStream = file.getInputStream();
             repositoryService.createDeployment().addInputStream(sFileName, inputStream).deploy();
             LOG.debug("BPMN file has been deployed to repository service");
@@ -2586,9 +2586,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             while (datesIterator.hasNext()) {
                 result = datesIterator.next();
                 key = result.get("id").toString();
-                key = URLDecoder.decode(key, "UTF-8");
+                //key = URLDecoder.decode(key, "UTF-8");
                 value = (String) result.get("value");
-                value = URLDecoder.decode(value, "UTF-8");
+                //value = URLDecoder.decode(value, "UTF-8");
                 values.put(key, value);
             }
             formService.saveFormData(nID_Task, values);
