@@ -30,10 +30,11 @@ public class TransferDocumentAnswer_SWinEd implements TaskListener {
 
     @Override
     public void notify(DelegateTask delegateTask) {
+        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         String sINN_Value = getStringFromFieldExpression(this.sINN, delegateTask.getExecution());
         String asID_Attach_Dfs = null;
         asID_Attach_Dfs = dfsService.getAnswer(delegateTask.getId(), delegateTask.getProcessInstanceId(), sINN_Value);
-        LOG.info("asID_Attach_Dfs:" + asID_Attach_Dfs.toString()); //хочу словить налпоинтер. это так и нужно!!! не убирать
+        LOG.info("as" + asID_Attach_Dfs.toString()); //хочу словить налпоинтер. это так и нужно!!! не убирать
     }
 
 }

@@ -68,6 +68,11 @@
             <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${TransferDocumentAnswer_SWinEd}">
+          <activiti:field name="sINN">
+            <activiti:expression>${bankIdinn}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
