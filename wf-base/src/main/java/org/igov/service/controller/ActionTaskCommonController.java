@@ -2558,11 +2558,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "проперти формы", required = false) @RequestParam(value = "sParams", required = false) String sParams,
             HttpServletRequest req) throws ParseException, CommonServiceException { */
     public ResponseEntity saveForm(
-            @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams)
-            throws ParseException, CommonServiceException {
+            @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams, HttpServletRequest req)
+            throws ParseException, CommonServiceException, IOException {
         //String key = null;
         //String value = null;
+        StringBuilder osRequestBody = new StringBuilder();
+        BufferedReader oReader = req.getReader();
+        String line;
+        if (oReader != null) {
+            while ((line = oReader.readLine()) != null) {
+                osRequestBody.append(line);
+            }
+            
         try {
+            
+            LOG.info("osRequestBody " + osRequestBody.toString());
+            LOG.info("getCharacterEncoding() " + req.getCharacterEncoding());
+            LOG.info("req.getContentType() " + req.getContentType());
+            LOG.info("req.getContextPath() " + req.getContextPath());
+            LOG.info("req.getPathInfo() " + req.getPathInfo());
+            LOG.info("osRequestBody " + req.getAttributeNames());
+            //LOG.info("osRequestBody " + );
+            
             LOG.info("Input params - " + sParams);
             //sParams= new String(sParams.getBytes("UTF-8"),"Cp1252");
             LOG.info("After refactoring params - " + sParams);
