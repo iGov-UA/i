@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="common_mreo_2" name="(Загальна послуга) - Надання витягу з Єдиного державного реєстру МВС України" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -34,10 +34,10 @@
         <activiti:formProperty id="markers1" name="show_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="set_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="required_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_3.json')}"></activiti:formProperty>
-       <activiti:formProperty id="searchDetail" name="searchDetail" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="searchDetail" name="searchDetail" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="reqDetail" name="reqDetail" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="resultData" name="Результат  перевірки" type="invisible" default="&lt;th&gt;no responce&lt;/th&gt;"></activiti:formProperty>
-      </extensionElements>
+     </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -65,7 +65,7 @@
       </extensionElements>
     </userTask>
     <endEvent id="endevent8" name="End"></endEvent>
-    <serviceTask id="servicetask11" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask11" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -77,11 +77,12 @@
           <activiti:string><![CDATA[Надання витягу з Єдиного державного реєстру МВС України]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/mvd/_common_header.html]
+          <activiti:expression>  [pattern/mail/mvd/_common_header.html]
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
  &lt;p&gt;                                   
 Ваше звернення успішно оброблено. &lt;br/&gt;
 Запит ${searchDetail} &lt;br/&gt;
+&lt;b&gt;Звертаємо Вашу увагу! Послуга працює поки що в тестовому режимі. База містить записи здебільшого за останні кілька років та постійно наповнюється.&lt;/b&gt;&lt;br/&gt;
 
 Результат обробки: &lt;br/&gt;
 &lt;table cellspacing="0" cellpadding="7" bordercolor="#5CA3CB" border="1" style="color:#5CA3CB;"&gt;
@@ -91,6 +92,15 @@ ${resultData}
 [pattern/mail/mvd/_common_signature.html]
 [pattern/mail/mvd/_common_feedback.html]
 [pattern/mail/mvd/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
