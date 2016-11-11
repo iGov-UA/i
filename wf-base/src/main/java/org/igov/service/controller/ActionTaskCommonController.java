@@ -2564,7 +2564,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         //String value = null;
         try {
             LOG.info("Input params - " + sParams);
-            sParams= new String(sParams.getBytes("UTF-8"),"Cp1252");
+            //sParams= new String(sParams.getBytes("UTF-8"),"Cp1252");
             LOG.info("After refactoring params - " + sParams);
             org.json.simple.JSONObject jsonObj = (org.json.simple.JSONObject) new JSONParser().parse(sParams);
             LOG.info("Succ. parsing of input data passed");
