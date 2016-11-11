@@ -36,12 +36,12 @@ public class SubjectGroupController {
     @ApiOperation(value = "Получение организационной иерархии")
     @RequestMapping(value = "/getSubjectGroups", method = RequestMethod.GET)
     @ResponseBody
-    public List<VSubjectGroupResult> getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
+    public SubjectGroupResult getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
     		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel)
             throws Exception  {
-    	List<VSubjectGroupResult> subjectGroupResult = null;
+    	SubjectGroupResult subjectGroupResult = null;
     	try {
-    		subjectGroupResult = subjectGroupService.getCatalogTreeSubjectGroups(sID_Group_Activiti,nDeepLevel);
+    		subjectGroupResult = subjectGroupService.getSubjectGroupsByGroupActiviti(sID_Group_Activiti,nDeepLevel);
     		
     		 LOG.info("SubjectGroupppppppppppppppp: "+subjectGroupResult);
     	} catch (Exception e) {
