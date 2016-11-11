@@ -2557,7 +2557,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
    /* public ResponseEntity saveForm(
             @ApiParam(value = "проперти формы", required = false) @RequestParam(value = "sParams", required = false) String sParams,
             HttpServletRequest req) throws ParseException, CommonServiceException { */
-    public ResponseEntity saveForm(
+    public /*ResponseEntity*/ HttpServletRequest saveForm(
             @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams, HttpServletRequest req)
             throws ParseException, CommonServiceException, IOException {
         //String key = null;
@@ -2613,7 +2613,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             Map<String, Object> response = new HashMap<>();
             response.put("sReturnSuccess", "OK");
             LOG.info("Process of update data finiched");
-            return JsonRestUtils.toJsonResponse(response);
+            //return JsonRestUtils.toJsonResponse(response);
+            return req;
         } catch (Exception e) {
             String message = "The process of update variables fail.";
             LOG.debug(message);
