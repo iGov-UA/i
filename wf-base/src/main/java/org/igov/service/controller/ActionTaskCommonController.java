@@ -2553,15 +2553,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     
     //test LinkProcess
     @ApiOperation(value = "saveForm", notes = "saveForm")
-    @RequestMapping(value = "/saveForm", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveForm", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
    /* public ResponseEntity saveForm(
             @ApiParam(value = "проперти формы", required = false) @RequestParam(value = "sParams", required = false) String sParams,
             HttpServletRequest req) throws ParseException, CommonServiceException { */
     public ResponseEntity saveForm(
             @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams)
             throws ParseException, CommonServiceException {
-        String key = null;
-        String value = null;
+        //String key = null;
+        //String value = null;
         try {
             LOG.info("Input params - " + sParams);
             org.json.simple.JSONObject jsonObj = (org.json.simple.JSONObject) new JSONParser().parse(sParams);
@@ -2585,15 +2585,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             Iterator<org.json.simple.JSONObject> datesIterator = dates.iterator();
             while (datesIterator.hasNext()) {
                 result = datesIterator.next();
-                key = result.get("id").toString();
+                //key = result.get("id").toString();
                 //key = URLDecoder.decode(key, "UTF-8");
-                value = (String) result.get("value");
+               // value = (String)result.get("value");
                 //value = URLDecoder.decode(value, "UTF-8");
-                values.put(key, value);
+                values.put(result.get("id").toString(), (String)result.get("value"));
             }
             formService.saveFormData(nID_Task, values);
             Map<String, Object> response = new HashMap<>();
             response.put("sReturnSuccess", "OK");
+            LOG.info("Process of update data finiched");
             return JsonRestUtils.toJsonResponse(response);
         } catch (Exception e) {
             String message = "The process of update variables fail.";
