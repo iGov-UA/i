@@ -2573,17 +2573,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         try {           
 
             //LOG.info("osRequestBody " + );
-            
-            LOG.info("Input params - " + sParams);
+                     LOG.info("Input params - " + sParams);
             //sParams= new String(sParams.getBytes("UTF-8"),"Cp1252");
             LOG.info("After refactoring params - " + sParams);
-                        LOG.info("osRequestBody " + osRequestBody.toString());
-            LOG.info("getCharacterEncoding() " + req.getCharacterEncoding());
-            LOG.info("req.getContentType() " + req.getContentType());
-            LOG.info("req.getContextPath() " + req.getContextPath());
-            LOG.info("req.getPathInfo() " + req.getPathInfo());
-            LOG.info("osRequestBody " + req.getAttributeNames());
+            LOG.info("osRequestBody " + osRequestBody.toString());
             org.json.simple.JSONObject jsonObj = (org.json.simple.JSONObject) new JSONParser().parse(sParams);
+            org.json.simple.JSONObject jsonObj11 = (org.json.simple.JSONObject) new JSONParser().parse(osRequestBody.toString());
             LOG.info("Succ. parsing of input data passed");
             String nID_Task = null;
             if (jsonObj.containsKey("taskId")) {
@@ -2594,14 +2589,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("taskId = " + nID_Task);
             Map<String, String> values = new HashMap<>();
             org.json.simple.JSONArray dates = null;
+            org.json.simple.JSONArray dates11 = null;
             if (jsonObj.containsKey("properties")) {
                 dates = (org.json.simple.JSONArray) jsonObj.get("properties");
+                dates11 = (org.json.simple.JSONArray) jsonObj11.get("properties");
             } else {
                 LOG.error("Variable \"properties\" not found");
             }
-            LOG.info("properties = " + dates);
+            LOG.info("properties = " + dates.toJSONString());
+            LOG.info("properties1 = " + dates11.toJSONString());
+
             org.json.simple.JSONObject result;
-            Iterator<org.json.simple.JSONObject> datesIterator = dates.iterator();
+            Iterator<org.json.simple.JSONObject> datesIterator = dates11.iterator();
             while (datesIterator.hasNext()) {
                 result = datesIterator.next();
                 //key = result.get("id").toString();
