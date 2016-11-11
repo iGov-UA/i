@@ -50,9 +50,9 @@ public class SubjectGroupService {
 			final SubjectGroup parentSubject = rootSubjectNode.getGroup();
 
 			final String rootTagId = rootSubjectNode.getGroup().getsID_Group_Activiti();
-			if (!rootTagId.equals(sID_Group_Activiti)) {
+			/*if (!rootTagId.equals(sID_Group_Activiti)) {
 				continue;
-			}
+			}*/
 
 			SubjectGroupsVO nodeVO = new SubjectGroupsVO();
 			nodeVO.setoSubjectGroup_Root(parentSubject);
