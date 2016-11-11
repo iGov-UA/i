@@ -32,6 +32,21 @@
         <activiti:formProperty id="sDovidkaDate" name="Дата видачі довідки" type="string" default="__" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCopyNo" name="Реєстраційний номер викопіювання" type="string" default="__" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCopyDate" name="Дата видачі викопіювання" type="string" default="__" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
+          <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
+          <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sText1" name="Увага!" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
+        <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asLust" name="Оберіть тип поштового відправлення" type="enum" required="true">
+          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 16.09"></activiti:value>
+          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 36.45"></activiti:value>
+        </activiti:formProperty>
+        
+        
+        
         <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sClerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRegNo" name="Номер реєстрації заявки у ЦНАП" type="invisible"></activiti:formProperty>
@@ -44,13 +59,25 @@
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker" name="mShowFields" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sKadastrObject&quot;,&quot;sVitiagNo&quot;,&quot;sVitiagDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;aDocErr&quot;},&quot;sCondition&quot;:&quot;[sClient]=='enum1'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDovidkaNo&quot;,&quot;sDovidkaDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;aDocErr&quot;},&quot;sCondition&quot;:&quot;[sClient]=='enum2'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sCopyNo&quot;,&quot;sCopyDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;aDocErr&quot;},&quot;sCondition&quot;:&quot;[sClient]=='enum3'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Region" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_225.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker" name="mShowFields" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/Zem_cnap_225.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Region" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/Zem_cnap_dgk_cnap.json')}"></activiti:formProperty>
         <activiti:formProperty id="bFlag" name="Перемикач регіонів" type="invisible" default="easy"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i75116857714"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="16.09"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюти" type="invisible" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
+var sum = 16.09;
+if ((execution.getVariable('asLust')) === 'sEnamLustKur') {
+	sum =  36.45;
+}
+execution.setVariable('sSum', sum);      
+      
 var gal = 'X'
 var bs = ' '
 execution.setVariable('iTemp1', bs)
@@ -555,7 +582,10 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <serviceTask id="servicetask13" name="Лист з оплатою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask13" name="Лист з оплатою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    
+    
+    </serviceTask>
     <sequenceFlow id="flow35" sourceRef="boundarytimer1" targetRef="servicetask13"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
