@@ -4,17 +4,16 @@
     <documentation>https://github.com/e-government-ua/i/issues/1353</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sTable1" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;файл в этом поле&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="перевірка вхідних данних" activiti:candidateGroups="sales">
+    <userTask id="usertask1" name="крок 1" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Таблиця на дашборді; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTableFieldString1&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;default&quot;:&quot;дефолтная запись&quot;},{&quot;id&quot;:&quot;sTableFieldLong1&quot;,&quot;name&quot;:&quot;Лонг&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTableFieldDate1&quot;,&quot;name&quot;:&quot;Дата&quot;,&quot;type&quot;:&quot;date&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTableFieldEnum1&quot;,&quot;name&quot;:&quot;Енум&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;attr1&quot;,&quot;name&quot;:&quot;атрибут енаму 1&quot;},{&quot;id&quot;:&quot;attr2&quot;,&quot;name&quot;:&quot;атрибут енаму 2&quot;}]},{&quot;id&quot;:&quot;sObjectCustoms&quot;,&quot;name&quot;:&quot;поле з типом селект&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;40%&quot;},{&quot;id&quot;:&quot;sID_UA_ObjectCustoms&quot;,&quot;name&quot;:&quot;автокомплит селекта&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Таблиця на дашборді; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTableFieldString1&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;default&quot;:&quot;дефолтная запись&quot;},{&quot;id&quot;:&quot;sTableFieldLong1&quot;,&quot;name&quot;:&quot;Лонг&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTableFieldDate1&quot;,&quot;name&quot;:&quot;Дата&quot;,&quot;type&quot;:&quot;date&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTableFieldEnum1&quot;,&quot;name&quot;:&quot;Енум&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;attr1&quot;,&quot;name&quot;:&quot;атрибут енаму 1&quot;},{&quot;id&quot;:&quot;attr2&quot;,&quot;name&quot;:&quot;атрибут енаму 2&quot;}]},{&quot;id&quot;:&quot;sTableFieldDouble&quot;,&quot;name&quot;:&quot;поле з типом double&quot;,&quot;type&quot;:&quot;double&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;40%&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Поточні рахунки у національній валюті" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNumberAccountUah&quot;,&quot;name&quot;:&quot;Номер поточного рахунку у національній валюті&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sBankNameUah&quot;,&quot;name&quot;:&quot;Найменування банку&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;МФО банку&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sBankAdresUah&quot;,&quot;name&quot;:&quot;Місцезнаходження банку&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="валідатор поля sBankMfoUah та sBankMfoCurrency" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_14&quot;:{&quot;aField_ID&quot;:[&quot;sBankMfoUah&quot;,&quot;sBankMfoCurrency&quot;],&quot;sFormat&quot;:&quot;######&quot;,&quot;sMessage&quot;:&quot;Невірний формат. МФО має складатися з 6 цифр&quot;}}}"></activiti:formProperty>
-      
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -25,6 +24,23 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
+    
+   <userTask id="usertask2" name="крок 2">
+      <extensionElements>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Таблиця на дашборді; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTableFieldString1&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;default&quot;:&quot;дефолтная запись&quot;},{&quot;id&quot;:&quot;sTableFieldLong1&quot;,&quot;name&quot;:&quot;Лонг&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTableFieldDate1&quot;,&quot;name&quot;:&quot;Дата&quot;,&quot;type&quot;:&quot;date&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTableFieldEnum1&quot;,&quot;name&quot;:&quot;Енум&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;attr1&quot;,&quot;name&quot;:&quot;атрибут енаму 1&quot;},{&quot;id&quot;:&quot;attr2&quot;,&quot;name&quot;:&quot;атрибут енаму 2&quot;}]},{&quot;id&quot;:&quot;sTableFieldDouble&quot;,&quot;name&quot;:&quot;поле з типом double&quot;,&quot;type&quot;:&quot;double&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;40%&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Поточні рахунки у національній валюті" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNumberAccountUah&quot;,&quot;name&quot;:&quot;Номер поточного рахунку у національній валюті&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sBankNameUah&quot;,&quot;name&quot;:&quot;Найменування банку&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;МФО банку&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sBankAdresUah&quot;,&quot;name&quot;:&quot;Місцезнаходження банку&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+         <activiti:formProperty id="markers14" name="валідатор поля sBankMfoUah та sBankMfoCurrency" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_14&quot;:{&quot;aField_ID&quot;:[&quot;sBankMfoUah&quot;,&quot;sBankMfoCurrency&quot;],&quot;sFormat&quot;:&quot;######&quot;,&quot;sMessage&quot;:&quot;Невірний формат. МФО має складатися з 6 цифр&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${sTable1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask> 
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -52,8 +68,10 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow55" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow56" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
-    <sequenceFlow id="flow57" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow58" sourceRef="usertask1" targetRef="endevent2"></sequenceFlow>
+    
+    <sequenceFlow id="flow60" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow61" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow62" sourceRef="usertask2" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_ved">
     <bpmndi:BPMNPlane bpmnElement="_test_ved" id="BPMNPlane__test_ved">
@@ -61,7 +79,7 @@
         <omgdc:Bounds height="35.0" width="35.0" x="52.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="137.0" x="296.0" y="129.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="137.0" x="460.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="60.0"></omgdc:Bounds>
@@ -73,7 +91,10 @@
         <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="87.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="117.0" y="139.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="117.0" y="149.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="137.0" x="298.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="87.0" y="87.0"></omgdi:waypoint>
@@ -81,19 +102,24 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
         <omgdi:waypoint x="135.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="134.0" y="139.0"></omgdi:waypoint>
+        <omgdi:waypoint x="134.0" y="149.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
         <omgdi:waypoint x="270.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="296.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="366.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="364.0" y="129.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
+        <omgdi:waypoint x="437.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="296.0" y="156.0"></omgdi:waypoint>
-        <omgdi:waypoint x="152.0" y="156.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+        <omgdi:waypoint x="528.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="528.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="435.0" y="166.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
+        <omgdi:waypoint x="298.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="152.0" y="166.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
