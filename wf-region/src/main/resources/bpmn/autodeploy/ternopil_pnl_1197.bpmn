@@ -101,12 +101,13 @@ execution.setVariable('sNotification_day', timer)</script>
 </p>
 <p>
 										<b>Необхідні документи, які треба принести до ${sLikar}:</b><br>
+									    <ul>
+										Прийти за адресою: ${sAddress}.</ul>
 										<ul>
-										<li>Прийти за адресою: ${sAddress}.</li>
 										<li>При собі мати:</li>
-										<li>- Направлення;</li>
-										<li>- Флюрографію та ренген;</li>
-										<li>- Первинну документацію (за навності)</li>
+										<li>Направлення;</li>
+										<li>Флюрографію та ренген;</li>
+										<li>Первинну документацію (за навності)</li>
 										</ul>
 									</p>
 [pattern/mail/_common_signature_start.html]
@@ -138,11 +139,12 @@ ${sNameOrgan},<br>
 									<p>
 										Для того щоб закінчити процедуру необхідно:<br>
 										<ul>
-										<li>Прийти за адресою: ${sAddress}.</li>
+										Прийти за адресою: ${sAddress}.</ul>
+										<ul>
 										<li>При собі мати:</li>
-										<li>- Направлення;</li>
-										<li>- Флюрографію та ренген;</li>
-										<li>- Первинну документацію (за навності)</li>
+										<li>Направлення;</li>
+										<li>Флюрографію та ренген;</li>
+										<li>Первинну документацію (за навності)</li>
 										</ul>
 									</p>
 									<p>
@@ -171,7 +173,7 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="med_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="${sLikar}" activiti:candidateGroups="med_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
