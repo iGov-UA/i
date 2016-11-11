@@ -136,7 +136,7 @@ public class SubjectGroupService {
 		LOG.info("childSubjectttttttttttttttttt " + childSubject);
 
 		LOG.info("SubjectGrouppppppSettttt" + rootTags);
-		rootTags.removeAll(childSubject);
+	//	rootTags.removeAll(childSubject);
 
 		final List<SubjectGroupNode> rootSubjectNodes = rootTags.stream().map(subjectToNodeMap::get)
 				.collect(Collectors.toList());
