@@ -21,8 +21,9 @@ import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupNode;
 import org.igov.model.subject.SubjectGroupResult;
 import org.igov.model.subject.SubjectGroupTree;
-import org.igov.model.subject.VSubjectGroupNode;
-import org.igov.model.subject.VSubjectGroupResult;
+import org.igov.model.subject.VSubjectGroupChildrenNode;
+import org.igov.model.subject.VSubjectGroupParentNode;
+import org.igov.model.subject.VSubjectGroupResultNode;
 import org.igov.model.subject.VSubjectGroupTreeResult;
 import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,32 +48,35 @@ public class SubjectGroupService {
 	@Autowired
 	private CachedInvocationBean cachedInvocationBean;
 
-	public List<VSubjectGroupResult> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+	public List<VSubjectGroupParentNode> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 
 		/*SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti,deepLevel);
 
 		return tree;*/
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
-		 List<VSubjectGroupResult> rootSubjectNodes = new ArrayList<>();
 		
-		for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
-			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
-			LOG.info("SubjectGrouppppppparent " + parent);
-			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
-			LOG.info("SubjectGrouppppppchild " + child);
-			VSubjectGroupNode vSubjectGroupNode = new VSubjectGroupNode();
-			vSubjectGroupNode.addChild(parent);
-			vSubjectGroupNode.addChild(child);
-			 VSubjectGroupResult parentNode = new VSubjectGroupResult();
-			parentNode.addChild(vSubjectGroupNode);
-			rootSubjectNodes.add(parentNode);
+			List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
+			
+			for(SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
+				final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
+		
+				if (parent.getId() != FAKE_ROOT_SUBJECT_ID ) {
+					VSubjectGroupParentNode parentSubjectGroup = new VSubjectGroupParentNode(parent);
+					parentSubjectGroups.add(parentSubjectGroup);
+				final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
+				VSubjectGroupChildrenNode childSubjectGroup = new VSubjectGroupChildrenNode(child);
+					parentSubjectGroup.addChild(childSubjectGroup);
+				}
+			}
+		
+			VSubjectGroupResultNode subjectGroupResult = new VSubjectGroupResultNode();
+			subjectGroupResult.setChildren(parentSubjectGroups);
+	    	
+	    	
 			VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
-			parentNode.accept(subjectGroupTreeResult);
-		}
+	    	subjectGroupResult.accept(subjectGroupTreeResult);
 		
-	
-		
-		return rootSubjectNodes;
+		return parentSubjectGroups;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {

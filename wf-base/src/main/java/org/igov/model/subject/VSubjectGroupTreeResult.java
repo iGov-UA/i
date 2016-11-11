@@ -6,16 +6,22 @@ import org.apache.commons.logging.LogFactory;
 public class VSubjectGroupTreeResult implements IVisitor  {
 	
 	private static final Log LOG = LogFactory.getLog(VSubjectGroupTreeResult.class);
-
+	
 	@Override
-	public void deepLevel(VSubjectGroupResult vSubjectGroupResult) {
-		LOG.info("VSubjectGroupResultttttttt "+vSubjectGroupResult.toString());
+	public void deepLevel(VSubjectGroupResultNode vSubjectGroupResult) {
+		LOG.info("VSubjectGroupResultNode "+vSubjectGroupResult.toString());
 		
 	}
 
 	@Override
-	public void deepLevel(VSubjectGroupNode vSubjectGroupNode) {
-		LOG.info("VSubjectGroupNodeeeeeeeee "+vSubjectGroupNode.toString());
+	public void deepLevel(VSubjectGroupParentNode vSubjectGroupResult) {
+		LOG.info("VSubjectGroupParentNode "+vSubjectGroupResult.toString());
+		
+	}
+
+	@Override
+	public void deepLevel(VSubjectGroupChildrenNode vSubjectGroupNode) {
+		LOG.info("VSubjectGroupChildrenNode "+vSubjectGroupNode.toString());
 		
 	}
 
@@ -24,5 +30,7 @@ public class VSubjectGroupTreeResult implements IVisitor  {
 		LOG.info("SubjectGroupppppppppppp "+subjectGroup.toString());
 		
 	}
+
+	
 
 }
