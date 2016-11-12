@@ -116,6 +116,14 @@ public class SubjectGroupService {
 						new Predicate<VSubjectGroupParentNode>() {
 					@Override
 					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
+						List<VSubjectGroupChildrenNode> ch = new ArrayList<>();
+						for(VSubjectGroupChildrenNode vSubjectGroupChildrenNode: vSubjectGroupParentNode.getChildren()) {
+							if(vSubjectGroupChildrenNode.getGroup().equals(sID_Group_Activiti)){
+								ch.add(vSubjectGroupChildrenNode);
+							}
+							
+						}
+						vSubjectGroupParentNode.setChildren(ch);
 						return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);					}
 				}));
 		/**
