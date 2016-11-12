@@ -87,7 +87,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     if (nAt >= 0) {
                         sExt = sFileName.substring(nAt);
                     }
-                    if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml") && !sFileName.toLowerCase().endsWith(".RPL")) {
+                    if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml") && !sFileName.toLowerCase().endsWith(".rpl")) {
                         sFileName = "Attach_"+oAttachment.getId()+sExt; //
                     }
                     sFileExt = oAttachment.getType().split(";")[0];
