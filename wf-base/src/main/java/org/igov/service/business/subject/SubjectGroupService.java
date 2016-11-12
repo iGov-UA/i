@@ -48,35 +48,33 @@ public class SubjectGroupService {
 	@Autowired
 	private CachedInvocationBean cachedInvocationBean;
 
-	public List<VSubjectGroupParentNode> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+	public VSubjectGroupTreeResult getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 
 		/*SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti,deepLevel);
 
 		return tree;*/
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 		
-			List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
-			
+			VSubjectGroupResultNode subjectGroupResult = new VSubjectGroupResultNode();
 			for(SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 				final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
 		
 				if (parent.getId() != FAKE_ROOT_SUBJECT_ID ) {
 					VSubjectGroupParentNode parentSubjectGroup = new VSubjectGroupParentNode(parent);
-					parentSubjectGroups.add(parentSubjectGroup);
+					
 				final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 				VSubjectGroupChildrenNode childSubjectGroup = new VSubjectGroupChildrenNode(child);
 					parentSubjectGroup.addChild(childSubjectGroup);
+					
+					subjectGroupResult.addChild(parentSubjectGroup);
 				}
+				
 			}
-		
-			VSubjectGroupResultNode subjectGroupResult = new VSubjectGroupResultNode();
-			subjectGroupResult.setChildren(parentSubjectGroups);
-	    	
 	    	
 			VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 	    	subjectGroupResult.accept(subjectGroupTreeResult);
 		
-		return parentSubjectGroups;
+		return subjectGroupTreeResult;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
