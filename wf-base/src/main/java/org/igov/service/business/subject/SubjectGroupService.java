@@ -48,7 +48,7 @@ public class SubjectGroupService {
 	@Autowired
 	private CachedInvocationBean cachedInvocationBean;
 
-	public VSubjectGroupTreeResult getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+	public VSubjectGroupResultNode getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 
 		/*SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti,deepLevel);
 
@@ -74,7 +74,7 @@ public class SubjectGroupService {
 			VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 	    	subjectGroupResult.accept(subjectGroupTreeResult);
 		
-		return subjectGroupTreeResult;
+		return subjectGroupResult;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {

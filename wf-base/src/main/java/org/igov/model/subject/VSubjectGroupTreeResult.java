@@ -1,9 +1,11 @@
 package org.igov.model.subject;
 
+import java.io.Serializable;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class VSubjectGroupTreeResult implements IVisitor  {
+public class VSubjectGroupTreeResult implements Serializable,IVisitor  {
 	
 	private static final Log LOG = LogFactory.getLog(VSubjectGroupTreeResult.class);
 	
