@@ -10,12 +10,6 @@ public class VSubjectGroupTreeResult implements Serializable,IVisitor  {
 	private static final Log LOG = LogFactory.getLog(VSubjectGroupTreeResult.class);
 	
 	@Override
-	public void deepLevel(VSubjectGroupResultNode vSubjectGroupResult) {
-		LOG.info("VSubjectGroupResultNode "+vSubjectGroupResult.toString());
-		
-	}
-
-	@Override
 	public void deepLevel(VSubjectGroupParentNode vSubjectGroupResult) {
 		LOG.info("VSubjectGroupParentNode "+vSubjectGroupResult.toString());
 		
