@@ -72,7 +72,42 @@ public class SubjectGroupService {
 			}
 		}
 		
+		return getFullResult(sID_Group_Activiti, deepLevel, parentSubjectGroups, parentSubjectGroup);
+		
 	
+		
+	}
+
+	public List<VSubjectGroupChildrenNode> getFullResult(String sID_Group_Activiti, Long deepLevel,
+			List<VSubjectGroupParentNode> parentSubjectGroups, VSubjectGroupParentNode parentSubjectGroup) {
+		if((deepLevel==null || deepLevel==0) && (sID_Group_Activiti==null || sID_Group_Activiti.isEmpty())){
+			/**
+			 * получаем лист детей
+			 */
+			final List<List<VSubjectGroupChildrenNode>> childrensParList = Lists.newArrayList(Collections2.transform(
+					parentSubjectGroups, new Function<VSubjectGroupParentNode, List<VSubjectGroupChildrenNode>>() {
+						@Override
+						public List<VSubjectGroupChildrenNode> apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
+							return vSubjectGroupParentNode.getChildren();
+						}
+					}));
+			
+			/**
+			 * только лист
+			 */
+			final List<VSubjectGroupChildrenNode> childrensByGroup = Lists.newArrayList(Collections2.transform(
+					childrensParList, new Function<List<VSubjectGroupChildrenNode>, VSubjectGroupChildrenNode>() {
+						@Override
+						public VSubjectGroupChildrenNode apply(List<VSubjectGroupChildrenNode> vSubjectGroupChildrenNodeList) {
+							return vSubjectGroupChildrenNodeList.get(0);
+						}
+					}));
+			
+			VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
+			parentSubjectGroup.accept(subjectGroupTreeResult);
+			
+			return childrensByGroup;
+		}
 		/**
 		 * получить только отфильтрованные по sID_Group_Activiti
 		 */
