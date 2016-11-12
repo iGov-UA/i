@@ -64,6 +64,7 @@ public class SubjectGroupService {
 					
 				final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 				VSubjectGroupChildrenNode childSubjectGroup = new VSubjectGroupChildrenNode(child);
+				childSubjectGroup.addChild(child);
 					parentSubjectGroup.addChild(childSubjectGroup);
 					
 					subjectGroupResult.addChild(parentSubjectGroup);
