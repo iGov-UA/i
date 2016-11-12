@@ -29,6 +29,10 @@ import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+
 
 
 /**
@@ -61,7 +65,7 @@ public class SubjectGroupService {
 		for(SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
 	
-			if (parent.getId() != FAKE_ROOT_SUBJECT_ID && parent.getsID_Group_Activiti().equals(sID_Group_Activiti) ) {
+			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
 				parentSubjectGroup = new VSubjectGroupParentNode(parent);
 				
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
@@ -71,12 +75,19 @@ public class SubjectGroupService {
 			}
 		}
 	
-    	
+		final List<VSubjectGroupParentNode> parentSubjectGroupsFilltr = Lists.newArrayList(Collections2
+				.filter(parentSubjectGroups,
+						new Predicate<VSubjectGroupParentNode>() {
+					@Override
+					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
+						// получить только отфильтрованные связки
+						return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);					}
+				}));
     	
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
 	
-	return parentSubjectGroups;
+	return parentSubjectGroupsFilltr;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
