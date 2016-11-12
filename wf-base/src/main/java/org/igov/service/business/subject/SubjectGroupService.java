@@ -55,27 +55,28 @@ public class SubjectGroupService {
 		return tree;*/
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 		
-			VSubjectGroupResultNode subjectGroupResult = new VSubjectGroupResultNode();
-			for(SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
-				final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
+		List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
 		
-				if (parent.getId() != FAKE_ROOT_SUBJECT_ID ) {
-					VSubjectGroupParentNode parentSubjectGroup = new VSubjectGroupParentNode(parent);
-					
-				final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
-				VSubjectGroupChildrenNode childSubjectGroup = new VSubjectGroupChildrenNode();
-				childSubjectGroup.addChild(child);
-					parentSubjectGroup.addChild(childSubjectGroup);
-					
-					subjectGroupResult.addChild(parentSubjectGroup);
-				}
-				
+		for(SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
+			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
+	
+			if (parent.getId() != FAKE_ROOT_SUBJECT_ID ) {
+				VSubjectGroupParentNode parentSubjectGroup = new VSubjectGroupParentNode(parent);
+				parentSubjectGroups.add(parentSubjectGroup);
+			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
+			VSubjectGroupChildrenNode childSubjectGroup = new VSubjectGroupChildrenNode(child);
+				parentSubjectGroup.addChild(childSubjectGroup);
 			}
-	    	
-			VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
-	    	subjectGroupResult.accept(subjectGroupTreeResult);
-		
-		return subjectGroupResult;
+		}
+	
+		VSubjectGroupResultNode subjectGroupResult = new VSubjectGroupResultNode();
+		subjectGroupResult.setChildren(parentSubjectGroups);
+    	
+    	
+		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
+    	subjectGroupResult.accept(subjectGroupTreeResult);
+	
+	return subjectGroupResult;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
