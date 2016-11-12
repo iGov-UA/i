@@ -48,7 +48,7 @@ public class SubjectGroupService {
 	@Autowired
 	private CachedInvocationBean cachedInvocationBean;
 
-	public VSubjectGroupResultNode getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+	public List<VSubjectGroupParentNode> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 
 		/*SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti,deepLevel);
 
@@ -62,10 +62,11 @@ public class SubjectGroupService {
 	
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID ) {
 				VSubjectGroupParentNode parentSubjectGroup = new VSubjectGroupParentNode(parent);
-				parentSubjectGroups.add(parentSubjectGroup);
+				
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 			VSubjectGroupChildrenNode childSubjectGroup = new VSubjectGroupChildrenNode(child);
 				parentSubjectGroup.addChild(childSubjectGroup);
+				parentSubjectGroups.add(parentSubjectGroup);
 			}
 		}
 	
@@ -76,7 +77,7 @@ public class SubjectGroupService {
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
     	subjectGroupResult.accept(subjectGroupTreeResult);
 	
-	return subjectGroupResult;
+	return parentSubjectGroups;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
