@@ -2,11 +2,10 @@
 package org.igov.service.controller;
 
 import java.util.List;
+import java.util.Map;
 
-import org.igov.model.subject.SubjectGroupResult;
-import org.igov.model.subject.VSubjectGroupParentNode;
-import org.igov.model.subject.VSubjectGroupResultNode;
-import org.igov.model.subject.VSubjectGroupTreeResult;
+import org.igov.model.subject.SubjectGroup;
+import org.igov.model.subject.VSubjectGroupChildrenNode;
 import org.igov.service.business.subject.SubjectGroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +37,10 @@ public class SubjectGroupController {
     @ApiOperation(value = "Получение организационной иерархии")
     @RequestMapping(value = "/getSubjectGroups", method = RequestMethod.GET)
     @ResponseBody
-    public List<VSubjectGroupParentNode> getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
+    public Map<SubjectGroup, List<VSubjectGroupChildrenNode>> getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
     		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel)
             throws Exception  {
-    	List<VSubjectGroupParentNode> subjectGroupResult = null;
+    	Map<SubjectGroup, List<VSubjectGroupChildrenNode>> subjectGroupResult = null;
     	try {
     		subjectGroupResult = subjectGroupService.getCatalogTreeSubjectGroups(sID_Group_Activiti,nDeepLevel);
     		

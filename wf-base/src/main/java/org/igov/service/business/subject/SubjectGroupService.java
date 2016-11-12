@@ -12,6 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
@@ -23,12 +24,12 @@ import org.igov.model.subject.SubjectGroupResult;
 import org.igov.model.subject.SubjectGroupTree;
 import org.igov.model.subject.VSubjectGroupChildrenNode;
 import org.igov.model.subject.VSubjectGroupParentNode;
-import org.igov.model.subject.VSubjectGroupResultNode;
 import org.igov.model.subject.VSubjectGroupTreeResult;
 import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -52,7 +53,7 @@ public class SubjectGroupService {
 	@Autowired
 	private CachedInvocationBean cachedInvocationBean;
 
-	public List<VSubjectGroupParentNode> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+	public Map<SubjectGroup, List<VSubjectGroupChildrenNode>> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 
 		/*SubjectGroupResult tree = getSubjectGroupResultCached(sID_Group_Activiti,deepLevel);
 
@@ -83,11 +84,32 @@ public class SubjectGroupService {
 						// получить только отфильтрованные связки
 						return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);					}
 				}));
-    	
+		
+		
+		final List<List<VSubjectGroupChildrenNode>> childrensParList = Lists.newArrayList(Collections2.transform(
+				parentSubjectGroupsFilltr, new Function<VSubjectGroupParentNode, List<VSubjectGroupChildrenNode>>() {
+					@Override
+					public List<VSubjectGroupChildrenNode> apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
+						return vSubjectGroupParentNode.getChildren();
+					}
+				}));
+		
+		final List<VSubjectGroupChildrenNode> childrens = Lists.newArrayList(Collections2.transform(
+				childrensParList, new Function<List<VSubjectGroupChildrenNode>, VSubjectGroupChildrenNode>() {
+					@Override
+					public VSubjectGroupChildrenNode apply(List<VSubjectGroupChildrenNode> vSubjectGroupChildrenNodeList) {
+						return vSubjectGroupChildrenNodeList.get(0);
+					}
+				}));
+		
+		Map<SubjectGroup, List<VSubjectGroupChildrenNode>> subjectToNodeMap = new HashMap<>();
+		subjectToNodeMap.put(parentSubjectGroupsFilltr.get(0).getGroup(), childrens);
+		
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
 	
-	return parentSubjectGroupsFilltr;
+	//return parentSubjectGroupsFilltr;
+		return subjectToNodeMap;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
