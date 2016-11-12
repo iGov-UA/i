@@ -56,17 +56,14 @@ public class SubjectGroupService {
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 		
 			VSubjectGroupResultNode subjectGroupResult = new VSubjectGroupResultNode();
+			VSubjectGroupParentNode parentSubjectGroup = new VSubjectGroupParentNode();
 			for(SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 				final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
-		
 				if (parent.getId() != FAKE_ROOT_SUBJECT_ID ) {
-					VSubjectGroupParentNode parentSubjectGroup = new VSubjectGroupParentNode(parent);
-					
 				final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
-				VSubjectGroupChildrenNode childSubjectGroup = new VSubjectGroupChildrenNode(child);
+				VSubjectGroupChildrenNode childSubjectGroup = new VSubjectGroupChildrenNode(parent);
 				childSubjectGroup.addChild(child);
 					parentSubjectGroup.addChild(childSubjectGroup);
-					
 					subjectGroupResult.addChild(parentSubjectGroup);
 				}
 				

@@ -20,9 +20,9 @@ public class VSubjectGroupParentNode implements Serializable, IVisitable {
 	List<VSubjectGroupChildrenNode> children = new ArrayList<>();
 
 
-	public VSubjectGroupParentNode(SubjectGroup group) {
+	/*public VSubjectGroupParentNode(SubjectGroup group) {
 		this.group = group;
-	}
+	}*/
 
 	public void addChild(VSubjectGroupChildrenNode rootSubjectNode) {
 		children.add(rootSubjectNode);
