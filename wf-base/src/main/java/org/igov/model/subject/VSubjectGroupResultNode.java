@@ -24,7 +24,7 @@ public class VSubjectGroupResultNode implements Serializable, IVisitable {
 
 	@Override
 	public void accept(IVisitor visitor) {
-		visitor.deepLevel(this);
+		//visitor.deepLevel(this);
 		for (VSubjectGroupParentNode vSubjectGroupParentNode : children) {
 			vSubjectGroupParentNode.accept(visitor);
 		}
