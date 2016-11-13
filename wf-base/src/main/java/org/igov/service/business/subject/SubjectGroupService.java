@@ -12,7 +12,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
@@ -128,7 +127,7 @@ public class SubjectGroupService {
 						vSubjectGroupParentNode.setChildren(ch);
 						}
 						
-						return vSubjectGroupParentNode!=null;
+						return !vSubjectGroupParentNode.getChildren().isEmpty() && vSubjectGroupParentNode.getChildren()!=null;
 						
 						//return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);					
 						}
@@ -157,13 +156,13 @@ public class SubjectGroupService {
 					}
 				}));*/
 		
-		Set<VSubjectGroupParentNode> rootTags = new TreeSet<>(parentSubjectGroupsFilltr);
-		List<VSubjectGroupParentNode> parentSubjectGroupsFilltrRes = new ArrayList<>(rootTags);
+		//Set<VSubjectGroupParentNode> rootTags = new HashSet<>(parentSubjectGroupsFilltr);
+	//	List<VSubjectGroupParentNode> parentSubjectGroupsFilltrRes = new ArrayList<>(rootTags);
 		
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
 	
-		return parentSubjectGroupsFilltrRes;
+		return parentSubjectGroupsFilltr;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
