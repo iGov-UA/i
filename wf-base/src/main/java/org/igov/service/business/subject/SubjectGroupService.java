@@ -143,12 +143,20 @@ public class SubjectGroupService {
 					}
 				}));
 		
+		final List<Long> nIdList = Lists.newArrayList(Collections2.transform(
+				childrensByGroup, new Function<VSubjectGroupChildrenNode, Long>() {
+					@Override
+					public Long apply(VSubjectGroupChildrenNode vSubjectGroupChildrenNode) {
+						return vSubjectGroupChildrenNode.getGroup().getId();
+					}
+				}));
+		
 		final List<VSubjectGroupParentNode> parentSubjectGroupsFilltrRes = Lists.newArrayList(Collections2
 				.filter(parentSubjectGroups,
 						new Predicate<VSubjectGroupParentNode>() {
 					@Override
 					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
-						return childrensByGroup.contains(vSubjectGroupParentNode.getGroup().getId());
+						return nIdList.contains(vSubjectGroupParentNode.getGroup().getId());
 						}
 				}));
 		
