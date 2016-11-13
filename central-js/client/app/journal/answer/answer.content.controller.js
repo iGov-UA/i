@@ -15,11 +15,12 @@
       }
 
       var fileId = $state.params.signedFileID;
+      var fileName = $state.params.fileName;
 
       if (fileId) {
         $http({
           method: 'GET',
-          url: '/api/answer/DFS/decrypted?signedFileID=' + fileId
+          url: '/api/answer/DFS/decrypted?signedFileID=' + fileId + '&fileName=' + fileName
         }).then(function successCallback(response) {
           if(!response.data){
             return;

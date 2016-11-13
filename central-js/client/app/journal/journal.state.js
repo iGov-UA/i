@@ -97,7 +97,7 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
         }*/
       })
       .state('index.journal.answer', {
-        url: '/answer/DFS?signedFileID',
+        url: '/answer/DFS?signedFileID&fileName',
         views: {
           'main@': {
             templateUrl: 'app/journal/answer/answer.content.html',

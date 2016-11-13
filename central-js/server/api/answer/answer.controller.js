@@ -15,6 +15,7 @@ function getOptions(req) {
 
 module.exports.getDecrypted = function (req, res) {
   var qOptions = getOptions(req);
+  var fileName = req.query.fileName || 'file.txt';
   var url = qOptions.protocol + '://' + qOptions.hostname + qOptions.path + '/object/file/download_file_from_redis_bytes';
   var options = {
     url: url,
@@ -31,8 +32,8 @@ module.exports.getDecrypted = function (req, res) {
 
     res.writeHead(200, {
       'Content-Type': 'application/force-download',
-      'Content-disposition': 'attachment; filename=file.txt',
-      'x-filename': 'file.txt'
+      'Content-disposition': 'attachment; filename=' + fileName,
+      'x-filename': fileName
     });
     res.end(data.body);
   });
