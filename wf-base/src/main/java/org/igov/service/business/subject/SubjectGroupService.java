@@ -125,11 +125,11 @@ public class SubjectGroupService {
 							
 						}
 						vSubjectGroupParentNode.setChildren(ch);
+						return !vSubjectGroupParentNode.getChildren().isEmpty() && vSubjectGroupParentNode.getChildren()!=null;
 						}
 						
-						return !vSubjectGroupParentNode.getChildren().isEmpty() && vSubjectGroupParentNode.getChildren()!=null;
 						
-						//return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);					
+						return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);					
 						}
 				}));
 		
