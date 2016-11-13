@@ -95,6 +95,23 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
             }
           });
         }*/
+      })
+      .state('index.journal.answer', {
+        url: '/answer/DFS?signedFileID',
+        views: {
+          'main@': {
+            templateUrl: 'app/journal/answer/answer.content.html',
+            controller: 'AnswerContentController'
+          },
+          resolve: {
+            BankIDLogin: function (UserService) {
+              return UserService.isLoggedIn()
+                .catch(function () {
+                  return false;
+                });
+            }
+          }
+        }
       });
 //  }
 });
