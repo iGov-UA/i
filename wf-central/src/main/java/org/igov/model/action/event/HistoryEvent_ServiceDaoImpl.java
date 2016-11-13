@@ -212,7 +212,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
         criteria.addOrder(
                 Order.desc("sDate").nulls(NullPrecedence.LAST));//todo remove after fix dublicates. todo uniqueResult
-        criteria.add(Restrictions.eq("nID_Task", nID_Process));
+        criteria.add(Restrictions.eq("nID_Process", nID_Process));
         Integer serverId = nID_Server != null ? nID_Server : 0;
         criteria.add(Restrictions.eq("nID_Server", serverId));
         List<HistoryEvent_Service> list = (List<HistoryEvent_Service>) criteria.list();
