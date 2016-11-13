@@ -52,7 +52,7 @@ public class SubjectGroupService {
 	@Autowired
 	private CachedInvocationBean cachedInvocationBean;
 
-	public List<VSubjectGroupChildrenNode> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+	public List<VSubjectGroupParentNode> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 		
@@ -78,7 +78,7 @@ public class SubjectGroupService {
 		
 	}
 
-	public List<VSubjectGroupChildrenNode> getFullResult(String sID_Group_Activiti, Long deepLevel,
+	public List<VSubjectGroupParentNode> getFullResult(String sID_Group_Activiti, Long deepLevel,
 			List<VSubjectGroupParentNode> parentSubjectGroups, VSubjectGroupParentNode parentSubjectGroup) {
 		if((deepLevel==null || deepLevel==0) || (sID_Group_Activiti==null || sID_Group_Activiti.isEmpty())){
 			/**
@@ -106,7 +106,7 @@ public class SubjectGroupService {
 			VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 			parentSubjectGroup.accept(subjectGroupTreeResult);
 			
-			return childrensByGroup;
+			return parentSubjectGroups;
 		}
 		/**
 		 * получить только отфильтрованные по sID_Group_Activiti
@@ -116,14 +116,14 @@ public class SubjectGroupService {
 						new Predicate<VSubjectGroupParentNode>() {
 					@Override
 					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
-						List<VSubjectGroupChildrenNode> ch = new ArrayList<>();
+						/*List<VSubjectGroupChildrenNode> ch = new ArrayList<>();
 						for(VSubjectGroupChildrenNode vSubjectGroupChildrenNode: vSubjectGroupParentNode.getChildren()) {
 							if(vSubjectGroupChildrenNode.getGroup().getId().equals(vSubjectGroupParentNode.getGroup().getId())){
 								ch.add(vSubjectGroupChildrenNode);
 							}
 							
 						}
-						vSubjectGroupParentNode.setChildren(ch);
+						vSubjectGroupParentNode.setChildren(ch);*/
 						
 						return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);					}
 				}));
@@ -154,7 +154,7 @@ public class SubjectGroupService {
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
 	
-		return childrensByGroup;
+		return parentSubjectGroupsFilltr;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
