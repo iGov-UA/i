@@ -93,8 +93,8 @@ public class DfsService {
             taskService.setVariable(sID_Task, "anID_Attach_Dfs", sID_Attach_Dfs);
             //taskService.complete(sID_Task);
         } else{
-            runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", " ");
-            taskService.setVariable(sID_Task, "anID_Attach_Dfs", " ");
+            runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", "");
+            taskService.setVariable(sID_Task, "anID_Attach_Dfs", "");
         }
         return asID_Attach_Dfs.toString();
     }

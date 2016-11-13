@@ -5,6 +5,7 @@
  */
 package org.igov.service.business.action.task.listener.doc;
 
+import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
@@ -20,21 +21,25 @@ import org.springframework.stereotype.Component;
  */
 @Component("TransferDocumentAnswer_SWinEd")
 public class TransferDocumentAnswer_SWinEd implements TaskListener {
+       
+    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(TransferDocumentAnswer_SWinEd.class);
 
     private Expression sINN;
 
     @Autowired
     private DfsService dfsService;
     
-    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(TransferDocumentAnswer_SWinEd.class);
+    @Autowired
+    private TaskService taskService;
+    
 
     @Override
     public void notify(DelegateTask delegateTask) {
         LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         String sINN_Value = getStringFromFieldExpression(this.sINN, delegateTask.getExecution());
-        String asID_Attach_Dfs = null;
-        asID_Attach_Dfs = dfsService.getAnswer(delegateTask.getId(), delegateTask.getProcessInstanceId(), sINN_Value);
-        LOG.info("as" + asID_Attach_Dfs.toString()); //хочу словить налпоинтер. это так и нужно!!! не убирать
+        String asID_Attach_Dfs = dfsService.getAnswer(delegateTask.getId(), delegateTask.getProcessInstanceId(), sINN_Value);
+        LOG.info("as" + asID_Attach_Dfs); //хочу словить налпоинтер. это так и нужно!!! не убирать
+        //taskService.complete(delegateTask.getId());
     }
 
 }
