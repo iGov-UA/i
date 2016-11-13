@@ -80,7 +80,7 @@ public class SubjectGroupService {
 
 	public List<VSubjectGroupChildrenNode> getFullResult(String sID_Group_Activiti, Long deepLevel,
 			List<VSubjectGroupParentNode> parentSubjectGroups, VSubjectGroupParentNode parentSubjectGroup) {
-		if((deepLevel==null || deepLevel==0) && (sID_Group_Activiti==null || sID_Group_Activiti.isEmpty())){
+		if((deepLevel==null || deepLevel==0) || (sID_Group_Activiti==null || sID_Group_Activiti.isEmpty())){
 			/**
 			 * получаем лист детей
 			 */
@@ -116,6 +116,15 @@ public class SubjectGroupService {
 						new Predicate<VSubjectGroupParentNode>() {
 					@Override
 					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
+						List<VSubjectGroupChildrenNode> ch = new ArrayList<>();
+						for(VSubjectGroupChildrenNode vSubjectGroupChildrenNode: vSubjectGroupParentNode.getChildren()) {
+							if(vSubjectGroupChildrenNode.getGroup().getId().equals(vSubjectGroupParentNode.getGroup().getId())){
+								ch.add(vSubjectGroupChildrenNode);
+							}
+							
+						}
+						vSubjectGroupParentNode.setChildren(ch);
+						
 						return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);					}
 				}));
 		
