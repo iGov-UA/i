@@ -336,9 +336,17 @@
         };
 
         (function isTaskHasEmail() {
-          for(var i=0; i<$scope.taskData.aField.length; i++){
-            if($scope.taskData.aField[i].sID === "email"){
-              $scope.bHasEmail = true;
+          try{
+            for(var i=0; i<$scope.taskData.aField.length; i++){
+              if($scope.taskData.aField[i].sID === "email"){
+                $scope.bHasEmail = true;
+              }
+            }
+          } catch (err){
+            if($scope.taskData.code && $scope.taskData.message){
+              console.warn($scope.taskData.message);
+            } else {
+              console.error(err);
             }
           }
         })();

@@ -64,10 +64,15 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import org.activiti.engine.task.Attachment;
 import org.apache.commons.mail.EmailException;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import org.igov.service.business.action.task.systemtask.DeleteProccess;
+import org.igov.service.business.dfs.DfsService;
+import org.igov.service.business.dfs.DfsService_New;
 import static org.igov.util.Tool.sO;
 import org.igov.util.db.queryloader.QueryLoader;
 //import com.google.common.base.Optional;
@@ -89,8 +94,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public GeneralConfig generalConfig;
     @Autowired
     private TaskService taskService;
-    //@Autowired
-    //private ExceptionCommonController exceptionController;
     @Autowired
     private RuntimeService runtimeService;
     @Autowired
@@ -99,14 +102,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private FormService formService;
     @Autowired
     private RepositoryService repositoryService;
-    //@Autowired
-    //private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
-    @Autowired
-    private HistoryEventService historyEventService;
+    
     @Autowired
     private IdentityService identityService;
-    //@Autowired
-    //private ExceptionCommonController exceptionController;
+    
     @Autowired
     private NotificationPatterns oNotificationPatterns;
 
@@ -119,14 +118,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Autowired
     private DeleteProccess deleteProccess;
 
-    /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
-     @ResponseBody
-     public ResponseEntity<String> handleAccessException(Exception e) throws CommonServiceException {
-     return exceptionController.catchActivitiRestException(new CommonServiceException(
-     ExceptionCommonController.BUSINESS_ERROR_CODE,
-     e.getMessage(), e,
-     HttpStatus.FORBIDDEN));
-     }*/
+    @Autowired
+    private DfsService dfsService;
+    
+    @Autowired
+    private DfsService_New dfsService_new;
+
     @Autowired
     private ActionTaskService oActionTaskService;
 
@@ -745,9 +742,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     /**
-     * Method takes current value of process variable and if its value doesn't contain sInsertValue method appends it.
-     * Also if it contains sRemoveValue it will be removed.
-     * Can be used only with Strings
+     * Method takes current value of process variable and if its value doesn't
+     * contain sInsertValue method appends it. Also if it contains sRemoveValue
+     * it will be removed. Can be used only with Strings
+     *
      * @param snID_Process - id of Activiti Process
      * @param sKey - name of Variable on Activiti Process
      * @param sInsertValues - values which should be added.
@@ -768,14 +766,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("removeValues={} insertValues={}", sRemoveValues, sInsertValues);
             if (sInsertValues != null) {
                 for (String sInsertValue : sInsertValues) {
-                    if(!currentValue.contains(sInsertValue)){
+                    if (!currentValue.contains(sInsertValue)) {
                         currentValue = (currentValue.trim() + " " + sInsertValue).trim();
                     }
                 }
             }
-            if (sRemoveValues != null ) {
+            if (sRemoveValues != null) {
                 for (String sRemoveValue : sRemoveValues) {
-                    if(currentValue.contains(sRemoveValue)){
+                    if (currentValue.contains(sRemoveValue)) {
                         currentValue = currentValue.replace(sRemoveValue, "");
                     }
                 }
@@ -1437,7 +1435,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param saField -- строка-массива полей (например:
      * "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
      * ) // * @param nID_Process - ид заявки
-     * @param soParams 
+     * @param soParams
      * @param sMail -- строка электронного адреса гражданина // * @param
      * nID_Server - ид сервера
      * @param sHead -- строка заголовка письма //опциональный (если не задан, то
@@ -2477,7 +2475,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.debug(e.getMessage());
         }
     }
-    
+
     @ApiOperation(value = "/removeOldProcess", notes = "##### Удаление закрытых процессов из таблиц активити#####\n\n")
     @RequestMapping(value = "/removeOldProcess", method = RequestMethod.GET)
     public @ResponseBody
@@ -2517,16 +2515,49 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return result;
     }
 
-
     @ApiOperation(value = "/closeProcess", notes = "##### Закрытие всех инстансов бизнес-процесса#####\n\n")
     @RequestMapping(value = "/closeProcess", method = RequestMethod.GET)
     public @ResponseBody
     void closeProcess(@ApiParam(value = "ид бизнес-процесса", required = true) @RequestParam(value = "sID_Process_Def", required = true) String sID_Process_Def,
             @ApiParam(value = "лимит количества заявок для удаления", required = false) @RequestParam(value = "nLimitCountRowDeleted", required = false) Integer nLimitCountRowDeleted) {
-        if(nLimitCountRowDeleted != null){
+        if (nLimitCountRowDeleted != null) {
             deleteProccess.setLimitCountRowDeleted(nLimitCountRowDeleted);
         }
         deleteProccess.closeProcess(sID_Process_Def);
+    }
+
+    @ApiOperation(value = "/getAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")
+    @RequestMapping(value = "/getAnswer_DFS", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAnswer_DFS(@ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String INN,
+            @ApiParam(value = "ИНН", required = true) @RequestParam(value = "sID_Process", required = true) String sID_Process) throws Exception {
+        Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
+        LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
+        String asID_Attach_Dfs = "";
+        if (task != null) {
+            asID_Attach_Dfs = dfsService.getAnswer(task.getId(), sID_Process, INN);
+            if (asID_Attach_Dfs != null && asID_Attach_Dfs.length() > 0) {
+                taskService.complete(task.getId());
+            }
+        }
+        return asID_Attach_Dfs;
+    }
+    
+    @ApiOperation(value = "/getAnswer_DFS_New", notes = "##### Получение ответов по процессам ДФС#####\n\n")
+    @RequestMapping(value = "/getAnswer_DFS_New", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAnswer_DFS_New(@ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String INN,
+            @ApiParam(value = "ИНН", required = true) @RequestParam(value = "sID_Process", required = true) String sID_Process) throws Exception {
+        Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
+        LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
+        String asID_Attach_Dfs = "";
+        if (task != null) {
+            asID_Attach_Dfs = dfsService_new.getAnswer(task.getId(), sID_Process, INN);
+            if (asID_Attach_Dfs != null && asID_Attach_Dfs.length() > 0) {
+                taskService.complete(task.getId());
+            }
+        }
+        return asID_Attach_Dfs;
     }
 
 }
