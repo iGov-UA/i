@@ -9,7 +9,7 @@ var url = require('url')
 
 /**
  * Load previously saved content from redis, sign it, and call(callback) service for saving signed content back to redis
- * https://github.com/e-government-ua/i/issues/1374
+ * https://github.com/e-government-ua/i/issues/1422
  * @param req
  * @param res
  */
@@ -72,7 +72,7 @@ module.exports.decryptContent = function (req, res) {
       req.session.access.accessToken,
       url.resolve(
         originalURL(req, {}),
-        '/api/sign-content/decrypt/callback?nID_Server=' + req.query.nID_Server + '&restoreUrl='+restoreUrl
+        '/api/sign-content/decrypt/callback?nID_Server=' + req.query.nID_Server + '&restoreUrl='+restoreUrl + '&fileName='+fileName
       ),
       objectsToSign,
       function (error, signResult) {
@@ -120,7 +120,7 @@ module.exports.decryptContent = function (req, res) {
 
 /**
  * Save signed content to redis, redirect to original url for further form submit
- * https://github.com/e-government-ua/i/issues/1374
+ * https://github.com/e-government-ua/i/issues/1422
  * @param req
  * @param res
  */
@@ -132,7 +132,8 @@ module.exports.callback = function (req, res) {
     , accessToken = req.session.access.accessToken
     , type = req.session.type
     , userService = authProviderRegistry.getUserService(type)
-    , restoreUrl = req.query.restoreUrl;
+    , restoreUrl = req.query.restoreUrl
+    , fileName = req.query.fileName;
 
   if (!codeValue) {
     codeValue = req.query['amp;code'];
@@ -188,7 +189,7 @@ module.exports.callback = function (req, res) {
     if (err) {
       res.redirect(restoreUrl+ '&error=' + JSON.stringify(err));
     } else {
-      res.redirect(restoreUrl + '?signedFileID=' + result.signedFileID);
+      res.redirect(restoreUrl + '?signedFileID=' + result.signedFileID + '&fileName=' + fileName);
     }
   }
 

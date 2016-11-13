@@ -95,9 +95,9 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
             }
           });
         }*/
-      })
+      })  //https://github.com/e-government-ua/i/issues/1422
       .state('index.journal.answer', {
-        url: '/answer/DFS?signedFileID',
+        url: '/answer/DFS?signedFileID&fileName',
         views: {
           'main@': {
             templateUrl: 'app/journal/answer/answer.content.html',
