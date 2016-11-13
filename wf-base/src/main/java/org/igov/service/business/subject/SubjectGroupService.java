@@ -157,7 +157,7 @@ public class SubjectGroupService {
 					@Override
 					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
 						return nIdList.contains(vSubjectGroupParentNode.getGroup().getId())
-								&&vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
+								&& vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
 						}
 				}));
 		
