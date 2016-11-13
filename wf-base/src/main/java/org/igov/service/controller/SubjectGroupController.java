@@ -3,7 +3,6 @@ package org.igov.service.controller;
 
 import java.util.List;
 
-import org.igov.model.subject.SubjectGroupResult;
 import org.igov.model.subject.VSubjectGroupParentNode;
 import org.igov.service.business.subject.SubjectGroupService;
 import org.slf4j.Logger;
@@ -43,7 +42,6 @@ public class SubjectGroupController {
     	try {
     		subjectGroupResult = subjectGroupService.getCatalogTreeSubjectGroups(sID_Group_Activiti,nDeepLevel);
     		
-    		 LOG.info("SubjectGroupppppppppppppppp: "+subjectGroupResult);
     	} catch (Exception e) {
     		 LOG.error("FAIL: ", e);
         }

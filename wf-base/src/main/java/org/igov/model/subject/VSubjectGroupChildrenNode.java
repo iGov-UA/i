@@ -22,8 +22,7 @@ public class VSubjectGroupChildrenNode implements Serializable,IVisitable {
     public VSubjectGroupChildrenNode(SubjectGroup group) {
 		this.group = group;
 	}
-	
-    public void addChild(SubjectGroup child) {
+	public void addChild(SubjectGroup child) {
     	children.add(child);
     }
 	@Override
