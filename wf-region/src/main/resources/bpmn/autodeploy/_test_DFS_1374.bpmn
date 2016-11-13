@@ -116,7 +116,18 @@
         <timeDuration>PT7M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow13" sourceRef="getAnswerTimer" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="getAnswerTimer" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${TransferDocumentAnswer_SWinEd}">
+          <activiti:field name="sINN">
+            <activiti:expression>${bankIdinn}</activiti:expression>
+          </activiti:field>
+        </activiti:executionListener>
+      </extensionElements>
+      <timerEventDefinition></timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow14" sourceRef="timerintermediatecatchevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_DFS_1374">
     <bpmndi:BPMNPlane bpmnElement="_test_DFS_1374" id="BPMNPlane__test_DFS_1374">
@@ -127,7 +138,7 @@
         <omgdc:Bounds height="67.0" width="105.0" x="150.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="getAnswerTimer" id="BPMNShape_getAnswerTimer">
-        <omgdc:Bounds height="30.0" width="30.0" x="230.0" y="133.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="225.0" y="133.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="67.0" width="105.0" x="340.0" y="114.0"></omgdc:Bounds>
@@ -136,7 +147,10 @@
         <omgdc:Bounds height="35.0" width="35.0" x="540.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="305.0" y="228.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="300.0" y="410.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="280.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="445.0" y="147.0"></omgdi:waypoint>
@@ -147,8 +161,12 @@
         <omgdi:waypoint x="150.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="260.0" y="148.0"></omgdi:waypoint>
-        <omgdi:waypoint x="340.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="163.0"></omgdi:waypoint>
+        <omgdi:waypoint x="297.0" y="200.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="297.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="392.0" y="181.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
