@@ -156,16 +156,19 @@ public class SubjectGroupService {
 						new Predicate<VSubjectGroupParentNode>() {
 					@Override
 					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
-						return nIdList.contains(vSubjectGroupParentNode.getGroup().getId())
-								&& vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
+										
+						return nIdList.contains(vSubjectGroupParentNode.getGroup().getId());
 						}
 				}));
 		
 		
+		List<VSubjectGroupParentNode> newList = new ArrayList<>(parentSubjectGroupsFilltrRes);
+		newList.addAll(parentSubjectGroupsFilltr);
+		
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
 	
-		return parentSubjectGroupsFilltrRes;
+		return newList;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
