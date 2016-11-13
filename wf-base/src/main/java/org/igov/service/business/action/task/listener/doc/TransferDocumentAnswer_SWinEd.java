@@ -35,7 +35,7 @@ public class TransferDocumentAnswer_SWinEd implements TaskListener {
 
     @Override
     public void notify(DelegateTask delegateTask) {
-        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        LOG.info("!!!");
         String sINN_Value = getStringFromFieldExpression(this.sINN, delegateTask.getExecution());
         String asID_Attach_Dfs = dfsService.getAnswer(delegateTask.getId(), delegateTask.getProcessInstanceId(), sINN_Value);
         LOG.info("!!!as: " + asID_Attach_Dfs); //хочу словить налпоинтер. это так и нужно!!! не убирать
