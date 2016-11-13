@@ -116,19 +116,6 @@ public class SubjectGroupService {
 						new Predicate<VSubjectGroupParentNode>() {
 					@Override
 					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
-						List<VSubjectGroupChildrenNode> ch = new ArrayList<>();
-						if(vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti)) {
-						for(VSubjectGroupChildrenNode vSubjectGroupChildrenNode: vSubjectGroupParentNode.getChildren()) {
-							if(vSubjectGroupChildrenNode.getGroup().getId().equals(vSubjectGroupParentNode.getGroup().getId())){
-								ch.add(vSubjectGroupChildrenNode);
-							}
-							
-						}
-						vSubjectGroupParentNode.setChildren(ch);
-						return !vSubjectGroupParentNode.getChildren().isEmpty() && vSubjectGroupParentNode.getChildren()!=null;
-						}
-						
-						
 						return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);					
 						}
 				}));
@@ -137,7 +124,7 @@ public class SubjectGroupService {
 		/**
 		 * получаем лист детей отфильтрованного списка
 		 */
-		/*final List<List<VSubjectGroupChildrenNode>> childrensParList = Lists.newArrayList(Collections2.transform(
+		final List<List<VSubjectGroupChildrenNode>> childrensParList = Lists.newArrayList(Collections2.transform(
 				parentSubjectGroupsFilltr, new Function<VSubjectGroupParentNode, List<VSubjectGroupChildrenNode>>() {
 					@Override
 					public List<VSubjectGroupChildrenNode> apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
@@ -145,24 +132,31 @@ public class SubjectGroupService {
 					}
 				}));
 		
-		*//**
+		/**
 		 * только лист
-		 *//*
+		 */
 		final List<VSubjectGroupChildrenNode> childrensByGroup = Lists.newArrayList(Collections2.transform(
 				childrensParList, new Function<List<VSubjectGroupChildrenNode>, VSubjectGroupChildrenNode>() {
 					@Override
 					public VSubjectGroupChildrenNode apply(List<VSubjectGroupChildrenNode> vSubjectGroupChildrenNodeList) {
 						return vSubjectGroupChildrenNodeList.get(0);
 					}
-				}));*/
+				}));
 		
-		//Set<VSubjectGroupParentNode> rootTags = new HashSet<>(parentSubjectGroupsFilltr);
-	//	List<VSubjectGroupParentNode> parentSubjectGroupsFilltrRes = new ArrayList<>(rootTags);
+		final List<VSubjectGroupParentNode> parentSubjectGroupsFilltrRes = Lists.newArrayList(Collections2
+				.filter(parentSubjectGroups,
+						new Predicate<VSubjectGroupParentNode>() {
+					@Override
+					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
+						return childrensByGroup.contains(vSubjectGroupParentNode.getGroup().getId());
+						}
+				}));
+		
 		
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
 	
-		return parentSubjectGroupsFilltr;
+		return parentSubjectGroupsFilltrRes;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
