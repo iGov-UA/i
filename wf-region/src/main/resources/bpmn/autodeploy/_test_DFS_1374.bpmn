@@ -116,7 +116,7 @@
     </intermediateCatchEvent>
     <sequenceFlow id="flow17" sourceRef="exclusivegateway1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="timerintermediatecatchevent1" targetRef="usertask2"></sequenceFlow>
-    <boundaryEvent id="Получение ответа" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+    <boundaryEvent id="getAnswerTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <extensionElements>
         <activiti:executionListener event="start" delegateExpression="${TransferDocumentAnswer_SWinEd}">
           <activiti:field name="sINN">
@@ -128,7 +128,7 @@
         <timeDuration>PT7M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow20" sourceRef="Получение ответа" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="getAnswerTimer" targetRef="timerintermediatecatchevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_DFS_1374">
     <bpmndi:BPMNPlane bpmnElement="_test_DFS_1374" id="BPMNPlane__test_DFS_1374">
@@ -138,7 +138,7 @@
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="67.0" width="105.0" x="150.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="Получение ответа" id="BPMNShape_Получение ответа">
+      <bpmndi:BPMNShape bpmnElement="getAnswerTimer" id="BPMNShape_getAnswerTimer">
         <omgdc:Bounds height="30.0" width="30.0" x="230.0" y="133.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
