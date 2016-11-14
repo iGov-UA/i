@@ -195,7 +195,8 @@ public class SubjectGroupService {
 			}
 
 			SubjectGroupNode childNode = subjectToNodeMap.get(child);
-			if (childNode == null) {
+			if (childNode == null&&SubjectGroupService.getDeepLevelChildSubjectGroup().compareTo(deepLevel)<0) {
+				SubjectGroupService.setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup+1);
 				childSubject.add(child);
 				childNode = new SubjectGroupNode(child);
 				subjectToNodeMap.put(child, childNode);
