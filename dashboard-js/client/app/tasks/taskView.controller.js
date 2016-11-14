@@ -75,8 +75,9 @@
                 user.getUsers(group).then(function (users) {
                   if (users) {
                     item.enumValues = convertUsersToEnum(users);
-                    item.value = item.enumValues[0].id;
-                    console.log($scope.taskForm);
+                    if(item.value == null){
+                      item.value = item.enumValues[0].id;
+                    }
                   }
                 });
               }
