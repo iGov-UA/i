@@ -3,8 +3,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               FormDataFactory, ActivitiService, ValidationService, ServiceService, oService, oServiceData,
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
               PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
-              ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory, TableService,
-              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory) {
+              ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
+              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService) {
 
       'use strict';
 
@@ -263,7 +263,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
         angular.forEach($scope.activitiForm.formProperties, function (prop) {
           if (prop.type === 'table') {
-            $scope.data.formData.params[prop.id].value = prop.aRow;
+            $scope.data.formData.params[prop.id].value = prop;
           }
         });
 
@@ -909,7 +909,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       TableService.init($scope.activitiForm.formProperties);
 
       $scope.addRow = function (form, id, index) {
-        ValidationService.validateByMarkers(form, null, true, this.data, true);
+        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {}, true);
         if (!form.$invalid) {
           $scope.tableIsInvalid = false;
           TableService.addRow(id, $scope.activitiForm.formProperties);
@@ -919,16 +919,16 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       };
       $scope.removeRow = function (index, form, id) {
-        angular.forEach($scope.activitiForm.formProperties, function (item, key, obj) {
-          if (item.id === id) {
-            obj[key].aRow.splice(index, 1);
-            if (!form.$invalid) {
-              $scope.tableIsInvalid = false;
-            }
-          }
-        });
+        TableService.removeRow($scope.activitiForm.formProperties, index, id);
+        if (!form.$invalid) {
+          $scope.tableIsInvalid = false;
+        }
       };
       $scope.rowLengthCheckLimit = function (table) {
-        return table.aRow.length >= table.nRowsLimit
+        return TableService.rowLengthCheckLimit(table);
+      };
+
+      $scope.isFieldWritable = function (field) {
+        return TableService.isFieldWritable(field);
       };
     });
