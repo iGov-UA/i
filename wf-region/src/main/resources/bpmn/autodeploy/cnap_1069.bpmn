@@ -97,14 +97,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sSocBenefit" name="Соціальний стан (пільги, група інвалідності); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asType" name="Тип нещасного випадку; ;writable=false" type="enum">
-          <activiti:value id="sEnumWork" name="виробничого"></activiti:value>
-          <activiti:value id="sEnumHome" name="невиробничого"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Дата, коли стався нещасний випадок; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sTime" name="Час, коли стався нещасний випадок; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAccidentAddress" name="Адреса, де саме стався нещасний випадок; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAccident" name="Обставини, що спричинили нещасний випадок; ;writable=false" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRef" name="Довідка про реабілітацію: дата видачі та номер; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Задовільнити заяву"></activiti:value>
           <activiti:value id="reject" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
@@ -115,7 +108,7 @@ ${sNameOrgan}<br />
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nSick},${nReport},${nHospital}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nReabil}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -186,7 +179,6 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 			<p>Ваше звернення на тему: "Видача документів про уповноваження з розслідування нещасного випадку" - розглянуте.</p>
-			<p>Коментар держслужбовця (за наявності): ${comment}</p>
 			<p>Запрошуємо Вас отримати документи за адресою:<br/>
 			</p>
 			${sPhoneOrgan}<br />

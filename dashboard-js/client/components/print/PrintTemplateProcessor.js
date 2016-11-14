@@ -44,7 +44,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
   return {
     processPrintTemplate: function (task, form, printTemplate, reg, fieldGetter) {
       var _printTemplate = printTemplate;
-      var templates = [], ids = [], found;
+      var templates = [], ids = [], found, idArray = [];
       while (found = reg.exec(_printTemplate)) {
         templates.push(found[1]);
         ids.push(found[2]);

@@ -118,7 +118,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                 if (bankIdlastName != null && bankIdfirstName != null && bankIdmiddleName != null
                         && bankIdfirstName.length() > 0 && bankIdmiddleName.length() > 0) {
                     fullIO = new StringBuilder(bankIdfirstName).append(" ").append(bankIdmiddleName).toString();
-                    shortFIO = new StringBuilder(bankIdlastName).append(" ")
+                    shortFIO = new StringBuilder(bankIdlastName).append(". ")
                             .append(bankIdfirstName.substring(0, 1)).append(". ")
                             .append(bankIdmiddleName.substring(0, 1)).append(".").toString();
                 }

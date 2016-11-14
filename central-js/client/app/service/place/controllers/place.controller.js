@@ -14,7 +14,6 @@ angular.module('app').controller('PlaceController',
             isLoggedIn,
             regions,
             service,
-            statesRepository,
             feedback) {
 
     var self = this;
@@ -27,12 +26,6 @@ angular.module('app').controller('PlaceController',
     $scope.$location = $location;
     $scope.bAdmin = AdminService.isAdmin();
     $scope.state = $state.get($state.current.name);
-
-    if(statesRepository.isKyivCity()){
-      $scope.bHideTab = true;
-    } else {
-      $scope.bHideTab = false;
-    }
 
     //TODO should be removed after refactoring for single controller for app/service/index.html
     $scope.feedback = feedback;

@@ -2,32 +2,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів</title>
+    <title>Надання довідки про доходи фізичних осіб</title>
 
-    <style type="text/css">
-
-      section.PrintFormClaim {        
+<style type="text/css">
+/* <![CDATA[ */
+      div.PrintFormClaim {
         font-size: 14pt;
         font-family: "Times New Roman";
-        width: 17cm;
+        padding: 1cm 1.5cm 1cm 2.5cm;
+        width: 21cm;
+        min-height: 100%;
+        height: 100%;
       }
 
-      section.PrintFormClaim div {  
+      div.PrintFormClaim div {  
         margin-top: 6pt;
       }
 
-      section.PrintFormClaim u{
+      div.PrintFormClaim u{
         padding: 0 10px;
       }
 
       /* Подчеркивание с отступами не подходит для  */
-      section.PrintFormClaim em{
+      div.PrintFormClaim em{
         padding: 0 15px;
         font-style: normal;
         border-bottom: 1px  solid  black;  
       } /* Отменяем подчеркивание у ссылки */
 
+
       .whomBlock {
+        text-align: juice;
+      }
+
+      .whoBlock {
         text-align: juice;
       }
 
@@ -40,36 +48,37 @@
       }
 
       .smallText {
-        font-size: 12pt;  
+        font-size: 10pt;  
         line-height: 1.1;
       }
 
-      section.PrintFormClaim table {
+      div.PrintFormClaim table {
         align-self: center;
       }
 
-      section.PrintFormClaim td.bb {
+      div.PrintFormClaim td.bb {
         border: 0px solid black;
         border-bottom: 1px solid black;
       }
 
-      section.PrintFormClaim td.notb {
+      div.PrintFormClaim td.notb {
         border: 0px solid black;
       }
 
-      section.PrintFormClaim td {
+      div.PrintFormClaim td {
         border: 1px solid black;
         text-align:justify;
       }
 
-      section.PrintFormClaim table {
+      div.PrintFormClaim table {
         align-self: center;
         border-collapse: collapse; /* Отображать двойные линии как одинарные */
       }
 
-      section.PrintFormClaim th {
+      div.PrintFormClaim th {
         border: 1px solid black;
       }
+
 
       .under_multifield{ /* Мой кейс, многострочный текст*/
         border-bottom: 1px solid black;
@@ -91,6 +100,8 @@
         position: relative;
         bottom: -1px;  
         line-height: 125%;
+        word-wrap: break-word;
+        word-break: break-all;
       }
 
       .under_field { /* Блок с подписью */
@@ -100,6 +111,11 @@
         display: inline-block;
         clear: both;
       }
+
+      .under_field.notb { /*без подчеркивания*/
+        border-bottom: 0px solid black;
+      }
+
 
       .under_field>b { /*если не надо подчеркивать*/
         padding: 0 10px 0 0;
@@ -203,6 +219,8 @@
 
       .clear {clear: both;}
 
+
+
       /* организация колонок */
       .layout {
         overflow: hidden;
@@ -212,27 +230,24 @@
         float: left;
       }
 
+      .notunder_field { /* Блок с без линии */
+        margin: 0 0 15px 0;
+        position: relative;
+        display: inline-block;
+        clear: both;
+      }
+
+
       /* выравнивание текста */
-      section.PrintFormClaim .ta-l { text-align: left;}
-      section.PrintFormClaim .ta-j { 
-        text-align: justify;
-      }
-      section.PrintFormClaim .ta-j-w { 
-        text-align: justify;
-        -webkit-hyphens: auto;
-        -moz-hyphens: auto;
-        -ms-hyphens: auto;
-        hyphens: auto;
-        word-wrap: break-word;
-      }
-      section.PrintFormClaim .ta-r { text-align: right;}
-      section.PrintFormClaim .ta-c { text-align: center;}
+      div.PrintFormClaim .ta-l { text-align: left;}
+      div.PrintFormClaim .ta-j { text-align: justify;}
+      div.PrintFormClaim .ta-r { text-align: right;}
+      div.PrintFormClaim .ta-c { text-align: center;}
 
       /* ширина в процентах */            
       .w1p {width: 1%;}      
       .w4p {width: 4%;}      
-      .w5p {width: 5%;}      
-      .w8p {width: 8%;}   
+      .w5p {width: 5%;}   
       .w10p { width: 10%;}
       .w20p { width: 20%;}
       .w30p { width: 30%;}
@@ -247,7 +262,6 @@
       .w100p { width: 100%;}
 
       /* ширина */
-      .w20 {	width: 20px;}
       .w50 {	width: 50px;}
       .w100 {	width: 100px;}
       .w150 {	width: 150px;}
@@ -260,10 +274,12 @@
       .w500 {	width: 500px;}
 
       /* отступ  */
+
       .pl-paragraph { text-indent: 1cm;}
       .pl-paragraph>div,
       .pl-paragraph>span  
       { text-indent: initial;} 
+
 
       .pl-25 { padding-left: 25px;}
       .pl-50 { padding-left: 50px;}
@@ -298,8 +314,6 @@
 
       /*отступы по горизонтали*/
       .pg-10 { padding: 0 10px;}
-      .pg-15 { padding: 0 15px;}
-      .pg-20 { padding: 0 20px;}
       .pg-25 { padding: 0 25px;}
       .pg-50 { padding: 0 50px;}
       .pg-75 { padding: 0 75px;}
@@ -316,49 +330,29 @@
 
       .test{ border: 1px solid red;}
 
-      /* свойства для печати*/
-      @media print {
-        @page {
-          margin: 1cm 1.5cm 1cm 2.5cm;
-        }
-
-        * {
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-        }
-
-        a[href^="http://"]:after, a[href^="ftp://"]:after {
-          content: " (" attr(href) ")";
-          color: blue;
-        }
-
-        section {page-break-after: avoid;}
-        h1 {page-break-after: avoid;}
-        p {page-break-inside: avoid; orphans:3; widows:2;}
-        ul, img {page-break-inside: avoid;}
-      }      
-    </style>
-
+/* ]]> */
+</style>
+    
 
   </head>
   <body>
-    <section lang="uk" class="PrintFormClaim">
-
-      <div class="whoBlock ml-8">
+    <div class="PrintFormClaim">
+		
+      <div class="whoBlock ml-11">
         До органу доходів і зборів
 
-        <div class="under_multifield w100p ta-j line1">
+        <div class="under_multifield w100p ta-l">
           <u>[sNameOrgan]</u>
-        </div>
-        <div class="ta-c smalltext line1">
-          (назва, номер та дата прийняття нормативно-правового акта)
-        </div>
+        </div> 
+
+        <br> <br>
+
         <div class="layout">
-          <div>
+          <div class="pg-25">
             від 
           </div>
-          <div class="pg-15">
-            <table>
+          <div class="pg-25">
+            <table class="w200">
               <tr id="trINN">
                 <td>&#160;</td>
                 <td>&#160;</td>
@@ -374,41 +368,49 @@
             </table>
           </div>
         </div>
-        <div class="ta-c smalltext line1">
+        <div class="ta-c smalltext">
           (код за ЄДРПОУ або реєстраційний <br>
           номер облікової картки платника податків*)
         </div>
-        <div class="under_multifield w100p ta-j">
-          <u>[sAvtor] 
+
+        <br/>
+        <div class="under_multifield w100p ta-l">
+          <u>
+            <span id="spanFisName">[bankIdlastName] [bankIdlastName] [bankIdlastName]</span>            
+            <span id="spanUrName">[sNameUr]</span>
           </u> 
         </div>
-        <div class="ta-c smalltext line1">
-          (найменування платника податків/прізвище, <br>          
+        <div class="ta-c smalltext line1">(найменування платника податків/прізвище, <br>          
           ім’я, по батькові фізичної особи)
         </div>
-        <div class="under_multifield w100p ta-j">
-          <u>Поштова адреса:[sAdresECP]
+        <br>
+        <div class="under_multifield w100p ta-l">
+          <u>Поштова адреса:
+            <span id="spanAdressRegistr">[bankIdAddressFactual]</span>
+            <span id="spanAdressFactual">[sAddressFactual]</span>
+            <span id="spanAdressFactualUr">[sAddressFactualUr]</span>            
           </u>
         </div>
 
-        <div class="under_multifield w100p ta-j">
+        <div class="under_multifield w100p ta-l">
           <u>Електронна адреса: [email]</u>
         </div>        
-        <div class="under_multifield w100p ta-j">
+        <div class="under_multifield w100p ta-l">
           <u>Контактний телефон: [phone]</u>
         </div>
       </div>
-      <br>
+      <br><br>
 
       <div class="claimBlock">ЗАЯВА</div>
 
-      
+      <br>
       <div class="ta-j pl-paragraph">Прошу видати довідку про відсутність 
         заборгованості з податків, зборів, платежів відповідно до вимог
       </div>
       <div class="under_multifield w100p ta-j">
-        <u>[sNameDoc]</u>
-      </div>
+        <u>[sNameDoc] № [sNumDoc] від [dDoc] року</u>
+      </div>  
+
 
       <div class="ta-j">
         для надання до
@@ -426,76 +428,39 @@
         вигляді.
       </div>
       <div class="ta-j  pl-paragraph">
-        <span class="check_box"><span id="spanLawCourt">&#10004;</span><span id="spanLawCourtNo">&#160;</span></span>        
+        <span class="check_box"><span id="spanLawCourt">&#10004;</span></span>        
         Додатково повідомляю, що станом на день звернення триває процес адміністративного (судового) оскарження суми грошового зобов’язання (у разі необхідності зробити відповідну позначку „&#10004;”).
       </div>
-      <div class="layout w100p">
-        <div class="w30p">
-          <div class="under_field notb w100p">
-            Платник податків
-          </div>
-        </div>
-        <div class="w8p"></div>
 
-        <div class="w20p">
-          <div class="under_field w100p">
-            <u>          
-              &#160;
-            </u>
-            <span>(підпис)</span>
-          </div>
+      <br/><br/>
+      <div>
+        <div class="under_field notb w20p">
+          Платник податків
         </div>
-        <div class="w8p"></div>
-        <div class="w30p">
-          <div class="under_field w100p">
-            <u>
-              <span id="spanFIO">&#160;</span>
-            </u>
-            <span>(ініціали та прізвище)</span>
-          </div>
+        <div class="notunder_field w10p"></div>
+        <div class="under_field w20p">
+          <u>          
+            &#160;
+          </u>
+          <span>(підпис)</span>
         </div>
-      </div>
+        <div class="notunder_field w10p"></div>
+        <div class="under_field w30p">
+          <u>          
+            &#160;
+          </u>
+          <span>(ініціали та прізвище)</span>
+        </div>
+      </div><br/>
       <div class="smalltext">
         ____________________________________________<br>
         * Або серія та номер паспорта (для фізичних осіб, які через свої релігійні переконання
         відмовляються від прийняття реєстраційного номера облікової картки платника податків
         та повідомили про це відповідний орган доходів і зборів і мають відмітку у паспорті).
       </div>
-    </section>
+    </div>
 
-
-    <script>
-      //**** Скрипт для заполнения ИНН/ЕДГРПОУ ****
-      var inn; 
-
-      if("[subekt]"=="по собі, як фізичній особі"){
-        inn = String("[bankIdinn]");
-        
-
-        //**** Скрипт Фамилия инициалы ****	    
-        var spanFIO = document.getElementById("spanFIO");
-        var clFIO = String("[clFIO]").split(' ');
-        if(clFIO.length == 3){
-          spanFIO.innerHTML = clFIO[1][0] + "." + clFIO[2][0] + ". " + clFIO[0];
-        }
-        
-      } else if("[subekt]"=="по підприємству, як його представник"){
-        inn = String("[edrpou]");
-      } 
-
-      var cells = document.getElementById("trINN").children;
-
-      for(var i=0; i<cells.length; ++i){
-    	  if(i<inn.length){
-    		  cells[i].innerHTML =inn[i];	  
-    	  }
-    	  cells[i].className = "ta-c w20";
-      }
-
-      //**** Скрипт подчеркивание **** 
-      document.getElementById("spanTypePaper").className = "u";
-
-
-    </script>
+    
+    
   </body>
 </html>

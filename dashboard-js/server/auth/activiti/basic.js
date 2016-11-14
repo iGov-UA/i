@@ -135,7 +135,7 @@ exports.authenticate = function (req, res) {
     if (error) {
       res.status(error.status ? error.status : 500).send(error);
     } else {
-      //req.session = result.userResult;
+      req.session = result.userResult;
       res.cookie('user', JSON.stringify({
         email : result.userResult.email,
         firstName : result.userResult.firstName,

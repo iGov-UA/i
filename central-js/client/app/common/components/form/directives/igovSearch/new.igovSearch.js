@@ -74,7 +74,7 @@ angular.module('app')
           }
           // получаем к-во услуг готовых/скоро/в работе
           function getCounts (category) {
-            var countCategory = category && category.aService || category && category[0].aService ? category : 'business';
+            var countCategory = category && category.aService ? category : 'business';
             if(countCategory === 'business') {
               CatalogService.getModeSpecificServices(null, "", false, countCategory).then(function (res) {
                 $scope.catalogCounts = CatalogService.getCatalogCounts(res)

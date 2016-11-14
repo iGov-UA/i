@@ -1,174 +1,804 @@
-<div ng-if="['table'].indexOf(item.type) > -1" class="row field-table">
-  <div class="col-sm-12">
+<div class="list-group">
+  <place></place>
 
-    <table ng-init="tableName = item.id">
+  <style>
+    .ui-select-match-text {
+      overflow: hidden;
+      width: inherit;
+      padding-right: 10px;
+    }
+    .ui-select-match-text * {
+      overflow: hidden;
+      display: block;
+    }
+    .form-control.ui-select-search {
+      width: 100% !important;
+    }
 
-      <thead>
+    .dropdown-menu {
+      padding-top: 0;
+    }
+  </style>
 
-      <tr class="table-thead">
-        <th ng-repeat="field in item.aRow[0].aField" ng-style="{'width' : field.nWidth}">
-          <span>{{field.sFieldLabel || field.name}}</span>
-          <span style="display: block; text-align: center" class="s-field-notes"
-                ng-if="field.sFieldNotes!=null">
-            {{field.sFieldNotes}}
-          </span>
-        </th>
-        <th style="width:30px;border:none; background-color: transparent"></th>
-      </tr>
+  <div class="list-group-item disabled" ng-if="!spinner">
+    <div class="row no-margin-bottom">
+      <div class="col-md-11">Крок 2. Ви увійшли як
+        {{account.customer.firstName}} {{account.customer.middleName}} {{account.customer.lastName}}
+      </div>
+      <div class="col-md-1">
+        <div class="link-button">
+          <a ng-click="editBankId()">Змінити</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      </thead>
+  <div class="list-group-item" ng-if="!spinner">
+    <div class="row">
+      <div class="col-md-6 pull-left">Крок 3.
+        {{data.formData.params["processName"].name==null?"":data.formData.params["processName"].name}}
+      </div>
+      <div ng-show="bAdmin" class="col-md-6 pull-right">
+        <!--div ng-if="bAdmin" style="/*display:none;*/" class="col-md-6 pull-right"-->
+        <label for="ref" class="pull-right"> Заповнення референтом</label>
+        <input type="checkbox" ng-model="data.formData.params.bReferent.value" ng-change="onReferent" id="ref" class="pull-right">
+      </div>
+    </div>
+    <div class="row" ng-if="data.formData.params.bReferent.value">
+      <div class="col-md-12">
+        <div class="highlight-yellow">
+          <div class="row"
+               ng-repeat="property in activitiForm.formProperties track by property.id"
+               ng-if="data.formData.params.bReferent.value && property.id.startsWith('bankId')">
 
-      <tbody ng-form='{{tableName}}'>
+            <div class="col-md-5"
+                 ng-if="property.type!='invisible' && property.type!='markers' && property.type != 'file'">
+              <label style="color: red;"
+                     ng-if="isFieldRequired(property)==true">* </label>
+              {{property.sFieldLabel}}:
 
-      <tr ng-repeat="row in item.aRow track by $index" ng-init="rowIndex=$index">
+              <div class="s-field-notes"
+                   ng-if="property.sFieldNotes!=null">
+                {{property.sFieldNotes}}
+              </div>
+            </div>
 
-        <td ng-repeat="field in row.aField track by $index" style="border: 1px solid lightgrey">
-
-          <div ng-if="['string'].indexOf(field.type) > -1">
-            <input class="inputs-in-table"
-                   ng-if='field.hasOwnProperty("default") || !field.hasOwnProperty("default") && !field.hasOwnProperty("value")'
-                   name="{{field.id + rowIndex}}"
-                   ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
-                   ng-required="field.required"
-                   ng-model="field.default"
-                   ng-disabled="!isFieldWritable(field.writable)"
-                   type="text">
-            <input class="inputs-in-table"
-                   ng-if='field.hasOwnProperty("value")'
-                   name="{{field.id + rowIndex}}"
-                   ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
-                   ng-required="field.required"
-                   ng-model="field.value"
-                   ng-disabled="!isFieldWritable(field.writable)"
-                   type="text">
+            <div class="col-md-3"  ng-hide="property.type === 'file'">
+              {{persistValues[property.id].value}}
+              <input type="hidden"
+                     name="{{property.id}}"
+                     ng-model="persistValues[property.id].value"
+                     ng-required="isFieldRequired(property)"
+                     class="form-control"
+                     value="{{persistValues[property.id].value}}">
+            </div>
           </div>
+        </div>
+      </div>
 
-          <div ng-if="['enum'].indexOf(field.type) > -1">
-            <select name="{{field.id + rowIndex}}"
-                    ng-required="field.required"
-                    ng-model="field.value"
-                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
-                    ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in field.a"
-                    ng-disabled="!isFieldWritable(field.writable)"
-                    class="inputs-in-table">
-            </select>
-          </div>
-
-          <div ng-if="['long', 'double'].indexOf(field.type) > -1">
-            <input name="{{field.id + rowIndex}}"
-                   ng-if="field.hasOwnProperty('default') || !field.hasOwnProperty('default') && !field.hasOwnProperty('value')"
-                   ng-required="field.required"
-                   ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
-                   ng-model="field.default"
-                   class="inputs-in-table"
-                   ng-disabled="!isFieldWritable(field.writable)"
-                   type="number">
-            <input name="{{field.id + rowIndex}}"
-                   ng-if="field.hasOwnProperty('value')"
-                   ng-required="field.required"
-                   ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
-                   ng-model="field.value"
-                   class="inputs-in-table"
-                   ng-disabled="!isFieldWritable(field.writable)"
-                   type="number">
-          </div>
-
-          <div ng-if="['date'].indexOf(field.type) > -1">
-          <input datetimepicker
-                 class="form-control date-picker"
-                 ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
-                 name="{{field.id + rowIndex}}"
-                 ng-disabled="!isFieldWritable(field.writable)"
-                 ng-required="field.required"
-                 ng-model="field.props.value"
-                 format="DD/MM/YYYY"/>
-          </div>
-
-          <div ng-if="['select'].indexOf(field.type) > -1" ng-class="getBpAndFieldID(field)">
-            <dropdown-organ ng-if="field.id==='sID_Public_SubjectOrganJoin'"
-                            ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
-                            ng-model="field.value"
-                            form-data-property="field"
-                            service-data="oServiceData"
-                            activiti-form="activitiForm"
-                            ng-required="field.required"
-                            form-data="data.formData"
-                            ng-disabled="!isFieldWritable(field.writable)"
-                            name="field.id"></dropdown-organ>
-
-            <ui-select dropdown-autocomplete ng-if="field.selectType=='autocomplete'"
-                       ng-model="field.value"
-                       name="{{field.id + rowIndex}}"
-                       ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
-
-                       ng-required="field.required"
-                       autocomplete-data="field.autocompleteData"
-                       autocomplete-name="field.autocompleteName"
-
-                       reach-infinity="requestMoreItems($select.items)"
-                       ng-disabled="!isFieldWritable(field.writable)"
-                       on-select="onSelectDataList($item, tableName, rowIndex)">
-
-              <ui-select-match>
-                {{$select.selected[autocompleteData.titleProperty] || field.value}}
-              </ui-select-match>
-              <ui-select-choices refresh="refreshList(field.autocompleteData.titleProperty, $select.search)"
-                                 refresh-delay="50"
-                                 repeat="item[field.autocompleteData.valueProperty] as item in items track by item[field.autocompleteData.orderBy]">
-                               <span title="{{item[field.autocompleteData.titleProperty]}}">
-                                 {{item[field.autocompleteData.titleProperty]}}
-                               </span>
-              </ui-select-choices>
-            </ui-select>
-          </div>
-
-          <div style="padding:5px"
-               class="error-popup"
-               ng-messages="form[tableName][field.id + rowIndex].$error" ng-if="form.$submitted && form[tableName][field.id + rowIndex].$invalid
-                                          || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName">
-            <span ng-message="required">Необхідно заповнити.</span>
-            <span ng-message="pattern">Значення має бути числом.</span>
-            <span ng-message="email">Помилка в email.</span>
-            <span ng-message="tel">Помилка в номері телефону.</span>
-            <span ng-message="autovin">Помилка у VIN-номері авто.</span>
-            <span ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</span>
-            <span ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</span>
-            <span ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</span>
-            <span ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
-                            х-місяців, х-років.
-                          </span>
-            <span ng-message="numberbetween">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</span>
-            <div ng-message="numberfractionalbetween">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</div>
-            <span ng-message="numbersaccounts">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</span>
-            <span ng-message="dateofbirth">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</span>
-            <span ng-message="CustomFormat">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</span>
-            <span ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</span>
-            <span ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</span>
-            <span ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</span>
-            <span ng-message="FileSign">Підпис не валідний або відсутній</span>
-            <span ng-message="FileExtensions">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</span>
-            <span ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</span>
-          </div>
-
-        </td>
-
-        <td style="padding: 0;" ng-if="$index !== 0">
-          <a href="#" class="btn btn-default remove-btn" ng-click="removeRow($index, form[tableName], item.id)">
-            <i style="color: #FF1F1F;" class="glyphicon glyphicon-remove"></i>
-          </a>
-        </td>
-
-      </tr>
-
-      </tbody>
-    </table>
-
-    <div style="text-align: left; margin-top: 3px">
-      <input type="button" ng-hide="rowLengthCheckLimit(item) && !item.aRow" class="add-row-button" ng-click="addRow(form[tableName], item.id, tableName)" value="Додати рядок">
     </div>
 
+    <div class="row">
+      <div class="col-md-12">
+        <div class="highlight">
+          <form name="form" novalidate>
+            <div class="clearfix" ng-if="oServiceData.oPlace">
+                <a class="pull-right" ng-hide="paramsBackup !== null" href ng-click="fillSelfPrevious()">Заповнити даними попередньої заявки</a>
+                <a class="pull-right" ng-hide="paramsBackup === null" href ng-click="fillSelfPreviousBack()">Відмінити авто-заповнені дані</a>
+            </div>
+
+              <div class="row col-md-8 col-md-push-2 update-bankid-message" ng-show="isShowMessageRequiringToValidateUserData()">
+                  Якщо ці або будь-які інші дані, які були передані з Вашого банку, вже не актуальні,
+                  просимо Вас звернутися до цього банку для актуалізації.
+              </div>
+
+            <div class="row"
+                 ng-repeat="property in activitiForm.formProperties track by property.id"
+                 ng-if="isFieldVisible(property)">
+
+              <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
+                <table style="width: 100%">
+                  <tr ng-if="insertSeparator(property.id).sText.length > 0">
+                    <td style="width: 30%; text-align: right">
+                      <hr class="hr-divider side-left"
+                          style="width: 95%;
+                    height: 1px;
+                    display: inline-block;
+                    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                    </td>
+                    <td colspan="2" style="max-width: 40%; text-align: center">
+                      <span style="position: relative">{{insertSeparator(property.id).sText}}</span>
+                    </td>
+                    <td style="width: 30%; text-align: left">
+                      <hr class="hr-divider side-right"
+                          style="width: 95%;
+                    height: 1px;
+                    display: inline-block;
+                    background-image: -webkit-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:    -moz-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:     -ms-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:      -o-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                    </td>
+                  </tr>
+                  <tr ng-if="insertSeparator(property.id).sText.length == 0">
+                    <td style="width: 50%; text-align: right">
+                      <hr class="hr-divider side-left"
+                          style="width: 97%;
+                    height: 1px;
+                    display: inline-block;
+                    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                    </td>
+                    <td style="width: 50%; text-align: left">
+                      <hr class="hr-divider side-right"
+                          style="width: 97%;
+                    height: 1px;
+                    display: inline-block;
+                    background-image: -webkit-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:    -moz-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:     -ms-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:      -o-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="col-md-5"
+                   ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
+                <label style="color: red;"
+                       ng-if="isFieldRequired(property)==true">* </label>
+                {{property.sFieldLabel}}:
+
+                <div class="s-field-notes"
+                     ng-if="property.sFieldNotes!=null">
+                  {{property.sFieldNotes}}
+                </div>
+              </div>
+
+
+              <div class="col-md-3"
+                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table'}"
+                   ng-if="showFormField(property)"
+                   ng-switch
+                   on="property.type">
+                                <textarea ng-switch-when="textArea"
+                                          name="{{property.id}}"
+                                          ng-model="data.formData.params[property.id].value"
+                                          ng-required="isFieldRequired(property)"
+                                          ng-class="getBpAndFieldID(property)"
+                                          class="form-control"></textarea>
+                <label ng-switch-when="label"
+                       name="{{property.id}}"
+                       ng-required="isFieldRequired(property)"
+                        class="form-control_"
+                        ng-bind-html="htmldecode(data.formData.params[property.id].value)">
+                         <!--{{data.formData.params[property.id].value}}-->
+                 </label>
+
+                <dropdown-country ng-switch-when="string"
+                                  ng-if="property.id==='resident' || property.id === 'sCountry'"
+                                  ng-model="data.formData.params[property.id].value"
+                                  ng-class="getBpAndFieldID(property)"
+                                  service-data="oServiceData"
+                                  ng-required="isFieldRequired(property)"></dropdown-country>
+
+                <div class="col-md-12 field-table" ng-switch-when="table">
+                  <table ng-init="tableName = property.id">
+
+                    <thead ng-if="println(property.aRow[0].aField)">
+
+                    <tr class="table-thead">
+                      <th ng-repeat="item in property.aRow[0].aField" ng-style="{'width' : item.nWidth}">
+                        <span>{{item.sFieldLabel || item.name}}</span>
+                        <span style="display: block; text-align: center" class="s-field-notes"
+                             ng-if="item.sFieldNotes!=null">
+                          {{item.sFieldNotes}}
+                        </span>
+                      </th>
+                      <th style="width:30px;border:none; background-color: transparent"></th>
+                    </tr>
+
+                    </thead>
+
+                    <tbody ng-form='{{tableName}}'>
+
+                    <tr ng-repeat="row in property.aRow track by $index" ng-init="rowIndex=$index">
+
+                      <td ng-repeat="item in row.aField track by $index" style="border: 1px solid lightgrey">
+
+                        <div ng-if="item.type == 'string'">
+                          <input class="inputs-in-table"
+                                 ng-if='item.hasOwnProperty("default") || !item.hasOwnProperty("default") && !item.hasOwnProperty("value")'
+                                 name="{{item.id + rowIndex}}"
+                                 ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                                 ng-required="item.required"
+                                 ng-model="item.default"
+                                 type="text">
+                          <input class="inputs-in-table"
+                                 ng-if='item.hasOwnProperty("value")'
+                                 name="{{item.id + rowIndex}}"
+                                 ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                                 ng-required="item.required"
+                                 ng-model="item.value"
+                                 type="text">
+                        </div>
+
+                        <div ng-if="item.type == 'enum'">
+                          <select name="{{item.id + rowIndex}}"
+                                  ng-required="item.required"
+                                  ng-model="item.value"
+                                  ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                                  ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.a"
+                                  class="inputs-in-table">
+                          </select>
+                        </div>
+
+                        <div ng-if="item.type == 'long'">
+                          <input name="{{item.id + rowIndex}}"
+                                 ng-if="item.hasOwnProperty('default') || !item.hasOwnProperty('default') && !item.hasOwnProperty('value')"
+                                 ng-required="item.required"
+                                 ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                                 ng-model="item.default"
+                                 class="inputs-in-table"
+                                 type="number">
+                          <input name="{{item.id + rowIndex}}"
+                                 ng-if="item.hasOwnProperty('value')"
+                                 ng-required="item.required"
+                                 ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                                 ng-model="item.value"
+                                 class="inputs-in-table"
+                                 type="number">
+                        </div>
+
+                        <div ng-if="item.type == 'date'">
+                          <!--заменить на директиву-->
+                          <p class="input-group datepicker-central">
+                            <input type="text"
+                                   ng-required="item.required"
+                                   name="{{item.id + rowIndex}}"
+                                   datepicker-popup="{{item.props.format}}"
+                                   is-open="item.props.opened"
+                                   datepicker-options="item.props.options"
+                                   ng-model="item.props.value"
+                                   ng-readonly="true"
+                                   ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                                   close-text="Close"
+                                   class="form-control"
+                                   value="item.props.value | fixDateFormat">
+                            <span class="input-group-btn">
+                              <button type="button"
+                                      class="btn btn-link"
+                                      style="background: white;outline: none;"
+                                      ng-click="item.props.open($event)">
+                                      <i class="glyphicon glyphicon-calendar" style="color:green;"></i>
+                              </button>
+                            </span>
+                            <!--calendar-modal-window-->
+                            <script id="template/datepicker/popup.html" type="text/ng-template">
+                              <ul class="dropdown-menu" ng-style="{display: (isOpen && 'block') || 'none', top: position.top+'px', left: position.left+'px', overflow: 'hidden'}" ng-keydown="keydown($event)">
+                                <li ng-transclude style="margin-top:0"></li>
+                                <li ng-if="showButtonBar" style="margin-top:0; text-align: center">
+                                  <button type="button" class="btn btn-sm btn-link" style="color: black; font-weight: bold" ng-click="select(null)">{{ getText('clear') }}</button>
+                                </li>
+                              </ul>
+                            </script>
+                            <!--calendar-year-template-->
+                            <script id="template/datepicker/year.html" type="text/ng-template">
+                              <table  role="grid" class="calender" style="outline: none; margin:5px" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+                                <thead>
+                                <tr>
+                                  <th>
+                                    <button type="button" class="btn btn-link btn-sm pull-left" style="color: black;" ng-click="move(-1)" tabindex="-1">
+                                      <i class="glyphicon glyphicon-arrow-left"></i>
+                                    </button>
+                                  </th>
+                                  <th colspan="3">
+                                    <button id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-link btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;">
+                                      <strong style="color: black; font-size: 14px">Рік</strong>
+                                    </button>
+                                  </th>
+                                  <th>
+                                    <button type="button" class="btn btn-link btn-sm pull-right" style="color: black;" ng-click="move(1)" tabindex="-1">
+                                      <i class="glyphicon glyphicon-arrow-right"></i>
+                                    </button>
+                                  </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="row in rows track by $index">
+                                  <td ng-repeat="dt in row track by dt.date" class="text-center" role="gridcell" id="{{::dt.uid}}" ng-class="::dt.customClass">
+                                    <button type="button" style="min-width:100%;" class="btn btn-link" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="::{'text-info': dt.current}" style="color:black">{{::dt.label}}</span></button>
+                                  </td>
+                                </tr>
+                                </tbody>
+                              </table>
+                            </script>
+                            <!--calendar-month-template-->
+                            <script id="template/datepicker/month.html" type="text/ng-template">
+                              <table role="grid" class="calender" style="outline: none; margin:5px" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+                                <thead>
+                                <tr>
+                                  <th colspan="3"><button id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-link btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%">
+                                    <strong style="color:black; font-size: 14px">{{title}}</strong>
+                                  </button>
+                                  </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="row in rows track by $index">
+                                  <td ng-repeat="dt in row track by dt.date" class="text-center months" role="gridcell" id="{{::dt.uid}}" ng-class="::dt.customClass">
+                                    <button type="button" style="min-width:100%; padding:10px" class="btn btn-link" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1">
+                                      <span ng-class="::{'text-info': dt.current}" style="color:black; font-size:16px">{{::dt.label}}</span>
+                                    </button>
+                                  </td>
+                                </tr>
+                                </tbody>
+                              </table>
+                            </script>
+                            <!--calendar-day-template-->
+                            <script id="template/datepicker/day.html" type="text/ng-template">
+                              <table role="grid" class="calender" style="outline: none;" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+                                <thead>
+                                <tr>
+                                  <th class="month-year-heading" colspan="7">
+                                    <button id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-link btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;">
+                                      <strong style="color:black; font-size: 14px">{{title}}</strong>
+                                    </button>
+                                  </th>
+                                </tr>
+                                <tr>
+                                  <th ng-repeat="label in labels track by $index" class="text-center">
+                                    <small aria-label="{{label.full}}">{{label.abbr}}</small>
+                                  </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="row in rows track by $index">
+                                  <td ng-repeat="dt in row track by dt.date" class="text-center" role="gridcell" id="{{::dt.uid}}" ng-class="::dt.customClass" ng-mouseover="">
+                                    <button type="button" style="min-width:100%; color: black;" class="btn btn-link btn-sm" ng-class="{'btn-primary': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1">
+                                      <span ng-class="::{'text-muted': dt.secondary, 'text-info': dt.current}">{{::dt.label}}</span>
+                                    </button>
+                                  </td>
+                                </tr>
+                                </tbody>
+                              </table>
+                            </script>
+
+                          </p>
+                          <!--заменить на директиву-->
+                        </div>
+
+                        <div ng-if="item.type === 'select'" ng-class="getBpAndFieldID(item)">
+                          <dropdown-organ ng-if="item.id==='sID_Public_SubjectOrganJoin'"
+                                          ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                                          ng-model="item.value"
+                                          form-data-property="item"
+                                          service-data="oServiceData"
+                                          activiti-form="activitiForm"
+                                          ng-required="item.required"
+                                          form-data="data.formData"
+                                          name="item.id"></dropdown-organ>
+
+                          <ui-select dropdown-autocomplete ng-if="item.selectType=='autocomplete'"
+                                     ng-model="item.value"
+                                     name="{{item.id + rowIndex}}"
+                                     ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                                     service-data="oServiceData"
+                                     ng-required="item.required"
+                                     autocomplete-data="item.autocompleteData"
+                                     autocomplete-name="item.autocompleteName"
+                                     form-data="data.formData"
+                                     reach-infinity="requestMoreItems($select.items)"
+                                     on-select="onSelectDataList($item, tableName, rowIndex)">
+
+                            <ui-select-match>
+                              {{$select.selected[autocompleteData.titleProperty] || item.value}}
+                            </ui-select-match>
+                            <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search)"
+                                               refresh-delay="50"
+                                               repeat="field[item.autocompleteData.valueProperty] as field in items track by field[item.autocompleteData.orderBy]">
+                               <span title="{{field[item.autocompleteData.titleProperty]}}">
+                                 {{field[item.autocompleteData.titleProperty]}}
+                               </span>
+                            </ui-select-choices>
+                          </ui-select>
+                        </div>
+
+                        <div style="padding:5px"
+                             class="error-popup"
+                             ng-messages="form[tableName][item.id + rowIndex].$error" ng-if="form.$submitted && form[tableName][item.id + rowIndex].$invalid
+                                          || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName">
+                          <span ng-message="required">Необхідно заповнити.</span>
+                          <span ng-message="pattern">Значення має бути числом.</span>
+                          <span ng-message="email">Помилка в email.</span>
+                          <span ng-message="tel">Помилка в номері телефону.</span>
+                          <span ng-message="autovin">Помилка у VIN-номері авто.</span>
+                          <span ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</span>
+                          <span ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</span>
+                          <span ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</span>
+                          <span ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
+                            х-місяців, х-років.
+                          </span>
+                          <span ng-message="numberbetween">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
+                          <div ng-message="numberfractionalbetween">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</div>
+                          <span ng-message="numbersaccounts">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
+                          <span ng-message="dateofbirth">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
+                          <span ng-message="CustomFormat">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
+                          <span ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</span>
+                          <span ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</span>
+                          <span ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</span>
+                          <span ng-message="FileSign">Підпис не валідний або відсутній</span>
+                          <span ng-message="FileExtensions">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
+                          <span ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</span>
+                        </div>
+
+                      </td>
+
+                      <td style="padding: 0;" ng-if="$index !== 0">
+                        <a href="#" class="btn btn-default remove-btn" ng-click="removeRow($index, form[tableName], property.id)">
+                          <i style="color: #FF1F1F;" class="glyphicon glyphicon-remove"></i>
+                        </a>
+                      </td>
+
+                    </tr>
+
+                    </tbody>
+                  </table>
+
+                  <div style="text-align: left; margin-top: 3px">
+                    <input type="button" ng-hide="rowLengthCheckLimit(property)" class="add-row-button" ng-click="addRow(form[tableName], property.id, tableName)" value="Додати рядок">
+                  </div>
+                </div>
+
+                <input ng-switch-when="string"
+                       type="text"
+                       name="{{property.id}}"
+                       ng-hide="property.id==='resident' || property.id === 'sCountry' || property.id.indexOf('sCurrency') === 0 || property.id === 'sID_Merchant' || property.id.indexOf('sID_Merchant') === 0"
+                       ng-model="data.formData.params[property.id].value"
+                       ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
+                       class="form-control"
+                       value="">
+
+                <button ng-switch-when="string"
+                        type="button"
+                        name="{{property.id}}"
+                        ng-if="property.id === 'sID_Merchant' || property.id.indexOf('sID_Merchant') === 0"
+                        ng-model="data.formData.params[property.id].value"
+                        ng-disabled="!data.formData.params[property.id].value"
+                        ng-required="isFieldRequired(property)"
+                        ng-class="getBpAndFieldID(property)"
+                        ng-click="redirectPaymentLiqpay(property.id)"
+                        class="btn btn-success">Сплатити</button>
+
+                <label style="display: none;"
+                       ng-switch-when="invisible"
+                       name="{{property.id}}"
+                       ng-required="isFieldRequired(property)"
+                       class="form-control_">{{data.formData.params[property.id].value}}</label>
+                <label style="display: none;"
+                       ng-switch-when="markers"
+                       name="{{property.id}}"
+                       ng-required="isFieldRequired(property)"
+                       class="form-control_">{{data.formData.params[property.id].value}}</label>
+
+                <!--type="{{!!property.sFieldType?property.sFieldType : 'text'}}"-->
+                <input ng-switch-when="long"
+                       type="{{!!property.sFieldType?property.sFieldType : 'text'}}"
+                       name="{{property.id}}"
+                       ng-model="data.formData.params[property.id].value"
+                       ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
+                       class="form-control"
+                       value="">
+
+                <input ng-switch-when="tel"
+                       type="text"
+                       name="{{property.id}}"
+                       ng-model="data.formData.params[property.id].value"
+                       ng-tel-field="{defaultCountry:'ua', autoFormat:true, allowExtensions:false, preferredCountries:['ua'], autoPlaceholder:true}"
+                       ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
+                       class="form-control"
+                       value="">
+
+                <p class="input-group datepicker-central"
+                   ng-switch-when="date">
+
+                  <input type="text"
+                         name="{{property.id}}"
+                         datepicker-popup="{{data.formData.params[property.id].format}}"
+                         is-open="data.formData.params[property.id].opened"
+                         datepicker-options="data.formData.params[property.id].options"
+                         ng-model="data.formData.params[property.id].value"
+                         ng-required="isFieldRequired(property)"
+                         ng-readonly="true"
+                         ng-class="getBpAndFieldID(property)"
+                         close-text="Close"
+                         class="form-control"
+                         value="">
+                  <span class="input-group-btn">
+                    <button type="button"
+                            class="btn btn-default"
+                            ng-click="data.formData.params[property.id].open($event)">
+                      <i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                  <!--calendar-modal-window-->
+                  <script id="template/datepicker/popup.html" type="text/ng-template">
+                    <ul class="dropdown-menu" ng-style="{display: (isOpen && 'block') || 'none', top: position.top+'px', left: position.left+'px', overflow: 'hidden'}" ng-keydown="keydown($event)">
+                    	<li ng-transclude style="margin-top:0"></li>
+                    	<li ng-if="showButtonBar" style="margin-top:0; text-align: center">
+                        <button type="button" class="btn btn-sm btn-link" style="color: black; font-weight: bold" ng-click="select(null)">{{ getText('clear') }}</button>
+                    	</li>
+                    </ul>
+                  </script>
+                    <!--calendar-year-template-->
+                  <script id="template/datepicker/year.html" type="text/ng-template">
+                    <table  role="grid" class="calender" style="outline: none; margin:5px" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+                      <thead>
+                        <tr>
+                          <th>
+                            <button type="button" class="btn btn-link btn-sm pull-left" style="color: black;" ng-click="move(-1)" tabindex="-1">
+                              <i class="glyphicon glyphicon-arrow-left"></i>
+                            </button>
+                          </th>
+                          <th colspan="3">
+                            <button id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-link btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;">
+                              <strong style="color: black; font-size: 14px">Рік</strong>
+                            </button>
+                          </th>
+                          <th>
+                            <button type="button" class="btn btn-link btn-sm pull-right" style="color: black;" ng-click="move(1)" tabindex="-1">
+                              <i class="glyphicon glyphicon-arrow-right"></i>
+                            </button>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="row in rows track by $index">
+                          <td ng-repeat="dt in row track by dt.date" class="text-center" role="gridcell" id="{{::dt.uid}}" ng-class="::dt.customClass">
+                            <button type="button" style="min-width:100%;" class="btn btn-link" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="::{'text-info': dt.current}" style="color:black">{{::dt.label}}</span></button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </script>
+                    <!--calendar-month-template-->
+                  <script id="template/datepicker/month.html" type="text/ng-template">
+                    <table role="grid" class="calender" style="outline: none; margin:5px" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+                      <thead>
+                        <tr>
+                          <th colspan="3"><button id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-link btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%">
+                            <strong style="color:black; font-size: 14px">{{title}}</strong>
+                          </button>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="row in rows track by $index">
+                          <td ng-repeat="dt in row track by dt.date" class="text-center months" role="gridcell" id="{{::dt.uid}}" ng-class="::dt.customClass">
+                            <button type="button" style="min-width:100%; padding:10px" class="btn btn-link" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1">
+                              <span ng-class="::{'text-info': dt.current}" style="color:black; font-size:16px">{{::dt.label}}</span>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </script>
+                    <!--calendar-day-template-->
+                  <script id="template/datepicker/day.html" type="text/ng-template">
+                    <table role="grid" class="calender" style="outline: none;" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+                      <thead>
+                        <tr>
+                          <th class="month-year-heading" colspan="7">
+                            <button id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-link btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;">
+                              <strong style="color:black; font-size: 14px">{{title}}</strong>
+                            </button>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th ng-repeat="label in labels track by $index" class="text-center">
+                            <small aria-label="{{label.full}}">{{label.abbr}}</small>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <tr ng-repeat="row in rows track by $index">
+                        <td ng-repeat="dt in row track by dt.date" class="text-center" role="gridcell" id="{{::dt.uid}}" ng-class="::dt.customClass" ng-mouseover="">
+                          <button type="button" style="min-width:100%; color: black;" class="btn btn-link btn-sm" ng-class="{'btn-primary': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1">
+                            <span ng-class="::{'text-muted': dt.secondary, 'text-info': dt.current}">{{::dt.label}}</span>
+                          </button>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </script>
+
+                </p>
+                <select ng-switch-when="enum"
+                        name="{{property.id}}"
+                        ng-model="data.formData.params[property.id].value"
+                        ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in property.enumValues"
+                        ng-required="isFieldRequired(property)"
+                        ng-class="getBpAndFieldID(property)"
+                        class="form-control"></select>
+
+                  <div class="input-group"
+                       ng-switch-when="checkbox">
+                  <div ng-class="{'checkbox-indeterminate': data.formData.params[property.id].value === null}">
+                    <input type="checkbox"
+                           id="{{property.id}}"
+                           name="{{property.id}}"
+                           ng-model="data.formData.params[property.id].value"
+                           ng-true-value="'{{data.checkbox[property.id].trueValue}}'"
+                           ng-false-value="'{{data.checkbox[property.id].falseValue}}'"
+                           checkbox-indeterminate="data.formData.params[property.id].value === null"
+                           ng-required="isFieldRequired(property) && data.formData.params[property.id].value === null"
+                    >
+                    <label for="{{property.id}}"></label>
+                  </div>
+                  </div>
+
+                <p class="input-group"
+                   ng-switch-when="file">
+                  <label ng-if="data.formData.params[property.id].scan && data.formData.params[property.id].isLoading"
+                         name="{{property.id}}_0"
+                         class="form-control_">
+                    Завантаження із BankID ...</label>
+                  <label ng-if="data.formData.params[property.id].scan && !data.formData.params[property.id].isLoading"
+                         name="{{property.id}}_1"
+                         class="form-control_">
+                    Завантажено із BankID</label>
+                  <file-field name="{{property.id}}"
+                              ng-model="data.formData.params[property.id].value"
+                              ng-required="isFieldRequired(property)"
+                              ng-class="getBpAndFieldID(property)"
+                              ng-if="data.formData.params[property.id].upload">Add File
+                  </file-field>
+                </p>
+
+                <slot-picker ng-switch-when="queueData"
+                             name="{{property.id}}"
+                             service="oService"
+                             service-data="oServiceData"
+                             ng-model="data.formData.params[property.id].value"
+                             ng-class="getBpAndFieldID(property)"
+                             form-data="data.formData"
+                             property="property"
+                             ng-required="isFieldRequired(property)"></slot-picker>
+                <div ng-switch-when="select" ng-class="getBpAndFieldID(property)">
+                  <dropdown-organ ng-if="property.id==='sID_Public_SubjectOrganJoin'"
+                                  ng-model="data.formData.params[property.id].value"
+                                  form-data-property="data.formData.params[property.id]"
+                                  service-data="oServiceData"
+                                  activiti-form="activitiForm"
+                                  ng-required="isFieldRequired(property)"
+                                  form-data="data.formData"
+                                  name="property.id"></dropdown-organ>
+
+                  <ui-select dropdown-autocomplete ng-if="property.selectType=='autocomplete'"
+                             ng-model="data.formData.params[property.id].value"
+                             service-data="oServiceData"
+                             ng-required="isFieldRequired(property)"
+                             autocomplete-data="property.autocompleteData"
+                             autocomplete-name="property.autocompleteName"
+                             form-data="data.formData"
+                             reach-infinity="requestMoreItems($select.items)"
+                             on-select="onSelectDataList($item)">
+
+                    <ui-select-match>
+                      {{$select.selected[property.autocompleteData.valueProperty]}}
+                    </ui-select-match>
+
+                    <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"
+                                       refresh-delay="50"
+                                       repeat="item[property.autocompleteData.valueProperty] as item in items track by item[property.autocompleteData.orderBy]">
+                      <span title="{{item[property.autocompleteData.titleProperty]}}">
+                        {{item[property.autocompleteData.titleProperty]}}
+                      </span>
+                    </ui-select-choices>
+                  </ui-select>
+                </div>
+              </div>
+
+              <div class="col-md-3" ng-if="renderAsLabel(property)" ng-hide="property.type === 'file'"
+                   ng-bind="data.formData.params[property.id].value">
+                <input type="hidden"
+                       name="{{property.id}}"
+                       ng-model="data.formData.params[property.id].value"
+                       ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
+                       class="form-control"
+                       value="">
+              </div>
+
+              <div class="col-md-4 validation-message"
+                   ng-if="form.$submitted"
+                   ng-messages="form[property.id].$error">
+                <div ng-message="required">Необхідно заповнити.</div>
+                <div ng-message="pattern">Значення має бути числом.</div>
+                <div ng-message="email">Помилка в email.</div>
+                <div ng-message="tel">Помилка в номері телефону.</div>
+                <div ng-message="autovin">Помилка у VIN-номері авто.</div>
+                <div ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</div>
+                <div ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</div>
+                <div ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</div>
+                <div ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
+                  х-місяців, х-років.
+                </div>
+                <div ng-message="numberbetween">{{ form[property.id].lastErrorMessage }}</div>
+                <div ng-message="numberfractionalbetween">{{ form[property.id].lastErrorMessage }}</div>
+                <div ng-message="numbersaccounts">{{ form[property.id].lastErrorMessage }}</div>
+                <div ng-message="dateofbirth">{{ form[property.id].lastErrorMessage }}</div>
+                <div ng-message="CustomFormat">{{ form[property.id].lastErrorMessage }}</div>
+                <div ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</div>
+                <div ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</div>
+                <div ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</div>
+                <div ng-message="FileSign">Підпис не валідний або відсутній</div>
+                <div ng-message="FileExtensions">{{ form[property.id].lastErrorMessage }}</div>
+                <div ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-5"></div>
+              <div class="col-md-3">
+
+
+                  <label ng-hide="!sign.checked">Після натискання "Замовити послугу"
+                    Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом
+                  </label>
+                  <label  ng-if="isSignNeeded" ng-hide="isSignNeededRequired">Накласти ЕЦП :
+                  <input type="checkbox"
+                         ng-model="sign.checked"
+                         name="{{data.formData.getSignFieldID()}}">
+                </label>
+                  <!--label  ng-if="isSignNeededRequired ? true : sign.checked">Після натискання "Замовити послугу"-->
+                         <!--ng-model="isSignNeededRequired ? true : sign.checked"-->
+
+              </div>
+              <div class="col-md-4"></div>
+              </div>
+            <div class="row col-md-8 col-md-push-3">
+              Замовляючи послугу, Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність
+            </div>
+              <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-3">
+                  <br/>
+                  <button class="btn btn-info"
+                          ng-click="processForm(form, activitiForm.formProperties)"
+                          ng-disable="cantSubmit(form)"
+                          ng-hide="bSending(form)">
+                    Замовити послугу
+                  </button>
+                  <!--<button class="btn btn-info"-->
+                          <!--ng-click="signForm(form)"-->
+                          <!--ng-disable="cantSubmit(form)"-->
+                          <!--ng-hide="bSending(form)">-->
+                    <!--Підписати-->
+                  <!--</button>-->
+                  <br><label ng-show="bSending(form)">Зачекайте...</label>
+                </div>
+                <div class="col-md-4"></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
   </div>
+
+  <div class="row" ng-if="spinner">
+    <div class="text-center">
+      <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
+    </div>
+  </div>
+
+  <place-edit></place-edit>
+
 </div>
-
-
-

@@ -6,19 +6,6 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
       var fileField = element.find('input');
       var oFile = scope.data.formData.params[ngModel.$name];
 
-      // todo table file
-      // if(!oFile && ngModel.$name) {
-      //   angular.forEach(scope.activitiForm.formProperties, function (prop) {
-      //     if('aRow' in prop) {
-      //       angular.forEach(prop.aRow, function (row) {
-      //         angular.forEach(row.aField, function (field) {
-      //           if(field.id === ngModel.$name) oFile = field.props;
-      //         })
-      //       })
-      //     }
-      //   })
-      // }
-
       var nMaxFileSizeLimit = 10; // max upload file size = 10 MB
       var aAvailableFileExtensions = ["bmp", "gif", "jpeg", "jpg", "png", "tif", "doc", "docx", "odt", "rtf", "pdf"
         , "xls", "xlsx", "xlsm", "ods", "sxc", "wks", "csv", "zip", "rar", "7z", "p7s"];
@@ -112,7 +99,7 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
     '  <input type="file" style="display:none"  ng-disabled="isFileProcessUploading.bState">' +
     ' </button>' +
     ' <br/>' +
-    ' <label ng-if="data.formData.params[property.id].value">Файл: {{data.formData.params[property.id].fileName || item.props.fileName}}</label>' +
+    ' <label ng-if="data.formData.params[property.id].value">Файл: {{data.formData.params[property.id].fileName}}</label>' +
     ' <br/>' +
     ' <label ng-if="data.formData.params[property.id].value && data.formData.params[property.id].value.signInfo"  class="form-control_"> ' +
     '    Підпис: {{data.formData.params[property.id].value.signInfo.name}} ' +

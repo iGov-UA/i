@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.List;
 
-
 @Entity
 @Table(name = "SubjectMessageFeedback")
 public class SubjectMessageFeedback extends AbstractEntity {
@@ -55,12 +54,8 @@ public class SubjectMessageFeedback extends AbstractEntity {
     @JsonProperty(value = "sID_Token")
     @Column(name = "sID_Token", nullable = false)
     private String sID_Token;
-    
-    @JsonProperty(value = "sID_Order")
-    @Column(name = "sID_Order", nullable = true)
-    private String sID_Order;
 
-    @JsonProperty(value = "sAnswer") 
+    @JsonProperty(value = "sAnswer")
     @Column(name = "sAnswer", nullable = true)
     private String sAnswer;
 
@@ -173,14 +168,6 @@ public class SubjectMessageFeedback extends AbstractEntity {
     public void setsID_Token(String sID_Token) {
         this.sID_Token = sID_Token;
     }
-    
-    public String getsID_Order() {
-        return sID_Order;
-    }
-
-    public void setsID_Order(String sID_Order) {
-        this.sID_Order = sID_Order;
-    }
 
     public String getsAnswer() {
         return sAnswer;
@@ -189,4 +176,4 @@ public class SubjectMessageFeedback extends AbstractEntity {
     public void setsAnswer(String sAnswer) {
         this.sAnswer = sAnswer;
     }
- }
+}

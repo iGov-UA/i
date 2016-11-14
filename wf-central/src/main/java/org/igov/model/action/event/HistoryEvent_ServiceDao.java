@@ -51,6 +51,4 @@ public interface HistoryEvent_ServiceDao extends EntityDao<Long, HistoryEvent_Se
     
     
     List<HistoryEvent_Service> getOrdersHistory(Long nID_Subject, Long nID_Service, String sID_UA);
-    
-    List<HistoryEvent_Service> getHistoryEvent_Service(String sID_UA, Long nID_Service, Long nID_StatusType);
 }

@@ -5,6 +5,8 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.task.Attachment;
 import org.apache.commons.mail.ByteArrayDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.igov.io.mail.Mail;
 
@@ -15,8 +17,11 @@ import static org.igov.util.ToolLuna.getProtectedNumber;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.mail.MultiPartEmail;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 //import org.igov.io.sms.ManagerSMS_New;
+
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
 /**
  * @author BW
@@ -25,6 +30,7 @@ import static org.igov.service.business.action.task.core.AbstractModelTask.getSt
 public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
     //private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithAttachments.class);
+
     private Expression saAttachmentsForSend;
 
     protected Expression sPhone_SMS;
@@ -38,48 +44,43 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
             //MultiPartEmail oMultiPartEmail = MultiPartEmail_BaseFromTask(oExecution);
             Mail oMail = Mail_BaseFromTask(oExecution);
 
-            String sPhone_SMS_Value = getStringFromFieldExpression(this.sPhone_SMS, oExecution);
-            if (sPhone_SMS_Value != null) {
-                String sText_SMS_Value = getStringFromFieldExpression(this.sText_SMS, oExecution);
-                if (sText_SMS_Value != null) {
-                    sText_SMS_Value = replaceTags(sText_SMS_Value, oExecution);
+            String sPhone_SMS = getStringFromFieldExpression(this.sPhone_SMS, oExecution);
+            if (sPhone_SMS != null) {
+                String sText_SMS = getStringFromFieldExpression(this.sText_SMS, oExecution);
+                if (sText_SMS != null) {
+                    sText_SMS = replaceTags(sText_SMS, oExecution);
                     String sReturn;
-                    sPhone_SMS_Value = sPhone_SMS_Value.replaceAll("\\ ", "");
+                    sPhone_SMS = sPhone_SMS.replaceAll("\\ ", "");
 
-                    //sReturn = oManagerSMS.sendSMS(generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))),
-                    //        sPhone_SMS_Value, sText_SMS_Value);
-                    
-                    sReturn = ManagerSMS.sendSms(sPhone_SMS_Value, sText_SMS_Value, 
-                            generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))), true);
-                    
+                    sReturn = oManagerSMS.sendSMS(generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))),
+                	    sPhone_SMS, sText_SMS);
                     LOG.info("(sReturn={})", sReturn);
                 }
             }
-            String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
-            LOG.info("sAttachmentsForSend on " + oMail.getTo() + " sAttachmentsForSend: " + sAttachmentsForSend);
-            sAttachmentsForSend = sAttachmentsForSend == null ? "" : sAttachmentsForSend;
+            LOG.info("sAttachmentsForSend...");
+            String sAttachmentsForSend = this.saAttachmentsForSend == null || "".equals(this.saAttachmentsForSend) ? "" : getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
+            LOG.info("(sAttachmentsForSend={})", sAttachmentsForSend);
             List<Attachment> aAttachment = new ArrayList<>();
             String[] asID_Attachment = sAttachmentsForSend.split(",");
             for (String sID_Attachment : asID_Attachment) {
-                LOG.info("sID_Attachment=" + sID_Attachment);
+                //log.info("sID_Attachment=" + sID_Attachment);
                 if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
                     String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
-                    if (!"".equals(sID_AttachmentTrimmed)) {
-                        LOG.info("(sID_AttachmentTrimmed={})", sID_AttachmentTrimmed);
-                        Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
-                        if (oAttachment != null) {
-                            aAttachment.add(oAttachment);
-                            LOG.info("aAttachment={} add ok!", sID_AttachmentTrimmed);
-                        }
+                    LOG.info("(sID_AttachmentTrimmed={})", sID_AttachmentTrimmed);
+                    Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
+                    if (oAttachment != null) {
+                        aAttachment.add(oAttachment);
                     }
                 } else {
-                    LOG.warn("sID_Attachment={} is empty!!!", sID_Attachment);
+                    LOG.warn("(sID_Attachment={})", sID_Attachment);
                 }
             }
 
             if (!aAttachment.isEmpty()) {
-                InputStream oInputStream_Attachment;
-                String sFileName, sFileExt, sDescription;
+                InputStream oInputStream_Attachment = null;
+                String sFileName = "document";
+                String sFileExt = "txt";
+                String sDescription = "";
                 for (Attachment oAttachment : aAttachment) {
                     sFileName = oAttachment.getName();
                     String sExt = "";
@@ -87,9 +88,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     if (nAt >= 0) {
                         sExt = sFileName.substring(nAt);
                     }
-                    if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml") && !sFileName.toLowerCase().endsWith(".rpl")) {
-                        sFileName = "Attach_"+oAttachment.getId()+sExt; //
-                    }
+                    sFileName = "Attach_" + oAttachment.getId() + sExt; //
                     sFileExt = oAttachment.getType().split(";")[0];
                     sDescription = oAttachment.getDescription();
                     if (sDescription == null || "".equals(sDescription.trim())) {
@@ -106,11 +105,17 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                                 Attachment.class);
                     }
                     DataSource oDataSource = new ByteArrayDataSource(oInputStream_Attachment, sFileExt);
+                    if (oDataSource == null) {
+                        LOG.error("Attachment: oDataSource == null");
+                    }
+
+                    //oMail._Attach(oDataSource, sFileName + "." + sFileExt, sDescription);
                     oMail._Attach(oDataSource, sFileName, sDescription);
+
                     LOG.info("oMultiPartEmail.attach: Ok!");
                 }
             }
-            LOG.info("sAttachmentsForSend ok!" + " on email " + oMail.getTo());
+            LOG.info("sAttachmentsForSend ok!");
             LOG.info("email send...");
             oMail.send();
             LOG.info("email send ok!");

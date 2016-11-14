@@ -6,6 +6,10 @@
 
   function taxTemplateFileHandler($http, taxTemplateFileHandlerConfig) {
 
+    // var OFILE_XML_SWINED = 'oFile_XML_SWinEd',
+    //     SID_FIELD_SWINED = 'sID_Field_SWinEd',
+    //     TYPE = 'file';
+
     /**
      * Parse template into JSON
      * @param params
@@ -105,7 +109,7 @@
 
           if (!finalArray || !finalArray[1]) return null;
 
-          var indexes = finalArray[1].trim().match(/^\d+$/ig),
+          var indexes = finalArray[1].trim().match(/\d+/ig),
               index;
 
           if (Array.isArray(indexes)) {

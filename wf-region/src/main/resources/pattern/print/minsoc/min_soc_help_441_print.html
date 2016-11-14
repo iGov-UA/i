@@ -315,7 +315,7 @@
     //  ****************    переменные   ****************
     //*
     var asNumberApplication = "[asNumberApplication]";
-    var asTransferType = "[asTransferType]";
+    var transfer_type = "[transfer_type]";
     var asAdress = "[asAdress]";
     var bankIdPassport = "[bankIdPassport]";
     var nPage = "[nPage]";
@@ -324,7 +324,7 @@
     // */
     /*
     var asNumberApplication = "первинне";
-    var asTransferType = "через національного оператора поштового зв'язку";
+    var transfer_type = "через національного оператора поштового зв'язку";
     var asAdress = "Так";
     var bankIdPassport = "АО295227 БАБУШКИНСКИМ РО В Г ДНЕПРОПЕТРОВСКЕ ГУ ГМС УКРАИНЫ В ДНЕПРОПЕТРОВСКОЙ ОБЛ 17.08.2015";
     //  */
@@ -713,14 +713,18 @@
         <div>Заповнюється: заявником /уповноваженим представником/</div>
         <div>До органу праці та соціального захисту населення [sNameOrgan]
           <div class="under_multifield">
-            <b>від</b><u>[clFIO]</u>
+            <b>від</b><u>[clFio]</u>
           </div>
         </div>
         <div class="under_multifield">
-          <b>зареєстрований за адресою:</b><u>[sAddressRegistered]</u>
+          <b>зареєстрований за адресою:</b><u>[bankIdAddressFactual]</u>
         </div>
         <div class="under_multifield">
-          <b>проживаю за адресою:</b><u>[sAddressFactual]</u>
+          <b>проживаю за адресою:</b>
+          <u>
+            <span id="spanAdressRegistr">[bankIdAddressFactual]</span>           
+            <span id="spanAdressFactual">[sAddressFactual]</span>
+          </u>
         </div>
         <div class="ta-J">
           контактний телефон <em>[phone]</em>, паспорт:
@@ -984,7 +988,7 @@
         <span class="check_box"><span id="spanTransferPost">&#10004;</span></span>        
         через національного оператора поштового зв'язку №
         <div class="under_field w200 ta-c"><u>
-        	<span id="spanTransferPostVal">[nPostOffice]</span>
+        	<span id="spanTransferPostVal">[post_office]</span>
         </u></div>;
       </div>
       <div class="ta-j">
@@ -997,10 +1001,10 @@
           банк<span class="pg-75 ub">&#160;</span>
         </span>
         <span id="spanTransferBankVal">   
-          <em>[sBankAccount]</em>	
+          <em>[bank_account]</em>	
           МФО <em>[mfo]</em> 
           код <em>[edrpou]</em> 
-          банк <em>[sBankName]</em>
+          банк <em>[bank_name]</em>
         </span>
       </div>
       <div class="ta-j">
@@ -1015,10 +1019,10 @@
           банк<span class="pg-75 ub">&#160;</span>
         </span>
         <span id="spanTransferHouseVal">   
-          <em>[sBankAccount]</em>	
+          <em>[bank_account]</em>	
           МФО <em>[mfo]</em> 
           код <em>[edrpou]</em> 
-          банк <em>[sBankName]</em>
+          банк <em>[bank_name]</em>
         </span>
       </div>
       <div class="ta-j i b">
@@ -1263,8 +1267,11 @@
     	
         ShowElements(asNumberApplication == "первинне", "spanFirst");
         ShowElements(asNumberApplication == "повторне звернення", "spanSecond");
-               	
-        switch(asTransferType) {
+        
+        ShowElementsOnTrue(asAdress == "Так", "spanAdressRegistr");      
+        ShowElementsOnTrue(asAdress == "Ні", "spanAdressFactual");
+    	
+        switch(transfer_type) {
         case "через національного оператора поштового зв'язку":          
           ShowElementsOnTrue(true, "spanTransferPost", "spanTransferPostVal", "spanTransferHouseNotVal", "spanTransferBankNotVal"); 
           ShowElementsOnTrue(false, "spanTransferBank", "spanTransferBankVal", "spanTransferHouse", "spanTransferHouseVal"); 

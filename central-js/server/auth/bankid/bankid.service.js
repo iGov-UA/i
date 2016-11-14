@@ -10,8 +10,7 @@ var request = require('request')
   , uploadFileService = require('../../api/uploadfile/uploadfile.service')
   , bankidUtil = require('./bankid.util')
   , errors = require('../../components/errors')
-  , activiti = require('../../components/activiti')
-  , logger = require('../../components/logger').createLogger(module);
+  , activiti = require('../../components/activiti');
 
 var createError = function (error, error_description, response) {
   return {
@@ -38,13 +37,10 @@ module.exports.getUserKeyFromSession = function (session){
 };
 
 module.exports.index = function (accessToken, callback, disableDecryption) {
-  logger.info('start search for client data', { accessToken: accessToken });
-
   var url = bankidUtil.getInfoURL(config);
 
   function validateResponse(errorCallback, successCallback) {
     return function (error, repsonse, body) {
-      logger.info('bankid result', body);
       if(error){
         errorCallback(error, repsonse, body);
       } else if (body && (body.state === 'err' ||  body.error)) {
@@ -60,24 +56,30 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
   }
 
   function adminCheckCallback(error, response, body) {
-    var innToCheck = body.customer.inn;
+    console.log("--------------- enter admin callback !!!!");
+    var innToCheck;
 
-    if(innToCheck){
-      if (disableDecryption) {
-        logger.info('innToCheck before decryption', {inn : innToCheck});
-        innToCheck = bankidUtil.decryptField(innToCheck);
-        logger.info('innToCheck after decryption', {inn : innToCheck});
-      }
-
-      if (Admin.isAdminInn(innToCheck)) {
-        body.admin = {
-          inn: innToCheck,
-          token: Admin.generateAdminToken()
-        };
-        logger.info('user is recognized as admin', body.admin);
-      }
+    if (disableDecryption) {
+      console.log("---------------  innToCheck before decryption !!!!" + body.customer.inn);
+      innToCheck = bankidUtil.decryptField(body.customer.inn);
+      console.log("---------------  innToCheck after decryption !!!!" + innToCheck);
+    } else {
+      innToCheck = body.customer.inn;
+      console.log("--------------- nodecrption of inn !!!!");
     }
 
+    console.log("---------------  innToCheck in result !!!!" + innToCheck);
+
+    console.log("---------------  body.customer in result !!!!" + body.customer);
+    console.log("---------------  Admin.isAdminInn(innToCheck) in result!!!! " + Admin.isAdminInn(innToCheck));
+
+    if (body.customer && Admin.isAdminInn(innToCheck)) {
+      console.log("---------------  user with inn " + innToCheck + " is admin");
+      body.admin = {
+        inn: innToCheck,
+        token: Admin.generateAdminToken()
+      };
+    }
     callback(error, response, body);
   }
 
@@ -169,7 +171,6 @@ module.exports.getScanContentRequest = function (documentScanLink, accessToken) 
 /**
  * function downloads buffer with scan bytes
  *
- * @param documentScanType type of scan
  * @param documentScanLink link to scan from where we should download it
  * @param accessToken access token from bankid authorization
  * @param callback function(error, buffer)

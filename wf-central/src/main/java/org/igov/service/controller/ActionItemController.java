@@ -38,10 +38,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 
+import org.igov.model.action.item.ServiceTag;
+import org.igov.model.action.item.ServiceTagLink;
 
 import static org.igov.util.Tool.bFoundText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import springfox.documentation.spring.web.json.Json;
 
 @Controller
 @Api(tags = {"ActionItemController - Предметы действий (каталог сервисов)"})
@@ -149,9 +152,7 @@ public class ActionItemController {
     public @ResponseBody
     ResponseEntity getService(
             @ApiParam(value = "ИД-номер сервиса ", required = true) @RequestParam(value = "nID") Long nID) {
-        //System.out.println("!!: " + generalConfig.getServerId(new Integer(0)));
         Service oService = baseEntityDao.findById(Service.class, nID);
-        //System.out.println("!!: " + generalConfig.getServerId(new Integer(5)));
         return regionsToJsonResponse(oService);
     }
 
@@ -496,7 +497,7 @@ public class ActionItemController {
                 preparedData.setRegion(serviceData.getRegion());
                 preparedData.setHidden(serviceData.isHidden());
                 preparedData.setNote(serviceData.getNote());
-                preparedData.setnID_Server(generalConfig.getServerId(serviceData.getnID_Server().intValue()).longValue());
+                preparedData.setnID_Server(serviceData.getnID_Server());
                 preparedData.setTest(serviceData.isTest());
                 preparedData.setServiceType(serviceData.getServiceType());
                 preparedData.setUrl(serviceData.getUrl());

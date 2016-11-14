@@ -4,7 +4,14 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть найближчий центр надання безоплатної вторинної допомоги" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Місцезнаходження центру" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="label1" name="Юрисдикція центру" type="label" default="Дніпровський, Синельниківський райони, м.Синельникове, Новокодацький (Ленінський), Чечелівський (Красногвардійський) райони м. Дніпро"></activiti:formProperty>
+        <activiti:formProperty id="label2" name="Юрисдикція центру" type="label" default="Амур-Нижньодніпровський р-н м. Дніпро, Індустріальний р-н м. Дніпро, Самарський р-н м. Дніпро, Магдалинівський р-н, м. Новомосковськ, Новомосковський р-н, Царичанський р-н"></activiti:formProperty>
+        <activiti:formProperty id="label3" name="Юрисдикція центру" type="label" default="Шевченківський (Бабушкінський) район м. Дніпропетро, Соборний (Жовтневий) р-н м. Дніпро, Центральний (Кіровський) р-н м. Дніпро, Солонянський р-н"></activiti:formProperty>
+        <activiti:formProperty id="label4" name="Юрисдикція центру" type="label" default="Апостолівський р-н, Криворізький р-н, м. Жовті Води, П'ятихатський р-н, Дзержинський р-н м. Кривий Ріг, Довгинцівський р-н м. Кривий Ріг, Інгулецький р-н м. Кривий Ріг, Жовтневий р-н м. Кривий Ріг"></activiti:formProperty>
+        <activiti:formProperty id="label5" name="Юрисдикція центру" type="label" default="Софіївський р-н, Широківський р-н, Тернівський р-н м. Кривий Ріг, Саксаганський р-н м. Кривий Ріг, Центрально-Міський р-н м. Кривий Ріг"></activiti:formProperty>
+        <activiti:formProperty id="label6" name="Юрисдикція центру" type="label" default="Верхньодніпровський р-н, Криничанський р-н, м. Вільногірськ, м. Кам'янське, Петриківський р-н"></activiti:formProperty>
+        <activiti:formProperty id="label7" name="Юрисдикція центру" type="label" default="м. Марганець, м. Нікополь, м. Орджонікідзе, Нікопольський р-н, Томаківський р-н"></activiti:formProperty>
+        <activiti:formProperty id="label8" name="Юрисдикція центру" type="label" default="Васильківський, Межівський, Павлоградський, Петропавлівський, Юр'ївський, Покровський райони, м. Першотравенськ, м. Тернівка, м. Павлоград"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -69,9 +76,11 @@
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Довіреність" type="markers" default="${markerService.loadFromFile('minust/justice_989.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="Лейбл" type="markers" default="${markerService.loadFromFile('minust/justice_989_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="File upload" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -114,7 +123,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			&lt;p&gt; Ваше звернення №[sID_Order] щодо Надання безоплатної вторинної правової допомоги було зареєстровано у системі.&lt;br/&gt;
+			&lt;p&gt; Ваше звернення №[sID_Order] щодо Звернення про надання безоплатної вторинної правової допомоги було зареєстровано у системі.&lt;br/&gt;
 			Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 			&lt;br /&gt;
 			${sPhoneOrgan}&lt;br /&gt;
@@ -158,7 +167,7 @@
         <activiti:formProperty id="decide" name="Рішення" type="enum" required="true">
           <activiti:value id="accept" name="звернення прийнято, видано наказ про надання безоплатної правової допомоги"></activiti:value>
           <activiti:value id="reject" name="відмова в обробці (обов'язково вкажіть причину в коментарі)"></activiti:value>
-          <activiti:value id="deny" name="звернення прийнято, відмова у наданні безоплатної правової допомоги (обов'язково вкажіть причину в коментарі)"></activiti:value>
+          <activiti:value id="deny" name="звернення прийнято, відмова у наданні безоплатної правової допомоги  (обов'язково вкажіть причину в коментарі)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Примітки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/justice_989_print1.html" type="file"></activiti:formProperty>

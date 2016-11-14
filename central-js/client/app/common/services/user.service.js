@@ -1,4 +1,4 @@
-angular.module('app').factory('UserService', function ($http, $q, $rootScope, AdminService, ErrorsFactory) {
+angular.module('app').factory('UserService', function ($http, $q, AdminService, ErrorsFactory) {
   var bankIDLogin;
   var bankIDAccount;
 
@@ -44,9 +44,7 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
     },
 
     logout: function (){
-      $http.post('./auth/logout').then(function(){
-        $rootScope.$broadcast('event.logout');
-      });
+      $http.post('./auth/logout');
     },
 
     fio: function(){

@@ -2,321 +2,190 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів</title>
+    <title>Надання довідки про доходи фізичних осіб</title>
 
     <style type="text/css">
-      table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        padding: 0;
+      /* <![CDATA[ */
+      .under_field { /* Блок с подписью */
       }
+
+      .under_field.notb { /*без подчеркивания*/
+        border-bottom: 0px solid black;
+      }
+
+      /*
+      .under_field>spam.bold {
+      padding: 0 10px 0 0;
+      font-weight: normal;
+      background: white;
+      display: inline-block;
+      position: relative;
+      left: 0;
+      font-style: normal;
+      bottom: -1;
+      background-color: white;
+    }*/
+
+      /*если надо подчеркнуть*/
+      .under_field>spam.under { 
+        padding: 0 10px;
+        text-decoration: none; 
+      }
+
+      /*текст снизу*/
+      .under_field>span.textUnd { 
+        color: #606060;
+        font-size: 10pt;
+      }	
+
+      table {
+        align-self: center;
+        border-collapse: collapse; /* Отображать двойные линии как одинарные */
+      }
+
 
       td.bb {
-        border: 1px solid #000;
+        border: 1px solid black;
+        border-bottom: 1px solid black;
       }
 
-      td.notb, td, th {
-        border: 1px solid #fff;
+      td.notb {
+        border: 1px solid white;
       }
 
-      th.t, td.t {
-        border-top: 1px solid #000;
+      td {
+        border: 1px solid white;
+        text-align:justify;
       }
 
-      th.r, td.r {
-        border-right: 1px solid #000;
+      th {
+        border: 1px solid white;
       }
 
-      th.b, td.b {
-        border-bottom: 1px solid #000;
+
+
+      th.t, td.t{
+        border-top: 1px solid #F00;
       }
 
-      th.l, td.l {
-        border-left: 1px solid #000;
+      th.r, td.r{
+        border-right: 1px solid #F00;
+      }
+
+      th.b, td.b{
+        border-bottom: 1px solid #F00;
+      }
+
+      th.l, td.l{
+        border-left: 1px solid #F00;
+      }
+
+
+
+      .smallText {
+        font-size: 10pt;  
+        line-height: 1.1;
       }
 
 
       /* выравнивание текста */
-      .ta-l {text-align: left;}
-      .ta-j {text-align: justify;}
-      .ta-r {text-align: right;}
-      .ta-c {text-align: center;}
+      .ta-l { text-align: left;}
+      .ta-j { text-align: justify;}
+      .ta-r { text-align: right;}
+      .ta-c { text-align: center;}
 
-      .i {font-style: italic;}
+      .i{font-style: italic;}
+
       
-      .checkblock{
-		  text-align: center;
-		  vertical-align: middle;  
-	  }
-
-      /* ширина в процентах */            
-      .w1p {width: 1%;}      
-      .w4p {width: 4%;}      
-      .w5p {width: 5%;}   
-      .w10p { width: 10%;}
-      .w20p { width: 20%;}
-      .w30p { width: 30%;}
-      .w33p { width: 33%;} 
-      .w40p { width: 40%;}
-      .w50p { width: 50%;}   
-      .w60p { width: 60%;}   
-      .w70p { width: 70%;}   
-      .w80p { width: 80%;}   
-      .w90p { width: 90%;}    
-      .w95p { width: 95%;}     
       .w100p { width: 100%;}
-
-      /* ширина */
-		.w10 {	width: 10px;}
-		.w30 {	width: 30px;}
-       .w50 {	width: 50px;}
-      .w100 {	width: 100px;}
-      .w150 {	width: 150px;}
-      .w200 {	width: 200px;}
-      .w250 {	width: 250px;}
-      .w300 {	width: 300px;}
-      .w350 {	width: 350px;}
-      .w450 {	width: 450px;}
-      .w400 {	width: 400px;}
-      .w500 {	width: 500px;}
-      
-
-      /* отступ  */
-      .pl-paragraph { text-indent: 1cm;}
-
-      .pl-25 { padding-left: 25px;}
-      .pl-50 { padding-left: 50px;}
-      .pl-75 { padding-left: 75px;}
-      .pl-100 { padding-left: 100px;}
-      .pl-150 { padding-left: 150px;}
-      .pl-200 { padding-left: 200px;}
-      .pl-250 { padding-left: 250px;}
-      .pl-300 { padding-left: 300px;}
-
-		.pr-5 { padding-right: 5px;}
-		.pr-10 { padding-right: 10px;}
-		.pr-25 { padding-right: 25px;}
-		.pr-50 { padding-right: 50px;}
-		.pr-100 { padding-right: 100px;}
-
-      .ml-1{ padding-left: 1cm;}
-      .ml-2{ padding-left: 2cm;}
-      .ml-3{ padding-left: 3cm;}
-      .ml-4{ padding-left: 4cm;}
-      .ml-5{ padding-left: 5cm;}
-      .ml-6{ padding-left: 6cm;}
-      .ml-7{ padding-left: 7cm;}
-      .ml-8{ padding-left: 8cm;}
-      .ml-9{ padding-left: 9cm;}
-      .ml-10{ padding-left: 10cm;}
-      .ml-11{ padding-left: 11cm;}
-      .ml-12{ padding-left: 12cm;}
-      .ml-13{ padding-left: 13cm;}
-      .ml-14{ padding-left: 14cm;}
-
-      /*отступы по горизонтали*/
-      .pg-10 { padding: 0 10px;}
-      .pg-25 { padding: 0 25px;}
-      .pg-50 { padding: 0 50px;}
-      .pg-75 { padding: 0 75px;}
-      .pg-100 { padding: 0 100px;}
-      
+      /* ]]> */
     </style>
   </head>
+
   <body>
-    <table class="w100p">
+    <div class="w100p">
+      <div class="w100p" style="padding-left:12cm; ">
+        До органу доходів і зборів
+
+        <div>
+          <span>
+            ДПІ у місті Хмельницькому,
+            головного управління ДФС у
+            Хмельницькій області
+          </span>
+        </div>
+
+        <br /> <br />
+
+        <div>
+          <span>від</span>
+          <span>2943209693</span>
+        </div>
+        <div class="w100p smallText ta-c">
+          (код за ЄДРПОУ або реєстраційний <br />
+          номер облікової картки платника податків*)
+        </div>
+
+        <br />
+        <div class="under_field">
+          <span class="under"> 
+            <span>
+              БІЛЯВЦЕВ БІЛЯВЦЕВ БІЛЯВЦЕВ   
+            </span>
+            <span>null</span>
+          </span> <br />
+          <span class="textUnd ta-c"> 
+            (найменування платника податків/прізвище, <br />
+            ім’я, по батькові фізичної особи)
+          </span>
+        </div>
+        <br />
+        <div>
+          <span> Поштова адреса: 
+            <span>Дніпроjjjjjjjjjjjjjjjjjjjjjjвпівапівапівапівапівапівапjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj, Тополина 26, 99</span> 
+            <span>null</span>
+            <span>null</span>
+          </span>
+        </div>
+
+        <div>
+          <span> Електронна адреса: [email] </span>
+        </div>
+        <div>
+          <span>Контактний телефон: [phone] </span>
+        </div>
+      </div>
+      <br /> <br />
+
+      <div class="ta-c i"><b><u>ЗАЯВА</u></b></div>
+
+      <br />
+      <div class="ta-r">Прошу видати довідку про відсутність заборгованості з
+        податків, зборів, платежів відповідно до вимог</div>
+    </div>
+
+    <table style="width:100%;">
+      <col style="width:30px;"/>      
+      <col style="width:130px;"/>   
+      <col style="width:230px;"/>
       <tr>
-        <td class="ml-1">
-          <div class="ml-7">
-            <table class="w100p">
-              <tr>
-                <td>До органу доходів і зборів</td>
-              </tr>
-              <tr>
-                <td><u>[sNameOrgan]</u></td>
-              </tr>
-              <tr>
-                <td class="ta-c">
-                  <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-                    (найменування органу доходів і зборів)
-                  </font>
-                </td>
-              </tr>
-              <tr>
-                <td>&#160;<br/> <br/></td>
-              </tr>
-              <tr>
-                <td class="pg-25">
-                	<table>
-                		<tr>
-                			<td>від</td>
-                			<td>[sInn]</td>
-                		</tr>
-                	</table>
-                </td>
-              </tr>
-              <tr>
-                <td class="ta-c">
-                  <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-                    (код за ЄДРПОУ або реєстраційний <br/>
-                    номер облікової картки платника податків*)
-                  </font>
-                </td>
-              </tr>
-              <tr>
-                <td>&#160;<br/></td>
-              </tr>
-              <tr>
-                <td class="b">
-                    [sAvtor]
-                </td>
-              </tr>
-              <tr>
-                <td class="ta-c">
-                  <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-                    (найменування платника податків/прізвище,<br/>
-                    ім’я, по батькові фізичної особи)
-                  </font>
-                </td>
-              </tr>
-
-
-              <tr>
-                <td>&#160;<br/></td>
-              </tr>
-              <tr>
-                <td class="b">Поштова адреса: [sAdresECP]</td>
-              </tr>
-
-              <tr>
-                <td>&#160;<br/></td>
-              </tr>
-              <tr>
-                <td class="b">Електронна адреса: [email]</td>
-              </tr>
-
-              <tr>
-                <td>&#160;<br/></td>
-              </tr>
-              <tr>
-                <td class="b">Контактний телефон: [phone]</td>
-              </tr>
-
-            </table>
-          </div>
-
-          <div><br/><br/></div>
-          <div class="ta-c"><b>ЗАЯВА</b></div>
-          <div><br/></div>
-          <table class="w100p">
-            <tr>
-              <td class="ta-j pl-paragraph">
-                Прошу видати довідку про відсутність заборгованості з податків, зборів, платежів відповідно до вимог
-              </td>
-            </tr>
-            <tr>
-              <td class="b ta-c">[sNameDoc]</td>
-            </tr>
-            <tr>
-              <td class="ta-c">
-                <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-                  (назва, номер та дата прийняття нормативно-правового акта)
-                </font>
-              </td>
-            </tr>
-          </table>
-          <div class="ta-j">для надання до</div>
-
-          <table class="w100p">
-            <tr>
-              <td class="b ta-c">[sNameCompany]</td>
-            </tr>
-            <tr>
-              <td class="ta-c">
-                <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-                  (найменування підприємства (установи, організації), до якого (якої) буде подано довідку)
-                </font>
-              </td>
-            </tr>
-          </table>
-
-
-          <div><br/></div>
-          <table>
-            <tr>
-              <td class="w250">
-              	Довідку прошу видати в
-              </td>
-              <td class="b ta-c">
-                електронному/<u>паперовому</u>
-              </td>
-              <td>вигляді.</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td class="ta-c">
-                <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-                  (необхідне позначити)
-                </font>
-              </td>
-              <td></td>
-            </tr>
-          </table>
-
-          <table class="w100p">
-            <tr>
-              <td height="30" class="checkblock w30 r b t l">
-              	[sV]
-              </td>              
-              <td class="w10" rowspan="2">
-              </td>
-              <td class="ta-j" rowspan="2">
-                Додатково повідомляю, що станом на день звернення триває процес
-                адміністративного (судового) оскарження суми грошового зобов’язання (у
-                разі необхідності зробити відповідну позначку „V”).
-              </td>
-            </tr>
-            <tr>
-              <td>
-              </td>
-            </tr>
-          </table>
-          
-          <div><br/><br/></div>
-          <table class="w100p">
-            <tr>
-              <td width="15%">
-                Платник податків
-              </td>
-              <td width="5%">&#160;</td>
-              <td width="15%" class="ta-c b">
-                Підписано ЕЦП
-              </td>
-            </tr>
-            <tr>
-              <td>
-                &#160;
-              </td>
-              <td></td>
-              <td class="ta-c">
-                <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-                  (підпис)
-                </font>
-              </td>
-            </tr>
-          </table>
-
-          <div><br/><br/><br/><br/></div>
-          <div class="ta-j">
-            ____________________________________________<br/>
-            <font style="font-size:10pt; font-family:Times New Roman" color="#000">
-              * Або серія та номер паспорта (для фізичних осіб, які через свої релігійні
-              переконання відмовляються від прийняття реєстраційного номера
-              облікової картки платника податків та повідомили про це відповідний
-              орган доходів і зборів і мають відмітку у паспорті).
-            </font>
-          </div>
-        </td>
+        <th class="r l b t">№ п/п</th>
+        <th class="r b t" colspan="2">Название</th>
+        <th class="r b t">Описание</th>
+      </tr>
+      <tr>
+        <td class="l  ta-c">1.</td>
+        <td class="r " colspan="2">Услуга новая</td>
+        <td class="r b" rowspan="2">Вот такая новая услуга</td>
+      </tr>
+      <tr>
+        <td class="l ta-c">2.</td>
+        <td class="r b ta-c" colspan="2">&#160; Как то так</td>
+      </tr>
+      <tr>
+        <td class="l b ta-c">3.</td>
+        <td class="r ">вот так</td>
+        <td class="r b" colspan="2">обернется и уснет звезда</td>
       </tr>
     </table>
   </body>
