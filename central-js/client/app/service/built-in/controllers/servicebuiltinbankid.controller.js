@@ -274,7 +274,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
         angular.forEach($scope.activitiForm.formProperties, function (prop) {
           if (prop.type === 'table') {
-            fixFileInTable(prop);
+            // fixFileInTable(prop);
             $scope.data.formData.params[prop.id].value = prop;
           }
         });
