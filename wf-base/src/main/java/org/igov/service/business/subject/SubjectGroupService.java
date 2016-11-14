@@ -25,10 +25,8 @@ import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 /**
@@ -105,20 +103,15 @@ public class SubjectGroupService {
 						return subjectGroupNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
 					}
 				}));
-
-		if ((subjectGroupNodeByGroup != null && !subjectGroupNodeByGroup.isEmpty())
-				&& (deepLevel == null || deepLevel.compareTo(0L) == 0)) {
-
+		
+		if(subjectGroupNodeByGroup!=null && !subjectGroupNodeByGroup.isEmpty()) {
 			subjectGroupResult = new SubjectGroupResult(subjectGroupNodeByGroup);
+		}else {
+			subjectGroupResult = new SubjectGroupResult(rootSubjectNodes);
+		}
 
 			LOG.info("subjectGroupResultttttttttttttttt " + subjectGroupResult);
 			return subjectGroupResult;
-		} else {
-			
-			
-			
-			return subjectGroupResult;
-		}
 
 	}
 
