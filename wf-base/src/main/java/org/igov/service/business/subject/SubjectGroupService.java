@@ -66,11 +66,8 @@ public class SubjectGroupService {
 
 	public List<SubjectGroup> getFullResult(String sID_Group_Activiti, Long deepLevel,
 			List<VSubjectGroupParentNode> parentSubjectGroups, VSubjectGroupParentNode parentSubjectGroup) {
-		if ((deepLevel == null || deepLevel == 0) || (sID_Group_Activiti == null || sID_Group_Activiti.isEmpty())) {
+		if ((deepLevel == null || deepLevel == 0) && (sID_Group_Activiti == null || sID_Group_Activiti.isEmpty())) {
 
-			/**
-			 * получаем лист детей отфильтрованного списка
-			 */
 			final List<List<VSubjectGroupChildrenNode>> childrensParList = Lists.newArrayList(Collections2.transform(
 					parentSubjectGroups, new Function<VSubjectGroupParentNode, List<VSubjectGroupChildrenNode>>() {
 						@Override
@@ -79,9 +76,6 @@ public class SubjectGroupService {
 						}
 					}));
 
-			/**
-			 * только лист
-			 */
 			final List<VSubjectGroupChildrenNode> childrensByGroup = Lists.newArrayList(Collections2.transform(
 					childrensParList, new Function<List<VSubjectGroupChildrenNode>, VSubjectGroupChildrenNode>() {
 						@Override
@@ -161,8 +155,6 @@ public class SubjectGroupService {
 		Collections.sort(newList, new Comparator() {
 			@Override
 			public int compare(Object vSubjectGroupParentNode, Object vSubjectGroupParentNodeTwo) {
-				// use instanceof to verify the references are indeed of the
-				// type in question
 				return ((VSubjectGroupParentNode) vSubjectGroupParentNode).getGroup().getId()
 						.compareTo(((VSubjectGroupParentNode) vSubjectGroupParentNodeTwo).getGroup().getId());
 			}
@@ -195,10 +187,13 @@ public class SubjectGroupService {
 						return vSubjectGroupChildrenNodeList.getGroup();
 					}
 				}));
+		if ((deepLevel == null || deepLevel == 0) && (sID_Group_Activiti != null || !sID_Group_Activiti.isEmpty())) {
+			return childrens;
+		}
 		
-		List<SubjectGroup> listChildrens = new ArrayList<>();
+		/*List<SubjectGroup> listChildrens = new ArrayList<>();
 		
-		if(deepLevel ==0 || deepLevel==null) {
+		if ((deepLevel == null || deepLevel == 0) && (sID_Group_Activiti != null || !sID_Group_Activiti.isEmpty())) {
 			listChildrens =childrens;
 		}else {
 		
@@ -208,12 +203,12 @@ public class SubjectGroupService {
 			}
 			
 		}
-		}
+		}*/
 
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
 
-		return listChildrens;
+		return childrens;
 	}
 
 }
