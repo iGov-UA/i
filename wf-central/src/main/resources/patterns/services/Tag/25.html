@@ -482,21 +482,6 @@
         <li>періоду використання транспортного засобу;</li>
         <li>наявності у страхувальника (за минулий рік) спроб страхових махінацій.</li>
     </ul>
-    
-
-    <p>
-    	Пільгова знижка в розмірі 50% від страхового платежу мають наступні категорії громадян України – страхувальників:
-    </p>
-    <ol>
-      <li>Учасників війни;</li>
-      <li>Інваліди ІІ групи;</li>
-      <li>Пенсіонери;</li>
-      <li>Особи, які постраждали внаслідок Чорнобильської катастрофи.</li>
-    </ol>
-    <p>
-      Однак, така знижка надається за умов, що забезпечений ТЗ має об’єм двигуна до 2500 см 3 та належить цьому страхувальнику-пільговику на праві власності і використовується ним особисто.
-    </p>                    
-
 
     <div class="col-md-12">
       <div class="highlight col-md-12">
@@ -600,7 +585,7 @@
 
         <!-- Інформаційний блок -->
         <div id="resultBlock" style="display:none;" class="col-md-12">
-        </div>
+        </div>        
         <br>
       </div>
     </div>
@@ -716,415 +701,440 @@
 <p>&nbsp;</p>
 
 <!-- Функции для работы с формой -->
-    <script>
+<script>
 
-        function l0() {
-            //если выбран мотороллер
-            if (SelectedItem(getSelect("K0")).value == "fiz") {
-                getSelect("K4").style.display = "block";
-            } else {
-                getSelect("K4").style.display = "none";
-            }
-
-
-            Calculation();
+    function l0() {
+        //если выбран мотороллер
+        if (SelectedItem(getSelect("K0")).value == "fiz") {
+            getSelect("K4").style.display = "block";
+        } else {
+            getSelect("K4").style.display = "none";
         }
 
-        //обработчик первого выпадающего списка
-        function l1(sel) {
 
-            var transport = SelectedItem(getSelect("K1")).value;
-            var transportType = SelectedItem(getSelect("K1", 1)).value;
+        Calculation();
+    }
 
+    //обработчик первого выпадающего списка
+    function l1(sel) {
 
-            var mas = K1.GetSubCatByID(SelectedItem(getSelect("K1")).value);
-            var elSel = getSelect("K1", 1);
-
-            if (mas._subCategories.length > 0) {
-                fillingSelect(elSel, mas);
-                elSel.style.display = "block";
-            } else {
-                elSel.style.display = "none";
-            }
+        var transport = SelectedItem(getSelect("K1")).value;
+        var transportType = SelectedItem(getSelect("K1", 1)).value;
 
 
-            //если выбран мотороллер
-            if (transport == "Moto") {
-                getSelect("K3").value = "private";
-                getSelect("K3").disabled = 1;
-            } else {
-                getSelect("K3").disabled = 0;
-            }
+        var mas = K1.GetSubCatByID(SelectedItem(getSelect("K1")).value);
+        var elSel = getSelect("K1", 1);
 
-            if (transport == "Truck" || transport == "TrailerTruck" || transport == "TrailerCar") {
-                getSelect("K3").style.display = "none";
-            } else {
-                getSelect("K3").style.display = "block";
-            }        
-
-            Calculation();
+        if (mas._subCategories.length > 0) {
+            fillingSelect(elSel, mas);
+            elSel.style.display = "block";
+        } else {
+            elSel.style.display = "none";
         }
 
-        //обработчик остальных выпадающих списков
-        function l2() {
-            Calculation();
+
+        //если выбран мотороллер
+        if (transport == "Moto") {
+            getSelect("K3").value = "private";
+            getSelect("K3").disabled = 1;
+        } else {
+            getSelect("K3").disabled = 0;
         }
 
-        //расчет коэфициентов
-        function Calculation() {
-            // *****************************   K1  ********************************
-            var person = SelectedItem(getSelect("K0")).value;
-            var transport = SelectedItem(getSelect("K1", 0)).value;
-            var transportType = SelectedItem(getSelect("K1", 1)).value;
-            var using = SelectedItem(getSelect("K3")).value;
+        if (transport == "Truck" || transport == "TrailerTruck" || transport == "TrailerCar") {
+            getSelect("K3").style.display = "none";
+        } else {
+            getSelect("K3").style.display = "block";
+        }        
+
+        Calculation();
+    }
+
+    //обработчик остальных выпадающих списков
+    function l2() {
+        Calculation();
+    }
+
+    //расчет коэфициентов
+    function Calculation() {
+        // *****************************   K1  ********************************
+        var person = SelectedItem(getSelect("K0")).value;
+        var transport = SelectedItem(getSelect("K1", 0)).value;
+        var transportType = SelectedItem(getSelect("K1", 1)).value;
+        var using = SelectedItem(getSelect("K3")).value;
 
 
-            var mas1 = K1.GetSubCatByID(transport);
-            var mas11 = mas1.GetSubCatByID(transportType);
+        var mas1 = K1.GetSubCatByID(transport);
+        var mas11 = mas1.GetSubCatByID(transportType);
 
-            if (mas1._subCategories.length > 0) {
-                parametrs.k1.SetVal(mas11._value);
-            } else {
-                parametrs.k1.SetVal(mas1._value);
+        if (mas1._subCategories.length > 0) {
+            parametrs.k1.SetVal(mas11._value);
+        } else {
+            parametrs.k1.SetVal(mas1._value);
+        }
+
+        // *****************************   K2  ********************************
+        var mas2 = K2.GetSubCatByID(SelectedItem(getSelect("K2")).value);
+        parametrs.k2.SetVal(mas2._value);
+
+        // *****************************   K3  ********************************
+        var result = " ";
+
+        if ((transport == "Car" || transport == "Moto") && (using == "private")) {
+            if (person == "fiz") {
+                result = "PrivateFiz";
+            } else if (person == "ur") {
+                result = "PrivateUr";
             }
+        } else if ((transport == "Car"  || (transport == "Bus" && transportType == "UpTo20")) && (using == "taxi")) {
+            if (person == "fiz") {
+                result = "TaxiFiz";
+            } else if (person == "ur") {
+                result = "TaxiUr";
+            }
+        } else if (transport == "Truck" || transport == "Bus" || transport == "TrailerTruck" || transport == "TrailerCar") {
+            result = "Other";
+        }
 
-            // *****************************   K2  ********************************
-            var mas2 = K2.GetSubCatByID(SelectedItem(getSelect("K2")).value);
-            parametrs.k2.SetVal(mas2._value);
+        var mas3 = K3.GetSubCatByID(result);
+        parametrs.k3.SetVal(mas3._value);
 
-            // *****************************   K3  ********************************
+        // *****************************   K4  ********************************
+        if (person == "fiz") {
+            var mas4 = K4.GetSubCatByID(SelectedItem(getSelect("K4")).value);
+            parametrs.k4.SetVal(mas4._value);
+        } else if (person == "ur") {
+            var mas4 = K4.GetSubCatByID("UrPerson");
+            parametrs.k4.SetVal(mas4._value);
+        } else {
+            parametrs.k4.Clear();
+        }
+
+        // *****************************   K5  ********************************
+        var mas5 = K5.GetSubCatByID(SelectedItem(getSelect("K5")).value);
+        parametrs.k5.SetVal(mas5._value);
+
+        // *****************************   K6  ********************************
+        var mas6 = K6.GetSubCatByID(SelectedItem(getSelect("K6")).value);
+        parametrs.k6.SetVal(mas6._value);
+
+
+        if (parametrs.IsAllSet()) {
+            document.getElementById("resultBlock").innerHTML = parametrs.VisibleResult();
+            document.getElementById("resultBlock").style.display = "block";
+            
+        } else {
+            document.getElementById("resultBlock").innerHTML = " ";
+            document.getElementById("resultBlock").style.display = "none";
+        }
+    }
+
+    //Заполнение селект блока
+    function fillingBlock(idBlock, param) {
+        clearBlock(idBlock);
+        document.getElementById(idBlock).children[0].innerHTML = param._name + "<br/><br/>";
+        fillingSelect(getSelect(idBlock), param);
+    }
+    //Заполнени селекта
+    function fillingSelect(select, param) {
+        clearSelect(select);
+        for (var i = 0; i < param._subCategories.length; i++)
+            select.options[i + 1] = new Option(param._subCategories[i]._name, param._subCategories[i]._id);
+    }
+    //очистить блок
+    function clearBlock(idBlock) {
+        document.getElementById(idBlock).children[0].innerHTML = "";
+        clearSelect(getSelect(idBlock));
+    }
+    //очистка селекта
+    function clearSelect(select) {
+        for (var i = select.options.length; i > 0 ; i--)
+            select.remove(i);
+    }
+    //получение объекта селект
+    function getSelect(idBlock, num) {
+        if (isNaN(parseFloat(num)) && !isFinite(num)) num = 0;
+        return document.getElementById(idBlock).children[1].children[num];
+    }
+    //получение выбранного пункта
+    function SelectedItem(select) {
+        return select.options[select.selectedIndex];
+    }
+    //инициализация
+    function init() {
+        document.getElementById("K0").style.display = "block";
+
+        fillingBlock("K1", K1);
+        document.getElementById("K1").style.display = "block";
+        getSelect("K1", 1).style.display = "none";
+
+        fillingBlock("K2", K2);
+        document.getElementById("K2").style.display = "block";
+
+        //fillingBlock("K3", K3);
+        document.getElementById("K3").style.display = "block";
+
+        //fillingBlock("K4", K4);
+        document.getElementById("K4").style.display = "block";
+
+        fillingBlock("K5", K5);
+        document.getElementById("K5").style.display = "block";
+
+        fillingBlock("K6", K6);
+        document.getElementById("K6").style.display = "block";
+
+        document.getElementById("resultBlock").style.display = "none";
+
+        Calculation();
+    }
+
+</script>
+<!-- Класс категория -->
+<script>
+
+    function Category(par) {
+        this._id = par.id;
+        this._name = par.name;
+        this._value = par.value;
+        this._subCategories = new Array();
+
+        this.Add = function () {
+            for (var i = 0; i < arguments.length; i++) {
+                this._subCategories.push(arguments[i]);
+            }
+        }
+        this.GetSubCatByName = function (name) {
+            for (var i = 0; i < this._subCategories.length; i++) {
+                if (name == this._subCategories[i]._name) {
+                    return this._subCategories[i];
+                }
+            }
+            return new Category({ id: " ", name: " ", value: " " });
+        }
+        this.GetSubCatByID = function (id) {
+            for (var i = 0; i < this._subCategories.length; i++) {
+                if (id == this._subCategories[i]._id) {
+                    return this._subCategories[i];
+                }
+            }
+            return new Category({ id: " ", name: " ", value: " " });
+        }
+    }
+
+    function Ratio(IdBlock) {
+        this._minValue = " ";
+        this._maxValue = " ";
+        this._value = " ";
+        this._BlockResult = document.getElementById(IdBlock).children[2];
+
+        this.Clear = function () {
+            this._value = " ";
+            this._BlockResult.innerHTML = " ";
+        }
+
+        this.GetVal = function () {
+            if (this._minValue != this._maxValue) {
+                return "(" + this._value + ")";
+            } else {
+                return this._value;
+            }
+        }
+
+        this.SetVal = function (val) {
+            var val0 = val.replace(new RegExp(',', 'g'), '.');
+
+            if (val.indexOf("-") >= 0) {
+                var masVal = val0.split('-');
+                this._minValue = +masVal[0];
+                this._maxValue = +masVal[1];
+                this._value = "від " + this._minValue + " до " + this._maxValue;
+            } else {
+                this._minValue = +val0;
+                this._maxValue = +val0;
+                this._value = val0;
+            }
+            this._BlockResult.innerHTML = this._value;
+        }
+
+        this.IsSet = function () {
+            return ((!isNaN(parseFloat(this._minValue)) && isFinite(this._minValue))
+                && (!isNaN(parseFloat(this._maxValue)) && isFinite(this._maxValue))
+                && (this._minValue>0 && this._maxValue> 0))
+        }
+
+    }
+
+
+    function Ratios() {
+        this.k1 = new Ratio("K1");
+        this.k2 = new Ratio("K2");
+        this.k3 = new Ratio("K3");
+        this.k4 = new Ratio("K4");
+        this.k5 = new Ratio("K5");
+        this.k6 = new Ratio("K6");
+
+        this.IsAllSet = function () {
+            return this.k1.IsSet() && this.k2.IsSet() && this.k3.IsSet() && this.k4.IsSet() && this.k5.IsSet() && this.k6.IsSet();
+        }
+
+        this._minAllValue = function () {
+            var result = (180 * this.k1._minValue * this.k2._minValue * this.k3._minValue * this.k4._minValue * this.k5._minValue * this.k6._minValue).toFixed(2);
+            return result;
+        }
+        this._maxAllValue = function () {
+            return (180 * this.k1._maxValue * this.k2._maxValue * this.k3._maxValue * this.k4._maxValue * this.k5._maxValue * this.k6._maxValue).toFixed(2);
+        }
+
+
+        //формирование результата
+        this.VisibleResult = function () {
             var result = " ";
 
-            if ((transport == "Car" || transport == "Moto") && (using == "private")) {
-                if (person == "fiz") {
-                    result = "PrivateFiz";
-                } else if (person == "ur") {
-                    result = "PrivateUr";
-                }
-            } else if ((transport == "Car"  || (transport == "Bus" && transportType == "UpTo20")) && (using == "taxi")) {
-                if (person == "fiz") {
-                    result = "TaxiFiz";
-                } else if (person == "ur") {
-                    result = "TaxiUr";
-                }
-            } else if (transport == "Truck" || transport == "Bus" || transport == "TrailerTruck" || transport == "TrailerCar") {
-                result = "Other";
-            }
-
-            var mas3 = K3.GetSubCatByID(result);
-            parametrs.k3.SetVal(mas3._value);
-
-            // *****************************   K4  ********************************
-            if (person == "fiz") {
-                var mas4 = K4.GetSubCatByID(SelectedItem(getSelect("K4")).value);
-                parametrs.k4.SetVal(mas4._value);
-            } else if (person == "ur") {
-                var mas4 = K4.GetSubCatByID("UrPerson");
-                parametrs.k4.SetVal(mas4._value);
-            } else {
-                parametrs.k4.Clear();
-            }
-
-            // *****************************   K5  ********************************
-            var mas5 = K5.GetSubCatByID(SelectedItem(getSelect("K5")).value);
-            parametrs.k5.SetVal(mas5._value);
-
-            // *****************************   K6  ********************************
-            var mas6 = K6.GetSubCatByID(SelectedItem(getSelect("K6")).value);
-            parametrs.k6.SetVal(mas6._value);
-
-
-            if (parametrs.IsAllSet()) {
-                document.getElementById("resultBlock").innerHTML = parametrs.VisibleResult();
-                document.getElementById("resultBlock").style.display = "block";
+            if (this.IsAllSet()) {
                 
-            } else {
-                document.getElementById("resultBlock").innerHTML = " ";
-                document.getElementById("resultBlock").style.display = "none";
-            }
-        }
+                result = '<div class="row">';
+                result += '<div class="col-md-12">';
+                result += "<hr>";
+                result += "Базова ставка складає 180 грн.";
+                result += "<br>\n";
+                result += "<br>\n";
+                result += "Розрахунок буде виглядати так:";
+                result += "<br>\n";
+                result += '<div class="ta-j">';
+                result += "<strong>180 грн" + " &times; (" + this.k1.GetVal() + " &times; " + this.k2.GetVal() + " &times; " + this.k3.GetVal() + " &times; " + this.k4.GetVal() + " &times; " + this.k5.GetVal() + " &times; " + this.k6.GetVal() + ")</strong>";
+                result += "</div>";
+                result += "</div>";
+                result += "</div>";
 
-        //Заполнение селект блока
-        function fillingBlock(idBlock, param) {
-            clearBlock(idBlock);
-            document.getElementById(idBlock).children[0].innerHTML = param._name + "<br/><br/>";
-            fillingSelect(getSelect(idBlock), param);
-        }
-        //Заполнени селекта
-        function fillingSelect(select, param) {
-            clearSelect(select);
-            for (var i = 0; i < param._subCategories.length; i++)
-                select.options[i + 1] = new Option(param._subCategories[i]._name, param._subCategories[i]._id);
-        }
-        //очистить блок
-        function clearBlock(idBlock) {
-            document.getElementById(idBlock).children[0].innerHTML = "";
-            clearSelect(getSelect(idBlock));
-        }
-        //очистка селекта
-        function clearSelect(select) {
-            for (var i = select.options.length; i > 0 ; i--)
-                select.remove(i);
-        }
-        //получение объекта селект
-        function getSelect(idBlock, num) {
-            if (isNaN(parseFloat(num)) && !isFinite(num)) num = 0;
-            return document.getElementById(idBlock).children[1].children[num];
-        }
-        //получение выбранного пункта
-        function SelectedItem(select) {
-            return select.options[select.selectedIndex];
-        }
-        //инициализация
-        function init() {
-            document.getElementById("K0").style.display = "block";
+                result += '<div class="row">';
+                result += '<div class="col-md-12">';
+                result += "<br>\n";
 
-            fillingBlock("K1", K1);
-            document.getElementById("K1").style.display = "block";
-            getSelect("K1", 1).style.display = "none";
+                result += SelectedItem(getSelect("K1", 0)).text + " можна застрахувати за суму";
+                result += "&nbsp;&nbsp;від&nbsp;&nbsp;<strong>" + this._minAllValue() + "&nbsp;грн</strong>&nbsp;&nbsp;до&nbsp;&nbsp;<strong>" + this._maxAllValue() + "&nbsp;грн</strong>&nbsp;&nbsp;";
 
-            fillingBlock("K2", K2);
-            document.getElementById("K2").style.display = "block";
 
-            //fillingBlock("K3", K3);
-            document.getElementById("K3").style.display = "block";
+                result += "</div>";
+                result += "</div>";
 
-            //fillingBlock("K4", K4);
-            document.getElementById("K4").style.display = "block";
 
-            fillingBlock("K5", K5);
-            document.getElementById("K5").style.display = "block";
-
-            fillingBlock("K6", K6);
-            document.getElementById("K6").style.display = "block";
-
-            document.getElementById("resultBlock").style.display = "none";
-
-            Calculation();
-        }
-
-    </script>
-    <!-- Класс категория -->
-    <script>
-
-        function Category(par) {
-            this._id = par.id;
-            this._name = par.name;
-            this._value = par.value;
-            this._subCategories = new Array();
-
-            this.Add = function () {
-                for (var i = 0; i < arguments.length; i++) {
-                    this._subCategories.push(arguments[i]);
-                }
-            }
-            this.GetSubCatByName = function (name) {
-                for (var i = 0; i < this._subCategories.length; i++) {
-                    if (name == this._subCategories[i]._name) {
-                        return this._subCategories[i];
-                    }
-                }
-                return new Category({ id: " ", name: " ", value: " " });
-            }
-            this.GetSubCatByID = function (id) {
-                for (var i = 0; i < this._subCategories.length; i++) {
-                    if (id == this._subCategories[i]._id) {
-                        return this._subCategories[i];
-                    }
-                }
-                return new Category({ id: " ", name: " ", value: " " });
-            }
-        }
-
-        function Ratio(IdBlock) {
-            this._minValue = " ";
-            this._maxValue = " ";
-            this._value = " ";
-            this._BlockResult = document.getElementById(IdBlock).children[2];
-
-            this.Clear = function () {
-                this._value = " ";
-                this._BlockResult.innerHTML = " ";
+                /*
+                result += "<br>\n";
+                result += '<div class="row">';
+              	result += '<div class="col-md-12" id="rInfo">';
+          		result += '<div class="alert alert-info">';
+          		result += "Зверніть увагу";
+       			result += "<p>";
+   				result += "Пільгова знижка в розмірі 50% від страхового платежу мають наступні категорії громадян України:";
+				result += "</p>";
+				result += "<ol>";
+				result += "<li>Учасників війни;</li>";
+				result += "<li>Інваліди ІІ групи;</li>";
+				result += "<li>Пенсіонери;</li>";
+				result += "<li>Особи, які постраждали внаслідок Чорнобильської катастрофи.</li>";
+				result += "</ol>";
+				result += "<p>";
+				result += "Однак, така знижка надається за умов, що забезпечений ТЗ має об’єм двигуна до 2500 см</sup>3</sup> та належить цьому страхувальнику-пільговику ";
+				result += "на праві власності і використовується ним особисто.";
+				result += "</p> ";
+				result += "</div>";
+				result += "</div>";
+				result += "</div>";  
+				*/
             }
 
-            this.GetVal = function () {
-                if (this._minValue != this._maxValue) {
-                    return "(" + this._value + ")";
-                } else {
-                    return this._value;
-                }
-            }
-
-            this.SetVal = function (val) {
-                var val0 = val.replace(new RegExp(',', 'g'), '.');
-
-                if (val.indexOf("-") >= 0) {
-                    var masVal = val0.split('-');
-                    this._minValue = +masVal[0];
-                    this._maxValue = +masVal[1];
-                    this._value = "від " + this._minValue + " до " + this._maxValue;
-                } else {
-                    this._minValue = +val0;
-                    this._maxValue = +val0;
-                    this._value = val0;
-                }
-                this._BlockResult.innerHTML = this._value;
-            }
-
-            this.IsSet = function () {
-                return ((!isNaN(parseFloat(this._minValue)) && isFinite(this._minValue))
-                    && (!isNaN(parseFloat(this._maxValue)) && isFinite(this._maxValue))
-                    && (this._minValue>0 && this._maxValue> 0))
-            }
-
+            return result;
         }
 
 
-        function Ratios() {
-            this.k1 = new Ratio("K1");
-            this.k2 = new Ratio("K2");
-            this.k3 = new Ratio("K3");
-            this.k4 = new Ratio("K4");
-            this.k5 = new Ratio("K5");
-            this.k6 = new Ratio("K6");
 
-            this.IsAllSet = function () {
-                return this.k1.IsSet() && this.k2.IsSet() && this.k3.IsSet() && this.k4.IsSet() && this.k5.IsSet() && this.k6.IsSet();
-            }
+    }
+</script>
 
-            this._minAllValue = function () {
-                var result = (180 * this.k1._minValue * this.k2._minValue * this.k3._minValue * this.k4._minValue * this.k5._minValue * this.k6._minValue).toFixed(2);
-                return result;
-            }
-            this._maxAllValue = function () {
-                return (180 * this.k1._maxValue * this.k2._maxValue * this.k3._maxValue * this.k4._maxValue * this.k5._maxValue * this.k6._maxValue).toFixed(2);
-            }
+<!-- Инициализация -->
+<script>
 
+    // *******************************************************************
+    // ***************** K1 **********************
+    // *******************************************************************
+    var K1 = new Category({ id: "K1", name: "I. Тип транспортного засобу (К1)" });
+    K1.Add(
+        new Category({ id: "Moto", name: "Мотоцкл чи мопед" }),
+        new Category({ id: "Car", name: "Легковий автомобіль" }),
+        new Category({ id: "Truck", name: "Вантажний автомобіль" }),
+        new Category({ id: "Bus", name: "Автобус" }),
+        new Category({ id: "TrailerCar", name: "Причеп до легкового автомобіля", value: "0,34" }),
+        new Category({ id: "TrailerTruck", name: "Причеп до вантажного автомобіля", value: "0,5" }));
 
-            //формирование результата
-            this.VisibleResult = function () {
-                var result = " ";
+    K1.GetSubCatByID("Moto").Add(
+        new Category({ id: "UpTo300", name: "до 300 куб.см (включно)", value: "0,34" }),
+        new Category({ id: "Over300", name: "понад 300 куб.см", value: "0,68" }));
 
-                if (this.IsAllSet()) {
-                    
-                    result = '<div class="row">';
-                    result += '<div class="col-md-12">';
-                    result += "<hr>";
-                    result += "Базова ставка складає 180 грн.";
-                    result += "<br>\n";
-                    result += "<br>\n";
-                    result += "Розрахунок буде виглядати так:";
-                    result += "<br>\n";
-                    result += '<div class="ta-j">';
-                    result += "<strong>180 грн" + " &times; " + this.k1.GetVal() + " &times; " + this.k2.GetVal() + " &times; " + this.k3.GetVal() + " &times; " + this.k4.GetVal() + " &times; " + this.k5.GetVal() + " &times; " + this.k6.GetVal() + "</strong>";
-                    result += "</div>";
-                    result += "</div>";
-                    result += "</div>";
+    K1.GetSubCatByID("Car").Add(
+        new Category({ id: "UpTo1600", name: "до 1600 куб.см", value: "1" }),
+        new Category({ id: "Over1600", name: "1601 - 2000 куб.см", value: "1,14" }),
+        new Category({ id: "Over2000", name: "2001 - 3000 куб.см", value: "1,18" }),
+        new Category({ id: "Over3000", name: "понад 3000 куб.см", value: "1,82" }));
 
-                    result += '<div class="row">';
-                    result += '<div class="col-md-12">';
-                    result += "<br>\n";
+    K1.GetSubCatByID("Truck").Add(
+        new Category({ id: "UpTo2", name: "до 2 тонн (включно)", value: "2" }),
+        new Category({ id: "Over2", name: "понад 2 тонни", value: "2,18" }));
 
-                    result += SelectedItem(getSelect("K1", 0)).text + " можна застрахувати за суму";
-                    result += "&nbsp;&nbsp;від&nbsp;&nbsp;<strong>" + this._minAllValue() + "&nbsp;грн</strong>&nbsp;&nbsp;до&nbsp;&nbsp;<strong>" + this._maxAllValue() + "&nbsp;грн</strong>&nbsp;&nbsp;";
-
-
-                    result += "</div>";
-                    result += "</div>";
-                }
-
-                return result;
-            }
+    K1.GetSubCatByID("Bus").Add(
+        new Category({ id: "UpTo20", name: "до 20 осіб (включно)", value: "2,55" }),
+        new Category({ id: "Over20", name: "понад 20 осіб", value: "3" }));
 
 
 
-        }
-    </script>
-    
-    <!-- Инициализация -->
-    <script>
+    var K2 = new Category({ id: "K2", name: "II. Місце реєстрації транспортного засобу (К2)" });
+    K2.Add(
+        new Category({ id: "Kyiv", name: "місто Київ", value: "3,2-4,8" }),
+        new Category({ id: "KyivArea", name: "міста Бориспіль, Боярка, Бровари, Васильків, Вишгород, Вишневе, Ірпінь", value: "1-2,5" }),
+        new Category({ id: "LocOver1000", name: "міста з населенням понад 1 мільйон осіб", value: "2,3-3,5" }),
+        new Category({ id: "LocOver500", name: "міста з населенням від 500 тисяч до 1 мільйона осіб", value: "1,8-2,8" }),
+        new Category({ id: "LocOver100", name: "міста з населенням від 100 тисяч до 500 тисяч осіб", value: "1,3-2,5" }),
+        new Category({ id: "LocUpTo100", name: "населені пункти з населенням менше 100 тисяч осіб", value: "1-1,6" }),
+        new Category({ id: "Abroad", name: "для транспортних засобів, які зареєстровані в інших країнах", value: "2-4" }));
 
-        // *******************************************************************
-        // ***************** K1 **********************
-        // *******************************************************************
-        var K1 = new Category({ id: "K1", name: "I. Тип транспортного засобу (К1)" });
-        K1.Add(
-            new Category({ id: "Moto", name: "Мотоцкл чи мопед" }),
-            new Category({ id: "Car", name: "Легковий автомобіль" }),
-            new Category({ id: "Truck", name: "Вантажний автомобіль" }),
-            new Category({ id: "Bus", name: "Автобус" }),
-            new Category({ id: "TrailerCar", name: "Причеп до легкового автомобіля", value: "0,34" }),
-            new Category({ id: "TrailerTruck", name: "Причеп до вантажного автомобіля", value: "0,5" }));
+    var K3 = new Category({ id: "K3", name: "III. Сфери використання транспортного засобу (К3)" });
+    K3.Add(
+        new Category({ id: "PrivateFiz", name: "легковий автомобіль (крім таксі), мотоцикл, моторолер, який використовується фізичною особою", value: "1" }),
+        new Category({ id: "PrivateUr", name: "легковий автомобіль (крім таксі), мотоцикл, моторолер, який використовується юридичною особою", value: "1,1-1,4" }),
+        new Category({ id: "Other", name: "вантажні автомобілі, автобуси, причепи до вантажних та легкових автомобілів", value: "1" }),
+        new Category({ id: "TaxiFiz", name: "легковий автомобіль або автобус з кількістю місць для сидіння до 20, який використовується ФІЗИЧНОЮ особою для перевезення пасажирів", value: "1,1-1,4" }),
+        new Category({ id: "TaxiUr", name: "легковий автомобіль або автобус з кількістю місць для сидіння до 20, який використовується ЮРИДИЧНОЮ особою для перевезення пасажирів", value: "1,1-1,5" }));
 
-        K1.GetSubCatByID("Moto").Add(
-            new Category({ id: "UpTo300", name: "до 300 куб.см (включно)", value: "0,34" }),
-            new Category({ id: "Over300", name: "понад 300 куб.см", value: "0,68" }));
+    var K4 = new Category({ id: "K4", name: "IV. Водійський стаж осіб, допущених до керування транспортним засобом (К4)" });
+    K4.Add(
+        new Category({ id: "UpTo3", name: "стаж водіння менше 3 років", value: "1,27-1,76" }),
+        new Category({ id: "Over3", name: "стаж водіння більше 3 років", value: "1-1,76" }),
+        new Category({ id: "UrPerson", name: "для юридичних осіб", value: "1,2" }));
 
-        K1.GetSubCatByID("Car").Add(
-            new Category({ id: "UpTo1600", name: "до 1600 куб.см", value: "1" }),
-            new Category({ id: "Over1600", name: "1601 - 2000 куб.см", value: "1,14" }),
-            new Category({ id: "Over2000", name: "2001 - 3000 куб.см", value: "1,18" }),
-            new Category({ id: "Over3000", name: "понад 3000 куб.см", value: "1,82" }));
+    var K5 = new Category({ id: "K5", name: "V. Період використання транспортного засобу (К5)" });
+    K5.Add(
+        new Category({ id: "Over6", name: "6 місяців", value: "0,7" }),
+        new Category({ id: "Over7", name: "7 місяців", value: "0,75" }),
+        new Category({ id: "Over8", name: "8 місяців", value: "0,8" }),
+        new Category({ id: "Over9", name: "9 місяців", value: "0,85" }),
+        new Category({ id: "Over10", name: "10 місяців", value: "0,9" }),
+        new Category({ id: "Over11", name: "11 місяців", value: "0,95" }),            
+        new Category({ id: "All", name: "дорівнює строку дії договору", value: "1" }));
 
-        K1.GetSubCatByID("Truck").Add(
-            new Category({ id: "UpTo2", name: "до 2 тонн (включно)", value: "2" }),
-            new Category({ id: "Over2", name: "понад 2 тонни", value: "2,18" }));
-
-        K1.GetSubCatByID("Bus").Add(
-            new Category({ id: "UpTo20", name: "до 20 осіб (включно)", value: "2,55" }),
-            new Category({ id: "Over20", name: "понад 20 осіб", value: "3" }));
-
-
-
-        var K2 = new Category({ id: "K2", name: "II. Місце реєстрації транспортного засобу (К2)" });
-        K2.Add(
-            new Category({ id: "Kyiv", name: "місто Київ", value: "3,2-4,8" }),
-            new Category({ id: "KyivArea", name: "міста Бориспіль, Боярка, Бровари, Васильків, Вишгород, Вишневе, Ірпінь", value: "1-2,5" }),
-            new Category({ id: "LocOver1000", name: "міста з населенням понад 1 мільйон осіб", value: "2,3-3,5" }),
-            new Category({ id: "LocOver500", name: "міста з населенням від 500 тисяч до 1 мільйона осіб", value: "1,8-2,8" }),
-            new Category({ id: "LocOver100", name: "міста з населенням від 100 тисяч до 500 тисяч осіб", value: "1,3-2,5" }),
-            new Category({ id: "LocUpTo100", name: "населені пункти з населенням менше 100 тисяч осіб", value: "1-1,6" }),
-            new Category({ id: "Abroad", name: "для транспортних засобів, які зареєстровані в інших країнах", value: "2-4" }));
-
-        var K3 = new Category({ id: "K3", name: "III. Сфери використання транспортного засобу (К3)" });
-        K3.Add(
-            new Category({ id: "PrivateFiz", name: "легковий автомобіль (крім таксі), мотоцикл, моторолер, який використовується фізичною особою", value: "1" }),
-            new Category({ id: "PrivateUr", name: "легковий автомобіль (крім таксі), мотоцикл, моторолер, який використовується юридичною особою", value: "1,1-1,4" }),
-            new Category({ id: "Other", name: "вантажні автомобілі, автобуси, причепи до вантажних та легкових автомобілів", value: "1" }),
-            new Category({ id: "TaxiFiz", name: "легковий автомобіль або автобус з кількістю місць для сидіння до 20, який використовується ФІЗИЧНОЮ особою для перевезення пасажирів", value: "1,1-1,4" }),
-            new Category({ id: "TaxiUr", name: "легковий автомобіль або автобус з кількістю місць для сидіння до 20, який використовується ЮРИДИЧНОЮ особою для перевезення пасажирів", value: "1,1-1,5" }));
-
-        var K4 = new Category({ id: "K4", name: "IV. Водійський стаж осіб, допущених до керування транспортним засобом (К4)" });
-        K4.Add(
-            new Category({ id: "UpTo3", name: "стаж водіння менше 3 років", value: "1,27-1,76" }),
-            new Category({ id: "Over3", name: "стаж водіння більше 3 років", value: "1-1,76" }),
-            new Category({ id: "UrPerson", name: "для юридичних осіб", value: "1,2" }));
-
-        var K5 = new Category({ id: "K5", name: "V. Період використання транспортного засобу (К5)" });
-        K5.Add(
-            new Category({ id: "Over6", name: "6 місяців", value: "0,7" }),
-            new Category({ id: "Over7", name: "7 місяців", value: "0,75" }),
-            new Category({ id: "Over8", name: "8 місяців", value: "0,8" }),
-            new Category({ id: "Over9", name: "9 місяців", value: "0,85" }),
-            new Category({ id: "Over10", name: "10 місяців", value: "0,9" }),
-            new Category({ id: "Over11", name: "11 місяців", value: "0,95" }),            
-            new Category({ id: "All", name: "дорівнює строку дії договору", value: "1" }));
-
-        var K6 = new Category({ id: "K6", name: "VI. Наявність чи відсутності у страхувальника (протягом попереднього року) доведених у судовому порядку спроб страхового шахрайства (К6)" });
-        K6.Add(            
-            new Category({ id: "No", name: "відсутність таких справ", value: "1" }),
-            new Category({ id: "Yes", name: "наявність таких справ", value: "2" }));
+    var K6 = new Category({ id: "K6", name: "VI. Наявність чи відсутності у страхувальника (протягом попереднього року) доведених у судовому порядку спроб страхового шахрайства (К6)" });
+    K6.Add(            
+        new Category({ id: "No", name: "відсутність таких справ", value: "1" }),
+        new Category({ id: "Yes", name: "наявність таких справ", value: "2" }));
 
 
 
 
 
-        var parametrs = new Ratios();
+    var parametrs = new Ratios();
 
 
 
 
 
-        //Инициализация
-        init();
-    </script>
+    //Инициализация
+    init();
+</script>
