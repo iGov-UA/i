@@ -3,6 +3,7 @@ package org.igov.service.controller;
 
 import java.util.List;
 
+import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.VSubjectGroupChildrenNode;
 import org.igov.model.subject.VSubjectGroupParentNode;
 import org.igov.service.business.subject.SubjectGroupService;
@@ -36,10 +37,10 @@ public class SubjectGroupController {
     @ApiOperation(value = "Получение организационной иерархии")
     @RequestMapping(value = "/getSubjectGroups", method = RequestMethod.GET)
     @ResponseBody
-    public List<VSubjectGroupChildrenNode> getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
+    public List<SubjectGroup> getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
     		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel)
             throws Exception  {
-    	List<VSubjectGroupChildrenNode> subjectGroupResult = null;
+    	List<SubjectGroup> subjectGroupResult = null;
     	try {
     		subjectGroupResult = subjectGroupService.getCatalogTreeSubjectGroups(sID_Group_Activiti,nDeepLevel);
     		
