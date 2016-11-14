@@ -353,7 +353,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       $scope.validateForm = function (form) {
         var bValid = true;
-        ValidationService.validateByMarkers(form, null, true, this.data);
+        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {});
         return form.$valid && bValid;
       };
 
@@ -759,49 +759,74 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         return true;
       };
 
-      $scope.fillSelfPrevious = function () {
-
+      $scope.oHystoryTaskData = {
+        oStartForm: {},
+        bHideLink: true
+      };
+      function getStartFormByTask() {
         $http.get('/api/order/getStartFormByTask', {
           params: {
             nID_Service: oService.nID,
             sID_UA: oServiceData.oPlaceRoot ? oServiceData.oPlaceRoot.sID_UA : oServiceData.oPlace.sID_UA
           }
         }).then(function (response) {
-          var bFilled = $scope.bFilledSelfPrevious();
-          if (!bFilled) {
-            $scope.paramsBackup = {};
-          }
-          angular.forEach($scope.activitiForm.formProperties, function (oField) {
-            try {
-              var key = oField.id;
-              var property = $scope.data.formData.params[key];
-
-              if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)) {
-
-                if (oField && oField !== null
-                    && oField.type !== "file"
-                    && oField.type !== "label"
-                    && oField.type !== "invisible"
-                    && oField.type !== "markers"
-                    && oField.type !== "queueData"
-                    && oField.type !== "select"
-                ) {
-                  if (!bFilled) {
-                    $scope.paramsBackup[key] = property.value;
-                  }
-                  property.value = response.data[key];
-                }
-
-                if (oField.type === 'select' &&
-                    oField.hasOwnProperty('autocompleteData')) {
-                  property.value = {};
-                  property.value[oField.autocompleteData.valueProperty] = response.data[key];
-                }
-              }
-            } catch (_) {
-              console.log("[fillSelfPrevious][" + key + "]ERROR:" + _);
+          var fieldCount = 0;
+          if(response.data && response.status == 200){
+            for(var key in response.data) if (response.data.hasOwnProperty(key)){
+              fieldCount++;
             }
-          });
+          }
+          if(fieldCount == 0){
+            $scope.oHystoryTaskData.oStartForm = angular.copy(response);
+            $scope.oHystoryTaskData.bHideLink = false;
+          } else {
+            $scope.oHystoryTaskData.oStartForm = {};
+            $scope.oHystoryTaskData.bHideLink = true;
+          }
+        }, function (errback) {
+          $scope.oHystoryTaskData.oStartForm = {};
+          $scope.oHystoryTaskData.bHideLink = true;
+        });
+      }
+
+      getStartFormByTask();
+
+      $scope.fillSelfPrevious = function () {
+
+        var bFilled = $scope.bFilledSelfPrevious();
+        if (!bFilled) {
+          $scope.paramsBackup = {};
+        }
+        angular.forEach($scope.activitiForm.formProperties, function (oField) {
+          try {
+            var key = oField.id;
+            var property = $scope.data.formData.params[key];
+
+            if (key && key !== null && key.indexOf("bankId") !== 0 && $scope.oHystoryTaskData.oStartForm.data.hasOwnProperty(key)) {
+
+              if (oField && oField !== null
+                && oField.type !== "file"
+                && oField.type !== "label"
+                && oField.type !== "invisible"
+                && oField.type !== "markers"
+                && oField.type !== "queueData"
+                && oField.type !== "select"
+              ) {
+                if (!bFilled) {
+                  $scope.paramsBackup[key] = property.value;
+                }
+                property.value = $scope.oHystoryTaskData.oStartForm.data[key];
+              }
+
+              if (oField.type === 'select' &&
+                oField.hasOwnProperty('autocompleteData')) {
+                property.value = {};
+                property.value[oField.autocompleteData.valueProperty] = $scope.oHystoryTaskData.oStartForm.data[key];
+              }
+            }
+          } catch (_) {
+            console.log("[fillSelfPrevious][" + key + "]ERROR:" + _);
+          }
         });
       };
 
@@ -837,10 +862,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         $rootScope.isFileProcessUploading.bState = !$rootScope.isFileProcessUploading.bState;
         console.log("Switch $rootScope.isFileProcessUploading to " + $rootScope.isFileProcessUploading.bState);
       };
-
-      if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
-        $scope.fillSelfPrevious();
-      }
 
       // відображення напису про необхідність перевірки реєстраційних данних, переданих від BankID
       $scope.isShowMessageRequiringToValidateUserData = function () {
@@ -923,7 +944,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       TableService.init($scope.activitiForm.formProperties);
 
       $scope.addRow = function (form, id, index) {
-        ValidationService.validateByMarkers(form, null, true, this.data, true);
+        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {}, true);
         if (!form.$invalid) {
           $scope.tableIsInvalid = false;
           TableService.addRow(id, $scope.activitiForm.formProperties);
@@ -945,4 +966,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       $scope.isFieldWritable = function (field) {
         return TableService.isFieldWritable(field);
       };
+
+      if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
+        $scope.fillSelfPrevious();
+      }
     });

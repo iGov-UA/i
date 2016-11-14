@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.igov.io.sms.ManagerSMS;
 
 @Controller
 @Api(tags = {"SubjectMessageCommonController -- Сообщения субьектов"})
@@ -22,12 +25,6 @@ public class SubjectMessageCommonController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageCommonController.class);
     
-    /*private static final String body = new StringBuilder("<message>")
-                .append("<service id='single' source='iGov'/>")
-                .append("<to>").append("%s").append("</to>")
-                .append("<body content-type=\"text/plain\" encoding=\"plain\">").append("%s")
-                .append("</body>")
-                .append("</message>").toString();*/
     @Autowired
     private ManagerSMS_New managerSMS;
 
@@ -36,6 +33,9 @@ public class SubjectMessageCommonController {
 
     @Autowired
     private HttpRequester oHttpRequester;
+    
+    @Autowired
+    private ManagerSMS smsManager;
 
     /**
      * Колбек для сервиса отправки СМС
@@ -54,38 +54,27 @@ public class SubjectMessageCommonController {
         return "";
     }
 
-    /**
-     * Колбек для сервиса отправки СМС
-     *
-     * @param number
-     * @param message
-     * @return
-     */
-    @RequestMapping(value = "/sentSms", method = {RequestMethod.POST,
+    @ApiOperation(value = "/sendSms", notes = "##### Контроллер отправки смс с проверкой номера по оператору абонента\n")
+    @RequestMapping(value = "/sendSms", method = {RequestMethod.POST,
         RequestMethod.GET}, produces = "text/plain;charset=UTF-8")
     public @ResponseBody
-    String sentSms(@RequestParam(value = "number", required = false) String number, 
-            @RequestParam(value = "message", required = false) String message) throws Exception {
-
-        String resp;
-
-        byte[] utf8Message = message.getBytes("UTF-8");
-
-        //if (number.startsWith("+38063")||number.startsWith("+38093"))
-        //{
-        String body = new StringBuilder("<message>")
-                .append("<service id='single' source='iGov'/>")
-                .append("<to>").append(number).append("</to>")
-                .append("<body content-type=\"text/plain\" encoding=\"plain\">").append(message).append(new String(utf8Message, "UTF-8"))
-                .append("</body>")
-                .append("</message>").toString();
+    String sendSms(@ApiParam(value = "Номер телефона в формате 380XXXXXXXXX", required = true)@RequestParam(value = "phone") String phone, 
+            @ApiParam(value = "Текст сообщения", required = true) @RequestParam(value = "message") String message,
+            @ApiParam(value = "Номер заявки", required = true) @RequestParam(value = "sID_Order") String sID_Order,
+            @ApiParam(value = "Если значение флага true - отправка смс идет через старое api, независимо от оператора", required = false) @RequestParam(value = "oldApiFlag", required = false) Boolean apiFlag){
+    
+        if (apiFlag == null)
+        {
+            apiFlag = false;
+        }
         
-        String result = String.format(body, number, message);
-        
-        resp = oHttpRequester.postInside(generalConfig.getLifeURL(), null, body, "text/xml; charset=utf-8",
-                generalConfig.getLifeLogin(), generalConfig.getLifePassword());
-        //}
-
-        return resp;
+        try{
+            String resp = smsManager.sendSms(phone, message, sID_Order, apiFlag);
+            return resp;
+        }
+        catch (Exception ex)
+        {
+            return ex.toString();
+        }
     }
 }

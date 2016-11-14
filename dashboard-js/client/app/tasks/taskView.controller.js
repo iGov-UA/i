@@ -136,7 +136,14 @@
 
         $scope.validateForm = function(form) {
           var bValid = true;
-          ValidationService.validateByMarkers(form, null, true);
+          var oValidationFormData = {};
+          angular.forEach($scope.taskForm, function (field) {
+            oValidationFormData[field.id] = angular.copy(field);
+            if(field.type === 'file'){
+              //debugger;
+            }
+          });
+          ValidationService.validateByMarkers(form, null, true, oValidationFormData);
           return form.$valid && bValid;
         };
 
@@ -332,9 +339,17 @@
         };
 
         (function isTaskHasEmail() {
-          for(var i=0; i<$scope.taskData.aField.length; i++){
-            if($scope.taskData.aField[i].sID === "email"){
-              $scope.bHasEmail = true;
+          try{
+            for(var i=0; i<$scope.taskData.aField.length; i++){
+              if($scope.taskData.aField[i].sID === "email"){
+                $scope.bHasEmail = true;
+              }
+            }
+          } catch (err){
+            if($scope.taskData.code && $scope.taskData.message){
+              console.warn($scope.taskData.message);
+            } else {
+              console.error(err);
             }
           }
         })();
@@ -507,6 +522,7 @@
             if (filterResult && filterResult.length === 1) {
               filterResult[0].value = result.response.id;
               filterResult[0].fileName = result.response.name;
+              filterResult[0].signInfo = result.signInfo;
             }
           }).catch(function (err) {
             Modal.inform.error()('Помилка. ' + err.code + ' ' + err.message);

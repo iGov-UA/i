@@ -1,0 +1,22 @@
+<div class="container">
+    <div ng-if="vm.isLoggedIn" class="row">
+        <div>
+            <div>
+                <decrypt-file on-file-upload-success="onFileUploadSuccess($file)"
+                                    o-service-data="{}">Розшифрувати файл з ДФС</decrypt-file>
+            </div>
+        </div>
+    </div>
+    <div ng-if="!vm.isLoggedIn" class="row">
+        <div class="text-center">
+            <p>Будьласка, увійдіть в систему</p><br />
+            <div service-auth-block
+                 redirect-uri="{{vm.getRedirectURI()}}"
+                 auth-methods="{{getAuthMethods()}}">
+            </div>
+        </div>
+        <div class="text-center" ng-show="error">
+            <p>{{error}}</p>
+        </div>
+    </div>
+</div>

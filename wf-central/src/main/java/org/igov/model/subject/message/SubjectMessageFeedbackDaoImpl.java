@@ -15,7 +15,9 @@ import org.slf4j.LoggerFactory;
 
 @Repository
 public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, SubjectMessageFeedback> implements SubjectMessageFeedbackDao {
-private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.class);
+    
+    private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.class);
+    
     protected SubjectMessageFeedbackDaoImpl() {
         super(SubjectMessageFeedback.class);
     }
@@ -74,8 +76,8 @@ private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.
     }
 
     @Override
-    public Optional<SubjectMessageFeedback> findByOrder(String sID_Order) {
-    return findBy("sID_Order", sID_Order);
+    public SubjectMessageFeedback findByOrder(String sID_Order) {
+        return findBy("sID_Order", sID_Order).orNull();
     }
 
 }

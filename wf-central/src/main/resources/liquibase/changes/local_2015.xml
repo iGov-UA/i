@@ -1553,4 +1553,14 @@
         </addColumn>       
     </changeSet>
 
+    <changeSet id="ServiceData_asAuth-size" author="bw">
+        <modifyDataType tableName="ServiceData" columnName="asAuth" newDataType="varchar(100)" />
+    </changeSet>
+    
+    <changeSet id="issue-1421_rename" author="yegor-kovylin">
+        <renameColumn newColumnName="nID_Process"
+                      oldColumnName="nID_Task"
+                      tableName="HistoryEvent_Service"/>
+    </changeSet>
+    
 </databaseChangeLog>

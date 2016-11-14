@@ -11,11 +11,13 @@ import static org.igov.util.ToolLuna.getProtectedNumber;
 import javax.annotation.PostConstruct;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import org.springframework.context.annotation.Scope;
 
 /**
  * @author bw
  */
 @Component("generalConfig")
+@Scope("prototype")
 public class GeneralConfig {
 
     private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);
@@ -129,7 +131,7 @@ public class GeneralConfig {
     private String lifeLogin;
     @Value("${general.SMS.lifePassword}")
     private String lifePassword;
-            
+
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
     @Value("${general.LiqPay.bTest}")
@@ -163,7 +165,9 @@ public class GeneralConfig {
     
     @Value("${general.feedbackCountLimit}")
     private String feedbackCountLimit;
-   
+    
+    @Value("${general.Escalation.bTest}")
+    private String sbTest_Escalation;
     
     
     public boolean isSelfTest() {
@@ -289,7 +293,7 @@ public class GeneralConfig {
     public String getChemaId()  {
         return snID_Shema;
     }
-
+    
     public String getLifeURL() {
         return lifeURL;
     }
@@ -335,7 +339,7 @@ public class GeneralConfig {
         return b;
     }
     
-
+    
     
     public Integer getServerId(Integer nID_Server) {
         if(mServerReplace==null){
@@ -367,6 +371,7 @@ public class GeneralConfig {
                 }
             }
         }
+        //System.out.println("mServerReplace: " + mServerReplace);
         LOG.info("nID_Server={}, mServerReplace={}", nID_Server, mServerReplace);
         Integer nID_Server_Return = nID_Server;
         if(mServerReplace!=null&&!mServerReplace.isEmpty()&&nID_Server!=null){
@@ -411,6 +416,18 @@ public class GeneralConfig {
     }
     public String getOrderId_ByProcess(Integer nID_Server, Long nID_Process) {
         return getOrderId_ByOrder(getSelfServerId(), getProtectedNumber(nID_Process));
+    }
+    public Long getOrderId_ByProcess(String snID_Process) {
+        if(snID_Process==null){
+            return null;
+        }
+        Long nID_Process = null;
+        try{
+            nID_Process = Long.valueOf(snID_Process);
+        }catch(Exception oException){
+            LOG.warn(oException.getMessage());
+        }
+        return nID_Process;
     }
     
     @PostConstruct
@@ -501,6 +518,19 @@ public class GeneralConfig {
 
     public void setsSecretKey_Corezoid_Gorsovet_Exchange(String sSecretKey_Corezoid_Gorsovet_Exchange) {
         this.sSecretKey_Corezoid_Gorsovet_Exchange = sSecretKey_Corezoid_Gorsovet_Exchange;
+    }
+
+    
+    public boolean isTest_Escalation() {
+        boolean b = true;
+        try {
+            b = (sbTest_Escalation == null ? b : Boolean.valueOf(sbTest_Escalation));
+            //LOG.info("(sbTest_LiqPay={})", sbTest_LiqPay);
+        } catch (Exception oException) {
+            LOG.error("Bad: {} (sbTest_Escalation={})", oException.getMessage(), sbTest_Escalation);
+            LOG.debug("FAIL:", oException);
+        }
+        return b;
     }
     
 }
