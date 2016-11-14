@@ -293,6 +293,9 @@ angular.module('journal').controller('JournalSearchController', function (
   }
 
   $scope.getAuthMethods = function () {
+    if($rootScope.profile.isKyivCity){
+      return ["BankID","EDS"]
+    }
     return ["BankID","EDS","mpbds"];
   };
 

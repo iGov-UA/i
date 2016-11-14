@@ -94,7 +94,7 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Нове звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -102,7 +102,7 @@ execution.setVariable('Registrationservice', per4)
     <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -111,29 +111,29 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
+          <activiti:expression><![CDATA[
                                     [pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
 										Ваш запит був успішно зареєстрований у нашій системі [sID_Order]. 
-								    &lt;/p&gt;
-									&lt;p&gt;
+								    </p>
+									<p>
 										Спеціалісти ${sOrganType} оброблять Вашу заявку та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час. 
-									&lt;/p&gt;
-                                    &lt;p&gt;[cancelTask]&lt;/p&gt;
+									</p>
+                                    <p>[cancelTask]</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -174,7 +174,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${doksmen},${bankId_scan_passport}</activiti:expression>
+            <activiti:expression><![CDATA[${doksmen},${bankId_scan_passport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -187,7 +187,7 @@ execution.setVariable('Registrationservice', per4)
     <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -196,32 +196,32 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										На жаль, Вам відмовлено у надані послуги.&lt;br&gt;
-                                        При необхідності обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br&gt;
-											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										На жаль, Вам відмовлено у надані послуги.<br>
+                                        При необхідності обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+									</p>
+									<p>
+										Коментар Державного службовця:<br>
+											<b><i>${decisionComment}</i></b>
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися до чергового:<br>
 										${sPhoneOrgan}
-									&lt;/p&gt;
+									</p>
 									[pattern/mail/_common_signature_start.html]
-                                    ${sNameOrgan}.&lt;/p&gt;
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+                                    ${sNameOrgan}.</p>
+                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -235,7 +235,7 @@ execution.setVariable('Registrationservice', per4)
     <serviceTask id="servicetask6" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -244,57 +244,57 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.&lt;br&gt;
-										Для того щоб закінчити процедуру обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові необхідно:&lt;br /&gt;
-										&lt;ul&gt;
-										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab205}.&lt;/li&gt;
-										&lt;li&gt;Заповнити та підписати заяву для видачі паспорту згідно зразка.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.<br>
+										Для того щоб закінчити процедуру обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові необхідно:<br />
+										<ul>
+										<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab205}.</li>
+										<li>Заповнити та підписати заяву для видачі паспорту згідно зразка.</li>
+										</ul>
+									</p>
+									<p>
+										<b>Деталі зустрічі:</b><br>
 										День та час - ${date_of_visit}
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при оформленні паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові:&lt;/b&gt;&lt;br&gt;
-										&lt;ul&gt;
-										&lt;li&gt;оригінал документу, на основі якого відбулася зміна (переміна) прізвища, ім'я або по батькові;&lt;/li&gt;
-										&lt;li&gt;паспорт, що підлягає обміну;&lt;/li&gt;
-										&lt;li&gt;дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;	
-										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
-										&lt;ul&gt;
-										&lt;li&gt;у разі порушення строку подання заяви про зміну паспортного документа (якщо такий строк перевищує 1 місяць) Вас може бути притягнено до адміністративної відповідальності за ст. 197 КУпАП (санкція – штраф від 17 до 51 грн.). Майте з собою гроші на оплату штрафу.&lt;/li&gt;
-										&lt;li&gt;якщо Ваше нове прізвище - подвійне, то потрібно принести 3 фотокартки.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br&gt;
-										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br&gt;
+									</p>
+									<p>
+										<b>Необхідні документи, які треба принести до ${sOrganType} при оформленні паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові:</b><br>
+										<ul>
+										<li>оригінал документу, на основі якого відбулася зміна (переміна) прізвища, ім'я або по батькові;</li>
+										<li>паспорт, що підлягає обміну;</li>
+										<li>дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);</li>
+										</ul>
+									</p>
+									<p>	
+										<b>Зверніть увагу:</b> 
+										<ul>
+										<li>у разі порушення строку подання заяви про зміну паспортного документа (якщо такий строк перевищує 1 місяць) Вас може бути притягнено до адміністративної відповідальності за ст. 197 КУпАП (санкція – штраф від 17 до 51 грн.). Майте з собою гроші на оплату штрафу.</li>
+										<li>якщо Ваше нове прізвище - подвійне, то потрібно принести 3 фотокартки.</li>
+										</ul>
+									</p>
+									<p>
+										Коментар Державного службовця:<br>
+										<b><i>${decisionComment}</i></b>
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися до чергового:<br>
 										${sPhoneOrgan}
-									&lt;/p&gt;
-                                    &lt;p&gt;[cancelTask]&lt;/p&gt;
+									</p>
+                                    <p>[cancelTask]</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -342,7 +342,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${doksmen},${bankId_scan_passport}</activiti:expression>
+            <activiti:expression><![CDATA[${doksmen},${bankId_scan_passport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -359,7 +359,7 @@ execution.setVariable('Registrationservice', per4)
     <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -368,21 +368,21 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		Ви отримали послугу "Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові".&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                              		Ви отримали послугу "Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові".<br />
                               		Якщо для замовлення послуги Ви використовували BankID, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
-                              		&lt;/p&gt;
-                              		&lt;p&gt;
-                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.&lt;br&gt;
+                              		</p>
+                              		<p>
+                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
                               		Дякуємо.
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

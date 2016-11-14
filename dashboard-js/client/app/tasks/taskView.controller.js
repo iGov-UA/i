@@ -6,10 +6,12 @@
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks', 'user',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', '$rootScope', 'lunaService',
-      function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
+      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
+      'lunaService', 'TableService', 'autocompletesDataFactory',
+      function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope, lunaService) {
+                $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
+                lunaService, TableService, autocompletesDataFactory) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -205,10 +207,19 @@
         $scope.nID_Process = oTask.processInstanceId;
         $scope.markers = ValidationService.getValidationMarkers();
         $scope.bHasEmail = false;
+        $scope.isClarifySending = false;
+        $scope.tableIsInvalid = false;
 
         $scope.validateForm = function(form) {
           var bValid = true;
-          ValidationService.validateByMarkers(form, null, true);
+          var oValidationFormData = {};
+          angular.forEach($scope.taskForm, function (field) {
+            oValidationFormData[field.id] = angular.copy(field);
+            if(field.type === 'file'){
+              //debugger;
+            }
+          });
+          ValidationService.validateByMarkers(form, null, true, oValidationFormData);
           return form.$valid && bValid;
         };
 
@@ -327,6 +338,7 @@
         };
 
         $scope.clarifySend = function () {
+          $scope.isClarifySending = true;
 
           var oData = {
             nID_Process: $scope.nID_Process,
@@ -388,12 +400,14 @@
             oData.nID_Process = oData.nID_Process + lunaService.getLunaValue(oData.nID_Process);
             tasks.postServiceMessages(oData).then(function () {
               $scope.clarify = false;
+              $scope.isClarifySending = false;
               Modal.inform.success(function () {
               })('Коментар відправлено успішно');
             });
           } else {
             tasks.setTaskQuestions(oData).then(function () {
               $scope.clarify = false;
+              $scope.isClarifySending = false;
               Modal.inform.success(function () {
               })('Зауваження відправлено успішно');
             });
@@ -401,9 +415,17 @@
         };
 
         (function isTaskHasEmail() {
-          for(var i=0; i<$scope.taskData.aField.length; i++){
-            if($scope.taskData.aField[i].sID === "email"){
-              $scope.bHasEmail = true;
+          try{
+            for(var i=0; i<$scope.taskData.aField.length; i++){
+              if($scope.taskData.aField[i].sID === "email"){
+                $scope.bHasEmail = true;
+              }
+            }
+          } catch (err){
+            if($scope.taskData.code && $scope.taskData.message){
+              console.warn($scope.taskData.message);
+            } else {
+              console.error(err);
             }
           }
         })();
@@ -718,6 +740,7 @@
             if (filterResult && filterResult.length === 1) {
               filterResult[0].value = result.response.id;
               filterResult[0].fileName = result.response.name;
+              filterResult[0].signInfo = result.signInfo;
             }
           }).catch(function (err) {
             Modal.inform.error()('Помилка. ' + err.code + ' ' + err.message);
@@ -902,23 +925,34 @@
           return activeFieldsList.length > 0;
         };
 
-        $scope.openTableAttachment = function (id) {
-          angular.forEach($scope.taskData.aTable, function (table) {
-            if(table.id === id) {
-              $scope.openedAttachTable = table;
-            }
+        $scope.openTableAttachment = function (id, taskId) {
+          $scope.attachIsLoading = true;
+
+          tasks.getTableAttachment(taskId, id).then(function (res) {
+            $scope.openedAttachTable = JSON.parse(res);
+            fixFieldsForTable($scope.openedAttachTable);
+            $scope.attachIsLoading = false;
           });
+
           $scope.tableContentShow = !$scope.tableContentShow;
         };
 
-        var fixFieldsForTable = function () {
-          angular.forEach($scope.taskData.aTable, function (table) {
-            angular.forEach(table.content, function (row) {
+        var fixFieldsForTable = function (table) {
+            var tableRow;
+            if('content' in table){
+              tableRow = table.content;
+            } else {
+              tableRow = table.aRow;
+            }
+            angular.forEach(tableRow, function (row) {
               angular.forEach(row.aField, function (field) {
                 if(field.type === 'date') {
-                  var onlyDate = field.props.value.split('T')[0];
-                  var splitDate = onlyDate.split('-');
-                  field.props.value = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0]
+                  var match = /^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/.test(field.props.value);
+                  if(!match) {
+                    var onlyDate = field.props.value.split('T')[0];
+                    var splitDate = onlyDate.split('-');
+                    field.props.value = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0]
+                  }
                 }
                 if(field.type === 'enum') {
                   angular.forEach(field.a, function (item) {
@@ -929,37 +963,50 @@
                 }
               })
             });
-          })
         };
 
-        // при наличии полей типа "table" загружаем их с редиса и наполняем массив aTable.
-        $scope.getListOfTables = function () {
-          var itemsProcessed = 0;
-          $scope.taskData.aTable = [];
-          if($scope.taskData.aAttachment && $scope.taskData.aAttachment.length > 0)
-            angular.forEach($scope.taskData.aAttachment, function (attach) {
-              tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
-                ++itemsProcessed;
-                try {
-                  var table = {};
-                  table.name = attach.description;
-                  table.id = attach.id;
-                  table.content = JSON.parse(res);
-                  for(var i=0; i<table.content.length; i++) {
-                    if(typeof table.content[i] === "string") {
-                      table.idName = table.content[i];
-                      delete table.content[i];
-                    }
-                  }
-                  $scope.taskData.aTable.push(table);
-                } catch (e) {
-
-                }
-                if(itemsProcessed === $scope.taskData.aAttachment.length) fixFieldsForTable();
-              })
-            });
+        var idMatch = function () {
+          angular.forEach($scope.taskForm, function (item, key, obj) {
+            angular.forEach($scope.taskData.aAttachment, function (attachment) {
+              var reg = /(\[id=(\w+)\])/;
+              var match = attachment.description.match(reg);
+              if(match !== null && (item.id && match[2].toLowerCase() === item.id.toLowerCase() ||item.name && match[2].toLowerCase() === item.name.toLowerCase())) {
+                tasks.getTableAttachment(attachment.taskId, attachment.id).then(function (res) {
+                  obj[key] = JSON.parse(res);
+                  obj[key].description = attachment.description;
+                })
+              }
+            })
+          });
         };
-        $scope.getListOfTables();
+        // idMatch();
+
+        TableService.init($scope.taskForm);
+
+        $scope.addRow = function (form, id, index) {
+          ValidationService.validateByMarkers(form, null, true, null, true);
+          if (!form.$invalid) {
+            $scope.tableIsInvalid = false;
+            TableService.addRow(id, $scope.taskForm);
+          } else {
+            $scope.tableIsInvalid = true;
+            $scope.invalidTableNum = index;
+          }
+        };
+
+        $scope.removeRow = function (index, form, id) {
+          TableService.removeRow($scope.taskForm, index, id);
+          if (!form.$invalid) {
+            $scope.tableIsInvalid = false;
+          }
+        };
+        $scope.rowLengthCheckLimit = function (table) {
+          if(table.aRow) return table.aRow.length >= table.nRowsLimit
+        };
+
+        $scope.isFieldWritable = function (field) {
+          return TableService.isFieldWritable(field);
+        };
       }
 
     ])

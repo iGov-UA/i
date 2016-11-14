@@ -28,7 +28,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
  */
 @Service
 public class SubjectMessageService {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageService.class);
 
     @Autowired
@@ -41,6 +41,8 @@ public class SubjectMessageService {
     private SubjectContactTypeDao subjectContactTypeDao;
     @Autowired
     private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
+    @Autowired
+    private SubjectMessagesDao subjectMessageDao;
     @Autowired
     private SubjectMessageFeedbackAnswerDao subjectMessageFeedbackAnswerDao;
 
@@ -82,59 +84,57 @@ public class SubjectMessageService {
     }
 
     public SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
-                                               String sContacts, String sData, Long nID_subjectMessageType)throws CommonServiceException{
+            String sContacts, String sData, Long nID_subjectMessageType) throws CommonServiceException {
         SubjectContact subjectContact = null;
         Subject subject = new Subject();
         SubjectMessage message = null;
-       
-        if(sMail != null && !sMail.isEmpty())
-        {
+
+        if (sMail != null && !sMail.isEmpty()) {
             LOG.info("(createSubjectMessage: sMail{}, nID_subject{}) ", sMail, nID_subject);
-            if (nID_subject != null)
-            {
+            if (nID_subject != null) {
                 LOG.info("(createSubjectMessage: nID_subject{}) ", nID_subject);
-                
+
                 try {
-                	subjectContact = syncMail(sMail, nID_subject);
-                } catch (Exception e){
-                	LOG.warn("Error occured while syncing mail {}", e.getMessage());
+                    subjectContact = syncMail(sMail, nID_subject);
+                } catch (Exception e) {
+                    LOG.warn("Error occured while syncing mail {}", e.getMessage());
                 }
-                if(subjectContact != null)
-                 LOG.info("(syncMail with nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
-                    subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
-                    subjectContact.getsDate(), subjectContact.getsValue());
-                else
-                   LOG.info("(syncMail with nID_Subject after calling method: SubjectContact null)"); 
-               
+                if (subjectContact != null) {
+                    LOG.info("(syncMail with nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
+                            subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
+                            subjectContact.getsDate(), subjectContact.getsValue());
+                } else {
+                    LOG.info("(syncMail with nID_Subject after calling method: SubjectContact null)");
+                }
 
             }
-            if (nID_subject == null)
-            {
+            if (nID_subject == null) {
                 LOG.info("(createSubjectMessage: nID_subject{}) ", nID_subject);
-                
-                subjectContact = syncMail(sMail, subject);
-                
-               if(subjectContact != null) 
-                LOG.info("(syncMail without nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
-                    subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
-                    subjectContact.getsDate(), subjectContact.getsValue());
-               else
-                   LOG.info("(syncMail without nID_Subject after calling method: subjectContact null)");
-                
-              if(subject != null)
-                LOG.info("(syncMail without nID_Subject after calling method: oSubject ID{},sID{}, sLabel{}, sLabaleShort{})", 
-                        subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
-              else
-                  LOG.info("(syncMail without nID_Subject after calling method: subject null)");
 
-                
+                subjectContact = syncMail(sMail, subject);
+
+                if (subjectContact != null) {
+                    LOG.info("(syncMail without nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
+                            subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
+                            subjectContact.getsDate(), subjectContact.getsValue());
+                } else {
+                    LOG.info("(syncMail without nID_Subject after calling method: subjectContact null)");
+                }
+
+                if (subject != null) {
+                    LOG.info("(syncMail without nID_Subject after calling method: oSubject ID{},sID{}, sLabel{}, sLabaleShort{})",
+                            subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
+                } else {
+                    LOG.info("(syncMail without nID_Subject after calling method: subject null)");
+                }
+
             }
         }
-       
+
         message = new SubjectMessage();
         message.setHead(sHead);
         message.setBody(sBody == null ? "" : sBody);
-     
+
         LOG.info("(createSubjectMessage: subject Id{})", subject.getId());
 
         message.setId_subject((nID_subject == null) ? ((subject.getId() == null) ? 0 : subject.getId()) : nID_subject);
@@ -142,7 +142,7 @@ public class SubjectMessageService {
         SubjectContact oSubjectContact = (subjectContact == null) ? null : subjectContact;
         message.setoMail(oSubjectContact);
         //if(oSubjectContact==null){
-            message.setMail(sMail == null ? "" : sMail);
+        message.setMail(sMail == null ? "" : sMail);
         //}
         message.setContacts((sContacts == null) ? "" : sContacts);
         message.setData((sData == null) ? "" : sData);
@@ -162,54 +162,52 @@ public class SubjectMessageService {
         LOG.info("Created message id={}, Id_subject={}", messageID, message.getId_subject());
         LOG.info("Created message id={}, Id_subject={}", messageID, message.getsID_DataLink());
         LOG.info("Created message id={}, ID_HistoryEvent_Service={}", messageID, message.getnID_HistoryEvent_Service());
-        */
+         */
         return message;
     }
 
     /*issue1215 Перегружен ради добавлениия нового параметра (sSubjectInfo) в /setTaskQuestions, чтобы не рушить
     существующие сервисыБ которые используют этот метод  */
     public SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
-                                               String sContacts, String sData, Long nID_subjectMessageType, String sSubjectInfo)throws CommonServiceException{
+            String sContacts, String sData, Long nID_subjectMessageType, String sSubjectInfo) throws CommonServiceException {
         SubjectContact subjectContact = null;
         Subject subject = new Subject();
         SubjectMessage message = null;
 
-        if(sMail != null && !sMail.isEmpty())
-        {
+        if (sMail != null && !sMail.isEmpty()) {
             LOG.info("(createSubjectMessage: sMail{}, nID_subject{}) ", sMail, nID_subject);
-            if (nID_subject != null)
-            {
+            if (nID_subject != null) {
                 LOG.info("(createSubjectMessage: nID_subject{}) ", nID_subject);
 
                 subjectContact = syncMail(sMail, nID_subject);
-                if(subjectContact != null)
+                if (subjectContact != null) {
                     LOG.info("(syncMail with nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                             subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
                             subjectContact.getsDate(), subjectContact.getsValue());
-                else
+                } else {
                     LOG.info("(syncMail with nID_Subject after calling method: SubjectContact null)");
-
+                }
 
             }
-            if (nID_subject == null)
-            {
+            if (nID_subject == null) {
                 LOG.info("(createSubjectMessage: nID_subject{}) ", nID_subject);
 
                 subjectContact = syncMail(sMail, subject);
 
-                if(subjectContact != null)
+                if (subjectContact != null) {
                     LOG.info("(syncMail without nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                             subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
                             subjectContact.getsDate(), subjectContact.getsValue());
-                else
+                } else {
                     LOG.info("(syncMail without nID_Subject after calling method: subjectContact null)");
+                }
 
-                if(subject != null)
+                if (subject != null) {
                     LOG.info("(syncMail without nID_Subject after calling method: oSubject ID{},sID{}, sLabel{}, sLabaleShort{})",
                             subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
-                else
+                } else {
                     LOG.info("(syncMail without nID_Subject after calling method: subject null)");
-
+                }
 
             }
         }
@@ -241,13 +239,14 @@ public class SubjectMessageService {
     }
 
     public SubjectMessageFeedback setSubjectMessageFeedback(String sID_Source, String sAuthorFIO, String sMail,
-                                                            String sHead, String sBody, String sPlace, String sEmployeeFIO,
-                                                            Long nID_Rate, Long nID_Service, String sAnswer, Long nId,
-                                                            Long nID_Subject) {
+            String sHead, String sBody, String sPlace, String sEmployeeFIO,
+            Long nID_Rate, Long nID_Service, String sAnswer, Long nId,
+            Long nID_Subject, String sID_Order) {
 
         SubjectMessageFeedback messageFeedback;
         SubjectMessage subjectMessage;
-        if (nId == null){
+        if (nId == null) {
+            LOG.info("!!!nId is null sID_Order = " + sID_Order);
             messageFeedback = new SubjectMessageFeedback();
             messageFeedback.setsID_Source(sID_Source);
             messageFeedback.setsAuthorFIO(sAuthorFIO);
@@ -260,7 +259,11 @@ public class SubjectMessageService {
             messageFeedback.setnID_Service(nID_Service);
             messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
             messageFeedback.setsAnswer(sAnswer);
-            if(!isEmpty(sHead) || !isEmpty(sBody)){
+            if(sID_Order != null){
+                messageFeedback.setsID_Order(sID_Order);
+            }
+            if (!isEmpty(sHead) || !isEmpty(sBody)) {
+                LOG.info("!!!sHead = " + sHead);
                 SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(2L);
                 subjectMessage = new SubjectMessage();
                 subjectMessage.setHead(sHead);
@@ -270,57 +273,61 @@ public class SubjectMessageService {
                 subjectMessage.setsSubjectInfo(sAuthorFIO);
                 subjectMessage.setMail(sMail);
                 subjectMessage.setId_subject(nID_Subject);
+                subjectMessage = subjectMessageDao.saveOrUpdate(subjectMessage);
+                messageFeedback.setoSubjectMessage(subjectMessage);
             }
-
             return subjectMessageFeedbackDao.save(messageFeedback);
+        } else {
+            messageFeedback = subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
+            /*if(sID_Order != null){
+                messageFeedback.setsID_Order(sID_Order);
+            }*/
+            LOG.info("!!!nId = " + nId + " sAnswer = " + sAnswer+ " sID_Order = " + messageFeedback.getsID_Order());
+            if (StringUtils.isEmpty(sAnswer)) {
+                messageFeedback.setsID_Source(sID_Source);
+                messageFeedback.setsAuthorFIO(sAuthorFIO);
+                messageFeedback.setsMail(sMail);
+                messageFeedback.setsHead(sHead);
+                messageFeedback.setsBody(sBody);
+                messageFeedback.setsPlace(sPlace);
+                messageFeedback.setsEmployeeFIO(sEmployeeFIO);
+                messageFeedback.setnID_Rate(nID_Rate);
+                messageFeedback.setnID_Service(nID_Service);
+                messageFeedback.setsAnswer(sAnswer);
+                subjectMessage = messageFeedback.getoSubjectMessage();
+                if (subjectMessage == null) {
+                    SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(2L);
+                    subjectMessage = new SubjectMessage();
+                    subjectMessage.setHead(sHead == null ? "" : sHead);
+                    subjectMessage.setBody(sBody == null ? "" : sBody);
+                    subjectMessage.setSubjectMessageType(subjectMessageType);
+                    subjectMessage.setMail(sMail == null ? "" : sMail);
+                    subjectMessage.setId_subject(nID_Subject);
+                }
+                if (sHead != null) {
+                    subjectMessage.setHead(sHead);
+                }
+                if (sBody != null) {
+                    subjectMessage.setBody(sBody);
+                }
+                subjectMessage.setDate(new DateTime());
+                subjectMessage.setsSubjectInfo(sAuthorFIO);
+                if (sMail != null) {
+                    subjectMessage.setMail(sMail);
+                }
+                if (nID_Subject != null) {
+                    subjectMessage.setId_subject(nID_Subject);
+                }
+                subjectMessage = subjectMessageDao.saveOrUpdate(subjectMessage);
+                messageFeedback.setoSubjectMessage(subjectMessage);
+            }
+            return subjectMessageFeedbackDao.update(messageFeedback);
         }
-        messageFeedback = subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
 
-        if (StringUtils.isEmpty(sAnswer)) {
-            messageFeedback.setsID_Source(sID_Source);
-            messageFeedback.setsAuthorFIO(sAuthorFIO);
-            messageFeedback.setsMail(sMail);
-            messageFeedback.setsHead(sHead);
-            messageFeedback.setsBody(sBody);
-            messageFeedback.setsPlace(sPlace);
-            messageFeedback.setsEmployeeFIO(sEmployeeFIO);
-            messageFeedback.setnID_Rate(nID_Rate);
-            messageFeedback.setnID_Service(nID_Service);
-            messageFeedback.setsAnswer(sAnswer );
-            subjectMessage = messageFeedback.getoSubjectMessage();
-            if(subjectMessage==null){
-                SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(2L);
-                subjectMessage = new SubjectMessage();
-                subjectMessage.setHead(sHead==null?"":sHead);
-                subjectMessage.setBody(sBody==null?"":sBody);
-                subjectMessage.setSubjectMessageType(subjectMessageType);
-                //subjectMessage.setDate(new DateTime());
-                //subjectMessage.setsSubjectInfo(sAuthorFIO);
-                subjectMessage.setMail(sMail==null?"":sMail);
-                subjectMessage.setId_subject(nID_Subject);
-            }
-            if(sHead!=null){
-                subjectMessage.setHead(sHead);
-            }
-            if(sBody!=null){
-                subjectMessage.setBody(sBody);
-            }
-            subjectMessage.setDate(new DateTime());
-            subjectMessage.setsSubjectInfo(sAuthorFIO);
-            if(sMail!=null){
-                subjectMessage.setMail(sMail);
-            }
-            if(nID_Subject!=null){
-                subjectMessage.setId_subject(nID_Subject);
-            }
-            messageFeedback.setoSubjectMessage(subjectMessage);
-        }
-
-        return subjectMessageFeedbackDao.update(messageFeedback);
     }
 
     public SubjectMessageFeedbackAnswer setSubjectMessageFeedbackAnswer(Long nID_SubjectMessageFeedback, String sBody,
-                                                                        Long nID_Subject, Boolean bSelf, String sAuthorFIO){
+            Long nID_Subject, Boolean bSelf, String sAuthorFIO) {
 
         SubjectMessageFeedbackAnswer answer = new SubjectMessageFeedbackAnswer();
         SubjectMessageFeedback messageFeedback = subjectMessageFeedbackDao
@@ -334,12 +341,11 @@ public class SubjectMessageService {
         subjectMessage.setDate(new DateTime());
         subjectMessage.setId_subject(nID_Subject);
         subjectMessage.setsSubjectInfo(sAuthorFIO);
-        
 
         answer.setoSubjectMessageFeedback(messageFeedback);
         answer.setbSelf(bSelf);
         answer.setoSubjectMessage(subjectMessage);
-        
+
         return subjectMessageFeedbackAnswerDao.save(answer);
     }
 
@@ -347,31 +353,32 @@ public class SubjectMessageService {
         return subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
     }
 
-    public List<SubjectMessageFeedback> getAllSubjectMessageFeedbackBynID_Service(Long nID_service){
+    public List<SubjectMessageFeedback> getAllSubjectMessageFeedbackBynID_Service(Long nID_service) {
         return subjectMessageFeedbackDao.getAllSubjectMessageFeedbackBynID_Service(nID_service);
     }
 
+    public List<SubjectMessageFeedback> getAllSubjectMessageFeedback_Filtered(Long nID_service, Long nID__LessThen_Filter, Integer nRowsMax) {
+        return subjectMessageFeedbackDao.getAllSubjectMessageFeedback_Filtered(nID_service, nID__LessThen_Filter, nRowsMax);
+    }
+
     //при параметре nID_Subject == null
-    private SubjectContact syncMail(String sMail, Subject oSubject)  {
-        
-    
-        
+    private SubjectContact syncMail(String sMail, Subject oSubject) {
+
         Subject subject = this.getSubject(null, sMail);
         List<SubjectContact> list_contacts = subjectContactDao.findContacts(subject);
         List<SubjectContact> list_smail = subjectContactDao.findAllBy("sValue", sMail);
         SubjectContact res = this.contactsSinchronization(list_smail, list_contacts, sMail, subject);
-        if(subject != null)
-        {
+        if (subject != null) {
             oSubject.setId(subject.getId());
             oSubject.setsID(subject.getsID());
             oSubject.setsLabel(subject.getsLabel());
             oSubject.setsLabelShort(subject.getsLabelShort());
-            
+
         }
-         
-         return res;
+
+        return res;
     }
-    
+
     //private void checkRate(String sID_Order, Long nID_Protected, Integer nID_Server, String sID_Rate)
     /*private void setServiceRate(String sID_Order, String sID_Rate)
             throws CommonServiceException {
@@ -429,154 +436,132 @@ public class SubjectMessageService {
             }
         }
     }*/
-
     //при параметре nID_Subject != null
     private SubjectContact syncMail(String sMail, Long nID_Subject) throws CommonServiceException {
 
-      //находим Subject по nID_Subject
-      
-       Subject subject = this.getSubject(nID_Subject, sMail);
-       SubjectHuman subjectHuman = this.getSubjectHuman(subject);
-       List<SubjectContact> list_contacts = subjectContactDao.findContacts(subject);
-       List<SubjectContact> list_mail = subjectContactDao.findAllBy("sValue", sMail);
-       SubjectContact res = this.contactsSinchronization(list_mail, list_contacts, sMail, subject);
-       if(subjectHuman != null)
-       {
-           subjectHuman.setDefaultEmail(res);
-           subjectHumanDao.saveOrUpdateHuman(subjectHuman);
-       }
-       
-      
+        //находим Subject по nID_Subject
+        Subject subject = this.getSubject(nID_Subject, sMail);
+        SubjectHuman subjectHuman = this.getSubjectHuman(subject);
+        List<SubjectContact> list_contacts = subjectContactDao.findContacts(subject);
+        List<SubjectContact> list_mail = subjectContactDao.findAllBy("sValue", sMail);
+        SubjectContact res = this.contactsSinchronization(list_mail, list_contacts, sMail, subject);
+        if (subjectHuman != null) {
+            subjectHuman.setDefaultEmail(res);
+            subjectHumanDao.saveOrUpdateHuman(subjectHuman);
+        }
+
         return res;
     }
-    
-    
-    private Subject getSubject(Long nID_Subject, String sMail)
-    {
-       Subject subject = null;
-       if(nID_Subject == null)
-       {
-           String sID = SubjectHuman.getSubjectId(SubjectHumanIdType.Email, sMail);
-           subject = subjectDao.getSubject(sID);
-            
-              List<SubjectContact> list_contacts = subjectContactDao.findAllBy("sValue", sMail);
-              
-             if(list_contacts.size() != 0)
-             {
-                 for(SubjectContact contact : list_contacts)
-                {
-                    if(contact.getsValue().equals(sMail))
-                    {
+
+    private Subject getSubject(Long nID_Subject, String sMail) {
+        Subject subject = null;
+        if (nID_Subject == null) {
+            String sID = SubjectHuman.getSubjectId(SubjectHumanIdType.Email, sMail);
+            subject = subjectDao.getSubject(sID);
+
+            List<SubjectContact> list_contacts = subjectContactDao.findAllBy("sValue", sMail);
+
+            if (list_contacts.size() != 0) {
+                for (SubjectContact contact : list_contacts) {
+                    if (contact.getsValue().equals(sMail)) {
                         Subject subj = contact.getSubject();
-                        if(!subj.getsID().startsWith("_"))
+                        if (!subj.getsID().startsWith("_")) {
                             subject = subj;
+                        }
                         break;
                     }
                 }
-              
-             }
-             if(subject == null)
-             {
-                 Subject subject_time = new Subject();
-                 subject_time.setsID(sID);
-                 subjectDao.saveOrUpdateSubject(subject_time);
-                 subject = subjectDao.getSubject(sID);
-               
-             }
-           
-       }
-       else
-         subject = subjectDao.getSubject(nID_Subject);
-       
-       if(subject != null)
-       LOG.info("(syncMail with nID_Subject: oSubject ID{},sID{}, sLabel{}, sLabaleShort{})", 
-                        subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
-       else
-           LOG.info("(syncMail with nID_Subject: subject null)");
 
-       
-       return subject;
+            }
+            if (subject == null) {
+                Subject subject_time = new Subject();
+                subject_time.setsID(sID);
+                subjectDao.saveOrUpdateSubject(subject_time);
+                subject = subjectDao.getSubject(sID);
+
+            }
+
+        } else {
+            subject = subjectDao.getSubject(nID_Subject);
+        }
+
+        if (subject != null) {
+            LOG.info("(syncMail with nID_Subject: oSubject ID{},sID{}, sLabel{}, sLabaleShort{})",
+                    subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
+        } else {
+            LOG.info("(syncMail with nID_Subject: subject null)");
+        }
+
+        return subject;
     }
-     
-    private SubjectHuman getSubjectHuman(Subject subject)
-    {
+
+    private SubjectHuman getSubjectHuman(Subject subject) {
         SubjectHuman subjectHuman = null;
-         //по subject найдем запись относящуюся к SubjectHuman
-        if(subject != null)
-        {
+        //по subject найдем запись относящуюся к SubjectHuman
+        if (subject != null) {
             subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
         }
-        if(subjectHuman != null)
-         LOG.info("(syncMail with nID_Subject: sINN{}, id {}, default_email{})", 
-                 subjectHuman.getsINN(), subjectHuman.getoSubject().getId(), subjectHuman.getDefaultEmail());
-        
+        if (subjectHuman != null) {
+            LOG.info("(syncMail with nID_Subject: sINN{}, id {}, default_email{})",
+                    subjectHuman.getsINN(), subjectHuman.getoSubject().getId(), subjectHuman.getDefaultEmail());
+        }
+
         return subjectHuman;
-     
+
     }
-    private SubjectContact contactsSinchronization(List<SubjectContact> list_mail, List<SubjectContact> list_contacts, String sMail, Subject subject)
-    {
-       SubjectContact res = null;
-       boolean bIsContact = this.isContactByMail(list_contacts, sMail);
-       boolean bIsDataBase = this.isContactByMail(list_mail, sMail);
-       if(bIsContact)
-       {
+
+    private SubjectContact contactsSinchronization(List<SubjectContact> list_mail, List<SubjectContact> list_contacts, String sMail, Subject subject) {
+        SubjectContact res = null;
+        boolean bIsContact = this.isContactByMail(list_contacts, sMail);
+        boolean bIsDataBase = this.isContactByMail(list_mail, sMail);
+        if (bIsContact) {
             res = this.updateContact(subject, sMail);
-       }
-       else
-       {
-           if(bIsDataBase)
-           {
-              res = this.updateContact(subject, sMail);
-           }
-           else
-           {
-              res = this.createSubjectContact(sMail, subject);
-           }
-       }
-       
-       return res;
+        } else if (bIsDataBase) {
+            res = this.updateContact(subject, sMail);
+        } else {
+            res = this.createSubjectContact(sMail, subject);
+        }
+
+        return res;
     }
-    private SubjectContact createSubjectContact(String sMail, Subject subject)
-    {
-         SubjectContact contact = new SubjectContact();
-         contact.setSubject(subject);
-         contact.setSubjectContactType(subjectContactTypeDao.getEmailType());
-         contact.setsDate();
-         contact.setsValue(sMail);
-         subjectContactDao.saveOrUpdate(contact);
-         SubjectContact res = subjectContactDao.findByExpected("sValue", sMail);
-         
-         return res;
+
+    private SubjectContact createSubjectContact(String sMail, Subject subject) {
+        SubjectContact contact = new SubjectContact();
+        contact.setSubject(subject);
+        contact.setSubjectContactType(subjectContactTypeDao.getEmailType());
+        contact.setsDate();
+        contact.setsValue(sMail);
+        subjectContactDao.saveOrUpdate(contact);
+        SubjectContact res = subjectContactDao.findByExpected("sValue", sMail);
+
+        return res;
     }
-    private SubjectContact updateContact(Subject subject, String sMail)
-    {
-        
-         SubjectContact res = null;
-       try
-       {
-         SubjectContact contact = subjectContactDao.findByExpected("sValue", sMail);
-         contact.setSubject(subject);
-         contact.setsDate();
-         subjectContactDao.saveOrUpdate(contact);
-         res = subjectContactDao.findByIdExpected(contact.getId());
-       }
-       catch(Exception ex)
-       {
-          LOG.warn("(Fail update contact {})", ex.getMessage());
-       }
-         
-         return res;
+
+    private SubjectContact updateContact(Subject subject, String sMail) {
+
+        SubjectContact res = null;
+        try {
+            SubjectContact contact = subjectContactDao.findByExpected("sValue", sMail);
+            contact.setSubject(subject);
+            contact.setsDate();
+            subjectContactDao.saveOrUpdate(contact);
+            res = subjectContactDao.findByIdExpected(contact.getId());
+        } catch (Exception ex) {
+            LOG.warn("(Fail update contact {})", ex.getMessage());
+        }
+
+        return res;
     }
-    private boolean isContactByMail(List<SubjectContact> list, String sMail )
-    {
-        
-         for(SubjectContact contact : list)
-         {
-             if(contact.getsValue().equals(sMail))
-                 return true; 
-             
-         }
-         
-         return false;
+
+    private boolean isContactByMail(List<SubjectContact> list, String sMail) {
+
+        for (SubjectContact contact : list) {
+            if (contact.getsValue().equals(sMail)) {
+                return true;
+            }
+
+        }
+
+        return false;
     }
 }
