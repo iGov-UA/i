@@ -87,7 +87,7 @@ module.exports.submit = function (req, res) {
   }
 
   for(var key in formData.params) {
-    if(typeof formData.params[key] === 'object') {
+    if(formData.params[key] !== null && typeof formData.params[key] === 'object') {
       keys.push(key);
     }
   }
