@@ -87,8 +87,7 @@ module.exports.submit = function (req, res) {
   }
 
   for(var key in formData.params) {
-    if(Array.isArray(formData.params[key])) {
-      formData.params[key].push(key);
+    if(typeof formData.params[key] === 'object') {
       keys.push(key);
     }
   }
@@ -97,7 +96,7 @@ module.exports.submit = function (req, res) {
     async.forEach(keys, function (key, next) {
         function putTableToRedis (table, callback) {
           var url = '/object/file/upload_file_to_redis';
-          activiti.upload(url, {}, 'tableField.json', JSON.stringify(table), callback);
+          activiti.upload(url, {}, table.id + '.json', JSON.stringify(table), callback);
         }
         putTableToRedis(formData.params[key], function (error, response, data) {
           formData.params[key] = data;
