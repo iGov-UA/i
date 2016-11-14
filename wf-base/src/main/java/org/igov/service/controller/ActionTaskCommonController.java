@@ -2284,7 +2284,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public String setBP(@ApiParam(value = "Cтрока-название файла", required = true) @RequestParam(value = "sFileName", required = true) String sFileName,
             @ApiParam(value = "Новий БП") @RequestParam("file") MultipartFile file,
             HttpServletRequest req) throws CommonServiceException {
-        try {
+        try {            
             InputStream inputStream = file.getInputStream();
             repositoryService.createDeployment().addInputStream(sFileName, inputStream).deploy();
             LOG.debug("BPMN file has been deployed to repository service");
@@ -2553,18 +2553,32 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     
     //test LinkProcess
     @ApiOperation(value = "saveForm", notes = "saveForm")
-    @RequestMapping(value = "/saveForm", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveForm", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
    /* public ResponseEntity saveForm(
             @ApiParam(value = "проперти формы", required = false) @RequestParam(value = "sParams", required = false) String sParams,
             HttpServletRequest req) throws ParseException, CommonServiceException { */
-    public ResponseEntity saveForm(
-            @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams)
-            throws ParseException, CommonServiceException {
-        String key = null;
-        String value = null;
-        try {
-            LOG.info("Input params - " + sParams);
+    public /*ResponseEntity*/ HttpServletRequest saveForm(
+            @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams, HttpServletRequest req)
+            throws ParseException, CommonServiceException, IOException {
+        //String key = null;
+        //String value = null;
+        StringBuilder osRequestBody = new StringBuilder();
+        BufferedReader oReader = req.getReader();
+        String line;
+        if (oReader != null) {
+            while ((line = oReader.readLine()) != null) {
+                osRequestBody.append(line);
+            }
+        }            
+        try {           
+
+            //LOG.info("osRequestBody " + );
+                     LOG.info("Input params - " + sParams);
+            //sParams= new String(sParams.getBytes("UTF-8"),"Cp1252");
+            LOG.info("After refactoring params - " + sParams);
+            LOG.info("osRequestBody " + osRequestBody.toString());
             org.json.simple.JSONObject jsonObj = (org.json.simple.JSONObject) new JSONParser().parse(sParams);
+            org.json.simple.JSONObject jsonObj11 = (org.json.simple.JSONObject) new JSONParser().parse(osRequestBody.toString());
             LOG.info("Succ. parsing of input data passed");
             String nID_Task = null;
             if (jsonObj.containsKey("taskId")) {
@@ -2575,26 +2589,32 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("taskId = " + nID_Task);
             Map<String, String> values = new HashMap<>();
             org.json.simple.JSONArray dates = null;
+            org.json.simple.JSONArray dates11 = null;
             if (jsonObj.containsKey("properties")) {
                 dates = (org.json.simple.JSONArray) jsonObj.get("properties");
+                dates11 = (org.json.simple.JSONArray) jsonObj11.get("properties");
             } else {
                 LOG.error("Variable \"properties\" not found");
             }
-            LOG.info("properties = " + dates);
+            LOG.info("properties = " + dates.toJSONString());
+            LOG.info("properties1 = " + dates11.toJSONString());
+
             org.json.simple.JSONObject result;
-            Iterator<org.json.simple.JSONObject> datesIterator = dates.iterator();
+            Iterator<org.json.simple.JSONObject> datesIterator = dates11.iterator();
             while (datesIterator.hasNext()) {
                 result = datesIterator.next();
-                key = result.get("id").toString();
-                key = URLDecoder.decode(key, "UTF-8");
-                value = (String) result.get("value");
-                value = URLDecoder.decode(value, "UTF-8");
-                values.put(key, value);
+                //key = result.get("id").toString();
+                //key = URLDecoder.decode(key, "UTF-8");
+               // value = (String)result.get("value");
+                //value = URLDecoder.decode(value, "UTF-8");
+                values.put(result.get("id").toString(), (String)result.get("value"));
             }
             formService.saveFormData(nID_Task, values);
             Map<String, Object> response = new HashMap<>();
             response.put("sReturnSuccess", "OK");
-            return JsonRestUtils.toJsonResponse(response);
+            LOG.info("Process of update data finiched");
+            //return JsonRestUtils.toJsonResponse(response);
+            return req;
         } catch (Exception e) {
             String message = "The process of update variables fail.";
             LOG.debug(message);

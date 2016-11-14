@@ -173,7 +173,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="usertask4"></sequenceFlow>
-    <userTask id="usertask6" name="7. Перевірка повноти данних і прийняття рішення прореєстрацію або повернення на доопрацювання" activiti:candidateGroups="kyiv_dabi_permit_empl">
+    <userTask id="usertask6" name="7. Перевірка повноти данних і прийняття рішення прореєстрацію або повернення на доопрацювання">
       <extensionElements>
         <activiti:formProperty id="sLabel_9" name=" " type="label" default="---- Інформація про об’єкт ----"></activiti:formProperty>
         <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
@@ -306,7 +306,12 @@
         <activiti:formProperty id="markers3" name="hideShowFields3" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_929_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_929_4.json')}"></activiti:formProperty>
       	<activiti:formProperty id="markers5" name="RequiredFields5" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_929_5.json')}"></activiti:formProperty>
-      <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
@@ -314,7 +319,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask9" name="14. Підтвердження передачі паперового документу до ЦНАП." activiti:candidateGroups="kyiv_dabi_permit_empl">
+    <userTask id="usertask9" name="14. Підтвердження передачі паперового документу до ЦНАП." activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="sLabel_13" name=" " type="label" default="---- Інформація про об’єкт ----"></activiti:formProperty>
         <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
