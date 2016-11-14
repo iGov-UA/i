@@ -85,19 +85,7 @@ public class SubjectGroupService {
 
 		Set<SubjectGroup> rootTags = new LinkedHashSet<>(parentSubject);
 		
-		for(SubjectGroup subjectGroup:rootTags) {
-			if(!subjectGroup.getsID_Group_Activiti().equals(sID_Group_Activiti)) {
-				rootTags.remove(subjectGroup);
-			}
-		}
 		
-		 for (Map.Entry<SubjectGroup, SubjectGroupNode> entry : subjectToNodeMap.entrySet()) {
-			 SubjectGroup key = entry.getKey();
-			 if(!key.getsID_Group_Activiti().equals(sID_Group_Activiti)) {
-				 subjectToNodeMap.remove(key);
-			 }
-	        }
-
 		LOG.info("parentSubjecttttttttttttttt " + parentSubject);
 		LOG.info("childSubjectttttttttttttttttt " + childSubject);
 
