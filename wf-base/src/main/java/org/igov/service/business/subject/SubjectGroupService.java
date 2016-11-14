@@ -188,7 +188,6 @@ public class SubjectGroupService {
 			if(SubjectGroupService.getDeepLevelChildSubjectGroup().compareTo(deepLevel)<0 && (parent.getsID_Group_Activiti().equals(sID_Group_Activiti)
 					|| child.getsID_Group_Activiti().equals(sID_Group_Activiti))) {
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
-				
 				parentNode = subjectToNodeMap.get(parent);
 				if (parentNode == null) {
 					parentSubject.add(parent);
