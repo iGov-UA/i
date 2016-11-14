@@ -779,6 +779,10 @@
         $scope.isFieldWritable = function (field) {
           return TableService.isFieldWritable(field);
         };
+
+        $scope.tableIsLoaded = function (item) {
+          return typeof item.aRow[0] !== 'number';
+        };
       }
 
     ])
