@@ -25,6 +25,12 @@ import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 /**
  *
  * @author inna
@@ -91,11 +97,20 @@ public class SubjectGroupService {
 				.collect(Collectors.toList());
 
 		SubjectGroupResult subjectGroupResult = new SubjectGroupResult(rootSubjectNodes);
-		List<SubjectGroupNode> subjectGroupNodeList = subjectGroupResult.getRootSubjectNodes();
-		for(SubjectGroupNode subjectGroupNode:subjectGroupNodeList) {
+		for(SubjectGroupNode subjectGroupNode:subjectGroupResult.getRootSubjectNodes()) {
 			if(subjectGroupNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti)) {
-				return subjectGroupResult;
-			}
+				final List<SubjectGroupNode> subjectGroupNodeByGroup = Lists.newArrayList(Collections2
+						.filter(subjectGroupResult.getRootSubjectNodes(),
+								new Predicate<SubjectGroupNode>() {
+							@Override
+							public boolean apply(SubjectGroupNode subjectGroupNode) {
+								return subjectGroupNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
+							}
+						}));
+				if(subjectGroupNodeByGroup!=null && !subjectGroupNodeByGroup.isEmpty()) {
+					subjectGroupResult.setRootSubjectNodes(subjectGroupNodeByGroup);
+				}
+			}else {
 			List<SubjectGroupNode> childrenList = subjectGroupNode.getChildren();
 			for(SubjectGroupNode children:childrenList) {
 				if(children.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti)) {
@@ -103,9 +118,9 @@ public class SubjectGroupService {
 					children = new SubjectGroupNode(children.getGroup());
 					children.setChildren(children.getChildren());
 					childrens.add(children);
-					SubjectGroupResult subjectGroupRes = new SubjectGroupResult(childrens);
-					return subjectGroupRes;
+					subjectGroupResult = new SubjectGroupResult(childrens);
 				}
+			}
 			}
 			
 		}
