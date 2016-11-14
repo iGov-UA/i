@@ -49,16 +49,8 @@ public class HttpRequester {
             throws Exception {
         return postInside(sURL, mParam, null, null);
     }
-    
-    public String postInside(String sURL, Map<String, Object> mParam, String sParam, String contentType)
-            throws Exception {
-        String sUser = generalConfig.getAuthLogin();
-        String sPassword = generalConfig.getAuthPassword();
-        
-        return postInside(sURL, mParam, sParam, contentType, sUser, sPassword);
-    }
 
-    public String postInside(String sURL, Map<String, Object> mParam, String sParam, String contentType, String sUser, String sPassword)
+    public String postInside(String sURL, Map<String, Object> mParam, String sParam, String contentType)
             throws Exception {
 
         boolean bSkipValidationSSL = generalConfig.isSelfTest();
@@ -87,8 +79,8 @@ public class HttpRequester {
         StringBuilder osReturn = new StringBuilder();
         try {
             HttpURLConnection oConnection = (HttpURLConnection) oURL.openConnection();
-            //String sUser = generalConfig.getAuthLogin();
-            //String sPassword = generalConfig.getAuthPassword();
+            String sUser = generalConfig.getAuthLogin();
+            String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
 

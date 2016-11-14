@@ -54,7 +54,6 @@ import static org.igov.util.Tool.sCut;
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889";
-    private static final String asID_BP_SkipSendMail = "dnepr_mvk_291_common";
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     //private static final Logger LOG_BIG = LoggerFactory.getLogger('APP');
@@ -334,16 +333,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sPhone = String.valueOf(JsonRequestDataResolver.getPhone(omRequestBody));
         String bankIdFirstName = JsonRequestDataResolver.getBankIdFirstName(omRequestBody);
         String bankIdLastName = JsonRequestDataResolver.getBankIdLastName(omRequestBody);
-        //dnepr_mvk_291_common
 
         if (sMailTo != null) {
-            if (!asID_BP_SkipSendMail.contains(oProcessDefinition.getKey())) {
-                ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
-                LOG.info("Send notification mail... (sMailTo={})", sMailTo);
-                oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName, bankIdLastName);
-            }else{
-                LOG.info("SKIP Send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
-            }
+            LOG.info("Send notification mail... (sMailTo={})", sMailTo);
+            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName, bankIdLastName);
         }
 
         if (sMailTo != null || sPhone != null) {

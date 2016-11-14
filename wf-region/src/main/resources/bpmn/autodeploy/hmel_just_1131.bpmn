@@ -27,7 +27,7 @@
         <activiti:formProperty id="fVarDod_03" name="Реєстр;за наявності" type="file" required="false"></activiti:formProperty>
 
         <activiti:formProperty id="Info_04_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
-        <activiti:formProperty id="InfoDod_04" name="Ви можете завантажити бланк Відомостей про керівні органи громадського об’єднання та про особу, яка має право представляти громадське формування для здійснення реєстраційних дій" type="label" default="&lt;a href=&quot;https://drive.google.com/open?id=0B9UDkfHM4vkrUVVTTGhZRlRTd1E&quot; target=&quot;_blank&quot;&gt;Зразок Документу &lt;br&gt;Відомості про керівні органи&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="InfoDod_04" name="Ви можете завантажити бланк Відомості про керівні органи громадського об’єднання та про особу, яка має право представляти громадське формування для здійснення реєстраційних дій" type="label" default="&lt;a href=&quot;https://drive.google.com/open?id=0B9UDkfHM4vkrNVJrSEt5OFYxZkk&quot; target=&quot;_blank&quot;&gt;Зразок Документу &lt;br&gt;Відомості про керівні органи&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="fVarDod_04" name="Відомості;за наявності" type="file" required="false"></activiti:formProperty>
  
         <activiti:formProperty id="Info_05_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
@@ -66,7 +66,7 @@
     <serviceTask id="servicetask2" name="Е-mail повідомлення урядовцеві про зареєстровану заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk},august_@i.ua</activiti:expression>
+          <activiti:string><![CDATA[august_@i.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -110,7 +110,6 @@
 
         <activiti:formProperty id="sNameGO" name="Найменування громадського об’єднання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressGO" name="Місцезнаходження громадського об’єднання; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sUserComment" name="Коментар/питання від заявника" type="textArea"></activiti:formProperty>
 
         <activiti:formProperty id="sTextMail" name="Якщо за даним зверненням питання до заявника відсутні - вкажіть текст який буде додано до завершуючого листа Заявнику" type="textArea" default="Шановний (-а), " required="true"></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Файл-додаток до листа заявнику" type="file" required="true"></activiti:formProperty>

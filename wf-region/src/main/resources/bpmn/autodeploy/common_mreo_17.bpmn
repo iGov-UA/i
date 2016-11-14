@@ -149,11 +149,6 @@
         <activiti:formProperty id="comment" name="Вкажіть дату візиту/номер віконця для отримання послуги або підставу для відмови (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="sNotifyEvent_AfterSubmit" type="invisible" default="Електроний лист заявнику успішно відправлено.  В разі надання послуги заявка перейшла в чергу Необроблених з новим статусом - 'Надання послуги' "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${file2}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -235,12 +230,6 @@
           <activiti:value id="accept2" name="Підтверджую, що громадянин отримав послугу"></activiti:value>
           <activiti:value id="reject2" name="Громадянин не з'явився для отримання послуги. Закрити заявку."></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${file2}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>

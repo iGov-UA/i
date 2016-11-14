@@ -8,15 +8,12 @@ import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.task.Attachment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.text.MessageFormat;
-import org.igov.io.GeneralConfig;
-import org.igov.io.Log;
 
 /**
  * @author askosyr
@@ -30,53 +27,32 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
     private Expression aFieldInheritedAttachmentID;
 
-    @Autowired
-    GeneralConfig generalConfig;
-    
     @Override
-    public void notify(DelegateTask oTask) {
+    public void notify(DelegateTask task) {
 
-        DelegateExecution oExecution = oTask.getExecution();
+        DelegateExecution execution = task.getExecution();
 
         LOG.info("notify");
 
-        List<Attachment> asID_Attachment_ToAdd = null;
         try {
 
-            String sInheritedAttachmentsIds = getStringFromFieldExpression(this.aFieldInheritedAttachmentID, oExecution);
-            LOG.info("(task.getId()={},sInheritedAttachmentsIds(1)={})", oTask.getId(), sInheritedAttachmentsIds);
+            String sInheritedAttachmentsIds = getStringFromFieldExpression(this.aFieldInheritedAttachmentID, execution);
+            LOG.info("(task.getId()={},sInheritedAttachmentsIds(1)={})", task.getId(), sInheritedAttachmentsIds);
 
             if (sInheritedAttachmentsIds == null || "".equals(sInheritedAttachmentsIds.trim())) {
                 LOG.error("aFieldInheritedAttachmentID field is not specified!");
                 return;
             }
 
-            List<Attachment> attachments = getAttachmentsFromParentTasks(oExecution);
+            List<Attachment> attachments = getAttachmentsFromParentTasks(execution);
 
-            asID_Attachment_ToAdd = getInheritedAttachmentIdsFromTask(attachments,
+            List<Attachment> attachmentsToAdd = getInheritedAttachmentIdsFromTask(attachments,
                     sInheritedAttachmentsIds);
 
-            addAttachmentsToCurrentTask(asID_Attachment_ToAdd, oTask);
+            addAttachmentsToCurrentTask(attachmentsToAdd, task);
         } catch (Exception oException) {
             LOG.error("FAIL: {}", oException.getMessage());
             LOG.trace("FAIL:", oException);
-            new Log(oException, LOG)//this.getClass()
-                    ._Case("Activiti_AttachInheritFail")
-                    ._Status(Log.LogStatus.ERROR)
-                    ._Head("Invalid Inherit of Attachment")
-                    ._Body(oException.getMessage())
-                    //._Exception(oException)
-//                    ._Param("n", n)
-//                    ._Param("sID_Field", sID_Field)
-                    ._Param("asID_Attachment_ToAdd", asID_Attachment_ToAdd)
-//                    ._Param("sDescription", sDescription)
-                    ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
-                    //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
-                    ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
-                    ._Param("oTask.getId()", oTask.getId())
-                    ._Param("oTask.getName()", oTask.getName())
-                    .save()
-                    ;
         }
 
     }

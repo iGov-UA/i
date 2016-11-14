@@ -250,16 +250,12 @@ angular.module('app').service('ServiceService', function ($http, $q, FeedbackSer
     return $http.get('./api/service/' + serviceId + '/statistics');
   };
 
-  this.getServiceHistoryReport = function (from, to, exclude, sCodepage) {
-    if(!sCodepage){
-      sCodepage = 'windows-1251';
-    }
+  this.getServiceHistoryReport = function (from, to, exclude) {
     return $http.get('./api/service/getServiceHistoryReport', {
       params : {
         sDateAt : from,
         sDateTo : to,
-        sanID_Service_Exclude : exclude,
-        sCodepage: sCodepage
+        sanID_Service_Exclude : exclude
       }
     })
   };

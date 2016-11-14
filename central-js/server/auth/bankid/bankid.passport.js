@@ -1,9 +1,9 @@
 var passport = require('passport')
   , OAuth2Strategy = require('passport-oauth2')
   , crypto = require('crypto')
+  , url = require('url')
   , bankidUtil = require('./bankid.util')
-  , bankidService = require('./bankid.service')
-  , logger = require('../../components/logger').createLogger(module);
+  , bankidService = require('./bankid.service');
 
 
 exports.setup = function (config, authProviderRegistry) {
@@ -55,7 +55,7 @@ exports.setup = function (config, authProviderRegistry) {
       done(err, profile);
     });
   };
-
+  
   authProviderRegistry.use('bankid', bankidService);
   authProviderRegistry.use('eds', bankidService);
   authProviderRegistry.use('mpbds', bankidService);

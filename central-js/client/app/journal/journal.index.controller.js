@@ -1,5 +1,4 @@
-angular.module('journal').controller('JournalController', function ($rootScope, $scope, $location, $state, $window,
-                                                                    ErrorsFactory, ServiceService, BankIDLogin) {
+angular.module('journal').controller('JournalController', function ($rootScope, $scope, $location, $state, $window, ErrorsFactory, ServiceService) {
 
   function getRedirectURI() {
     var stateForRedirect = $state.href('index.journal', {error: ''});
@@ -7,14 +6,6 @@ angular.module('journal').controller('JournalController', function ($rootScope, 
       '://' + $location.host() + ':'
       + $location.port()
       + stateForRedirect;
-  }
-
-  activate();
-
-  function activate() {
-    if(BankIDLogin){
-      $state.go('.content');
-    }
   }
 
   var bExist = function (oValue) {
@@ -29,9 +20,6 @@ angular.module('journal').controller('JournalController', function ($rootScope, 
   $scope.sSearch = '';
 
   $scope.getAuthMethods = function () {
-    if($rootScope.profile.isKyivCity){
-      return "BankID,EDS,BankID-NBU"
-    }
     return "BankID,EDS,mpbds,KK,BankID-NBU"
   };
   $scope.searchOrder = function (sID_Order_New, sToken_New) {//arguments.callee.toString()

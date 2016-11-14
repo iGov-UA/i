@@ -3,6 +3,7 @@
   <process id="kiev_dms-205ID" name="Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
+        <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="Дана послуга доступна лише за місцем реєстрації, якщо Ви не можете обрати свій район, то у ньому послуга на iGov відсутня"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -12,7 +13,6 @@
         <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="&lt;b&gt;Дана послуга доступна лише за місцем реєстрації, якщо Ви не можете обрати свій район, то у ньому послуга на iGov відсутня&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС району (міста), до якого належить місце реєстрації отримувача паспорта" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_ServiceCustomPrivate_visitDay" name="Номер черги за довідником ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
@@ -93,7 +93,7 @@ execution.setVariable('sTicketCode', tickCode)
 										<li>Вам не потрібно реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.</li>
 									</ul>
 								</p>
-								<p>Якщо Вам потрібно скасувати заявку,  зверніться,  будь ласка, за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
+								<p>Якщо Вам потрібно скасувати заявку - зверніться будь-ласка за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
 								При цьому потрібно буде вказати код талону = ${sTicketCode}.
 								[pattern/mail/_common_signature_start.html]
 									${sNameOrgan},<br>
@@ -103,11 +103,10 @@ execution.setVariable('sTicketCode', tickCode)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="id_card_kiev">
+    <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="id_card_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище отримувача паспорта" type="string" writable="false"></activiti:formProperty>
