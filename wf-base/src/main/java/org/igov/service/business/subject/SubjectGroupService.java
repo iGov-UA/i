@@ -56,74 +56,25 @@ public class SubjectGroupService {
 			LOG.info("SubjectGrouppppppparent " + parent);
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 			LOG.info("SubjectGrouppppppchild " + child);
-			if (SubjectGroupService.getDeepLevelChildSubjectGroup().compareTo(deepLevel) < 0) {
-				if (parent.getsID_Group_Activiti().equals(sID_Group_Activiti)) {
-					if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
-						parentNode = subjectToNodeMap.get(parent);
-						if (parentNode == null) {
-							parentSubject.add(parent);
-							parentNode = new SubjectGroupNode(parent);
-							subjectToNodeMap.put(parent, parentNode);
-						}
-					}
-
-					SubjectGroupNode childNode = subjectToNodeMap.get(child);
-					if (childNode == null) {
-						SubjectGroupService.setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup + 1);
-						childSubject.add(child);
-						childNode = new SubjectGroupNode(child);
-						subjectToNodeMap.put(child, childNode);
-					}
-
-					if (parentNode != null) {
-						parentNode.addChild(childNode);
-					}
-				}
-				if (child.getsID_Group_Activiti().equals(sID_Group_Activiti)) {
-					if (child.getId() != FAKE_ROOT_SUBJECT_ID) {
-						parentNode = subjectToNodeMap.get(child);
-						if (parentNode == null) {
-							parentSubject.add(child);
-							parentNode = new SubjectGroupNode(child);
-							subjectToNodeMap.put(child, parentNode);
-						}
-					}
-
-/*					SubjectGroupNode childNode = subjectToNodeMap.get(child);
-					if (childNode == null) {
-						SubjectGroupService.setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup + 1);
-						childSubject.add(child);
-						childNode = new SubjectGroupNode(child);
-						subjectToNodeMap.put(child, childNode);
-					}*/
-
-					if (parentNode != null) {
-						parentNode.addChild(parentNode);
-					}
+			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
+				parentNode = subjectToNodeMap.get(parent);
+				if (parentNode == null) {
+					parentSubject.add(parent);
+					parentNode = new SubjectGroupNode(parent);
+					subjectToNodeMap.put(parent, parentNode);
 				}
 			}
 
-			if (deepLevel.compareTo(0L)==0 || deepLevel==null) {
-				if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
-					parentNode = subjectToNodeMap.get(parent);
-					if (parentNode == null) {
-						parentSubject.add(parent);
-						parentNode = new SubjectGroupNode(parent);
-						subjectToNodeMap.put(parent, parentNode);
-					}
-				}
+			SubjectGroupNode childNode = subjectToNodeMap.get(child);
+			if (childNode == null) {
+				SubjectGroupService.setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup + 1);
+				childSubject.add(child);
+				childNode = new SubjectGroupNode(child);
+				subjectToNodeMap.put(child, childNode);
+			}
 
-				SubjectGroupNode childNode = subjectToNodeMap.get(child);
-				if (childNode == null) {
-					SubjectGroupService.setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup + 1);
-					childSubject.add(child);
-					childNode = new SubjectGroupNode(child);
-					subjectToNodeMap.put(child, childNode);
-				}
-
-				if (parentNode != null) {
-					parentNode.addChild(childNode);
-				}
+			if (parentNode != null) {
+				parentNode.addChild(childNode);
 			}
 
 		}
@@ -140,6 +91,24 @@ public class SubjectGroupService {
 				.collect(Collectors.toList());
 
 		SubjectGroupResult subjectGroupResult = new SubjectGroupResult(rootSubjectNodes);
+		List<SubjectGroupNode> subjectGroupNodeList = subjectGroupResult.getRootSubjectNodes();
+		for(SubjectGroupNode subjectGroupNode:subjectGroupNodeList) {
+			if(subjectGroupNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti)) {
+				return subjectGroupResult;
+			}
+			List<SubjectGroupNode> childrenList = subjectGroupNode.getChildren();
+			for(SubjectGroupNode children:childrenList) {
+				if(children.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti)) {
+					List<SubjectGroupNode> childrens =new ArrayList<>();
+					children = new SubjectGroupNode(children.getGroup());
+					children.setChildren(children.getChildren());
+					childrens.add(children);
+					SubjectGroupResult subjectGroupRes = new SubjectGroupResult(childrens);
+					return subjectGroupRes;
+				}
+			}
+			
+		}
 
 		LOG.info("subjectGroupResultttttttttttttttt " + subjectGroupResult);
 		return subjectGroupResult;
