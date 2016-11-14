@@ -95,19 +95,30 @@ public class SubjectGroupService {
 
 		final List<SubjectGroupNode> rootSubjectNodes = rootTags.stream().map(subjectToNodeMap::get)
 				.collect(Collectors.toList());
-		
-		final List<SubjectGroupNode> subjectGroupNodeByGroup = Lists.newArrayList(Collections2
-				.filter(rootSubjectNodes, new Predicate<SubjectGroupNode>() {
+
+		SubjectGroupResult subjectGroupResult = null;
+
+		final List<SubjectGroupNode> subjectGroupNodeByGroup = Lists
+				.newArrayList(Collections2.filter(rootSubjectNodes, new Predicate<SubjectGroupNode>() {
 					@Override
 					public boolean apply(SubjectGroupNode subjectGroupNode) {
 						return subjectGroupNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
 					}
 				}));
 
-		SubjectGroupResult subjectGroupResult = new SubjectGroupResult(subjectGroupNodeByGroup);
+		if ((subjectGroupNodeByGroup != null && !subjectGroupNodeByGroup.isEmpty())
+				&& (deepLevel == null || deepLevel.compareTo(0L) == 0)) {
 
-		LOG.info("subjectGroupResultttttttttttttttt " + subjectGroupResult);
-		return subjectGroupResult;
+			subjectGroupResult = new SubjectGroupResult(subjectGroupNodeByGroup);
+
+			LOG.info("subjectGroupResultttttttttttttttt " + subjectGroupResult);
+			return subjectGroupResult;
+		} else {
+			
+			
+			
+			return subjectGroupResult;
+		}
 
 	}
 
