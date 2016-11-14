@@ -185,8 +185,8 @@ public class SubjectGroupService {
 			LOG.info("SubjectGrouppppppparent " + parent);
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 			LOG.info("SubjectGrouppppppchild " + child);
-			if(SubjectGroupService.getDeepLevelChildSubjectGroup().compareTo(deepLevel)<0 && (parent.getsID_Group_Activiti().equals(sID_Group_Activiti)
-					|| child.getsID_Group_Activiti().equals(sID_Group_Activiti))) {
+			if(SubjectGroupService.getDeepLevelChildSubjectGroup().compareTo(deepLevel)<0) {
+			if(parent.getsID_Group_Activiti().equals(sID_Group_Activiti)) {	
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
 				parentNode = subjectToNodeMap.get(parent);
 				if (parentNode == null) {
@@ -208,6 +208,30 @@ public class SubjectGroupService {
 				parentNode.addChild(childNode);
 			}
 			}
+			if(child.getsID_Group_Activiti().equals(sID_Group_Activiti)) {	
+				if (child.getId() != FAKE_ROOT_SUBJECT_ID) {
+					parentNode = subjectToNodeMap.get(child);
+					if (parentNode == null) {
+						parentSubject.add(child);
+						parentNode = new SubjectGroupNode(child);
+						subjectToNodeMap.put(child, parentNode);
+					}
+				}	
+
+				SubjectGroupNode childNode = subjectToNodeMap.get(child);
+				if (childNode == null) {
+					SubjectGroupService.setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup+1);
+					childSubject.add(child);
+					childNode = new SubjectGroupNode(child);
+					subjectToNodeMap.put(child, childNode);
+				}
+
+				if (parentNode != null) {
+					parentNode.addChild(childNode);
+				}
+				}
+			}
+			
 			
 
 		}
