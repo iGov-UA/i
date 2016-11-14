@@ -522,7 +522,7 @@
     <sequenceFlow id="flow37" sourceRef="servicetask_step19.1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow40" sourceRef="startevent_step1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="usertask_step3" targetRef="usertask_step4"></sequenceFlow>
-    <userTask id="usertask1" name="Upload Files"activiti:candidateGroups="kyiv_dabi_doc">
+    <userTask id="usertask1" name="Upload Files" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -530,7 +530,8 @@
             <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-      </extensionElements></userTask>
+      </extensionElements>
+    </userTask>
     <boundaryEvent id="boundarytimer3" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <timerEventDefinition>
         <timeDuration>PT5S</timeDuration>
