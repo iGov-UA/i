@@ -95,35 +95,16 @@ public class SubjectGroupService {
 
 		final List<SubjectGroupNode> rootSubjectNodes = rootTags.stream().map(subjectToNodeMap::get)
 				.collect(Collectors.toList());
+		
+		final List<SubjectGroupNode> subjectGroupNodeByGroup = Lists.newArrayList(Collections2
+				.filter(rootSubjectNodes, new Predicate<SubjectGroupNode>() {
+					@Override
+					public boolean apply(SubjectGroupNode subjectGroupNode) {
+						return subjectGroupNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
+					}
+				}));
 
-		SubjectGroupResult subjectGroupResult = new SubjectGroupResult(rootSubjectNodes);
-		for(SubjectGroupNode subjectGroupNode:subjectGroupResult.getRootSubjectNodes()) {
-			if(subjectGroupNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti)) {
-				final List<SubjectGroupNode> subjectGroupNodeByGroup = Lists.newArrayList(Collections2
-						.filter(subjectGroupResult.getRootSubjectNodes(),
-								new Predicate<SubjectGroupNode>() {
-							@Override
-							public boolean apply(SubjectGroupNode subjectGroupNode) {
-								return subjectGroupNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
-							}
-						}));
-				if(subjectGroupNodeByGroup!=null && !subjectGroupNodeByGroup.isEmpty()) {
-					subjectGroupResult.setRootSubjectNodes(subjectGroupNodeByGroup);
-				}
-			}else {
-			List<SubjectGroupNode> childrenList = subjectGroupNode.getChildren();
-			for(SubjectGroupNode children:childrenList) {
-				if(children.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti)) {
-					List<SubjectGroupNode> childrens =new ArrayList<>();
-					children = new SubjectGroupNode(children.getGroup());
-					children.setChildren(children.getChildren());
-					childrens.add(children);
-					subjectGroupResult = new SubjectGroupResult(childrens);
-				}
-			}
-			}
-			
-		}
+		SubjectGroupResult subjectGroupResult = new SubjectGroupResult(subjectGroupNodeByGroup);
 
 		LOG.info("subjectGroupResultttttttttttttttt " + subjectGroupResult);
 		return subjectGroupResult;
