@@ -54,7 +54,7 @@ public class SubjectGroupService {
 	@Autowired
 	private CachedInvocationBean cachedInvocationBean;
 
-	public List<VSubjectGroupParentNode> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+	public List<VSubjectGroupChildrenNode> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 		
@@ -80,14 +80,14 @@ public class SubjectGroupService {
 		
 	}
 
-	public List<VSubjectGroupParentNode> getFullResult(String sID_Group_Activiti, Long deepLevel,
+	public List<VSubjectGroupChildrenNode> getFullResult(String sID_Group_Activiti, Long deepLevel,
 			List<VSubjectGroupParentNode> parentSubjectGroups, VSubjectGroupParentNode parentSubjectGroup) {
-		if((deepLevel==null || deepLevel==0) || (sID_Group_Activiti==null || sID_Group_Activiti.isEmpty())){
+		/*if((deepLevel==null || deepLevel==0) || (sID_Group_Activiti==null || sID_Group_Activiti.isEmpty())){
 			VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 			parentSubjectGroup.accept(subjectGroupTreeResult);
 			
 			return parentSubjectGroups;
-		}
+		}*/
 		/**
 		 * получить только отфильтрованные по sID_Group_Activiti
 		 */
@@ -154,10 +154,30 @@ public class SubjectGroupService {
             }
         });
 		
+		final List<List<VSubjectGroupChildrenNode>> childrensParListRes = Lists.newArrayList(Collections2.transform(
+				newList, new Function<VSubjectGroupParentNode, List<VSubjectGroupChildrenNode>>() {
+					@Override
+					public List<VSubjectGroupChildrenNode> apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
+						return vSubjectGroupParentNode.getChildren();
+					}
+				}));
+		
+		/**
+		 * только лист
+		 */
+		final List<VSubjectGroupChildrenNode> childrensByGroupRes = Lists.newArrayList(Collections2.transform(
+				childrensParListRes, new Function<List<VSubjectGroupChildrenNode>, VSubjectGroupChildrenNode>() {
+					@Override
+					public VSubjectGroupChildrenNode apply(List<VSubjectGroupChildrenNode> vSubjectGroupChildrenNodeList) {
+						return vSubjectGroupChildrenNodeList.get(0);
+					}
+				}));
+		
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
 	
-		return newList;
+		//return newList;
+		return childrensByGroupRes;
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
