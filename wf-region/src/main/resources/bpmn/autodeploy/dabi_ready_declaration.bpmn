@@ -61,7 +61,7 @@
         <activiti:formProperty id="sDocEmpComment" name="Коментар працівника сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLoginAsignee_step5" name="Відповідальний виконавець;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step5" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_step5" name="Група виконавців" type="string" default="kyiv_dabi_permit_boss"></activiti:formProperty>
-        <activiti:formProperty id="sBossComment" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBossComment" name="Коментар працівника сектору документообігу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_ready_declaration_vis1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -211,30 +211,19 @@
           <activiti:value id="sEnumObjCategory" name="об’єктів, які належать до I­III категорії складності"></activiti:value>
           <activiti:value id="sEnumObjUnlicensed" name="самочинно збудованого об’єкта, на яке визнано право власності за рішенням суду"></activiti:value>
         </activiti:formProperty>
-        
-        <activiti:formProperty id="bObjectInfo" name="Інформація про об'єкт;;sID_CheckboxTrue=ObjectInfo_show" type="enum" default="ObjectInfo_hide">
-          <activiti:value id="ObjectInfo_show" name="Показати"></activiti:value>
-          <activiti:value id="ObjectInfo_hide" name="Приховати"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Найменування органу державного архітектурного контролю, який провів реєстрацію" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObjectName" name="Найменування закінченого будівництвом об’єкта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBuildingName" name="Найменування будинку, будівлі, споруди, що є частиною об’єкта будівництва та готові до експлуатації (заповнюється в разі прийняття в експлуатацію окремих будинків, будівель споруд, якщо згідно з будівельним паспортом передбачено будівництво декількох об’єктів)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObjectAddress" name="Адреса закінченого будівництвом об’єкта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObjectCode" name="Код об’єкта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string"></activiti:formProperty>
-        
-        <activiti:formProperty id="bChiefInfo" name="Керівник замовника;;sID_CheckboxTrue=ChiefInfo_show" type="enum" default="ChiefInfo_hide">
-          <activiti:value id="ChiefInfo_show" name="Показати"></activiti:value>
-          <activiti:value id="ChiefInfo_hide" name="Приховати"></activiti:value>
-        </activiti:formProperty>        
+        <activiti:formProperty id="sLabel_Chief" name=" " type="label" default="--- Керівник замовника ---"></activiti:formProperty>
         <activiti:formProperty id="sChiefPib" name="ПІБ керівника замовника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sChiefPassport" name="Паспортні дані керівника замовника (серія, номер паспорта, ким і коли виданий)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sChiefAddress" name="Місце проживання керівника замовника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sChiefInn" name="Номер облікової картки платника податків керівника замовника (не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sChiefPhone" name="Номер телефону керівника замовника" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sTechSupervisor" name="Інформація про відповідальну особу-інженера з технічного нагляду" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sSupervisorName&quot;,&quot;name&quot;:&quot;Найменування посади, прізвище, ім’я та по батькові, номер телефону&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sSupervisionNumberID&quot;,&quot;name&quot;:&quot;Назва, номер та дата документа, що підтверджує повноваження особи на здійснення технічного нагляду&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sSupervisionCertificate&quot;,&quot;name&quot;:&quot;Серія та номер кваліфікаційного сертифіката&quot;,&quot;type&quot;:&quot;string&quot;}]}"></activiti:formProperty>
-        
         <activiti:formProperty id="sLabel_Insurance" name=" " type="label" default="--- Страхова компанія ---"></activiti:formProperty>
         <activiti:formProperty id="sInsuranceName" name="Найменування страхової організації" type="string"></activiti:formProperty>
         <activiti:formProperty id="sInsuranceAddress" name="Місцезнаходження страхової організації" type="string"></activiti:formProperty>
@@ -389,7 +378,7 @@
         <activiti:formProperty id="marker_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_ready_declaration_valid.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
-            <activiti:expression><![CDATA[sLoginAsignee_step7]]></activiti:expression>
+            <activiti:expression><![CDATA[sLoginAsignee]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">

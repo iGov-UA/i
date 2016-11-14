@@ -1,25 +1,47 @@
 {
   "motion": 
     {
-    "ShowFieldsOnCondition_Obj1_ObjInfo": 
-      {"aField_ID": ["sBuildingName"], 
-       "asID_Field": {"sCond1":"asObjectType","sCond2":"bObjectInfo"},
-       "sCondition": "[sCond1] == 'sEnumObjPassport' && [sCond2] == 'ObjectInfo_show'"
+    "ShowFieldsOnCondition_ObjType1": 
+      {"aField_ID":  
+        ["sBuildingName","sBuildNotificationOrgan","sBuildNotificationDate","sBuildNotificationNumber",
+         "sTechInventoryPib","sTechInventoryPassport","sObjectHouseNonLiveArea"], 
+       "asID_Field": {"sCondit":"asObjectType"},
+       "sCondition": "[sCondit] == 'sEnumObjPassport'"
       },
-    "ShowFieldsOnCondition_Obj2-3_ObjInfo": 
-      {"aField_ID":  ["sObjectCategory"], 
-       "asID_Field": {"sCond1":"asObjectType","Cond2":"bObjectInfo"},
-       "sCondition": "([sCond1] == 'sEnumObjCategory'||[sCond1] == 'sEnumObjUnlicensed') &&  [sCond2] == 'ObjectInfo_show'"
+    "ShowFieldsOnCondition_ObjType2": 
+      {"aField_ID":  
+        ["sObjectCategory","sChiefPib","sChiefPassport","sChiefAddress","sChiefInn","sChiefPhone","sLabel_Chief",
+         "sSupervisorName", "sSupervisionNumberID","sSupervisionCertificate","sLabel_Insurance","sInsuranceName",
+         "sInsuranceAddress","sInsuranceInn","sInsuranceContract","sResponsiblePosition","sResponsiblePib","sResponsiblePhone",
+         "sResponsibleNumberID","sResponsibleType","asProject","sLabel_Project","sArchitect","sArchitectNumberID",
+         "sArchitectCertificate","sProjectDocName","sProjectDocNumber","sExpertName","sExpertInn","sExpertMainPib",
+         "sExpertSertificate","sObjectDateStartConstruction","sObjectDateStartConstruction","sObjectTimeConstruction","sPermitDoc",
+         "asGeneralContractor","sObjectTotalArea","sObjectHouseFloor","sObjectHouseWall","sObjectHouseSection","sKeyIndicators"], 
+       "asID_Field": {"sCondit":"asObjectType"},
+       "sCondition": "[sCondit] == 'sEnumObjCategory'"
       },
-    "ShowFieldsOnCondition_ObjInfo": 
-      {"aField_ID":  ["sRegistrationOrgan","sObjectName","sObjectAddress","sObjectCode"], 
-       "asID_Field": {"sCond2":"asObjectType"},
-       "sCondition": " [sCond2] == 'ObjectInfo_show''"
+    "ShowFieldsOnCondition_ObjType3": 
+      {"aField_ID":  
+        ["sObjectCategory","sChiefPib","sChiefPassport","sChiefAddress","sChiefInn","sChiefPhone","sLabel_Chief",
+         "sResponsiblePosition","sResponsiblePib","sResponsiblePhone","sResponsibleNumberID","sResponsibleType","sTechReportName",
+         "sTechReportNumber","sTechExpertName","sTechEngineerLastName","sTechEngineerFirstName","sTechEngineerMiddleName",
+         "sTechEngineerSertificate","sTechEngineerPhone","sObjectDateStartConstruction","sObjectDateStartConstruction",
+         "sJudgmentForm","sJudgmentForceDate","sCourtName","sLocationComplianceOrgan","sLocationComplianceDoc","asGeneralContractor",
+         "sObjectTotalArea","sObjectHouseFloor","sObjectHouseWall","sObjectHouseSection","sKeyIndicators"], 
+       "asID_Field": {"sCondit":"asObjectType"},
+       "sCondition": "[sCondit] == 'sEnumObjUnlicensed'"
       },
-    "ShowFieldsOnCondition_Obj2-3_ObjInfo": 
-      {"aField_ID":  ["sChiefPib","sChiefPassport","sChiefAddress","sChiefInn","sChiefPhone"], 
-       "asID_Field": {"sCond1":"asObjectType","Cond2":"bObjectInfo"},
-       "sCondition": "([sCond1] == 'sEnumObjCategory'||[sCond1] == 'sEnumObjUnlicensed') &&  [sCond2] == 'ObjectInfo_show'"
-      }
+    "ShowFieldsOnCondition_ObjType2.1": 
+      {"aField_ID":  
+        ["sProjectPib","sProjectPassport","sProjectAddress","sProjectInn"], 
+       "asID_Field": {"sCond1":"asObjectType","sCond2":"asProject"},
+       "sCondition": "[sCond1]=='sEnumObjCategory'&&[sCond2]=='sEnumProjectPerson'"
+      },
+    "ShowFieldsOnCondition_ObjType2.2": 
+      {"aField_ID":  
+        ["sProjectOrganizationForm","sProjectOrganizationName","sProjectOrganizationAddress","sProjectOrganizationInn","sProjectOrganizationPhone"], 
+       "asID_Field": {"sCond1":"asObjectType","sCond2":"asProject"},
+       "sCondition": "[sCond1] == 'sEnumObjCategory'&&[sCond2]=='sEnumProjectLegal'"
+      }   
     }
 }
