@@ -185,7 +185,7 @@ public class SubjectGroupService {
 			LOG.info("SubjectGrouppppppparent " + parent);
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 			LOG.info("SubjectGrouppppppchild " + child);
-
+			if(SubjectGroupService.getDeepLevelChildSubjectGroup().compareTo(deepLevel)<0) {
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
 				parentNode = subjectToNodeMap.get(parent);
 				if (parentNode == null) {
@@ -196,7 +196,7 @@ public class SubjectGroupService {
 			}
 
 			SubjectGroupNode childNode = subjectToNodeMap.get(child);
-			if (childNode == null&&SubjectGroupService.getDeepLevelChildSubjectGroup().compareTo(deepLevel)<0) {
+			if (childNode == null) {
 				SubjectGroupService.setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup+1);
 				childSubject.add(child);
 				childNode = new SubjectGroupNode(child);
@@ -205,6 +205,7 @@ public class SubjectGroupService {
 
 			if (parentNode != null) {
 				parentNode.addChild(childNode);
+			}
 			}
 
 		}
