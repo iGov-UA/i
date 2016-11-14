@@ -1,5 +1,12 @@
-angular.module('app').service('TitleChangeService', function () {
-  var title = 'iGov – Портал державних послуг';
+angular.module('app').service('TitleChangeService', function (statesRepository, $rootScope) {
+
+  var title = '';
+  if(statesRepository.isKyivCity){
+    title = 'Портал державних послуг';
+  } else {
+    title = 'iGov – Портал державних послуг';
+  }
+
   return {
     title: function() {
       return title;

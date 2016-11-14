@@ -37,13 +37,48 @@
           <activiti:expression>subject</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
- 
-[pattern/mail/test/_test_body.html]
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_feedback_new.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+                [pattern/mail/new_design/_common_header.html]
+                [pattern/mail/new_design/_common_content_start.html]
+              
+здесь какойто текст 
+              
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Mauris sit amet feugiat dolor, ut commodo metus. 
+In sagittis metus ut gravida molestie. 
+Nam sollicitudin nisl eu lectus blandit posuere. 
+Morbi auctor metus mauris, facilisis laoreet quam mattis vel. 
+Curabitur consequat aliquam quam at venenatis. 
+Praesent feugiat libero nec est faucibus pulvinar. 
+Aenean turpis lectus, tempor pellentesque lectus ac, porta pulvinar est. 
+Etiam dapibus quam eget tortor tincidunt, eu sagittis arcu viverra. 
+Nulla facilisi. Quisque dapibus eget orci id sodales. 
+Aenean lacinia sed felis eu molestie. Mauris cursus vulputate vestibulum. 
+Vestibulum vulputate viverra ante in elementum.
+
+
+Pellentesque eu cursus magna. 
+Quisque vehicula dolor vitae massa mattis, ac malesuada dolor varius. 
+Integer lobortis mi id neque tincidunt varius. 
+Donec pellentesque enim non risus faucibus volutpat. 
+Suspendisse tempor ipsum nec vulputate ornare. 
+In ac nunc tristique, luctus arcu sit amet, efficitur quam. 
+Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. 
+Mauris tellus risus, sollicitudin in quam imperdiet, convallis consequat massa. 
+Donec facilisis nulla ligula, at consectetur felis volutpat eget. 
+Morbi ornare dolor sit amet egestas iaculis. Phasellus congue orci nisi. 
+Aenean at velit ac nisl rhoncus bibendum eget a neque.
+
+               
+              [pattern/mail/new_design/_common_content_end.html]
+
+                [pattern/mail/new_design/_common_sid_order.html]
+                [pattern/mail/new_design/_common_feedback.html]        
+                [pattern/mail/new_design/_common_signature_start.html]
+              какойто ещё орган для подписи 
+                [pattern/mail/new_design/_common_signature_end.html]
+                [pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${file}"</activiti:expression>
@@ -58,18 +93,16 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email},${email2}</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Mail test ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
-  тестовый емейл - оповещение сотрудника
-
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+        [pattern/mail/new_design/_common_employee_notify.html]
+              
+</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -85,13 +118,49 @@
           <activiti:expression>"Mail test + SMS ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
- 
-[pattern/mail/test/_test_body.html]
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+              [pattern/mail/new_design/_common_header.html]
+                [pattern/mail/new_design/_common_content_start.html]
+              
+здесь какойто текст 
+              
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Mauris sit amet feugiat dolor, ut commodo metus. 
+In sagittis metus ut gravida molestie. 
+Nam sollicitudin nisl eu lectus blandit posuere. 
+Morbi auctor metus mauris, facilisis laoreet quam mattis vel. 
+Curabitur consequat aliquam quam at venenatis. 
+Praesent feugiat libero nec est faucibus pulvinar. 
+Aenean turpis lectus, tempor pellentesque lectus ac, porta pulvinar est. 
+Etiam dapibus quam eget tortor tincidunt, eu sagittis arcu viverra. 
+Nulla facilisi. Quisque dapibus eget orci id sodales. 
+Aenean lacinia sed felis eu molestie. Mauris cursus vulputate vestibulum. 
+Vestibulum vulputate viverra ante in elementum.
+
+
+Pellentesque eu cursus magna. 
+Quisque vehicula dolor vitae massa mattis, ac malesuada dolor varius. 
+Integer lobortis mi id neque tincidunt varius. 
+Donec pellentesque enim non risus faucibus volutpat. 
+Suspendisse tempor ipsum nec vulputate ornare. 
+In ac nunc tristique, luctus arcu sit amet, efficitur quam. 
+Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. 
+Mauris tellus risus, sollicitudin in quam imperdiet, convallis consequat massa. 
+Donec facilisis nulla ligula, at consectetur felis volutpat eget. 
+Morbi ornare dolor sit amet egestas iaculis. Phasellus congue orci nisi. 
+Aenean at velit ac nisl rhoncus bibendum eget a neque.
+
+               
+              [pattern/mail/new_design/_common_content_end.html]
+
+                [pattern/mail/new_design/_common_sid_order.html]
+                [pattern/mail/new_design/_common_feedback.html]        
+                [pattern/mail/new_design/_common_signature_start.html]
+              какойто ещё орган для подписи 
+                [pattern/mail/new_design/_common_signature_end.html]
+                [pattern/mail/new_design/_common_footer.html]
+              
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -116,13 +185,49 @@
           <activiti:expression>"Mail test + SMS ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
- 
-[pattern/mail/test/_test_body.html]
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+              [pattern/mail/new_design/_common_header.html]
+                [pattern/mail/new_design/_common_content_start.html]
+              
+здесь какойто текст 
+              
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Mauris sit amet feugiat dolor, ut commodo metus. 
+In sagittis metus ut gravida molestie. 
+Nam sollicitudin nisl eu lectus blandit posuere. 
+Morbi auctor metus mauris, facilisis laoreet quam mattis vel. 
+Curabitur consequat aliquam quam at venenatis. 
+Praesent feugiat libero nec est faucibus pulvinar. 
+Aenean turpis lectus, tempor pellentesque lectus ac, porta pulvinar est. 
+Etiam dapibus quam eget tortor tincidunt, eu sagittis arcu viverra. 
+Nulla facilisi. Quisque dapibus eget orci id sodales. 
+Aenean lacinia sed felis eu molestie. Mauris cursus vulputate vestibulum. 
+Vestibulum vulputate viverra ante in elementum.
+
+
+Pellentesque eu cursus magna. 
+Quisque vehicula dolor vitae massa mattis, ac malesuada dolor varius. 
+Integer lobortis mi id neque tincidunt varius. 
+Donec pellentesque enim non risus faucibus volutpat. 
+Suspendisse tempor ipsum nec vulputate ornare. 
+In ac nunc tristique, luctus arcu sit amet, efficitur quam. 
+Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. 
+Mauris tellus risus, sollicitudin in quam imperdiet, convallis consequat massa. 
+Donec facilisis nulla ligula, at consectetur felis volutpat eget. 
+Morbi ornare dolor sit amet egestas iaculis. Phasellus congue orci nisi. 
+Aenean at velit ac nisl rhoncus bibendum eget a neque.
+
+               
+              [pattern/mail/new_design/_common_content_end.html]
+
+                [pattern/mail/new_design/_common_sid_order.html]
+                [pattern/mail/new_design/_common_feedback.html]        
+                [pattern/mail/new_design/_common_signature_start.html]
+              какойто ещё орган для подписи 
+                [pattern/mail/new_design/_common_signature_end.html]
+                [pattern/mail/new_design/_common_footer.html]
+              
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -147,7 +252,7 @@
           <activiti:expression>Ваша заявка ще не взята в роботу</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_client_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_client_notify.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>

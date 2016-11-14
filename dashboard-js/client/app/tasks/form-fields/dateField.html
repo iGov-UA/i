@@ -1,30 +1,32 @@
-  <div ng-if="['date'].indexOf(item.type) > -1" class="col-sm-12 form-field">
+<div ng-if="['date'].indexOf(item.type) > -1" class="col-sm-12 form-field">
             <span class="col-sm-6 task-form-title">
-              <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && item.writable" style="color: red">*</span></label>
+              <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && item.writable"
+                                                      style="color: red">*</span></label>
             </span>
-    <div class="col-sm-6">
-      <div class="input-group" ng-if="!isFormPropertyDisabled(item)">
-        <input datetimepicker
-               class="form-control date-picker"
-               name="{{item.id}}"
-               ng-readonly="isFormPropertyDisabled(item)"
-               ng-required="isRequired(item)"
-               ng-model="item.value"
-               format="DD/MM/YYYY"
-               ng-class="{submitted:isRequired(item) && isTaskSubmitted()}"/>
+  <div class="col-sm-6">
+    <div class="input-group" ng-if="!isFormPropertyDisabled(item)">
+      <input datetimepicker
+             format='DD/MM/YYYY'
+             separator='/'
+             class="form-control date-picker"
+             name="{{item.id}}"
+             ng-readonly="isFormPropertyDisabled(item)"
+             ng-required="isRequired(item)"
+             ng-model="item.value"
+             ng-class="{submitted:isRequired(item) && isTaskSubmitted()}"/>
 
         <span class="input-group-addon"
               ng-if="isFormPropertyDisabled(item)"
               clip-copy="item.value">
                   <i class="glyphicon glyphicon-copy"></i>
                 </span>
-      </div>
-      <div ng-if="isFormPropertyDisabled(item) && item.value">
+    </div>
+    <div ng-if="isFormPropertyDisabled(item) && item.value">
               <span class="task-form-written-right-sight"
                     name="{{item.id}}"
                     ng-model="item.value">
                 {{item.value}}
               </span>
-      </div>
     </div>
   </div>
+</div>
