@@ -6,6 +6,8 @@
 package org.igov.service.business.subject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -81,28 +83,6 @@ public class SubjectGroupService {
 	public List<VSubjectGroupParentNode> getFullResult(String sID_Group_Activiti, Long deepLevel,
 			List<VSubjectGroupParentNode> parentSubjectGroups, VSubjectGroupParentNode parentSubjectGroup) {
 		if((deepLevel==null || deepLevel==0) || (sID_Group_Activiti==null || sID_Group_Activiti.isEmpty())){
-			/**
-			 * получаем лист детей
-			 */
-			final List<List<VSubjectGroupChildrenNode>> childrensParList = Lists.newArrayList(Collections2.transform(
-					parentSubjectGroups, new Function<VSubjectGroupParentNode, List<VSubjectGroupChildrenNode>>() {
-						@Override
-						public List<VSubjectGroupChildrenNode> apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
-							return vSubjectGroupParentNode.getChildren();
-						}
-					}));
-			
-			/**
-			 * только лист
-			 */
-			final List<VSubjectGroupChildrenNode> childrensByGroup = Lists.newArrayList(Collections2.transform(
-					childrensParList, new Function<List<VSubjectGroupChildrenNode>, VSubjectGroupChildrenNode>() {
-						@Override
-						public VSubjectGroupChildrenNode apply(List<VSubjectGroupChildrenNode> vSubjectGroupChildrenNodeList) {
-							return vSubjectGroupChildrenNodeList.get(0);
-						}
-					}));
-			
 			VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 			parentSubjectGroup.accept(subjectGroupTreeResult);
 			
@@ -164,6 +144,15 @@ public class SubjectGroupService {
 		
 		List<VSubjectGroupParentNode> newList = new ArrayList<>(parentSubjectGroupsFilltrRes);
 		newList.addAll(parentSubjectGroupsFilltr);
+		
+		Collections.sort(newList, new Comparator() {
+            @Override
+            public int compare(Object vSubjectGroupParentNode, Object vSubjectGroupParentNodeTwo) {
+                //use instanceof to verify the references are indeed of the type in question
+                return ((VSubjectGroupParentNode)vSubjectGroupParentNode).getGroup().getId()
+                        .compareTo(((VSubjectGroupParentNode)vSubjectGroupParentNodeTwo).getGroup().getId());
+            }
+        });
 		
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
