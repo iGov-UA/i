@@ -11,11 +11,8 @@ import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
 import org.igov.model.action.task.core.entity.ActionProcessCount;
 import org.igov.model.action.task.core.entity.ActionProcessCountDao;
-import org.igov.model.document.DocumentDao;
 import org.igov.model.subject.Server;
 import org.igov.model.subject.ServerDao;
-import org.igov.model.subject.message.SubjectMessage;
-import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
@@ -43,9 +40,12 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.igov.model.subject.Subject;
+import org.igov.model.subject.SubjectDao;
+import org.igov.model.subject.SubjectHuman;
+import org.igov.model.subject.SubjectHumanDao;
 import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
-import org.igov.service.business.subject.SubjectMessageService;
 import org.joda.time.format.DateTimeFormatter;
 
 @Controller
@@ -67,15 +67,13 @@ public class ActionEventController implements ControllerConstants {
     @Autowired
     private HttpEntityInsedeCover oHttpEntityInsedeCover;
     @Autowired
-    private SubjectMessagesDao subjectMessagesDao;
-    @Autowired
     private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
-    @Autowired
-    private DocumentDao documentDao;
     @Autowired
     private ActionProcessCountDao actionProcessCountDao;
     @Autowired
-    private SubjectMessageService oSubjectMessageService;
+    private SubjectDao subjectDao;
+    @Autowired
+    private SubjectHumanDao subjectHumanDao;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -671,7 +669,7 @@ public class ActionEventController implements ControllerConstants {
                     SubjectMessageFeedback oSubjectMessageFeedback
                             = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
                     LOG.info("found oSubjectMessageFeedback: " + oSubjectMessageFeedback);
-                    if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null 
+                    if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null
                             && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
                     } else {
@@ -703,7 +701,7 @@ public class ActionEventController implements ControllerConstants {
                     String sURL = "";
 
                     if (bIncludeTaskInfo) {
-                        sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
+                        sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Process() + "&sVariableName=phone";
                         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
 
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
@@ -826,5 +824,37 @@ public class ActionEventController implements ControllerConstants {
             @ApiParam(required = true) @RequestParam(value = "sID_BP", required = false) String sID_BP) {
         int res = actionProcessCountDao.deleteBy("sID_BP", sID_BP);
         LOG.info("Removed {} entities", res);
+    }
+
+    @ApiOperation(value = "/sheduleAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")
+    @RequestMapping(value = "/sheduleAnswer_DFS", method = RequestMethod.GET)
+    public @ResponseBody
+    String sheduleAnswer_DFS() throws Exception {
+        String result = "None";
+        LOG.info("sheduleAnswer_DFS... ");
+        List<HistoryEvent_Service> historyEvent_Services = historyEventServiceDao.getHistoryEvent_Service(null, new Long(1549), null);
+        LOG.info("historyEvent_Services.size: " + historyEvent_Services.size());
+        for (HistoryEvent_Service historyEvent_Service : historyEvent_Services) {
+            if (historyEvent_Service.getnID_StatusType() != 8) {
+                Subject subject = subjectDao.findByIdExpected(historyEvent_Service.getnID_Subject()); //
+                LOG.info("subject: " + subject);
+                SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
+                LOG.info("subjectHuman.getsINN: " + subjectHuman.getsINN());
+                //вызываем сервис региона по закрыти процесса и сету ответа от ДФС
+                Server server = serverDao.findByIdExpected(new Long(historyEvent_Service.getnID_Server()));
+                String sURL = server.getsURL() + "/service/action/task/getAnswer_DFS?sID_Process=" + historyEvent_Service.getnID_Process()
+                        + "&INN=" + subjectHuman.getsINN();
+                LOG.info(sURL + "...");
+                ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+                result = osResponseEntityReturn.getBody();
+                LOG.info(sURL + " result: " + result);
+                if(result != null && result.length() > 0){
+                   historyEvent_Service.setnID_StatusType(HistoryEvent_Service_StatusType.CLOSED.getnID());
+                   historyEventServiceDao.saveOrUpdate(historyEvent_Service);
+                   LOG.info(historyEvent_Service.getnID_Process() + " closed!!!");
+                }
+            }
+        }
+        return result;
     }
 }

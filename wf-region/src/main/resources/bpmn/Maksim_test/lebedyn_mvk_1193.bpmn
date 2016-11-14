@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="lebedyn_mvk_1193" name="Видача дозволу на видалення зелених насаджень" isExecutable="true">
     <startEvent id="startevent1" name="Start">
-    <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -25,12 +25,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="asChoicePay" name="Вказати за чий рахунок буде проводитися зрізка зелених насаджень" type="enum" required="true">
           <activiti:value id="sEnum1" name="За власний рахунок"></activiti:value>
           <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="nFile1" name="Документи, що підтверджують право користування земельною ділянкою у відповідності до генерального плану забудови міста" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile2" name="зареєстрована інспекцією державного архітектурно-будівельного контролю у Сумській обл. декларація про початок виконання будівельних робіт;або дозвіл на виконання будівельних робіт" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Фотографія зазначених зелених насаджень" type="file" required="true"></activiti:formProperty>
@@ -40,34 +38,392 @@
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Лист адміністратору про нове звернення"></serviceTask>
+    <serviceTask id="servicetask1" name="Лист адміністратору про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[msvidran@gmail.com]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. Видача дозволу на видалення зелених насаджень.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Повідомлення громадянину про успішну доставку до ЦНАПу"></serviceTask>
+    <serviceTask id="servicetask2" name="Повідомлення громадянину про успішну доставку до ЦНАПу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+<p> Ваше звернення №[sID_Order] щодо видачи дозволу на видалення зелених насаджень зареєстровано у системі.<br>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br>
+Телефон для довідок: (05445) 2-19-26<br>
+[pattern/mail/_common_signature_start.html]
+ЦНАП виконавчого комітету Лебединської міської ради,<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <userTask id="usertask1" name="1. Перевірка даних адміністратором ЦНАПу"></userTask>
+    <userTask id="usertask1" name="1. Перевірка даних адміністратором ЦНАПу" activiti:candidateGroups="cnap_lebedyn">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень; ;writable=false" type="enum">
+          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
+          <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
+          <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
+          <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
+          <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні "></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень або прив'язка (місце розташування); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень; ;writable=false" type="enum">
+          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChoicePay" name="За чий рахунок буде проводитися зрізка зелених насаджень; ;writable=false" type="enum">
+          <activiti:value id="sEnum1" name="За власний рахунок"></activiti:value>
+          <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="accept" name="З документами все гаразд, документи відправлено на комісію"></activiti:value>
+          <activiti:value id="reject" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_503_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Повідомлення про відмову"></serviceTask>
-    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо видачи дозволу на видалення зелених насаджень було відхилено.</p>
+<p>Причина в наступному: 
+                                    </p>
+<p>${comment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+<br />
+Телефон для довідок: (05445) 2-19-26<br>
+[pattern/mail/_common_signature_start.html]
+ЦНАП виконавчого комітету Лебединської міської ради,<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="2. Обробка після обстеження ЗН (видача рішення виконкому про видалення ЗН)"></userTask>
-    <serviceTask id="servicetask4" name="Повідомлення про реєстрацію звернення та передачу на комісію обстеження ЗН"></serviceTask>
-    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
+    <userTask id="usertask2" name="2. Обробка після обстеження ЗН (видача рішення виконкому про видалення ЗН)" activiti:candidateGroups="cnap_lebedyn">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
+          <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
+          <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
+          <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
+          <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень або прив'язка (місце розташування)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoicePay" name="За чий рахунок буде проводитися зрізка зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="За власний рахунок"></activiti:value>
+          <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFileResolution" name="Відсканована копія рішення виконкому про видалення зелених насаджень" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask4" name="Повідомлення про реєстрацію звернення та передачу на комісію обстеження ЗН" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] peredano na komisiu. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+<p>Ваше звернення щодо видачи дозволу на видалення зелених насаджень - відправлено на комісію.<br>
+Комісія у п'ятиденний строк після подання заяви повина визначити стан зелених насаджень і скласти акт обстеження зелених насаджень. Виконком у місячний строк після надходження заяви повинен прийняти рішення шляхом видання копії рішення про видалення зелених насаджень, копію якого Ви отримаєте на електронну адресу.<br> 
+</p>
+<br>
+Телефон для довідок: (05445) 2-19-26<br>
+[pattern/mail/_common_signature_start.html]
+ЦНАП виконавчого комітету Лебединської міської ради,<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Повідомлення заявнику про слату відновної вартості ЗН"></serviceTask>
+    <serviceTask id="servicetask5" name="Повідомлення заявнику про слату відновної вартості ЗН" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Po vashomu zvernennu [sID_Order] vyneseno rishennya. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${nFileResolution}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>По Вашому зверненю щодо видачи дозволу на видалення зелених насаджень винесено рішення про видалення зелених насаджень, копія якого в додатку до цього листа.<br> 
+</p>
+В залежності від прийнятого рішення Вам необхідно сплатити відновну вартість зелених насаджень, що підлягають видаленню та сплатити за компенсаційну висадку зелених насаджень.<br>
+
+Після цього Вам потрібно, відсканувати квитанцію про сплату, зайти у розділ <a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">Мій журнал</a> та відправити цей файл співробітнику ЦНАПу:
+<ul>
+<li>праворуч Вашого звернення натисніть на посилання “Детальніше” Ви опинитесь на сторінці діалогу с співробітником ЦНАПу;</li>
+<li>в полі залиште коментар, який побачить співробітник ЦНАПу;</li>
+<li>нижче поля натисніть “Додати файл” та оберіть файл, який Ви відсканували;</li>
+<li>натисніть кнопку “Відправити”.</li>
+</ul>
+<br>
+Після цьго впродовж наступного робочого дня Вам буде надіслано повідомлення де і коли Ви зможете забрати ордер на видалення зелених насаджень.<br><br>
+
+Телефон для довідок: (05445) 2-19-26<br>
+[pattern/mail/_common_signature_start.html]
+ЦНАП виконавчого комітету Лебединської міської ради,<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="servicetask5"></sequenceFlow>
-    <userTask id="usertask3" name="3. Очикування оплати відновної вартості ЗН"></userTask>
+    <userTask id="usertask3" name="3. Очикування оплати відновної вартості ЗН" activiti:candidateGroups="cnap_lebedyn">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
+          <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
+          <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
+          <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
+          <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень або прив'язка (місце розташування)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoicePay" name="За чий рахунок буде проводитися зрізка зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="За власний рахунок"></activiti:value>
+          <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResolution" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="sEnumPayYes" name="Оплата поступила. Відправити Громадянину ордер."></activiti:value>
+          <activiti:value id="sEnumPayNo" name="Оплата відсутня. Закрити заявку."></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFileOrder" name="Відсканована копія ордеру на видалення зелених насаджень" type="file"></activiti:formProperty>
+        
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Повідомлення заявнику про необхідність забрати ордер"></serviceTask>
-    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="servicetask6"></sequenceFlow>
+    <serviceTask id="servicetask6" name="Повідомлення заявнику про необхідність забрати ордер" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${nFileOrder}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+<p> Ваше звернення №[sID_Order] щодо видачи дозволу на видалення зелених насаджень опрацьоване.<br>
+Копія ордеру на видалення зелених насаджень у прикріпленому файлі.<br>
+Оригінал Ви можете отримати за адресою:<br>
+м.Лебедин, вул.Пушкіна, 11<br>
+Режим роботи ЦНАПу:<br>
+Понеділок - четвер з 8.00 до 17.15<br>
+П'ятниця з 8.00 до 16.00<br>
+Перерва на обід з 12.00 до 13.00<br>
+</p>
+<br>
+<p>При собі треба мати оригінал паспорту.</p>
+<br>
+Телефон для довідок: (05445) 2-19-26<br>
+[pattern/mail/_common_signature_start.html]
+ЦНАП виконавчого комітету Лебединської міської ради,<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResolution=='sEnumPayYes'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask7" name="Повідомлення про несплату та закриття заявки"></serviceTask>
-    <sequenceFlow id="flow14" sourceRef="exclusivegateway2" targetRef="servicetask7"></sequenceFlow>
+    <serviceTask id="servicetask7" name="Повідомлення про несплату та закриття заявки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+<p>По Вашому зверненню №[sID_Order] щодо видачи дозволу на видалення зелених насаджень не надійшла оплата.<br>
+Справа буде закрита.</p>
+<br>
+Телефон для довідок: (05445) 2-19-26<br>
+[pattern/mail/_common_signature_start.html]
+ЦНАП виконавчого комітету Лебединської міської ради,<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow14" sourceRef="exclusivegateway2" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResolution=='sEnumPayNo'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
   </process>

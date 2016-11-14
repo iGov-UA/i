@@ -8,15 +8,19 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.io.web.HttpRequester;
-import org.igov.service.business.action.task.core.AbstractModelTask;
-import static org.igov.util.ToolWeb.base64_encode;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+import org.igov.util.swind.GateSoapProxy;
+import org.igov.util.swind.ProcessResult;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component("SendDocument_SWinEd")
-public class SendDocument_SWinEd extends AbstractModelTask implements TaskListener {
+public class SendDocument_SWinEd implements TaskListener {
 
     private static final long serialVersionUID = 1L;
 
@@ -52,12 +56,12 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
             LOG.info("sEmailValue : " + sEmailValue 
                     + " oByteArrayMultipartFile.getOriginalFilename(): " + oByteArrayMultipartFile.getOriginalFilename());
             if (oFile_XML_SWinEd != null) {
-                String content = new String(oByteArrayMultipartFile.getBytes());
-                resp += " content: " + content;
-                LOG.info("content: " + content);
-                String body = createBody(content, oByteArrayMultipartFile.getOriginalFilename(), sEmailValue);
-                resp = oHttpRequester.postInside(URL, null, body, "text/xml; charset=utf-8");
-                LOG.info("!!!response:" + resp);
+                GateSoapProxy gate = new GateSoapProxy(URL);
+                LOG.info("!!! Before sending request to gate web service. sID_File_XML_SWinEdValue:" + oByteArrayMultipartFile.getOriginalFilename() + 
+                		" sEmailValue:" + sEmailValue + " endpoint:" + gate.getEndpoint() + " content:" + oByteArrayMultipartFile.getBytes());
+                ProcessResult result = gate.send(oByteArrayMultipartFile.getOriginalFilename(), sEmailValue, oByteArrayMultipartFile.getBytes());
+                LOG.info("!!!response:" + result.getValue());
+                resp = result.getValue();
             } else {
                 LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " oFile_XML_SWinEd is null!!!");
             }
@@ -66,20 +70,6 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
             LOG.error("!!! Error in SendDocument_SWinEd sID_File_XML_SWinEdValue=" + sID_File_XML_SWinEdValue, ex);
             execution.setVariable("result", resp);
         }
-    }
-
-    private String createBody(String content, String fileName, String email) {
-        String result = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
-                .append("<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">")
-                .append("<soap:Body>")
-                .append("<Send xmlns=\"http://govgate/\">")
-                .append("<fileName>").append(fileName).append("</fileName>")
-                .append("<senderEMail>").append(email).append("</senderEMail>")
-                .append("<data>").append(base64_encode(content)).append("</data>")
-                .append("</Send>")
-                .append("</soap:Body>")
-                .append("</soap:Envelope>").toString();
-        return result;
     }
 
 }

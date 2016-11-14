@@ -451,26 +451,10 @@ public class SubjectMessageController {
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
-            //nID_Subject = oHistoryEvent_Service.getnID_Subject();
-
+            
             if (bAuth) {
                 actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
             }
-            
-            /*if(sToken!=null){
-                if(sToken.equals(oHistoryEvent_Service.getsToken())){
-                    nID_Subject = oHistoryEvent_Service.getnID_Subject();
-                }
-            }
-            if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
-                if(sToken!=null){
-                    LOG.warn("nID_Subject is not owner of Order of messages and wrong sToken! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={},sToken={})", nID_Subject, oHistoryEvent_Service.getnID_Subject(),sToken);
-                    throw new Exception("nID_Subject is not Equal and wrong sToken!");
-                }else{
-                    LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
-                    throw new Exception("nID_Subject is not Equal!");
-                }
-//            }*/
 
             if (isNotBlank(sID_File)) {
                 LOG.info("sID_File param is not null {}. File name is {}", sID_File, sFileName);
@@ -518,18 +502,7 @@ public class SubjectMessageController {
             subjectMessagesDao.setMessage(oSubjectMessage);
 
             Long messageID = oSubjectMessage.getId();
-            /*
-            LOG.info("Set message id={}, Mail={}", messageID, oSubjectMessage.getMail());
-            LOG.info("Set message id={}, Contacts={}", messageID, oSubjectMessage.getContacts());
-            LOG.info("Set message id={}, Data={}", messageID, oSubjectMessage.getData());
-            LOG.info("Set message id={}, Date={}", messageID, oSubjectMessage.getDate());
-            LOG.info("Set message id={}, Head={}", messageID, oSubjectMessage.getHead());
-            LOG.info("Set message id={}, Body={}", messageID, oSubjectMessage.getBody());
-            LOG.info("Set message id={}, Id_subject={}", messageID, oSubjectMessage.getId_subject());
-            LOG.info("Set message id={}, ID_DataLink={}", messageID, oSubjectMessage.getsID_DataLink());
-            LOG.info("Set message id={}, ID_HistoryEvent_Service={}", messageID, oSubjectMessage.getnID_HistoryEvent_Service());
-            */
-
+            
             LOG.info("Successfully saved message with the ID {}", messageID);
 
             String sHost = null;
@@ -542,10 +515,7 @@ public class SubjectMessageController {
             }
 
             String mergeUrl = sHost + "/service/action/task/mergeVariable";
-            Long nID_Task = oHistoryEvent_Service.getnID_Task();
-//            Task task = taskService.createTaskQuery().taskId(String.valueOf(nID_Task)).singleResult();
-//            String processId = task.getProcessInstanceId();
-
+            Long nID_Task = oHistoryEvent_Service.getnID_Process();
             Map<String, String> mergeParams = new HashMap<>();
             Map<String, List<String>> multipleParam = new HashMap<>();
             mergeParams.put("processInstanceId", String.valueOf(nID_Task));
@@ -563,7 +533,7 @@ public class SubjectMessageController {
 
         } catch (Exception e) {
             LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);
-            LOG.trace("FAIL:", e);
+            LOG.error("FAIL:", e);
             throw new CommonServiceException(500, "{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(oSubjectMessage);
@@ -670,7 +640,7 @@ public class SubjectMessageController {
     	        }
     	        String sURL = sHost + "/service/action/feedback/runFeedBack";
     	        Map<String, String> mParam = new HashMap<>();
-    	        mParam.put("snID_Process", String.valueOf(oHistoryEvent_Service.getnID_Task()));
+    	        mParam.put("snID_Process", String.valueOf(oHistoryEvent_Service.getnID_Process()));
     	        LOG.info("mParam={}", mParam);
     	        String sReturnRegion = httpRequester.getInside(sURL, mParam);
     	        LOG.info("(sReturnRegion={})", sReturnRegion);

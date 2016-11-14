@@ -10,12 +10,12 @@ var tasksService = require('./tasks.service');
 var environment = require('../../config/environment');
 var config = require(__dirname + '/../../..' + '/process.json').env;
 var request = require('request');
-var pdf = require('html-pdf');
+var pdfConversion = require('phantom-html-to-pdf')();
 
 /*
-var nodeLocalStorage = require('node-localstorage').LocalStorage;
-var localStorage = new nodeLocalStorage('./scratch');
-*/
+ var nodeLocalStorage = require('node-localstorage').LocalStorage;
+ var localStorage = new nodeLocalStorage('./scratch');
+ */
 function createHttpError(error, statusCode) {
   return {httpError: error, httpStatus: statusCode};
 }
@@ -246,16 +246,16 @@ exports.getOrderMessages = function (req, res) {
 
   activiti.get(options, function (error, statusCode, result) {
     if (error) {
-      console.log("[getOrderMessages]:error="+error);
+      console.log("[getOrderMessages]:error=" + error);
       res.status(200).json("[]");
       //res.send(error);
     } else {
-        console.log("[getOrderMessages]:result="+result);
-        if(statusCode!==200){
-            res.status(200).json("[]");
-        }else{
-            res.status(statusCode).json(result);
-        }
+      console.log("[getOrderMessages]:result=" + result);
+      if (statusCode !== 200) {
+        res.status(200).json("[]");
+      } else {
+        res.status(statusCode).json(result);
+      }
     }
   });
 };
@@ -281,11 +281,11 @@ exports.getAttachmentContentTable = function (req, res) {
     }
   };
   activiti.get(options, function (error, statusCode, result) {
-    if(error) {
+    if (error) {
       res.send(error);
     } else if (statusCode == 500) {
       console.log(statusCode, "isn't table attachment");
-    }else {
+    } else {
       res.status(statusCode).json(result);
     }
   });
@@ -352,27 +352,27 @@ exports.getTasksByText = function (req, res) {
 };
 
 /*
-exports.getProcesses = function (req, res) {
-  var user = JSON.parse(req.cookies.user);
-  var roles = JSON.stringify(user.roles);
-  //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
-  var options = {
-    path: 'analytic/process/getProcesses',
-    query: {
-      'sID_': req.query.sID,
-      'asID_Group': roles
-    }
-  };
-  activiti.get(options, function (error, statusCode, result) {
-    error ? res.send(error) : res.status(statusCode).json(result);
-    //error ? res.send(error) : res.status(statusCode).json("[\"4585243\"]");
-  });
-};
-*/
+ exports.getProcesses = function (req, res) {
+ var user = JSON.parse(req.cookies.user);
+ var roles = JSON.stringify(user.roles);
+ //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
+ var options = {
+ path: 'analytic/process/getProcesses',
+ query: {
+ 'sID_': req.query.sID,
+ 'asID_Group': roles
+ }
+ };
+ activiti.get(options, function (error, statusCode, result) {
+ error ? res.send(error) : res.status(statusCode).json(result);
+ //error ? res.send(error) : res.status(statusCode).json("[\"4585243\"]");
+ });
+ };
+ */
 exports.getProcesses = function (req, res) {
   var currentUser = JSON.parse(req.cookies.user);
   var userRoles = authService.getCashedUserGroups(currentUser);
-  if(userRoles){
+  if (userRoles) {
     currentUser.roles = userRoles;
     var options = {
       path: 'analytic/process/getProcesses',
@@ -390,15 +390,15 @@ exports.getProcesses = function (req, res) {
         activiti.get({
           path: 'action/identity/getGroups',
           query: {
-            sLogin : currentUser.id
+            sLogin: currentUser.id
           },
-          json : true
+          json: true
         }, function (error, statusCode, result) {
           if (error) {
             callback(error, null);
           } else {
             var resultGroups;
-            if((typeof result == "object") && (result instanceof Array)){
+            if ((typeof result == "object") && (result instanceof Array)) {
               currentUser['roles'] = result.map(function (group) {
                 return group.id;
               });
@@ -460,22 +460,32 @@ exports.getPatternFile = function (req, res) {
  */
 exports.upload_content_as_attachment = function (req, res) {
   async.waterfall([
-    function(callback){
-      if(req.body.sFileName === 'sPrintFormFileAsPDF.pdf'){
+    function (callback) {
+      if (req.body.sFileName === 'sPrintFormFileAsPDF.pdf') {
         var options = {
-          "format": "A4",        // allowed units: A3, A4, A5, Legal, Letter, Tabloid
-          "orientation": "landscape" // portrait or landscape
+          html: req.body.sContent,
+          allowLocalFilesAccess: true,
+          paperSize: {
+            format: 'A4', orientation: 'portrait'
+          },
+          fitToPage: true,
+          customHeaders: [],
+          settings: {
+            javascriptEnabled: true
+          },
+          format: {
+            quality: 100
+          }
         };
-        pdf.create(req.body.sContent, options)
-        .toStream(function (err, stream) {
-          callback(err, {content: stream, contentType: 'application/json', url:'upload_file_as_attachment'});
+        pdfConversion(options, function (err, pdf) {
+          callback(err, {content: pdf.stream, contentType: 'application/json', url: 'upload_file_as_attachment'});
         });
-      }else{
-        callback(null, {content: req.body.sContent, contentType: 'text/html', url:'upload_content_as_attachment'});
+      } else {
+        callback(null, {content: req.body.sContent, contentType: 'text/html', url: 'upload_content_as_attachment'});
       }
     },
     function (data, callback) {
-      if(data.url === 'upload_content_as_attachment'){
+      if (data.url === 'upload_content_as_attachment') {
         activiti.post({
           path: 'object/file/' + data.url,
           query: {
@@ -485,23 +495,24 @@ exports.upload_content_as_attachment = function (req, res) {
             sFileName: req.body.sFileName
           },
           headers: {
-            'Content-Type': data.contentType+';charset=utf-8'
+            'Content-Type': data.contentType + ';charset=utf-8'
           }
         }, function (error, statusCode, result) {
           error ? res.send(error) : res.status(statusCode).json(result);
         }, data.content, false);
       }
 
-      if(data.url === 'upload_file_as_attachment'){
+      if (data.url === 'upload_file_as_attachment') {
         activiti.uploadStream({
           path: 'object/file/' + data.url,
           taskId: req.params.taskId,
           stream: data.content,
           description: req.body.sDescription,
           headers: {
-            'Content-Type': data.contentType+';charset=utf-8'
+            'Content-Type': data.contentType + ';charset=utf-8'
           }
-        },function (error, statusCode, result) {
+        }, function (error, statusCode, result) {
+          pdfConversion.kill();
           error ? res.send(error) : res.status(statusCode).json(result);
         });
       }
@@ -520,24 +531,24 @@ exports.setTaskQuestions = function (req, res) {
 };
 
 // отправка комментария от чиновника, сервис работает на централе, поэтому с env конфигов берем урл.
-exports.postServiceMessage = function(req, res){
+exports.postServiceMessage = function (req, res) {
   var oData = req.body;
   var oDateNew = {
     'sID_Order': config.Back_Region.nID_Server_Back_Region + '-' + oData.nID_Process,
     'sBody': oData.sBody,
-    'nID_SubjectMessageType' : 9
+    'nID_SubjectMessageType': 9
   };
   var sURL = config.Back_Central.sURL_Back_Central + '/subject/message/setServiceMessage';
-  var callback = function(error, response, body) {
+  var callback = function (error, response, body) {
     res.send(body);
     res.end();
   };
   return request.post({
     'url': sURL,
     'auth': {
-    'username': config.Back_Central.sLogin_Back_Central,
+      'username': config.Back_Central.sLogin_Back_Central,
       'password': config.Back_Central.sPassword_Back_Central
-  },
+    },
     'qs': oDateNew
   }, callback);
 };
@@ -598,36 +609,36 @@ exports.unassign = function (req, res) {
 };
 
 /*
-exports.getTaskData = function(req, res) {
-  var options = {
-    path: 'action/task/getTaskData',
-    query: req.query,
-    json: true
-  };
+ exports.getTaskData = function(req, res) {
+ var options = {
+ path: 'action/task/getTaskData',
+ query: req.query,
+ json: true
+ };
 
-  activiti.get(options, function (error, statusCode, body) {
-    if (error) {
-      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while loading task data', error);
-      res.status(500).send(error);
-      return;
-    }
-    var currentUser = JSON.parse(req.cookies.user);
-    var UserFromStorage = JSON.parse(localStorage.getItem('user'));
-    currentUser.roles = UserFromStorage.roles;
-    // После запуска существует вероятность, что объекта req.session еще не ссуществует и чтобы не вывалилась ошибка
-    // пропускаем проверку. todo: При следующем релизе нужно удалить условие !req.session
-    //var cashedGr = authService.getCashedUserGroups(currentUser);
+ activiti.get(options, function (error, statusCode, body) {
+ if (error) {
+ error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while loading task data', error);
+ res.status(500).send(error);
+ return;
+ }
+ var currentUser = JSON.parse(req.cookies.user);
+ var UserFromStorage = JSON.parse(localStorage.getItem('user'));
+ currentUser.roles = UserFromStorage.roles;
+ // После запуска существует вероятность, что объекта req.session еще не ссуществует и чтобы не вывалилась ошибка
+ // пропускаем проверку. todo: При следующем релизе нужно удалить условие !req.session
+ //var cashedGr = authService.getCashedUserGroups(currentUser);
 
-    if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
-      res.status(200).send(body);
-    else {
-      error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
-      res.status(403).send(error);
-    }
-  });
-};
-*/
-exports.getTaskData = function (req, res){
+ if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
+ res.status(200).send(body);
+ else {
+ error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
+ res.status(403).send(error);
+ }
+ });
+ };
+ */
+exports.getTaskData = function (req, res) {
   var options = {
     path: 'action/task/getTaskData',
     query: req.query,
@@ -637,7 +648,7 @@ exports.getTaskData = function (req, res){
   var currentUser = JSON.parse(req.cookies.user);
 
   var userRoles = authService.getCashedUserGroups(currentUser);
-  if(userRoles){
+  if (userRoles) {
     currentUser.roles = userRoles;
     activiti.get(options, function (error, statusCode, body) {
       if (error) {
@@ -646,7 +657,7 @@ exports.getTaskData = function (req, res){
         return;
       }
 
-      if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
+      if (!req.session || tasksService.isTaskDataAllowedForUser(body, currentUser))
         res.status(200).send(body);
       else {
         error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
@@ -659,15 +670,15 @@ exports.getTaskData = function (req, res){
         activiti.get({
           path: 'action/identity/getGroups',
           query: {
-            sLogin : currentUser.id
+            sLogin: currentUser.id
           },
-          json : true
+          json: true
         }, function (error, statusCode, result) {
           if (error) {
             callback(error, null);
           } else {
             var resultGroups;
-            if((typeof result == "object") && (result instanceof Array)){
+            if ((typeof result == "object") && (result instanceof Array)) {
               currentUser['roles'] = result.map(function (group) {
                 return group.id;
               });
@@ -692,7 +703,7 @@ exports.getTaskData = function (req, res){
         return;
       }
       authService.setCashedUserGroups(currentUser, currentUser.roles);
-      if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
+      if (!req.session || tasksService.isTaskDataAllowedForUser(body, currentUser))
         res.status(200).send(body);
       else {
         error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
@@ -702,7 +713,7 @@ exports.getTaskData = function (req, res){
   }
 };
 
-exports.getMessageFile = function(req, res) {
+exports.getMessageFile = function (req, res) {
   var options = {
     path: 'action/task/getMessageFile_Local',
     query: {
