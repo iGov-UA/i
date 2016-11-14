@@ -3669,7 +3669,7 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow49" name="asStatusOperator=='sEnumSendInFrontOffice'" sourceRef="exclusivegateway1" targetRef="usertask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumSendInFrontOffice'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow50" name="asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway2" targetRef="exclusivegateway12">
+    <sequenceFlow id="flow50" name="asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway2" targetRef="usertask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw1'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
@@ -3684,7 +3684,7 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow57" name="asAnswerChannel=='sEnumAnsw3'" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw3'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow59" name="asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway2" targetRef="exclusivegateway13">
+    <sequenceFlow id="flow59" name="asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway2" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent10" name="End"></endEvent>
@@ -3864,22 +3864,6 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <exclusiveGateway id="exclusivegateway12" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow89" sourceRef="exclusivegateway12" targetRef="servicetask11">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='sendEmail'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow90" sourceRef="exclusivegateway12" targetRef="usertask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='noSendEmail'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow91" sourceRef="servicetask11" targetRef="usertask9"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway13" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow92" sourceRef="exclusivegateway13" targetRef="servicetask12">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='sendEmail'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow93" sourceRef="exclusivegateway13" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='noSendEmail'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow94" sourceRef="servicetask12" targetRef="usertask3"></sequenceFlow>
     <serviceTask id="servicetask13" name="письмо с ошибкой" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -3909,7 +3893,6 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow95" sourceRef="exclusivegateway7" targetRef="servicetask13"></sequenceFlow>
     <endEvent id="endevent12" name="End"></endEvent>
     <sequenceFlow id="flow96" sourceRef="servicetask13" targetRef="endevent12"></sequenceFlow>
     <sequenceFlow id="flow97" sourceRef="usertask4" targetRef="usertask1"></sequenceFlow>
@@ -4015,12 +3998,6 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
         <omgdc:Bounds height="55.0" width="164.0" x="2447.0" y="859.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway12" id="BPMNShape_exclusivegateway12">
-        <omgdc:Bounds height="40.0" width="40.0" x="2330.0" y="737.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway13" id="BPMNShape_exclusivegateway13">
-        <omgdc:Bounds height="40.0" width="40.0" x="2330.0" y="866.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
         <omgdc:Bounds height="55.0" width="160.0" x="2301.0" y="443.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -4107,11 +4084,11 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
-        <omgdi:waypoint x="2131.0" y="681.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2131.0" y="756.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2330.0" y="757.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2111.0" y="661.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1892.0" y="657.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1892.0" y="292.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="2190.0" y="743.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1928.0" y="616.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
@@ -4136,9 +4113,10 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="2131.0" y="681.0"></omgdi:waypoint>
         <omgdi:waypoint x="2130.0" y="885.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2330.0" y="886.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1584.0" y="884.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1525.0" y="1094.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="2202.0" y="870.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1844.0" y="828.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
@@ -4190,43 +4168,6 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNEdge bpmnElement="flow88" id="BPMNEdge_flow88">
         <omgdi:waypoint x="852.0" y="469.0"></omgdi:waypoint>
         <omgdi:waypoint x="852.0" y="504.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow89" id="BPMNEdge_flow89">
-        <omgdi:waypoint x="2370.0" y="757.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2447.0" y="757.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow90" id="BPMNEdge_flow90">
-        <omgdi:waypoint x="2350.0" y="777.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2348.0" y="813.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1892.0" y="812.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1892.0" y="292.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow91" id="BPMNEdge_flow91">
-        <omgdi:waypoint x="2529.0" y="785.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2528.0" y="844.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1969.0" y="844.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1968.0" y="361.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1892.0" y="292.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow92" id="BPMNEdge_flow92">
-        <omgdi:waypoint x="2370.0" y="886.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2447.0" y="886.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow93" id="BPMNEdge_flow93">
-        <omgdi:waypoint x="2350.0" y="906.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2349.0" y="1313.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1761.0" y="1313.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1525.0" y="1151.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow94" id="BPMNEdge_flow94">
-        <omgdi:waypoint x="2529.0" y="914.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2528.0" y="1334.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1668.0" y="1334.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1525.0" y="1151.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow95" id="BPMNEdge_flow95">
-        <omgdi:waypoint x="2151.0" y="470.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2301.0" y="470.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow96" id="BPMNEdge_flow96">
         <omgdi:waypoint x="2461.0" y="470.0"></omgdi:waypoint>
