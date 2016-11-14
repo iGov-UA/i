@@ -6,57 +6,47 @@
           ["sObjectTimeConstruction","sBuildNotificationOrgan","sBuildNotificationDate","sBuildNotificationNumber",
            "sTechInventoryPib","sTechInventoryPassport"], 
        "asID_Field": {"sCond1":"asObjectType"},
-       "sCondition": "[sCond1] == 'sEnumObjPassport'||[sCond1]=='об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
+       "sCondition": "[sCond1]=='sEnumObjPassport'||[sCond1]=='об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
       },
     "ShowFieldsOnCondition_Obj2-3": 
       {"aField_ID":  ["sTechSupervisor","sResponsiblePers","sObjectDateStartConstruction","sObjectDateEndConstruction"], 
        "asID_Field": {"sCond1":"asObjectType"},
-       "sCondition": "[sCond1] != 'sEnumObjPassport'"
+       "sCondition": "[sCond1]!='sEnumObjPassport'&&[sCond1]!= 'об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
       },
     "ShowFieldsOnCondition_Obj3": 
       {"aField_ID":  ["sJudgement","sLocationComplianceOrgan","sLocationComplianceDoc"], 
        "asID_Field": {"sCond1":"asObjectType"},
-       "sCondition": "[sCond1] == 'sEnumObjUnlicensed'"
+       "sCondition": "[sCond1]=='sEnumObjUnlicensed'||[sCond1]=='самочинно збудованого об’єкта, на яке визнано право власності за рішенням суду'"
       },    
     "ShowFieldsOnCondition_Obj2": 
       {"aField_ID":  ["sPermitDoc","sObjectTerritory"], 
        "asID_Field": {"sCond1":"asObjectType"},
-       "sCondition": "[sCond1] == 'sEnumObjUnlicensed'"
+       "sCondition": "[sCond1]=='sEnumObjCategory'||[sCond1]=='об’єктів, які належать до I­III категорії складності'"
       },     
     "ShowFieldsOnCondition_ObjInfo1": 
       {"aField_ID": ["sBuildingName"], 
        "asID_Field": {"sCond1":"asObjectType","sCond2":"bObjectInfo"},
-       "sCondition": "[sCond2] == 'ObjectInfo_show' && ([sCond1] == 'sEnumObjPassport'||[sCond1] == 'об’єктів, будівництво яких здійснено на підставі будівельного паспорта')"
+       "sCondition": "[sCond2]=='ObjectInfo_show'&&([sCond1]=='sEnumObjPassport'||[sCond1]=='об’єктів, будівництво яких здійснено на підставі будівельного паспорта')"
       },
     "ShowFieldsOnCondition_ObjInfo2-3": 
       {"aField_ID":  ["sObjectCategory"], 
        "asID_Field": {"sCond1":"asObjectType","sCond2":"bObjectInfo"},
-       "sCondition": "[sCond1] != 'sEnumObjPassport' &&  [sCond2] == 'ObjectInfo_show' && [sCond1] != 'об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
+       "sCondition": "[sCond1]!='sEnumObjPassport'&&[sCond2]=='ObjectInfo_show'&&[sCond1]!='об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
       },
     "ShowFieldsOnCondition_ObjInfo": 
       {"aField_ID":  ["sRegistrationOrgan","sObjectName","sObjectAddress","sObjectCode"], 
        "asID_Field": {"sCond2":"bObjectInfo"},
-       "sCondition": "[sCond2] == 'ObjectInfo_show'"
+       "sCondition": "[sCond2]=='ObjectInfo_show'"
       },
     "ShowFieldsOnCondition_ChiefInfo2-3": 
       {"aField_ID":  ["sChiefPib","sChiefPassport","sChiefAddress","sChiefInn","sChiefPhone"], 
        "asID_Field": {"sCond1":"asObjectType","sCond2":"bObjectInfo"},
-       "sCondition": "[sCond1] != 'sEnumObjPassport' &&  [sCond2] == 'ChiefInfo_show'"
+       "sCondition": "[sCond1]!='sEnumObjPassport'&&[sCond2]=='ChiefInfo_show'&&[sCond1]!='об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
       },
     "ShowFieldsOnCondition_Insurance2": 
       {"aField_ID":  ["sInsuranceName","sInsuranceAddress","sInsuranceInn","sInsuranceContract"], 
        "asID_Field": {"sCond1":"asObjectType","sCond2":"bInsuranceInfo"},
-       "sCondition": "[sCond1] == 'sEnumObjCategory' &&  [sCond2] == 'InsuranceInfo_show'"
-      },
-    "ShowFieldsOnCondition_DesignerPerson2": 
-      {"aField_ID":  ["sProjectPib","sProjectPassport","sProjectAddress","sProjectInn"], 
-       "asID_Field": {"sCond1":"asObjectType","sCond2":"bDesignerInfo","sCond3":"asProject"},
-       "sCondition": "[sCond1] == 'sEnumObjCategory' &&  [sCond2] == 'DesignerInfo_show' && [sCond3] == 'sEnumProjectPerson'"
-      },
-    "ShowFieldsOnCondition_DesignerCompany2": 
-      {"aField_ID":  ["sProjectOrganizationForm","sProjectOrganizationName","sProjectOrganizationAddress","sProjectOrganizationInn","sProjectOrganizationPhone"], 
-       "asID_Field": {"sCond1":"asObjectType","sCond2":"bDesignerInfo","sCond3":"asProject"},
-       "sCondition": "[sCond1] == 'sEnumObjCategory' &&  [sCond2] == 'DesignerInfo_show' && [sCond3] == 'sEnumProjectLegal'"
+       "sCondition": "([sCond1]=='sEnumObjCategory||[sCond2]=='об’єктів, які належать до I­III категорії складності)&&[sCond2]=='InsuranceInfo_show'"
       }
     }
 }
