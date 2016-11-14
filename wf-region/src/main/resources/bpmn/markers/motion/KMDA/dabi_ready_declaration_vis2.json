@@ -1,25 +1,62 @@
 {
   "motion": 
     {
-    "ShowFieldsOnCondition_Obj1_ObjInfo": 
+    "ShowFieldsOnCondition_Obj1": 
+      {"aField_ID":  
+          ["sObjectTimeConstruction","sBuildNotificationOrgan","sBuildNotificationDate","sBuildNotificationNumber",
+           "sTechInventoryPib","sTechInventoryPassport"], 
+       "asID_Field": {"sCond1":"asObjectType"},
+       "sCondition": "[sCond1] = 'sEnumObjPassport'"
+      },
+    "ShowFieldsOnCondition_Obj2-3": 
+      {"aField_ID":  ["sTechSupervisor","sResponsiblePers","sObjectDateStartConstruction","sObjectDateEndConstruction"], 
+       "asID_Field": {"sCond1":"asObjectType"},
+       "sCondition": "[sCond1] != 'sEnumObjPassport'"
+      },
+    "ShowFieldsOnCondition_Obj3": 
+      {"aField_ID":  ["sJudgement","sLocationComplianceOrgan","sLocationComplianceDoc"], 
+       "asID_Field": {"sCond1":"asObjectType"},
+       "sCondition": "[sCond1] = 'sEnumObjUnlicensed'"
+      },    
+    "ShowFieldsOnCondition_Obj2": 
+      {"aField_ID":  ["sPermitDoc","sObjectTerritory"], 
+       "asID_Field": {"sCond1":"asObjectType"},
+       "sCondition": "[sCond1] = 'sEnumObjUnlicensed'"
+      },     
+    "ShowFieldsOnCondition_ObjInfo1": 
       {"aField_ID": ["sBuildingName"], 
        "asID_Field": {"sCond1":"asObjectType","sCond2":"bObjectInfo"},
        "sCondition": "[sCond1] == 'sEnumObjPassport' && [sCond2] == 'ObjectInfo_show'"
       },
-    "ShowFieldsOnCondition_Obj2-3_ObjInfo": 
+    "ShowFieldsOnCondition_ObjInfo2-3": 
       {"aField_ID":  ["sObjectCategory"], 
-       "asID_Field": {"sCond1":"asObjectType","Cond2":"bObjectInfo"},
-       "sCondition": "([sCond1] == 'sEnumObjCategory'||[sCond1] == 'sEnumObjUnlicensed') &&  [sCond2] == 'ObjectInfo_show'"
+       "asID_Field": {"sCond1":"asObjectType","sCond2":"bObjectInfo"},
+       "sCondition": "[sCond1] != 'sEnumObjPassport' &&  [sCond2] == 'ObjectInfo_show'"
       },
     "ShowFieldsOnCondition_ObjInfo": 
       {"aField_ID":  ["sRegistrationOrgan","sObjectName","sObjectAddress","sObjectCode"], 
-       "asID_Field": {"sCond2":"asObjectType"},
-       "sCondition": " [sCond2] == 'ObjectInfo_show''"
+       "asID_Field": {"sCond2":"bObjectInfo"},
+       "sCondition": "[sCond2] == 'ObjectInfo_show''"
       },
-    "ShowFieldsOnCondition_Obj2-3_ObjInfo": 
+    "ShowFieldsOnCondition_ChiefInfo2-3": 
       {"aField_ID":  ["sChiefPib","sChiefPassport","sChiefAddress","sChiefInn","sChiefPhone"], 
-       "asID_Field": {"sCond1":"asObjectType","Cond2":"bObjectInfo"},
-       "sCondition": "([sCond1] == 'sEnumObjCategory'||[sCond1] == 'sEnumObjUnlicensed') &&  [sCond2] == 'ObjectInfo_show'"
+       "asID_Field": {"sCond1":"asObjectType","sCond2":"bObjectInfo"},
+       "sCondition": "[sCond1] != 'sEnumObjPassport' &&  [sCond2] == 'ChiefInfo_show'"
+      },
+    "ShowFieldsOnCondition_Insurance2": 
+      {"aField_ID":  ["sInsuranceName","sInsuranceAddress","sInsuranceInn","sInsuranceContract"], 
+       "asID_Field": {"sCond1":"asObjectType","sCond2":"bInsuranceInfo"},
+       "sCondition": "[sCond1] == 'sEnumObjCategory' &&  [sCond2] == 'InsuranceInfo_show'"
+      },
+    "ShowFieldsOnCondition_DesignerPerson2": 
+      {"aField_ID":  ["sProjectPib","sProjectPassport","sProjectAddress","sProjectInn"], 
+       "asID_Field": {"sCond1":"asObjectType","sCond2":"bDesignerInfo","sCond3":"asProject"},
+       "sCondition": "[sCond1] == 'sEnumObjCategory' &&  [sCond2] == 'DesignerInfo_show' && [sCond3] == 'sEnumProjectPerson'"
+      },
+    "ShowFieldsOnCondition_DesignerCompany2": 
+      {"aField_ID":  ["sProjectOrganizationForm","sProjectOrganizationName","sProjectOrganizationAddress","sProjectOrganizationInn","sProjectOrganizationPhone"], 
+       "asID_Field": {"sCond1":"asObjectType","sCond2":"bDesignerInfo","sCond3":"asProject"},
+       "sCondition": "[sCond1] == 'sEnumObjCategory' &&  [sCond2] == 'DesignerInfo_show' && [sCond3] == 'sEnumProjectLegal'"
       }
     }
 }

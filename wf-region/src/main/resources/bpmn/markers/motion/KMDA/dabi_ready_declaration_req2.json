@@ -1,20 +1,43 @@
 {
   "motion": 
     {
-    "RequiredFieldsOnCondition_Obj2-3_ObjInfo": 
-      {"aField_ID":  ["sObjectCategory"], 
-       "asID_Field": {"sCond1":"asObjectType","Cond2":"bObjectInfo"},
-       "sCondition": "([sCond1] == 'sEnumObjCategory'||[sCond1] == 'sEnumObjUnlicensed') &&  [sCond2] == 'ObjectInfo_show'"
+    "RequiredFieldsOnCondition_Obj1": 
+      {"aField_ID":  
+          ["sObjectTimeConstruction","sBuildNotificationOrgan","sBuildNotificationDate","sBuildNotificationNumber",
+           "sTechInventoryPib","sTechInventoryPassport","sObjectHouseNonLiveArea"], 
+       "asID_Field": {"sCond1":"asObjectType"},
+       "sCondition": "[sCond1] = 'sEnumObjPassport'"
       },
-    "RequiredFieldsOnCondition_ObjInfo": 
-      {"aField_ID":  ["sRegistrationOrgan","sObjectName","sObjectAddress","sObjectCode"], 
-       "asID_Field": {"sCond2":"asObjectType"},
-       "sCondition": " [sCond2] == 'ObjectInfo_show''"
+    "RequiredFieldsOnCondition_Obj2-3": 
+      {"aField_ID":  
+          ["sTechSupervisor","sResponsiblePers","sObjectDateStartConstruction","sObjectDateEndConstruction","sObjectCategory",
+           "sChiefPib","sChiefPassport","sChiefAddress","sChiefInn","sChiefPhone","nObjectTotalArea","nObjectHouseFloor",
+           "sObjectHouseWall","sObjectHouseIntegratedTotalArea","sObjectHouseNonLiveArea","sObjectIndicatorsBearing",
+           "sObjectIndicatorsFence","sObjectIndicatorsFacade","bEquipmentColdWater","bEquipmentHotWater","bEquipmentDrainage",
+           "bEquipmentElevator","bEquipmentGarbage","bEquipmentCentralHeating","bEquipmentStoveHeating","sObjectEstimatedCost",
+           "sObjectEstimatedConstruction","sObjectFixedAssetsCost","sObjectFixedAssetsConstruction","sObjectFixedAssetsEquipment",
+           "sObjectShareDate","sObjectShareOrgan","sObjectSharePayment","sObjectShareExemption"], 
+       "asID_Field": {"sCond1":"asObjectType"},
+       "sCondition": "[sCond1] != 'sEnumObjPassport'"
       },
-    "RequiredFieldsOnCondition_Obj2-3_ObjInfo": 
-      {"aField_ID":  ["sChiefPib","sChiefPassport","sChiefAddress","sChiefInn","sChiefPhone"], 
-       "asID_Field": {"sCond1":"asObjectType","Cond2":"bObjectInfo"},
-       "sCondition": "([sCond1] == 'sEnumObjCategory'||[sCond1] == 'sEnumObjUnlicensed') &&  [sCond2] == 'ObjectInfo_show'"
+    "RequiredFieldsOnCondition_DesignerPerson2": 
+      {"aField_ID":  ["sProjectPib","sProjectPassport","sProjectAddress","sProjectInn","sRespPersProject"], 
+       "asID_Field": {"sCond1":"asObjectType","sCond3":"asProject"},
+       "sCondition": "[sCond1] == 'sEnumObjCategory' && [sCond3] == 'sEnumProjectPerson'"
+      },
+    "RequiredFieldsOnCondition_DesignerCompany2": 
+      {"aField_ID":  ["sProjectOrganizationForm","sProjectOrganizationName","sProjectOrganizationAddress","sProjectOrganizationInn","sProjectOrganizationPhone","sRespPersProject"],
+       "asID_Field": {"sCond1":"asObjectType","sCond3":"asProject"},
+       "sCondition": "[sCond1] == 'sEnumObjCategory' && [sCond3] == 'sEnumProjectLegal'"
+      },
+    "RequiredFieldsOnCondition_Obj3": 
+      {"aField_ID":  
+          ["sTechReportName","sTechReportNumber","sTechExpertName","sTechEngineerLastName","sTechEngineerFirstName",
+           "sTechEngineerMiddleName","sTechEngineerSertificate","sTechEngineerPhone","sLocationComplianceOrgan",
+           "sLocationComplianceDoc"], 
+       "asID_Field": {"sCond1":"asObjectType"},
+       "sCondition": "[sCond1] == 'sEnumObjUnlicensed'"
       }
+
     }
 }
