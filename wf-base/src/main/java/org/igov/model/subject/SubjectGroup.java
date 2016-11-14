@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author olga
  */
 @javax.persistence.Entity
-public class SubjectGroup extends NamedEntity implements IVisitable{
+public class SubjectGroup extends NamedEntity {
     
     /**
 	 * 
@@ -52,12 +52,6 @@ public class SubjectGroup extends NamedEntity implements IVisitable{
 	public String toString() {
 		return "SubjectGroup [sID_Group_Activiti=" + sID_Group_Activiti + ", sChain=" + sChain + ", getName()="
 				+ getName() + ", getId()=" + getId() + "]";
-	}
-
-	@Override
-	public void accept(IVisitor visitor) {
-		visitor.deepLevel(this);
-		
 	}
 
 }
