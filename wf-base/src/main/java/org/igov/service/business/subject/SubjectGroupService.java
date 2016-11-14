@@ -172,6 +172,7 @@ public class SubjectGroupService {
 	}
 
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
+		SubjectGroupService.setDeepLevelChildSubjectGroup(0L);
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 		Map<SubjectGroup, SubjectGroupNode> subjectToNodeMap = new HashMap<>();
 
