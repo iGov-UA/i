@@ -1,43 +1,20 @@
 {
   "motion": 
     {
-    "RequiredFieldsOnCondition_ObjType1": 
-      {"aField_ID":  
-        ["sBuildNotificationOrgan","sBuildNotificationDate","sBuildNotificationNumber","sTechInventoryPib",
-         "sTechInventoryPassport","sObjectHouseNonLiveArea"], 
-       "asID_Field": {"sCondit":"asObjectType"},
-       "sCondition": "[sCondit] == 'sEnumObjPassport'"
+    "RequiredFieldsOnCondition_Obj2-3_ObjInfo": 
+      {"aField_ID":  ["sObjectCategory"], 
+       "asID_Field": {"sCond1":"asObjectType","Cond2":"bObjectInfo"},
+       "sCondition": "([sCond1] == 'sEnumObjCategory'||[sCond1] == 'sEnumObjUnlicensed') &&  [sCond2] == 'ObjectInfo_show'"
       },
-    "RequiredFieldsOnCondition_ObjType2": 
-      {"aField_ID":  
-        ["sObjectCategory","sChiefPib","sChiefPassport","sChiefAddress","sChiefInn","sChiefPhone","sSupervisorName",
-         "sSupervisionNumberID","sSupervisionCertificate","sArchitect","sArchitectNumberID","sArchitectCertificate",
-         "sProjectDocName","sProjectDocNumber","sObjectDateStartConstruction","sObjectDateStartConstruction",
-         "sObjectTimeConstruction","sObjectTotalArea","sObjectHouseFloor","sObjectHouseWall","sKeyIndicators"], 
-       "asID_Field": {"sCondit":"asObjectType"},
-       "sCondition": "[sCondit] == 'sEnumObjCategory'"
+    "RequiredFieldsOnCondition_ObjInfo": 
+      {"aField_ID":  ["sRegistrationOrgan","sObjectName","sObjectAddress","sObjectCode"], 
+       "asID_Field": {"sCond2":"asObjectType"},
+       "sCondition": " [sCond2] == 'ObjectInfo_show''"
       },
-    "RequiredFieldsOnCondition_ObjType2.1": 
-      {"aField_ID":  
-        ["sProjectPib","sProjectPassport","sProjectAddress","sProjectInn"], 
-       "asID_Field": {"sCond1":"asObjectType","sCond2":"asProject"},
-       "sCondition": "[sCond1] == 'sEnumObjCategory'&&[sCond2]=='sEnumProjectPerson'"
-      },      
-    "RequiredFieldsOnCondition_ObjType2.2": 
-      {"aField_ID":  
-        ["sProjectOrganizationForm","sProjectOrganizationName","sProjectOrganizationAddress","sProjectOrganizationInn","sProjectOrganizationPhone"], 
-       "asID_Field": {"sCond1":"asObjectType","sCond2":"asProject"},
-       "sCondition": "[sCond1] == 'sEnumObjCategory'&&[sCond2]=='sEnumProjectLegal'"
-      },   
-    "RequiredFieldsOnCondition_ObjType3": 
-      {"aField_ID":  
-        ["sObjectCategory","sChiefPib","sChiefPassport","sChiefAddress","sChiefInn","sChiefPhone",
-         "sTechReportName","sTechReportNumber","sTechExpertName","sTechEngineerLastName","sTechEngineerFirstName",
-         "sTechEngineerMiddleName","sTechEngineerSertificate","sTechEngineerPhone","sObjectDateStartConstruction",
-         "sObjectDateStartConstruction","sJudgmentForm","sJudgmentForceDate","sCourtName","sLocationComplianceOrgan",
-         "sLocationComplianceDoc","sObjectTotalArea","sObjectHouseFloor","sObjectHouseWall","sKeyIndicators"], 
-       "asID_Field": {"sCondit":"asObjectType"},
-       "sCondition": "[sCondit] == 'sEnumObjUnlicensed'"
+    "RequiredFieldsOnCondition_Obj2-3_ObjInfo": 
+      {"aField_ID":  ["sChiefPib","sChiefPassport","sChiefAddress","sChiefInn","sChiefPhone"], 
+       "asID_Field": {"sCond1":"asObjectType","Cond2":"bObjectInfo"},
+       "sCondition": "([sCond1] == 'sEnumObjCategory'||[sCond1] == 'sEnumObjUnlicensed') &&  [sCond2] == 'ObjectInfo_show'"
       }
     }
 }

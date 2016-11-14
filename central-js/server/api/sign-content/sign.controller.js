@@ -58,10 +58,12 @@ module.exports.signContent = function (req, res) {
   function signContentAsync(result, callbackAsync) {
 
     var mail = result.loadedContent.formData.params.email;
+    var formInn = result.loadedContent.formData.params.bankIdinn;
 
     var fiscalData = {
       "customerType":"physical",
-      "customerInn":req.session.subject.sID,
+      "fiscalClaimAction":"encrypt",
+      "customerInn": formInn ? formInn : req.session.subject.sID,
       "email":mail
     };
     var stringfyFiscalDataToJSON = JSON.stringify(fiscalData);
