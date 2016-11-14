@@ -6,6 +6,8 @@
 package org.igov.service.business.subject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -21,13 +23,19 @@ import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupNode;
 import org.igov.model.subject.SubjectGroupResult;
 import org.igov.model.subject.SubjectGroupTree;
+import org.igov.model.subject.VSubjectGroupChildrenNode;
+import org.igov.model.subject.VSubjectGroupParentNode;
+import org.igov.model.subject.VSubjectGroupTreeResult;
 import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+
+
 
 /**
  *
@@ -46,8 +54,133 @@ public class SubjectGroupService {
 	@Autowired
 	private CachedInvocationBean cachedInvocationBean;
 
+	public List<VSubjectGroupChildrenNode> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+
+		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
+		
+		List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
+		VSubjectGroupParentNode parentSubjectGroup =null;
+		
+		for(SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
+			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
+	
+			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
+				parentSubjectGroup = new VSubjectGroupParentNode(parent);
+				
+			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
+			VSubjectGroupChildrenNode childSubjectGroup = new VSubjectGroupChildrenNode(child);
+				parentSubjectGroup.addChild(childSubjectGroup);
+				parentSubjectGroups.add(parentSubjectGroup);
+			}
+		}
+		
+		return getFullResult(sID_Group_Activiti, deepLevel, parentSubjectGroups, parentSubjectGroup);
+		
+	
+		
+	}
+
+	public List<VSubjectGroupChildrenNode> getFullResult(String sID_Group_Activiti, Long deepLevel,
+			List<VSubjectGroupParentNode> parentSubjectGroups, VSubjectGroupParentNode parentSubjectGroup) {
+		/*if((deepLevel==null || deepLevel==0) || (sID_Group_Activiti==null || sID_Group_Activiti.isEmpty())){
+			VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
+			parentSubjectGroup.accept(subjectGroupTreeResult);
+			
+			return parentSubjectGroups;
+		}*/
+		/**
+		 * получить только отфильтрованные по sID_Group_Activiti
+		 */
+		final List<VSubjectGroupParentNode> parentSubjectGroupsFilltr = Lists.newArrayList(Collections2
+				.filter(parentSubjectGroups,
+						new Predicate<VSubjectGroupParentNode>() {
+					@Override
+					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
+						return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);					
+						}
+				}));
+		
+		LOG.info("parentSubjectGroupssssssssss "+parentSubjectGroups);
+		/**
+		 * получаем лист детей отфильтрованного списка
+		 */
+		final List<List<VSubjectGroupChildrenNode>> childrensParList = Lists.newArrayList(Collections2.transform(
+				parentSubjectGroupsFilltr, new Function<VSubjectGroupParentNode, List<VSubjectGroupChildrenNode>>() {
+					@Override
+					public List<VSubjectGroupChildrenNode> apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
+						return vSubjectGroupParentNode.getChildren();
+					}
+				}));
+		
+		/**
+		 * только лист
+		 */
+		final List<VSubjectGroupChildrenNode> childrensByGroup = Lists.newArrayList(Collections2.transform(
+				childrensParList, new Function<List<VSubjectGroupChildrenNode>, VSubjectGroupChildrenNode>() {
+					@Override
+					public VSubjectGroupChildrenNode apply(List<VSubjectGroupChildrenNode> vSubjectGroupChildrenNodeList) {
+						return vSubjectGroupChildrenNodeList.get(0);
+					}
+				}));
+		
+		final List<Long> nIdList = Lists.newArrayList(Collections2.transform(
+				childrensByGroup, new Function<VSubjectGroupChildrenNode, Long>() {
+					@Override
+					public Long apply(VSubjectGroupChildrenNode vSubjectGroupChildrenNode) {
+						return vSubjectGroupChildrenNode.getGroup().getId();
+					}
+				}));
+		
+		final List<VSubjectGroupParentNode> parentSubjectGroupsFilltrRes = Lists.newArrayList(Collections2
+				.filter(parentSubjectGroups,
+						new Predicate<VSubjectGroupParentNode>() {
+					@Override
+					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
+										
+						return nIdList.contains(vSubjectGroupParentNode.getGroup().getId());
+						}
+				}));
+		
+		
+		List<VSubjectGroupParentNode> newList = new ArrayList<>(parentSubjectGroupsFilltrRes);
+		newList.addAll(parentSubjectGroupsFilltr);
+		
+		Collections.sort(newList, new Comparator() {
+            @Override
+            public int compare(Object vSubjectGroupParentNode, Object vSubjectGroupParentNodeTwo) {
+                //use instanceof to verify the references are indeed of the type in question
+                return ((VSubjectGroupParentNode)vSubjectGroupParentNode).getGroup().getId()
+                        .compareTo(((VSubjectGroupParentNode)vSubjectGroupParentNodeTwo).getGroup().getId());
+            }
+        });
+		
+		final List<List<VSubjectGroupChildrenNode>> childrensParListRes = Lists.newArrayList(Collections2.transform(
+				newList, new Function<VSubjectGroupParentNode, List<VSubjectGroupChildrenNode>>() {
+					@Override
+					public List<VSubjectGroupChildrenNode> apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
+						return vSubjectGroupParentNode.getChildren();
+					}
+				}));
+		
+		/**
+		 * только лист
+		 */
+		final List<VSubjectGroupChildrenNode> childrensByGroupRes = Lists.newArrayList(Collections2.transform(
+				childrensParListRes, new Function<List<VSubjectGroupChildrenNode>, VSubjectGroupChildrenNode>() {
+					@Override
+					public VSubjectGroupChildrenNode apply(List<VSubjectGroupChildrenNode> vSubjectGroupChildrenNodeList) {
+						return vSubjectGroupChildrenNodeList.get(0);
+					}
+				}));
+		
+		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
+		parentSubjectGroup.accept(subjectGroupTreeResult);
+	
+		//return newList;
+		return childrensByGroupRes;
+	}
+
 	public SubjectGroupResult getSubjectGroupsByGroupActiviti(String sID_Group_Activiti, Long deepLevel) {
-		SubjectGroupService.setDeepLevelChildSubjectGroup(0L);
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 		Map<SubjectGroup, SubjectGroupNode> subjectToNodeMap = new HashMap<>();
 
@@ -60,6 +193,7 @@ public class SubjectGroupService {
 			LOG.info("SubjectGrouppppppparent " + parent);
 			final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 			LOG.info("SubjectGrouppppppchild " + child);
+
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
 				parentNode = subjectToNodeMap.get(parent);
 				if (parentNode == null) {
@@ -71,7 +205,6 @@ public class SubjectGroupService {
 
 			SubjectGroupNode childNode = subjectToNodeMap.get(child);
 			if (childNode == null) {
-				SubjectGroupService.setDeepLevelChildSubjectGroup(deepLevelChildSubjectGroup + 1);
 				childSubject.add(child);
 				childNode = new SubjectGroupNode(child);
 				subjectToNodeMap.put(child, childNode);
@@ -84,38 +217,23 @@ public class SubjectGroupService {
 		}
 
 		Set<SubjectGroup> rootTags = new LinkedHashSet<>(parentSubject);
-		
-		
+
 		LOG.info("parentSubjecttttttttttttttt " + parentSubject);
 		LOG.info("childSubjectttttttttttttttttt " + childSubject);
 
 		LOG.info("SubjectGrouppppppSettttt" + rootTags);
-		// rootTags.removeAll(childSubject);
+	//	rootTags.removeAll(childSubject);
 
 		final List<SubjectGroupNode> rootSubjectNodes = rootTags.stream().map(subjectToNodeMap::get)
 				.collect(Collectors.toList());
-
-		SubjectGroupResult subjectGroupResult = null;
-
-		final List<SubjectGroupNode> subjectGroupNodeByGroup = Lists
-				.newArrayList(Collections2.filter(rootSubjectNodes, new Predicate<SubjectGroupNode>() {
-					@Override
-					public boolean apply(SubjectGroupNode subjectGroupNode) {
-						return subjectGroupNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
-					}
-				}));
 		
-		if(subjectGroupNodeByGroup!=null && !subjectGroupNodeByGroup.isEmpty()) {
-			subjectGroupResult = new SubjectGroupResult(subjectGroupNodeByGroup);
-		}else {
-			subjectGroupResult = new SubjectGroupResult(rootSubjectNodes);
-		}
-
-			LOG.info("subjectGroupResultttttttttttttttt " + subjectGroupResult);
-			return subjectGroupResult;
+		SubjectGroupResult subjectGroupResult=new SubjectGroupResult(rootSubjectNodes);
+		
+		LOG.info("subjectGroupResultttttttttttttttt " + subjectGroupResult);
+		return subjectGroupResult;
 
 	}
-
+	
 	public static Long getDeepLevelChildSubjectGroup() {
 		return deepLevelChildSubjectGroup;
 	}
@@ -126,19 +244,18 @@ public class SubjectGroupService {
 
 	/**
 	 * Кэш для SubjectGroupResult
-	 * 
 	 * @param sID_Group_Activiti
 	 * @param nDeepLevel
 	 * @return
 	 */
-	public SubjectGroupResult getSubjectGroupResultCached(String sID_Group_Activiti, Long deepLevel) {
-		return cachedInvocationBean.invokeUsingCache(new CachedInvocationBean.Callback<SubjectGroupResult>(
-				GET_SERVICE_SUBJECT_GROUP_CACHE_KEY, sID_Group_Activiti) {
-			@Override
-			public SubjectGroupResult execute() {
-				return getSubjectGroupsByGroupActiviti(sID_Group_Activiti, deepLevel);
-			}
-		});
+	 public SubjectGroupResult getSubjectGroupResultCached(String sID_Group_Activiti,Long deepLevel) {
+		return cachedInvocationBean.invokeUsingCache(
+				new CachedInvocationBean.Callback<SubjectGroupResult>(GET_SERVICE_SUBJECT_GROUP_CACHE_KEY, sID_Group_Activiti) {
+					@Override
+					public SubjectGroupResult execute() {
+						return getSubjectGroupsByGroupActiviti(sID_Group_Activiti,deepLevel);
+					}
+				});
 	}
 
 }

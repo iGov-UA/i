@@ -1,7 +1,10 @@
 
 package org.igov.service.controller;
 
-import org.igov.model.subject.SubjectGroupResult;
+import java.util.List;
+
+import org.igov.model.subject.VSubjectGroupChildrenNode;
+import org.igov.model.subject.VSubjectGroupParentNode;
 import org.igov.service.business.subject.SubjectGroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,12 +36,12 @@ public class SubjectGroupController {
     @ApiOperation(value = "Получение организационной иерархии")
     @RequestMapping(value = "/getSubjectGroups", method = RequestMethod.GET)
     @ResponseBody
-    public SubjectGroupResult getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
+    public List<VSubjectGroupChildrenNode> getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
     		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel)
             throws Exception  {
-    	SubjectGroupResult subjectGroupResult = null;
+    	List<VSubjectGroupChildrenNode> subjectGroupResult = null;
     	try {
-    		subjectGroupResult = subjectGroupService.getSubjectGroupsByGroupActiviti(sID_Group_Activiti,nDeepLevel);
+    		subjectGroupResult = subjectGroupService.getCatalogTreeSubjectGroups(sID_Group_Activiti,nDeepLevel);
     		
     	} catch (Exception e) {
     		 LOG.error("FAIL: ", e);
