@@ -84,7 +84,8 @@ public class SubjectGroupService {
 		}
 
 		Set<SubjectGroup> rootTags = new LinkedHashSet<>(parentSubject);
-
+		
+		
 		LOG.info("parentSubjecttttttttttttttt " + parentSubject);
 		LOG.info("childSubjectttttttttttttttttt " + childSubject);
 
