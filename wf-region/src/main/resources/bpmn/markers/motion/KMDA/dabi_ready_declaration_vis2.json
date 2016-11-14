@@ -6,7 +6,7 @@
           ["sObjectTimeConstruction","sBuildNotificationOrgan","sBuildNotificationDate","sBuildNotificationNumber",
            "sTechInventoryPib","sTechInventoryPassport"], 
        "asID_Field": {"sCond1":"asObjectType"},
-       "sCondition": "[sCond1] == 'sEnumObjPassport'"
+       "sCondition": "[sCond1] == 'sEnumObjPassport'||[sCond1]=='об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
       },
     "ShowFieldsOnCondition_Obj2-3": 
       {"aField_ID":  ["sTechSupervisor","sResponsiblePers","sObjectDateStartConstruction","sObjectDateEndConstruction"], 
@@ -26,12 +26,12 @@
     "ShowFieldsOnCondition_ObjInfo1": 
       {"aField_ID": ["sBuildingName"], 
        "asID_Field": {"sCond1":"asObjectType","sCond2":"bObjectInfo"},
-       "sCondition": "[sCond1] == 'sEnumObjPassport' && [sCond2] == 'ObjectInfo_show'"
+       "sCondition": "[sCond2] == 'ObjectInfo_show' && ([sCond1] == 'sEnumObjPassport'||[sCond1] == 'об’єктів, будівництво яких здійснено на підставі будівельного паспорта')"
       },
     "ShowFieldsOnCondition_ObjInfo2-3": 
       {"aField_ID":  ["sObjectCategory"], 
        "asID_Field": {"sCond1":"asObjectType","sCond2":"bObjectInfo"},
-       "sCondition": "[sCond1] != 'sEnumObjPassport' &&  [sCond2] == 'ObjectInfo_show'"
+       "sCondition": "[sCond1] != 'sEnumObjPassport' &&  [sCond2] == 'ObjectInfo_show' && [sCond1] != 'об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
       },
     "ShowFieldsOnCondition_ObjInfo": 
       {"aField_ID":  ["sRegistrationOrgan","sObjectName","sObjectAddress","sObjectCode"], 
