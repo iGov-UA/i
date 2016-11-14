@@ -790,6 +790,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               console.log("[fillSelfPrevious][" + key + "]ERROR:" + _);
             }
           });
+        }, function (err) {
+          //debugger;
         });
       };
 
@@ -825,10 +827,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         $rootScope.isFileProcessUploading.bState = !$rootScope.isFileProcessUploading.bState;
         console.log("Switch $rootScope.isFileProcessUploading to " + $rootScope.isFileProcessUploading.bState);
       };
-
-      if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
-        $scope.fillSelfPrevious();
-      }
 
       // відображення напису про необхідність перевірки реєстраційних данних, переданих від BankID
       $scope.isShowMessageRequiringToValidateUserData = function () {
@@ -943,4 +941,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           return field;
         }
       };
+
+      if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
+        $scope.fillSelfPrevious();
+      }
     });
