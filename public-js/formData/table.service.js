@@ -90,11 +90,15 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
      */
 
     this.isFieldWritable = function (field) {
-        if(typeof field === 'string' || field instanceof String) {
-            if(field === 'true') return true;
-            if(field === 'false') return false;
-        } else if (typeof field === 'boolean') {
-            return field;
+        if(!field){
+            return true
+        } else {
+            if(typeof field === 'string' || field instanceof String) {
+                if(field === 'true') return true;
+                if(field === 'false') return false;
+            } else if (typeof field === 'boolean') {
+                return field;
+            }
         }
     };
 

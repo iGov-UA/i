@@ -202,7 +202,7 @@
         <div>
           <div class="dropup" ng-repeat="item in taskData.aAttachment" style="display: inline-block; position:relative;">
             <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
-              <p>{{item.description}}</p>
+              <p>{{item.description | tableButtonFilter}}</p>
               <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}"
                  target="_blank"
                  ng-if="!isTableAttachment(item.description)"
@@ -225,9 +225,9 @@
                     class="btn btn-link attach-btn dropdown-toggle"
                     data-toggle="dropdown"
                     ng-model="some"
-                    title="{{item.description}}">
+                    title="{{item.description | tableButtonFilter}}">
                     <!--ng-click="openModalWindow($event)">-->
-              {{item.description | cut : true : 25}}
+              {{item.description | cut : true : 25 | tableButtonFilter}}
             </button>
           </div>
         </div>
