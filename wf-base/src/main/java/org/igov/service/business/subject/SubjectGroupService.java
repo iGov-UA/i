@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,10 +55,14 @@ public class SubjectGroupService {
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
 
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
-				parentSubjectGroup = new VSubjectGroupParentNode(parent);
-
+				Set<Long>idList = new LinkedHashSet<>();
+				idList.add(parent.getId());
 				final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
+				if(!idList.contains(parent.getId())) {
+				parentSubjectGroup = new VSubjectGroupParentNode(parent);
 				parentSubjectGroup.addChild(child);
+				}
+				parentSubjectGroup.getChildren().add(child);
 				parentSubjectGroups.add(parentSubjectGroup);
 			}
 		}
@@ -67,6 +74,18 @@ public class SubjectGroupService {
 						.compareTo(((VSubjectGroupParentNode) vSubjectGroupParentNodeTwo).getGroup().getId());
 			}
 		});
+		
+		Map<SubjectGroup,List<SubjectGroup>>map = new HashMap<>();
+		
+		
+		final List<VSubjectGroupParentNode> parentSubjectGroupsFilltr = Lists
+				.newArrayList(Collections2.filter(parentSubjectGroups, new Predicate<VSubjectGroupParentNode>() {
+					@Override
+					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
+						return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
+					}
+				}));
+		
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
 		return parentSubjectGroups;
