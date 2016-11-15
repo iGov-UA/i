@@ -70,7 +70,8 @@ public class DfsService {
                 for (ByteArrayMultipartFile multipartFile : multipartFiles) {
                     LOG.info("multipartFile.getOriginalFilename(): " + multipartFile.getOriginalFilename()
                             + " attachmentDocumentName: " + attachmentDocumentName);
-                    if (multipartFile.getOriginalFilename().contains(attachmentDocumentName)) {
+                    if (multipartFile.getOriginalFilename().contains(attachmentDocumentName) 
+                            && !multipartFile.getOriginalFilename().endsWith(".xml")) {
                         Attachment attachment = taskService.createAttachment(multipartFile.getContentType() + ";" + multipartFile.getExp(),
                                 sID_Task, sID_Process,
                                 multipartFile.getOriginalFilename(), multipartFile.getName(), multipartFile.getInputStream());
