@@ -9,7 +9,6 @@ import org.igov.io.mail.unisender.CreateCampaignRequest;
 import org.igov.io.mail.unisender.CreateEmailMessageRequest;
 import org.igov.io.mail.unisender.UniResponse;
 import org.igov.io.mail.unisender.UniSender;
-import org.igov.service.business.msg.MsgService;
 import org.igov.util.MethodsCallRunnerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,8 +53,6 @@ public class Mail extends Abstract_Mail {
     @Autowired
     UniSender oUniSender;
 
-    @Autowired
-    MsgService msgService;
 
     private final static Logger LOG = LoggerFactory.getLogger(Mail.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
@@ -123,7 +120,6 @@ public class Mail extends Abstract_Mail {
         } else {
             sendAlternativeWay(sbBody.toString());
         }
-        //        }
 
     }
 
