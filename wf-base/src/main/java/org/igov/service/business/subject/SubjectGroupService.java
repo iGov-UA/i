@@ -50,21 +50,27 @@ public class SubjectGroupService {
 
 		List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
 		VSubjectGroupParentNode parentSubjectGroup = null;
-		Set<Long>idList = new LinkedHashSet<>();
+		Set<Long>idParentList = new LinkedHashSet<>();
+		Set<Long>idChildrenList = new LinkedHashSet<>();
 		for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
 
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
-				
+				parentSubjectGroup = new VSubjectGroupParentNode();
 				final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
-				if(!idList.contains(parent.getId())) {
-				idList.add(parent.getId());
-				parentSubjectGroup = new VSubjectGroupParentNode(parent);
-				parentSubjectGroup.addChild(child);
+				if(!idParentList.contains(parent.getId())) {
+					idParentList.add(parent.getId());
+					parentSubjectGroup.setGroup(parent);
+					parentSubjectGroup.addChild(child);
+					parentSubjectGroups.add(parentSubjectGroup);
 				}else {
-				parentSubjectGroup.getChildren().add(child);
+					for(VSubjectGroupParentNode vSubjectGroupParentNode:parentSubjectGroups) {
+						if(vSubjectGroupParentNode.getGroup().getId().equals(parent.getId())) {
+							vSubjectGroupParentNode.getChildren().add(child);						}
+					}
 				}
-				parentSubjectGroups.add(parentSubjectGroup);
+				
+				
 			}
 		}
 		
