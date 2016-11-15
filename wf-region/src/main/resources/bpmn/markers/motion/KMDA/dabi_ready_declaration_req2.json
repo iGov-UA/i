@@ -6,7 +6,7 @@
           ["sObjectTimeConstruction","sBuildNotificationOrgan","sBuildNotificationDate","sBuildNotificationNumber",
            "sTechInventoryPib","sTechInventoryPassport","sObjectHouseNonLiveArea"], 
        "asID_Field": {"sCond1":"asObjectType"},
-       "sCondition": "[sCond1] == 'sEnumObjPassport'"
+       "sCondition": "[sCond1] == 'sEnumObjPassport'||[sCond1]=='об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
       },
     "RequiredFieldsOnCondition_Obj2-3": 
       {"aField_ID":  
@@ -18,17 +18,17 @@
            "sObjectEstimatedConstruction","sObjectFixedAssetsCost","sObjectFixedAssetsConstruction","sObjectFixedAssetsEquipment",
            "sObjectShareDate","sObjectShareOrgan","sObjectSharePayment","sObjectShareExemption"], 
        "asID_Field": {"sCond1":"asObjectType"},
-       "sCondition": "[sCond1] != 'sEnumObjPassport'"
+       "sCondition": "[sCond1] != 'sEnumObjPassport'&&[sCond1]!='об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
       },
     "RequiredFieldsOnCondition_DesignerPerson2": 
       {"aField_ID":  ["sProjectPib","sProjectPassport","sProjectAddress","sProjectInn","sRespPersProject"], 
        "asID_Field": {"sCond1":"asObjectType","sCond3":"asProject"},
-       "sCondition": "[sCond1] == 'sEnumObjCategory' && [sCond3] == 'sEnumProjectPerson'"
+       "sCondition": "([sCond1] == 'sEnumObjCategory'||[sCond1]=='об’єктів, які належать до I­III категорії складності') && [sCond3] == 'sEnumProjectPerson'"
       },
     "RequiredFieldsOnCondition_DesignerCompany2": 
       {"aField_ID":  ["sProjectOrganizationForm","sProjectOrganizationName","sProjectOrganizationAddress","sProjectOrganizationInn","sProjectOrganizationPhone","sRespPersProject"],
        "asID_Field": {"sCond1":"asObjectType","sCond3":"asProject"},
-       "sCondition": "[sCond1] == 'sEnumObjCategory' && [sCond3] == 'sEnumProjectLegal'"
+       "sCondition": "([sCond1] == 'sEnumObjCategory'||[sCond1]=='об’єктів, які належать до I­III категорії складності') && [sCond3] == 'sEnumProjectLegal'"
       },
     "RequiredFieldsOnCondition_Obj3": 
       {"aField_ID":  
@@ -36,7 +36,7 @@
            "sTechEngineerMiddleName","sTechEngineerSertificate","sTechEngineerPhone","sLocationComplianceOrgan",
            "sLocationComplianceDoc"], 
        "asID_Field": {"sCond1":"asObjectType"},
-       "sCondition": "[sCond1] == 'sEnumObjUnlicensed'"
+       "sCondition": "[sCond1] == 'sEnumObjUnlicensed'||[sCond1]=='самочинно збудованого об’єкта, на яке визнано право власності за рішенням суду'"
       }
 
     }

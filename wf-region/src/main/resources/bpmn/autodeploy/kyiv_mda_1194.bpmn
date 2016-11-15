@@ -553,7 +553,7 @@
     </serviceTask>
     <sequenceFlow id="flow20" sourceRef="usertask3" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="usertask9" targetRef="parallelgateway3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="12.2 Повідомлення заявника +" activiti:class="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="12.2 Повідомлення заявника +" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -583,7 +583,7 @@ ${sTextLetterPositive}
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask4" name="12.1 Повідомлення заявника -" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="12.1 Повідомлення заявника -" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -607,18 +607,6 @@ ${sTextLetterNegative}
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow29" name="-" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow30" name="+" sourceRef="exclusivegateway1" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow29" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="exclusivegateway1" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
-    </sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow31" sourceRef="servicetask3" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
@@ -659,6 +647,13 @@ execution.setVariable('sNameWork', per1)</script>
     <sequenceFlow id="flow39" sourceRef="usertask9" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow40" sourceRef="exclusivegateway2" targetRef="usertask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'||decide=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="usertask6" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow43" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kyiv_mda_1194">
@@ -753,22 +748,6 @@ execution.setVariable('sNameWork', per1)</script>
         <omgdi:waypoint x="644.0" y="258.0"></omgdi:waypoint>
         <omgdi:waypoint x="643.0" y="208.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="920.0" y="315.0"></omgdi:waypoint>
-        <omgdi:waypoint x="920.0" y="351.0"></omgdi:waypoint>
-        <omgdi:waypoint x="950.0" y="351.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="4.0" x="910.0" y="336.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="920.0" y="275.0"></omgdi:waypoint>
-        <omgdi:waypoint x="920.0" y="240.0"></omgdi:waypoint>
-        <omgdi:waypoint x="950.0" y="240.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="6.0" x="910.0" y="252.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="1116.0" y="240.0"></omgdi:waypoint>
         <omgdi:waypoint x="1167.0" y="240.0"></omgdi:waypoint>
@@ -809,6 +788,20 @@ execution.setVariable('sNameWork', per1)</script>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="643.0" y="362.0"></omgdi:waypoint>
         <omgdi:waypoint x="644.0" y="333.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="644.0" y="447.0"></omgdi:waypoint>
+        <omgdi:waypoint x="643.0" y="402.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="920.0" y="275.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="950.0" y="240.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="920.0" y="315.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="351.0"></omgdi:waypoint>
+        <omgdi:waypoint x="950.0" y="351.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
