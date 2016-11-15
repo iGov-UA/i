@@ -56,13 +56,14 @@ public class SubjectGroupService {
 
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
 				Set<Long>idList = new LinkedHashSet<>();
-				idList.add(parent.getId());
 				final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 				if(!idList.contains(parent.getId())) {
+				idList.add(parent.getId());
 				parentSubjectGroup = new VSubjectGroupParentNode(parent);
 				parentSubjectGroup.addChild(child);
-				}
+				}else {
 				parentSubjectGroup.getChildren().add(child);
+				}
 				parentSubjectGroups.add(parentSubjectGroup);
 			}
 		}
