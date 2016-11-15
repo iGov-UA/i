@@ -59,6 +59,14 @@ public class SubjectGroupService {
 				parentSubjectGroups.add(parentSubjectGroup);
 			}
 		}
+		
+		Collections.sort(parentSubjectGroups, new Comparator() {
+			@Override
+			public int compare(Object vSubjectGroupParentNode, Object vSubjectGroupParentNodeTwo) {
+				return ((VSubjectGroupParentNode) vSubjectGroupParentNode).getGroup().getId()
+						.compareTo(((VSubjectGroupParentNode) vSubjectGroupParentNodeTwo).getGroup().getId());
+			}
+		});
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
 		return parentSubjectGroups;
