@@ -44,7 +44,7 @@
             var item = aoUser[i];
             var newItem = {};
             newItem.id = item.sLogin;
-            newItem.name = item.sFirstName.trim() + ' ' + item.sLastName.trim();
+            newItem.name = item.sLastName.trim() + ' ' + item.sFirstName.trim();
             aoNewUser[i] = newItem;
           }
           return aoNewUser;
@@ -76,6 +76,7 @@
                 item.type = "enum";
                 user.getUsers(group).then(function (users) {
                   if (users) {
+                    sortUsersByAlphabet(users);
                     item.enumValues = convertUsersToEnum(users);
                     if(item.value == null){
                       item.value = item.enumValues[0].id;
@@ -85,6 +86,24 @@
               }
             }
           }
+        }
+
+        function sortUsersByAlphabet(items) {
+          items.sort(function (a, b) {
+            if (a.sLastName > b.sLastName) {
+              return 1;
+            }
+            if (a.sLastName < b.sLastName) {
+              return -1;
+            }
+            if (a.sFirstName > b.sFirstName) {
+              return 1;
+            }
+            if (a.sFirstName< b.sFirstName) {
+              return -1;
+            }
+            return 0;
+          });
         }
 
         hiddenObjWithGroupNext();
