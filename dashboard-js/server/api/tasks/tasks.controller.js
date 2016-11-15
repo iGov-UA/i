@@ -318,6 +318,9 @@ exports.getTask = function (req, res) {
   //activiti.put(options, function (error, statusCode, result) {
   activiti.get(options, function (error, statusCode, result) {
     res.statusCode = statusCode;
+    if(typeof(result) === 'number'){
+      result = '' + result;
+    }
     res.send(result);
   }, req.body);
 };
