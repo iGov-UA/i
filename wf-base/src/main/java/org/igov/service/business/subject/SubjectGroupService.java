@@ -100,7 +100,7 @@ public class SubjectGroupService {
 
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
-		return parentSubjectGroupsFilltr;
+		return parentSubjectGroups;
 
 	}
 
