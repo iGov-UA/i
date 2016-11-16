@@ -8,11 +8,8 @@ package org.igov.service.business.subject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -20,14 +17,11 @@ import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupTree;
-import org.igov.model.subject.VSubjectGroupChildrenNode;
 import org.igov.model.subject.VSubjectGroupParentNode;
 import org.igov.model.subject.VSubjectGroupTreeResult;
-import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -96,7 +90,7 @@ public class SubjectGroupService {
 					if (subjectGroup.getId().equals(vSubjectGroupParentNode.getGroup().getId())) {
 						countChild++;
 						if (countChild.compareTo(deepLevel) < 0) {
-							vSubjectGroupParentNode.getChildren().add(subjectGroup);
+							vSubjectGroupParentNodef.getChildren().add(vSubjectGroupParentNode.getChildren().get(countChild.intValue()));
 						}
 					}
 				}
@@ -106,7 +100,7 @@ public class SubjectGroupService {
 
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
-		return parentSubjectGroups;
+		return parentSubjectGroupsFilltr;
 
 	}
 

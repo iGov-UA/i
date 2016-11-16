@@ -16,12 +16,6 @@ public class VSubjectGroupTreeResult implements Serializable,IVisitor  {
 	}
 
 	@Override
-	public void deepLevel(VSubjectGroupChildrenNode vSubjectGroupNode) {
-		LOG.info("VSubjectGroupChildrenNode "+vSubjectGroupNode.toString());
-		
-	}
-
-	@Override
 	public void deepLevel(SubjectGroup subjectGroup) {
 		LOG.info("SubjectGroupppppppppppp "+subjectGroup.toString());
 		
