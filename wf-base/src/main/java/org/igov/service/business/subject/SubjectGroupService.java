@@ -45,7 +45,7 @@ public class SubjectGroupService {
 	private BaseEntityDao<Long> baseEntityDao;
 
 	public List<VSubjectGroupParentNode> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
-
+		countChild = 0L;
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 
 		List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
@@ -72,10 +72,10 @@ public class SubjectGroupService {
 
 				for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
 					for (SubjectGroup subjectGroup : vSubjectGroupParentNode.getChildren()) {
-						if (subjectGroup.getId().equals(parent.getId())) {
+						if (idParentList.contains(subjectGroup.getId())) {
 							countChild++;
 							if (countChild.compareTo(deepLevel) < 0) {
-								vSubjectGroupParentNode.getChildren().add(parent);
+								vSubjectGroupParentNode.getChildren().add(child);
 							}
 						}
 					}
