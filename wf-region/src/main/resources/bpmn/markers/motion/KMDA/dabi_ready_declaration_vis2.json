@@ -10,18 +10,18 @@
       },
     "ShowFieldsOnCondition_Obj2-3": 
       {"aField_ID":  
-          ["bChiefInfo","sTechSupervisor","sResponsiblePers","sObjectDateStartConstruction","sObjectDateEndConstruction",
+          ["bChiefInfo","tTechSupervisor","tResponsiblePers","sObjectDateStartConstruction","sObjectDateEndConstruction",
            "asGeneralContractor","bObjEquipInfo","bObjCostInfo","bShareInfo"], 
        "asID_Field": {"sCond1":"asObjectType"},
        "sCondition": "[sCond1]!='sEnumObjPassport'&&[sCond1]!= 'об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
       },
     "ShowFieldsOnCondition_Obj3": 
-      {"aField_ID":  ["sJudgement","sLocationComplianceOrgan","sLocationComplianceDoc","bTechInspInfo"], 
+      {"aField_ID":  ["tJudgement","sLocationComplianceOrgan","sLocationComplianceDoc","bTechInspInfo"], 
        "asID_Field": {"sCond1":"asObjectType"},
        "sCondition": "[sCond1]=='sEnumObjUnlicensed'||[sCond1]=='самочинно збудованого об’єкта, на яке визнано право власності за рішенням суду'"
       },    
     "ShowFieldsOnCondition_Obj2": 
-      {"aField_ID":  ["bInsuranceInfo","asProject","sPermitDoc","sObjectTerritory","bExpertInfo","ObjectTimeConstruction"], 
+      {"aField_ID":  ["bInsuranceInfo","asProject","tPermitDoc","tObjectTerritory","bExpertInfo","ObjectTimeConstruction"], 
        "asID_Field": {"sCond1":"asObjectType"},
        "sCondition": "[sCond1]=='sEnumObjCategory'||[sCond1]=='об’єктів, які належать до I­III категорії складності'"
       },     
@@ -42,13 +42,8 @@
       },
     "ShowFieldsOnCondition_ChiefInfo2-3": 
       {"aField_ID":  ["sChiefPib","sChiefPassport","sChiefAddress","sChiefInn","sChiefPhone"], 
-       "asID_Field": {"sCond1":"asObjectType","sCond2":"bObjectInfo"},
-       "sCondition": "[sCond1]!='sEnumObjPassport'&&[sCond2]=='ChiefInfo_show'&&[sCond1]!='об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
-      },
-    "ShowFieldsOnCondition_Insurance2": 
-      {"aField_ID":  ["sInsuranceName","sInsuranceAddress","sInsuranceInn","sInsuranceContract"], 
-       "asID_Field": {"sCond1":"asObjectType","sCond2":"bInsuranceInfo"},
-       "sCondition": "([sCond1]=='sEnumObjCategory'||[sCond2]=='об’єктів, які належать до I­III категорії складності')&&[sCond2]=='InsuranceInfo_show'"
-      }
+       "asID_Field": {"sCond1":"asObjectType","sCond2":"bChiefInfo"},
+       "sCondition": "[sCond2]=='ChiefInfo_show'&&[sCond1]!='sEnumObjPassport'&&[sCond1]!='об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
+      }   
     }
 }
