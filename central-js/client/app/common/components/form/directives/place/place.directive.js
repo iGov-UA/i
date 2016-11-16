@@ -267,6 +267,8 @@ angular.module('app')
           // Якщо форма вже заповнена після відновлення даних з localStorage, то перейти до наступного кроку:
           if (bIsComplete) {
             $scope.processPlaceSelection();
+          } else {
+            $scope.resetPlace();
           }
         };
 
