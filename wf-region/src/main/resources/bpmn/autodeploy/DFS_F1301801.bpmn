@@ -103,12 +103,12 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
-    <boundaryEvent id="getAnswerTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <timerEventDefinition>
         <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow13" sourceRef="getAnswerTimer" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="boundarytimer1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
         <timeDuration>PT6M</timeDuration>
@@ -123,7 +123,7 @@
     <sequenceFlow id="flow17" sourceRef="exclusivegateway1" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${anID_Attach_Dfs != ''}]]></conditionExpression>
     </sequenceFlow>
-    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+    <boundaryEvent id="boundarytimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
       <timerEventDefinition>
         <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
@@ -137,7 +137,7 @@
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="67.0" width="105.0" x="150.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="getAnswerTimer" id="BPMNShape_getAnswerTimer">
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
         <omgdc:Bounds height="30.0" width="30.0" x="225.0" y="133.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
@@ -149,7 +149,7 @@
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="295.0" y="218.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+      <bpmndi:BPMNShape bpmnElement="boundarytimer2" id="BPMNShape_boundarytimer2">
         <omgdc:Bounds height="30.0" width="30.0" x="360.0" y="240.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
