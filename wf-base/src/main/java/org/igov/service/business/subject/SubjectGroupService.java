@@ -70,7 +70,6 @@ public class SubjectGroupService {
 				}
 				List<SubjectGroup> childSubjectGroup = subjToNodeMap.get(child);
 	            if (childSubjectGroup == null) {
-	            	childSubjectGroup.add(child);
 	            	subjToNodeMap.put(child, childSubjectGroup);
 	            	parentSubjectGroup.getChildren().add(child);	            
 	            	parentSubjectGroups.add(parentSubjectGroup);	
