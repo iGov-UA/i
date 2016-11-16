@@ -70,17 +70,18 @@ public class SubjectGroupService {
 					}
 				}
 
-					for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
-						if(vSubjectGroupParentNode.getChildren().contains(parent.getId())) {
-						countChild++;
-						if (countChild.compareTo(deepLevel) < 0) {
-							vSubjectGroupParentNode.getChildren().add(child);
-						}
-						}
-				}
+				for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
+					if (vSubjectGroupParentNode.getGroup().getId().equals(child.getId())) {
+					countChild++;
+					if (countChild.compareTo(deepLevel) < 0) {
+						vSubjectGroupParentNode.getChildren().add(child);
+					}
+					}
+			}	
 
 			}
 		}
+		
 
 		Collections.sort(parentSubjectGroups, new Comparator() {
 			@Override
