@@ -72,7 +72,7 @@ public class SubjectGroupService {
 
 				for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
 					for (SubjectGroup subjectGroup : vSubjectGroupParentNode.getChildren()) {
-						if (parent.equals(subjectGroup.getId())) {
+						if (parent.getId().equals(vSubjectGroupParentNode.getGroup().getId())) {
 							countChild++;
 							if (countChild.compareTo(deepLevel) < 0) {
 								vSubjectGroupParentNode.getChildren().add(child);
