@@ -30,6 +30,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.apache.commons.codec.binary.Base64;
+import org.igov.service.business.action.task.listener.doc.SendDocument_SWinEd;
 import org.igov.service.controller.ActionTaskCommonController;
 
 /**
@@ -40,8 +41,6 @@ import org.igov.service.controller.ActionTaskCommonController;
 public class DfsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DfsService.class);
-
-    private final static String URL = "http://109.237.89.107:1220/gate.asmx";
 
     private final static String CONTENT_TYPE = "text/xml; charset=utf-8";
 
@@ -103,7 +102,7 @@ public class DfsService {
     public String send(String content, String fileName, String email) throws Exception {
         LOG.info("content: " + content + " fileName: " + fileName + " email: " + email);
         String body = createBody_Send(content, fileName, email);
-        return oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
+        return oHttpRequester.postInside(SendDocument_SWinEd.URL, null, body, CONTENT_TYPE);
     }
 
     private String createBody_Send(String content, String fileName, String email) {
@@ -156,7 +155,7 @@ public class DfsService {
     private String getMessages(String inn) throws Exception {
         LOG.info("inn: " + inn);
         String body = createBody_GetMessages(inn);
-        return oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
+        return oHttpRequester.postInside(SendDocument_SWinEd.URL, null, body, CONTENT_TYPE);
     }
 
     private String createBody_GetMessages(String inn) {
@@ -174,7 +173,7 @@ public class DfsService {
     private String receive(String massageID) throws Exception {
         LOG.info("massageID: " + massageID);
         String body = createBody_Receive(massageID);
-        return oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
+        return oHttpRequester.postInside(SendDocument_SWinEd.URL, null, body, CONTENT_TYPE);
     }
 
     private String createBody_Receive(String massageID) {
@@ -192,7 +191,7 @@ public class DfsService {
     private String delete(String massageID) throws Exception {
         LOG.info("massageID: " + massageID);
         String body = createBody_Delete(massageID);
-        return oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
+        return oHttpRequester.postInside(SendDocument_SWinEd.URL, null, body, CONTENT_TYPE);
     }
 
     private String createBody_Delete(String massageID) {
