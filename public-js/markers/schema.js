@@ -261,42 +261,6 @@ angular.module('iGovMarkers')
                             required: ["aField_ID"],
                             additionalProperties: false
                         },
-                        "^StringRange": { 
-                        	type: "object",
-                        	properties: {
-                        		aField_ID: {"$ref": "#/definitions/stringArray"},
-                        		aField_Type: {"$ref": "#/definitions/stringArray"}, 
-                        		nMin: {type: "integer"},
-                        		nMax: {type: "integer"}, 
-                        		sMessage: {type: "string"}
-                        	},
-                        	required: ["aField_ID"],
-                        	additionalProperties: false
-                        },
-                        "^LongNumber": {
-                        	type: "object",
-                        	properties: {
-                        		aField_ID: {"$ref": "#/definitions/stringArray"},
-                        		aField_Type: {"$ref": "#/definitions/stringArray"}, 
-                        		nMin: {type: "integer"},
-                        		nMax: {type: "integer"},
-                        		sMessage: {type: "string"}
-                        	},
-                        	required: ["aField_ID"],
-                        	additionalProperties: false
-                        },
-                        "^DoubleNumber": { 
-                        	type: "object", 
-                        	properties: {
-                        		aField_ID: {"$ref": "#/definitions/stringArray"},
-                        		aField_Type: {"$ref": "#/definitions/stringArray"}, 
-                        		nMin: {type: "integer"}, 
-                        		nMax: {type: "integer"},
-                        		sMessage: {type: "string"}                     		
-                        	}, 
-                        	required: ["aField_ID"], 
-                        	additionalProperties: false
-                        }, 
                         "^NumberBetween": {
                             type: "object",
                             properties: {
