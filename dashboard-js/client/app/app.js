@@ -15,7 +15,11 @@ angular.module('dashboardJsApp', [
   'iGovMarkers',
   'ngMessages',
   'smart-table',
-  'ui.validate'
+  'ui.validate',
+  'ui.select',
+  'iGovTable',
+  'datepickerService',
+  'autocompleteService'
 ]).config(function($urlRouterProvider, $locationProvider) {
   $urlRouterProvider
     .otherwise('/');

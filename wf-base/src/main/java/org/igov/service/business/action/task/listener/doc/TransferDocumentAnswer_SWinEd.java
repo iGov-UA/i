@@ -6,10 +6,8 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import org.activiti.engine.TaskService;
-import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
-import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.delegate.TaskListener;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.igov.service.business.dfs.DfsService;
@@ -37,11 +35,11 @@ public class TransferDocumentAnswer_SWinEd implements TaskListener {
 
     @Override
     public void notify(DelegateTask delegateTask) {
-        LOG.info("!!!");
+        LOG.info("!!! delegateTask.getId(): " + delegateTask.getId());
         String sINN_Value = getStringFromFieldExpression(this.sINN, delegateTask.getExecution());
         String asID_Attach_Dfs = dfsService.getAnswer(delegateTask.getId(), delegateTask.getProcessInstanceId(), sINN_Value);
-        LOG.info("!!!as: " + asID_Attach_Dfs); //хочу словить налпоинтер. это так и нужно!!! не убирать
-        taskService.complete(delegateTask.getId());
+        LOG.info("!!! delegateTask.getId(): " + delegateTask.getId() + " as: " + asID_Attach_Dfs);
+        //taskService.complete(delegateTask.getId());
     }
 
 }

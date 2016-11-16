@@ -17,7 +17,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
 
     private static final Logger LOG = LoggerFactory.getLogger(HistoryEventServiceImpl.class);
     private final String URI_GET_HISTORY_EVENT = "/wf/service/action/event/getHistoryEvent_Service";
-   private final String URI_UPDATE_HISTORY_EVENT = "/wf/service/action/event/updateHistoryEvent_Service";
+    private final String URI_UPDATE_HISTORY_EVENT = "/wf/service/action/event/updateHistoryEvent_Service";
     private final String URI_ADD_HISTORY_EVENT = "/wf/service/action/event/addHistoryEvent_Service";
     private final String URI_ADD_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
 

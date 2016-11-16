@@ -3,8 +3,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               FormDataFactory, ActivitiService, ValidationService, ServiceService, oService, oServiceData,
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
               PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
-              ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory, TableService,
-              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory) {
+              ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
+              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService) {
 
       'use strict';
 
@@ -230,6 +230,17 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       }
 
+      // todo file in table
+      // function fixFileInTable (prop) {
+      //   angular.forEach(prop.aRow, function (fields) {
+      //     angular.forEach(fields.aField, function (item, key, obj) {
+      //       if(item.type === 'file' && item.props) {
+      //         obj[key].value = item.props.value.id;
+      //       }
+      //     })
+      //   })
+      // }
+
       iGovMarkers.validateMarkers(formFieldIDs);
       //save values for each property
       $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
@@ -263,7 +274,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
         angular.forEach($scope.activitiForm.formProperties, function (prop) {
           if (prop.type === 'table') {
-            $scope.data.formData.params[prop.id].value = prop.aRow;
+            // fixFileInTable(prop);
+            $scope.data.formData.params[prop.id].value = prop;
           }
         });
 
@@ -747,74 +759,49 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         return true;
       };
 
-      $scope.oHystoryTaskData = {
-        oStartForm: {},
-        bHideLink: true
-      };
-      function getStartFormByTask() {
+      $scope.fillSelfPrevious = function () {
+
         $http.get('/api/order/getStartFormByTask', {
           params: {
             nID_Service: oService.nID,
-            sID_UA: oServiceData.oPlaceRoot ? oServiceData.oPlaceRoot.sID_UA : oServiceData.oPlace.sID_UA
+            sID_UA: oServiceData.oPlaceRoot ? oServiceData.oPlaceRoot.sID_UA : oServiceData.oPlace ? oServiceData.oPlace.sID_UA : ''
           }
         }).then(function (response) {
-          var fieldCount = 0;
-          if(response.data && response.status == 200){
-            for(var key in response.data) if (response.data.hasOwnProperty(key)){
-              fieldCount++;
-            }
+          var bFilled = $scope.bFilledSelfPrevious();
+          if (!bFilled) {
+            $scope.paramsBackup = {};
           }
-          if(fieldCount == 0){
-            $scope.oHystoryTaskData.oStartForm = angular.copy(response);
-            $scope.oHystoryTaskData.bHideLink = false;
-          } else {
-            $scope.oHystoryTaskData.oStartForm = {};
-            $scope.oHystoryTaskData.bHideLink = true;
-          }
-        }, function (errback) {
-          $scope.oHystoryTaskData.oStartForm = {};
-          $scope.oHystoryTaskData.bHideLink = true;
-        });
-      }
+          angular.forEach($scope.activitiForm.formProperties, function (oField) {
+            try {
+              var key = oField.id;
+              var property = $scope.data.formData.params[key];
 
-      getStartFormByTask();
+              if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)) {
 
-      $scope.fillSelfPrevious = function () {
-
-        var bFilled = $scope.bFilledSelfPrevious();
-        if (!bFilled) {
-          $scope.paramsBackup = {};
-        }
-        angular.forEach($scope.activitiForm.formProperties, function (oField) {
-          try {
-            var key = oField.id;
-            var property = $scope.data.formData.params[key];
-
-            if (key && key !== null && key.indexOf("bankId") !== 0 && $scope.oHystoryTaskData.oStartForm.data.hasOwnProperty(key)) {
-
-              if (oField && oField !== null
-                && oField.type !== "file"
-                && oField.type !== "label"
-                && oField.type !== "invisible"
-                && oField.type !== "markers"
-                && oField.type !== "queueData"
-                && oField.type !== "select"
-              ) {
-                if (!bFilled) {
-                  $scope.paramsBackup[key] = property.value;
+                if (oField && oField !== null
+                    && oField.type !== "file"
+                    && oField.type !== "label"
+                    && oField.type !== "invisible"
+                    && oField.type !== "markers"
+                    && oField.type !== "queueData"
+                    && oField.type !== "select"
+                ) {
+                  if (!bFilled) {
+                    $scope.paramsBackup[key] = property.value;
+                  }
+                  property.value = response.data[key];
                 }
-                property.value = $scope.oHystoryTaskData.oStartForm.data[key];
-              }
 
-              if (oField.type === 'select' &&
-                oField.hasOwnProperty('autocompleteData')) {
-                property.value = {};
-                property.value[oField.autocompleteData.valueProperty] = $scope.oHystoryTaskData.oStartForm.data[key];
+                if (oField.type === 'select' &&
+                    oField.hasOwnProperty('autocompleteData')) {
+                  property.value = {};
+                  property.value[oField.autocompleteData.valueProperty] = response.data[key];
+                }
               }
+            } catch (_) {
+              console.log("[fillSelfPrevious][" + key + "]ERROR:" + _);
             }
-          } catch (_) {
-            console.log("[fillSelfPrevious][" + key + "]ERROR:" + _);
-          }
+          });
         });
       };
 
@@ -850,10 +837,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         $rootScope.isFileProcessUploading.bState = !$rootScope.isFileProcessUploading.bState;
         console.log("Switch $rootScope.isFileProcessUploading to " + $rootScope.isFileProcessUploading.bState);
       };
-
-      if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
-        $scope.fillSelfPrevious();
-      }
 
       // відображення напису про необхідність перевірки реєстраційних данних, переданих від BankID
       $scope.isShowMessageRequiringToValidateUserData = function () {
@@ -946,26 +929,20 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       };
       $scope.removeRow = function (index, form, id) {
-        angular.forEach($scope.activitiForm.formProperties, function (item, key, obj) {
-          if (item.id === id) {
-            obj[key].aRow.splice(index, 1);
-            if (!form.$invalid) {
-              $scope.tableIsInvalid = false;
-            }
-          }
-        });
+        TableService.removeRow($scope.activitiForm.formProperties, index, id);
+        if (!form.$invalid) {
+          $scope.tableIsInvalid = false;
+        }
       };
       $scope.rowLengthCheckLimit = function (table) {
-        return table.aRow.length >= table.nRowsLimit
+        return TableService.rowLengthCheckLimit(table);
       };
 
       $scope.isFieldWritable = function (field) {
-      // включил проверку тк иногда передается false/true как строка 'false'/'true'.
-        if(typeof field === 'string' || field instanceof String) {
-          if(field === 'true') return true;
-          if(field === 'false') return false;
-        } else if (typeof field === 'boolean') {
-          return field;
-        }
+        return TableService.isFieldWritable(field);
       };
+
+      if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
+        $scope.fillSelfPrevious();
+      }
     });
