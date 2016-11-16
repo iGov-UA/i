@@ -795,12 +795,16 @@ public class ObjectFileCommonController {
     //+ C_STI_ORIG(4, містять код територіального органу отримувача, до якого подається оригінал документа. если оригинал, то = C_REG(2) + C_RAJ(2))
     private String buildFileName(Map<String, String> mField) {
         //2301 3194700944 F1301801 1 00 0000001 1 12 2015 2301.xml
+        String C_DOC_VER = mField.get("C_DOC_VER").trim();
+        if(C_DOC_VER.length() == 1){
+            C_DOC_VER = "0" + C_DOC_VER;
+        }
         String result = new StringBuilder(mField.get("C_REG").trim())
                     .append(mField.get("C_RAJ").trim())
                     .append(mField.get("TIN").trim())
                     .append(mField.get("C_DOC").trim())
                     .append(mField.get("C_DOC_SUB").trim())
-                    .append(mField.get("C_DOC_VER").trim())
+                    .append(C_DOC_VER)
                     .append(mField.get("C_DOC_STAN").trim())
                     .append(mField.get("C_DOC_TYPE").trim())
                     .append(mField.get("C_DOC_CNT").trim())
