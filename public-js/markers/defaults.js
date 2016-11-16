@@ -66,6 +66,28 @@ angular.module('iGovMarkers')
       ,CodeMFO: {
         aField_ID: ['mfo']
       }
+      ,StringRange: { 
+    	  aField_ID: ['string'],
+    	  aField_Type: ['string'], 
+    	  nMin: 0,
+    	  nMax: 200,
+    	  sMessage: 'Повинно бути від 0 до 200 символів'
+      }
+      ,LongNumber: {
+    	  aField_ID: ['long'],
+    	  aField_Type: ['long'],
+    	  nMin: 1,
+    	  nMax: 1000, 
+    	  sMessage: 'Повинно бути подільним числом від 1 до 1000 '
+      }
+      ,DoubleNumber: {
+    	  aField_ID: ['double'],
+    	  aField_Type: ['double'],
+    	  nMin: 1, 
+    	  nMax: 10000000,
+    	  sSeparator: '.',
+    	  sMessage: 'Повинно бути неподільним числом та розділене "."'
+      }
       ,NumberBetween: { //Целочисленное между
         aField_ID: ['numberBetween'],
         nMin: 1,
@@ -103,7 +125,32 @@ angular.module('iGovMarkers')
       }
     },
     attributes: {
-      Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true}
+      Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true}, 
+      ExtendLabelStyle : {
+    	  aElement_IDs : ['textUa', 'vin_code'], 
+    	  aSelectors : ["col-sm-4"], 
+    	  sCondition : "",
+    	  // Загальний стиль для селекторів 
+    	  sCommonStyle : { "font-style" : "italic", "display" : "block" },
+    	  // Стиль для Central-js | = sCommonStyle 
+    	  sCentralStyle : { "font-style": "bold", "display": "block" }, 
+    	  // Стиль для Region  
+    	  sRegionStyle : { "font-style": "bold", "font-color": "#FF0000", "display": "block" }, 
+      }, 
+      
+      ExtendFormStyle : {
+    	  aElement_ID : ['testForm'],  	  
+    	  aSelector : ["test-form"], 
+    	  sCondition : "",
+    	  // Загальний стиль для селекторів 
+    	  sCommonStyle : { "font-style": "italic", "display": "block" },
+    	  // Стиль для Central-js | = sCommonStyle 
+    	  sCentralStyle : { "font-style": "bold", "display": "block" }, 
+    	  // Стиль для Region  
+    	  sRegionStyle : { "font-style": "bold", "font-color": "#FF0000", "display": "block" }, 
+
+      }
+      
     },
     motion: {
       ReplaceTextSymbols_1: {
