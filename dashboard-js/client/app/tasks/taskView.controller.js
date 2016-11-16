@@ -1007,6 +1007,14 @@
           return TableService.isFieldWritable(field);
         };
 
+        $scope.updateTemplateList = function () {
+          $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
+          if ($scope.printTemplateList.length > 0) {
+            $scope.model.printTemplate = $scope.printTemplateList[0];
+          }
+          return true;
+        }
+
         $scope.tableIsLoaded = function (item) {
           return typeof item.aRow[0] !== 'number';
         };
