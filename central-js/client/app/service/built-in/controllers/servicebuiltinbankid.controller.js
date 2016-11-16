@@ -4,7 +4,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
               PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
               ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory, TableService,
-              ErrorsFactory, SignFactory) {
+              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory) {
 
       'use strict';
 
@@ -283,17 +283,65 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           return false;
         }
 
+        /**
+         * If oFile_XML_SWinEd property exists - try to handle taxTemplateFileHandler
+         * https://github.com/e-government-ua/i/issues/1374
+         */
+        if($scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]){
+          taxTemplateFileHandler.postJSON({
+            formProperties: aFormProperties,
+            formData: $scope.data.formData,
+            oServiceData: oServiceData
+          }, function (data, error) {
+
+            if (data) {
+              $scope.data.formData.params[taxTemplateFileHandlerConfig.soPatternFilled] = data.soPatternFilled;
+
+              angular.extend($scope.data.formData, {
+                contentToSign: {
+                  contentValue: $scope.data.formData.params[taxTemplateFileHandlerConfig.soPatternFilled],
+                  contentName: data.sFileName
+                }
+              });
+
+              ActivitiService.saveForm(
+                  oService,
+                  oServiceData,
+                  'some business key 111',
+                  'process name here',
+                  $scope.activitiForm,
+                  $scope.data.formData
+              ).then(function (result) {
+                $window.location.href =
+                    $location.protocol() + '://' +
+                    $location.host() + ':' +
+                    $location.port() + '/api/sign-content/sign?formID=' +
+                    result.formID + '&nID_Server=' +
+                    oServiceData.nID_Server + '&sName=' + oService.sName;
+              });
+            }
+
+            if(error){
+              ErrorsFactory.push({
+                type: 'danger',
+                text: error.text + JSON.stringify(error.value)
+              })
+            }
+          });
+        }
+
+
         if ($scope.sign.checked) {
           $scope.fixForm(form, aFormProperties);
           $scope.signForm();
-        } else {
+        } else if (!$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]) {
           $scope.submitForm(form, aFormProperties);
         }
       };
 
       $scope.validateForm = function (form) {
         var bValid = true;
-        ValidationService.validateByMarkers(form, null, true, this.data);
+        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {});
         return form.$valid && bValid;
       };
 
@@ -603,7 +651,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           return true;
         }
         var b = FieldMotionService.FieldMentioned.inRequired(property.id) ?
-          FieldMotionService.isFieldRequired(property.id, $scope.data.formData.params) : property.required;
+            FieldMotionService.isFieldRequired(property.id, $scope.data.formData.params) : property.required;
         if($scope.data.formData.params[property.id] instanceof SignFactory){
           $scope.isSignNeededRequired = b;
           if(!($scope.isSignNeeded && !$scope.isSignNeededRequired)){
@@ -666,10 +714,24 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         return $sce.trustAsHtml(html);
       };
 
-      if($scope.data.formData.isAlreadySigned() && $stateParams.signedFileID){
+      /**
+       * Check for $scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd] was done
+       * in order to https://github.com/e-government-ua/i/issues/1374
+       */
+      if (($scope.data.formData.isAlreadySigned() &&
+          $stateParams.signedFileID) ||
+          ($stateParams.signedFileID &&
+          $scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd])) {
         var state = $state.$current;
+
+
+        //TODO should be refactored signedFileID assignment after tax template file partial signing (https://github.com/e-government-ua/i/issues/1374)
+        $scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd] ?
+            $scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd].value = $stateParams.signedFileID :
+            null;
+
         //TODO remove ugly hack for not calling submit after submit
-        if(!state.name.endsWith('submitted')){
+        if (!state.name.endsWith('submitted')) {
           $scope.submitForm();
         }
       }
@@ -690,7 +752,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         $http.get('/api/order/getStartFormByTask', {
           params: {
             nID_Service: oService.nID,
-            sID_UA: oServiceData.oPlaceRoot ? oServiceData.oPlaceRoot.sID_UA : oServiceData.oPlace.sID_UA
+            sID_UA: oServiceData.oPlaceRoot ? oServiceData.oPlaceRoot.sID_UA : oServiceData.oPlace ? oServiceData.oPlace.sID_UA : ''
           }
         }).then(function (response) {
           var bFilled = $scope.bFilledSelfPrevious();
@@ -750,6 +812,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       };
 
+      $scope.insertSeparator = function(sPropertyId){
+        return FieldAttributesService.insertSeparators(sPropertyId);
+      };
+
       // блокировка кнопок выбора файлов на время выполнения процесса загрузки ранее выбранного файла
       $rootScope.isFileProcessUploading = {
         bState: false
@@ -759,10 +825,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         $rootScope.isFileProcessUploading.bState = !$rootScope.isFileProcessUploading.bState;
         console.log("Switch $rootScope.isFileProcessUploading to " + $rootScope.isFileProcessUploading.bState);
       };
-
-      if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
-        $scope.fillSelfPrevious();
-      }
 
       // відображення напису про необхідність перевірки реєстраційних данних, переданих від BankID
       $scope.isShowMessageRequiringToValidateUserData = function () {
@@ -845,7 +907,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       TableService.init($scope.activitiForm.formProperties);
 
       $scope.addRow = function (form, id, index) {
-        ValidationService.validateByMarkers(form, null, true, this.data, true);
+        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {}, true);
         if (!form.$invalid) {
           $scope.tableIsInvalid = false;
           TableService.addRow(id, $scope.activitiForm.formProperties);
@@ -867,4 +929,18 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       $scope.rowLengthCheckLimit = function (table) {
         return table.aRow.length >= table.nRowsLimit
       };
+
+      $scope.isFieldWritable = function (field) {
+      // включил проверку тк иногда передается false/true как строка 'false'/'true'.
+        if(typeof field === 'string' || field instanceof String) {
+          if(field === 'true') return true;
+          if(field === 'false') return false;
+        } else if (typeof field === 'boolean') {
+          return field;
+        }
+      };
+
+      if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
+        $scope.fillSelfPrevious();
+      }
     });

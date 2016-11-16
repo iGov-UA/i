@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
 @Component("deleteProccess")
 public class DeleteProccess implements JavaDelegate {
@@ -76,17 +77,6 @@ public class DeleteProccess implements JavaDelegate {
         LOG.info("FINISHED!!! processInstances processInstanceQuery size: countRowDeleted: " + countRowDeleted);
 
         //}
-    }
-
-    protected String getStringFromFieldExpression(Expression expression,
-            DelegateExecution execution) {
-        if (expression != null) {
-            Object value = expression.getValue(execution);
-            if (value != null) {
-                return value.toString();
-            }
-        }
-        return null;
     }
 
     public void setLimitCountRowDeleted(int limitCountRowDeleted) {

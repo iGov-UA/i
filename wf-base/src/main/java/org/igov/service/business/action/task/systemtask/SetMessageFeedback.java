@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.GeneralConfig;
 
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+
 /**
  * @author a.skosyr
  */
@@ -75,16 +77,5 @@ public class SetMessageFeedback implements JavaDelegate {
             LOG.trace("FAIL:", oException);
 		}		
 	}
-
-    protected String getStringFromFieldExpression(Expression expression,
-            DelegateExecution execution) {
-        if (expression != null) {
-            Object value = expression.getValue(execution);
-            if (value != null) {
-                return value.toString();
-            }
-        }
-        return null;
-    }
     
 }

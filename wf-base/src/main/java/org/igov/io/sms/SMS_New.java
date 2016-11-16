@@ -18,15 +18,15 @@ public class SMS_New {
     private String callbackUrl = null;
     private String schemaId = null;
     private String addrPhone = null;
-    private String typeSend = "online";
-    private String typeCheck = "info";
+    private final String typeSend = "online";
+    private final String typeCheck = "info";
     private String merchantId = null;
-    private String merchantType = "sms_service";
+    private final String merchantType = "sms_service";
     private String merchantPassword = null;
-    private List<SMS_Text> messageTemplate = new ArrayList<>();
-    private String smsAlfaname = SMSFrom.FROM_IGOV.getSMSFrom();
-    private int senderTTL = 60;
-    private int privat24TTL = 60;
+    private final List<SMS_Text> messageTemplate = new ArrayList<>();
+    private final String smsAlfaname = SMSFrom.FROM_IGOV.getSMSFrom();
+    private final int senderTTL = 60;
+    private final int privat24TTL = 60;
 
     public SMS_New(String messageId, String callbackUrl, String schemaId, String addrPhone, String merchantId, String merchantPassword,
 	    String sText) throws IllegalArgumentException {

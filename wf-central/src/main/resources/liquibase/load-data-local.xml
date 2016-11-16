@@ -5,12 +5,27 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    
-    
+    <!--
+        Данные, которые считаются статическими, могут безопасно перезаливаться целиком, чтобы быть всегда
+        синхронизированными с csv файлами.
+        Если все данные в таблице статические, то полностью очищаем таблицу, а потом заливаем заново с помощью loadData.
+        Если часть данных являются статическими (как в Subject), то очищаем по условию, чтобы ненароком не удалить
+        на продакшене динамическую часть, и заливаем с помощью loadData.
+        Если данные перезаливаются с помощью loadUpdateData, то надо иметь в виду, что оно не поддерживает
+        удаление данных. Т.е. если вы удалите строки из csv, то они не удалятся после исполнения loadUpdateData.
+        Именно по этому loadUpdateData постепенно заменяется связкой: очистить таблицу, и вызвать loadData.
+
+        Чтобы в процессе обновления данных не падали констрейнты, выполняется команда
+        SET CONSTRAINTS ALL DEFERRED;
+        Она означает, что все констрейнты надо проверять толкько при коммите транзакции, а коммит транзакции наступает
+        после выполнения всех команд внутри changeSet. Таким образом, можно временно нарушать целостность данных, но
+        в самом конце перед коммитом целостность должна быть восстановлена.
+    -->
     <changeSet id="Update data" author="brunneng" runOnChange="true">
 
-        <sql splitStatements="true" dbms="postgresql">
+        <sql splitStatements="true" dbms="postgresql"><![CDATA[
             SET CONSTRAINTS ALL DEFERRED;
+
             DELETE FROM "Region";
             DELETE FROM "City";
             DELETE FROM "Category";
@@ -22,14 +37,22 @@
             DELETE FROM "ServiceType";
             DELETE FROM "Service";
             DELETE FROM "ServiceData";
-        </sql>
+            DELETE FROM "SubjectOrganJoinAttribute";
+            DELETE FROM "SubjectOrganJoinTax";
+            DELETE FROM "SubjectOrganJoin";
+            DELETE FROM "ObjectCustoms";
+            DELETE FROM "SubjectAccount" where "nID" < 20000;
+            DELETE FROM "SubjectContact" where "nID" < 20000;
+            DELETE FROM "Subject" where "nID" < 20000;
+        ]]></sql>
 
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Subject.csv" tableName="Subject" separator=";">
+
+        <loadData encoding="UTF-8" file="data/Subject.csv" tableName="Subject" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="sID" type="STRING"/>
             <column name="sLabel" type="STRING"/>
             <column name="sLabelShort" type="STRING"/>
-        </loadUpdateData>
+        </loadData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectContactType.csv" tableName="SubjectContactType" separator=";">
             <column name="nID" type="NUMERIC"/>
@@ -38,12 +61,12 @@
             <column name="sName_UA" type="STRING"/>
         </loadUpdateData>
 
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectContact.csv" tableName="SubjectContact" separator=";">
+        <loadData encoding="UTF-8" file="data/SubjectContact.csv" tableName="SubjectContact" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="nID_Subject" type="NUMERIC"/>
             <column name="nID_SubjectContactType" type="NUMERIC"/>
             <column name="sValue" type="STRING"/>
-        </loadUpdateData>
+        </loadData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectHuman.csv" tableName="SubjectHuman" separator=";">
             <column name="nID" type="NUMERIC"/>
@@ -115,12 +138,6 @@
         </loadUpdateData>
 
         <!-- 5 связанных таблиц ServiceTag, ServiceTagLink, ServiceTagRelation, Service, ServiceData  перезагружаются каждый раз -->
-        <delete tableName="ServiceTagRelation"/>
-        <delete tableName="ServiceTagLink"/>
-        <delete tableName="ServiceTag"/>
-        <delete tableName="ServiceTagType"/>
-        <delete tableName="ServiceData"/>
-        <delete tableName="Service"/>
         <loadData encoding="UTF-8" file="data/Service.csv" tableName="Service" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="sName" type="STRING"/>
@@ -261,9 +278,6 @@
 
         <!-- 3 связанные таблицы SubjectOrganJoin, SubjectOrganJoinTax, SubjectOrganJoinAttribute
         перезагружаются каждый раз -->
-        <delete tableName="SubjectOrganJoinAttribute"/>
-        <delete tableName="SubjectOrganJoinTax"/>
-        <delete tableName="SubjectOrganJoin"/>
         <loadData encoding="UTF-8" file="data/SubjectOrganJoin.csv" tableName="SubjectOrganJoin" separator=";">
             <column name="nID"              type="NUMERIC"/>
             <column name="nID_SubjectOrgan" type="NUMERIC"/>
@@ -278,8 +292,7 @@
             <column name="sID_UA"           type="STRING"/>
         </loadData>
 
-        <loadData tableName="SubjectOrganJoinTax" file="data/SubjectOrganJoinTax.csv"  encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
+        <loadData tableName="SubjectOrganJoinTax" file="data/SubjectOrganJoinTax.csv" encoding="UTF-8" separator=";">
             <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
             <column name="sID_UA" type="STRING"/>
             <column name="sName_UA" type="STRING"/>
@@ -295,7 +308,7 @@
                         tableName="HistoryEvent_Service" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="sID" type="STRING"/>
-            <column name="nID_Task" type="NUMERIC"/>
+            <column name="nID_Process" type="NUMERIC"/>
             <column name="nID_Subject" type="NUMERIC"/>
             <column name="sUserTaskName" type="STRING"/>
             <column name="sDate" type="STRING"/>
@@ -353,12 +366,11 @@
             <column name="sReference_LocalISO" type="STRING"/>
         </loadUpdateData>
 
-         <loadUpdateData tableName="ObjectCustoms" primaryKey="nID" encoding="UTF-8" file="data/ObjectCustoms.csv" separator=";" >
-            <column name="nID" type = "NUMERIC" />
+        <loadData tableName="ObjectCustoms" encoding="UTF-8" file="data/ObjectCustoms.csv" separator=";" >
             <column name="sID_UA" type = "STRING" />
             <column name="sName_UA" type = "STRING" />
             <column name="sMeasure_UA" type = "STRING" />
-        </loadUpdateData>
+        </loadData>
 
         <loadUpdateData tableName="SubjectMessage" primaryKey="nID" encoding="UTF-8" file="data/SubjectMessage.csv" separator=";">
             <column name="nID" type="NUMERIC"/>
@@ -396,21 +408,21 @@
             <column name="sNote"   type="STRING"/>
         </loadUpdateData>
 
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectAccount.csv" tableName="SubjectAccount" separator=";">
+        <loadData encoding="UTF-8" file="data/SubjectAccount.csv" tableName="SubjectAccount" separator=";">
             <column name="nID"     type="NUMERIC"/>
             <column name="sLogin"  type="STRING"/>
             <column name="sNote"   type="STRING"/>
             <column name="nID_SubjectAccountType"     type="NUMERIC"/>
             <column name="nID_Server"     type="NUMERIC"/>
             <column name="nID_Subject"    type="NUMERIC"/>
-        </loadUpdateData>
+        </loadData>
 
          <loadUpdateData tableName="SubjectActionKVED" primaryKey="nID" encoding="UTF-8" file="data/SubjectActionKVED.csv" separator=";" >
             <column name="nID" type = "NUMERIC" />
             <column name="sID" type = "STRING" />
             <column name="sNote" type = "STRING" />
         </loadUpdateData>
-        
+
          <loadUpdateData tableName="ObjectPlace_UA" primaryKey="nID" encoding="UTF-8" file="data/ObjectPlace_UA.csv" separator=";" >
             <column name="nID" type = "NUMERIC" />
             <column name="sID" type = "STRING" />
@@ -419,11 +431,11 @@
         </loadUpdateData>
     </changeSet>
 
-    <changeSet id="Drop out-of-date HistoryEvent_Service" author="brunneng" runOnChange="true" runAlways="true" dbms="postgresql">
+    <!--changeSet id="Drop out-of-date HistoryEvent_Service" author="brunneng" runOnChange="true" runAlways="true" dbms="postgresql">
         <sql splitStatements="true" dbms="postgresql">
             delete from "HistoryEvent_Service" where "nID_ServiceData" is not null and "nID_ServiceData" not in (select "nID" from "ServiceData");
         </sql>
-    </changeSet>
+    </changeSet-->
 
 
 </databaseChangeLog>

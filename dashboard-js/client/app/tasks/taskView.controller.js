@@ -6,10 +6,10 @@
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', '$rootScope', 'lunaService',
+      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope', 'lunaService',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state, stateModel, ValidationService, FieldMotionService, $rootScope, lunaService) {
+                $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope, lunaService) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -128,10 +128,19 @@
         $scope.tabHistoryAppeal = 'appeal';
         $scope.nID_Process = oTask.processInstanceId;
         $scope.markers = ValidationService.getValidationMarkers();
+        $scope.bHasEmail = false;
+        $scope.isClarifySending = false;
 
         $scope.validateForm = function(form) {
           var bValid = true;
-          ValidationService.validateByMarkers(form, null, true);
+          var oValidationFormData = {};
+          angular.forEach($scope.taskForm, function (field) {
+            oValidationFormData[field.id] = angular.copy(field);
+            if(field.type === 'file'){
+              //debugger;
+            }
+          });
+          ValidationService.validateByMarkers(form, null, true, oValidationFormData);
           return form.$valid && bValid;
         };
 
@@ -250,6 +259,7 @@
         };
 
         $scope.clarifySend = function () {
+          $scope.isClarifySending = true;
 
           var oData = {
             nID_Process: $scope.nID_Process,
@@ -311,17 +321,35 @@
             oData.nID_Process = oData.nID_Process + lunaService.getLunaValue(oData.nID_Process);
             tasks.postServiceMessages(oData).then(function () {
               $scope.clarify = false;
+              $scope.isClarifySending = false;
               Modal.inform.success(function () {
               })('Коментар відправлено успішно');
             });
           } else {
             tasks.setTaskQuestions(oData).then(function () {
               $scope.clarify = false;
+              $scope.isClarifySending = false;
               Modal.inform.success(function () {
               })('Зауваження відправлено успішно');
             });
           }
         };
+
+        (function isTaskHasEmail() {
+          try{
+            for(var i=0; i<$scope.taskData.aField.length; i++){
+              if($scope.taskData.aField[i].sID === "email"){
+                $scope.bHasEmail = true;
+              }
+            }
+          } catch (err){
+            if($scope.taskData.code && $scope.taskData.message){
+              console.warn($scope.taskData.message);
+            } else {
+              console.error(err);
+            }
+          }
+        })();
 
         $scope.checkSignState = {inProcess: false, show: false, signInfo: null, attachmentName: null};
 
@@ -491,6 +519,7 @@
             if (filterResult && filterResult.length === 1) {
               filterResult[0].value = result.response.id;
               filterResult[0].fileName = result.response.name;
+              filterResult[0].signInfo = result.signInfo;
             }
           }).catch(function (err) {
             Modal.inform.error()('Помилка. ' + err.code + ' ' + err.message);
@@ -515,12 +544,11 @@
         };
 
         $scope.nID_FlowSlotTicket_FieldQueueData = function (sValue) {
-          var nAt = sValue.indexOf(":");
-          var nTo = sValue.indexOf(",");
-          var s = sValue.substring(nAt + 1, nTo);
           var nID_FlowSlotTicket = 0;
           try {
-            nID_FlowSlotTicket = s;
+            var nAt = sValue.indexOf(":");
+            var nTo = sValue.indexOf(",");
+            nID_FlowSlotTicket = sValue.substring(nAt + 1, nTo);;
           } catch (_) {
             nID_FlowSlotTicket = 1;
           }
@@ -528,12 +556,11 @@
         };
 
         $scope.sDate_FieldQueueData = function (sValue) {
-          var nAt = sValue.indexOf("sDate");
-          var nTo = sValue.indexOf("}");
-          var s = sValue.substring(nAt + 5 + 1 + 1 + 1, nTo - 1 - 6);
           var sDate = "Дата назначена!";
           try {
-            sDate = s;
+            var nAt = sValue.indexOf("sDate");
+            var nTo = sValue.indexOf("}");
+            sDate = sValue.substring(nAt + 5 + 1 + 1 + 1, nTo - 1 - 6);
           } catch (_) {
             sDate = "Дата назначена!";
           }
@@ -655,6 +682,10 @@
           }
         });
 
+        $scope.insertSeparator = function(sPropertyId){
+          return FieldAttributesService.insertSeparators(sPropertyId);
+        };
+
         $scope.isTableAttachment = function (item) {
           return item.indexOf('[table]') > -1;
         };
@@ -693,10 +724,11 @@
           })
         };
 
+        // при наличии полей типа "table" загружаем их с редиса и наполняем массив aTable.
         $scope.getListOfTables = function () {
           var itemsProcessed = 0;
           $scope.taskData.aTable = [];
-          if($scope.taskData.aAttachment.length > 0)
+          if($scope.taskData.aAttachment && $scope.taskData.aAttachment.length > 0)
           angular.forEach($scope.taskData.aAttachment, function (attach) {
             tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
               ++itemsProcessed;
@@ -705,6 +737,12 @@
                 table.name = attach.description;
                 table.id = attach.id;
                 table.content = JSON.parse(res);
+                for(var i=0; i<table.content.length; i++) {
+                  if(typeof table.content[i] === "string") {
+                    table.idName = table.content[i];
+                    delete table.content[i];
+                  }
+                }
                 $scope.taskData.aTable.push(table);
               } catch (e) {
 

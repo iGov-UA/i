@@ -14,6 +14,7 @@ import javax.activation.DataSource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
 /**
@@ -52,11 +53,11 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
             }
         }
 
-        if (aAttachment != null && !aAttachment.isEmpty()) {
+        if (!aAttachment.isEmpty()) {
             InputStream oInputStream_Attachment = null;
-            String sFileName = "document";
-            String sFileExt = "txt";
-            String sDescription = "";
+            String sFileName;
+            String sFileExt;
+            String sDescription;
             for (Attachment oAttachment : aAttachment) {
                 sFileName = oAttachment.getName();
                 String sExt="";
@@ -64,7 +65,11 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                 if(nAt>=0){
                     sExt = sFileName.substring(nAt);
                 }
-                sFileName = "Attach_"+oAttachment.getId()+sExt; //
+
+                if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml") && !sFileName.toLowerCase().endsWith(".rpl")) {
+                    sFileName = "Attach_"+oAttachment.getId()+sExt; //
+                }
+                
                 sFileExt = oAttachment.getType().split(";")[0];
                 sDescription = oAttachment.getDescription();
                 if (sDescription == null || "".equals(sDescription.trim())) {
@@ -81,13 +86,7 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                             Attachment.class);
                 }
                 DataSource oDataSource = new ByteArrayDataSource(oInputStream_Attachment, sFileExt);
-                if (oDataSource == null) {
-                    LOG.error("Attachment: oDataSource == null");
-                }
-
-                //oMail._Attach(oDataSource, sFileName + "." + sFileExt, sDescription);
                 oMail._Attach(oDataSource, sFileName, sDescription);
-
                 LOG.info("oMultiPartEmail.attach: Ok!");
             }
         } else {
@@ -95,8 +94,6 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
             throw new ActivitiObjectNotFoundException("add the file to send");
         }
 
-        // send the email
-        //oMultiPartEmail.send();
         oMail.send();
     }
 

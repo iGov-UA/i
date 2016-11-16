@@ -10,23 +10,24 @@ import java.util.List;
 import org.igov.model.core.NamedEntity;
 
 /**
- * Flow (stored in regional server) related to ServiceData (stored in central server).
+ * Flow (stored in regional server) related to ServiceData (stored in central
+ * server).
  * <p/>
- * User: goodg_000
- * Date: 14.06.2015
- * Time: 15:03
+ * User: goodg_000 Date: 14.06.2015 Time: 15:03
  */
 @javax.persistence.Entity
-public class Flow_ServiceData extends NamedEntity {
+public class Flow_ServiceData extends NamedEntity { 
 
     /**
-     * One-to-one soft reference to ServiceData which is stored in central but not present in regional server.
+     * One-to-one soft reference to ServiceData which is stored in central but
+     * not present in regional server.
      */
     @Column
     private Long nID_ServiceData;
 
     /**
-     * Many-to-one soft reference to SubjectOrganDepartment which is stored in central but not present in regional server.
+     * Many-to-one soft reference to SubjectOrganDepartment which is stored in
+     * central but not present in regional server.
      */
     @Column
     private Long nID_SubjectOrganDepartment;
@@ -36,6 +37,9 @@ public class Flow_ServiceData extends NamedEntity {
      */
     @Column
     private String sID_BP;
+
+    @Column
+    private Long nCountAutoGenerate;
 
     @OneToMany(mappedBy = "oFlow_ServiceData", cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -63,6 +67,14 @@ public class Flow_ServiceData extends NamedEntity {
 
     public void setsID_BP(String sID_BP) {
         this.sID_BP = sID_BP;
+    }
+
+    public Long getnCountAutoGenerate() {
+        return nCountAutoGenerate;
+    }
+
+    public void setnCountAutoGenerate(Long nCountAutoGenerate) {
+        this.nCountAutoGenerate = nCountAutoGenerate;
     }
 
     public List<FlowProperty> getFlowProperties() {

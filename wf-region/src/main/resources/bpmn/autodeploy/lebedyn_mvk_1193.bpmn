@@ -12,7 +12,6 @@
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень" type="enum" required="true">
-          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
           <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
           <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
           <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
@@ -23,19 +22,20 @@
           <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
           <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="asChoicePay" name="Вказати за чий рахунок буде проводитися зрізка зелених насаджень" type="enum" required="true">
           <activiti:value id="sEnum1" name="За власний рахунок"></activiti:value>
           <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Документи, що підтверджують право користування земельною ділянкою у відповідності до генерального плану забудови міста" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="зареєстрована інспекцією державного архітектурно-будівельного контролю у Сумській обл. декларація про початок виконання будівельних робіт;або дозвіл на виконання будівельних робіт" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Документи, що підтверджують право користування земельною ділянкою у відповідності до генерального плану забудови міста" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="зареєстрована інспекцією державного архітектурно-будівельного контролю у Сумській обл. декларація про початок виконання будівельних робіт;або дозвіл на виконання будівельних робіт" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Фотографія зазначених зелених насаджень" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile4" name="Висновок Лебединського міськрайонного управління Головного управління Держсанепідслужби про заміри коефіцієнта природного освітлення уприміщенні" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile5" name="Звернення балансоутримувача з відповідним обгрунтуванням необхідності виконання зазначенних робіт" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile6" name="Заява з відповідним обгрунтуванням необхідності виконання зазначенних робіт" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Висновок Лебединського міськрайонного управління Головного управління Держсанепідслужби про заміри коефіцієнта природного освітлення уприміщенні" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Звернення балансоутримувача з відповідним обгрунтуванням необхідності виконання зазначенних робіт" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Заява з відповідним обгрунтуванням необхідності виконання зазначенних робіт" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('lebedyn/lebedyn_mvk_1193_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="requiredFields1" type="markers" default="${markerService.loadFromFile('lebedyn/lebedyn_mvk_1193_2.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Лист адміністратору про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -76,16 +76,16 @@
           <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 <p> Ваше звернення №[sID_Order] щодо видачи дозволу на видалення зелених насаджень зареєстровано у системі.<br>
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
 <br>
 Телефон для довідок: (05445) 2-19-26<br>
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ЦНАП виконавчого комітету Лебединської міської ради,<br>
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -99,7 +99,6 @@
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень; ;writable=false" type="enum">
-          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
           <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
           <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
           <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
@@ -121,8 +120,10 @@
           <activiti:value id="reject" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_503_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/lebedyn/lebedyn_mvk_1193.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="hideShowElements1" type="markers" default="${markerService.loadFromFile('lebedyn/lebedyn_mvk_1193_print.json')}"></activiti:formProperty>
+        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}]]></activiti:expression>
@@ -154,7 +155,7 @@
           <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 На жаль, Ваше звернення щодо видачи дозволу на видалення зелених насаджень було відхилено.</p>
 <p>Причина в наступному: 
@@ -163,10 +164,10 @@
 <p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
 <br />
 Телефон для довідок: (05445) 2-19-26<br>
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ЦНАП виконавчого комітету Лебединської міської ради,<br>
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -184,7 +185,6 @@
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень" type="enum" writable="false">
-          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
           <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
           <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
           <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
@@ -192,17 +192,17 @@
         </activiti:formProperty>
         <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень або прив'язка (місце розташування)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень" type="enum" writable="false">
-          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
-          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+          <activiti:value id="sEnumTree" name="дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="газон"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asChoicePay" name="За чий рахунок буде проводитися зрізка зелених насаджень" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="За власний рахунок"></activiti:value>
-          <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
+          <activiti:value id="sEnum1" name="за власний рахунок"></activiti:value>
+          <activiti:value id="sEnum2" name="за рахунок КП «Комбінат благоустрою»"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFileResolution" name="Відсканована копія рішення виконкому про видалення зелених насаджень" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}]]></activiti:expression>
@@ -231,17 +231,17 @@
           <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 <p>Ваше звернення щодо видачи дозволу на видалення зелених насаджень - відправлено на комісію.<br>
 Комісія у п'ятиденний строк після подання заяви повина визначити стан зелених насаджень і скласти акт обстеження зелених насаджень. Виконком у місячний строк після надходження заяви повинен прийняти рішення шляхом видання копії рішення про видалення зелених насаджень, копію якого Ви отримаєте на електронну адресу.<br> 
 </p>
 <br>
 Телефон для довідок: (05445) 2-19-26<br>
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ЦНАП виконавчого комітету Лебединської міської ради,<br>
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -270,7 +270,7 @@
           <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 <p>По Вашому зверненю щодо видачи дозволу на видалення зелених насаджень винесено рішення про видалення зелених насаджень, копія якого в додатку до цього листа.<br> 
 </p>
@@ -287,10 +287,10 @@
 Після цьго впродовж наступного робочого дня Вам буде надіслано повідомлення де і коли Ви зможете забрати ордер на видалення зелених насаджень.<br><br>
 
 Телефон для довідок: (05445) 2-19-26<br>
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ЦНАП виконавчого комітету Лебединської міської ради,<br>
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -304,7 +304,6 @@
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень" type="enum" writable="false">
-          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
           <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
           <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
           <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
@@ -312,22 +311,24 @@
         </activiti:formProperty>
         <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень або прив'язка (місце розташування)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень" type="enum" writable="false">
-          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
-          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+          <activiti:value id="sEnumTree" name="дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="газон"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asChoicePay" name="За чий рахунок буде проводитися зрізка зелених насаджень" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="За власний рахунок"></activiti:value>
-          <activiti:value id="sEnum2" name="За рахунок КП «Комбінат благоустрою»"></activiti:value>
+          <activiti:value id="sEnum1" name="за власний рахунок"></activiti:value>
+          <activiti:value id="sEnum2" name="за рахунок КП «Комбінат благоустрою»"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asResolution" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="sEnumPayYes" name="Оплата поступила. Відправити Громадянину ордер."></activiti:value>
           <activiti:value id="sEnumPayNo" name="Оплата відсутня. Закрити заявку."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFileOrder" name="Відсканована копія ордеру на видалення зелених насаджень" type="file"></activiti:formProperty>
-        
-        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('lebedyn/lebedyn_mvk_1193_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="requiredFields1" type="markers" default="${markerService.loadFromFile('lebedyn/lebedyn_mvk_1193_2.json')}"></activiti:formProperty>
+      
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}]]></activiti:expression>
@@ -359,7 +360,7 @@
           <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 <p> Ваше звернення №[sID_Order] щодо видачи дозволу на видалення зелених насаджень опрацьоване.<br>
 Копія ордеру на видалення зелених насаджень у прикріпленому файлі.<br>
@@ -374,11 +375,11 @@
 <p>При собі треба мати оригінал паспорту.</p>
 <br>
 Телефон для довідок: (05445) 2-19-26<br>
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ЦНАП виконавчого комітету Лебединської міської ради,<br>
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -408,16 +409,16 @@
           <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 <p>По Вашому зверненню №[sID_Order] щодо видачи дозволу на видалення зелених насаджень не надійшла оплата.<br>
 Справа буде закрита.</p>
 <br>
 Телефон для довідок: (05445) 2-19-26<br>
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ЦНАП виконавчого комітету Лебединської міської ради,<br>
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

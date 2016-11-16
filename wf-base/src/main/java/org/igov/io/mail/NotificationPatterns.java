@@ -1,15 +1,18 @@
 package org.igov.io.mail;
 
+import java.util.List;
+import java.util.Map;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties_Notification;
+import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
 
 /**
  * User: goodg_000
@@ -126,9 +129,9 @@ public class NotificationPatterns {
 
     //nID_Process, saField, sBody, sToken
     //String sHead, String sBody, String sMailTo
-    public void sendTaskEmployeeQuestionEmail(String sHead, String sBody, String sMailTo, String sToken,
-        Long nID_Process, String saField, String soParams)
-        throws EmailException {
+    public void sendTaskEmployeeQuestionEmail(String sHead, String sCommentary, String sMailTo, String sToken,
+            Long nID_Process, String saField, String soParams)
+            throws EmailException, Exception {
         try {
             sHead = sHead == null ? "Просимо уточнити дані по Вашій заявці на iGov" : sHead;
             String sClientFIO = null;
@@ -136,12 +139,19 @@ public class NotificationPatterns {
             try {
                 if (soParams != null && !"".equals(soParams.trim())) {
                     JSONObject oParams = new JSONObject(soParams);
+                    //Object sName=oPatams.opt("sName");
+                    //String sEmployerFIO = oPatams.getString("sEmployerFIO");
                     if (oParams.has("sEmployerFIO")) {
                         sEmployerFIO = oParams.getString("sEmployerFIO");
                     }
                     if (oParams.has("sClientFIO")) {
                         sClientFIO = oParams.getString("sClientFIO");
                     }
+
+                    //JSONArray aField = oFields.getJSONArray("soData");
+                    /*for (int i = 0; i < aField.length(); i++) {
+                        JSONObject oField = aField.getJSONObject(i);
+                    StringBuilder osTable = new StringBuilder();*/
                 }
             } catch (Exception oException) {
                 LOG.warn("FAIL: {} (soParams={})", oException.getMessage(), soParams);
@@ -159,18 +169,19 @@ public class NotificationPatterns {
                     + (sEmployerFIO != null ? "(" + sEmployerFIO + ")" : "") + " потребує уточнення деяких даних.";
 
             StringBuilder osBody = new StringBuilder(sText);
-            osBody.append("<br>").append("<br>").append(createTable_TaskProperties_Notification(saField, false));
+            List<Map<String,String>> amReturn = amFieldMessageQuestion(saField, false);
+            osBody.append("<br>").append("<br>").append(createTable_TaskProperties(amReturn, false, true));//saField
             osBody.append("<br>").append("Примітка:").append("<br>");
-            osBody.append(sBody).append("<br>");
+            osBody.append(sCommentary).append("<br>");
             osBody.append("<br/>").append("Щоб уточнити дані, Вам потрібно <a href=\"" + sURL
                     + "\"> перейти в розділ \"Мій журнал\" порталу iGov</a> "
                     + "і внести інформацію у відповідні поля.").append("<br/>");
             osBody.append("<br/>").append("Дякуємо за порозуміння").append("<br/>");
             //osBody.append("Для уточнення - перейдіть по цьому посіланню: ").append(sURL).append("<br/>");
 
-            String sMailBody = osBody.toString();
+            String sBody = osBody.toString();
             Mail oMail = context.getBean(Mail.class);
-            oMail._To(sMailTo)._Head(sHead)._Body(sMailBody)._ToName(sClientFIO);
+            oMail._To(sMailTo)._Head(sHead)._Body(sBody)._ToName(sClientFIO);
             oMail.send();
         } catch (Exception oException) {
             LOG.warn("FAIL: {} (sMailTo={},sToken={},nID_Process={},saField={})", oException.getMessage(), sMailTo,
@@ -179,61 +190,6 @@ public class NotificationPatterns {
         }
     }
 
-    public void sendTaskEmployeeMessageEmail(String sHead, String sBody, String sMailTo, String sID_Order, String soParams)
-            throws EmailException {
-        try {
-            sHead = sHead == null ? "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead;
-            String sClientFIO = null;
-            String sEmployerFIO = null;
-            try {
-                if (soParams != null && !"".equals(soParams.trim())) {
-                    JSONObject oParams = new JSONObject(soParams);
-                    if (oParams.has("sEmployerFIO")) {
-                        sEmployerFIO = oParams.getString("sEmployerFIO");
-                    }
-                    if (oParams.has("sClientFIO")) {
-                        sClientFIO = oParams.getString("sClientFIO");
-                    }
-                }
-            } catch (Exception oException) {
-                LOG.warn("FAIL: {} (soParams={})", oException.getMessage(), soParams);
-            }
-
-            if (sClientFIO == null) {
-                sClientFIO = "громадянин";
-            }
-            
-            String sURL = (new StringBuilder(generalConfig.getSelfHostCentral()).append("/order/search?sID_Order=")
-                    .append(sID_Order)
-                    //.append("&sToken=").append(sToken)
-                    ).toString();
-
-            String sText = "<b>Шановний (-а) " + sClientFIO + "!</b><br><br>"
-                    + "У процесі обробки Вашого звернення, державний службовець "
-                    + (sEmployerFIO != null ? "(" + sEmployerFIO + ")" : "")
-                    + " надіслав Вам повідомлення:";
-
-            StringBuilder osBody = new StringBuilder(sText);
-            osBody.append("<br>");
-            osBody.append(sBody).append("<br>");
-            osBody.append("<br/>").append("Щоб відповісти, Вам потрібно <a href=\"" + sURL
-                    + "\"> перейти в розділ \"Мій журнал\" порталу iGov</a> "
-                    //+ "і внести інформацію у відповідні поля."
-                ).append("<br/>");
-            osBody.append("<br/>").append("Дякуємо за увагу").append("<br/>");
-            //osBody.append("Для уточнення - перейдіть по цьому посіланню: ").append(sURL).append("<br/>");
-
-            String sMailBody = osBody.toString();
-            Mail oMail = context.getBean(Mail.class);
-            oMail._To(sMailTo)._Head(sHead)._Body(sMailBody)._ToName(sClientFIO);
-            oMail.send();
-        } catch (Exception oException) {
-            LOG.warn("FAIL: {} (sMailTo={},sID_Order={})", oException.getMessage(), sMailTo,
-                    sID_Order);
-            throw oException;
-        }
-    }    
-    
     /*
     public void sendEmail(String sHead, String sBody, String recipient) throws EmailException {
         oMail.reset();

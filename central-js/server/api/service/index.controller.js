@@ -60,7 +60,9 @@ module.exports.getServiceFeedback = function (req, res) {
     'qs': {
       'sID_Token': data.sID_Token || 123,
       'nID_Service': req.params.nID,
-      'nID': data.sID_Order
+      'nID': data.sID_Order,
+      'nID__LessThen_Filter': data.nID__LessThen_Filter,
+      'nRowsMax': data.nRowsMax
     }
   }, callback);
 };
@@ -185,6 +187,35 @@ module.exports.setService = function (req, res) {
     'json': true,
     'body': req.body
   }, callback);
+};
+
+module.exports.getPatternFilled = function(req, res){
+  var callback = function (error, response, body) {
+    res.send(body);
+    res.end();
+  };
+
+  activiti.getServerRegionHost(req.body.nID_Server, regionHostCallback);
+
+  function regionHostCallback(data){
+    var regionHost = data,
+        url = regionHost + "/service/object/file/dfs/getPatternFilled";
+
+    request.post(url, {
+      auth: {
+        "username": config.username,
+        "password": config.password
+      },
+      headers: {
+        "content-type": "application/json; charset=utf-8"
+      },
+      qs: {
+        sID_Pattern: req.body.sID_Pattern
+      },
+      body: req.body.oData,
+      json: true
+    }, callback);
+  }
 };
 
 module.exports.removeServiceData = function (req, res) {

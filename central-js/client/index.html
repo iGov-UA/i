@@ -6,34 +6,34 @@
 <!--[if IE 8]>
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js"> <!--<![endif]-->
+<html class="no-js" ng-app="app"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible"
           content="IE=edge">
-  <base href="/">
-  <title ng-if="profile.isKyivCity">Портал державних послуг</title>
-  <title ng-if="!profile.isKyivCity">iGov – Портал державних послуг</title>
-  <meta name="description"
-        content="">
-  <meta name="viewport"
-        content="width=device-width">
+    <base href="/">
+    <title ng-if="profile.isKyivCity">Портал державних послуг</title>
+    <title ng-if="!profile.isKyivCity">iGov – Портал державних послуг</title>
+    <meta name="description"
+          content="">
+    <meta name="viewport"
+          content="width=device-width">
 
-  <!-- Facebook Graph Properties -->
-  <meta ng-if="!profile.isKyivCity" property="og:site_name" content="igov.org.ua — Портал державних послуг"/>
-  <meta ng-if="!profile.isKyivCity" property="og:image" content="https://igov.org.ua/assets/images/1b3b16cb.icon-476x476.png" />
-  <meta ng-if="!profile.isKyivCity" property="og:description" content="На порталі зібрано послуги державних органів України для громадян та бізнесу. Робота проводиться волонтерською командою iGov в рамках боротьби з корупцією в Україні та вдосконалення бізнес-процесів в державних органах. " />
-  <meta ng-if="profile.isKyivCity" property="og:site_name" content="es.kievcity.gov.ua — Портал державних послуг"/>
-  <meta ng-if="profile.isKyivCity" property="og:image" content="http://new.kievcity.gov.ua/logo.png" />
-  <meta ng-if="profile.isKyivCity" property="og:description" content="На порталі зібрано послуги державних органів України для громадян та бізнесу." />
-  <!-- End Of Facebook Graph Properties -->
+    <!-- Facebook Graph Properties -->
+    <meta ng-if="!profile.isKyivCity" property="og:site_name" content="igov.org.ua — Портал державних послуг"/>
+    <meta ng-if="!profile.isKyivCity" property="og:image" content="https://igov.org.ua/assets/images/1b3b16cb.icon-476x476.png" />
+    <meta ng-if="!profile.isKyivCity" property="og:description" content="На порталі зібрано послуги державних органів України для громадян та бізнесу. Робота проводиться волонтерською командою iGov в рамках боротьби з корупцією в Україні та вдосконалення бізнес-процесів в державних органах. " />
+    <meta ng-if="profile.isKyivCity" property="og:site_name" content="es.kievcity.gov.ua — Портал державних послуг"/>
+    <meta ng-if="profile.isKyivCity" property="og:image" content="http://new.kievcity.gov.ua/logo.png" />
+    <meta ng-if="profile.isKyivCity" property="og:description" content="На порталі зібрано послуги державних органів України для громадян та бізнесу." />
+    <!-- End Of Facebook Graph Properties -->
 
-  <!-- Apple Touch Icons -->
-  <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" href="assets/images/apple-touch-icon-60x60.png" />
-  <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="76x76" href="assets/images/apple-touch-icon-76x76.png">
-  <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="120x120" href="assets/images/apple-touch-icon-120x120.png">
-  <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="152x152" href="assets/images/apple-touch-icon-152x152.png">
-  <!-- End of Apple Touch Icons -->
+    <!-- Apple Touch Icons -->
+    <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" href="assets/images/apple-touch-icon-60x60.png" />
+    <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="76x76" href="assets/images/apple-touch-icon-76x76.png">
+    <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="120x120" href="assets/images/apple-touch-icon-120x120.png">
+    <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="152x152" href="assets/images/apple-touch-icon-152x152.png">
+    <!-- End of Apple Touch Icons -->
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
@@ -58,7 +58,7 @@
 
 </head>
 
-<body ng-app="app" errors-container>
+<body errors-container>
 
 <!-- Google Tag Manager -->
 <noscript>
@@ -175,6 +175,7 @@
 <script src="app/common/components/buttonFileSelect/buttonFileSelect.directive.js"></script>
 <script src="app/common/components/buttonFileUpload/buttonFileUpload.directive.js"></script>
 <script src="app/common/components/checkbox/checkboxIndeterminate.directive.js"></script>
+<script src="app/common/components/decryptFile/decryptFile.directive.js"></script>
 <script src="app/common/components/deletionModal/deletionModal.controller.js"></script>
 <script src="app/common/components/dropdown/factories/dropdown.js"></script>
 <script src="app/common/components/errors/directives/errorsContainer.js"></script>
@@ -245,11 +246,13 @@
 <script src="app/documents/factories/bankiddocumentspassport.factory.js"></script>
 <script src="app/feedback/controllers/feedback.controller.js"></script>
 <script src="app/feedback/feedback.js"></script>
+<script src="app/journal/answer/answer.content.controller.js"></script>
 <script src="app/journal/journal.content.controller.js"></script>
 <script src="app/journal/journal.helper.service.js"></script>
 <script src="app/journal/journal.index.controller.js"></script>
 <script src="app/journal/journal.search.controller.js"></script>
 <script src="app/journal/journal.state.js"></script>
+<script src="app/journal/stringToNumber.directive.js"></script>
 <script src="app/order/controllers/order.controller.js"></script>
 <script src="app/order/controllers/ordersearch.controller.js"></script>
 <script src="app/order/order.js"></script>
@@ -265,6 +268,8 @@
 <script src="app/service/place/controllers/place.controller.js"></script>
 <script src="app/service/place/states.js"></script>
 <script src="app/service/services/locationParser/serviceLocationParser.js"></script>
+<script src="app/service/services/tax.template.file.handler.config.js"></script>
+<script src="app/service/services/tax.template.file.handler.service.js"></script>
 <script src="app/service/subcategory/new.subcategory.controller.js"></script>
 <script src="app/service/subcategory/subcategory.controller.js"></script>
 <!-- endinjector -->
