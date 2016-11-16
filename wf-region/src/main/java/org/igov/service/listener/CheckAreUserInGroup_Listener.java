@@ -22,7 +22,8 @@ import static org.igov.service.business.action.task.core.AbstractModelTask.getSt
  - id пользователя
  - название группы
  Выходной параметр:
- - id поля (стандартный ResultOut), куда записать результат ( "true" - если пользователь принадлежит группе, "false" - в противном случае) */
+ - id поля (стандартный ResultOut), куда записать результат ( "true" - если пользователь принадлежит группе, "false" - в противном случае)
+ */
 
 @Component("checkUserGroup")
 public class CheckAreUserInGroup_Listener implements TaskListener {
@@ -33,6 +34,7 @@ public class CheckAreUserInGroup_Listener implements TaskListener {
     private RuntimeService runtimeService;
     public Expression sUsernameListener;   // Listener's переменные :
     public Expression sGroupListener;
+    public Expression ResultOut;
 
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -43,7 +45,7 @@ public class CheckAreUserInGroup_Listener implements TaskListener {
         //String sUsername3 = (String) runtimeService.getVariable(execution.getProcessInstanceId(), "sUsername");  // работает, это верхняя переменная, Процесса
 
         String sGroup = getStringFromFieldExpression(this.sGroupListener, execution);
-        runtimeService.setVariable(execution.getProcessInstanceId(), "resultListener", "false");
+        runtimeService.setVariable(execution.getProcessInstanceId(), "ResultOut", "false");
 
         boolean inGrp = false;
         List<Group> group = execution.getEngineServices().getIdentityService().createGroupQuery()
@@ -58,10 +60,10 @@ public class CheckAreUserInGroup_Listener implements TaskListener {
                 }
             }
             if (inGrp == true ) {
-                // runtimeService.setVariable(execution.getProcessInstanceId(), "resultListener", "true");
+                runtimeService.setVariable(execution.getProcessInstanceId(), "ResultOut", "true");
                 execution.setVariable("ResultOut", "True");
             } else {
-                //  runtimeService.setVariable(execution.getProcessInstanceId(), "resultListener", "false");
+                runtimeService.setVariable(execution.getProcessInstanceId(), "ResultOut", "false");
                 execution.setVariable("ResultOut", "False");
             }
         }
