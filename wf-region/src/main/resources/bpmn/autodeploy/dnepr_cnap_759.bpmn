@@ -91,8 +91,8 @@
         <activiti:formProperty id="sIzm_Plus_19" name="+ Изменения 19" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sIzm_Plus_20" name="+ Изменения 20" type="string" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="Info_00_01" name="======================================" type="label" default="======================================"></activiti:formProperty>
-        <activiti:formProperty id="Info_00_02" name="До яких даних юридичної особи Ви бажаєте внести зміни?" type="label" default=" "></activiti:formProperty>
+<!--        <activiti:formProperty id="Info_00_01" name="======================================" type="label" default="======================================"></activiti:formProperty> -->
+        <activiti:formProperty id="Info_00_02" name="Ви бажаєте внести зміни до" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_01_01" name="======================================" type="label" default="======================================"></activiti:formProperty>
 
         <activiti:formProperty id="asSelectIzm_01" name="1. Найменування юридичної особи" type="enum" default="tf_02" required="true">
@@ -150,6 +150,7 @@
           <activiti:value id="tf123" name="Чернівецька"></activiti:value>
           <activiti:value id="tf124" name="Чернігівська"></activiti:value>
         </activiti:formProperty>
+		
 
         <activiti:formProperty id="sVarOblPlus02_ADR01" name="область +" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarOblNam_0002_ADR01" name="Найменування області" type="string" default=" "></activiti:formProperty>
@@ -171,14 +172,11 @@
 
         <activiti:formProperty id="sVarPlaceNam_0002_ADR01" name="Назва населеного пункту; у випадку якщо була зміна назви населеного пункту (декомунізація) вкажіть додатково попередню назву у дужках - ПОТОЧНА НАЗВА (ПОПЕРЕДНЯ НАЗВА)" type="string" default=""></activiti:formProperty>
 
-<!-- ЗАГЛУШКА ЗАГЛУШКА ЗАГЛУШКА -->
-
         <activiti:formProperty id="sVarRajCity501Plus02_ADR01" name="В районі міста +" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarRajCityNam_0002_ADR01" name="Назва району в місті; у випадку якщо була зміна назви району (декомунізація) вкажіть додатково попередню назву у дужках - ПОТОЧНА НАЗВА (ПОПЕРЕДНЯ НАЗВА)" type="string" default=" "></activiti:formProperty>
 
-		
-		
-		
+<!-- ЗАГЛУШКА ЗАГЛУШКА ЗАГЛУШКА -->
+
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dnepr_cnap_759_print.html"></activiti:formProperty>
         <activiti:formProperty id="sNameService" type="invisible" default="Державна реєстрація змін до відомостей про юридичну особу"></activiti:formProperty>
@@ -187,7 +185,9 @@
 
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
 
-    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_all">
+<!-- НАЧАЛО ЮЗЕРТАСКА 1 -->
+
+    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_1499_all">
       <extensionElements>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -199,6 +199,122 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
 
+<!-- начало переменных -->
+        <activiti:formProperty id="Lblminus_001_01_01" name="===========================================================================" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asSelectRole_01" name="Оберіть Ваш статус" type="enum">
+          <activiti:value id="tf_01" name="Керівник"></activiti:value>
+          <activiti:value id="tf_02" name="Особа, яка має право вчиняти юридичні дії від імені юридичної особи (без довіреності)"></activiti:value>
+          <activiti:value id="tf_03" name="Уповноважена особа (за довіреністю)"></activiti:value>
+		</activiti:formProperty>
+
+        <activiti:formProperty id="sPl" name="Признак выбора пункта в заявлении" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSp" name="Признак не выбора пункта в заявлении" type="invisible"></activiti:formProperty>
+
+        <activiti:formProperty id="sRole_Plus_01" name="+ роль 01" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sRole_Plus_02" name="+ роль 02" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sRole_Plus_03" name="+ роль 03" type="invisible"></activiti:formProperty>
+
+        <activiti:formProperty id="Lblminus_001_01_02" name="===========================================================================" type="label" default=" "></activiti:formProperty>
+
+        <activiti:formProperty id="asSelectPidstava_01" name="Оберіть документ на підставі якого діє юридична особа" type="enum">
+          <activiti:value id="tf_01" name="- установчі документи, затверджені засновниками (учасниками)"></activiti:value>
+          <activiti:value id="tf_02" name="- модельний статут, затверджений постановою Кабінету Міністрів України"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sVarPidstava_01_Plus_01" name="собственный документ +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarPidstava_01_Plus_02" name="модельный документ +" type="invisible"></activiti:formProperty>
+
+        <activiti:formProperty id="Lblminus_001_01_03" name="===========================================================================" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVarINN_001_01" name="Ідентифікаційний код юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="asSelectOPF" name="Оберіть організаційно-правову форму юридичної особи; УВАГА - якщо в запропонованому переліку Ви не знайшли Ваш варіант - для отримання послуги зверніться, будь ласка, персонально до реєстратора." type="enum">
+          <activiti:value id="tf101" name="Приватне підприємство"></activiti:value>
+          <activiti:value id="tf102" name="Акціонерне товариство (приватне/публічне)"></activiti:value>
+          <activiti:value id="tf103" name="Об’єднання співвласників багатоквартирного будинку"></activiti:value>
+          <activiti:value id="tf104" name="Фермерське господарство"></activiti:value>
+          <activiti:value id="tf105" name="Кооператив (житлово-будівельний, садовий, гаражний)"></activiti:value>
+          <activiti:value id="tf106" name="Товариство з обмеженою відповідальністю"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sVarOPF" name="Організаційно-правова форма; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarUrName" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="Lblminus_001_01_04" name="===========================================================================" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asCourtIzm_01" name="Зміни пов'язані із судовим рішенням?" type="enum">
+          <activiti:value id="tf_01" name="Так"></activiti:value>
+          <activiti:value id="tf_02" name="Ні"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sVarCourtName" name="Найменування суду" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarCourtCaseDate" name="Дата рішення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sVarCourtCaseNum" name="Номер справи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarCourtCaseDateStart" name="Дата набрання чинності судовим рішенням" type="date"></activiti:formProperty>
+
+        <activiti:formProperty id="sIzm_Plus_01" name="+ Изменения 01" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_02" name="+ Изменения 02" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_03" name="+ Изменения 03" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_06" name="+ Изменения 06" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_07" name="+ Изменения 07" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_08" name="+ Изменения 08" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_10" name="+ Изменения 10" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_13" name="+ Изменения 13" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_15" name="+ Изменения 15" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_16" name="+ Изменения 16" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_17" name="+ Изменения 17" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_18" name="+ Изменения 18" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_19" name="+ Изменения 19" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_20" name="+ Изменения 20" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="asSelectIzm_01" name="1. Найменування юридичної особи" type="enum">
+          <activiti:value id="tf_01" name="Так"></activiti:value>
+          <activiti:value id="tf_02" name="Ні"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sVarOPF_02" name="Нова організаційно-правова форма; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarUrName_02" name="Нове найменування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarUrNameEn_02" name="Нове найменування англійською мовою або мовою національної меншини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Lblminus_001_01_05" name="===========================================================================" type="label" default=" "></activiti:formProperty>
+
+        <activiti:formProperty id="asSelectIzm_02" name="2. Скорочене найменування юридичної особи" type="enum">
+          <activiti:value id="tf_01" name="Так"></activiti:value>
+          <activiti:value id="tf_02" name="Ні"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sVarUrNameShort_02" name="Нове скорочене найменування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarUrNameEnShort_02" name="Нове скорочене найменування англійською мовою або мовою національної меншини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Lblminus_001_01_06" name="===========================================================================" type="label" default=" "></activiti:formProperty>
+
+        <activiti:formProperty id="asSelectIzm_03" name="3. Місцезнаходження юридичної особи" type="enum">
+          <activiti:value id="tf_01" name="Так"></activiti:value>
+          <activiti:value id="tf_02" name="Ні"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="Info_03_01" name="Нове місцезнаходження" type="label"></activiti:formProperty>
+        <activiti:formProperty id="sVarPostIndex_0002_ADR01" name="Поштовий індекс; ;writable=false" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="sVarOblPlus02_ADR01" name="область +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarOblNam_0002_ADR01" name="Найменування області; ;writable=false" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="sVarRajObl301Plus02_ADR01" name="Район області +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarRajOblNam_0002_ADR01" name="Найменування району області; ;writable=false" type="string"></activiti:formProperty>
+		
+        <activiti:formProperty id="asSelectTypePlace02_ADR01" name="Оберіть тип населеного пункту" type="enum">
+          <activiti:value id="tf401" name="Місто"></activiti:value>
+          <activiti:value id="tf402" name="Селище міського типу"></activiti:value>
+          <activiti:value id="tf403" name="Селище"></activiti:value>
+          <activiti:value id="tf404" name="Село"></activiti:value>
+        </activiti:formProperty>
+
+<!-- ТЕКУЩАЯ РАБОТА -->
+
+        <activiti:formProperty id="sVarPlace401Plus02_ADR01" name="Місто +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace402Plus02_ADR01" name="Селище міського типу +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace403Plus02_ADR01" name="Селище +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace404Plus02_ADR01" name="Село +" type="invisible"></activiti:formProperty>
+
+        <activiti:formProperty id="sVarPlaceNam_0002_ADR01" name="Назва населеного пункту; у випадку якщо була зміна назви населеного пункту (декомунізація) вкажіть додатково попередню назву у дужках - ПОТОЧНА НАЗВА (ПОПЕРЕДНЯ НАЗВА)" type="string" default=""></activiti:formProperty>
+		
+		
 <!-- ВСТАВКА -->
 
         <activiti:formProperty id="asChoiceCNAP" name="ВИКОНУВАЧ ПОСЛУГИ (важливо обирати свій район, оскільки саме на його рахунок буде надходити оплата за послугу)" type="enum" default="vasil" required="true">
@@ -220,7 +336,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${form_signed},${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01}</activiti:expression>
+            <activiti:expression>${form_signed},${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${fDoc_00}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
