@@ -8,8 +8,10 @@ package org.igov.service.business.subject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -43,6 +45,7 @@ public class SubjectGroupService {
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 
 		List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
+		Map<SubjectGroup, List<SubjectGroup>> subjToNodeMap = new HashMap<>();
 		VSubjectGroupParentNode parentSubjectGroup = null;
 		Set<Long> idParentList = new LinkedHashSet<>();
 		for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
@@ -56,15 +59,26 @@ public class SubjectGroupService {
 					parentSubjectGroup.setGroup(parent);
 					parentSubjectGroup.addChild(child);
 					parentSubjectGroups.add(parentSubjectGroup);
+					subjToNodeMap.put(parent, parentSubjectGroup.getChildren());
 				} else {
 					for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
 						if (vSubjectGroupParentNode.getGroup().getId().equals(parent.getId())) {
 							vSubjectGroupParentNode.getChildren().add(child);
+							subjToNodeMap.put(parent, vSubjectGroupParentNode.getChildren());
 						}
 					}
 				}
+				List<SubjectGroup> childSubjectGroup = subjToNodeMap.get(child);
+	            if (childSubjectGroup == null) {
+	            	childSubjectGroup.add(child);
+	            	subjToNodeMap.put(child, childSubjectGroup);
+	            	parentSubjectGroup.getChildren().add(child);	            
+	            	parentSubjectGroups.add(parentSubjectGroup);	
+	            
+	            }
 
 			}
+			
 		}
 		
 
