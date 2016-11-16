@@ -34,7 +34,7 @@ public class CheckAreUserInGroup_Listener implements TaskListener {
     private RuntimeService runtimeService;
     public Expression sUsernameListener;   // Listener's переменные :
     public Expression sGroupListener;
-    public Expression ResultOut;
+    public Expression resultListener;
 
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -52,7 +52,7 @@ public class CheckAreUserInGroup_Listener implements TaskListener {
                 .groupMember(sUsername1).list();
 
         if (group.size() == 0) {
-            execution.setVariable("ResultOut", "No such user");
+            execution.setVariable(getStringFromFieldExpression(this.resultListener, execution), "No such user");
         } else {
             for (Group grp : group) {
                 if (grp.getId().equals(sGroup)) {
@@ -60,11 +60,11 @@ public class CheckAreUserInGroup_Listener implements TaskListener {
                 }
             }
             if (inGrp == true ) {
-                runtimeService.setVariable(execution.getProcessInstanceId(), "ResultOut", "true");
-                execution.setVariable("ResultOut", "True");
+              //  runtimeService.setVariable(execution.getProcessInstanceId(), getStringFromFieldExpression(this.resultListener, execution), "true");
+                execution.setVariable(getStringFromFieldExpression(this.resultListener, execution), "True");
             } else {
-                runtimeService.setVariable(execution.getProcessInstanceId(), "ResultOut", "false");
-                execution.setVariable("ResultOut", "False");
+              //  runtimeService.setVariable(execution.getProcessInstanceId(), getStringFromFieldExpression(this.resultListener, execution), "false");
+                execution.setVariable(getStringFromFieldExpression(this.resultListener, execution), "False");
             }
         }
     }
