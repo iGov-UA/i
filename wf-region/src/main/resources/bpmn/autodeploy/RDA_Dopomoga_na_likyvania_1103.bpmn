@@ -207,7 +207,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
             <activiti:expression>${sDocPassport},${sDocIPN},${sDocMat_Umov},${sDocMat_Umov},${sDocDov_Bank}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-      </extensionElements
+      </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
@@ -249,7 +249,8 @@ ${sNameOrgan}.&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVidpovid == 'sEnamVidmova'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Допомогу надано" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <activiti:field name="from">
+      <extensionElements>
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
