@@ -84,7 +84,7 @@ public class SubjectGroupService {
 					}
 				}));
 		
-		for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
+		/*for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
 			for (VSubjectGroupParentNode vSubjectGroupParentNodef : parentSubjectGroupsFilltr) {
 				for (SubjectGroup subjectGroup : vSubjectGroupParentNodef.getChildren()) {
 					if (subjectGroup.getId().equals(vSubjectGroupParentNode.getGroup().getId())) {
@@ -96,7 +96,7 @@ public class SubjectGroupService {
 				}
 			}
 
-		}
+		}*/
 
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
