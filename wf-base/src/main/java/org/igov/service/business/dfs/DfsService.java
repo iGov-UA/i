@@ -69,9 +69,8 @@ public class DfsService {
                 for (ByteArrayMultipartFile multipartFile : multipartFiles) {
                     LOG.info("multipartFile.getOriginalFilename(): " + multipartFile.getOriginalFilename()
                             + " attachmentDocumentName: " + attachmentDocumentName);
-                    if ((multipartFile.getOriginalFilename().contains(attachmentDocumentName) 
-                            || multipartFile.getOriginalFilename().contains("F1401801")) 
-                            && !multipartFile.getOriginalFilename().endsWith(".xml")) {
+                    if ((multipartFile.getOriginalFilename().contains(attachmentDocumentName) && !multipartFile.getOriginalFilename().endsWith(".xml"))
+                            || multipartFile.getOriginalFilename().contains("F1401801")) {
                         Attachment attachment = taskService.createAttachment(multipartFile.getContentType() + ";" + multipartFile.getExp(),
                                 sID_Task, sID_Process,
                                 multipartFile.getOriginalFilename(), multipartFile.getName(), multipartFile.getInputStream());
@@ -79,9 +78,9 @@ public class DfsService {
                             asID_Attach_Dfs.append(attachment.getId()).append(",");
                             LOG.info("attachment: " + attachment.getId());
                         }
-                    } else{
+                    } else {
                         LOG.info("SKIP multipartFile.getOriginalFilename(): " + multipartFile.getOriginalFilename()
-                            + " attachmentDocumentName: " + attachmentDocumentName);
+                                + " attachmentDocumentName: " + attachmentDocumentName);
                     }
                 }
             }
@@ -93,7 +92,7 @@ public class DfsService {
             runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", sID_Attach_Dfs);
             taskService.setVariable(sID_Task, "anID_Attach_Dfs", sID_Attach_Dfs);
             //taskService.complete(sID_Task);
-        } else{
+        } else {
             runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", "");
             taskService.setVariable(sID_Task, "anID_Attach_Dfs", "");
         }
