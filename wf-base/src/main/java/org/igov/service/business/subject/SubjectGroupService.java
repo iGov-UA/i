@@ -71,13 +71,16 @@ public class SubjectGroupService {
 				}
 
 				for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
-					if (vSubjectGroupParentNode.getGroup().getId().equals(child.getId())) {
-					countChild++;
-					if (countChild.compareTo(deepLevel) < 0) {
-						vSubjectGroupParentNode.getChildren().add(child);
+					for (SubjectGroup subjectGroup : vSubjectGroupParentNode.getChildren()) {
+						if (subjectGroup.getId().equals(parent.getId())) {
+							countChild++;
+							if (countChild.compareTo(deepLevel) < 0) {
+								vSubjectGroupParentNode.getChildren().add(parent);
+							}
+						}
 					}
-					}
-			}	
+
+				}
 
 			}
 		}
