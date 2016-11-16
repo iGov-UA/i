@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="DFS_F1301801" name="Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків" isExecutable="true">
     <startEvent id="startevent1" name="Start">
-        <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище;Прізвище заявника;writable=true,sID_Field_SWinEd=HLNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я;Ім'я заявника;writable=true,sID_Field_SWinEd=HPNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові;По батькові заявника;writable=true,sID_Field_SWinEd=HFNAME" type="string"></activiti:formProperty>
@@ -33,7 +33,7 @@
         <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG" type="string"></activiti:formProperty>
         <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="F1301801"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Writable" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Обробка звернення " activiti:candidateGroups="sales">
@@ -119,14 +119,22 @@
     <sequenceFlow id="flow17" sourceRef="exclusivegateway1" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${anID_Attach_Dfs != ''}]]></conditionExpression>
     </sequenceFlow>
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_DFS_DFS_F1301801">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_DFS_F1301801">
     <bpmndi:BPMNPlane bpmnElement="DFS_F1301801" id="BPMNPlane_DFS_F1301801">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="41.0" width="41.0" x="57.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="67.0" width="105.0" x="150.0" y="113.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="getAnswerTimer" id="BPMNShape_getAnswerTimer">
+        <omgdc:Bounds height="30.0" width="30.0" x="225.0" y="133.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="67.0" width="105.0" x="530.0" y="114.0"></omgdc:Bounds>
@@ -137,8 +145,8 @@
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="295.0" y="218.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="getAnswerTimer" id="BPMNShape_getAnswerTimer">
-        <omgdc:Bounds height="30.0" width="30.0" x="225.0" y="133.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="371.0" y="245.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="330.0" y="129.0"></omgdc:Bounds>
