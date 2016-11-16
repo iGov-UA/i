@@ -21,50 +21,38 @@
     customRangeLabel: 'Вільний вибір проміжку'
   };
 
-  var adjustConfig = function(config, defaultValue) {
+  var adjustConfig = function (config, defaultValue) {
     var asDate = defaultValue.split(sSeparator);
 
-    /*
-    config.startDate = new Date(asDate[0]);
-
-    if (asDate[1]) {
-      config.endDate = new Date(asDate[1]);
-    }
-    */
-
-
     if (!asDate) {
-        config.startDate = new Date();
+      config.startDate = new Date();
+      config.endDate = config.startDate;
+    } else {
+      config.startDate = asDate[0];
+      if (asDate.length > 0 && asDate[1]) {
+        config.endDate = asDate[1];
+      } else {
         config.endDate = config.startDate;
-    }else{
-        config.startDate = new Date(asDate[0]);
-        if (asDate.length > 0 && asDate[1]) {
-          config.endDate = new Date(asDate[1]);
-        }else{
-          config.endDate = config.startDate;
-        }
+      }
     }
-
 
   };
 
-  var initDateRangePicker = function ($scope, element, ngModel, config) {
-
+  var initDateRangePicker = function ($scope, element, ngModelController, config) {
     var isInitialized = false;
-
     $scope.$watch(
       function () {
-        return ngModel.$modelValue;
+        return ngModelController.$modelValue;
       },
-      function (newValue) {
+      function (newValue, oldVal, scope) {
         if (!isInitialized) {
           if (newValue) {
             adjustConfig(config, newValue);
             element.daterangepicker(config);
           } else {
             element.daterangepicker(config);
-            ngModel.$setViewValue(undefined);
-            ngModel.$render();
+            ngModelController.$setViewValue(null);
+            ngModelController.$render();
           }
 
           isInitialized = true;
@@ -74,11 +62,11 @@
   };
 
   angular.module('dashboardJsApp')
-    .directive('datetimepicker', function () {
+    .directive('datetimepicker', function ($timeout) {
       return {
         restrict: 'AEC',
         require: 'ngModel',
-        link: function ($scope, element, attrs, ngModel) {
+        link: function ($scope, element, attrs, ngModelController) {
 
           var config = angular.copy(defaultConfig);
           config.singleDatePicker = true;
@@ -88,15 +76,42 @@
               config[attrname] = options[attrname];
             }
           }
+
           if (attrs.hasOwnProperty('format') && attrs.format) {
             config.locale.format = attrs.format;
           }
-          
-          if((attrs.hasOwnProperty('ngReadonly') && !$scope.$eval(attrs.ngReadonly)) ||
-            (!attrs.hasOwnProperty('ngReadonly') && !attrs.hasOwnProperty('readonly'))){
-            initDateRangePicker($scope, element, ngModel, config);
+
+          if (attrs.hasOwnProperty('separator') && attrs.separator) {
+            config.locale.separator = attrs.separator;
           }
 
+          var unregisterWatch = $scope.$watch(function(){
+            return ngModelController.$modelValue;
+          }, initialize);
+
+          function initialize(value){
+            if(value){
+              adjustConfig(config, value);
+            }
+            element.daterangepicker(config);
+            unregisterWatch();
+          }
+
+          ngModelController.$render = function () {
+            //TODO implement it if additional rendering should be done
+          };
+
+          if ((attrs.hasOwnProperty('ngReadonly') && !$scope.$eval(attrs.ngReadonly)) ||
+            (!attrs.hasOwnProperty('ngReadonly') && !attrs.hasOwnProperty('readonly'))) {
+            element.on('apply.daterangepicker', function (ev, picker) {
+              if (ngModelController) {
+                $timeout(function () {
+                  ngModelController.$setViewValue(picker.startDate.format(config.locale.format));
+                  ngModelController.$render();
+                });
+              }
+            });
+          }
         }
       };
     })
@@ -104,7 +119,7 @@
       return {
         restrict: 'AEC',
         require: 'ngModel',
-        link: function ($scope, element, attrs, ngModel) {
+        link: function ($scope, element, attrs, ngModelController) {
 
           var config = angular.copy(defaultConfig);
           config.singleDatePicker = false;
@@ -116,7 +131,7 @@
             'До кінця цього року': [moment(), moment().endOf('year')]
           };
 
-          initDateRangePicker($scope, element, ngModel, config);
+          initDateRangePicker($scope, element, ngModelController, config);
         }
       };
     });

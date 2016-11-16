@@ -35,7 +35,7 @@
   </div>
 
   <div class="open-full-info">
-    <a class="btn btn-link glyphicon glyphicon-modal-window" href="/task?nID_Task={{selectedTask.id}}" ng-if="::isShowExtendedLink()"></a>
+    <a class="btn btn-link glyphicon glyphicon-modal-window" title="Відкрити повний профіль задачі" href="/task?nID_Task={{selectedTask.id}}" ng-if="::isShowExtendedLink()"></a>
   </div>
 
   <div class="btn-group task-form-tabs" ng-if="!inUnassigned()">
@@ -96,16 +96,6 @@
                class="form-control_">{{item.value}}
         </label>
 
-        <!--тестовое поле line-->
-        <!--<div ng-if="item.type == 'line'">-->
-          <!--<div ng-if="item.value">-->
-            <!--<hr class="hr-divider">-->
-          <!--</div>-->
-          <!--<div ng-if="!item.value" class="addition-hr">-->
-            <!--<hr class="hr-divider side-left"><span>{{item.value}}</span><hr class="hr-divider side-right">-->
-          <!--</div>-->
-        <!--</div>-->
-
         <span style="display: none;" ng-if="['invisible'].indexOf(item.type) > -1">
           <label>{{sFieldLabel(item.name)}} {{isRequired(item) && item.writable ? "*" : ""}}</label>
         </span>
@@ -144,6 +134,32 @@
       <!--редактируемые поля для чиновника-->
       <hr class="hr-divider" ng-if="!inUnassigned() && isUnDisabledFields()">
       <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item) && !isFormPropertyDisabled(item)">
+
+        <!-- сепаратор -->
+        <div class="addition-hr" ng-if="insertSeparator(item.id).bShow">
+          <table style="width: 100%; height: auto">
+            <tr ng-if="insertSeparator(item.id).sText.length > 0">
+              <td style="width: 30%; text-align: right">
+                <hr class="hr-divider side-left" style="width: 95%;">
+              </td>
+              <td colspan="2" style="max-width: 40%; text-align: center">
+                <span style="bottom: 0px; padding: 0px">{{insertSeparator(item.id).sText}}</span>
+              </td>
+              <td style="width: 30%; text-align: left">
+                <hr class="hr-divider side-right" style="width: 95%;">
+              </td>
+            </tr>
+            <tr ng-if="insertSeparator(item.id).sText.length == 0">
+              <td style="width: 50%; text-align: right">
+                <hr class="hr-divider side-left" style="width: 97%;">
+              </td>
+              <td style="width: 50%; text-align: left">
+                <hr class="hr-divider side-right" style="width: 97%;">
+              </td>
+            </tr>
+          </table>
+        </div>
+
         <!--поле типа simple-field-->
         <simple-field></simple-field>
 
@@ -249,7 +265,7 @@
               </div>
             </div>
 
-          <div style="display: inline-block;" ng-if="!inUnassigned()">
+          <div style="display: inline-block;" ng-if="!inUnassigned() && bHasEmail">
             <div class="tasks-form-buttons-clarify" ng-if="sSelectedTask=='selfAssigned' && selectedTask.processDefinitionId.indexOf('system') != 0 && !isTaskSuccessfullySubmitted()">
               <button ng-if="!clarify" type="button" class="btn btn-link" ng-click="clarifyToggle()">Внести зауваження</button>
               <div ng-if="clarify" style="padding-top:5px;">

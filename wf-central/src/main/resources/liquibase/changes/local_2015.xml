@@ -1490,4 +1490,77 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="issue-1387-autoIncrements" author="brunneng">
+        <addAutoIncrement tableName="SubjectOrganJoinTax"
+                          columnName="nID"
+                          startWith="1"
+                          columnDataType="bigint"/>
+    </changeSet>
+
+    <changeSet id="issue-1387-makeDeferrable" author="brunneng" runOnChange="true" dbms="postgresql">
+        <dropForeignKeyConstraint baseTableName="Document" constraintName="FK_Document_Subject"/>
+        <addForeignKeyConstraint constraintName="FK_Document_Subject" referencedTableName="Subject" referencedColumnNames="nID"
+                                 baseTableName="Document" baseColumnNames="nID_Subject"
+                                 deferrable="true" deleteCascade="false"/>
+
+        <dropForeignKeyConstraint baseTableName="SubjectHuman" constraintName="FK_SubjectContact_SubjectContact_Email"/>
+        <addForeignKeyConstraint constraintName="FK_SubjectContact_SubjectContact_Email" baseTableName="SubjectHuman" baseColumnNames="nID_SubjectContact_DefaultEmail"
+                                 referencedTableName="SubjectContact" referencedColumnNames="nID"
+                                 deferrable="true" deleteCascade="false"/>
+
+        <dropForeignKeyConstraint baseTableName="SubjectHuman" constraintName="FK_SubjectContact_SubjectContact_Phone"/>
+        <addForeignKeyConstraint constraintName="FK_SubjectContact_SubjectContact_Phone" baseTableName="SubjectHuman" baseColumnNames="nID_SubjectContact_DefaultPhone"
+                                 referencedTableName="SubjectContact" referencedColumnNames="nID"
+                                 deferrable="true" deleteCascade="false"/>
+
+        <dropForeignKeyConstraint baseTableName="SubjectMessage" constraintName="FK_Subject_SubjectMessage"/>
+        <addForeignKeyConstraint constraintName="FK_Subject_SubjectMessage" baseTableName="SubjectMessage" baseColumnNames="nID_Subject"
+                                 referencedTableName="Subject" referencedColumnNames="nID"
+                                 deferrable="true" deleteCascade="false"/>
+
+        <dropForeignKeyConstraint baseTableName="HistoryEvent" constraintName="FK_Subject_HistoryEvent"/>
+        <addForeignKeyConstraint constraintName="FK_Subject_HistoryEvent" baseTableName="HistoryEvent" baseColumnNames="nID_Subject"
+                                 referencedTableName="Subject" referencedColumnNames="nID"
+                                 deferrable="true" deleteCascade="false"/>
+
+        <dropForeignKeyConstraint baseTableName="HistoryEvent" constraintName="FK_Document_HistoryEvent"/>
+        <addForeignKeyConstraint constraintName="FK_Document_HistoryEvent" baseTableName="HistoryEvent" baseColumnNames="nID_Document"
+                                 referencedTableName="Document" referencedColumnNames="nID"
+                                 deferrable="true" deleteCascade="false" />
+
+        <dropForeignKeyConstraint baseTableName="SubjectMessage" constraintName="FK_SubjectContact_Mail_SubjectContact_nID"/>
+        <addForeignKeyConstraint constraintName="FK_SubjectContact_Mail_SubjectContact_nID" baseTableName="SubjectMessage" baseColumnNames="nID_SubjectContact_Mail"
+                                 referencedTableName="SubjectContact" referencedColumnNames="nID"
+                                 deferrable="true" deleteCascade="false" />
+
+        <dropForeignKeyConstraint baseTableName="SubjectContact" constraintName="FK_SubjectContact_Subject"/>
+        <addForeignKeyConstraint constraintName="FK_SubjectContact_Subject" baseTableName="SubjectContact" baseColumnNames="nID_Subject"
+                                 referencedTableName="Subject" referencedColumnNames="nID"
+                                 deferrable="true" deleteCascade="false" />
+
+        <dropForeignKeyConstraint baseTableName="SubjectAccount" constraintName="FK_AccountContact_Subject"/>
+        <addForeignKeyConstraint constraintName="FK_AccountContact_Subject" baseTableName="SubjectAccount" baseColumnNames="nID_Subject"
+                                 referencedTableName="Subject" referencedColumnNames="nID"
+                                 deferrable="true" deleteCascade="false"/>
+
+    </changeSet>
+    
+    <changeSet id="issue-1397" author="HavrylinSerhii">
+        <addColumn tableName="SubjectMessageFeedback">
+            <column name="sID_Order" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>       
+    </changeSet>
+
+    <changeSet id="ServiceData_asAuth-size" author="bw">
+        <modifyDataType tableName="ServiceData" columnName="asAuth" newDataType="varchar(100)" />
+    </changeSet>
+    
+    <changeSet id="issue-1421_rename" author="yegor-kovylin">
+        <renameColumn newColumnName="nID_Process"
+                      oldColumnName="nID_Task"
+                      tableName="HistoryEvent_Service"/>
+    </changeSet>
+    
 </databaseChangeLog>

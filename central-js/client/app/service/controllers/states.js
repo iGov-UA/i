@@ -1,20 +1,20 @@
 angular.module('app')
-  .controller('ServiceFormController', function ($scope, service, regions, AdminService,
-                                                 ServiceService, TitleChangeService, CatalogService,
-                                                 $anchorScroll, $rootScope, feedback, statesRepository) {
-    $scope.spinner = true;
-    $scope.service = service;
-    $scope.regions = regions;
-    $scope.bAdmin = AdminService.isAdmin();
+.controller('ServiceFormController', function ($scope, service, regions, AdminService,
+                                               ServiceService, TitleChangeService, CatalogService,
+                                               $anchorScroll, $rootScope, feedback, statesRepository) {
+  $scope.spinner = true;
+  $scope.service = service;
+  $scope.regions = regions;
+  $scope.bAdmin = AdminService.isAdmin();
 
-    if(statesRepository.isKyivCity()){
-      $scope.bHideTab = true;
-    } else {
-      $scope.bHideTab = false;
-    }
+  if(statesRepository.isKyivCity()){
+    $scope.bHideTab = true;
+  } else {
+    $scope.bHideTab = false;
+  }
 
-    //TODO should be refactored after refactoring for single controller for app/service/index.html
-    $scope.feedback = feedback;
+  //TODO should be refactored after refactoring for single controller for app/service/index.html
+  $scope.feedback = feedback;
 
   var sServiceName = $scope.service.sName;
   var data = CatalogService.getServiceTags(sServiceName).then(function (res) {
@@ -140,6 +140,9 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
     } else {
       return $sce.trustAsHtml(string);
     }
+  };
+  $scope.goToService = function (nID) {
+    $location.path("/service/"+nID+"/general");
   };
   $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {
@@ -384,8 +387,9 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
     dateFrom = $scope.getTimeInterval($scope.statisticDateBegin);
     dateTo = $scope.getTimeInterval($scope.statisticDateEnd);
     exclude = $scope.sanIDServiceExclude;
+    var sCodepage = 'utf-8';
 
-    ServiceService.getServiceHistoryReport(dateFrom, dateTo, exclude).then(function (res) {
+    ServiceService.getServiceHistoryReport(dateFrom, dateTo, exclude, sCodepage).then(function (res) {
       var resp = res.data;
       var responseSplited = resp.split(';');
       var correct = responseSplited[12].split('\n');

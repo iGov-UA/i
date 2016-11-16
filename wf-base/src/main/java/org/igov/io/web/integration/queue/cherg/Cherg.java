@@ -169,6 +169,8 @@ public class Cherg {
 	    
 	} catch (ParseException e) {
             LOG.error("Error parsing response = {}", sReturn, e);
+            throw new Exception("Error parsing response for: [sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
+                    + oHttpEntityCover.nStatus());
 	}
 
         return oaJSONArrayReturn;
@@ -177,10 +179,6 @@ public class Cherg {
     public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
         JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
         
-        if (oaJSONArray == null ) {
-            throw new Exception("");            
-        }
-                
 	JSONObject oJSONObjectReturn = new JSONObject();
 	oJSONObjectReturn.put("aDate", oaJSONArray);
         LOG.info("Workdays only work days:{}", oJSONObjectReturn.toJSONString());

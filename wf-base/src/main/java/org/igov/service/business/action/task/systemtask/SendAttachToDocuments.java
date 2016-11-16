@@ -25,6 +25,8 @@ import org.igov.service.business.document.DocumentContentTypeUtil;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
 
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+
 /**
  * @author a.skosyr
  */
@@ -163,17 +165,5 @@ public class SendAttachToDocuments implements JavaDelegate {
 		*/
 		LOG.info("Received response from setDocumentFile: {}", nReturn);
 	}
-
-	protected String getStringFromFieldExpression(Expression expression,
-            DelegateExecution execution) {
-        if (expression != null) {
-            Object value = expression.getValue(execution);
-            if (value != null) {
-                return value.toString();
-            }
-        }
-        return null;
-    }
-
     
 }

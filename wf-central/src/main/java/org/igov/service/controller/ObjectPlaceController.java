@@ -977,8 +977,8 @@ public class ObjectPlaceController {
             } catch (RuntimeException e) {
                 LOG.warn("Error: {}", e.getMessage());
                 LOG.trace("FAIL:",  e);
-                //response.setStatus(HttpStatus.FORBIDDEN.value());
-                //response.setHeader("Reason", e.getMessage());
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                response.setHeader("Reason", e.getMessage());
             } 
             return result;
         }

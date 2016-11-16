@@ -8,7 +8,27 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть медичний заклад, в який Ви бажаєте записатись на прийом" type="select" default="0"></activiti:formProperty>     
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть медичний заклад, в який Ви бажаєте записатись на прийом" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="Rayon" name="Просимо вказати з якого Ви району" type="enum" required="true">
+        <activiti:value id="berezh" name="Бережанський район"></activiti:value>
+        <activiti:value id="borshch" name="Борщівський район"></activiti:value>
+        <activiti:value id="buch" name="Бучацький район"></activiti:value>
+        <activiti:value id="gus" name="Гусятинський район"></activiti:value>
+        <activiti:value id="zalishch" name="Заліщицький район"></activiti:value>
+        <activiti:value id="zbarazh" name="Збаразький район"></activiti:value>
+        <activiti:value id="zboriv" name="Зборівський район"></activiti:value>
+        <activiti:value id="kozova" name="Козівський район"></activiti:value>
+        <activiti:value id="kremen" name="Кременецький район"></activiti:value>
+        <activiti:value id="lanov" name="Лановецький район"></activiti:value>
+        <activiti:value id="monas" name="Монастириський район"></activiti:value>
+        <activiti:value id="pidvol" name="Підволочиський район"></activiti:value>
+        <activiti:value id="pidgai" name="Підгаєцький район"></activiti:value>
+        <activiti:value id="tereb" name="Теребовлянський район"></activiti:value>
+        <activiti:value id="tern" name="Тернопільський район"></activiti:value>
+        <activiti:value id="chort" name="Чортківський район"></activiti:value>
+        <activiti:value id="shums" name="Шумський район"></activiti:value>
+        <activiti:value id="ternopil" name="м.Тернопіль"></activiti:value>
+        </activiti:formProperty>     
         <activiti:formProperty id="sLikar" name="Оберіть лікаря до якого Ви бажаєте записатись на прийом" type="enum"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
@@ -17,8 +37,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLikari" name="Лікарі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/medicine.json')}"></activiti:formProperty>
       </extensionElements>
@@ -100,13 +119,14 @@ execution.setVariable('sNotification_day', timer)</script>
 Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
-										<b>Необхідні документи, які треба принести до ${sLikar}:</b><br>
+										<b>Необхідні документи, які треба принести до ${sLikari}:</b><br>
+									    <ul>
+										Прийти за адресою: ${sAddress}.</ul>
 										<ul>
-										<li>Прийти за адресою: ${sAddress}.</li>
-										<li>При собі мати:</li>
-										<li>- Направлення;</li>
-										<li>- Флюрографію та ренген;</li>
-										<li>- Первинну документацію (за навності)</li>
+										При собі мати:</ul>
+										<ul><li>Направлення;</li>
+										<li>Флюрографію та ренген;</li>
+										<li>Первинну документацію (за навності)</li>
 										</ul>
 									</p>
 [pattern/mail/_common_signature_start.html]
@@ -117,7 +137,7 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow32" sourceRef="servicetask6" targetRef="parallelgateway2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="ID картка" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="${sLikari}" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -133,16 +153,17 @@ ${sNameOrgan},<br>
 									<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 									<p>
 										Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
-										Ви записались до ${sLikar}.
+										Ви записались до ${sLikari} 
 									</p>
 									<p>
 										Для того щоб закінчити процедуру необхідно:<br>
 										<ul>
-										<li>Прийти за адресою: ${sAddress}.</li>
-										<li>При собі мати:</li>
-										<li>- Направлення;</li>
-										<li>- Флюрографію та ренген;</li>
-										<li>- Первинну документацію (за навності)</li>
+										Прийти за адресою: ${sAddress}.</ul>
+										<ul>
+										При собі мати:</ul>
+										<ul><li>Направлення;</li>
+										<li>Флюрографію та ренген;</li>
+										<li>Первинну документацію (за навності)</li>
 										</ul>
 									</p>
 									<p>
@@ -171,7 +192,7 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="med_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="${sLikari}" activiti:candidateGroups="med_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
@@ -179,7 +200,33 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Registrationservice" name="Орган, що здійснює прийом" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Rayon" name="Просимо вказати з якого Ви району" type="enum" writable="false">>
+        <activiti:value id="berezh" name="Бережанський район"></activiti:value>
+        <activiti:value id="borshch" name="Борщівський район"></activiti:value>
+        <activiti:value id="buch" name="Бучацький район"></activiti:value>
+        <activiti:value id="gus" name="Гусятинський район"></activiti:value>
+        <activiti:value id="zalishch" name="Заліщицький район"></activiti:value>
+        <activiti:value id="zbarazh" name="Збаразький район"></activiti:value>
+        <activiti:value id="zboriv" name="Зборівський район"></activiti:value>
+        <activiti:value id="kozova" name="Козівський район"></activiti:value>
+        <activiti:value id="kremen" name="Кременецький район"></activiti:value>
+        <activiti:value id="lanov" name="Лановецький район"></activiti:value>
+        <activiti:value id="monas" name="Монастириський район"></activiti:value>
+        <activiti:value id="pidvol" name="Підволочиський район"></activiti:value>
+        <activiti:value id="pidgai" name="Підгаєцький район"></activiti:value>
+        <activiti:value id="tereb" name="Теребовлянський район"></activiti:value>
+        <activiti:value id="tern" name="Тернопільський район"></activiti:value>
+        <activiti:value id="chort" name="Чортківський район"></activiti:value>
+        <activiti:value id="shums" name="Шумський район"></activiti:value>
+        <activiti:value id="ternopil" name="м.Тернопіль"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLikari" name="Лікарі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин з'явився"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>

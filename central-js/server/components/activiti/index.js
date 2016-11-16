@@ -142,16 +142,9 @@ module.exports.getAuth = function () {
 module.exports.getDefaultCallback = function (res) {
   return function (error, response, body) {
     if (error) {
-      //res.status(500).send(error);
-      res.statusCode = 500;
-      res.send(error);
+      res.status(500).send(error);
     } else {
-      //res.status(response.statusCode).send(body);
-      res.statusCode = response.statusCode;
-      if(typeof(body) === 'number'){
-        body = '' + body;
-      }
-      res.send(body);
+      res.status(response.statusCode).send(body);
     }
   }
 };

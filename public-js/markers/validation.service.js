@@ -50,8 +50,9 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
    * @param {object} markers - маркери валідації. Необов'язковий параметр. Якщо він відсутній, то спрацюють маркери за замовчуванням, див. _resolveValidationMarkers
    * @param {boolean} immediateValidation - необов'язковий, вказує, чи треба проводити першу валідацію одразу після призначення валідаторів.
    * @param (object) data - необов'язковий, але необхідний, якщо значення, які необхідно провалыдувати, не передаються засобами сервісу штатного валідатора в параметрах modelValue та viewValue
+   * @param {boolean} newRow - необов'язковий, використовується для валідації таблицi при додаваннi нового рядка
    */
-  self.validateByMarkers = function (form, markers, immediateValidation, data) {
+  self.validateByMarkers = function (form, markers, immediateValidation, data, newRow) {
 
     // Якщо маркери валідації прийшли зовні - то використати їх
     function _resolveValidationMarkers(markers) {
@@ -71,7 +72,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     // поместил в проверку тк ранее при сабмите, если параметр data не передавали, formData не могла взять параметры с undefined
     // и были ошибки
     if (data) {
-      self.oFormDataParams = data.formData.params || {};
+      self.oFormDataParams = data || {};
     }
 
     angular.forEach(markers.validate, function (marker, markerName) {
@@ -95,7 +96,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 */
       angular.forEach(form, function (formField) {
 
-        self.setValidatorByMarker(marker, markerName, formField, immediateValidation);
+        self.setValidatorByMarker(marker, markerName, formField, immediateValidation, false, newRow);
       });
     });
   };
@@ -121,7 +122,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     return markerName;
   };
 
-  self.setValidatorByMarker = function (marker, markerName, formField, immediateValidation, forceValidation) {
+  self.setValidatorByMarker = function (marker, markerName, formField, immediateValidation, forceValidation, newRow) {
 
     markerName = self.trimMarkerName(markerName);
 
@@ -129,6 +130,41 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     var fieldNameIsListedInMarker = formField && formField.$name && _.indexOf(marker.aField_ID, formField.$name) !== -1;
     var existingValidator = formField && formField.$validators && formField.$validators[keyByMarkerName];
 
+    // для того чтобы валидация работала в таблице, нужно добраться до полей, вводится доп проверка.
+    if(!fieldNameIsListedInMarker) {
+      angular.forEach(formField, function (field) {
+        if(typeof field === 'object') {
+          if(newRow) field = formField;
+          angular.forEach(field, function (table) {
+            angular.forEach(table, function (tableField) {
+              if (tableField && tableField.$name) {
+                for(var i=0; i<marker.aField_ID.length; i++){
+                  if(tableField.$name.indexOf(marker.aField_ID[i]) !== -1) {
+                    var keyByMarkerName = self.validatorNameByMarkerName[markerName];
+                    var fieldNameIsListedInMarker = tableField;
+                    var existingValidator = tableField && tableField.$validators && tableField.$validators[keyByMarkerName];
+                    if ((fieldNameIsListedInMarker /* || forceValidation */ ) && !existingValidator) {
+                      var markerOptions = angular.copy(marker) || {};
+                      if (marker.aField_ID && !tableField.$name.indexOf(marker.aField_ID[i]) > -1) marker.aField_ID.push(tableField.$name)
+                      markerOptions.key = keyByMarkerName;
+                      if (!tableField.$validators) return true;
+                      tableField.$validators[keyByMarkerName] = self.getValidatorByName(markerName, markerOptions, tableField);
+                      if (immediateValidation === true) tableField.$validate();
+                      if (markerOptions.inheritedValidator && typeof markerOptions.inheritedValidator === 'string') {
+                        self.setValidatorByMarker(marker, markerOptions.inheritedValidator, tableField, immediateValidation, true);
+                      }
+                    } else if (fieldNameIsListedInMarker && existingValidator) {
+                      if (immediateValidation === true) tableField.$validate();
+                    }
+                  }
+                  break
+                }
+              }
+            })
+          });
+        }
+      })
+    }
     // Встановлюємо валідатор Angular - тільки для поля, що згадується у маркері валідації, і тільки один раз.
     if ((fieldNameIsListedInMarker /* || forceValidation */ ) && !existingValidator) {
 
@@ -650,7 +686,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      }*/
     'CustomFormat': function (modelValue, viewValue, options) {
       console.log("viewValue=" + viewValue);
-      if (modelValue === null || modelValue === '') {
+      if (modelValue === null || modelValue === '' || modelValue === undefined) {
         return true;
       }
       var bValid = true;
@@ -670,7 +706,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
       var nCount = sValue.length;
       console.log("nCount=" + nCount);
-      var n = 0
+      var n = 0;
       while (bValid && n < nCount) {
         console.log("n=" + n);
         var s = sValue.substr(n, 1);
@@ -736,8 +772,11 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
       var params = self.oFormDataParams;
       for(var paramObj in params) if (params.hasOwnProperty(paramObj)){
-        if(params[paramObj].value && params[paramObj].value.id && params[paramObj].fileName){
+        if(params[paramObj].value && params[paramObj].fileName){
           if(modelValue.id === params[paramObj].value.id){
+            sFileName = params[paramObj].fileName;
+            break;
+          } else if (modelValue.id === params[paramObj].value) {
             sFileName = params[paramObj].fileName;
             break;
           }

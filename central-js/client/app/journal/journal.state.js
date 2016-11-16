@@ -95,6 +95,23 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
             }
           });
         }*/
+      })  //https://github.com/e-government-ua/i/issues/1422
+      .state('index.journal.answer', {
+        url: '/answer/DFS?signedFileID&fileName',
+        views: {
+          'main@': {
+            templateUrl: 'app/journal/answer/answer.content.html',
+            controller: 'AnswerContentController'
+          },
+          resolve: {
+            BankIDLogin: function (UserService) {
+              return UserService.isLoggedIn()
+                .catch(function () {
+                  return false;
+                });
+            }
+          }
+        }
       });
 //  }
 });
