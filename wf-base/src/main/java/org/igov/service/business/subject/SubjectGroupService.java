@@ -13,6 +13,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.common.base.Function;
 
 /**
  *
@@ -40,7 +42,7 @@ public class SubjectGroupService {
 	@Autowired
 	private BaseEntityDao<Long> baseEntityDao;
 
-	public List<VSubjectGroupParentNode> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+	public List<List<SubjectGroup>> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 		countChild = 0L;
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 
@@ -55,8 +57,10 @@ public class SubjectGroupService {
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
 				parentSubjectGroup = new VSubjectGroupParentNode();
 				final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
-				if(!idChildrenList.contains(child)) {
-					idChildrenList.add(child.getId());
+				if (!idChildrenList.contains(child)) {
+					if (subjToNodeMap.get(child) != null && !subjToNodeMap.get(child).isEmpty()) {
+						idChildrenList.add(child.getId());
+					}
 				}
 				if (!idParentList.contains(parent.getId())) {
 					idParentList.add(parent.getId());
@@ -73,10 +77,32 @@ public class SubjectGroupService {
 					}
 				}
 			}
-			
+
+		}
+
+		Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
+		for (Long parentId : idParentList) {
+			List<SubjectGroup> children = subjToNodeMap.get(parentId);
+
+			final List<Long> idChildren = Lists.newArrayList(
+					Collections2.transform(subjToNodeMap.get(parentId), new Function<SubjectGroup, Long>() {
+						@Override
+						public Long apply(SubjectGroup subjectGroup) {
+							return subjectGroup.getId();
+						}
+					}));
+
+			for (Long chid : idChildren) {
+				List<SubjectGroup> child = subjToNodeMap.get(chid);
+				if (subjToNodeMap.get(chid) != null && !subjToNodeMap.get(chid).isEmpty()) {
+					children.addAll(child);
+				}
+			}
+			subjToNodeMapFiltr.put(parentId, children);
 		}
 		
-		
+		List<List<SubjectGroup>> valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
+
 		Collections.sort(parentSubjectGroups, new Comparator() {
 			@Override
 			public int compare(Object vSubjectGroupParentNode, Object vSubjectGroupParentNodeTwo) {
@@ -92,24 +118,10 @@ public class SubjectGroupService {
 						return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
 					}
 				}));
-		
-		/*for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
-			for (VSubjectGroupParentNode vSubjectGroupParentNodef : parentSubjectGroupsFilltr) {
-				for (SubjectGroup subjectGroup : vSubjectGroupParentNodef.getChildren()) {
-					if (subjectGroup.getId().equals(vSubjectGroupParentNode.getGroup().getId())) {
-						countChild++;
-						if (countChild.compareTo(deepLevel) < 0) {
-							vSubjectGroupParentNodef.getChildren().add(vSubjectGroupParentNode.getChildren().get(countChild.intValue()));
-						}
-					}
-				}
-			}
-
-		}*/
 
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
-		return parentSubjectGroups;
+		return valuesRes;
 
 	}
 
