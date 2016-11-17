@@ -44,8 +44,8 @@ public class ManagerSMS {
            
     public String sendSms(String phone, String message, String sID_Order, boolean oldApiFlag) throws Exception
     {
-        Pattern regexpLifeCell = Pattern.compile("\\+(38093(.*)|38063(.*)|38073(.*))");
-        //Pattern regexKyivStar = Pattern.compile("\\+38067(.*)|\\+38096(.*)|\\+38097(.*)|\\+38098(.*)");
+        Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)|38073");
+        Pattern regexKyivStar = Pattern.compile("38067(.*)|38096(.*)|38097(.*)|38098(.*)");
 
         String resp = "[none]";
         
