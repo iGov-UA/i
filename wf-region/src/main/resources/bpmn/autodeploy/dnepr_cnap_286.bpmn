@@ -306,7 +306,12 @@ ${sNameOrgan}&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
+      <script>var sum = 16.09;
+if ((execution.getVariable('asLust')) === 'sEnamLustKur') {
+	sum =  36.45;
+}
+execution.setVariable('sSum', sum);      
+
 var per1 = "&lt;li&gt;Документ, що посвідчує особу.&lt;/li&gt;"
 var per2 = "&lt;li&gt;Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом.&lt;/li&gt;"
 var per3 = " "

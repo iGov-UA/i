@@ -47,7 +47,12 @@
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
+      <script>var sum = 16.09;
+if ((execution.getVariable('asLust')) === 'sEnamLustKur') {
+	sum =  36.45;
+}
+execution.setVariable('sSum', sum);      
+
 var num1 = [ "otr", "orend", "podatok"]
 var num2 = [ "Для отримання земельної ділянки у власність", "Для оформлення договору оренди", "Для подачі в податкову для нарахування податку на землю"]
 for (var i = 0; i&lt;3; i++){
