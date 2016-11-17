@@ -89,7 +89,8 @@ angular.module('autocompleteService')
     $scope.onSelectDataList = function (item, tableName, rowIndex) {
         var additionalPropertyName = getAdditionalPropertyName();
         if (rowIndex || rowIndex >= 0) {
-            angular.forEach($scope.activitiForm.formProperties, function (property) {
+            var form = $scope.activitiForm ? $scope.activitiForm.formProperties : $scope.taskForm;
+            angular.forEach(form, function (property) {
                 if (property.id === tableName) {
                     angular.forEach(property.aRow[rowIndex].aField, function (field, key, obj) {
                         if (field.id === additionalPropertyName) {

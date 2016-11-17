@@ -24,7 +24,8 @@ angular.module('autocompleteService', [])
             apiUrl: './api/subject/organs/join-tax',
             init: function (scope) {
                 // данный $watch нужен для полей в таблице
-                angular.forEach(scope.activitiForm.formProperties, function (table, tableKey) {
+                var form = scope.activitiForm ? scope.activitiForm.formProperties : scope.taskForm;
+                angular.forEach(form, function (table, tableKey) {
                     if(table.type === 'table') {
                         angular.forEach(table.aRow, function (row, rowKey) {
                             angular.forEach(row.aField, function (field, fieldKey) {
