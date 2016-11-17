@@ -3,8 +3,7 @@
   <process id="_test_asamoylenko" name="_test_asamoylenko" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sTable1" name="������� ����; ;nRowsLimit=5" type="string" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sField1&quot;,&quot;name&quot;:&quot;���� 1&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sField2&quot;,&quot;name&quot;:&quot;����2&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sVar" name="����� string" type="string" variable="Hello amigo!"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAsignee_step11" name="assignUser" type="string" default="gonzo"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -55,7 +54,7 @@
             <activiti:expression>${nFile1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="end" delegateExpression="${chekForCompleteParallelProcessTest}">
+        <activiti:taskListener event="complete" delegateExpression="${chekForCompleteParallelProcessTest}">
           <activiti:field name="paramName">
             <activiti:expression>sOpenGate</activiti:expression>
           </activiti:field>
