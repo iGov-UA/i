@@ -81,10 +81,10 @@ public class SubjectGroupService {
 		Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
 		List<List<SubjectGroup>> valuesRes = Lists.newArrayList();
 		for (Long parentId : idParentList) { // идем по ид парентов (там все все все паренты)
-			List<SubjectGroup> children = subjToNodeMap.get(parentId); //достаем его детей
+			
 			Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti); //достаем ид sID_Group_Activiti которое на вход
 			
-			if(groupFiltr.compareTo(parentId)==0) {
+				List<SubjectGroup> children = subjToNodeMap.get(groupFiltr); //достаем его детей
 			//получаем только ид чилдренов
 			final List<Long> idChildren = Lists.newArrayList(
 					Collections2.transform(subjToNodeMap.get(parentId), new Function<SubjectGroup, Long>() {
@@ -104,7 +104,6 @@ public class SubjectGroupService {
 			subjToNodeMapFiltr.put(parentId, children);
 			valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
 			}
-		}
 		
 		
 
