@@ -22,29 +22,25 @@ import org.springframework.stereotype.Component;
  */
 @Component("updateStatus_HistoryServiceEvent")
 public class UpdateStatus_HistoryServiceEvent implements JavaDelegate {
-    
+
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(UpdateStatus_HistoryServiceEvent.class);
-    
+
     @Autowired
     HistoryEventService historyEventService;
-    
+
     @Autowired
     GeneralConfig generalConfig;
-    
+
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        Map<String, String> mParam = new HashMap<>();
-        String sID_order = generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId()));
-        mParam.put("nID_StatusType", String.valueOf(HistoryEvent_Service_StatusType.CLOSED.getnID()));
-        
         try {
-            LOG.info("mParam: " + mParam);
-            String result = historyEventService.updateHistoryEvent(sID_order, mParam);
+            String sID_order = generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId()));
+            LOG.info("sID_Order: " + sID_order);
+            String result = historyEventService.updateHistoryEvent(sID_order, HistoryEvent_Service_StatusType.CLOSED, null);
             LOG.info("result: " + result);
         } catch (Exception ex) {
             LOG.error("updateStatus_HistoryServiceEvent fals!!!", ex);
         }
-        
     }
-    
+
 }

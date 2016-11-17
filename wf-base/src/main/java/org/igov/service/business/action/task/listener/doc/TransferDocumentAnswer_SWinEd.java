@@ -29,17 +29,13 @@ public class TransferDocumentAnswer_SWinEd implements TaskListener {
     @Autowired
     private DfsService dfsService;
     
-    @Autowired
-    private TaskService taskService;
-    
 
     @Override
     public void notify(DelegateTask delegateTask) {
-        LOG.info("!!!");
+        LOG.info("!!! delegateTask.getId(): " + delegateTask.getId());
         String sINN_Value = getStringFromFieldExpression(this.sINN, delegateTask.getExecution());
         String asID_Attach_Dfs = dfsService.getAnswer(delegateTask.getId(), delegateTask.getProcessInstanceId(), sINN_Value);
-        LOG.info("!!!as: " + asID_Attach_Dfs);
-        taskService.complete(delegateTask.getId());
+        LOG.info("!!! delegateTask.getId(): " + delegateTask.getId() + " as: " + asID_Attach_Dfs);
     }
 
 }

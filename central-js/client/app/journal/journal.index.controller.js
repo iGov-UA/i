@@ -10,7 +10,7 @@ angular.module('journal').controller('JournalController', function ($rootScope, 
   }
 
   activate();
-
+//https://github.com/e-government-ua/i/issues/1422
   function activate() {
     if(BankIDLogin){
       $state.go('.content');
