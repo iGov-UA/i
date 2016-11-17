@@ -20,6 +20,13 @@ module.exports = function(app) {
   app.use('/auth', require('./auth'));
   app.use('/api/profile', require('./api/profile'));
   app.use('/api/users', require('./api/user'));
+  app.use('/api/countries', require('./api/countries'));
+  app.use('/api/currencies', require('./api/currencies'));
+  app.use('/api/object-customs', require('./api/object-customs'));
+  app.use('/api/subject', require('./api/subject'));
+  app.use('/api/object-earth-target', require('./api/object-earth-target'));
+  app.use('/api/subject-action-kved', require('./api/subject-action-kved'));
+  app.use('/api/object-place', require('./api/object-place'));
 
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets|public-js)/*')
