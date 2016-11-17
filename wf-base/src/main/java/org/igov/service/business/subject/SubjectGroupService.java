@@ -38,12 +38,10 @@ import com.google.common.base.Function;
 public class SubjectGroupService {
 	private static final Log LOG = LogFactory.getLog(SubjectGroupService.class);
 	private static final long FAKE_ROOT_SUBJECT_ID = 0;
-	private Long countChild = 0L;
 	@Autowired
 	private BaseEntityDao<Long> baseEntityDao;
 
 	public List<List<SubjectGroup>> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
-		countChild = 0L;
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 
 		List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
@@ -51,31 +49,26 @@ public class SubjectGroupService {
 		Map<String, Long> mapGroupActiviti = new HashMap<>();
 		VSubjectGroupParentNode parentSubjectGroup = null;
 		Set<Long> idParentList = new LinkedHashSet<>();
-		Set<Long> idChildrenList = new LinkedHashSet<>();
 		for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
 
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
 				parentSubjectGroup = new VSubjectGroupParentNode();
 				final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
-				if (!idChildrenList.contains(child)) {
-					if (subjToNodeMap.get(child) != null && !subjToNodeMap.get(child).isEmpty()) {
-						idChildrenList.add(child.getId());
-					}
-				}
 				if (!idParentList.contains(parent.getId())) {
 					idParentList.add(parent.getId());
-					parentSubjectGroup.setGroup(parent);
-					parentSubjectGroup.addChild(child);
+					parentSubjectGroup.setGroup(parent); //устанавливаем парентов
+					parentSubjectGroup.addChild(child); //доавляем детей
 					parentSubjectGroups.add(parentSubjectGroup);
-					subjToNodeMap.put(parent.getId(), parentSubjectGroup.getChildren());
-					mapGroupActiviti.put(parent.getsID_Group_Activiti(),parent.getId());
+					subjToNodeMap.put(parent.getId(), parentSubjectGroup.getChildren()); //мапа парент - ребенок
+					mapGroupActiviti.put(parent.getsID_Group_Activiti(),parent.getId()); // мапа группа - ид парента
 				} else {
 					for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
+						//убираем дубликаты
 						if (vSubjectGroupParentNode.getGroup().getId().equals(parent.getId())) {
-							vSubjectGroupParentNode.getChildren().add(child);
-							subjToNodeMap.put(parent.getId(), vSubjectGroupParentNode.getChildren());
-							mapGroupActiviti.put(parent.getsID_Group_Activiti(),parent.getId());
+							vSubjectGroupParentNode.getChildren().add(child); // если дубликат парента- добавляем его детей к общему списку
+							subjToNodeMap.put(parent.getId(), vSubjectGroupParentNode.getChildren());//мапа парент - ребенок
+							mapGroupActiviti.put(parent.getsID_Group_Activiti(),parent.getId());// мапа группа - ид парента
 						}
 					}
 				}
@@ -86,9 +79,11 @@ public class SubjectGroupService {
 		
 		
 		Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
-		for (Long parentId : idParentList) {
-			List<SubjectGroup> children = subjToNodeMap.get(parentId);
-			Long groupFiltr = mapGroupActiviti.get(parentId);
+		for (Long parentId : idParentList) { // идем по ид парентов (там все все все паренты)
+			List<SubjectGroup> children = subjToNodeMap.get(parentId); //достаем его детей
+			Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti); //достаем ид sID_Group_Activiti которое на вход
+			
+			//получаем только ид чилдренов
 			final List<Long> idChildren = Lists.newArrayList(
 					Collections2.transform(subjToNodeMap.get(parentId), new Function<SubjectGroup, Long>() {
 						@Override
@@ -96,7 +91,7 @@ public class SubjectGroupService {
 							return subjectGroup.getId();
 						}
 					}));
-			
+			//фильтруем по groupFiltr
 			 final List<Long> idChildrenFiltr = Lists.newArrayList(Collections2
 					    .filter(idChildren,
 						    new Predicate<Long>() {
@@ -107,10 +102,11 @@ public class SubjectGroupService {
 						}
 					    }));
 
-			for (Long chid : idChildrenFiltr) {
-				List<SubjectGroup> child = subjToNodeMap.get(chid);
-				if (subjToNodeMap.get(chid) != null && !subjToNodeMap.get(chid).isEmpty()) {
-					children.addAll(child);
+			//идем по списку отфильтрованных ид детей
+			for (int i=0; i<deepLevel.intValue(); i++) {
+				List<SubjectGroup> child = subjToNodeMap.get(idChildrenFiltr.get(i));//достаем детей детей
+				if (subjToNodeMap.get(idChildrenFiltr.get(i)) != null && !subjToNodeMap.get(idChildrenFiltr.get(i)).isEmpty()) {
+					children.addAll(child); //добавляем детей к общему списку детей
 				}
 			}
 			subjToNodeMapFiltr.put(parentId, children);
@@ -118,14 +114,6 @@ public class SubjectGroupService {
 		
 		List<List<SubjectGroup>> valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
 
-
-		final List<VSubjectGroupParentNode> parentSubjectGroupsFilltr = Lists
-				.newArrayList(Collections2.filter(parentSubjectGroups, new Predicate<VSubjectGroupParentNode>() {
-					@Override
-					public boolean apply(VSubjectGroupParentNode vSubjectGroupParentNode) {
-						return vSubjectGroupParentNode.getGroup().getsID_Group_Activiti().equals(sID_Group_Activiti);
-					}
-				}));
 
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
