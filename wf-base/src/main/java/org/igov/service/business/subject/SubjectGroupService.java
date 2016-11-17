@@ -103,7 +103,7 @@ public class SubjectGroupService {
 					    }));
 
 			//идем по списку отфильтрованных ид детей
-			for (int i=0; i<deepLevel.intValue(); i++) {
+			for (int i=1; i<deepLevel.intValue(); i++) {
 				List<SubjectGroup> child = subjToNodeMap.get(idChildrenFiltr.get(i));//достаем детей детей
 				if (subjToNodeMap.get(idChildrenFiltr.get(i)) != null && !subjToNodeMap.get(idChildrenFiltr.get(i)).isEmpty()) {
 					children.addAll(child); //добавляем детей к общему списку детей
