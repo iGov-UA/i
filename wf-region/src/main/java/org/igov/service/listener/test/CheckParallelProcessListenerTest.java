@@ -1,11 +1,9 @@
-package org.igov.service.business.action.task.listener;
+package org.igov.service.listener.test;
 
 //import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.RuntimeService;
-import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.*;
 //import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.ExecutionListener;
-import org.activiti.engine.delegate.Expression;
 //import org.activiti.engine.delegate.TaskListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +15,10 @@ import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-@Component("chekForCompleteParallelProcess")
-public class CheckParallelProcessListener implements ExecutionListener {
+@Component("chekForCompleteParallelProcessTest")
+public class CheckParallelProcessListenerTest implements TaskListener {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CheckParallelProcessListener.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CheckParallelProcessListenerTest.class);
     private Expression paramName;
     private Expression checkValue;
     private Expression sErrorMessage;
@@ -28,8 +26,8 @@ public class CheckParallelProcessListener implements ExecutionListener {
     //@Autowired
     //private RuntimeService runtimeService;
     @Override
-    public void notify(DelegateExecution oExecution) throws TaskAlreadyUnboundException {
-        //DelegateExecution oExecution = delegateTask.getExecution();
+    public void notify(DelegateTask delegateTask) throws IllegalArgumentException{
+        DelegateExecution oExecution = delegateTask.getExecution();
 
         String paramName = getStringFromFieldExpression(this.paramName, oExecution);
         LOG.info("paramName: " + paramName);
@@ -42,7 +40,7 @@ public class CheckParallelProcessListener implements ExecutionListener {
         LOG.info("sValFromProcess: " + sValFromProcess);
 
         if (!checkValue.trim().equals(sValFromProcess.trim())) {
-            throw new TaskAlreadyUnboundException("errMsg=" + sErrorMessage);
+            throw new IllegalArgumentException("errMsg=" + sErrorMessage);
         }
     }
 

@@ -5,7 +5,11 @@
       <activiti:formProperty xmlns:activiti="http://activiti.org/bpmn" id="sLoginAsignee" type="select" name="Исполнитель;Выбор исполнителя;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_GroupNext"></activiti:formProperty>
       <activiti:formProperty xmlns:activiti="http://activiti.org/bpmn" id="sID_GroupNext" name="sID_GroupNext" type="string"></activiti:formProperty>
     </extensionElements>
-    <startEvent id="startevent1" name="Start"></startEvent>
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="startTest" name="startTest" type="string" default="TEST!" required="true"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
     <userTask id="usertask1" name="Выбрать исполнителя" activiti:candidateGroups="kyiv_dabi_permit_boss">
       <extensionElements>
         <activiti:formProperty id="nFirstNumber" name="Число1" type="long"></activiti:formProperty>
