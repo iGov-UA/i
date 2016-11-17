@@ -73,8 +73,10 @@ public class ManagerSMS {
     private String SendLifeCellSms(String phone, String message, String sID_Order) throws Exception
     {
         String bodyResult = String.format(LIFEBODY, sID_Order, "+" + phone, message);
-        return oHttpRequester.postInside(generalConfig.getLifeURL(), null, bodyResult, "text/xml; charset=utf-8",
+        String response = oHttpRequester.postInside(generalConfig.getLifeURL(), null, bodyResult, "text/xml; charset=utf-8",
             generalConfig.getLifeLogin(), generalConfig.getLifePassword());
+        LOG.info(response);
+        return response; 
     }
     
     /*private String SendKyivStarSms(String phone, String message) throws Exception
@@ -86,7 +88,8 @@ public class ManagerSMS {
     
     private String SendSenderSms(String sID_Order, String phone, String message)
     {
-        return managerSMS.sendSMS(sID_Order, "+" + phone, message);
+        String response = managerSMS.sendSMS(sID_Order, "+" + phone, message);
+        LOG.info(response);
+        return response; 
     }
-    
 }
