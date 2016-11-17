@@ -544,16 +544,15 @@
 
 
         function runCalculation() {
-          $scope['a'] = 1;
-          console.log($scope.a);
           var item = getObjFromTaskFormById("marker");
           if (item !== null) {
             var oMotion = JSON.parse(item.value)['motion']; // Generate obj from json(item.value)
             var asNameField = getAllNamesFields(oMotion); //Generate array fields name
 
             for (var i = 0; i < asNameField.length; i++) {
-              executeFormula(oMotion[asNameField[i]]);
-
+              if(asNameField[i].includes("PrintFormFormula")) {
+                executeFormula(oMotion[asNameField[i]]);
+              }
             }
           }
         }
@@ -908,6 +907,7 @@
         };
 
         $scope.newPrint = function (form, id) {
+          runCalculation(form);
           $scope.model.printTemplate = id;
           $scope.print(form);
         };
