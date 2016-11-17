@@ -82,8 +82,9 @@ public class SubjectGroupService {
 		LOG.info("idParentListtttttttttttttttttttttt "+idParentList);
 		
 		LOG.info("groupFiltrrrrrrrrrrrrrrrrrrrrrrrrrrr "+groupFiltr);
-		for (Long parentId : idParentList) { // идем по ид парентов (там все все все паренты)
-				List<SubjectGroup> children = subjToNodeMap.get(parentId); //достаем его детей
+	
+				List<SubjectGroup> children = subjToNodeMap.get(groupFiltr); //достаем его детей
+	//	for (Long parentId : idParentList) { // идем по ид парентов (там все все все паренты)
 			//получаем только ид чилдренов
 			final List<Long> idChildren = Lists.newArrayList(
 					Collections2.transform(children, new Function<SubjectGroup, Long>() {
@@ -98,7 +99,7 @@ public class SubjectGroupService {
 			//идем по списку отфильтрованных ид детей
 		//	for (int i=1; i<deepLevel.intValue(); i++) {
 			for(Long id : idChildren) {
-				if (subjToNodeMap.get(id) != null && !subjToNodeMap.get(id).isEmpty()) {
+				if (idParentList.contains(id)) {
 					List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
 					LOG.info("childddddddddddddddd "+child);
 					children.addAll(child); //добавляем детей к общему списку детей
@@ -106,9 +107,9 @@ public class SubjectGroupService {
 				}
 			}
 		//	}
-			subjToNodeMapFiltr.put(parentId, children);
+			subjToNodeMapFiltr.put(groupFiltr, children);
 			
-			}
+	//		}
 		valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
 
 
