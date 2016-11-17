@@ -14,9 +14,6 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
 
-
-
-        
         <activiti:formProperty id="asFamily" name="Сімейний стан" type="enum" required="true">
           <activiti:value id="fam1" name="Одружений(заміжня)"></activiti:value>
           <activiti:value id="fam2" name="Розлучений(а)"></activiti:value>
@@ -24,14 +21,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFileFamily1" name="Копія свідоцтва про одруження(заміжня)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileFamily2" name="Копія свідоцтва про розлучення" type="file" required="true"></activiti:formProperty>
-        
                 
         <activiti:formProperty id="asStaffRoom" name="Потребую надання службового житла, кімнати або ліжко-місця у гуртожитку" type="enum" required="true" default="no">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFileStaffRoom" name="Клопотання від підприємства на якому працюєте" type="file" required="true"></activiti:formProperty>
-        
 
         <activiti:formProperty id="asChangePlace" name="Чи міняли Ви місце проживання за останні 5 років" type="enum" required="true" default="no">
           <activiti:value id="yes" name="Так"></activiti:value>
@@ -39,17 +34,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFileChangePlace" name="Довідка з попереднього місця реєстрації" type="file" required="true"></activiti:formProperty>
 
-
         <activiti:formProperty id="asPrison" name="Чи перебували Ви в місцях позбавлення волі" type="enum" required="true" default="no">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePrison" name="Довідка про звільнення з місць позбавлення волі" type="file" required="true"></activiti:formProperty>
-
-
-
-
-
 
         <activiti:formProperty id="nWhereLives0" name="З якого року проживаєте в даному населеному пункті; чотори цифри" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asWork0" name="Працюєте" type="enum" required="true">
@@ -261,9 +250,9 @@ if(execution.getVariable('asPrivilege')=='no'){
 }
 
 // скільки проживає людей
-int maxCountFamily = 6
-int countFamily = execution.getVariable('asCountFamily')[1]
-int countIsAdult = 0
+def maxCountFamily = 6
+def countFamily = Integer.parseInt(execution.getVariable('asCountFamily')[1])
+def countIsAdult = 0
 
 /*форматуємо поле місце роботи*/
 for (int i = 1; i <= maxCountFamily; i++) {
