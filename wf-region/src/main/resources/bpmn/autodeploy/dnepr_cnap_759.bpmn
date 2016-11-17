@@ -193,6 +193,18 @@
         <activiti:formProperty id="sVarEmail_02" name="Адреса електронної пошти" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarOtherInfo_02" name="Інші відомості" type="string" default=" "></activiti:formProperty>
 
+        <activiti:formProperty id="Info_08_00" name="======================================" type="label" default="======================================"></activiti:formProperty>
+
+        <activiti:formProperty id="asSelectIzm_08" name="8. Центральний чи місцевий орган виконавчої влади; до сфери управління якого належить юридична особа публічного права або який здійснює функції з управління корпоративними правами держави у відповідній юридичній особі" type="enum" default="tf_02" required="true">
+          <activiti:value id="tf_01" name="Так"></activiti:value>
+          <activiti:value id="tf_02" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameVikonOrgan_02" name="Найменування нового органу" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sINNVikonOrgan_02" name="Ідентифікаційний код нового органу" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="fDoc_08" name="Копія документу для зміни органу виконавчої влади" type="file" default=" "></activiti:formProperty>
+
+<!-- ТЕКУЩАЯ РАБОТА -->
+		
 <!-- ЗАГЛУШКА ЗАГЛУШКА ЗАГЛУШКА -->
 
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
@@ -354,7 +366,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${form_signed},${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${fDoc_00}</activiti:expression>
+            <activiti:expression>${form_signed},${fDoc_08},${fDoc_03},${fDoc_02},${fDoc_01},${fDoc_00}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
