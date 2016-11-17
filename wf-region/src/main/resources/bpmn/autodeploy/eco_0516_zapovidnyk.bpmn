@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="eco_516_zapovidnyk" name="Затвердження ліміту на використання природних ресурсів у межах територій та об'єктів природно-заповідного фонду загальнодержавного значення" isExecutable="true">
+  <process id="eco_0516_zapovidnyk" name="Затвердження ліміту на використання природних ресурсів у межах територій та об'єктів природно-заповідного фонду загальнодержавного значення" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/1220</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -11,12 +11,12 @@
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Назва організації заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressDelivery" name="Адреса, за якою надіслати оригінал документу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Клопотання про встановлення лімітів" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Проект ліміту за формою" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Клопотання про встановлення лімітів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Проект ліміту за формою" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Обґрунтовуючі матеріали, погоджені з відповідними науковими установами – науковими  кураторами  територій  та  об'єктів природно-заповідного фонду, науково-дослідними інститутами" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile4" name="Карта-схема території чи об'єкта, на якій буде здійснюватися використання природних ресурсів" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Карта-схема території чи об'єкта, на якій буде здійснюватися використання природних ресурсів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile5" name="Витяг з рішення науково-технічної ради установи  природно-заповідного фонду;(тільки  для  біосферного заповідника, природного заповідника, національного   природного   парку   чи  ботанічного  саду)" type="file"></activiti:formProperty>
-      </extensionElements>  
+      </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення чиновнику про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -70,7 +70,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка данних та їх обробка" activiti:candidateGroups="cnap_lebedyn">
+    <userTask id="usertask1" name="Перевірка данних та їх обробка" activiti:candidateGroups="eco_zapovidnyk">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -87,9 +87,8 @@
         <activiti:formProperty id="nFileRemake" name="Скан-копія листа про повернення клопотання на доопрацювання" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFileReject" name="Скан-копія листа про відмову затвердження ліміту заявнику" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFileLimit" name="Скан-копія супроводжувального листа до  ліміту" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('eco/eco_516_zapovidnyk_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="requiredFields1" type="markers" default="${markerService.loadFromFile('eco/eco_516_zapovidnyk_2.json')}"></activiti:formProperty>
-      
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('eco/eco_0516_zapovidnyk_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="requiredFields1" type="markers" default="${markerService.loadFromFile('eco/eco_0516_zapovidnyk_2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -207,9 +206,15 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
-    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sEnumSendLimit'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sEnumSendRemake'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sEnumSendReject'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -217,8 +222,8 @@
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="servicetask3" targetRef="endevent3"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_eco_516_zapovidnyk">
-    <bpmndi:BPMNPlane bpmnElement="eco_516_zapovidnyk" id="BPMNPlane_eco_516_zapovidnyk">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_eco_0516_zapovidnyk">
+    <bpmndi:BPMNPlane bpmnElement="eco_0516_zapovidnyk" id="BPMNPlane_eco_0516_zapovidnyk">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="450.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
