@@ -14,9 +14,6 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
 
-
-
-        
         <activiti:formProperty id="asFamily" name="Сімейний стан" type="enum" required="true">
           <activiti:value id="fam1" name="Одружений(заміжня)"></activiti:value>
           <activiti:value id="fam2" name="Розлучений(а)"></activiti:value>
@@ -24,14 +21,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFileFamily1" name="Копія свідоцтва про одруження(заміжня)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileFamily2" name="Копія свідоцтва про розлучення" type="file" required="true"></activiti:formProperty>
-        
                 
         <activiti:formProperty id="asStaffRoom" name="Потребую надання службового житла, кімнати або ліжко-місця у гуртожитку" type="enum" required="true" default="no">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFileStaffRoom" name="Клопотання від підприємства на якому працюєте" type="file" required="true"></activiti:formProperty>
-        
 
         <activiti:formProperty id="asChangePlace" name="Чи міняли Ви місце проживання за останні 5 років" type="enum" required="true" default="no">
           <activiti:value id="yes" name="Так"></activiti:value>
@@ -39,17 +34,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFileChangePlace" name="Довідка з попереднього місця реєстрації" type="file" required="true"></activiti:formProperty>
 
-
         <activiti:formProperty id="asPrison" name="Чи перебували Ви в місцях позбавлення волі" type="enum" required="true" default="no">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePrison" name="Довідка про звільнення з місць позбавлення волі" type="file" required="true"></activiti:formProperty>
-
-
-
-
-
 
         <activiti:formProperty id="nWhereLives0" name="З якого року проживаєте в даному населеному пункті; чотори цифри" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asWork0" name="Працюєте" type="enum" required="true">
@@ -261,9 +250,9 @@ if(execution.getVariable('asPrivilege')=='no'){
 }
 
 // скільки проживає людей
-int maxCountFamily = 6
-int countFamily = execution.getVariable('asCountFamily')[1]
-int countIsAdult = 0
+def maxCountFamily = 6
+def countFamily = Integer.parseInt(execution.getVariable('asCountFamily')[1])
+def countIsAdult = 0
 
 /*форматуємо поле місце роботи*/
 for (int i = 1; i <= maxCountFamily; i++) {
@@ -294,7 +283,7 @@ for (int i = 1; i <= maxCountFamily; i++) {
 		execution.setVariable(name_nBirthday, ' ')  
 		execution.setVariable(name_nWhereLives, ' ')   
 		execution.setVariable(name_sFIO, ' ')
-		execution.setVariable(name_sClFio, ' ')
+		execution.setVariable(name_sClFio, '')
 	}
 }
 execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
@@ -588,8 +577,8 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask3" name="Підготовка витягу з рішення виконавчого комітету Ммр щодо взяття на квартирний облік" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="usertask2_green"></sequenceFlow>
+    <userTask id="usertask2_green" name="Підготовка витягу з рішення виконавчого комітету Ммр щодо взяття на квартирний облік" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClFio0" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -726,7 +715,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow17" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="usertask2_green" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow18" name="Відмовити по причині" sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${regChanged == 'no'}]]></conditionExpression>
@@ -817,7 +806,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="83.0" width="161.0" x="800.0" y="382.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+      <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
         <omgdc:Bounds height="88.0" width="166.0" x="560.0" y="381.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
