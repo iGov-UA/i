@@ -577,8 +577,8 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask3" name="Підготовка витягу з рішення виконавчого комітету Ммр щодо взяття на квартирний облік" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="usertask2_green"></sequenceFlow>
+    <userTask id="usertask2_green" name="Підготовка витягу з рішення виконавчого комітету Ммр щодо взяття на квартирний облік" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClFio0" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -715,7 +715,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow17" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="usertask2_green" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow18" name="Відмовити по причині" sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${regChanged == 'no'}]]></conditionExpression>
@@ -806,7 +806,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="83.0" width="161.0" x="800.0" y="382.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+      <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
         <omgdc:Bounds height="88.0" width="166.0" x="560.0" y="381.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
