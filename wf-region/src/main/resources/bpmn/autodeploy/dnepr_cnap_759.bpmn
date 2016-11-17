@@ -10,10 +10,11 @@
         <activiti:formProperty id="markers_ext_03" name="внешние маркеры 03" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_03.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_ext_04" name="внешние маркеры 04" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_04.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_ext_05" name="внешние маркеры 05" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_05.json')}"></activiti:formProperty>
-<!--        <activiti:formProperty id="markers_ext_06" name="внешние маркеры 06" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_06.json')}"></activiti:formProperty>  -->
-<!--        <activiti:formProperty id="markers_ext_07" name="внешние маркеры 07" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_07.json')}"></activiti:formProperty>  -->
-<!--        <activiti:formProperty id="markers_ext_08" name="внешние маркеры 08" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_08.json')}"></activiti:formProperty>  -->
-<!--        <activiti:formProperty id="markers_ext_09" name="внешние маркеры 09" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_09.json')}"></activiti:formProperty>  -->
+        <activiti:formProperty id="markers_ext_06" name="внешние маркеры 06" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_06.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_ext_07" name="внешние маркеры 07" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_07.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_ext_08" name="внешние маркеры 08" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_08.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_ext_09" name="внешние маркеры 09" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_09.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_ext_10" name="внешние маркеры 10" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_10.json')}"></activiti:formProperty>
 
 <!-- ПРОСЛЕДИТЬ Крім внесення змін до інформації про здійснення зв’язку з юридичною особою. -->
 
@@ -216,9 +217,7 @@
         <activiti:formProperty id="sVarDate_010_05" name="Дата прийняття рішення керівного органу політичної партії" type="date" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarNum_010_06" name="Номер прийняття рішення керівного органу політичної партії" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fDoc_10" name="Копія документу для зміни відомостей" type="file" default=" "></activiti:formProperty>
-
-<!-- ТЕКУЩАЯ РАБОТА -->
-
+		
         <activiti:formProperty id="Info_11_00" name="======================================" type="label" default="======================================"></activiti:formProperty>
 
         <activiti:formProperty id="asSelectIzm_11" name="11. Зміна розміру статутного (складеного) капіталу (пайового фонду)" type="enum" default="tf_02" required="true">
@@ -227,6 +226,81 @@
         </activiti:formProperty>
         <activiti:formProperty id="sVarSum_11_01" name="Розмір статутного (складеного) капіталу (пайового фонду) юридичної особи (грн)" type="string" default=" "></activiti:formProperty>
 		
+<!-- ТЕКУЩАЯ РАБОТА -->
+
+        <activiti:formProperty id="Info_13_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
+        <activiti:formProperty id="asSelectIzm_13" name="13. Види економічної діяльності" type="enum" default="tf1702_2" required="true">
+          <activiti:value id="tf1702_1" name="Так"></activiti:value>
+          <activiti:value id="tf1702_2" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="Info_13_2" name="Код виду економічної діяльності" type="label" default="перелік існуючих кодів можна знайти за &lt;a href=&quot;http://sfs.gov.ua/dovidniki--reestri--perelik/pereliki-/128651.html&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asSelectIzmKVED_0002_01" name="Змінюється основний вид економічної діяльності" type="enum" default="tf1702_2" required="true">
+          <activiti:value id="tf1702_1" name="Так"></activiti:value>
+          <activiti:value id="tf1702_2" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_new_0002_01" name="Код нового основного виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Lblminus_0002_00" name="----------------------------------------------------" type="label" default="----------------------------------------------"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_new_Plus_0002_01" name="Позначка нового виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asSelectIzmKVED_0002_02" name="Додаються нові види економічної діяльності" type="enum" default="tf1702_2" required="true">
+          <activiti:value id="tf1702_1" name="Так"></activiti:value>
+          <activiti:value id="tf1702_2" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSelectNumKVED_0002_01" name="Оберіть кількість видів діяльності які Ви додаєте/активуєте" type="enum" default="tf1600">
+          <activiti:value id="tf1600" name="1"></activiti:value>
+          <activiti:value id="tf1601" name="до  5"></activiti:value>
+          <activiti:value id="tf1602" name="до 10"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0002_01" name="Код виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0002_02" name="Код другого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0002_03" name="Код третього виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0002_04" name="Код четвертого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0002_05" name="Код п'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0002_06" name="Код шостого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0002_07" name="Код сьомого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0002_08" name="Код восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0002_09" name="Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0002_10" name="Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Lblminus_0002_01" name="----------------------------------------------------" type="label" default="----------------------------------------------"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_01" name="+ на Код виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_02" name="+ на Код другого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_03" name="+ на Код третього виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_04" name="+ на Код четвертого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_05" name="+ на Код п'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_06" name="+ на Код шостого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_07" name="+ на Код сьомого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_08" name="+ на Код восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_09" name="+ на Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_10" name="+ на Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asSelectIzmKVED_0003_02" name="Видаляються зареєстровані види економічної діяльності" type="enum" default="tf1702_2" required="true">
+          <activiti:value id="tf1702_1" name="Так"></activiti:value>
+          <activiti:value id="tf1702_2" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSelectNumKVED_0003_01" name="Оберіть кількість видів діяльності які Ви видаляєте/деактивуєте" type="enum" default="tf1600">
+          <activiti:value id="tf1600" name="1"></activiti:value>
+          <activiti:value id="tf1601" name="до  5"></activiti:value>
+          <activiti:value id="tf1602" name="до 10"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0003_01" name="Код виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0003_02" name="Код другого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0003_03" name="Код третього виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0003_04" name="Код четвертого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0003_05" name="Код п'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0003_06" name="Код шостого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0003_07" name="Код сьомого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0003_08" name="Код восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0003_09" name="Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_0003_10" name="Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_01" name="+ на Код виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_02" name="+ на Код другого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_03" name="+ на Код третього виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_04" name="+ на Код четвертого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_05" name="+ на Код п'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_06" name="+ на Код шостого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_07" name="+ на Код сьомого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_08" name="+ на Код восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_09" name="+ на Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_10" name="+ на Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
+
 		<!-- ЗАГЛУШКА ЗАГЛУШКА ЗАГЛУШКА -->
 
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
