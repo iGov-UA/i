@@ -559,12 +559,19 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow30" sourceRef="usertask4" targetRef="exclusivegateway1"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow31" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var sum = 16.09;
+if ((execution.getVariable('asLust')) === 'sEnamLustKur') {
+	sum =  36.45;
+}
+execution.setVariable('sSum', sum);      </script>
+    </scriptTask>
     <sequenceFlow id="flow32" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow34" name="ПРЯМО В ОРГАН" sourceRef="exclusivegateway3" targetRef="exclusivegateway4"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="exclusivegateway4" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_231">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_231" id="BPMNPlane_dnepr_cnap_231">
@@ -756,6 +763,10 @@ ${sNameOrgan}&lt;br /&gt;
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="100.0" x="401.0" y="188.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="391.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="273.0" y="195.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
