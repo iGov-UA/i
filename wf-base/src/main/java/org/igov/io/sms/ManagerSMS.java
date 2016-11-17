@@ -45,8 +45,10 @@ public class ManagerSMS {
     public String sendSms(String phone, String message, String sID_Order, boolean oldApiFlag) throws Exception
     {
         Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)|38073");
-        Pattern regexKyivStar = Pattern.compile("38067(.*)|38096(.*)|38097(.*)|38098(.*)");
-
+        //Pattern regexKyivStar = Pattern.compile("38067(.*)|38096(.*)|38097(.*)|38098(.*)");
+        
+        phone = phone.replace("+", "").trim();
+        
         String resp = "[none]";
         
         if (oldApiFlag == false){
@@ -70,7 +72,7 @@ public class ManagerSMS {
     
     private String SendLifeCellSms(String phone, String message, String sID_Order) throws Exception
     {
-        String bodyResult = String.format(LIFEBODY, sID_Order, "+" + phone.replace("+", "").trim(), message);
+        String bodyResult = String.format(LIFEBODY, sID_Order, "+" + phone, message);
         return oHttpRequester.postInside(generalConfig.getLifeURL(), null, bodyResult, "text/xml; charset=utf-8",
             generalConfig.getLifeLogin(), generalConfig.getLifePassword());
     }
@@ -84,7 +86,7 @@ public class ManagerSMS {
     
     private String SendSenderSms(String sID_Order, String phone, String message)
     {
-        return managerSMS.sendSMS(sID_Order, "+" + phone.replace("+", "").trim(), message);
+        return managerSMS.sendSMS(sID_Order, "+" + phone, message);
     }
     
 }
