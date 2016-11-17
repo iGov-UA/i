@@ -29,11 +29,11 @@
         <activiti:formProperty id="C_DOC_CNT" name="C_DOC_CNT;system;writable=true,sID_Field_SWinEd=C_DOC_CNT" type="string" default="0000001"></activiti:formProperty>
         <activiti:formProperty id="PERIOD_TYPE" name="PERIOD_TYPE;system;writable=true,sID_Field_SWinEd=PERIOD_TYPE" type="string" default="1"></activiti:formProperty>
         <activiti:formProperty id="PERIOD_MONTH" name="PERIOD_MONTH;system;writable=true,sID_Field_SWinEd=PERIOD_MONTH" type="string" default="12"></activiti:formProperty>
-        <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field_SWinEd=PERIOD_YEAR"  type="string" default="2015"></activiti:formProperty>
+        <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field_SWinEd=PERIOD_YEAR" type="string" default="2015"></activiti:formProperty>
         <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG" type="string"></activiti:formProperty>
         <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="F1301801"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Writable" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Обробка звернення " activiti:candidateGroups="sales">
@@ -115,7 +115,6 @@
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow14" sourceRef="timerintermediatecatchevent1" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow16" sourceRef="exclusivegateway1" targetRef="timerintermediatecatchevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${anID_Attach_Dfs == ''}]]></conditionExpression>
@@ -128,6 +127,7 @@
         <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
+    <sequenceFlow id="flow18" sourceRef="boundarytimer2" targetRef="exclusivegateway1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_DFS_F1301801">
     <bpmndi:BPMNPlane bpmnElement="DFS_F1301801" id="BPMNPlane_DFS_F1301801">
@@ -174,10 +174,6 @@
         <omgdi:waypoint x="347.0" y="164.0"></omgdi:waypoint>
         <omgdi:waypoint x="347.0" y="218.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="347.0" y="218.0"></omgdi:waypoint>
-        <omgdi:waypoint x="438.0" y="166.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="418.0" y="146.0"></omgdi:waypoint>
         <omgdi:waypoint x="365.0" y="146.0"></omgdi:waypoint>
@@ -185,6 +181,11 @@
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="458.0" y="146.0"></omgdi:waypoint>
         <omgdi:waypoint x="530.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="390.0" y="255.0"></omgdi:waypoint>
+        <omgdi:waypoint x="438.0" y="255.0"></omgdi:waypoint>
+        <omgdi:waypoint x="438.0" y="166.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
