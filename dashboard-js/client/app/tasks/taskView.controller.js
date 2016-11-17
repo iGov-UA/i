@@ -512,7 +512,11 @@
           var asVariablesValue = new Array(asId.length);
           for(var i = 0; i < asId.length; i++) {
             var result = getValueById(asId[i]);
-            if (!isNaN(result)) {
+            if (result == null) {
+              Modal.inform.error()('Обєкт з id: ' + asId[i] + ' не має значення. Формула не запрацює.<br> Зніться будь-ласка у технічну підтримку.');
+              console.warn('Виникла помилка. Обєкт з id: ' + asId[i] + ' має значення null. Зніться будь-ласка у технічну підтримку.');
+              throw 'Виникла помилка. Обєкт з id: ' + asId[i] + ' має значення null. Зніться будь-ласка у технічну підтримку.';
+            } else if (!isNaN(result)) {
               asVariablesValue[i] = parseInt(result);
             } else {
               asVariablesValue[i] = result;
