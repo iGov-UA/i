@@ -48,6 +48,7 @@ public class SubjectGroupService {
 
 		List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
 		Map<Long, List<SubjectGroup>> subjToNodeMap = new HashMap<>();
+		Map<String, Long> mapGroupActiviti = new HashMap<>();
 		VSubjectGroupParentNode parentSubjectGroup = null;
 		Set<Long> idParentList = new LinkedHashSet<>();
 		Set<Long> idChildrenList = new LinkedHashSet<>();
@@ -68,11 +69,13 @@ public class SubjectGroupService {
 					parentSubjectGroup.addChild(child);
 					parentSubjectGroups.add(parentSubjectGroup);
 					subjToNodeMap.put(parent.getId(), parentSubjectGroup.getChildren());
+					mapGroupActiviti.put(parent.getsID_Group_Activiti(),parent.getId());
 				} else {
 					for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
 						if (vSubjectGroupParentNode.getGroup().getId().equals(parent.getId())) {
 							vSubjectGroupParentNode.getChildren().add(child);
 							subjToNodeMap.put(parent.getId(), vSubjectGroupParentNode.getChildren());
+							mapGroupActiviti.put(parent.getsID_Group_Activiti(),parent.getId());
 						}
 					}
 				}
@@ -80,10 +83,12 @@ public class SubjectGroupService {
 
 		}
 
+		
+		
 		Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
 		for (Long parentId : idParentList) {
 			List<SubjectGroup> children = subjToNodeMap.get(parentId);
-
+			Long groupFiltr = mapGroupActiviti.get(parentId);
 			final List<Long> idChildren = Lists.newArrayList(
 					Collections2.transform(subjToNodeMap.get(parentId), new Function<SubjectGroup, Long>() {
 						@Override
@@ -91,8 +96,18 @@ public class SubjectGroupService {
 							return subjectGroup.getId();
 						}
 					}));
+			
+			 final List<Long> idChildrenFiltr = Lists.newArrayList(Collections2
+					    .filter(idChildren,
+						    new Predicate<Long>() {
+						@Override
+						public boolean apply(Long id) {
+						    // получить только отфильтрованные по группе
+						    return groupFiltr.compareTo(id)==0;
+						}
+					    }));
 
-			for (Long chid : idChildren) {
+			for (Long chid : idChildrenFiltr) {
 				List<SubjectGroup> child = subjToNodeMap.get(chid);
 				if (subjToNodeMap.get(chid) != null && !subjToNodeMap.get(chid).isEmpty()) {
 					children.addAll(child);
@@ -103,13 +118,6 @@ public class SubjectGroupService {
 		
 		List<List<SubjectGroup>> valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
 
-		Collections.sort(parentSubjectGroups, new Comparator() {
-			@Override
-			public int compare(Object vSubjectGroupParentNode, Object vSubjectGroupParentNodeTwo) {
-				return ((VSubjectGroupParentNode) vSubjectGroupParentNode).getGroup().getId()
-						.compareTo(((VSubjectGroupParentNode) vSubjectGroupParentNodeTwo).getGroup().getId());
-			}
-		});
 
 		final List<VSubjectGroupParentNode> parentSubjectGroupsFilltr = Lists
 				.newArrayList(Collections2.filter(parentSubjectGroups, new Predicate<VSubjectGroupParentNode>() {
