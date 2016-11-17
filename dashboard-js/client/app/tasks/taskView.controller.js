@@ -659,6 +659,11 @@
           }
         };
 
+        $scope.submitTaskQuestion = function (form) {
+          Modal.inform.submitTaskQuestion(function() {
+            return $scope.submitTask(form);});
+        };
+
       $scope.saveChangesTask = function (form) {
           //$scope.validateForm(form);
           //if(form.$invalid){
@@ -716,6 +721,16 @@
             })
             .catch(defaultErrorHandler);
         };
+
+
+        //tasks.submitTaskQuestion($scope.selectedTask.id, Auth.getCurrentUser().id)
+        //  .then(function (result) {
+        //    Modal.assignTask(function (event) {
+        //      $state.go('tasks.typeof.view', {type:'selfAssigned'});
+        //    }, 'Задача у вас в роботі', $scope.lightweightRefreshAfterSubmit);
+        //
+        //  })
+        //  .catch(defaultErrorHandler);
 
         $scope.unassign = function () {
           rollbackReadonlyEnumFields();
