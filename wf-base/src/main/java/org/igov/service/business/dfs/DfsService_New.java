@@ -15,7 +15,6 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
-import org.igov.io.web.HttpRequester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

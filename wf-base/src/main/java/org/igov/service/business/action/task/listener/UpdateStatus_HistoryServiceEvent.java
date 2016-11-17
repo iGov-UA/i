@@ -38,7 +38,7 @@ public class UpdateStatus_HistoryServiceEvent implements JavaDelegate {
         mParam.put("nID_StatusType", String.valueOf(HistoryEvent_Service_StatusType.CLOSED.getnID()));
         
         try {
-            LOG.info("sID_order: " + sID_order + " mParam: " + mParam);
+            LOG.info("sID_Order: " + sID_order + " mParam: " + mParam);
             String result = historyEventService.updateHistoryEvent(sID_order, mParam);
             LOG.info("result: " + result);
         } catch (Exception ex) {
