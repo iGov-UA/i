@@ -17,7 +17,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
 
     private static final Logger LOG = LoggerFactory.getLogger(HistoryEventServiceImpl.class);
     private final String URI_GET_HISTORY_EVENT = "/wf/service/action/event/getHistoryEvent_Service";
-   private final String URI_UPDATE_HISTORY_EVENT = "/wf/service/action/event/updateHistoryEvent_Service";
+    private final String URI_UPDATE_HISTORY_EVENT = "/wf/service/action/event/updateHistoryEvent_Service";
     private final String URI_ADD_HISTORY_EVENT = "/wf/service/action/event/addHistoryEvent_Service";
     private final String URI_ADD_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
 
@@ -63,7 +63,13 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     }
 
     @Override
-    public String updateHistoryEvent(String sID_order, Map<String, String> mParam) throws Exception {
+    public String updateHistoryEvent(String sID_order, HistoryEvent_Service_StatusType statusType,
+            Map<String, String> mParam) throws Exception {
+        if (mParam == null) {
+            mParam = new HashMap<>();
+        }
+        mParam.put("sID_Order", sID_order);
+        mParam.put("nID_StatusType", String.valueOf(statusType.getnID()));
         return doRemoteRequest(URI_UPDATE_HISTORY_EVENT, mParam);
     }
 
