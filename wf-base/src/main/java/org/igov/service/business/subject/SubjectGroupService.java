@@ -79,15 +79,13 @@ public class SubjectGroupService {
 		
 		
 		Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
-		List<List<SubjectGroup>> valuesRes = Lists.newArrayList();
+		List<List<SubjectGroup>> valuesRes = new ArrayList<>();
+		Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti); //достаем ид sID_Group_Activiti которое на вход
 		for (Long parentId : idParentList) { // идем по ид парентов (там все все все паренты)
-			
-			Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti); //достаем ид sID_Group_Activiti которое на вход
-			
 				List<SubjectGroup> children = subjToNodeMap.get(groupFiltr); //достаем его детей
 			//получаем только ид чилдренов
 			final List<Long> idChildren = Lists.newArrayList(
-					Collections2.transform(subjToNodeMap.get(parentId), new Function<SubjectGroup, Long>() {
+					Collections2.transform(children, new Function<SubjectGroup, Long>() {
 						@Override
 						public Long apply(SubjectGroup subjectGroup) {
 							return subjectGroup.getId();
@@ -95,16 +93,18 @@ public class SubjectGroupService {
 					}));
 
 			//идем по списку отфильтрованных ид детей
-			for (int i=1; i<deepLevel.intValue(); i++) {
-				List<SubjectGroup> child = subjToNodeMap.get(idChildren.get(i));//достаем детей детей
-				if (subjToNodeMap.get(idChildren.get(i)) != null && !subjToNodeMap.get(idChildren.get(i)).isEmpty()) {
+		//	for (int i=1; i<deepLevel.intValue(); i++) {
+			for(Long id : idChildren) {
+				if (subjToNodeMap.get(id) != null && !subjToNodeMap.get(id).isEmpty()) {
+					List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
 					children.addAll(child); //добавляем детей к общему списку детей
 				}
 			}
+		//	}
 			subjToNodeMapFiltr.put(parentId, children);
-			valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
+			
 			}
-		
+		valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
 		
 
 
