@@ -79,10 +79,12 @@ public class SubjectGroupService {
 		
 		
 		Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
+		List<List<SubjectGroup>> valuesRes = Lists.newArrayList();
 		for (Long parentId : idParentList) { // идем по ид парентов (там все все все паренты)
 			List<SubjectGroup> children = subjToNodeMap.get(parentId); //достаем его детей
 			Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti); //достаем ид sID_Group_Activiti которое на вход
 			
+			if(groupFiltr.compareTo(parentId)==0) {
 			//получаем только ид чилдренов
 			final List<Long> idChildren = Lists.newArrayList(
 					Collections2.transform(subjToNodeMap.get(parentId), new Function<SubjectGroup, Long>() {
@@ -91,28 +93,20 @@ public class SubjectGroupService {
 							return subjectGroup.getId();
 						}
 					}));
-			//фильтруем по groupFiltr
-			 final List<Long> idChildrenFiltr = Lists.newArrayList(Collections2
-					    .filter(idChildren,
-						    new Predicate<Long>() {
-						@Override
-						public boolean apply(Long id) {
-						    // получить только отфильтрованные по группе
-						    return groupFiltr.compareTo(id)==0;
-						}
-					    }));
 
 			//идем по списку отфильтрованных ид детей
 			for (int i=1; i<deepLevel.intValue(); i++) {
-				List<SubjectGroup> child = subjToNodeMap.get(idChildrenFiltr.get(i));//достаем детей детей
-				if (subjToNodeMap.get(idChildrenFiltr.get(i)) != null && !subjToNodeMap.get(idChildrenFiltr.get(i)).isEmpty()) {
+				List<SubjectGroup> child = subjToNodeMap.get(idChildren.get(i));//достаем детей детей
+				if (subjToNodeMap.get(idChildren.get(i)) != null && !subjToNodeMap.get(idChildren.get(i)).isEmpty()) {
 					children.addAll(child); //добавляем детей к общему списку детей
 				}
 			}
 			subjToNodeMapFiltr.put(parentId, children);
+			valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
+			}
 		}
 		
-		List<List<SubjectGroup>> valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
+		
 
 
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
