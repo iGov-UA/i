@@ -61,7 +61,7 @@ public class DfsService {
         List<ByteArrayMultipartFile> multipartFiles = getAnswer(sINN);
         LOG.info("multipartFiles.size: " + multipartFiles.size());
         try {
-            Attachment attachmentDocument = taskService.getAttachment((String) runtimeService.getVariable(sID_Process, "oFile_XML_SWinEd"));
+            Attachment attachmentDocument = taskService.getAttachment((String) runtimeService.getVariable(sID_Process, "oFile_XML_SWinEd")); //sFileName_XML_SWinEd_Answer=F1401801
             if (attachmentDocument != null) {
                 String attachmentDocumentName = attachmentDocument.getName();
                 LOG.info("attachmentDocumentName: " + attachmentDocumentName);
@@ -70,10 +70,9 @@ public class DfsService {
                     LOG.info("multipartFile.getOriginalFilename(): " + multipartFile.getOriginalFilename()
                             + " attachmentDocumentName: " + attachmentDocumentName);
                     if ((multipartFile.getOriginalFilename().contains(attachmentDocumentName) && !multipartFile.getOriginalFilename().endsWith(".xml"))
-                            || multipartFile.getOriginalFilename().contains("F1401801")) {
+                            || multipartFile.getOriginalFilename().contains((String) runtimeService.getVariable(sID_Process, "sFileName_XML_SWinEd_Answer"))) { //"F1401801"
                         Attachment attachment = taskService.createAttachment(multipartFile.getContentType() + ";" + multipartFile.getExp(),
-                                sID_Task, sID_Process,
-                                multipartFile.getOriginalFilename(), multipartFile.getName(), multipartFile.getInputStream());
+                                sID_Task, sID_Process, multipartFile.getOriginalFilename(), multipartFile.getName(), multipartFile.getInputStream());
                         if (attachment != null) {
                             asID_Attach_Dfs.append(attachment.getId()).append(",");
                             LOG.info("attachment: " + attachment.getId());
