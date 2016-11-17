@@ -6,8 +6,6 @@
 package org.igov.service.business.subject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -25,10 +23,9 @@ import org.igov.model.subject.VSubjectGroupTreeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Predicate;
+import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import com.google.common.base.Function;
 
 /**
  *
@@ -81,8 +78,12 @@ public class SubjectGroupService {
 		Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
 		List<List<SubjectGroup>> valuesRes = new ArrayList<>();
 		Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti); //достаем ид sID_Group_Activiti которое на вход
+		
+		LOG.info("idParentListtttttttttttttttttttttt "+idParentList);
+		
+		LOG.info("groupFiltrrrrrrrrrrrrrrrrrrrrrrrrrrr "+groupFiltr);
 		for (Long parentId : idParentList) { // идем по ид парентов (там все все все паренты)
-				List<SubjectGroup> children = subjToNodeMap.get(groupFiltr); //достаем его детей
+				List<SubjectGroup> children = subjToNodeMap.get(parentId); //достаем его детей
 			//получаем только ид чилдренов
 			final List<Long> idChildren = Lists.newArrayList(
 					Collections2.transform(children, new Function<SubjectGroup, Long>() {
@@ -91,13 +92,17 @@ public class SubjectGroupService {
 							return subjectGroup.getId();
 						}
 					}));
+			
+			LOG.info("idChildrennnnnnnnnnnnnnnnnnnnnnnn "+idChildren);
 
 			//идем по списку отфильтрованных ид детей
 		//	for (int i=1; i<deepLevel.intValue(); i++) {
 			for(Long id : idChildren) {
 				if (subjToNodeMap.get(id) != null && !subjToNodeMap.get(id).isEmpty()) {
 					List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
+					LOG.info("childddddddddddddddd "+child);
 					children.addAll(child); //добавляем детей к общему списку детей
+					LOG.info("childrennnnnnnnnnnnnnnn "+children);
 				}
 			}
 		//	}
@@ -105,7 +110,6 @@ public class SubjectGroupService {
 			
 			}
 		valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
-		
 
 
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
