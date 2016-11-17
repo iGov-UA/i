@@ -15,7 +15,7 @@ import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-@Component("chekForCompleteParallelProcess")
+@Component("chekForCompleteParallelProcessTest")
 public class CheckParallelProcessListenerTest implements TaskListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(CheckParallelProcessListenerTest.class);
