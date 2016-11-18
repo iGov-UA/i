@@ -108,9 +108,13 @@ var configuration = function () {
       var properties = getFullConfigAsObject();
       splittedURL.sURLBackProxyRegionParts = properties.BackProxy_Region ? parseUrl(properties.BackProxy_Region.sURL_BackProxy_Region) : undefined;
       splittedURL.sURLBackRegionParts = properties.Back_Region ? parseUrl(properties.Back_Region.sURL_Back_Region) : undefined;
+      splittedURL.sURLBackProxyCentralParts = properties.BackProxy_Central ? parseUrl(properties.BackProxy_Central.sURL_BackProxy_Central) : undefined;
+      splittedURL.sURLBackCentralParts = properties.Back_Central ? parseUrl(properties.Back_Central.sURL_Back_Central) : undefined;
     } catch (e) {
       splittedURL.sURLBackProxyRegionParts = undefined;
       splittedURL.sURLBackRegionParts = undefined;
+      splittedURL.sURLBackProxyCentralParts = undefined;
+      splittedURL.sURLBackCentralParts = undefined;
     }
 
     return splittedURL;
@@ -175,6 +179,7 @@ var all = {
     rest: config.getProperty('sURLBackRegionParts.suffix') || process.env.ACTIVITI_REST,
     username: config.getProperty('Back_Region.sLogin_Back_Region') || process.env.ACTIVITI_USER,
     password: config.getProperty('Back_Region.sPassword_Back_Region') || process.env.ACTIVITI_PASSWORD,
+    nID_Server: config.getProperty('Back_Region.nID_Server_Back_Region'),
     session: {
       //sessionIdle: process.env.ACTIVITI_SESSION_IDLE || 60 * 80, //sec show warning
       sessionIdle: config.getProperty('BackSession_Region.nIdleMS_BackSession_Region') || 60 * 80, //sec show warning
@@ -184,7 +189,14 @@ var all = {
       interval: config.getProperty('BackSession_Region.nIntervalMS_BackSession_Region') || 60 * 10 //sec update session
     }
   },
-
+  activiti_central: {
+    prot: config.getProperty('sURLBackCentralParts.protocol') || process.env.ACTIVITI_PROT,
+    host: config.getProperty('sURLBackCentralParts.host') || process.env.ACTIVITI_HOST,
+    port: config.getProperty('sURLBackCentralParts.port') || process.env.ACTIVITI_PORT,
+    rest: config.getProperty('sURLBackCentralParts.suffix') || process.env.ACTIVITI_REST,
+    username: config.getProperty('Back_Central.sLogin_Back_Central') || process.env.ACTIVITI_USER,
+    password: config.getProperty('Back_Central.sPassword_Back_Central') || process.env.ACTIVITI_PASSWORD
+  },
   ssl: {
     private_key: config.getProperty('BackProxy_Region.sKeyPath_BackProxy_Region') || process.env.PRIVATE_KEY,
     certificate: config.getProperty('BackProxy_Region.sCertPath_BackProxy_Region') || process.env.CERTIFICATE,
