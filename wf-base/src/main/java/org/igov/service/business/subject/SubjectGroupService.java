@@ -97,9 +97,9 @@ public class SubjectGroupService {
 			List<SubjectGroup> childrens = getChildren(children,idChildren,subjToNodeMap,idParentList);
 			Collections.sort(childrens, new Comparator() {
 				@Override
-				public int compare(Object vSubjectGroupParentNode, Object vSubjectGroupParentNodeTwo) {
-					return ((VSubjectGroupParentNode) vSubjectGroupParentNode).getGroup().getId()
-							.compareTo(((VSubjectGroupParentNode) vSubjectGroupParentNodeTwo).getGroup().getId());
+				public int compare(Object subjectGroup, Object subjectGroupTwo) {
+					return ((SubjectGroup) subjectGroup).getId()
+							.compareTo(((SubjectGroup) subjectGroupTwo).getId());
 				}
 			});
 			subjToNodeMapFiltr.put(groupFiltr, childrens);
