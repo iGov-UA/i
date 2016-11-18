@@ -6,6 +6,8 @@
 package org.igov.service.business.subject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -93,6 +95,13 @@ public class SubjectGroupService {
 					}));
 			
 			List<SubjectGroup> childrens = getChildren(children,idChildren,subjToNodeMap,idParentList);
+			Collections.sort(childrens, new Comparator() {
+				@Override
+				public int compare(Object vSubjectGroupParentNode, Object vSubjectGroupParentNodeTwo) {
+					return ((VSubjectGroupParentNode) vSubjectGroupParentNode).getGroup().getId()
+							.compareTo(((VSubjectGroupParentNode) vSubjectGroupParentNodeTwo).getGroup().getId());
+				}
+			});
 			subjToNodeMapFiltr.put(groupFiltr, childrens);
 		}
 			
@@ -110,7 +119,6 @@ public class SubjectGroupService {
 			if (idParentList.contains(id)) {
 				List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
 				if(child!=null && !child.isEmpty()) {
-					childrens.addAll(child); //добавляем детей к общему списку детей
 					//получаем только ид чилдренов
 					final List<Long> idCh = Lists.newArrayList(
 							Collections2.transform(child, new Function<SubjectGroup, Long>() {
