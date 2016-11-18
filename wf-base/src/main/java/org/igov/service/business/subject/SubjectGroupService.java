@@ -117,24 +117,27 @@ public class SubjectGroupService {
      * @param anID_ChildLevel ид детей уровня на котором мы находимся
      * @param subjToNodeMap мапа соответствия всех ид перентов и список его
      * детей
-     * @param anID_Perent ид всех перентов
+     * @param anID_PerentAll ид всех перентов
      * @param deepLevelRequested желаемая глубина
      * @param deepLevelFact фактическая глубина
      * @param result
      * @return
      */
     public List<SubjectGroup> getChildren(List<SubjectGroup> aChildLevel, List<Long> anID_ChildLevel, Map<Long, List<SubjectGroup>> subjToNodeMap,
-            Set<Long> anID_Perent, int deepLevelRequested, int deepLevelFact, List<SubjectGroup> result) {
+            Set<Long> anID_PerentAll, int deepLevelRequested, int deepLevelFact, List<SubjectGroup> result) {
         List<SubjectGroup> aChildLevel_Result = new ArrayList<>();
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
         if (deepLevelRequested == 0) {
             deepLevelRequested = 1000;
         }
+        LOG.info("aChildLevel: " + aChildLevel.size() + " anID_ChildLevel: " + anID_ChildLevel);
         if (deepLevelFact < deepLevelRequested) {
             for (Long nID_ChildLevel : anID_ChildLevel) {
-                if (anID_Perent.contains(nID_ChildLevel)) {
+                if (anID_PerentAll.contains(nID_ChildLevel)) {
+                    //LOG.info("nID_ChildLevel: " + nID_ChildLevel);
                     aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);//достаем детей детей
                     if (aChildLevel_Result != null && !aChildLevel_Result.isEmpty()) {
+                        LOG.info("nID_ChildLevel: " + nID_ChildLevel + " aChildLevel_Result: " + aChildLevel_Result.size());
                         //получаем только ид чилдренов
                         anID_ChildLevel_Result = Lists.newArrayList(
                                 Collections2.transform(aChildLevel_Result, new Function<SubjectGroup, Long>() {
@@ -143,14 +146,16 @@ public class SubjectGroupService {
                                         return subjectGroup.getId();
                                     }
                                 }));
+                        LOG.info("nID_ChildLevel: " + nID_ChildLevel + " anID_ChildLevel_Result: " + anID_ChildLevel_Result.size());
                         result.addAll(aChildLevel_Result); //добавляем детей к общему списку детей
+                        LOG.info("result: " + result.size());
                     }
                 }
             }
             deepLevelFact++;
             LOG.info("deepLevelFact: " + deepLevelFact + " deepLevelRequested: " + deepLevelRequested);
             if (deepLevelFact < deepLevelRequested) {
-                getChildren(aChildLevel_Result, anID_ChildLevel_Result, subjToNodeMap, anID_Perent, deepLevelRequested, deepLevelFact, result);
+                getChildren(aChildLevel_Result, anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll, deepLevelRequested, deepLevelFact, result);
             }
         }
         return result;
