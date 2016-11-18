@@ -30,7 +30,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
 /**
- * Сервис получения организационной иерархии
+ *Сервис получения организационной иерархии
  * @author inna
  */
 @Service
@@ -41,7 +41,7 @@ public class SubjectGroupService {
 	@Autowired
 	private BaseEntityDao<Long> baseEntityDao;
 
-	public List<SubjectGroup> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+	public List<List<SubjectGroup>> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 
 		List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
@@ -76,11 +76,14 @@ public class SubjectGroupService {
 
 		}
 
+		
+		
+		Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
+		List<List<SubjectGroup>> valuesRes = new ArrayList<>();
 		Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti); //достаем ид sID_Group_Activiti которое на вход
 		
 	
 		List<SubjectGroup> children = subjToNodeMap.get(groupFiltr); //достаем его детей
-		List<SubjectGroup> childrens = null;
 		if(children!=null && !children.isEmpty()) {
 			
 			//получаем только ид чилдренов
@@ -92,11 +95,7 @@ public class SubjectGroupService {
 						}
 					}));
 			
-			childrens = getChildren(children,idChildren,subjToNodeMap,idParentList,deepLevel.intValue());
-			
-			/**
-			 * Сортируем коллекцию по ид
-			 */
+			List<SubjectGroup> childrens = getChildren(children,idChildren,subjToNodeMap,idParentList,deepLevel.intValue());
 			Collections.sort(childrens, new Comparator() {
 				@Override
 				public int compare(Object subjectGroup, Object subjectGroupTwo) {
@@ -104,19 +103,21 @@ public class SubjectGroupService {
 							.compareTo(((SubjectGroup) subjectGroupTwo).getId());
 				}
 			});
+			subjToNodeMapFiltr.put(groupFiltr, childrens);
 		}
 			
+		valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
 
 
 		VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
 		parentSubjectGroup.accept(subjectGroupTreeResult);
-		return childrens;
+		return valuesRes;
 
 	}
 	
 	
 	/**
-	 * Метод который возвращает иерархию подчиненности согласно заданной глубины и группы
+	 * Метод структуру иерархии согласно заданной глубины и группы
 	 * @param childrens
 	 * @param idChildren
 	 * @param subjToNodeMap
@@ -129,7 +130,7 @@ public class SubjectGroupService {
 		if(deepLevel==0) {
 			deepL=1000;
 		}
-		i++; //накручиваем счетчик, для понимания глубины, согласно заданной на входе
+		i++;
 		for(Long id : idChildren) {
 			if (idParentList.contains(id)&& i<deepL) {
 				List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
@@ -142,6 +143,7 @@ public class SubjectGroupService {
 									return subjectGroup.getId();
 								}
 							}));
+					//childrens.addAll(getChildren(child,idCh,subjToNodeMap,idParentList,deepLevel)); //добавляем детей к общему списку детей
 					List<SubjectGroup> list = getChildren(child, idCh, subjToNodeMap, idParentList, deepLevel);
 					childrens.addAll(list); // добавляем детей к общему
 											// списку детей
