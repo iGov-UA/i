@@ -193,10 +193,10 @@ if(execution.getVariable('aDocErr') == 'enum3'){execution.setVariable('iTemp3', 
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="servicetask8">
+    <sequenceFlow id="flow21" name="ВІДМОВА" sourceRef="exclusivegateway2" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='bad'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="servicetask7">
+    <sequenceFlow id="flow20" name="ЦНАП-ЦНАП" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok' && bFlag=='easy'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow30" name="ЦНАП-ДГК-ЦНАП" sourceRef="exclusivegateway2" targetRef="servicetask11">
@@ -473,10 +473,10 @@ ${sNameOrgan}&lt;br /&gt;
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow31" sourceRef="servicetask1" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow3" name="Недостатньо інформації" sourceRef="exclusivegateway1" targetRef="servicetask4">
+    <sequenceFlow id="flow3" name="ДОВІДКУ НЕ ВИДАНО" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverka=='bad'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow4" name="Заявка прийнята і обробляється" sourceRef="exclusivegateway1" targetRef="servicetask3">
+    <sequenceFlow id="flow4" name="ДОВІДКУ ВИДАНО" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverka=='ok'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
@@ -1249,16 +1249,22 @@ ${sNameOrgan}&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="950.0" y="230.0"></omgdi:waypoint>
         <omgdi:waypoint x="1040.0" y="230.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="1042.0" y="190.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="930.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="1034.0" y="310.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="991.0" y="297.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="930.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="817.0" y="310.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="87.0" x="829.0" y="244.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="87.0" x="786.0" y="291.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
@@ -1317,14 +1323,14 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdi:waypoint x="927.0" y="653.0"></omgdi:waypoint>
         <omgdi:waypoint x="1034.0" y="720.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="911.0" y="561.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="991.0" y="679.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="927.0" y="653.0"></omgdi:waypoint>
         <omgdi:waypoint x="817.0" y="720.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="802.0" y="669.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="770.0" y="679.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
