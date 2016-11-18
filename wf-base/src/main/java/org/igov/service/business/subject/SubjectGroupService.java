@@ -144,7 +144,7 @@ public class SubjectGroupService {
 								}
 							}));
 					//childrens.addAll(getChildren(child,idCh,subjToNodeMap,idParentList,deepLevel)); //добавляем детей к общему списку детей
-					List<SubjectGroup> list = getChildren(child, idCh, subjToNodeMap, idParentList, deepLevel);
+					List<SubjectGroup> list = getChildren(child, idCh, subjToNodeMap, idParentList, deepL);
 					childrens.addAll(list); // добавляем детей к общему
 											// списку детей
 				}
