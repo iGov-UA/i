@@ -123,12 +123,6 @@ public class SubjectGroupService {
 		
 		if(deepLevel==0) {
 			deepLevel=1000;
-		}else {
-			if(deepLevel>idChildren.size()) {
-				deepLevel=deepLevel;
-			}else {
-			deepLevel = idChildren.size();
-			}
 		}
 		i++;
 		for(Long id : idChildren) {
