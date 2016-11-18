@@ -52,6 +52,10 @@ import java.util.*;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import org.igov.io.mail.NotificationPatterns;
+import org.igov.util.Tool;
+import static org.igov.util.Tool.sO;
+
 @Controller
 @Api(tags = { "SubjectMessageController -- Сообщения субьектов" })
 @RequestMapping(value = "/subject/message")
@@ -85,7 +89,10 @@ public class SubjectMessageController {
     
     @Autowired
     HttpRequester httpRequester;
-
+    
+    @Autowired
+    private NotificationPatterns oNotificationPatterns;
+    
     @Autowired
     private TaskService taskService;
 
@@ -434,6 +441,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка-Token", required = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "Строка-тело сообщения", required = true) @RequestParam(value = "sBody", required = true) String sBody,
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
+            @ApiParam(value = "строка-массива параметров", required = false) @RequestParam(value = "soParams") String soParams,
             @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
             @ApiParam(value = "строка-Ключ записи redis", required = false) @RequestParam(value = "sID_File", required = false) String sID_File,
             @ApiParam(value = "строка-Название файла", required = false) @RequestParam(value = "sFileName", required = false) String sFileName,
@@ -530,7 +538,10 @@ public class SubjectMessageController {
                 multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));
             }
             httpRequester.getInside(mergeUrl, mergeParams, multipleParam);
-
+            if(nID_SubjectMessageType==9){
+                 //String sToken = Tool.getGeneratedToken();
+                 oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
+            }
         } catch (Exception e) {
             LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);
             LOG.error("FAIL:", e);
