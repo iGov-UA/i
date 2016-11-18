@@ -119,7 +119,7 @@ public class SubjectGroupService {
 									return subjectGroup.getId();
 								}
 							}));
-					getChildren(child,idCh,subjToNodeMap,idParentList);
+					childrens.addAll(getChildren(child,idCh,subjToNodeMap,idParentList)); //добавляем детей к общему списку детей
 				}
 			}
 		}
