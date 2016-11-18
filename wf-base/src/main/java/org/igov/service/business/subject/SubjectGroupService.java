@@ -37,6 +37,7 @@ import com.google.common.collect.Lists;
 public class SubjectGroupService {
 	private static final Log LOG = LogFactory.getLog(SubjectGroupService.class);
 	private static final long FAKE_ROOT_SUBJECT_ID = 0;
+	public static int i = 0;
 	@Autowired
 	private BaseEntityDao<Long> baseEntityDao;
 
@@ -115,8 +116,13 @@ public class SubjectGroupService {
 	}
 	
 	public List<SubjectGroup> getChildren(List<SubjectGroup> childrens,List<Long> idChildren , Map<Long, List<SubjectGroup>> subjToNodeMap,Set<Long> idParentList,int deepLevel){
+		int deepL = deepLevel;
+		if(deepLevel==0) {
+			deepL=1000;
+		}
+		i++;
 		for(Long id : idChildren) {
-			if (idParentList.contains(id)) {
+			if (idParentList.contains(id)&& i<deepL) {
 				List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
 				if(child!=null && !child.isEmpty()) {
 					//получаем только ид чилдренов
@@ -128,17 +134,9 @@ public class SubjectGroupService {
 								}
 							}));
 					//childrens.addAll(getChildren(child,idCh,subjToNodeMap,idParentList,deepLevel)); //добавляем детей к общему списку детей
-					if (deepLevel == 0) {
-						List<SubjectGroup> list = getChildren(child, idCh, subjToNodeMap, idParentList, deepLevel);
-						childrens.addAll(list); // добавляем детей к общему
-												// списку детей
-				}else {
-					for (int i = 1; i < deepLevel; i++) {
-						List<SubjectGroup> list = getChildren(child, idCh, subjToNodeMap, idParentList, deepLevel);
-						childrens.addAll(list); // добавляем детей к общему
-												// списку детей
-					}
-				}
+					List<SubjectGroup> list = getChildren(child, idCh, subjToNodeMap, idParentList, deepLevel);
+					childrens.addAll(list); // добавляем детей к общему
+											// списку детей
 				}
 			}
 		}
