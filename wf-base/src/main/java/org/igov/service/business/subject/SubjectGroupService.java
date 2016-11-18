@@ -37,13 +37,13 @@ import com.google.common.collect.Lists;
 public class SubjectGroupService {
 	private static final Log LOG = LogFactory.getLog(SubjectGroupService.class);
 	private static final long FAKE_ROOT_SUBJECT_ID = 0;
-	public static int i = 0;
+	public int i = 0;
 	@Autowired
 	private BaseEntityDao<Long> baseEntityDao;
 
 	public List<List<SubjectGroup>> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
-		i = 0;
+		//i = 0;
 		List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
 		Map<Long, List<SubjectGroup>> subjToNodeMap = new HashMap<>();
 		Map<String, Long> mapGroupActiviti = new HashMap<>();
@@ -75,8 +75,8 @@ public class SubjectGroupService {
 			}
 
 		}
-
-		
+                //subjToNodeMap - полный список ид и список всех детей.
+		//mapGroupActiviti - полный список группа - ид парента
 		
 		Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
 		List<List<SubjectGroup>> valuesRes = new ArrayList<>();
@@ -84,6 +84,7 @@ public class SubjectGroupService {
 		
 	
 		List<SubjectGroup> children = subjToNodeMap.get(groupFiltr); //достаем его детей
+                // children полный список первого уровня
 		if(children!=null && !children.isEmpty()) {
 			
 			//получаем только ид чилдренов
@@ -94,7 +95,7 @@ public class SubjectGroupService {
 							return subjectGroup.getId();
 						}
 					}));
-			
+			//idChildren ид полного списка детей первого уровня
 			List<SubjectGroup> childrens = getChildren(children,idChildren,subjToNodeMap,idParentList,deepLevel.intValue());
 
 			subjToNodeMapFiltr.put(groupFiltr, childrens);
@@ -112,21 +113,22 @@ public class SubjectGroupService {
 	
 	/**
 	 * Метод структуру иерархии согласно заданной глубины и группы
-	 * @param childrens
-	 * @param idChildren
-	 * @param subjToNodeMap
-	 * @param idParentList
-	 * @param deepLevel
+	 * @param childrens результирующий список со всеми нужными нам детьми
+	 * @param idChildren ид детей уровня на котором мы находимся
+	 * @param subjToNodeMap мапа соответствия всех ид перентов и список его детей
+	 * @param idParentList ид всех перентов
+	 * @param deepLevel желаемая глубина
 	 * @return
 	 */
+        // i = 0 глубина фактическая 
+        
 	public List<SubjectGroup> getChildren(List<SubjectGroup> childrens,List<Long> idChildren , Map<Long, List<SubjectGroup>> subjToNodeMap,Set<Long> idParentList,int deepLevel){
 		
 		if(deepLevel==0) {
 			deepLevel=1000;
-		}
-		i++;
+		}		
 		for(Long id : idChildren) {
-			if (idParentList.contains(id)&& i<deepLevel) {
+			if (idParentList.contains(id)&& i<deepLevel) {                               
 				List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
 				if(child!=null && !child.isEmpty()) {
 					//получаем только ид чилдренов
@@ -141,7 +143,7 @@ public class SubjectGroupService {
 				}
 			}
 		}
-		
+		i++;
 		return childrens;
 		
 	}
