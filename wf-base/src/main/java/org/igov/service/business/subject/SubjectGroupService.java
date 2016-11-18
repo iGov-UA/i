@@ -79,7 +79,7 @@ public class SubjectGroupService {
         //subjToNodeMap - полный список ид и список всех детей.
         //mapGroupActiviti - полный список группа - ид парента
 
-        Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
+        //Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
         List<List<SubjectGroup>> valuesRes = new ArrayList<>();
         Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti); //достаем ид sID_Group_Activiti которое на вход
 
@@ -96,16 +96,16 @@ public class SubjectGroupService {
                         }
                     }));
             //idChildren ид полного списка детей первого уровня
-            
-            getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue(), 0, aChildResult);
+            aChildResult.addAll(children);
+            getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue(), 1, aChildResult);
 
-            subjToNodeMapFiltr.put(groupFiltr, aChildResult);
+            //subjToNodeMapFiltr.put(groupFiltr, aChildResult);
         }
         valuesRes.add(aChildResult);
         //valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
 
-        VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
-        parentSubjectGroup.accept(subjectGroupTreeResult);
+        //VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
+        //parentSubjectGroup.accept(subjectGroupTreeResult);
         return valuesRes;
 
     }
@@ -125,6 +125,7 @@ public class SubjectGroupService {
      */
     public List<SubjectGroup> getChildren(List<SubjectGroup> aChildLevel, List<Long> anID_ChildLevel, Map<Long, List<SubjectGroup>> subjToNodeMap,
             Set<Long> anID_PerentAll, int deepLevelRequested, int deepLevelFact, List<SubjectGroup> result) {
+
         List<SubjectGroup> aChildLevel_Result = new ArrayList<>();
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
         if (deepLevelRequested == 0) {
@@ -171,16 +172,16 @@ public class SubjectGroupService {
      * @param deepLevel
      * @return
      */
-	public List<SubjectGroup> getChildrenNew(List<SubjectGroup> childrens,List<Long> idChildren , Map<Long, List<SubjectGroup>> subjToNodeMap,Set<Long> idParentList,int deepLevel){
+    public List<SubjectGroup> getChildrenNew(List<SubjectGroup> childrens, List<Long> idChildren, Map<Long, List<SubjectGroup>> subjToNodeMap, Set<Long> idParentList, int deepLevel) {
 
-		if(deepLevel==0) {
-			deepLevel=1000;
+        if (deepLevel == 0) {
+            deepLevel = 1000;
         }
         i++;
-		for(Long id : idChildren) {
-			if (idParentList.contains(id)&& i<deepLevel) {
+        for (Long id : idChildren) {
+            if (idParentList.contains(id) && i < deepLevel) {
                 List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
-				if(child!=null && !child.isEmpty()) {
+                if (child != null && !child.isEmpty()) {
                     //получаем только ид чилдренов
                     final List<Long> idCh = Lists.newArrayList(
                             Collections2.transform(child, new Function<SubjectGroup, Long>() {
@@ -189,7 +190,7 @@ public class SubjectGroupService {
                                     return subjectGroup.getId();
                                 }
                             }));
-					childrens.addAll(getChildrenNew(child,idCh,subjToNodeMap,idParentList,deepLevel)); //добавляем детей к общему списку детей
+                    childrens.addAll(getChildrenNew(child, idCh, subjToNodeMap, idParentList, deepLevel)); //добавляем детей к общему списку детей
                 }
             }
         }
