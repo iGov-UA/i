@@ -94,7 +94,7 @@ public class SubjectGroupService {
 						}
 					}));
 			
-			List<SubjectGroup> childrens = getChildren(children,idChildren,subjToNodeMap,idParentList);
+			List<SubjectGroup> childrens = getChildren(children,idChildren,subjToNodeMap,idParentList,deepLevel.intValue());
 			Collections.sort(childrens, new Comparator() {
 				@Override
 				public int compare(Object subjectGroup, Object subjectGroupTwo) {
@@ -114,7 +114,7 @@ public class SubjectGroupService {
 
 	}
 	
-	public List<SubjectGroup> getChildren(List<SubjectGroup> childrens,List<Long> idChildren , Map<Long, List<SubjectGroup>> subjToNodeMap,Set<Long> idParentList){
+	public List<SubjectGroup> getChildren(List<SubjectGroup> childrens,List<Long> idChildren , Map<Long, List<SubjectGroup>> subjToNodeMap,Set<Long> idParentList,int deepLevel){
 		for(Long id : idChildren) {
 			if (idParentList.contains(id)) {
 				List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
@@ -127,7 +127,18 @@ public class SubjectGroupService {
 									return subjectGroup.getId();
 								}
 							}));
-					childrens.addAll(getChildren(child,idCh,subjToNodeMap,idParentList)); //добавляем детей к общему списку детей
+					//childrens.addAll(getChildren(child,idCh,subjToNodeMap,idParentList,deepLevel)); //добавляем детей к общему списку детей
+					if (deepLevel == 0) {
+						List<SubjectGroup> list = getChildren(child, idCh, subjToNodeMap, idParentList, deepLevel);
+						childrens.addAll(list); // добавляем детей к общему
+												// списку детей
+				}else {
+					for (int i = 1; i < deepLevel; i++) {
+						List<SubjectGroup> list = getChildren(child, idCh, subjToNodeMap, idParentList, deepLevel);
+						childrens.addAll(list); // добавляем детей к общему
+												// списку детей
+					}
+				}
 				}
 			}
 		}
