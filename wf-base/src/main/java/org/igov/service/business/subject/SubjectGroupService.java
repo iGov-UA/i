@@ -42,6 +42,7 @@ public class SubjectGroupService {
     private BaseEntityDao<Long> baseEntityDao;
 
     public List<List<SubjectGroup>> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+        List<SubjectGroup> aChildResult = new ArrayList();
         List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
         i = 0;
         List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
@@ -95,13 +96,13 @@ public class SubjectGroupService {
                         }
                     }));
             //idChildren ид полного списка детей первого уровня
-            List<SubjectGroup> childrens = new ArrayList();
-            getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue(), 0, childrens);
+            
+            getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue(), 0, aChildResult);
 
-            subjToNodeMapFiltr.put(groupFiltr, childrens);
+            subjToNodeMapFiltr.put(groupFiltr, aChildResult);
         }
-
-        valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
+        valuesRes.add(aChildResult);
+        //valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
 
         VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
         parentSubjectGroup.accept(subjectGroupTreeResult);
