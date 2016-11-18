@@ -6,8 +6,6 @@
 package org.igov.service.business.subject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -97,7 +95,7 @@ public class SubjectGroupService {
                         }
                     }));
             //idChildren ид полного списка детей первого уровня
-            List<SubjectGroup> childrens = getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue());
+            List<SubjectGroup> childrens = getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue(), 0);
 
             subjToNodeMapFiltr.put(groupFiltr, childrens);
         }
@@ -119,18 +117,17 @@ public class SubjectGroupService {
      * детей
      * @param idParentList ид всех перентов
      * @param deepLevel желаемая глубина
+     * @param deepLevelFact фактическая глубина
      * @return
      */
-    // i = 0 глубина фактическая 
-    public List<SubjectGroup> getChildren(List<SubjectGroup> childrens, List<Long> idChildren, Map<Long, List<SubjectGroup>> subjToNodeMap, Set<Long> idParentList, int deepLevel) {
+    public List<SubjectGroup> getChildren(List<SubjectGroup> childrens, List<Long> idChildren, Map<Long, List<SubjectGroup>> subjToNodeMap,
+            Set<Long> idParentList, int deepLevel, int deepLevelFact) {
         List<SubjectGroup> child = new ArrayList<>();
         List<Long> idCh = new ArrayList<>();
         if (deepLevel == 0) {
             deepLevel = 1000;
         }
-        if (i < deepLevel) {
-            i++;
-            LOG.info("i: " + i + " deepLevel: " + deepLevel );
+        if (deepLevelFact < deepLevel) {
             for (Long id : idChildren) {
                 if (idParentList.contains(id)) {
                     child = subjToNodeMap.get(id);//достаем детей детей
@@ -147,50 +144,52 @@ public class SubjectGroupService {
                     }
                 }
             }
-            if (i < deepLevel) {
-                getChildren(child, idCh, subjToNodeMap, idParentList, deepLevel);
+            deepLevelFact++;
+            LOG.info("deepLevelFact: " + deepLevelFact + " deepLevel: " + deepLevel);
+            if (deepLevelFact < deepLevel) {
+                getChildren(child, idCh, subjToNodeMap, idParentList, deepLevel, deepLevelFact);
             }
         }
 
         return childrens;
 
     }
-    
-    
-	/**
-	 * Метод структуру иерархии согласно заданной глубины и группы
-	 * @param childrens
-	 * @param idChildren
-	 * @param subjToNodeMap
-	 * @param idParentList
-	 * @param deepLevel
-	 * @return
-	 */
+
+    /**
+     * Метод структуру иерархии согласно заданной глубины и группы
+     *
+     * @param childrens
+     * @param idChildren
+     * @param subjToNodeMap
+     * @param idParentList
+     * @param deepLevel
+     * @return
+     */
 	public List<SubjectGroup> getChildrenNew(List<SubjectGroup> childrens,List<Long> idChildren , Map<Long, List<SubjectGroup>> subjToNodeMap,Set<Long> idParentList,int deepLevel){
-		
+
 		if(deepLevel==0) {
 			deepLevel=1000;
-		}
-		i++;
+        }
+        i++;
 		for(Long id : idChildren) {
 			if (idParentList.contains(id)&& i<deepLevel) {
-				List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
+                List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
 				if(child!=null && !child.isEmpty()) {
-					//получаем только ид чилдренов
-					final List<Long> idCh = Lists.newArrayList(
-							Collections2.transform(child, new Function<SubjectGroup, Long>() {
-								@Override
-								public Long apply(SubjectGroup subjectGroup) {
-									return subjectGroup.getId();
-								}
-							}));
-					childrens.addAll(getChildren(child,idCh,subjToNodeMap,idParentList,deepLevel)); //добавляем детей к общему списку детей
-				}
-			}
-		}
-		
-		return childrens;
-		
-	}
+                    //получаем только ид чилдренов
+                    final List<Long> idCh = Lists.newArrayList(
+                            Collections2.transform(child, new Function<SubjectGroup, Long>() {
+                                @Override
+                                public Long apply(SubjectGroup subjectGroup) {
+                                    return subjectGroup.getId();
+                                }
+                            }));
+					childrens.addAll(getChildrenNew(child,idCh,subjToNodeMap,idParentList,deepLevel)); //добавляем детей к общему списку детей
+                }
+            }
+        }
+
+        return childrens;
+
+    }
 
 }
