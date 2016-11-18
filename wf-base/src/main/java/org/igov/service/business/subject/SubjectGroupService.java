@@ -79,12 +79,10 @@ public class SubjectGroupService {
 		List<List<SubjectGroup>> valuesRes = new ArrayList<>();
 		Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti); //достаем ид sID_Group_Activiti которое на вход
 		
-		LOG.info("idParentListtttttttttttttttttttttt "+idParentList);
-		
-		LOG.info("groupFiltrrrrrrrrrrrrrrrrrrrrrrrrrrr "+groupFiltr);
 	
-				List<SubjectGroup> children = subjToNodeMap.get(groupFiltr); //достаем его детей
-	//	for (Long parentId : idParentList) { // идем по ид парентов (там все все все паренты)
+		List<SubjectGroup> children = subjToNodeMap.get(groupFiltr); //достаем его детей
+		if(children!=null && !children.isEmpty()) {
+			
 			//получаем только ид чилдренов
 			final List<Long> idChildren = Lists.newArrayList(
 					Collections2.transform(children, new Function<SubjectGroup, Long>() {
@@ -94,22 +92,10 @@ public class SubjectGroupService {
 						}
 					}));
 			
-			LOG.info("idChildrennnnnnnnnnnnnnnnnnnnnnnn "+idChildren);
-
-			//идем по списку отфильтрованных ид детей
-		//	for (int i=1; i<deepLevel.intValue(); i++) {
-			for(Long id : idChildren) {
-				if (idParentList.contains(id)) {
-					List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
-					LOG.info("childddddddddddddddd "+child);
-					children.addAll(child); //добавляем детей к общему списку детей
-					LOG.info("childrennnnnnnnnnnnnnnn "+children);
-				}
-			}
-		//	}
-			subjToNodeMapFiltr.put(groupFiltr, children);
+			List<SubjectGroup> childrens = getChildren(children,idChildren,subjToNodeMap,idParentList);
+			subjToNodeMapFiltr.put(groupFiltr, childrens);
+		}
 			
-	//		}
 		valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
 
 
@@ -117,6 +103,29 @@ public class SubjectGroupService {
 		parentSubjectGroup.accept(subjectGroupTreeResult);
 		return valuesRes;
 
+	}
+	
+	public List<SubjectGroup> getChildren(List<SubjectGroup> childrens,List<Long> idChildren , Map<Long, List<SubjectGroup>> subjToNodeMap,Set<Long> idParentList){
+		for(Long id : idChildren) {
+			if (idParentList.contains(id)) {
+				List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
+				if(child!=null && !child.isEmpty()) {
+					childrens.addAll(child); //добавляем детей к общему списку детей
+					//получаем только ид чилдренов
+					final List<Long> idCh = Lists.newArrayList(
+							Collections2.transform(child, new Function<SubjectGroup, Long>() {
+								@Override
+								public Long apply(SubjectGroup subjectGroup) {
+									return subjectGroup.getId();
+								}
+							}));
+					getChildren(child,idCh,subjToNodeMap,idParentList);
+				}
+			}
+		}
+		
+		return childrens;
+		
 	}
 
 }
