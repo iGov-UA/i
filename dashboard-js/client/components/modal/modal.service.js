@@ -90,7 +90,7 @@ angular.module('dashboardJsApp')
             modal: {
               dismissable: true,
               title: 'Уточнення!',
-              html: '<strong>' + 'Почати опрацьовувавти задачу ?' + '</strong>',
+              html: '<strong>' + 'Почати опрацювання задачі ?' + '</strong>',
               buttons: [{
                 classes: 'btn-success',
                 text: ' Так ',
