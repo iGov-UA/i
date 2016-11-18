@@ -90,26 +90,24 @@
           </div>
 
           <div ng-if="['select'].indexOf(field.type) > -1" ng-class="getBpAndFieldID(field)">
-            <dropdown-organ ng-if="field.id==='sID_Public_SubjectOrganJoin'"
-                            ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
-                            ng-model="field.value"
-                            form-data-property="field"
-                            service-data="oServiceData"
-                            activiti-form="activitiForm"
-                            ng-required="field.required"
-                            form-data="data.formData"
-                            ng-disabled="!isFieldWritable(field.writable)"
-                            name="field.id"></dropdown-organ>
+            <!--<dropdown-organ ng-if="field.id==='sID_Public_SubjectOrganJoin'"-->
+                            <!--ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"-->
+                            <!--ng-model="field.value"-->
+                            <!--form-data-property="field"-->
+                            <!--service-data="oServiceData"-->
+                            <!--activiti-form="activitiForm"-->
+                            <!--ng-required="field.required"-->
+                            <!--form-data="data.formData"-->
+                            <!--ng-disabled="!isFieldWritable(field.writable)"-->
+                            <!--name="field.id"></dropdown-organ>-->
 
             <ui-select dropdown-autocomplete ng-if="field.selectType=='autocomplete'"
                        ng-model="field.value"
                        name="{{field.id + rowIndex}}"
                        ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
-
                        ng-required="field.required"
                        autocomplete-data="field.autocompleteData"
                        autocomplete-name="field.autocompleteName"
-
                        reach-infinity="requestMoreItems($select.items)"
                        ng-disabled="!isFieldWritable(field.writable)"
                        on-select="onSelectDataList($item, tableName, rowIndex)">
