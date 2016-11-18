@@ -123,19 +123,20 @@ public class SubjectGroupService {
      */
     // i = 0 глубина фактическая 
     public List<SubjectGroup> getChildren(List<SubjectGroup> childrens, List<Long> idChildren, Map<Long, List<SubjectGroup>> subjToNodeMap, Set<Long> idParentList, int deepLevel) {
-
+        List<SubjectGroup> child = new ArrayList<>();
+        List<Long> idCh = new ArrayList<>();
         if (deepLevel == 0) {
             deepLevel = 1000;
         }
-        
         if (i < deepLevel) {
             i++;
+            LOG.info("i: " + i + " deepLevel: " + deepLevel );
             for (Long id : idChildren) {
                 if (idParentList.contains(id)) {
-                    List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
+                    child = subjToNodeMap.get(id);//достаем детей детей
                     if (child != null && !child.isEmpty()) {
                         //получаем только ид чилдренов
-                        final List<Long> idCh = Lists.newArrayList(
+                        idCh = Lists.newArrayList(
                                 Collections2.transform(child, new Function<SubjectGroup, Long>() {
                                     @Override
                                     public Long apply(SubjectGroup subjectGroup) {
@@ -143,11 +144,11 @@ public class SubjectGroupService {
                                     }
                                 }));
                         childrens.addAll(child); //добавляем детей к общему списку детей
-                        if (i < deepLevel) {
-                            getChildren(child, idCh, subjToNodeMap, idParentList, deepLevel);
-                        }
                     }
                 }
+            }
+            if (i < deepLevel) {
+                getChildren(child, idCh, subjToNodeMap, idParentList, deepLevel);
             }
         }
 
