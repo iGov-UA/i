@@ -667,6 +667,11 @@
             return $scope.submitTask(form);});
         };
 
+      $scope.println = function (form) {
+        console.log("println");
+        console.log(form);
+        return true;
+      }
       $scope.saveChangesTask = function (form) {
           //$scope.validateForm(form);
           //if(form.$invalid){
