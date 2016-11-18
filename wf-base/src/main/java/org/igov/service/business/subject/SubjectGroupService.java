@@ -43,7 +43,7 @@ public class SubjectGroupService {
 
 	public List<List<SubjectGroup>> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
-
+		i = 0;
 		List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
 		Map<Long, List<SubjectGroup>> subjToNodeMap = new HashMap<>();
 		Map<String, Long> mapGroupActiviti = new HashMap<>();
@@ -126,13 +126,12 @@ public class SubjectGroupService {
 	 * @return
 	 */
 	public List<SubjectGroup> getChildren(List<SubjectGroup> childrens,List<Long> idChildren , Map<Long, List<SubjectGroup>> subjToNodeMap,Set<Long> idParentList,int deepLevel){
-		int deepL = deepLevel;
 		if(deepLevel==0) {
-			deepL=1000;
+			deepLevel=1000;
 		}
 		i++;
 		for(Long id : idChildren) {
-			if (idParentList.contains(id)&& i<deepL) {
+			if (idParentList.contains(id)&& i<deepLevel) {
 				List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
 				if(child!=null && !child.isEmpty()) {
 					//получаем только ид чилдренов
@@ -143,10 +142,7 @@ public class SubjectGroupService {
 									return subjectGroup.getId();
 								}
 							}));
-					//childrens.addAll(getChildren(child,idCh,subjToNodeMap,idParentList,deepLevel)); //добавляем детей к общему списку детей
-					List<SubjectGroup> list = getChildren(child, idCh, subjToNodeMap, idParentList, deepL);
-					childrens.addAll(list); // добавляем детей к общему
-											// списку детей
+					childrens.addAll(getChildren(child,idCh,subjToNodeMap,idParentList,deepLevel)); //добавляем детей к общему списку детей
 				}
 			}
 		}
