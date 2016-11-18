@@ -45,7 +45,7 @@ public class SubjectGroupService {
 
     public List<List<SubjectGroup>> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
         List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
-        //i = 0;
+        i = 0;
         List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
         Map<Long, List<SubjectGroup>> subjToNodeMap = new HashMap<>();
         Map<String, Long> mapGroupActiviti = new HashMap<>();
