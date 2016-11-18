@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="eco_0520_audit" name="Видача (подовження) сертифіката екологічного аудитора" isExecutable="true">
+  <process id="eco_0520_audit" name="Видача сертифіката екологічного аудитора" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
@@ -15,10 +15,6 @@
         <activiti:formProperty id="sWork" name="основне місце роботи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="посада" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdresWork" name="місцезнаходження місця роботи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="saTypeAppeal" name="Оберіть тип послуги" type="enum" required="true">
-          <activiti:value id="sEnumFirst" name="Видача сертифіката екологічного аудитора"></activiti:value>
-          <activiti:value id="sEnumProlongation" name="Подовження терміну чинності сертифіката екологічного аудитора"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="markers5" name="лінія освіти" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sEducation&quot;],&quot;sValue&quot;:&quot;Освіта&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sEducation" name="Освіта" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sHighSchool&quot;,&quot;name&quot;:&quot;учбовий заклад&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;nYearGraduation&quot;,&quot;name&quot;:&quot;рік закінчення&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNumberDiploma&quot;,&quot;name&quot;:&quot;N диплома&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sSpecialty&quot;,&quot;name&quot;:&quot;спеціальність&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sQualification&quot;,&quot;name&quot;:&quot;кваліфікація&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="лінія іноземних мов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;slanguage&quot;],&quot;sValue&quot;:&quot;Знання іноземних мов&quot;}}}"></activiti:formProperty>
@@ -43,7 +39,7 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers10" name="лінія Наукові праці" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;sResearch&quot;],&quot;sValue&quot;:&quot;Наукові праці&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sResearch" name="Наукові праці" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;nNumberRow3&quot;,&quot;name&quot;:&quot;N з/п&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNameOrganization&quot;,&quot;name&quot;:&quot;Найменування організації&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNameCourse&quot;,&quot;name&quot;:&quot;Найменування курсу, тривалість курсу&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTerm2&quot;,&quot;name&quot;:&quot;Термін&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNumberDocEndCourse&quot;,&quot;name&quot;:&quot;Номер документа про закінчення курсу&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sResearch" name="Наукові праці" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNameResearch&quot;,&quot;name&quot;:&quot;Найменування наукової праці&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sDateResearch&quot;,&quot;name&quot;:&quot;Рік публікації&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="saQuestion4" name="Чи маєте іноземний документ про освіту?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -77,10 +73,6 @@
         <activiti:formProperty id="sWork" name="основне місце роботи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="посада; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresWork" name="місцезнаходження місця роботи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="saTypeAppeal" name="Оберіть тип послуги; ;writable=false" type="enum">
-          <activiti:value id="sEnumFirst" name="Видача сертифіката екологічного аудитора"></activiti:value>
-          <activiti:value id="sEnumProlongation" name="Подовження терміну чинності сертифіката екологічного аудитора"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="markers5" name="лінія освіти" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sEducation&quot;],&quot;sValue&quot;:&quot;Освіта&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sEducation" name="Освіта" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sHighSchool&quot;,&quot;name&quot;:&quot;учбовий заклад&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;nYearGraduation&quot;,&quot;name&quot;:&quot;рік закінчення&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNumberDiploma&quot;,&quot;name&quot;:&quot;N диплома&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sSpecialty&quot;,&quot;name&quot;:&quot;спеціальність&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sQualification&quot;,&quot;name&quot;:&quot;кваліфікація&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="лінія іноземних мов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;slanguage&quot;],&quot;sValue&quot;:&quot;Знання іноземних мов&quot;}}}"></activiti:formProperty>
@@ -105,7 +97,7 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers10" name="лінія Наукові праці" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;sResearch&quot;],&quot;sValue&quot;:&quot;Наукові праці&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sResearch" name="Наукові праці" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;nNumberRow3&quot;,&quot;name&quot;:&quot;N з/п&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNameOrganization&quot;,&quot;name&quot;:&quot;Найменування організації&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNameCourse&quot;,&quot;name&quot;:&quot;Найменування курсу, тривалість курсу&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTerm2&quot;,&quot;name&quot;:&quot;Термін&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNumberDocEndCourse&quot;,&quot;name&quot;:&quot;Номер документа про закінчення курсу&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sResearch" name="Наукові праці" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNameResearch&quot;,&quot;name&quot;:&quot;Найменування наукової праці&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sDateResearch&quot;,&quot;name&quot;:&quot;Рік публікації&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="saQuestion4" name="Чи маєте іноземний документ про освіту?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -122,7 +114,10 @@
         <activiti:formProperty id="markers12" name="маркер якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'||[sClient] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="нагадування" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/eco/eco_0520_audit_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/eco/eco_0520_audit_card_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0520_audit_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/eco/eco_0520_audit_card_print.html]" type="invisible" default="особиста картка" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -144,10 +139,6 @@
         <activiti:formProperty id="sWork" name="основне місце роботи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="посада; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresWork" name="місцезнаходження місця роботи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="saTypeAppeal" name="Оберіть тип послуги; ;writable=false" type="enum">
-          <activiti:value id="sEnumFirst" name="Видача сертифіката екологічного аудитора"></activiti:value>
-          <activiti:value id="sEnumProlongation" name="Подовження терміну чинності сертифіката екологічного аудитора"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="markers5" name="лінія освіти" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sEducation&quot;],&quot;sValue&quot;:&quot;Освіта&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sEducation" name="Освіта" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sHighSchool&quot;,&quot;name&quot;:&quot;учбовий заклад&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;nYearGraduation&quot;,&quot;name&quot;:&quot;рік закінчення&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNumberDiploma&quot;,&quot;name&quot;:&quot;N диплома&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sSpecialty&quot;,&quot;name&quot;:&quot;спеціальність&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sQualification&quot;,&quot;name&quot;:&quot;кваліфікація&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="лінія іноземних мов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;slanguage&quot;],&quot;sValue&quot;:&quot;Знання іноземних мов&quot;}}}"></activiti:formProperty>
@@ -172,7 +163,7 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers10" name="лінія Наукові праці" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;sResearch&quot;],&quot;sValue&quot;:&quot;Наукові праці&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sResearch" name="Наукові праці" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;nNumberRow3&quot;,&quot;name&quot;:&quot;N з/п&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNameOrganization&quot;,&quot;name&quot;:&quot;Найменування організації&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNameCourse&quot;,&quot;name&quot;:&quot;Найменування курсу, тривалість курсу&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTerm2&quot;,&quot;name&quot;:&quot;Термін&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNumberDocEndCourse&quot;,&quot;name&quot;:&quot;Номер документа про закінчення курсу&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+         <activiti:formProperty id="sResearch" name="Наукові праці" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNameResearch&quot;,&quot;name&quot;:&quot;Найменування наукової праці&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sDateResearch&quot;,&quot;name&quot;:&quot;Рік публікації&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="saQuestion4" name="Чи маєте іноземний документ про освіту?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -193,7 +184,9 @@
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="нагадування" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/eco/eco_0520_audit_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/eco/eco_0520_audit_card_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0520_audit_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/eco/eco_0520_audit_card_print.html]" type="invisible" default="особиста картка" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask3" name="прийняття рішення про видачу сертифіката або відмову" activiti:candidateGroups="eco_audit">
@@ -208,10 +201,6 @@
         <activiti:formProperty id="sWork" name="основне місце роботи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="посада; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresWork" name="місцезнаходження місця роботи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="saTypeAppeal" name="Оберіть тип послуги; ;writable=false" type="enum">
-          <activiti:value id="sEnumFirst" name="Видача сертифіката екологічного аудитора"></activiti:value>
-          <activiti:value id="sEnumProlongation" name="Подовження терміну чинності сертифіката екологічного аудитора"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="markers5" name="лінія освіти" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sEducation&quot;],&quot;sValue&quot;:&quot;Освіта&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sEducation" name="Освіта" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sHighSchool&quot;,&quot;name&quot;:&quot;учбовий заклад&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;nYearGraduation&quot;,&quot;name&quot;:&quot;рік закінчення&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNumberDiploma&quot;,&quot;name&quot;:&quot;N диплома&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sSpecialty&quot;,&quot;name&quot;:&quot;спеціальність&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sQualification&quot;,&quot;name&quot;:&quot;кваліфікація&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="лінія іноземних мов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;slanguage&quot;],&quot;sValue&quot;:&quot;Знання іноземних мов&quot;}}}"></activiti:formProperty>
@@ -236,7 +225,7 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers10" name="лінія Наукові праці" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;sResearch&quot;],&quot;sValue&quot;:&quot;Наукові праці&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sResearch" name="Наукові праці" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;nNumberRow3&quot;,&quot;name&quot;:&quot;N з/п&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNameOrganization&quot;,&quot;name&quot;:&quot;Найменування організації&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNameCourse&quot;,&quot;name&quot;:&quot;Найменування курсу, тривалість курсу&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTerm2&quot;,&quot;name&quot;:&quot;Термін&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNumberDocEndCourse&quot;,&quot;name&quot;:&quot;Номер документа про закінчення курсу&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+         <activiti:formProperty id="sResearch" name="Наукові праці" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNameResearch&quot;,&quot;name&quot;:&quot;Найменування наукової праці&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sDateResearch&quot;,&quot;name&quot;:&quot;Рік публікації&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="saQuestion4" name="Чи маєте іноземний документ про освіту?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -253,11 +242,12 @@
         <activiti:formProperty id="comment_3" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="маркер якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;comment_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'||[sClient] == 'рішення про відмову у видачі сертифіката'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers16" name="маркер якщо видача" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;sAddressSertificate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'accept'||[sClient] == 'рішення про видачу сертифіката'&quot;}}}"></activiti:formProperty>
-        
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="нагадування" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/eco/eco_0520_audit_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/eco/eco_0520_audit_card_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0520_audit_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/eco/eco_0520_audit_card_print.html]" type="invisible" default="особиста картка" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -266,7 +256,7 @@
           <activiti:expression><![CDATA[darja.grek@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення:  enum{[saTypeAppeal]}]]></activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення:  Видача сертифіката екологічного аудитора]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -282,7 +272,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[enum{[saTypeAppeal]}]]></activiti:expression>
+          <activiti:expression><![CDATA[Видача сертифіката екологічного аудитора]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -309,7 +299,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[enum{[saTypeAppeal]}]]></activiti:expression>
+          <activiti:expression><![CDATA[Видача сертифіката екологічного аудитора]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -330,7 +320,7 @@
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano i peredano na podalshiy rozglyad. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1},${PrintForm_2}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -343,7 +333,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[enum{[saTypeAppeal]}]]></activiti:expression>
+          <activiti:expression><![CDATA[Видача сертифіката екологічного аудитора]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -373,13 +363,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[enum{[saTypeAppeal]}]]></activiti:expression>
+          <activiti:expression><![CDATA[Видача сертифіката екологічного аудитора]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1},${PrintForm_2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -419,7 +409,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
@@ -447,7 +437,7 @@
           <activiti:expression><![CDATA[Nagaduvannya pro ispit. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[enum{[saTypeAppeal]}]]></activiti:expression>
+          <activiti:expression><![CDATA[Видача сертифіката екологічного аудитора]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -457,10 +447,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[enum{[saTypeAppeal]}]]></activiti:expression>
+          <activiti:expression><![CDATA[Видача сертифіката екологічного аудитора]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
@@ -492,13 +482,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[enum{[saTypeAppeal]}]]></activiti:expression>
+          <activiti:expression><![CDATA[Видача сертифіката екологічного аудитора]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1},${PrintForm_2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -533,10 +523,10 @@ ${sListDocumentsLetter}
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[enum{[saTypeAppeal]}]]></activiti:expression>
+          <activiti:expression><![CDATA[Видача сертифіката екологічного аудитора]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
