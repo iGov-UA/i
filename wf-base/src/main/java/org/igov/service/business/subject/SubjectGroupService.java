@@ -155,5 +155,42 @@ public class SubjectGroupService {
         return childrens;
 
     }
+    
+    
+	/**
+	 * Метод структуру иерархии согласно заданной глубины и группы
+	 * @param childrens
+	 * @param idChildren
+	 * @param subjToNodeMap
+	 * @param idParentList
+	 * @param deepLevel
+	 * @return
+	 */
+	public List<SubjectGroup> getChildrenNew(List<SubjectGroup> childrens,List<Long> idChildren , Map<Long, List<SubjectGroup>> subjToNodeMap,Set<Long> idParentList,int deepLevel){
+		
+		if(deepLevel==0) {
+			deepLevel=1000;
+		}
+		i++;
+		for(Long id : idChildren) {
+			if (idParentList.contains(id)&& i<deepLevel) {
+				List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
+				if(child!=null && !child.isEmpty()) {
+					//получаем только ид чилдренов
+					final List<Long> idCh = Lists.newArrayList(
+							Collections2.transform(child, new Function<SubjectGroup, Long>() {
+								@Override
+								public Long apply(SubjectGroup subjectGroup) {
+									return subjectGroup.getId();
+								}
+							}));
+					childrens.addAll(getChildren(child,idCh,subjToNodeMap,idParentList,deepLevel)); //добавляем детей к общему списку детей
+				}
+			}
+		}
+		
+		return childrens;
+		
+	}
 
 }
