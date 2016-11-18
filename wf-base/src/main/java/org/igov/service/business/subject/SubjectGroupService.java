@@ -120,8 +120,15 @@ public class SubjectGroupService {
 	 * @return
 	 */
 	public List<SubjectGroup> getChildren(List<SubjectGroup> childrens,List<Long> idChildren , Map<Long, List<SubjectGroup>> subjToNodeMap,Set<Long> idParentList,int deepLevel){
+		
 		if(deepLevel==0) {
 			deepLevel=1000;
+		}else {
+			if(deepLevel>idChildren.size()) {
+				deepLevel=deepLevel;
+			}else {
+			deepLevel = idChildren.size();
+			}
 		}
 		i++;
 		for(Long id : idChildren) {
