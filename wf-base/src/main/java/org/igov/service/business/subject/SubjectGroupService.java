@@ -95,7 +95,8 @@ public class SubjectGroupService {
                         }
                     }));
             //idChildren ид полного списка детей первого уровня
-            List<SubjectGroup> childrens = getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue(), 0);
+            List<SubjectGroup> childrens = new ArrayList();
+            getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue(), 0, childrens);
 
             subjToNodeMapFiltr.put(groupFiltr, childrens);
         }
@@ -111,48 +112,47 @@ public class SubjectGroupService {
     /**
      * Метод структуру иерархии согласно заданной глубины и группы
      *
-     * @param childrens результирующий список со всеми нужными нам детьми
-     * @param idChildren ид детей уровня на котором мы находимся
+     * @param aChildLevel результирующий список со всеми нужными нам детьми
+     * @param anID_ChildLevel ид детей уровня на котором мы находимся
      * @param subjToNodeMap мапа соответствия всех ид перентов и список его
      * детей
-     * @param idParentList ид всех перентов
-     * @param deepLevel желаемая глубина
+     * @param anID_Perent ид всех перентов
+     * @param deepLevelRequested желаемая глубина
      * @param deepLevelFact фактическая глубина
+     * @param result
      * @return
      */
-    public List<SubjectGroup> getChildren(List<SubjectGroup> childrens, List<Long> idChildren, Map<Long, List<SubjectGroup>> subjToNodeMap,
-            Set<Long> idParentList, int deepLevel, int deepLevelFact) {
-        List<SubjectGroup> child = new ArrayList<>();
-        List<Long> idCh = new ArrayList<>();
-        if (deepLevel == 0) {
-            deepLevel = 1000;
+    public List<SubjectGroup> getChildren(List<SubjectGroup> aChildLevel, List<Long> anID_ChildLevel, Map<Long, List<SubjectGroup>> subjToNodeMap,
+            Set<Long> anID_Perent, int deepLevelRequested, int deepLevelFact, List<SubjectGroup> result) {
+        List<SubjectGroup> aChildLevel_Result = new ArrayList<>();
+        List<Long> anID_ChildLevel_Result = new ArrayList<>();
+        if (deepLevelRequested == 0) {
+            deepLevelRequested = 1000;
         }
-        if (deepLevelFact < deepLevel) {
-            for (Long id : idChildren) {
-                if (idParentList.contains(id)) {
-                    child = subjToNodeMap.get(id);//достаем детей детей
-                    if (child != null && !child.isEmpty()) {
+        if (deepLevelFact < deepLevelRequested) {
+            for (Long nID_ChildLevel : anID_ChildLevel) {
+                if (anID_Perent.contains(nID_ChildLevel)) {
+                    aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);//достаем детей детей
+                    if (aChildLevel_Result != null && !aChildLevel_Result.isEmpty()) {
                         //получаем только ид чилдренов
-                        idCh = Lists.newArrayList(
-                                Collections2.transform(child, new Function<SubjectGroup, Long>() {
+                        anID_ChildLevel_Result = Lists.newArrayList(
+                                Collections2.transform(aChildLevel_Result, new Function<SubjectGroup, Long>() {
                                     @Override
                                     public Long apply(SubjectGroup subjectGroup) {
                                         return subjectGroup.getId();
                                     }
                                 }));
-                        childrens.addAll(child); //добавляем детей к общему списку детей
+                        result.addAll(aChildLevel_Result); //добавляем детей к общему списку детей
                     }
                 }
             }
             deepLevelFact++;
-            LOG.info("deepLevelFact: " + deepLevelFact + " deepLevel: " + deepLevel);
-            if (deepLevelFact < deepLevel) {
-                getChildren(child, idCh, subjToNodeMap, idParentList, deepLevel, deepLevelFact);
+            LOG.info("deepLevelFact: " + deepLevelFact + " deepLevelRequested: " + deepLevelRequested);
+            if (deepLevelFact < deepLevelRequested) {
+                getChildren(aChildLevel_Result, anID_ChildLevel_Result, subjToNodeMap, anID_Perent, deepLevelRequested, deepLevelFact, result);
             }
         }
-
-        return childrens;
-
+        return result;
     }
 
     /**
