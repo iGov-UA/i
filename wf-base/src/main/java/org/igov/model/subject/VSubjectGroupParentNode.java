@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author inna
  */
-public class VSubjectGroupParentNode implements Serializable, IVisitable {
+public class VSubjectGroupParentNode implements Serializable {
 
 	private SubjectGroup group;
 
@@ -27,15 +27,6 @@ public class VSubjectGroupParentNode implements Serializable, IVisitable {
 		children.add(child);
 	}
 
-	@Override
-	public void accept(IVisitor visitor) {
-		visitor.deepLevel(this);
-		for (SubjectGroup subjectGroupNode : children) {
-			subjectGroupNode.accept(visitor);
-		}
-
-	}
-	
 	
 	public SubjectGroup getGroup() {
 		return group;

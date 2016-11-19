@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectParentNode;
+import org.igov.model.process.ProcessSubjectResult;
 import org.igov.model.process.ProcessSubjectTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class ProcessSubjectService {
 	@Autowired
 	private BaseEntityDao<Long> baseEntityDao;
 	
-	public List<ProcessSubject> getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel) {
+	public ProcessSubjectResult getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel) {
 		
 		List<ProcessSubject> aChildResult = new ArrayList();
 		List<ProcessSubjectTree> processSubjectRelations = new ArrayList<>(baseEntityDao.findAll(ProcessSubjectTree.class));
@@ -100,7 +101,9 @@ public class ProcessSubjectService {
 			getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue(), 1, aChildResult);
 
 		}
-		return aChildResult;
+		ProcessSubjectResult processSubjectResult = new ProcessSubjectResult();
+		processSubjectResult.setaProcessSubject(aChildResult);
+		return processSubjectResult;
 		
 	}
 	

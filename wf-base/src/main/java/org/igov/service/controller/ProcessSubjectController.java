@@ -4,6 +4,7 @@ package org.igov.service.controller;
 import java.util.List;
 
 import org.igov.model.process.ProcessSubject;
+import org.igov.model.process.ProcessSubjectResult;
 import org.igov.service.business.process.ProcessSubjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +37,10 @@ public class ProcessSubjectController {
 	        + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/getProcessSubject?snID_Process_Activiti=MJU_Dnipro&nDeepLevel=1 \n")
     @RequestMapping(value = "/getProcessSubject", method = RequestMethod.GET)
     @ResponseBody
-    public List<ProcessSubject> getProcessSubject(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
+    public ProcessSubjectResult getProcessSubject(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
     		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel)
             throws Exception  {
-    	List<ProcessSubject> processSubjectResult = null;
+    	ProcessSubjectResult processSubjectResult = null;
     	try {
     		processSubjectResult = processSubjectService.getCatalogProcessSubject(snID_Process_Activiti,nDeepLevel);
     		
