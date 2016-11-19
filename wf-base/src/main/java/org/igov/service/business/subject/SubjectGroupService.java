@@ -7,6 +7,7 @@ package org.igov.service.business.subject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -120,23 +121,26 @@ public class SubjectGroupService {
 			}
 		}
 		List<SubjectUser> userByGroup = Lists.newArrayList();
+		Set<String> login = new HashSet<String>();
 		if (subjUsers.values() != null && !subjUsers.values().isEmpty()) {
 		List<List<SubjectUser>> mapValue = new ArrayList<List<SubjectUser>>(subjUsers.values());
 			for (List<SubjectUser> lists : mapValue) {
 				for (SubjectUser subjectUser : lists) {
-					userByGroup.add(subjectUser);
+					 if(login.add( subjectUser.getsLogin()) ) {
+						 userByGroup.add(subjectUser);
+					 }
 				}
 			}
 
 		}
-		Set<SubjectUser> setUser = new LinkedHashSet<>(userByGroup);
 		SubjectGroupAndUser subjectGroupAndUser = new SubjectGroupAndUser();
 		subjectGroupAndUser.setaSubjectGroup(aChildResult);
-		subjectGroupAndUser.setaSubjectUser(Lists.newArrayList(setUser));
+		subjectGroupAndUser.setaSubjectUser(userByGroup);
 
 		return subjectGroupAndUser;
 
 	}
+	
 
 	/**
 	 * Метод структуру иерархии согласно заданной глубины и группы
