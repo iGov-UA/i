@@ -1,5 +1,6 @@
 package org.igov.model.process;
 
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -26,6 +27,8 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
         ProcessSubject processSubject = new ProcessSubject();
         processSubject.setSnID_Process_Activiti(snID_Process_Activiti_Parent);
         processSubject.setsLogin(sLogin);
+        processSubject.setsDatePlan(new DateTime(new Date()));
+        
         ProcessSubjectStatus processSubjectStatus = new ProcessSubjectStatus();
         processSubjectStatus.setId(nOrder);
         processSubjectStatus.setName(sLogin);

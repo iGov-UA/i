@@ -125,7 +125,7 @@ public class ProcessSubjectService {
 	 */
 	 public Long setProcessSubject(String snID_Process_Activiti, String sLogin, String sDatePlan, Long nOrder){
 		 
-		 DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss");
+		 DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy");
 		 DateTime dtDatePlan = formatter.parseDateTime(sDatePlan);
 		 
 		return processSubjectDao.setProcessSubject(snID_Process_Activiti, sLogin, dtDatePlan, nOrder);
