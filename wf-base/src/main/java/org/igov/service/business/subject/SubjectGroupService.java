@@ -116,8 +116,7 @@ public class SubjectGroupService {
 		if (aChildResult != null && !aChildResult.isEmpty()) {
 			for (SubjectGroup subjectGroup : aChildResult) {
 				List<SubjectUser> aSubjectUser = getUsersByGroupSubject(subjectGroup.getsID_Group_Activiti());
-				Set<SubjectUser> setUser = new LinkedHashSet<>(aSubjectUser);
-				subjUsers.put(subjectGroup, Lists.newArrayList(setUser));
+				subjUsers.put(subjectGroup, aSubjectUser);
 			}
 		}
 		List<SubjectUser> userByGroup = Lists.newArrayList();
@@ -130,9 +129,10 @@ public class SubjectGroupService {
 			}
 
 		}
+		Set<SubjectUser> setUser = new LinkedHashSet<>(userByGroup);
 		SubjectGroupAndUser subjectGroupAndUser = new SubjectGroupAndUser();
 		subjectGroupAndUser.setaSubjectGroup(aChildResult);
-		subjectGroupAndUser.setaSubjectUser(userByGroup);
+		subjectGroupAndUser.setaSubjectUser(Lists.newArrayList(setUser));
 
 		return subjectGroupAndUser;
 
