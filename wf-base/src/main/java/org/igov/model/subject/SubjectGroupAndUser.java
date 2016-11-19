@@ -17,7 +17,7 @@ public class SubjectGroupAndUser implements Serializable {
 
 	private List<SubjectGroup> aSubjectGroup;
 
-	private List<Map<String, String>> aSubjectUser;
+	private List<List<Map<String, String>>> aSubjectUser;
 
 
 	public SubjectGroupAndUser() {
@@ -34,12 +34,12 @@ public class SubjectGroupAndUser implements Serializable {
 	}
 
 
-	public List<Map<String, String>> getaSubjectUser() {
+	public List<List<Map<String, String>>> getaSubjectUser() {
 		return aSubjectUser;
 	}
 
 
-	public void setaSubjectUser(List<Map<String, String>> aSubjectUser) {
+	public void setaSubjectUser(List<List<Map<String, String>>> aSubjectUser) {
 		this.aSubjectUser = aSubjectUser;
 	}
 
