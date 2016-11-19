@@ -248,8 +248,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sID_NumberDABI" name="Реєстраційний номер з реєстру ДАБІ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker6_applicant_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_st6_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker6_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_st6_req.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker6_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_valid.json')}"></activiti:formProperty>
@@ -355,7 +355,6 @@
         <activiti:formProperty id="sProjectDocAll" name="Дата затвердження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sProjectDocNumber" name="Назва та номер розпорядчого документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sProjectDocDate" name="Дата видачі розпорядчого документу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sKeyIndicators" name="Основні показники" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNumberOfFloors&quot;,&quot;name&quot;:&quot;Кількість поверхів&quot;,&quot;type&quot;:&quot;long&quot;},{&quot;id&quot;:&quot;sTotalArea&quot;,&quot;name&quot;:&quot;Загальна площа, кВ.метрів&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sResidentialSpace&quot;,&quot;name&quot;:&quot;Житлова площа, кВ.м&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sNonResidentialSpace&quot;,&quot;name&quot;:&quot;Нежитлова площа, кВ.м&quot;,&quot;type&quot;:&quot;string&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseNonLiveArea" name="Загальна площа нежитлових будівель, кВ.м" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExpertName" name="Найменування експертної організації, яка проводила експертизу" type="string" writable="false"></activiti:formProperty>
@@ -405,7 +404,7 @@
         <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_st6_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nBuildNotif}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nBuildNotif},${tRespPersProject},${tObjectIndivid}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -444,10 +443,21 @@
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow41" sourceRef="boundarytimer3" targetRef="parallelgateway1"></sequenceFlow>
-    <userTask id="usertask_UserGroup" name="ChrckAssigneeGroup" activiti:candidateGroups="kyiv_dabi_doc">
+    <userTask id="usertask_UserGroup" name="CheckAssigneeGroup" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="sResult" name="Виконавець - начальник відділу?" type="string"></activiti:formProperty>
-      </extensionElements>
+        <activiti:taskListener event="create" delegateExpression="${checkUserGroup}">
+          <activiti:field name="sGroupListener">
+            <activiti:expression><![CDATA[kyiv_dabi_permit_doc_boss]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sUsernameListener">
+            <activiti:expression><![CDATA[${sLoginAsignee}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="resultListener">
+            <activiti:expression><![CDATA[sResult]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>                      
     </userTask>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <boundaryEvent id="boundarytimer4" name="Timer" attachedToRef="usertask_UserGroup" cancelActivity="true">
