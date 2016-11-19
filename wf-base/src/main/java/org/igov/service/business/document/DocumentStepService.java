@@ -52,7 +52,7 @@ public class DocumentStepService {
     private RepositoryService repositoryService;
 
     @Autowired
-    private FormService formService;
+    private FormService oFormService;
 
     public void setDocumentSteps(String snID_Process_Activiti, String soJSON) {
         JSONObject steps = new JSONObject(soJSON);
@@ -173,6 +173,7 @@ public class DocumentStepService {
         }
         Task oTaskActive = aTaskActive.get(0);
         String sKey_UserTask = oTaskActive.getTaskDefinitionKey();
+        String snID_Task = oTaskActive.getId();
         String sID_BP = oTaskActive.getProcessDefinitionId();
         LOG.info("sID_BP={}", sID_BP);
         if(sID_BP!=null && sID_BP.contains(":")){
@@ -247,9 +248,27 @@ public class DocumentStepService {
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
         LOG.debug("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
         
+        Boolean bWrite=null;
+        for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
+            if(bWrite==null){
+                bWrite = false;
+            }
+            bWrite = bWrite || oDocumentStepSubjectRight.getbWrite();
+        }
+        
+        //oTaskActive.
+                
+        List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();
+        //List<Map<String,Object>> aReturn = new LinkedList();
+        Map<String,Object> mReturn;
+        //a.get(1).getType().getInformation()
+        for (FormProperty oProperty : a) {
+            
+        }                
+        
         //Let's find current active task properties
         Set<String> taskFormPropertiesIDs = new TreeSet<>();
-        TaskFormData oTaskFormData = formService.getTaskFormData(sKey_UserTask);
+        TaskFormData oTaskFormData = oFormService.getTaskFormData(sKey_UserTask);
 
         taskFormPropertiesIDs
                 .addAll(oTaskFormData.getFormProperties().stream().map(FormProperty::getId).collect(Collectors.toList()));
