@@ -235,8 +235,8 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow7" sourceRef="usertask_step6" targetRef="exclusivegateway1"></sequenceFlow>
-    <userTask id="usertask_step14" name="14. Підтверждження реєстрації" activiti:candidateGroups="kyiv_dabi_doc">
+    <sequenceFlow id="flow7" sourceRef="usertask_step6" targetRef="usertask_step14"></sequenceFlow>
+    <userTask id="usertask_step14" name="14. Реєстрація вихідного документу" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
@@ -352,104 +352,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow29" sourceRef="boundarytimer2" targetRef="usertask_step_6.2_red"></sequenceFlow>
-    <sequenceFlow id="flow31" name="Зареєстровано" sourceRef="exclusivegateway1" targetRef="usertask_step14">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEnumDecisionOK'}]]></conditionExpression>
-    </sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Рішення"></exclusiveGateway>
-    <userTask id="usertask_step14_refusal" name="14. Реєстрація інформаційного листа" activiti:candidateGroups="kyiv_dabi_doc">
-      <extensionElements>
-        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
-          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
-          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonAddress" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonINN" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" writable="false">
-          <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
-          <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
-          <activiti:value id="sEnumTechUpgrade" name="Технічне переоснащення діючих підприємств"></activiti:value>
-          <activiti:value id="sEnumRenewal" name="Реставрація"></activiti:value>
-          <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sRespSupervisorName" name="ПІБ відповідальної особи проектувальника, що здійснює авторський нагляд" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asConstructionOnBasis" name="Земельна ділянка використовується для будівництва на підставі:" type="enum" writable="false">
-          <activiti:value id="sEnumOwnership" name="Документ, що посвідчує право власності чи користування земельною ділянкою"></activiti:value>
-          <activiti:value id="sEnumSuperficies" name="Договір суперфіцію"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sOwnershipDoc" name="Дата, серія та номер документу, що посвідчує право власності чи користування земельною ділянкою" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSuperficiesDoc" name="Дата та номер договору суперфіцію" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="landNumb" name="Кадастровий номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asGeneralContractor" name="Генеральний підрядник:;у разі, коли будівельні роботи виконуються без залучення субпідрядників – підрядник" type="enum" writable="false">
-          <activiti:value id="sEnumGenPerson" name="Фізична особа"></activiti:value>
-          <activiti:value id="sEnumGenLegal" name="Юридична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sGenPersonName" name="ПІБ фізичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGenPersonPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGenPersonAddress" name="Місце проживання фізичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGenPersonINN" name="Номер облікової картки платника податків" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGenLegalForm" name="Організаційно-правова форма юридичної особи" type="string" default="Потрібна інтеграція з обліковою системою" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGenLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGenLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGenLegalINN" name="Код платника податків згідно з ЄДРПОУ або податковий номе" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="workPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBossPermitComment" name="Коментар Керівника Управління дозвільних процедур" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asDecision" name="Прийняте рішення" type="enum" writable="false">
-          <activiti:value id="sEnumDecisionOK" name="Надана повна інформація. Зареєструвати у реєстрі ДАБІ"></activiti:value>
-          <activiti:value id="sEnumDecisionReturn" name="Відправити на доопрацювання. Підготувати інформаційний лист"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sID_NumberDABI" name="Реєстраційний номер з реєстру ДАБІ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_NumberOutputDoc" name="Реєстраційний номер вихідного документу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_vis.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nWorksNotif}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <sequenceFlow id="flow32" name="На доопрацювання" sourceRef="exclusivegateway1" targetRef="usertask_step14_refusal">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEnumDecisionReturn'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow34" sourceRef="usertask_step14_refusal" targetRef="servicetask_step14.2"></sequenceFlow>
-    <sequenceFlow id="flow35" sourceRef="usertask_step14" targetRef="servicetask_step14.1"></sequenceFlow>
-    <serviceTask id="servicetask_step14.2" name="14.2 Повідомлення заявника про результат з вкладеним інформ. листом" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:expression><![CDATA[noreply@dabi.gov.ua]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:expression><![CDATA[Про результат опрацювання електронного повідомлення про початок виконання підготовчих робіт.]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[Надіслане до Департаменту з питань державного архітектурно-будівельного контролю міста
-Києва виконавчого органу Київської міської ради (Київської міської державної адміністрації)
-повідомлення про початок виконання підготовчих робіт не зареєстровано у єдиному
-реєстрі документів, що дають право на виконання підготовчих та будівельних робіт і
-засвідчують прийняття в експлуатацію закінчених будівництвом об’єктів, відомостей про
-повернення на доопрацювання, відмову у видачі, скасування та анулювання зазначених
-документів.]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
+    <sequenceFlow id="flow35" sourceRef="usertask_step14" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask_step14.1" name="14.1 Повідомлення заявника про результат надання послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -462,14 +365,7 @@
           <activiti:expression><![CDATA[Про результат опрацювання повідомлення про початок виконання підготовчих робіт]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Надіслане до Департаменту з питань державного архітектурно-будівельного контролю міста
-Києва виконавчого органу Київської міської ради (Київської міської державної адміністрації)
-повідомлення про початок виконання підготовчих робіт зареєстровано у єдиному
-реєстрі документів, що дають право на виконання підготовчих та будівельних робіт і
-засвідчують прийняття в експлуатацію закінчених будівництвом об’єктів, відомостей про
-повернення на доопрацювання, відмову у видачі, скасування та анулювання зазначених
-документів.
-Реєстраційний номер: ${sID_NumberDABI}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sTextLetter}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -524,13 +420,25 @@
     <sequenceFlow id="flow51" sourceRef="parallelgateway3" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow46" sourceRef="exclusivegateway5" targetRef="parallelgateway3"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow52" sourceRef="servicetask_step14.2" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow53" sourceRef="servicetask_step14.1" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow54" sourceRef="exclusivegateway6" targetRef="parallelgateway3"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var isRegistered  = ""
+var sMessage =""
+
+if (execution.getVariable('asDecision') == 'sEnumDecisionReturn'){
+  isRegistered = "не "
+}
+
+sMessage = "&lt;p&gt;Надіслане до Департаменту з питань державного архітектурно-будівельного контролю міста Києва виконавчого органу Київської міської ради (Київської міської державної адміністрації) повідомлення про початок виконання підготовчих робіт "+isRegistered+ "зареєстровано у єдиному реєстрі документів, що дають право на виконання підготовчих та будівельних робіт і засвідчують прийняття в експлуатацію закінчених будівництвом об’єктів, відомостей про повернення на доопрацювання, відмову у видачі, скасування та анулювання зазначених документів. &lt;/p&gt;"
+
+if (execution.getVariable('asDecision') == 'sEnumDecisionOK'){
+  sMessage = sMessage  + "&lt;p&gt;Реєстраційний номер: " + execution.getVariable('sID_NumberDABI') +"&lt;/p&gt;"
+}
+execution.setVariable('sTextLetter', sMessage)</script>
+    </scriptTask>
+    <sequenceFlow id="flow52" sourceRef="scripttask1" targetRef="servicetask_step14.1"></sequenceFlow>
+    <sequenceFlow id="flow53" sourceRef="servicetask_step14.1" targetRef="parallelgateway3"></sequenceFlow>
     <textAnnotation id="textannotation1">
-      <text>Перевірка групи обраного виконавця
-</text>
+      <text>Перевірка групи обраного виконавця</text>
     </textAnnotation>
     <association id="association1" sourceRef="textannotation1" targetRef="usertask_CheckAssigneeGroup"></association>
   </process>
@@ -567,10 +475,10 @@
         <omgdc:Bounds height="30.0" width="30.0" x="811.0" y="96.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask_step14" id="BPMNShape_usertask_step14">
-        <omgdc:Bounds height="70.0" width="105.0" x="641.0" y="203.0"></omgdc:Bounds>
+        <omgdc:Bounds height="70.0" width="125.0" x="698.0" y="158.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="190.0" y="463.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="190.0" y="417.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask_step_6.1_red" id="BPMNShape_usertask_step_6.1_red">
         <omgdc:Bounds height="59.0" width="124.0" x="900.0" y="52.0"></omgdc:Bounds>
@@ -578,17 +486,8 @@
       <bpmndi:BPMNShape bpmnElement="usertask_step_6.2_red" id="BPMNShape_usertask_step_6.2_red">
         <omgdc:Bounds height="59.0" width="121.0" x="901.0" y="148.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="741.0" y="157.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask_step14_refusal" id="BPMNShape_usertask_step14_refusal">
-        <omgdc:Bounds height="70.0" width="105.0" x="773.0" y="201.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask_step14.2" id="BPMNShape_servicetask_step14.2">
-        <omgdc:Bounds height="95.0" width="125.0" x="763.0" y="294.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask_step14.1" id="BPMNShape_servicetask_step14.1">
-        <omgdc:Bounds height="92.0" width="122.0" x="633.0" y="296.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="172.0" x="676.0" y="340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask_upload" id="BPMNShape_usertask_upload">
         <omgdc:Bounds height="55.0" width="105.0" x="26.0" y="86.0"></omgdc:Bounds>
@@ -606,13 +505,13 @@
         <omgdc:Bounds height="40.0" width="40.0" x="518.0" y="206.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway3" id="BPMNShape_parallelgateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="339.0" y="460.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="340.0" y="414.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
         <omgdc:Bounds height="40.0" width="40.0" x="518.0" y="366.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
-        <omgdc:Bounds height="40.0" width="40.0" x="741.0" y="410.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="708.0" y="258.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
         <omgdc:Bounds height="50.0" width="100.0" x="597.0" y="19.0"></omgdc:Bounds>
@@ -647,7 +546,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="761.0" y="131.0"></omgdi:waypoint>
-        <omgdi:waypoint x="761.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="158.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="837.0" y="69.0"></omgdi:waypoint>
@@ -657,29 +556,9 @@
         <omgdi:waypoint x="826.0" y="126.0"></omgdi:waypoint>
         <omgdi:waypoint x="961.0" y="148.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="741.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="692.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="693.0" y="203.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="75.0" x="673.0" y="158.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="781.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="824.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="825.0" y="201.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="97.0" x="772.0" y="158.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="825.0" y="271.0"></omgdi:waypoint>
-        <omgdi:waypoint x="825.0" y="294.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="693.0" y="273.0"></omgdi:waypoint>
-        <omgdi:waypoint x="694.0" y="296.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="258.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="78.0" y="54.0"></omgdi:waypoint>
@@ -717,36 +596,30 @@
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
         <omgdi:waypoint x="332.0" y="237.0"></omgdi:waypoint>
         <omgdi:waypoint x="360.0" y="238.0"></omgdi:waypoint>
-        <omgdi:waypoint x="359.0" y="460.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="414.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="331.0" y="331.0"></omgdi:waypoint>
         <omgdi:waypoint x="360.0" y="332.0"></omgdi:waypoint>
-        <omgdi:waypoint x="359.0" y="460.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="414.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="339.0" y="480.0"></omgdi:waypoint>
-        <omgdi:waypoint x="225.0" y="480.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="434.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="434.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
         <omgdi:waypoint x="538.0" y="406.0"></omgdi:waypoint>
-        <omgdi:waypoint x="537.0" y="480.0"></omgdi:waypoint>
-        <omgdi:waypoint x="379.0" y="480.0"></omgdi:waypoint>
+        <omgdi:waypoint x="537.0" y="434.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="434.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="825.0" y="389.0"></omgdi:waypoint>
-        <omgdi:waypoint x="824.0" y="429.0"></omgdi:waypoint>
-        <omgdi:waypoint x="781.0" y="430.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="313.0"></omgdi:waypoint>
+        <omgdi:waypoint x="762.0" y="340.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
-        <omgdi:waypoint x="694.0" y="388.0"></omgdi:waypoint>
-        <omgdi:waypoint x="694.0" y="429.0"></omgdi:waypoint>
-        <omgdi:waypoint x="741.0" y="430.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
-        <omgdi:waypoint x="761.0" y="450.0"></omgdi:waypoint>
-        <omgdi:waypoint x="760.0" y="480.0"></omgdi:waypoint>
-        <omgdi:waypoint x="379.0" y="480.0"></omgdi:waypoint>
+        <omgdi:waypoint x="762.0" y="415.0"></omgdi:waypoint>
+        <omgdi:waypoint x="762.0" y="434.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="434.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
         <omgdi:waypoint x="647.0" y="69.0"></omgdi:waypoint>
