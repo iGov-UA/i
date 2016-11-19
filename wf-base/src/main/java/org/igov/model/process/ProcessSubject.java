@@ -5,7 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
-import org.igov.model.core.NamedEntity;
+import org.igov.model.core.AbstractEntity;
 import org.igov.util.JSON.JsonDateTimeDeserializer;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @javax.persistence.Entity
-public class ProcessSubject extends NamedEntity {
+public class ProcessSubject extends AbstractEntity {
 
 	/**
 	 * 
