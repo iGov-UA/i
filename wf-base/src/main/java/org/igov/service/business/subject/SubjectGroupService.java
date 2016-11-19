@@ -9,11 +9,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.identity.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.BaseEntityDao;
@@ -46,7 +49,7 @@ public class SubjectGroupService {
 	private BaseEntityDao<Long> baseEntityDao;
 
 	@Autowired
-	private UsersService usersService;
+    private IdentityService identityService;
 
 	public SubjectGroupAndUser getCatalogSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 		List<SubjectGroup> aChildResult = new ArrayList();
@@ -116,8 +119,7 @@ public class SubjectGroupService {
 		Map<SubjectGroup, List<Map<String, String>>> subjUsers = new HashMap<>();
 		if (aChildResult != null && !aChildResult.isEmpty()) {
 			for (SubjectGroup subjectGroup : aChildResult) {
-				List<Map<String, String>> aSubjectUser = usersService
-						.getUsersByGroup(subjectGroup.getsID_Group_Activiti());
+				List<Map<String, String>> aSubjectUser = getUsersByGroupSubject(subjectGroup.getsID_Group_Activiti());
 				Set<Map<String, String>> setUser = new LinkedHashSet<>(aSubjectUser);
 				subjUsers.put(subjectGroup, Lists.newArrayList(setUser));
 			}
@@ -192,5 +194,30 @@ public class SubjectGroupService {
 		}
 		return result;
 	}
+	
+public List<Map<String, String>> getUsersByGroupSubject(String sID_Group_Activiti) {
+    	
+    	List<Map<String, String>> amsUsers = new ArrayList<>(); 
+        List<User> aoUsers = sID_Group_Activiti != null ?
+                identityService.createUserQuery().memberOfGroup(sID_Group_Activiti).list() :
+                identityService.createUserQuery().list();
+
+        for (User oUser : aoUsers) {
+            Map<String, String> mUserInfo = new LinkedHashMap();
+
+            mUserInfo.put("sLogin", oUser.getId() == null ? "" : oUser.getId());
+            mUserInfo.put("sFirstName", oUser.getFirstName() == null ? "" : oUser.getFirstName());
+            mUserInfo.put("sLastName", oUser.getLastName() == null ? "" : oUser.getLastName());
+            mUserInfo.put("sEmail", oUser.getEmail() == null ? "" : oUser.getEmail());
+             mUserInfo.put("FirstName", oUser.getFirstName() == null ? "" : oUser.getFirstName());
+             mUserInfo.put("LastName", oUser.getLastName() == null ? "" : oUser.getLastName());
+             mUserInfo.put("Email", oUser.getEmail() == null ? "" : oUser.getEmail());
+            mUserInfo.put("Picture", null); // Временно ставим картинку null, позже будет изменение на Base64 или ссылка
+            amsUsers.add(mUserInfo);
+        }
+    	
+		return amsUsers;
+
+    }
 
 }
