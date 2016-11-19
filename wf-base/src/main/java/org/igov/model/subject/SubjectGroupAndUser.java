@@ -7,50 +7,41 @@ package org.igov.model.subject;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Класс - возвращает список организационной иерархии и список людей подчиненных данной иерархии
+ * Класс - возвращает список организационной иерархии и список людей подчиненных
+ * данной иерархии
+ * 
  * @author inna
  */
 public class SubjectGroupAndUser implements Serializable {
 
 	private List<SubjectGroup> aSubjectGroup;
 
-	private List<List<Map<String, String>>> aSubjectUser;
-
+	private List<SubjectUser> aSubjectUser;
 
 	public SubjectGroupAndUser() {
 	}
-
 
 	public List<SubjectGroup> getaSubjectGroup() {
 		return aSubjectGroup;
 	}
 
-
 	public void setaSubjectGroup(List<SubjectGroup> aSubjectGroup) {
 		this.aSubjectGroup = aSubjectGroup;
 	}
 
-
-	public List<List<Map<String, String>>> getaSubjectUser() {
+	public List<SubjectUser> getaSubjectUser() {
 		return aSubjectUser;
 	}
 
-
-	public void setaSubjectUser(List<List<Map<String, String>>> aSubjectUser) {
+	public void setaSubjectUser(List<SubjectUser> aSubjectUser) {
 		this.aSubjectUser = aSubjectUser;
 	}
-
 
 	@Override
 	public String toString() {
 		return "aSubjectGroup=" + aSubjectGroup + ", aSubjectUser=" + aSubjectUser;
 	}
-
-
-
-
 
 }

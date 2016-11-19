@@ -6,10 +6,8 @@
 package org.igov.service.business.subject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,16 +21,14 @@ import org.igov.model.core.BaseEntityDao;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupAndUser;
 import org.igov.model.subject.SubjectGroupTree;
+import org.igov.model.subject.SubjectUser;
 import org.igov.model.subject.VSubjectGroupParentNode;
-import org.igov.service.business.action.task.core.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-
-
 
 /**
  * Сервис получения организационной иерархии
@@ -49,7 +45,7 @@ public class SubjectGroupService {
 	private BaseEntityDao<Long> baseEntityDao;
 
 	@Autowired
-    private IdentityService identityService;
+	private IdentityService identityService;
 
 	public SubjectGroupAndUser getCatalogSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
 		List<SubjectGroup> aChildResult = new ArrayList();
@@ -67,25 +63,26 @@ public class SubjectGroupService {
 				final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 				if (!idParentList.contains(parent.getId())) {
 					idParentList.add(parent.getId());
-					//устанавливаем парентов
-					parentSubjectGroup.setGroup(parent); 
+					// устанавливаем парентов
+					parentSubjectGroup.setGroup(parent);
 					// доавляем детей
-					parentSubjectGroup.addChild(child); 
+					parentSubjectGroup.addChild(child);
 					parentSubjectGroups.add(parentSubjectGroup);
-					//мапа  парент -ребенок
-					subjToNodeMap.put(parent.getId(), parentSubjectGroup.getChildren()); 
-					//мапа группа-ид парента
-					mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId()); 
+					// мапа парент -ребенок
+					subjToNodeMap.put(parent.getId(), parentSubjectGroup.getChildren());
+					// мапа группа-ид парента
+					mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId());
 				} else {
 					for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
 						// убираем дубликаты
 						if (vSubjectGroupParentNode.getGroup().getId().equals(parent.getId())) {
-							//если дубликат парента-добавляем его детей к общему списку
-							vSubjectGroupParentNode.getChildren().add(child);  
-							//мапа парент-ребенок
+							// если дубликат парента-добавляем его детей к
+							// общему списку
+							vSubjectGroupParentNode.getChildren().add(child);
+							// мапа парент-ребенок
 							subjToNodeMap.put(parent.getId(), vSubjectGroupParentNode.getChildren());
-							//мапа группа-ид парента
-							mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId()); 
+							// мапа группа-ид парента
+							mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId());
 						}
 					}
 				}
@@ -94,10 +91,10 @@ public class SubjectGroupService {
 		}
 
 		// Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
-		//достаем ид sID_Group_Activiti которое на вход
-		Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti);  
-		//детей его детей
-		List<SubjectGroup> children = subjToNodeMap.get(groupFiltr); 
+		// достаем ид sID_Group_Activiti которое на вход
+		Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti);
+		// детей его детей
+		List<SubjectGroup> children = subjToNodeMap.get(groupFiltr);
 		// children полный список первого уровня
 		if (children != null && !children.isEmpty()) {
 
@@ -116,17 +113,27 @@ public class SubjectGroupService {
 		}
 
 		// Получаем орг иерархию и людей
-		Map<SubjectGroup, List<Map<String, String>>> subjUsers = new HashMap<>();
+		Map<SubjectGroup, List<SubjectUser>> subjUsers = new HashMap<>();
 		if (aChildResult != null && !aChildResult.isEmpty()) {
 			for (SubjectGroup subjectGroup : aChildResult) {
-				List<Map<String, String>> aSubjectUser = getUsersByGroupSubject(subjectGroup.getsID_Group_Activiti());
-				Set<Map<String, String>> setUser = new LinkedHashSet<>(aSubjectUser);
+				List<SubjectUser> aSubjectUser = getUsersByGroupSubject(subjectGroup.getsID_Group_Activiti());
+				Set<SubjectUser> setUser = new LinkedHashSet<>(aSubjectUser);
 				subjUsers.put(subjectGroup, Lists.newArrayList(setUser));
 			}
 		}
+		List<SubjectUser> userByGroup = Lists.newArrayList();
+		if (subjUsers.values() != null && !subjUsers.values().isEmpty()) {
+		List<List<SubjectUser>> mapValue = new ArrayList<List<SubjectUser>>(subjUsers.values());
+			for (List<SubjectUser> lists : mapValue) {
+				for (SubjectUser subjectUser : lists) {
+					userByGroup.add(subjectUser);
+				}
+			}
+
+		}
 		SubjectGroupAndUser subjectGroupAndUser = new SubjectGroupAndUser();
 		subjectGroupAndUser.setaSubjectGroup(aChildResult);
-		subjectGroupAndUser.setaSubjectUser(subjUsers.values()!=null?new ArrayList<List<Map<String, String>>>(subjUsers.values()):Collections.<List<Map<String, String>>>emptyList());
+		subjectGroupAndUser.setaSubjectUser(userByGroup);
 
 		return subjectGroupAndUser;
 
@@ -179,8 +186,8 @@ public class SubjectGroupService {
 								}));
 						LOG.info("nID_ChildLevel: " + nID_ChildLevel + " anID_ChildLevel_Result: "
 								+ anID_ChildLevel_Result.size());
-						//добавляем детей к общему списку детей
-						result.addAll(aChildLevel_Result);  
+						// добавляем детей к общему списку детей
+						result.addAll(aChildLevel_Result);
 						LOG.info("result: " + result.size());
 					}
 				}
@@ -194,30 +201,26 @@ public class SubjectGroupService {
 		}
 		return result;
 	}
-	
-public List<Map<String, String>> getUsersByGroupSubject(String sID_Group_Activiti) {
-    	
-    	List<Map<String, String>> amsUsers = new ArrayList<>(); 
-        List<User> aoUsers = sID_Group_Activiti != null ?
-                identityService.createUserQuery().memberOfGroup(sID_Group_Activiti).list() :
-                identityService.createUserQuery().list();
 
-        for (User oUser : aoUsers) {
-            Map<String, String> mUserInfo = new LinkedHashMap();
+	public List<SubjectUser> getUsersByGroupSubject(String sID_Group_Activiti) {
 
-            mUserInfo.put("sLogin", oUser.getId() == null ? "" : oUser.getId());
-            mUserInfo.put("sFirstName", oUser.getFirstName() == null ? "" : oUser.getFirstName());
-            mUserInfo.put("sLastName", oUser.getLastName() == null ? "" : oUser.getLastName());
-            mUserInfo.put("sEmail", oUser.getEmail() == null ? "" : oUser.getEmail());
-             mUserInfo.put("FirstName", oUser.getFirstName() == null ? "" : oUser.getFirstName());
-             mUserInfo.put("LastName", oUser.getLastName() == null ? "" : oUser.getLastName());
-             mUserInfo.put("Email", oUser.getEmail() == null ? "" : oUser.getEmail());
-            mUserInfo.put("Picture", null); // Временно ставим картинку null, позже будет изменение на Base64 или ссылка
-            amsUsers.add(mUserInfo);
-        }
-    	
+		List<SubjectUser> amsUsers = new ArrayList<>();
+		List<User> aoUsers = sID_Group_Activiti != null
+				? identityService.createUserQuery().memberOfGroup(sID_Group_Activiti).list()
+				: identityService.createUserQuery().list();
+
+		for (User oUser : aoUsers) {
+			SubjectUser subjectUser = SubjectUser.BuilderHelper.buildSubjectUser(
+					oUser.getId() == null ? "" : oUser.getId(),
+					oUser.getFirstName() == null ? "" : oUser.getFirstName(),
+					oUser.getLastName() == null ? "" : oUser.getLastName(),
+					oUser.getEmail() == null ? "" : oUser.getEmail(), null);
+			amsUsers.add(subjectUser);
+
+		}
+
 		return amsUsers;
 
-    }
+	}
 
 }
