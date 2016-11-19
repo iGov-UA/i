@@ -29,7 +29,7 @@ public class ProcessSubject extends AbstractEntity {
 
     @JsonIgnore
     @ManyToOne(targetEntity = ProcessSubjectStatus.class)
-    @JoinColumn(name = "nID_ProcessSubjectStatus", nullable = false, updatable = false)
+    @JoinColumn(name = "nID_ProcessSubjectStatus")
     private ProcessSubjectStatus processSubjectStatus;
 
     @JsonProperty(value = "nOrder")
