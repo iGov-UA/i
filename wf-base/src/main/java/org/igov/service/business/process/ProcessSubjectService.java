@@ -6,20 +6,30 @@
 package org.igov.service.business.process;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.BaseEntityDao;
+import org.igov.model.core.GenericEntityDao;
+import org.igov.model.document.DocumentStep;
 import org.igov.model.process.ProcessSubject;
+import org.igov.model.process.ProcessSubjectDao;
 import org.igov.model.process.ProcessSubjectParentNode;
 import org.igov.model.process.ProcessSubjectResult;
 import org.igov.model.process.ProcessSubjectTree;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
@@ -37,6 +47,9 @@ public class ProcessSubjectService {
 	
 	@Autowired
 	private BaseEntityDao<Long> baseEntityDao;
+	
+	 @Autowired
+	 private ProcessSubjectDao processSubjectDao;
 	
 	public ProcessSubjectResult getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel) {
 		
@@ -106,6 +119,23 @@ public class ProcessSubjectService {
 		return processSubjectResult;
 		
 	}
+	
+	
+	/**
+	 * Сохранить сущность
+	 * @param snID_Process_Activiti__Parent
+	 * @param sLogin
+	 * @param sDatePlan
+	 * @param nOrder
+	 * @return
+	 */
+	 public Long setProcessSubject(String snID_Process_Activiti, String sLogin, String sDatePlan, Long nOrder){
+		 
+		 DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss");
+		 DateTime dtDatePlan = formatter.parseDateTime(sDatePlan);
+		 
+		return processSubjectDao.setProcessSubject(snID_Process_Activiti, sLogin, dtDatePlan, nOrder);
+	 }
 	
 	
 	
