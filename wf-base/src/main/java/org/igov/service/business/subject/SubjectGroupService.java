@@ -11,7 +11,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,7 +18,6 @@ import org.igov.model.core.BaseEntityDao;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupTree;
 import org.igov.model.subject.VSubjectGroupParentNode;
-import org.igov.model.subject.VSubjectGroupTreeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,14 +35,12 @@ public class SubjectGroupService {
 
     private static final Log LOG = LogFactory.getLog(SubjectGroupService.class);
     private static final long FAKE_ROOT_SUBJECT_ID = 0;
-    public int i = 0;
     @Autowired
     private BaseEntityDao<Long> baseEntityDao;
 
-    public List<List<SubjectGroup>> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+    public List<SubjectGroup> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
         List<SubjectGroup> aChildResult = new ArrayList();
         List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
-        i = 0;
         List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
         Map<Long, List<SubjectGroup>> subjToNodeMap = new HashMap<>();
         Map<String, Long> mapGroupActiviti = new HashMap<>();
@@ -76,8 +72,6 @@ public class SubjectGroupService {
             }
 
         }
-        //subjToNodeMap - полный список ид и список всех детей.
-        //mapGroupActiviti - полный список группа - ид парента
 
         //Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
         List<List<SubjectGroup>> valuesRes = new ArrayList<>();
@@ -87,7 +81,7 @@ public class SubjectGroupService {
         // children полный список первого уровня
         if (children != null && !children.isEmpty()) {
 
-            //получаем только ид чилдренов
+            //получаем только ид чилдренов полного списка детей первого уровня
             final List<Long> idChildren = Lists.newArrayList(
                     Collections2.transform(children, new Function<SubjectGroup, Long>() {
                         @Override
@@ -95,18 +89,14 @@ public class SubjectGroupService {
                             return subjectGroup.getId();
                         }
                     }));
-            //idChildren ид полного списка детей первого уровня
             aChildResult.addAll(children);
             getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue(), 1, aChildResult);
 
             //subjToNodeMapFiltr.put(groupFiltr, aChildResult);
         }
         valuesRes.add(aChildResult);
-        //valuesRes = subjToNodeMapFiltr.values().stream().collect(Collectors.toList());
 
-        //VSubjectGroupTreeResult subjectGroupTreeResult = new VSubjectGroupTreeResult();
-        //parentSubjectGroup.accept(subjectGroupTreeResult);
-        return valuesRes;
+        return aChildResult;
 
     }
 
@@ -160,43 +150,6 @@ public class SubjectGroupService {
             }
         }
         return result;
-    }
-
-    /**
-     * Метод структуру иерархии согласно заданной глубины и группы
-     *
-     * @param childrens
-     * @param idChildren
-     * @param subjToNodeMap
-     * @param idParentList
-     * @param deepLevel
-     * @return
-     */
-    public List<SubjectGroup> getChildrenNew(List<SubjectGroup> childrens, List<Long> idChildren, Map<Long, List<SubjectGroup>> subjToNodeMap, Set<Long> idParentList, int deepLevel) {
-
-        if (deepLevel == 0) {
-            deepLevel = 1000;
-        }
-        i++;
-        for (Long id : idChildren) {
-            if (idParentList.contains(id) && i < deepLevel) {
-                List<SubjectGroup> child = subjToNodeMap.get(id);//достаем детей детей
-                if (child != null && !child.isEmpty()) {
-                    //получаем только ид чилдренов
-                    final List<Long> idCh = Lists.newArrayList(
-                            Collections2.transform(child, new Function<SubjectGroup, Long>() {
-                                @Override
-                                public Long apply(SubjectGroup subjectGroup) {
-                                    return subjectGroup.getId();
-                                }
-                            }));
-                    childrens.addAll(getChildrenNew(child, idCh, subjToNodeMap, idParentList, deepLevel)); //добавляем детей к общему списку детей
-                }
-            }
-        }
-
-        return childrens;
-
     }
 
 }
