@@ -1,20 +1,29 @@
 package org.igov.model.process;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
+import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
 import org.hibernate.annotations.Type;
 import org.igov.model.core.AbstractEntity;
+import org.igov.model.core.NamedEntity;
 import org.joda.time.DateTime;
 
-@Entity
-public class ProcessSubject extends AbstractEntity {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-    @JsonProperty(value = "snID_Process_Activiti")
+@javax.persistence.Entity
+public class ProcessSubject extends NamedEntity {
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@JsonProperty(value = "snID_Process_Activiti")
+    @Column
     private String snID_Process_Activiti;
 
     @JsonIgnore
@@ -23,44 +32,23 @@ public class ProcessSubject extends AbstractEntity {
     private ProcessSubjectStatus processSubjectStatus;
 
     @JsonProperty(value = "nOrder")
+    @Column
     private Long nOrder;
 
     @JsonProperty(value = "sLogin")
+    @Column
     private String sLogin;
 
     @JsonProperty(value = "sDateEdit")
     @Type(type = DATETIME_TYPE)
+    @Column
     private DateTime sDateEdit;
 
     @JsonProperty(value = "sDatePlan")
     @Type(type = DATETIME_TYPE)
+    @Column
     private DateTime sDatePlan;
     
-    /*
-    @OneToMany(targetEntity = ProcessSubjectTree.class, mappedBy = "processSubjectChild", cascade = CascadeType.ALL)
-    private List<ProcessSubjectTree> processChild;
-
-    @OneToMany(targetEntity = ProcessSubjectTree.class, mappedBy = "processSubjectParent", cascade = CascadeType.ALL)
-    private List<ProcessSubjectTree> processParent;  
-    
-
-    public List<ProcessSubjectTree> getProcessChild() {
-        return processChild;
-    }
-
-    public void setProcessChild(List<ProcessSubjectTree> processChild) {
-        this.processChild = processChild;
-    }
-
-    public List<ProcessSubjectTree> getProcessParent() {
-        return processParent;
-    }
-
-    public void setProcessParent(List<ProcessSubjectTree> processParent) {
-        this.processParent = processParent;
-    }
-    */
-
     public String getSnID_Process_Activiti() {
         return snID_Process_Activiti;
     }

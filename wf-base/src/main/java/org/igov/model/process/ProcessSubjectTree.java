@@ -1,17 +1,23 @@
 package org.igov.model.process;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
 import org.igov.model.core.AbstractEntity;
 
-@Entity
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@javax.persistence.Entity
 public class ProcessSubjectTree extends AbstractEntity {
 
-    @JsonIgnore
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "nID_ProcessSubject_Child")
     private ProcessSubject processSubjectChild;

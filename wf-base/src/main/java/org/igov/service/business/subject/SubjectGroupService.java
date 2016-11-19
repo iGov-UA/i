@@ -205,6 +205,11 @@ public class SubjectGroupService {
 		return result;
 	}
 
+	/**
+	 * Получение списка юзеров по ид группы 
+	 * @param sID_Group_Activiti
+	 * @return
+	 */
 	public List<SubjectUser> getUsersByGroupSubject(String sID_Group_Activiti) {
 
 		List<SubjectUser> amsUsers = new ArrayList<>();
