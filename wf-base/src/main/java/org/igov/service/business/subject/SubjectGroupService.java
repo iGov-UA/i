@@ -126,7 +126,7 @@ public class SubjectGroupService {
 		List<List<SubjectUser>> mapValue = new ArrayList<List<SubjectUser>>(subjUsers.values());
 			for (List<SubjectUser> lists : mapValue) {
 				for (SubjectUser subjectUser : lists) {
-					 if(login.add( subjectUser.getsLogin()) ) {
+					 if(login.add( subjectUser.getsLogin()) ) { //удаляем дубликаты
 						 userByGroup.add(subjectUser);
 					 }
 				}
