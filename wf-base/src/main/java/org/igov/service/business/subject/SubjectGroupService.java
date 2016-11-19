@@ -7,6 +7,7 @@ package org.igov.service.business.subject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -63,41 +64,25 @@ public class SubjectGroupService {
 				final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
 				if (!idParentList.contains(parent.getId())) {
 					idParentList.add(parent.getId());
-					parentSubjectGroup.setGroup(parent); // устанавливаем
-															// парентов
-					parentSubjectGroup.addChild(child); // доавляем детей
+					//устанавливаем парентов
+					parentSubjectGroup.setGroup(parent); 
+					// доавляем детей
+					parentSubjectGroup.addChild(child); 
 					parentSubjectGroups.add(parentSubjectGroup);
-					subjToNodeMap.put(parent.getId(), parentSubjectGroup.getChildren()); // мапа
-																							// парент
-																							// -
-																							// ребенок
-					mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId()); // мапа
-																							// группа
-																							// -
-																							// ид
-																							// парента
+					//мапа  парент -ребенок
+					subjToNodeMap.put(parent.getId(), parentSubjectGroup.getChildren()); 
+					//мапа группа-ид парента
+					mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId()); 
 				} else {
 					for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
 						// убираем дубликаты
 						if (vSubjectGroupParentNode.getGroup().getId().equals(parent.getId())) {
-							vSubjectGroupParentNode.getChildren().add(child); // если
-																				// дубликат
-																				// парента-
-																				// добавляем
-																				// его
-																				// детей
-																				// к
-																				// общему
-																				// списку
-							subjToNodeMap.put(parent.getId(), vSubjectGroupParentNode.getChildren());// мапа
-																										// парент
-																										// -
-																										// ребенок
-							mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId());// мапа
-																									// группа
-																									// -
-																									// ид
-																									// парента
+							//если дубликат парента-добавляем его детей к общему списку
+							vSubjectGroupParentNode.getChildren().add(child);  
+							//мапа парент-ребенок
+							subjToNodeMap.put(parent.getId(), vSubjectGroupParentNode.getChildren());
+							//мапа группа-ид парента
+							mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId()); 
 						}
 					}
 				}
@@ -106,15 +91,10 @@ public class SubjectGroupService {
 		}
 
 		// Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
-		Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti); // достаем
-																	// ид
-																	// sID_Group_Activiti
-																	// которое
-																	// на вход
-
-		List<SubjectGroup> children = subjToNodeMap.get(groupFiltr); // достаем
-																		// его
-																		// детей
+		//достаем ид sID_Group_Activiti которое на вход
+		Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti);  
+		//детей его детей
+		List<SubjectGroup> children = subjToNodeMap.get(groupFiltr); 
 		// children полный список первого уровня
 		if (children != null && !children.isEmpty()) {
 
@@ -142,10 +122,10 @@ public class SubjectGroupService {
 				subjUsers.put(subjectGroup, Lists.newArrayList(setUser));
 			}
 		}
-
+		List<Map<String, String>> list = new ArrayList<Map<String, String>>((Collection<? extends Map<String, String>>) subjUsers.values());
 		SubjectGroupAndUser subjectGroupAndUser = new SubjectGroupAndUser();
 		subjectGroupAndUser.setaSubjectGroup(aChildResult);
-		subjectGroupAndUser.setaSubjectUser((List)subjUsers.values());
+		subjectGroupAndUser.setaSubjectUser(list);
 
 		return subjectGroupAndUser;
 
@@ -183,9 +163,8 @@ public class SubjectGroupService {
 			for (Long nID_ChildLevel : anID_ChildLevel) {
 				if (anID_PerentAll.contains(nID_ChildLevel)) {
 					// LOG.info("nID_ChildLevel: " + nID_ChildLevel);
-					aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);// достаем
-																			// детей
-																			// детей
+					// достаем детей детей
+					aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);
 					if (aChildLevel_Result != null && !aChildLevel_Result.isEmpty()) {
 						LOG.info("nID_ChildLevel: " + nID_ChildLevel + " aChildLevel_Result: "
 								+ aChildLevel_Result.size());
@@ -199,9 +178,8 @@ public class SubjectGroupService {
 								}));
 						LOG.info("nID_ChildLevel: " + nID_ChildLevel + " anID_ChildLevel_Result: "
 								+ anID_ChildLevel_Result.size());
-						result.addAll(aChildLevel_Result); // добавляем детей к
-															// общему списку
-															// детей
+						//добавляем детей к общему списку детей
+						result.addAll(aChildLevel_Result);  
 						LOG.info("result: " + result.size());
 					}
 				}
