@@ -70,7 +70,7 @@ public class ProcessSubjectService {
 					// мапа парент -ребенок
 					subjToNodeMap.put(parent.getId(), parentProcessSubject.getChildren());
 					// мапа группа-ид парента
-					mapGroupActiviti.put(parent.getSnID_Process_Activiti(), parent.getId());
+					mapGroupActiviti.put(parent.getID_Process_Activiti(), parent.getId());
 				} else {
 					for (ProcessSubjectParentNode processSubjectParentNode : parentProcessSubjects) {
 						// убираем дубликаты
@@ -81,7 +81,7 @@ public class ProcessSubjectService {
 							// мапа парент-ребенок
 							subjToNodeMap.put(parent.getId(), processSubjectParentNode.getChildren());
 							// мапа группа-ид парента
-							mapGroupActiviti.put(parent.getSnID_Process_Activiti(), parent.getId());
+							mapGroupActiviti.put(parent.getID_Process_Activiti(), parent.getId());
 						}
 					}
 				}
@@ -194,4 +194,54 @@ public class ProcessSubjectService {
 		}
 		return result;
 	}
+        
+    /**
+     * Задать логин
+     *
+     * @param snID_Process_Activiti
+     * @param sLogin
+     * @return
+     */
+    public ProcessSubject setProcessSubjectLogin(String snID_Process_Activiti, String sLogin) {
+        return processSubjectDao.setProcessSubjectLogin(snID_Process_Activiti, sLogin);
+    }
+
+    /**
+     * Задать номер заявки
+     *
+     * @param snID_Process_Activiti
+     * @param nOrder
+     * @return
+     */
+    public ProcessSubject setProcessSubjectOrder(String snID_Process_Activiti, Long nOrder) {
+        return processSubjectDao.setProcessSubjectOrder(snID_Process_Activiti, nOrder);
+    }
+
+    /**
+     * Задать статус
+     *
+     * @param snID_Process_Activiti
+     * @param nID_ProcessSubjectStatus
+     * @return
+     */
+    public ProcessSubject setProcessSubjectStatus(String snID_Process_Activiti, Long nID_ProcessSubjectStatus) {
+        return processSubjectDao.setProcessSubjectStatus(snID_Process_Activiti, nID_ProcessSubjectStatus);
+    }
+
+    /**
+     * Задать дату
+     *
+     * @param snID_Process_Activiti
+     * @param sDatePlan
+     * @return
+     */
+    public ProcessSubject setProcessSubjectDatePlan(String snID_Process_Activiti, String sDatePlan) {
+        
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy");
+        DateTime dtDatePlan = formatter.parseDateTime(sDatePlan);
+        
+        return processSubjectDao.setProcessSubjectDatePlan(snID_Process_Activiti, dtDatePlan);
+    }
+
+ 
 }
