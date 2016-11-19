@@ -29,11 +29,30 @@ public class SubjectGroupController {
 
     @Autowired
     private SubjectGroupService subjectGroupService;
-
-
-
-    
-    @ApiOperation(value = "Получение организационной иерархии")
+    @ApiOperation(value = "Получение организационной иерархии", notes = "##### Пример:\n"
+	        + "https://alpha.test.region.igov.org.ua/wf/service/subject/group/getSubjectGroups?sID_Group_Activiti=MJU_Dnipro&nDeepLevel=1 \n"
+	        + "Ответ: HTTP STATUS 200\n\n"
+	        + "{\n"
+	        + "\"aSubjectGroup\": [\n"
+	        + "{\n"
+	        + "\"sID_Group_Activiti\": \"MJU_Dnipro_Top3\",\n"
+	        + "\"sChain\": \"MJU_Dnipro_\",\n"
+	        + "\"nID\": 172,\n"
+	        + "\"sName\": \"Управління державної виконавчої служби-начальник управління\"\n"
+	        + "	}\n"
+	        + "	],\n"
+	        + "aSubjectUser\": [\n"
+	        + "{\n"
+	        + "\"sLogin\": \"MJU_common\",\n"
+	        + "\"sFirstName\": \"мінюст\",\n"
+	        +	"sLastName\": \"тестовий користувач\",\n"
+	        +	"sEmail\":,\n"
+	        +	"sPicture\": \"null\n"
+	        + "        }\n"
+	        + "    ]\n"
+	        + "}\n\n"
+	        + "\n```\n"
+	        )
     @RequestMapping(value = "/getSubjectGroups", method = RequestMethod.GET)
     @ResponseBody
     public SubjectGroupAndUser getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
