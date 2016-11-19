@@ -1,23 +1,24 @@
 package org.igov.model.process;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
-import org.igov.model.core.AbstractEntity;
 import org.igov.model.core.NamedEntity;
+import org.igov.util.JSON.JsonDateTimeDeserializer;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @javax.persistence.Entity
 public class ProcessSubject extends NamedEntity {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
@@ -27,8 +28,8 @@ public class ProcessSubject extends NamedEntity {
     private String snID_Process_Activiti;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "nID_ProcessSubjectStatus")
+    @ManyToOne(targetEntity = ProcessSubjectStatus.class)
+    @JoinColumn(name = "nID_ProcessSubjectStatus", nullable = false, updatable = false)
     private ProcessSubjectStatus processSubjectStatus;
 
     @JsonProperty(value = "nOrder")
@@ -39,13 +40,17 @@ public class ProcessSubject extends NamedEntity {
     @Column
     private String sLogin;
 
-    @JsonProperty(value = "sDateEdit")
-    @Type(type = DATETIME_TYPE)
+    @JsonProperty(value="sDateEdit")
+    @JsonSerialize(using=JsonDateTimeSerializer.class)
+    @JsonDeserialize(using=JsonDateTimeDeserializer.class)
+    @Type(type=DATETIME_TYPE)
     @Column
     private DateTime sDateEdit;
 
-    @JsonProperty(value = "sDatePlan")
-    @Type(type = DATETIME_TYPE)
+    @JsonProperty(value="sDatePlan")
+    @JsonSerialize(using=JsonDateTimeSerializer.class)
+    @JsonDeserialize(using=JsonDateTimeDeserializer.class)
+    @Type(type=DATETIME_TYPE)
     @Column
     private DateTime sDatePlan;
     

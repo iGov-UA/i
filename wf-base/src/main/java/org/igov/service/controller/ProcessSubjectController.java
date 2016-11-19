@@ -4,10 +4,7 @@ package org.igov.service.controller;
 import java.util.List;
 
 import org.igov.model.process.ProcessSubject;
-import org.igov.model.subject.SubjectGroup;
-import org.igov.model.subject.SubjectGroupAndUser;
 import org.igov.service.business.process.ProcessSubjectService;
-import org.igov.service.business.subject.SubjectGroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +32,8 @@ public class ProcessSubjectController {
 
 
     
-    @ApiOperation(value = "Получение иерархии процессов")
+    @ApiOperation(value = "Получение иерархии процессов", notes = "##### Пример:\n"
+	        + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/getProcessSubject?snID_Process_Activiti=MJU_Dnipro&nDeepLevel=1 \n")
     @RequestMapping(value = "/getProcessSubject", method = RequestMethod.GET)
     @ResponseBody
     public List<ProcessSubject> getProcessSubject(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
