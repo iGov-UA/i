@@ -100,6 +100,13 @@
           });
 
           $scope.feedback.messageList = $scope.feedback.messageList.concat(newMessages);
+          $scope.feedback.messageList.sort(function (a, b) {
+            if(a.oSubjectMessage.sDate && b.oSubjectMessage.sDate) {
+              return Date.parse(b.oSubjectMessage.sDate) - Date.parse(a.oSubjectMessage.sDate);
+            } else {
+              return 0;
+            }
+          })
         }).finally(function () {
           $scope.messagesLoadingProgress = false;
       });

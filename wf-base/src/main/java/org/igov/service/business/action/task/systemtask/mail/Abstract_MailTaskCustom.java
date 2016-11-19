@@ -51,6 +51,7 @@ import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import org.igov.service.business.finance.Currency;
 import org.igov.service.business.finance.Liqpay;
 import org.igov.service.business.object.Language;
+import org.igov.service.business.place.PlaceService;
 import org.igov.service.controller.security.AccessContract;
 import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.igov.util.Tool;
@@ -162,6 +163,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     private HistoryEventService historyEventService;
     @Autowired
     private IBytesDataStorage durableBytesDataStorage;
+    @Autowired
+    private PlaceService placeService;
 
     protected String replaceTags(String sTextSource, DelegateExecution execution)
             throws Exception {
@@ -499,7 +502,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     }
 
     //TODO: Допилить и начать использовать PlaceServiceImpl вместо этого
-    private String getPlaceByProcess(String sID_Process) {
+    /*private String getPlaceByProcess(String sID_Process) {
         Map<String, String> mParam = new HashMap<String, String>();
         mParam.put("nID_Process", sID_Process);
         //LOG.info("2sID_Process: " + sID_Process);
@@ -522,7 +525,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         }
         //LOG.info("(soResponse={})", soResponse);
         return sName;//soResponse
-    }
+    }*/
 
     private String replaceTags_sURL_FEEDBACK_MESSAGE(String textWithoutTags,
             DelegateExecution execution, Long nID_Order) throws Exception {
@@ -618,7 +621,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 nID_Service = historyEvent.getLong("nID_Service");
                 sID_Place_UA = historyEvent.getString("sID_UA");
                 String snID_Process = execution.getProcessInstanceId();
-                sPlace = getPlaceByProcess(snID_Process);
+                sPlace = placeService.getPlaceByProcess(snID_Process);
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
                 LOG.debug("FAIL:", oException);

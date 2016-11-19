@@ -101,15 +101,8 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
         views: {
           'main@': {
             templateUrl: 'app/journal/answer/answer.content.html',
-            controller: 'AnswerContentController'
-          },
-          resolve: {
-            BankIDLogin: function (UserService) {
-              return UserService.isLoggedIn()
-                .catch(function () {
-                  return false;
-                });
-            }
+            controller: 'AnswerContentController',
+            controllerAs: 'vm'
           }
         }
       });

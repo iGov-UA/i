@@ -30,6 +30,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.apache.commons.codec.binary.Base64;
+import org.igov.service.business.action.task.listener.doc.SendDocument_SWinEd;
 import org.igov.service.controller.ActionTaskCommonController;
 
 /**
@@ -40,8 +41,6 @@ import org.igov.service.controller.ActionTaskCommonController;
 public class DfsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DfsService.class);
-
-    private final static String URL = "http://109.237.89.107:1220/gate.asmx";
 
     private final static String CONTENT_TYPE = "text/xml; charset=utf-8";
 
@@ -62,7 +61,7 @@ public class DfsService {
         List<ByteArrayMultipartFile> multipartFiles = getAnswer(sINN);
         LOG.info("multipartFiles.size: " + multipartFiles.size());
         try {
-            Attachment attachmentDocument = taskService.getAttachment((String) runtimeService.getVariable(sID_Process, "oFile_XML_SWinEd"));
+            Attachment attachmentDocument = taskService.getAttachment((String) runtimeService.getVariable(sID_Process, "oFile_XML_SWinEd")); //sFileName_XML_SWinEd_Answer=F1401801
             if (attachmentDocument != null) {
                 String attachmentDocumentName = attachmentDocument.getName();
                 LOG.info("attachmentDocumentName: " + attachmentDocumentName);
@@ -70,17 +69,17 @@ public class DfsService {
                 for (ByteArrayMultipartFile multipartFile : multipartFiles) {
                     LOG.info("multipartFile.getOriginalFilename(): " + multipartFile.getOriginalFilename()
                             + " attachmentDocumentName: " + attachmentDocumentName);
-                    if (multipartFile.getOriginalFilename().contains(attachmentDocumentName)) {
+                    if ((multipartFile.getOriginalFilename().contains(attachmentDocumentName) && !multipartFile.getOriginalFilename().endsWith(".xml"))
+                            || multipartFile.getOriginalFilename().contains((String) runtimeService.getVariable(sID_Process, "sFileName_XML_SWinEd_Answer"))) { //"F1401801"
                         Attachment attachment = taskService.createAttachment(multipartFile.getContentType() + ";" + multipartFile.getExp(),
-                                sID_Task, sID_Process,
-                                multipartFile.getOriginalFilename(), multipartFile.getName(), multipartFile.getInputStream());
+                                sID_Task, sID_Process, multipartFile.getOriginalFilename(), multipartFile.getName(), multipartFile.getInputStream());
                         if (attachment != null) {
                             asID_Attach_Dfs.append(attachment.getId()).append(",");
                             LOG.info("attachment: " + attachment.getId());
                         }
-                    } else{
+                    } else {
                         LOG.info("SKIP multipartFile.getOriginalFilename(): " + multipartFile.getOriginalFilename()
-                            + " attachmentDocumentName: " + attachmentDocumentName);
+                                + " attachmentDocumentName: " + attachmentDocumentName);
                     }
                 }
             }
@@ -92,7 +91,7 @@ public class DfsService {
             runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", sID_Attach_Dfs);
             taskService.setVariable(sID_Task, "anID_Attach_Dfs", sID_Attach_Dfs);
             //taskService.complete(sID_Task);
-        } else{
+        } else {
             runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", "");
             taskService.setVariable(sID_Task, "anID_Attach_Dfs", "");
         }
@@ -102,7 +101,7 @@ public class DfsService {
     public String send(String content, String fileName, String email) throws Exception {
         LOG.info("content: " + content + " fileName: " + fileName + " email: " + email);
         String body = createBody_Send(content, fileName, email);
-        return oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
+        return oHttpRequester.postInside(SendDocument_SWinEd.URL, null, body, CONTENT_TYPE);
     }
 
     private String createBody_Send(String content, String fileName, String email) {
@@ -155,7 +154,7 @@ public class DfsService {
     private String getMessages(String inn) throws Exception {
         LOG.info("inn: " + inn);
         String body = createBody_GetMessages(inn);
-        return oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
+        return oHttpRequester.postInside(SendDocument_SWinEd.URL, null, body, CONTENT_TYPE);
     }
 
     private String createBody_GetMessages(String inn) {
@@ -173,7 +172,7 @@ public class DfsService {
     private String receive(String massageID) throws Exception {
         LOG.info("massageID: " + massageID);
         String body = createBody_Receive(massageID);
-        return oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
+        return oHttpRequester.postInside(SendDocument_SWinEd.URL, null, body, CONTENT_TYPE);
     }
 
     private String createBody_Receive(String massageID) {
@@ -191,7 +190,7 @@ public class DfsService {
     private String delete(String massageID) throws Exception {
         LOG.info("massageID: " + massageID);
         String body = createBody_Delete(massageID);
-        return oHttpRequester.postInside(URL, null, body, CONTENT_TYPE);
+        return oHttpRequester.postInside(SendDocument_SWinEd.URL, null, body, CONTENT_TYPE);
     }
 
     private String createBody_Delete(String massageID) {

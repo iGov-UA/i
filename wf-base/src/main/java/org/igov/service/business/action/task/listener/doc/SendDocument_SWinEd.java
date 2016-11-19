@@ -27,7 +27,8 @@ public class SendDocument_SWinEd implements TaskListener {
     private final static Logger LOG = LoggerFactory.getLogger(SendDocument_SWinEd.class);
     
     //private final static String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
-    private final static String URL = "http://109.237.89.107:1220/gate.asmx";
+    //public final static String URL = "http://109.237.89.107:1220/gate.asmx"; //тестовый
+    public final static String URL = "http://217.76.198.151/Websrvgate/gate.asmx"; //боевой
     
     private Expression sEmail;
     
