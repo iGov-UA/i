@@ -7,6 +7,7 @@ package org.igov.service.business.subject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -123,7 +124,7 @@ public class SubjectGroupService {
 		}
 		SubjectGroupAndUser subjectGroupAndUser = new SubjectGroupAndUser();
 		subjectGroupAndUser.setaSubjectGroup(aChildResult);
-		subjectGroupAndUser.setaSubjectUser(new ArrayList<List<Map<String, String>>>(subjUsers.values()));
+		subjectGroupAndUser.setaSubjectUser(subjUsers.values()!=null?new ArrayList<List<Map<String, String>>>(subjUsers.values()):Collections.<List<Map<String, String>>>emptyList());
 
 		return subjectGroupAndUser;
 
