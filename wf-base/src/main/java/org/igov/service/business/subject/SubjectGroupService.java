@@ -16,14 +16,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.subject.SubjectGroup;
+import org.igov.model.subject.SubjectGroupAndUser;
 import org.igov.model.subject.SubjectGroupTree;
 import org.igov.model.subject.VSubjectGroupParentNode;
+import org.igov.service.business.action.task.core.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Сервис получения организационной иерархии
@@ -35,10 +39,14 @@ public class SubjectGroupService {
 
     private static final Log LOG = LogFactory.getLog(SubjectGroupService.class);
     private static final long FAKE_ROOT_SUBJECT_ID = 0;
+    
     @Autowired
     private BaseEntityDao<Long> baseEntityDao;
+    
+    @Autowired
+    private UsersService usersService;
 
-    public List<SubjectGroup> getCatalogTreeSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+    public SubjectGroupAndUser getCatalogSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
         List<SubjectGroup> aChildResult = new ArrayList();
         List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
         List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
@@ -74,7 +82,6 @@ public class SubjectGroupService {
         }
 
         //Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
-        List<List<SubjectGroup>> valuesRes = new ArrayList<>();
         Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti); //достаем ид sID_Group_Activiti которое на вход
 
         List<SubjectGroup> children = subjToNodeMap.get(groupFiltr); //достаем его детей
@@ -94,9 +101,23 @@ public class SubjectGroupService {
 
             //subjToNodeMapFiltr.put(groupFiltr, aChildResult);
         }
-        valuesRes.add(aChildResult);
+        
+        //Получаем орг иерархию и людей
+        Map<SubjectGroup, Set<Map<String, String>>> subjUsers = new HashMap<>();
+        if(aChildResult!=null && !aChildResult.isEmpty()) {
+        	for(SubjectGroup subjectGroup: aChildResult) {
+        		List<Map<String, String>> aSubjectUser = usersService.getUsersByGroup(subjectGroup.getsID_Group_Activiti());
+        		Set<Map<String, String>>setUser = new LinkedHashSet<>(aSubjectUser); 
+        		subjUsers.put(subjectGroup, setUser);
+        	}
+        }
+        
+        SubjectGroupAndUser subjectGroupAndUser = new SubjectGroupAndUser();
+        subjectGroupAndUser.setaSubjectGroup(aChildResult);
+        subjectGroupAndUser.setaSubjectUser(Arrays.asList(subjUsers.values().toArray()));
+        
 
-        return aChildResult;
+        return subjectGroupAndUser;
 
     }
 
