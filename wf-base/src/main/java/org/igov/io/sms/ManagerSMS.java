@@ -45,29 +45,38 @@ public class ManagerSMS {
            
     public String sendSms(String phone, String message, String sID_Order, boolean oldApiFlag) throws Exception
     {
-        Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)|38073");
-        //Pattern regexKyivStar = Pattern.compile("38067(.*)|38096(.*)|38097(.*)|38098(.*)");
-        
-        phone = phone.replace("+", "").trim();
         
         String resp = "[none]";
         
-        if (oldApiFlag == false){
-            if (regexpLifeCell.matcher(phone).matches()){
-                resp = SendLifeCellSms(phone, message);
+        try{
+            
+            Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)|38073");
+            //Pattern regexKyivStar = Pattern.compile("38067(.*)|38096(.*)|38097(.*)|38098(.*)");
+
+            phone = phone.replace("+", "").trim();
+
+            if (oldApiFlag == false){
+                if (regexpLifeCell.matcher(phone).matches()){
+                    resp = SendLifeCellSms(phone, message);
+                }
+                /*else if(regexKyivStar.matcher(phone).matches())
+                {
+                    SendKyivStarSms(phone, message);
+                }*/
+                else{
+                    resp = SendSenderSms(sID_Order, phone, message);
+                }
             }
-            /*else if(regexKyivStar.matcher(phone).matches())
-            {
-                SendKyivStarSms(phone, message);
-            }*/
             else{
                 resp = SendSenderSms(sID_Order, phone, message);
             }
         }
-        else{
-            resp = SendSenderSms(sID_Order, phone, message);
+        catch(Exception ex){
+            
+            LOG.error("Error sending sms: " + ex.toString());
+            resp = ex.toString();
         }
-        
+
         return resp;
     }
     
