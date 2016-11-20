@@ -42,24 +42,30 @@ public class ManagerSMS {
             .append("</body>")
             .append("</message>").toString();*/
     public String sendSms(String phone, String message, String sID_Order, boolean oldApiFlag) throws Exception {
-        Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)|38073");
-        //Pattern regexKyivStar = Pattern.compile("38067(.*)|38096(.*)|38097(.*)|38098(.*)");
-
-        phone = phone.replace("+", "").trim();
-
+        
         String resp = "[none]";
 
-        if (oldApiFlag) {
-            resp = SendSenderSms(sID_Order, phone, message);
-        } else if (regexpLifeCell.matcher(phone).matches()) {
-            resp = SendLifeCellSms(phone, message);
-        } /*else if(regexKyivStar.matcher(phone).matches())
-            {
-                SendKyivStarSms(phone, message);
-        }*/ else {
-            resp = SendSenderSms(sID_Order, phone, message);
-        }
+        try {
+            Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)|38073");
+            //Pattern regexKyivStar = Pattern.compile("38067(.*)|38096(.*)|38097(.*)|38098(.*)");
 
+            phone = phone.replace("+", "").trim();
+
+            if (oldApiFlag) {
+                resp = SendSenderSms(sID_Order, phone, message);
+            } else if (regexpLifeCell.matcher(phone).matches()) {
+                resp = SendLifeCellSms(phone, message);
+            } /*else if(regexKyivStar.matcher(phone).matches())
+                {
+                    SendKyivStarSms(phone, message);
+            }*/ else {
+                resp = SendSenderSms(sID_Order, phone, message);
+            }
+        }
+        catch (Exception ex){
+            LOG.error("Error sending SMS: " + ex.toString());
+        }
+            
         return resp;
     }
 
