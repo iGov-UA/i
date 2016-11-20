@@ -113,9 +113,9 @@
                        on-select="onSelectDataList($item, tableName, rowIndex)">
 
               <ui-select-match>
-                {{$select.selected[autocompleteData.titleProperty] || field.value}}
+                {{$select.selected[autocompleteData.valueProperty] || field.value}}
               </ui-select-match>
-              <ui-select-choices refresh="refreshList(field.autocompleteData.titleProperty, $select.search)"
+              <ui-select-choices refresh="refreshList(field.autocompleteData.titleProperty, $select.search, field.name)"
                                  refresh-delay="50"
                                  repeat="item[field.autocompleteData.valueProperty] as item in items track by item[field.autocompleteData.orderBy]">
                                <span title="{{item[field.autocompleteData.titleProperty]}}">

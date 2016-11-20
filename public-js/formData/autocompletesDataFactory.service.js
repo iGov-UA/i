@@ -16,6 +16,13 @@ angular.module('autocompleteService', [])
             apiUrl: './api/object-customs',
             hasPaging: true
         },
+        SubjectRole: {
+            apiUrl: './api/subject-role',
+            titleProperty: 'sName',
+            orderBy: 'sLogin',
+            prefixAssociatedField: 'sName',
+            valueProperty: 'sLogin'
+        },
         SubjectOrganJoinTax: {
             valueProperty: 'sName_UA',
             titleProperty: 'sName_UA',
@@ -42,6 +49,15 @@ angular.module('autocompleteService', [])
                 scope.$watch("formData.params['sID_Public_SubjectOrganJoin'].nID", function (newValue) {
                     scope.refreshList('nID_SubjectOrganJoin', newValue);
                 });
+                if(scope.taskForm){
+                    angular.forEach(scope.taskForm, function (item, key) {
+                        if(item.id === 'sID_Public_SubjectOrganJoin') {
+                            scope.$watch("taskForm["+ key +"].nID", function (newValue) {
+                                scope.refreshList('nID_SubjectOrganJoin', newValue);
+                            });
+                        }
+                    })
+                }
             }
         },
         ObjectEarthTarget: {

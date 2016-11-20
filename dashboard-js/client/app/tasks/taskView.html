@@ -77,6 +77,11 @@
           <checkbox-field></checkbox-field>
         </div>
 
+        <!--поле типа select-->
+        <div ng-if="item.value && isFormPropertyDisabled(item)">
+          <select-field></select-field>
+        </div>
+
         <!--поле типа user-->
         <p ng-if="item.type == 'user'">
           <label>{{sFieldLabel(item.name)}}</label>
@@ -180,6 +185,9 @@
 
         <!--поле типа table-->
         <table-field></table-field>
+
+        <!--поле типа select-->
+        <select-field></select-field>
 
       </div>
 

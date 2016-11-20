@@ -105,6 +105,32 @@
           }
         }
 
+        function searchSelectSubject() {
+          angular.forEach(taskForm, function (item) {
+            var isExecutorSelect = item.name.split(';')[2];
+            if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
+              var match;
+              if (((match = item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/)))
+                ||(item.type == 'select' && (match = item.id.match(/^s(Country)(_(\d+))?/))) || isExecutorSelect) {
+                if (match && autocompletesDataFactory[match[1]] && !isExecutorSelect) {
+                  item.type = 'select';
+                  item.selectType = 'autocomplete';
+                  item.autocompleteName = match[1];
+                  if (match[2])
+                    item.autocompleteName += match[2];
+                  item.autocompleteData = autocompletesDataFactory[match[1]];
+                } else if (!match && isExecutorSelect) {
+                  item.type = 'select';
+                  item.selectType = 'autocomplete';
+                  item.autocompleteName = 'SubjectRole';
+                  item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
+                }
+              }
+            }
+          })
+        }
+        searchSelectSubject();
+
         $scope.isShowExtendedLink = function () {
           return tasks.isFullProfileAvailableForCurrentUser(taskData);
         };
@@ -709,8 +735,25 @@
           $scope.tableContentShow = !$scope.tableContentShow;
         };
 
+        // проверяем имя поля на наличие заметок
+        function fixName(item) {
+          var sFieldName = item.name || '';
+          var aNameParts = sFieldName.split(';');
+          var sFieldNotes = aNameParts[0].trim();
+          item.sFieldLabel = sFieldNotes;
+          sFieldNotes = null;
+          if (aNameParts.length > 1) {
+            sFieldNotes = aNameParts[1].trim();
+            if (sFieldNotes === '') {
+              sFieldNotes = null;
+            }
+          }
+          item.sFieldNotes = sFieldNotes;
+        }
+
         var fixFieldsForTable = function (table) {
             var tableRow;
+            fixName(table);
             if('content' in table){
               tableRow = table.content;
             } else {
@@ -718,6 +761,7 @@
             }
             angular.forEach(tableRow, function (row) {
               angular.forEach(row.aField, function (field) {
+                fixName(field);
                 if(field.type === 'date') {
                   var match = /^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/.test(field.props.value);
                   if(!match) {

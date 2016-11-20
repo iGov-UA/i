@@ -18,16 +18,11 @@ angular.module('autocompleteService')
                         el.sFind = el.sName_UA + " " + el.sID_UA;
                     }
                 });
+            } else if(typeof res.data === 'object' && res.data.aSubjectUser) {
+                angular.forEach(res.data.aSubjectUser, function (user) {
+                    user.sName = user.sFirstName + " " + user.sLastName;
+                })
             }
-            /*
-             if (res.config.url.indexOf('object-customs') > 0){
-             angular.forEach(res.data, function (el) {
-             if (angular.isDefined(el.sID_UA) && angular.isDefined(el.sName_UA)) {
-             el.sName_UA = el.sID_UA + " " + el.sName_UA;
-             }
-             });
-             }
-             */
             return res;
         });
     }
@@ -43,7 +38,8 @@ angular.module('autocompleteService')
 
         return ($scope.autocompleteData ? getInfinityScrollChunk() : $timeout(getInfinityScrollChunk, 200))
             .then(function(response) {
-                Array.prototype.push.apply(collection, $filter('orderBy')(response.data, $scope.autocompleteData.orderBy));
+                var resp = response.data.aSubjectUser ? response.data.aSubjectUser : response.data;
+                Array.prototype.push.apply(collection, $filter('orderBy')(resp, $scope.autocompleteData.orderBy));
                 if (!$scope.autocompleteData.hasPaging || response.data.length < count) {
                     hasNextChunk = false;
                 }
@@ -59,7 +55,7 @@ angular.module('autocompleteService')
             });
     };
 
-    $scope.refreshList = function(queryKey, queryValue) {
+    $scope.refreshList = function(queryKey, queryValue, params) {
         if (!angular.isDefined(queryParams.params[queryKey])) {
             hasNextChunk = true;
         }
@@ -71,7 +67,43 @@ angular.module('autocompleteService')
             }
             $scope.isRequestMoreItems = false;
             hasNextChunk = true;
-            queryParams.params[queryKey] = queryValue;
+            var ps = params ? params.split(';')[2] : null;
+            if(ps && ps.indexOf('sID_SubjectRole=Executor') > -1) {
+                var param = ps.split(',');
+                angular.forEach(param, function (p) {
+                    angular.forEach($scope.taskForm, function (field, key) {
+                        if('aRow' in field) {
+                            angular.forEach(field.aRow, function (row, rkey) {
+                                angular.forEach(row.aField, function (f, fkey) {
+                                    if(p.split('=')[1] === f.id) {
+                                        setParams(f, key, rkey, fkey);
+                                    }
+                                })
+                            })
+                        }
+                        if(p.split('=')[1] === field.id) {
+                            setParams(field, key);
+                        }
+                    })
+                });
+                function setParams(field, key, rowKey, fieldKey) {
+                    queryParams.params[field.id] = field.value;
+                    if(key && rowKey && fieldKey) {
+                        $scope.$watch('taskForm['+ key +'].aRow['+ rowKey + '].aField[' + fieldKey + '].value', function (newValue) {
+                            $scope.refreshList(field.id, newValue);
+                        })
+                    } else {
+                        $scope.$watch('taskForm['+ key +'].value', function (newValue) {
+                            $scope.refreshList($scope.taskForm[key].id, newValue);
+                        })
+                    }
+                }
+                if(queryValue) {
+                    queryParams.params.sFind = queryValue;
+                }
+            } else {
+                queryParams.params[queryKey] = queryValue
+            }
             $scope.requestMoreItems([]).then(function (items) {
                 // $timeout(function () {
                 //   $scope.$select.items = items;
@@ -104,8 +136,14 @@ angular.module('autocompleteService')
                 }
             });
         } else {
-            if ($scope.formData.params[additionalPropertyName]) {
+            if ($scope.formData && $scope.formData.params[additionalPropertyName]) {
                 $scope.formData.params[additionalPropertyName].value = item[$scope.autocompleteData.prefixAssociatedField];
+            } else if($scope.taskForm) {
+                angular.forEach($scope.taskForm, function (field, key, obj) {
+                    if(field.id === additionalPropertyName) {
+                        obj[key].value = item[$scope.autocompleteData.prefixAssociatedField];
+                    }
+                })
             }
         }
     };
