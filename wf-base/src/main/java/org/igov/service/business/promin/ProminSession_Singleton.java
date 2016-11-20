@@ -31,30 +31,30 @@ import org.xml.sax.SAXException;
 @Service
 @Scope("prototype")
 public class ProminSession_Singleton {
-
+    
     private final static Logger LOG = LoggerFactory.getLogger(ProminSession_Singleton.class);
     private String sid_Auth_UkrDoc_SED;
     private String sid_Auth_Receipt_PB_Bank;
     private long nTimeCreatedMS;
     private final long nTimeLiveLimitMS = 1000 * 60 * 20;
-
+    
     @Autowired
     GeneralConfig generalConfig;
     
     @Autowired
     HttpRequester httpRequester;
-
-    public String getSid_Auth_UkrDoc_SED() throws Exception {
-        checkAndUpdateSid();
+    
+    public String getSid_Auth_UkrDoc_SED() {
+        checkAndUpdateSid();        
         return sid_Auth_UkrDoc_SED;
     }
-
-    public String getSid_Auth_Receipt_PB_Bank() throws Exception {
+    
+    public String getSid_Auth_Receipt_PB_Bank() {
         checkAndUpdateSid();
         return sid_Auth_Receipt_PB_Bank;
     }
-
-    private void checkAndUpdateSid() throws Exception {
+    
+    private void checkAndUpdateSid() {
         LOG.info("getSID ... " + toString());
         if (sid_Auth_UkrDoc_SED == null || (System.currentTimeMillis() - nTimeCreatedMS) > nTimeLiveLimitMS) {
             nTimeCreatedMS = System.currentTimeMillis();
@@ -67,16 +67,16 @@ public class ProminSession_Singleton {
         }
         LOG.info(toString() + " ok!");
     }
-
+    
     @Override
     public String toString() {
         String sCase = "SID_ESC";
-        return "[" + sCase + "]: sid_Auth_UkrDoc_SED=" + sid_Auth_UkrDoc_SED + ", sid_Auth_Receipt_PB_Bank= " + sid_Auth_Receipt_PB_Bank 
+        return "[" + sCase + "]: sid_Auth_UkrDoc_SED=" + sid_Auth_UkrDoc_SED + ", sid_Auth_Receipt_PB_Bank= " + sid_Auth_Receipt_PB_Bank
                 + ", nTimeCreatedMS=" + nTimeCreatedMS + ", nTimeLiveLimitMS=" + nTimeLiveLimitMS;
     }
-
-    private String getSessionId(String login, String password, String uriSid) throws Exception {
-        String sessionId;
+    
+    private String getSessionId(String login, String password, String uriSid) {
+        String sessionId = null;
         String xml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\n"
                 + "<session><user auth='EXCL' login='" + login + "' password='" + password + "'/></session>";
         LOG.info("Sending request to SID generator. URL:{}, request:{}", uriSid, xml);
@@ -86,14 +86,17 @@ public class ProminSession_Singleton {
         httpHeaders.setAccept(mediaTypes);
         //String xmlResponse = new RestRequest().post(uriSid, xml, MediaType.TEXT_XML,
         //        StandardCharsets.UTF_8, String.class, httpHeaders);
-        String xmlResponse = httpRequester.postInside(generalConfig.getLifeURL(), null, xml, 
-                "text/xml; charset=utf-8", null, null);
-        
-        LOG.info("Response from SID generator: {}", xmlResponse);
-        sessionId = getSidFromXml(xmlResponse);
+        try {
+            String xmlResponse = httpRequester.postInside(generalConfig.getLifeURL(), null, xml,
+                    "text/xml; charset=utf-8", null, null);
+            LOG.info("Response from SID generator: {}", xmlResponse);
+            sessionId = getSidFromXml(xmlResponse);
+        } catch (Exception ex) {
+            LOG.error("", ex);
+        }
         return sessionId;
     }
-
+    
     private static String getSidFromXml(String xmlDocument) {
         //todo simplify parsing
         String result;
@@ -111,5 +114,5 @@ public class ProminSession_Singleton {
         }
         return result;
     }
-
+    
 }
