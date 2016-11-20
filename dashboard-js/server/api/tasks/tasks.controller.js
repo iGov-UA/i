@@ -8,7 +8,6 @@ var authService = require('../../auth/activiti/basic');
 var async = require('async');
 var tasksService = require('./tasks.service');
 var environment = require('../../config/environment');
-var config = require(__dirname + '/../../..' + '/process.json').env;
 var request = require('request');
 var pdfConversion = require('phantom-html-to-pdf')();
 
@@ -318,6 +317,9 @@ exports.getTask = function (req, res) {
   //activiti.put(options, function (error, statusCode, result) {
   activiti.get(options, function (error, statusCode, result) {
     res.statusCode = statusCode;
+    if(typeof(result) === 'number'){
+      result = '' + result;
+    }
     res.send(result);
   }, req.body);
 };
@@ -531,23 +533,26 @@ exports.setTaskQuestions = function (req, res) {
 };
 
 // отправка комментария от чиновника, сервис работает на централе, поэтому с env конфигов берем урл.
-exports.postServiceMessage = function (req, res) {
+exports.postServiceMessage = function(req, res){
   var oData = req.body;
   var oDateNew = {
-    'sID_Order': config.Back_Region.nID_Server_Back_Region + '-' + oData.nID_Process,
+    'sID_Order': environment.activiti.nID_Server + '-' + oData.nID_Process,
     'sBody': oData.sBody,
-    'nID_SubjectMessageType': 9
+    'nID_SubjectMessageType' : 9,
+    'sMail': oData.sMail,
+    'soParams': oData.soParams
   };
-  var sURL = config.Back_Central.sURL_Back_Central + '/subject/message/setServiceMessage';
-  var callback = function (error, response, body) {
+  var central = environment.activiti_central;
+  var sURL = central.prot + '://' + central.host + ':' + central.port + '/' + central.rest + '/subject/message/setServiceMessage';
+  var callback = function(error, response, body) {
     res.send(body);
     res.end();
   };
   return request.post({
     'url': sURL,
     'auth': {
-      'username': config.Back_Central.sLogin_Back_Central,
-      'password': config.Back_Central.sPassword_Back_Central
+      'username': central.username,
+      'password': central.password
     },
     'qs': oDateNew
   }, callback);

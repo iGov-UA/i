@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_39_dnepr_mvk" name="Копії рішень міської (селищної) ради про надання дозволу на розроблення проекту відведення земельної ділянки" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 09.11.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 10.11.2016</documentation>
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Ваш документ; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Ваш документ, що посвідчує особу; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер (ІПН)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -49,7 +49,9 @@
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSumNote" name="Розшифрока суми сплати для Email" type="invisible" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="[Етап I] Перевірка і виготовлення копії рішення (1-й крок)" activiti:candidateGroups="mvk_copy_${sID_Public_SubjectOrganJoin}">
@@ -82,7 +84,6 @@
           <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
           <activiti:value id="sRekPrior" name="рекомендований лист з кур'єрською доставкою"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sWarning0" name="Вартість послуги Укрпошти" type="label"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат опрацювання" type="enum" required="true">
           <activiti:value id="accept" name="Копія рішення виготовлена та передана до ЦНАП"></activiti:value>
           <activiti:value id="reject" name="Відмовити у реєстрації звернення"></activiti:value>
@@ -135,12 +136,11 @@
           <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
           <activiti:value id="sRekPrior" name="рекомендований лист з кур'єрською доставкою"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sWarning0" name="Вартість послуги Укрпошти" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="asResult" name="Результат опрацювання" type="enum" writable="false">
+        <activiti:formProperty id="asResult" name="Результат опрацювання Міською Радою" type="enum" writable="false">
           <activiti:value id="accept" name="Копія рішення виготовлена та передана до ЦНАП"></activiti:value>
           <activiti:value id="reject" name="Відмовити у реєстрації звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment" name="Коментар до рішення (обов'язково у разі відмови у реєстрації звернення)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Коментар до рішення, наданий Міською Радою" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації зверення у форматі ДД.ММ.РРРР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали співробітника, що опрацював звернення" type="string" writable="false"></activiti:formProperty>
@@ -225,14 +225,15 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської ради]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської ради (необхідно сплатити послуги Укрпошти)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header_with_payment.html]
 							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 							    &lt;p&gt;
 							    Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].&lt;br&gt;
-								Для того щоб закінчити процедуру необхідно протягом доби сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)&lt;br&gt;
+								Для того щоб закінчити процедуру необхідно протягом доби сплатити послуги Укрпошти.&lt;br&gt;
+								${sSumNote}.&lt;br&gt;
 								[paymentButton_LiqPay]
 								&lt;/p&gt;
 								[pattern/mail/_common_signature_start.html]
@@ -380,10 +381,13 @@
       <script>
 var typeMail = execution.getVariable('asTypeMail');
 var sum = 16.09;
+var sumNote = "Загальна сума сплати становить 16.09 грн (до вартості послуги 15.80 грн. буде додано комісію 1,8%)";
 if (typeMail === 'sRekPrior') {
 	sum =  36.45;
+	sumNote = "Загальна сума сплати становить 36.45 грн (до вартості послуги 35.80 грн. буде додано комісію 1,8%)";
 }
 execution.setVariable('sSum', sum);
+execution.setVariable('sSumNote', sumNote);
 
 var delta='1';
 var unixdate= Math.round((new Date()).getTime());
@@ -409,7 +413,7 @@ execution.setVariable('sNotification_day', timer)
       	</script>
     </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask10" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask10" name="Повідомлення про нове звернення Міську Раду" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk_MVK}</activiti:expression>
@@ -535,7 +539,7 @@ execution.setVariable('sNotification_day', timer)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow48" sourceRef="exclusivegateway4" targetRef="servicetask13">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType == 'sMyself' && asResultCNAP1 == 'dozvPost'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType == 'sMyself' && asResultCNAP1 == 'dozvMyself'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow49" sourceRef="servicetask13" targetRef="endevent2"></sequenceFlow>
   </process>
