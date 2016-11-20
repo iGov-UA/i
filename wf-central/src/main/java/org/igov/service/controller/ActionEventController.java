@@ -639,21 +639,11 @@ public class ActionEventController implements ControllerConstants {
                     anID_HistoryEvent_Service.add(oHistoryEvent_Service.getId());
                 }
                 LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service);
-
-                //               List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
-//                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
-//                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
-//                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessage) {
-////                    if (oSubjectMessage.getSubjectMessageType().getId() == 2) {
-//                        mSubjectMessageFeedback.put(oHistoryEvent_Service.getId(), oSubjectMessageFeedback);
-////                    }
-//                }
+                    
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
-                    LOG.info("1sID_Order: " + aHistoryEvent_Service.get(0).getsID_Order());
                     List<String> asCell = new LinkedList<>();
                     // sID_Order
                     asCell.add(oHistoryEvent_Service.getsID_Order());
-                    LOG.info("2sID_Order: " + oHistoryEvent_Service.getsID_Order());
                     // nID_Server
                     asCell.add(oHistoryEvent_Service.getnID_Server() != null ? oHistoryEvent_Service.getnID_Server().toString() : "");
                     // nID_Service
@@ -749,7 +739,7 @@ public class ActionEventController implements ControllerConstants {
                         }
                     }
 
-                    asCell.add(sDateCreate != null ? uDateFormat.format(sDateCreate.toDate()) : "");
+                    asCell.add(sDateCreate != null ?  uDateFormat.format(sDateCreate.toDate()) : "");
                     asCell.add(sDateClose != null ? uDateFormat.format(sDateClose.toDate()) : "");
 
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));

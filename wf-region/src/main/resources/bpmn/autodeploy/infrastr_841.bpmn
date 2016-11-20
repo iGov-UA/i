@@ -25,17 +25,23 @@
         <activiti:formProperty id="privatePhone" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="E-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShipName" name="Назва судна;відповідно до Свідоцтва про право плавання під прапором України або Суднового білета" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="warning00" name="Зверніть увагу" type="label" default="Вам потрібно завантажити, заповнити та підписати &lt;a href=&quot;https://drive.google.com/open?id=1Lsz7rBsh7FVmYxZLuXhwVOZYASGeCLwLCT0ucBkaGsY&quot;&gt;заяву для видачі свідоцтва&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН;містить 7 цифр" type="string"></activiti:formProperty>
+        <activiti:formProperty id="warning00" name="Зверніть увагу" type="label" default="Вам потрібно завантажити, заповнити та підписати &lt;a href=&quot;https://drive.google.com/open?id=1Lsz7rBsh7FVmYxZLuXhwVOZYASGeCLwLCT0ucBkaGsY&quot;  target=&quot;_blank&quot;&gt;заяву для видачі свідоцтва&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="nDocZajava" name="Заява для видачі свідоцтва" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити та заповнити &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYaFExblNOTUFnaEdMUE5Ycl9Qc2REanNScHhn&quot;&gt;обґрунтування і розрахунок мінімального складу екіпажу судна&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити та заповнити &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYaFExblNOTUFnaEdMUE5Ycl9Qc2REanNScHhn&quot;  target=&quot;_blank&quot;&gt;обґрунтування і розрахунок мінімального складу екіпажу судна&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="nDocAnketa" name="Обґрунтування і розрахунок мінімального складу екіпажу судна" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocTO" name="Копія класифікаційного свідоцтва або копія акта технічного нагляду судна для здійснення його державної реєстрації" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocFlag" name="Копія свідоцтва про право плавання під Державним Прапором України" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocVlasn" name="Копія свідоцтва про право власності на судно" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; Для пасажирських суден" type="file"></activiti:formProperty>
+
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="validate" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_2.json')}"></activiti:formProperty>
+        
+       
+	    <activiti:formProperty id="form_signed" name="Заява громадянина" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/infr/min_equip_ecp.html"></activiti:formProperty>
+        
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
@@ -75,16 +81,20 @@
           <activiti:expression><![CDATA[Видача свідоцтва про мінімальний склад екіпажу судна]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    					<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-								<p>
-            						Ваша заявка на видачу свідоцтва про мінімальний склад екіпажу судна успішно зареєстрована [sID_Order].<br>
-									Спеціалісти Державної служби України з безпеки на транспорті повинні дати відповідь найближчим часом.
-                                </p>
-                                [pattern/mail/_common_signature_start.html]
-								Державна служба України з безпеки на транспорті,<br>
-								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваша заявка на видачу свідоцтва про мінімальний склад екіпажу судна успішно зареєстрована [sID_Order].<br>
+				Спеціалісти Державної служби України з безпеки на транспорті повинні дати відповідь найближчим часом.
+			</p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			Державна служба України з безпеки на транспорті,<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]
+		  ]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -130,14 +140,14 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocAnketa},${nDocTO},${nDocFlag},${nDocVlasn},${nDocPass},${nDocZajava}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocAnketa},${nDocTO},${nDocFlag},${nDocVlasn},${nDocPass},${nDocZajava},${form_signed}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow5" name="${decide == 'reject'}" sourceRef="exclusivegateway3" targetRef="servicetask3">
+    <sequenceFlow id="flow5" name="відмова" sourceRef="exclusivegateway3" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -152,7 +162,9 @@
           <activiti:string><![CDATA[Видача свідоцтва про мінімальний склад екіпажу судна]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				На жаль, ми змушені відмовити Вам у наданні послуги за заявкою №[sID_Order].
@@ -162,9 +174,12 @@
 			${comment}
 			</p>
 			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
-			[pattern/mail/_common_signature_start.html]
-			Державна служба України з безпеки на транспорті.</p>
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			Державна служба України з безпеки на транспорті,<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]
+		  ]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -179,7 +194,7 @@
     </serviceTask>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent5"></sequenceFlow>
     <endEvent id="endevent5" name="End"></endEvent>
-    <sequenceFlow id="flow7" name="decide == 'accept'" sourceRef="exclusivegateway3" targetRef="servicetask4">
+    <sequenceFlow id="flow7" name="надати" sourceRef="exclusivegateway3" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="Відправка відповіді на запит користувачу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -194,7 +209,9 @@
           <activiti:string><![CDATA[Видача свідоцтва про мінімальний склад екіпажу судна]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>Ваша заявка №[sID_Order] на видачу свідоцтва про мінімальний склад екіпажу судна прийнята в роботу.<br>
 			В додатках до листа ви знайдете рахунок для сплати послуг Державної служби України з безпеки на транспорті
@@ -210,17 +227,21 @@
 			Дата готовності свідоцтва: value{[sDate]}<br>
 			Приймальні дні управління надання адміністративних послуг на водному транспорті Департаменту надання адміністративних послуг Укртрансбезпеки:<br>
 			понеділок, середа, п’ятниця з 9.00-18.00, обідня перерва з 13.00-13.45.<br>
-			Факт отримання свідоцтва засвідчується у журналі видачі свідоцтв особистим підписом керівника юридичної особи, фізичної особи - підприємця, фізичної особи (уповноваженої особи) у разі пред’явлення документа, що посвідчує його (її) особу.<br>
+			Факт отримання свідоцтва засвідчується у журналі видачі свідоцтв особистим підписом керівника юридичної особи, 
+			фізичної особи - підприємця, фізичної особи (уповноваженої особи) у разі пред’явлення документа, що посвідчує його (її) особу.<br>
 			${comment}
 			</p> 
 			<p>
 			Після отримання свідоцтва, будь ласка, оцініть якість надання послуги за допомогою форми нижче.
             </p>
-            [pattern/mail/_common_signature_start.html]
+            
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
 			Державна служба України з безпеки на транспорті,<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]
+		  ]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${nBill}]]></activiti:expression>
@@ -234,6 +255,15 @@
     <bpmndi:BPMNPlane bpmnElement="infrastr_841" id="BPMNPlane_infrastr_841">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="71.0" width="105.0" x="51.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="51.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
+        <omgdc:Bounds height="35.0" width="35.0" x="101.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="71.0" width="105.0" x="171.0" y="122.0"></omgdc:Bounds>
@@ -259,18 +289,17 @@
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
         <omgdc:Bounds height="35.0" width="35.0" x="841.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="71.0" width="105.0" x="51.0" y="122.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="51.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
-        <omgdc:Bounds height="35.0" width="35.0" x="101.0" y="230.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="36.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="51.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="66.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="118.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="156.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="276.0" y="157.0"></omgdi:waypoint>
@@ -288,7 +317,7 @@
         <omgdi:waypoint x="611.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="691.0" y="157.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="95.0" x="596.0" y="122.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="610.0" y="140.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
@@ -300,20 +329,12 @@
         <omgdi:waypoint x="591.0" y="247.0"></omgdi:waypoint>
         <omgdi:waypoint x="691.0" y="247.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="87.0" x="597.0" y="219.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="611.0" y="229.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="802.0" y="247.0"></omgdi:waypoint>
         <omgdi:waypoint x="841.0" y="247.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="156.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="66.0" y="190.0"></omgdi:waypoint>
-        <omgdi:waypoint x="118.0" y="230.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

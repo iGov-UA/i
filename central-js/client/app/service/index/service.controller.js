@@ -91,6 +91,15 @@ angular.module('app')
       $location.path("/service/"+nID+"/general");
     };
 
+    // checking host for tag icons. if host is localhost - replace to alpha.test
+    $scope.isDefaultIconsForLocalhost = function (url) {
+      if(url) {
+        return 'https://alpha.test.igov.org.ua' + url;
+      } else {
+        return $location.host().split(':')[0] === 'localhost';
+      }
+    };
+
     $scope.$on('$stateChangeStart', function(event, toState) {
       $scope.spinner = true;
       if(toState.name === 'index') {

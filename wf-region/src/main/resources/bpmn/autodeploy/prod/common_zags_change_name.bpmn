@@ -390,6 +390,7 @@
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="PrintformDate" name="Дата подання звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, запросити заявника для надання оригіналів"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
@@ -401,7 +402,6 @@
         <activiti:formProperty id="markers48" name="якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_48&quot;:{&quot;aField_ID&quot;:[&quot;sDateVisit1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'Заповнені дані вірні, запросити заявника для надання оригіналів'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNowName" name="частина імені у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -412,6 +412,8 @@
         <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSumPr" name="сумма платежа чек" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sComPr" name="сумма платежа ком чек" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -574,6 +576,7 @@
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintformDate" name="Дата подання звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_4" name="Чи з'явився заявник для надання оригіналів?" type="enum" required="true">
           <activiti:value id="accept" name="так - дані відправлено до МВС"></activiti:value>
           <activiti:value id="reject" name="ні - заявник не з'явився вродовж тривалого часу - відхилити звернення"></activiti:value>
@@ -582,7 +585,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNowName" name="частина імені у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -752,6 +754,7 @@
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintformDate" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="наданно дозвіл на зміну імені"></activiti:value>
           <activiti:value id="reject" name="відмовлено у зміні імені"></activiti:value>
@@ -760,7 +763,6 @@
         <activiti:formProperty id="sDocDecision" name="Завантажте лист-висновок про надання дозволу на зміну імені" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNowName" name="частина імені у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -923,12 +925,12 @@
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintformDate" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_3" name="Заявник отримав свідоцтво про зміну імені, складено відповідний актовий запис" type="enum" required="true">
           <activiti:value id="accept" name="так"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNowName" name="частина імені у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -953,8 +955,8 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
 Вам необхідно сплатити державне мито.<br />
-Якщо ім'я змінюєте впереше - 5.2UAH (в т.ч комісія 10 копійок)/<br />
-Якщо вже раніше змінювали ім'я, державне мито складає - 51.92UAH (в т.ч. комісія 92 копійки)/<br />
+Якщо ім'я змінюєте вперше - 5.10 UAH (Загальна сума з комісією (10 копійок) складе 5.20 UAH)/<br />
+Якщо вже раніше змінювали ім'я, державне мито складає - 51.00 UAH (Загальна сума з комісією (92 копійки) складе 51.92 UAH)/<br />
 Для сплати державного мита скористуйтесь, будь ласка, кнопкою:<br />
 [paymentButton_LiqPay]<br />
 У разі необхідності - підтвердіть перехід на зовнішню сторінку.<br />
@@ -1019,7 +1021,7 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[darja.grek@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове  звернення. Державна реєстрація зміни імені фізичної особи (прізвища, власного імені та по батькові)]]></activiti:string>
@@ -1606,15 +1608,23 @@ execution.setVariable('sCountPayment', src)</script>
       <script>
 var sum =" "
 var des = " "
+var sumPr = " "
+var comPr = " "
 if(execution.getVariable('saChangeName') == 'no'){
 des = "державне мито за державну реєстрацію зміни імені фізичної особи"
 sum = "5.2"
+sumPr = "5.10"
+comPr = "0.10"
 }
 if(execution.getVariable('saChangeName') == 'yes'){
 des = "державне мито за повторну державну реєстрацію зміни імені фізичної особи"
 sum = "51.92"
+sumPr = "51.00"
+comPr = "0.92"
 }
 execution.setVariable('sSum', sum)
+execution.setVariable('sSumPr', sumPr)
+execution.setVariable('sComPr', comPr)
 execution.setVariable('sDescription', des)</script>
     </scriptTask>
     <sequenceFlow id="flow160" sourceRef="servicetask1" targetRef="scripttask4"></sequenceFlow>

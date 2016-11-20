@@ -189,7 +189,6 @@ var all = {
       interval: config.getProperty('BackSession_Region.nIntervalMS_BackSession_Region') || 60 * 10 //sec update session
     }
   },
-
   activiti_central: {
     prot: config.getProperty('sURLBackCentralParts.protocol') || process.env.ACTIVITI_PROT,
     host: config.getProperty('sURLBackCentralParts.host') || process.env.ACTIVITI_HOST,
@@ -198,7 +197,6 @@ var all = {
     username: config.getProperty('Back_Central.sLogin_Back_Central') || process.env.ACTIVITI_USER,
     password: config.getProperty('Back_Central.sPassword_Back_Central') || process.env.ACTIVITI_PASSWORD
   },
-
   ssl: {
     private_key: config.getProperty('BackProxy_Region.sKeyPath_BackProxy_Region') || process.env.PRIVATE_KEY,
     certificate: config.getProperty('BackProxy_Region.sCertPath_BackProxy_Region') || process.env.CERTIFICATE,
