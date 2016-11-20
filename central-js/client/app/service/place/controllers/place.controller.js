@@ -67,7 +67,7 @@ angular.module('app').controller('PlaceController',
       var isStaying = !stateToGo
         || ($state.current.name === stateToGo)
         || $state.current.name === 'index.service.general.place.built-in.bankid'
-        || $state.current.name === 'index.service.general.place.built-in.bankid.submitted';
+        || $state.current.name === 'index.service.general.place.built-in.bankid.submitted'
       return {isStaying: isStaying, isLoggedIn: false};
     }
 
@@ -81,6 +81,7 @@ angular.module('app').controller('PlaceController',
       if(!isChangeInProcess) {
         // діємо в залежності від доступності сервісу
         var stateToGo = PlacesService.getServiceStateForPlace();
+
         // отримати дані сервісу та його опис
         var oAvail = PlacesService.serviceAvailableIn();
         var foundInCountry;
@@ -102,16 +103,17 @@ angular.module('app').controller('PlaceController',
           }
         });
 
-        if (!isStayingOnCurrentState($state, stateToGo).isStaying) {
-          isChangeInProcess = true;
-          $state.go(stateToGo, {id: oService.nID}, {location: false}).finally(function () {
-            isChangeInProcess = false;
-          })
-        } else if (isPlaceChoosingState($state) && isNewPlace(region, city) && isLoggedIn) {
+        // console.info('PROCESS Place сhange, $state:', $state.current.name, ', to go:', stateToGo);
+        if (isPlaceChoosingState($state) && isNewPlace(region, city) && isLoggedIn) {
           isChangeInProcess = true;
           $state.go('index.service.general.place.built-in.bankid', getBuiltInBankIDStateParams()).finally(function () {
             isChangeInProcess = false;
           });
+        } else if (!isStayingOnCurrentState($state, stateToGo).isStaying) {
+          isChangeInProcess = true;
+          $state.go(stateToGo, {id: oService.nID}, {location: false}).finally(function () {
+            isChangeInProcess = false;
+          })
         } else {
           isChangeInProcess = false;
         }

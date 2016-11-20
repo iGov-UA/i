@@ -677,13 +677,13 @@ angular.module('about').controller('aboutController', function ($scope) {
         {
           "sFIO":"Курбацький Павло",
           "sURL":"https://www.facebook.com/kyrbatsky",
-          "sPhoto" : "https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/14948_717710254976581_8444143412921572127_n.jpg?oh=4f62248312dea4c80b0c86b14174ac0b&oe=58C843B6",
+          "sPhoto" : "https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/14948_717710254976581_8444143412921572127_n.jpg?oh=eadeb8ea15640de0d90ec54477e6737e&oe=582A0FB6",
           "sCity":"Дніпро"
         },
         {
           "sFIO":"Кельнер Ірина",
           "sURL":"https://www.facebook.com/IraKelner",
-          "sPhoto" : "https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-9/14358825_1180775801969376_7177213972410092853_n.jpg?oh=45af223f4c6db0ae80746a5b2b4cc067&oe=5889A7CB",
+          "sPhoto" : "https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c0.0.160.160/p160x160/12642654_1012837938763164_3246634087482743284_n.jpg?oh=edc2d0da483bd6d0a187fc1a6ec5053c&oe=581165DA",
           "sCity":"Тернопіль"
         },
         {
@@ -694,7 +694,7 @@ angular.module('about').controller('aboutController', function ($scope) {
         {
           "sFIO":"Боровик Дмитро",
           "sURL":"https://www.facebook.com/dmitry.borovik.39",
-          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c32.0.160.160/p160x160/10599674_678591012230665_7844095113786179561_n.jpg?oh=4029d4ae9e8ad3bea791b3413b9ede4d&oe=588EB180",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c32.0.160.160/p160x160/10599674_678591012230665_7844095113786179561_n.jpg?oh=f96e99efd0e18c178bbf70f4314dde29&oe=58180A80",
           "sCity":"Дніпро"
         },
         {
@@ -706,7 +706,7 @@ angular.module('about').controller('aboutController', function ($scope) {
         {
           "sFIO":"Забрудський Дмитро",
           "sURL":"https://www.facebook.com/dmitrij.zabrudskij",
-          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c37.56.465.465/s160x160/48134_10201214484668290_1678936328_n.jpg?oh=493a3f4b3228d912af919c8980cc279b&oe=58C1C7CE",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c37.56.465.465/s160x160/48134_10201214484668290_1678936328_n.jpg?oh=776e6b7d79db6671ebfd1e7dd673cdc1&oe=582393CE",
           "sCity":"Дніпро"
         },
         {
@@ -718,19 +718,19 @@ angular.module('about').controller('aboutController', function ($scope) {
         {
           "sFIO":"Грек Дар'я",
           "sURL":"https://www.facebook.com/darja.grek",
-          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12046987_969763873087888_5887983526328644721_n.jpg?oh=80cb75c12f7cc87fd550b93c6f6c4aca&oe=58C323AC",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12046987_969763873087888_5887983526328644721_n.jpg?oh=ccdc6260583f719fa7f61ff1b13ab31b&oe=5824EFAC",
           "sCity":"Дніпро"
         },
         {
           "sFIO":"Свідрань Максим",
           "sURL":"https://www.facebook.com/maksim.svidran",
-          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c0.40.160.160/p160x160/1655880_10203085452998391_1162874664_n.jpg?oh=783a775e2c4b47a8b6e576f04f7678ec&oe=58C2DB75",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c0.40.160.160/p160x160/1655880_10203085452998391_1162874664_n.jpg?oh=8979ec2ee3494428820cfd8e2a434ea9&oe=5824A775",
           "sCity":"Дніпро"
         },
   		{
           "sFIO":"Ставицький Валерій",
           "sURL":"https://www.facebook.com/valery.stavitsky",
-          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11224861_870685936332468_2045742132617793708_n.jpg?oh=e48a52f8e62385cfa75e2c375d0aaac7&oe=58898C99",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11224861_870685936332468_2045742132617793708_n.jpg?oh=1b29b4b5d3d9047fc949a7fa671c7153&oe=5812E599",
           "sCity":"Харків"
         },
   		{
@@ -742,19 +742,19 @@ angular.module('about').controller('aboutController', function ($scope) {
   		{
           "sFIO":"Смоктій Кирило",
           "sURL":"https://www.facebook.com/smoktii",
-          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12933003_567888636711685_9122203894998038314_n.jpg?oh=ca83505f1f061397e9ac0acc2253ebbe&oe=58890F29",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12933003_567888636711685_9122203894998038314_n.jpg?oh=2f60ddab0abb663ddb2ae7b4af823cd1&oe=58126829",
           "sCity":"Дніпро"
         },
         {
           "sFIO":"Продан Юлія",
           "sURL":"https://www.facebook.com/klimkovichy",
-          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/10268438_1477001455911660_5539510016470161228_n.jpg?oh=8e2bb667a1cc54a35bc6c51a9bd20a97&oe=58BD816A",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/10268438_1477001455911660_5539510016470161228_n.jpg?oh=3791f2651b792617423001a164cfa986&oe=581F4D6A",
           "sCity":"Дніпро"
         },
         {
           "sFIO":"Столбова Анна",
           "sURL":"https://www.facebook.com/insanniyou",
-          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/1743652_594673260603466_1655652539_n.jpg?oh=fcf9919d8b29dc41db775e14558e59ac&oe=58C21539",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/1743652_594673260603466_1655652539_n.jpg?oh=57bdc0968e8b24ffc6b83a6eaf1bcb0d&oe=5823E139",
           "sCity":"Дніпро"
         },
         {
@@ -765,7 +765,7 @@ angular.module('about').controller('aboutController', function ($scope) {
         {
           "sFIO":"Куліш Андрій",
           "sURL":"https://www.facebook.com/andriy.kylish",
-          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c28.28.352.352/s160x160/421576_111660178962768_1443552158_n.jpg?oh=e887fd488ed9a1f09fb5de1634921813&oe=58C7FAE1",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c28.28.352.352/s160x160/421576_111660178962768_1443552158_n.jpg?oh=da3c9218fcc6b4a34980b32009f3ac24&oe=5829C6E1",
           "sCity":"Дніпро"
         },
         {
