@@ -29,7 +29,7 @@ public class ProcessSubject extends AbstractEntity {
 
     @JsonIgnore
     @ManyToOne(targetEntity = ProcessSubjectStatus.class)
-    @JoinColumn(name = "nID_ProcessSubjectStatus", nullable = false, updatable = false)
+    @JoinColumn(name = "nID_ProcessSubjectStatus")
     private ProcessSubjectStatus processSubjectStatus;
 
     @JsonProperty(value = "nOrder")
@@ -54,11 +54,11 @@ public class ProcessSubject extends AbstractEntity {
     @Column
     private DateTime sDatePlan;
     
-    public String getSnID_Process_Activiti() {
+    public String getID_Process_Activiti() {
         return snID_Process_Activiti;
     }
 
-    public void setSnID_Process_Activiti(String snID_Process_Activiti) {
+    public void setID_Process_Activiti(String snID_Process_Activiti) {
         this.snID_Process_Activiti = snID_Process_Activiti;
     }
 
@@ -70,35 +70,35 @@ public class ProcessSubject extends AbstractEntity {
         this.processSubjectStatus = processSubjectStatus;
     }
 
-    public Long getnOrder() {
+    public Long getOrder() {
         return nOrder;
     }
 
-    public void setnOrder(Long nOrder) {
+    public void setOrder(Long nOrder) {
         this.nOrder = nOrder;
     }
 
-    public String getsLogin() {
+    public String getLogin() {
         return sLogin;
     }
 
-    public void setsLogin(String sLogin) {
+    public void setLogin(String sLogin) {
         this.sLogin = sLogin;
     }
 
-    public DateTime getsDateEdit() {
+    public DateTime getDateEdit() {
         return sDateEdit;
     }
 
-    public void setsDateEdit(DateTime sDateEdit) {
+    public void setDateEdit(DateTime sDateEdit) {
         this.sDateEdit = sDateEdit;
     }
 
-    public DateTime getsDatePlan() {
+    public DateTime getDatePlan() {
         return sDatePlan;
     }
 
-    public void setsDatePlan(DateTime sDatePlan) {
+    public void setDatePlan(DateTime sDatePlan) {
         this.sDatePlan = sDatePlan;
     }
 

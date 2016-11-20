@@ -1,9 +1,6 @@
 
 package org.igov.service.controller;
 
-import java.util.List;
-
-import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupAndUser;
 import org.igov.service.business.subject.SubjectGroupService;
 import org.slf4j.Logger;
