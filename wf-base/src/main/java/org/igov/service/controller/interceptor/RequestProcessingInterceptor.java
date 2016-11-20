@@ -599,12 +599,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         status = HistoryEvent_Service_StatusType.OPENED;
                     }
                     LOG.info("Saving closed task");
-                    mParam.put("nID_StatusType", status.getnID().toString());
                     mParam.put("sUserTaskName", sUserTaskName);
-                    mParam.put("sID_Order", sID_Order);
                     try {
                         if(!(sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && status == HistoryEvent_Service_StatusType.CLOSED)){
-                            historyEventService.updateHistoryEvent(sID_Order, mParam);
+                            historyEventService.updateHistoryEvent(sID_Order, status, mParam);
                         }
                     } catch (Exception oException) {
                         new Log(oException, LOG)._Case("IC_SaveTaskHistoryEvent")._Status(Log.LogStatus.ERROR)
@@ -638,7 +636,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private void saveUpdatedTaskInfo(String sResponseBody, Map<String, String> mRequestParam) throws Exception {
         Map<String, String> mParam = new HashMap<>();
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
-        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
         String snID_Task = (String) omResponseBody.get("taskId");
         if (snID_Task == null && mRequestParam.containsKey("taskId")) {
             LOG.info("snID_Task is NULL, looking for it in mRequestParam");
@@ -660,9 +657,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
         closeEscalationProcessIfExists(snID_Process);
         Long nID_Process = Long.valueOf(snID_Process);
-        String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
-        LOG.info("(sID_Order={})", sID_Order);
-
         String sSubjectInfo = mRequestParam.get("sSubjectInfo");
         if (sSubjectInfo != null) {
             mParam.put("sSubjectInfo", sSubjectInfo);
@@ -671,15 +665,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             String nID_Subject = String.valueOf(mRequestParam.get("nID_Subject"));
             mParam.put("nID_Subject", nID_Subject);
         }
-        LOG.info("historyEventService.updateHistoryEvent sID_Order = {}", sID_Order);
-
-        if (sID_Order != null) {
-            mParam.put("sID_Order", sID_Order);
-        }
-
         LOG_BIG.info("mParams: {}", mParam.toString());
-        historyEventService.updateHistoryEvent(sID_Order, mParam);
-
+        String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
+        LOG.info("(sID_Order={})", sID_Order);
+        historyEventService.updateHistoryEvent(sID_Order, HistoryEvent_Service_StatusType.OPENED_ASSIGNED, mParam);
         LOG.info("historyEventService.updateHistoryEvent finished");
         String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
         try {

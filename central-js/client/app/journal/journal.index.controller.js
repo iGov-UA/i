@@ -1,4 +1,5 @@
-angular.module('journal').controller('JournalController', function ($rootScope, $scope, $location, $state, $window, ErrorsFactory, ServiceService) {
+angular.module('journal').controller('JournalController', function ($rootScope, $scope, $location, $state, $window,
+                                                                    ErrorsFactory, ServiceService, BankIDLogin) {
 
   function getRedirectURI() {
     var stateForRedirect = $state.href('index.journal', {error: ''});
@@ -6,6 +7,14 @@ angular.module('journal').controller('JournalController', function ($rootScope, 
       '://' + $location.host() + ':'
       + $location.port()
       + stateForRedirect;
+  }
+
+  activate();
+//https://github.com/e-government-ua/i/issues/1422
+  function activate() {
+    if(BankIDLogin){
+      $state.go('.content');
+    }
   }
 
   var bExist = function (oValue) {
