@@ -87,7 +87,7 @@ public class ProminSession_Singleton {
         //String xmlResponse = new RestRequest().post(uriSid, xml, MediaType.TEXT_XML,
         //        StandardCharsets.UTF_8, String.class, httpHeaders);
         try {
-            String xmlResponse = httpRequester.postInside(generalConfig.getLifeURL(), null, xml,
+            String xmlResponse = httpRequester.postInside(uriSid, null, xml,
                     "text/xml; charset=utf-8", null, null);
             LOG.info("Response from SID generator: {}", xmlResponse);
             sessionId = getSidFromXml(xmlResponse);
