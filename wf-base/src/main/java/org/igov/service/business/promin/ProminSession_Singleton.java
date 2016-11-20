@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.igov.io.GeneralConfig;
+import org.igov.io.web.HttpRequester;
 import org.igov.io.web.RestRequest;
 import org.igov.service.exception.DocumentNotFoundException;
 import org.slf4j.Logger;
@@ -39,18 +40,21 @@ public class ProminSession_Singleton {
 
     @Autowired
     GeneralConfig generalConfig;
+    
+    @Autowired
+    HttpRequester httpRequester;
 
-    public String getSid_Auth_UkrDoc_SED() {
+    public String getSid_Auth_UkrDoc_SED() throws Exception {
         checkAndUpdateSid();
         return sid_Auth_UkrDoc_SED;
     }
 
-    public String getSid_Auth_Receipt_PB_Bank() {
+    public String getSid_Auth_Receipt_PB_Bank() throws Exception {
         checkAndUpdateSid();
         return sid_Auth_Receipt_PB_Bank;
     }
 
-    private void checkAndUpdateSid() {
+    private void checkAndUpdateSid() throws Exception {
         LOG.info("getSID ... " + toString());
         if (sid_Auth_UkrDoc_SED == null || (System.currentTimeMillis() - nTimeCreatedMS) > nTimeLiveLimitMS) {
             nTimeCreatedMS = System.currentTimeMillis();
@@ -71,7 +75,7 @@ public class ProminSession_Singleton {
                 + ", nTimeCreatedMS=" + nTimeCreatedMS + ", nTimeLiveLimitMS=" + nTimeLiveLimitMS;
     }
 
-    private static String getSessionId(String login, String password, String uriSid) {
+    private String getSessionId(String login, String password, String uriSid) throws Exception {
         String sessionId;
         String xml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\n"
                 + "<session><user auth='EXCL' login='" + login + "' password='" + password + "'/></session>";
@@ -80,8 +84,11 @@ public class ProminSession_Singleton {
         mediaTypes.add(MediaType.TEXT_XML);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(mediaTypes);
-        String xmlResponse = new RestRequest().post(uriSid, xml, MediaType.TEXT_XML,
-                StandardCharsets.UTF_8, String.class, httpHeaders);
+        //String xmlResponse = new RestRequest().post(uriSid, xml, MediaType.TEXT_XML,
+        //        StandardCharsets.UTF_8, String.class, httpHeaders);
+        String xmlResponse = httpRequester.postInside(generalConfig.getLifeURL(), null, xml, 
+                "text/xml; charset=utf-8", null, null);
+        
         LOG.info("Response from SID generator: {}", xmlResponse);
         sessionId = getSidFromXml(xmlResponse);
         return sessionId;
