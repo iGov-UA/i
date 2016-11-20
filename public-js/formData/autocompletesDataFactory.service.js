@@ -3,7 +3,7 @@ angular.module('autocompleteService', [])
     return {
         Currency: {
             valueProperty: 'sName_UA',
-            titleProperty: 'sFind',
+            titleProperty: 'sName_UA',
             prefixAssociatedField: 'sID_UA',
             apiUrl: './api/currencies',
             orderBy: 'sName_UA'
@@ -15,13 +15,6 @@ angular.module('autocompleteService', [])
             orderBy: 'sName_UA',
             apiUrl: './api/object-customs',
             hasPaging: true
-        },
-        SubjectRole: {
-            apiUrl: './api/subject-role',
-            titleProperty: 'sFind',
-            orderBy: 'sLogin',
-            prefixAssociatedField: 'sLogin',
-            valueProperty: 'sLogin'
         },
         SubjectOrganJoinTax: {
             valueProperty: 'sName_UA',
@@ -62,14 +55,14 @@ angular.module('autocompleteService', [])
         },
         ObjectEarthTarget: {
             valueProperty: 'sName_UA',
-            titleProperty: 'sFind',
+            titleProperty: 'sName_UA',
             orderBy: 'sName_UA',
             prefixAssociatedField: 'sID_UA',
             apiUrl: './api/object-earth-target'
         },
         Country: {
             valueProperty: 'sNameShort_UA',
-            titleProperty: 'sFind',
+            titleProperty: 'sNameShort_UA',
             orderBy: 'sNameShort_UA',
             prefixAssociatedField: 'nID_UA',
             additionalValueProperty: 'sID_UA',
