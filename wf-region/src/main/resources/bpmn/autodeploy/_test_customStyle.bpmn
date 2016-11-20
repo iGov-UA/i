@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_ved" name="_test_ved" isExecutable="true">
+    <documentation>https://github.com/e-government-ua/i/issues/1353</documentation>
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sString" name="слово" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nLong" name="число" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="Валюта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="дата" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sLabel" name="це лейбл" type="label" default="дефолт лейбла"></activiti:formProperty>
+        <activiti:formProperty id="saEnum" name="Оберіть" type="enum" required="true">
+           <activiti:value id="sEnumSomeFields" name="Задача кастомных стилей для отдельных полей"></activiti:value>
+           <activiti:value id="sEnumAllForm" name="Задача кастомных стилей для всей формы"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="маркер якщо окремі поля" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;markers3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saEnum&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumSomeFields'||[sClient] == 'Задача кастомных стилей для отдельных полей'&quot;}}}"></activiti:formProperty>
+	    <activiti:formProperty id="markers2" name="маркер якщо вся форма" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;markers4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saEnum&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumAllForm'||[sClient] == 'Задача кастомных стилей для всей формы'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="маркер кастомных" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;slanguage&quot;],&quot;sValue&quot;:&quot;Знання іноземних мов&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="маркер стилей всей формы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;slanguage&quot;],&quot;sValue&quot;:&quot;Знання іноземних мов&quot;}}}"></activiti:formProperty>
+          
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="крок 1" activiti:candidateGroups="sales">
+      <extensionElements>
+      <activiti:formProperty id="sString" name="слово" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nLong" name="число" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="Валюта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="дата" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sLabel" name="це лейбл" type="label" default="дефолт лейбла"></activiti:formProperty>
+        <activiti:formProperty id="saEnum" name="Оберіть" type="enum" required="true">
+           <activiti:value id="sEnumSomeFields" name="Задача кастомных стилей для отдельных полей"></activiti:value>
+           <activiti:value id="sEnumAllForm" name="Задача кастомных стилей для всей формы"></activiti:value>
+        </activiti:formProperty>
+       <activiti:formProperty id="markers1" name="маркер якщо окремі поля" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;markers3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saEnum&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumSomeFields'||[sClient] == 'Задача кастомных стилей для отдельных полей'&quot;}}}"></activiti:formProperty>
+	   <activiti:formProperty id="markers2" name="маркер якщо вся форма" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;markers4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saEnum&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumAllForm'||[sClient] == 'Задача кастомных стилей для всей формы'&quot;}}}"></activiti:formProperty>
+       <activiti:formProperty id="markers3" name="маркер кастомных" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;slanguage&quot;],&quot;sValue&quot;:&quot;Знання іноземних мов&quot;}}}"></activiti:formProperty>
+       <activiti:formProperty id="markers4" name="маркер стилей всей формы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;slanguage&quot;],&quot;sValue&quot;:&quot;Знання іноземних мов&quot;}}}"></activiti:formProperty>
+      
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow56" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow57" sourceRef="usertask1" targetRef="endevent2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_ved">
+    <bpmndi:BPMNPlane bpmnElement="_test_ved" id="BPMNPlane__test_ved">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="52.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="137.0" x="117.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="290.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
+        <omgdi:waypoint x="87.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="117.0" y="87.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
+        <omgdi:waypoint x="254.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="87.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
