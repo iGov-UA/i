@@ -52,6 +52,7 @@
         <activiti:formProperty id="iTemp2" name="довідка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="iTemp3" name="викопіювання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_dgk" name="Пошта ДЗК" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
@@ -559,7 +560,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow33" name="БЕЗ ПОШТИ" sourceRef="exclusivegateway4" targetRef="servicetask12">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVidpovid == 'sEnamnarochno'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask5" name="Фіктивна таска" activiti:candidateGroups="DGK_texnik_task">
+    <userTask id="usertask5" name="Технічна таска" activiti:candidateGroups="DGK_texnik_task">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -634,7 +635,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     </serviceTask>
     <userTask id="usertask8" name="УКРПОШТА" activiti:candidateGroups="UkrPost_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" default="Виправлення технічної помилки у відомостях з ДГК, допущеної органом" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -932,7 +933,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow47" sourceRef="servicetask16" targetRef="endevent4"></sequenceFlow>
     <userTask id="usertask7" name="ЦНАП видача відповіді" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" default="Виправлення технічної помилки у відомостях з ДГК, допущеної органом" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>

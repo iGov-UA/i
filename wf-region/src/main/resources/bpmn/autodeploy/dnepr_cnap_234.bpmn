@@ -3,6 +3,8 @@
   <process id="dnepr_cnap_234" name="Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="надання відомостей з ДЗК у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації ДЗК"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="FirstText" name="Зверніть увагу" type="label" default="Послуга платна! Обов`язково додайте квитанцію про сплату вартості послуги в призначене для цього поле!"></activiti:formProperty>
         <activiti:formProperty id="sRekv" name="Вартість послуги 43,5 грн. Реквізити для оплати" type="label" default=" "></activiti:formProperty>
@@ -26,6 +28,28 @@
         <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
+          <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
+          <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sText1" name="Увага!" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
+        <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asLust" name="Оберіть тип поштового відправлення" type="enum" required="true">
+          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 16.09"></activiti:value>
+          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 36.45"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i75116857714"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="16.09"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюти" type="invisible" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
+        <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_dgk" name="Пошта ДЗК" type="invisible" default=" "></activiti:formProperty>
+        
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
@@ -564,7 +588,7 @@ ${sNameOrgan}.<br />
     <sequenceFlow id="flow32" name="ПРЯМО В ОРГАН" sourceRef="exclusivegateway3" targetRef="exclusivegateway4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin == 'lev' || sID_Public_SubjectOrganJoin == 'prav'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask5" name="User Task" activiti:candidateGroups="DGK_texnik_task"></userTask>
+    <userTask id="usertask5" name="Технічна таска" activiti:candidateGroups="DGK_texnik_task"></userTask>
     <sequenceFlow id="flow33" name="ПОШТА" sourceRef="exclusivegateway4" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVidpovid == 'sEnamPost'}]]></conditionExpression>
     </sequenceFlow>
@@ -573,7 +597,7 @@ ${sNameOrgan}.<br />
         <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <serviceTask id="servicetask12" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask12" name="Оплата пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow34" sourceRef="boundarytimer1" targetRef="servicetask12"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
@@ -581,7 +605,7 @@ ${sNameOrgan}.<br />
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow35" sourceRef="servicetask12" targetRef="timerintermediatecatchevent1"></sequenceFlow>
-    <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="Таймер Скріпт" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var src=execution.getVariable('sCountPayment')
 src=(+src + +1)
@@ -590,25 +614,25 @@ execution.setVariable('sCountPayment', src)</script>
     <sequenceFlow id="flow36" sourceRef="timerintermediatecatchevent1" targetRef="scripttask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow37" sourceRef="scripttask2" targetRef="exclusivegateway5"></sequenceFlow>
-    <serviceTask id="servicetask13" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask13" name="Не оплочено" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
     <sequenceFlow id="flow38" name="НЕМА ОПЛАТИ" sourceRef="exclusivegateway5" targetRef="servicetask13">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment =="" && sCountPayment=="24"}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask14" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask14" name="Заяву прийнято, після оплати" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow39" name="ОПЛОЧЕНО" sourceRef="exclusivegateway5" targetRef="servicetask14">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment !=""}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow40" name="ОЧІКУВАННЯ ОПЛАТИ" sourceRef="exclusivegateway5" targetRef="timerintermediatecatchevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""&& sCountPayment!="24"}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask15" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask15" name="Заява прийнята без пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow41" name="БЕЗ ПОШТИ" sourceRef="exclusivegateway4" targetRef="servicetask15">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVidpovid == 'sEnamnarochno'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask16" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask16" name="Лист чиновнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
     <sequenceFlow id="flow42" sourceRef="servicetask15" targetRef="servicetask16"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="servicetask14" targetRef="servicetask16"></sequenceFlow>
-    <userTask id="usertask6" name="User Task" activiti:candidateGroups="dgk_${sID_Public_SubjectOrganJoin}"></userTask>
+    <userTask id="usertask6" name="Обробка кадастром" activiti:candidateGroups="dgk_${sID_Public_SubjectOrganJoin}"></userTask>
     <sequenceFlow id="flow44" sourceRef="servicetask16" targetRef="usertask6"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow45" sourceRef="usertask6" targetRef="exclusivegateway6"></sequenceFlow>
@@ -616,30 +640,72 @@ execution.setVariable('sCountPayment', src)</script>
     <sequenceFlow id="flow46" name="НАДАТИ ПОСЛУГУ" sourceRef="exclusivegateway6" targetRef="parallelgateway1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask17" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask17" name="Лист про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow47" name="ВІДМОВА" sourceRef="exclusivegateway6" targetRef="servicetask17">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow48" sourceRef="servicetask17" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow49" sourceRef="servicetask13" targetRef="endevent4"></sequenceFlow>
-    <userTask id="usertask7" name="User Task" activiti:candidateGroups="UkrPost_${sID_Public_SubjectOrganJoin}"></userTask>
+    <userTask id="usertask7" name="УКРПОШТА" activiti:candidateGroups="UkrPost_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIndex" name="Індекс" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asLust" name="Тип поштового відправлення" type="enum" writable="false">
+          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 16.09"></activiti:value>
+          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 36.45"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow50" sourceRef="parallelgateway1" targetRef="usertask7"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow51" sourceRef="usertask7" targetRef="parallelgateway2"></sequenceFlow>
-    <serviceTask id="servicetask18" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask18" name="Лист про обробку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow52" sourceRef="parallelgateway1" targetRef="servicetask18"></sequenceFlow>
-    <serviceTask id="servicetask19" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask19" name="Лист в ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
     <sequenceFlow id="flow53" sourceRef="servicetask18" targetRef="servicetask19"></sequenceFlow>
-    <userTask id="usertask8" name="User Task" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}"></userTask>
+    <userTask id="usertask8" name="ЦНАП видача відповіді" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
+          <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
+          <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIndex" name="Індекс" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asLust" name="Тип поштового відправлення" type="enum" writable="false">
+          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 16.09"></activiti:value>
+          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 36.45"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markerPostDash" name="PostDash" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Dashboard.json')}"></activiti:formProperty>
+        <activiti:formProperty id="asCnapObrobka" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="accept" name="Надіслати лист про оплату послуги"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow54" sourceRef="servicetask19" targetRef="usertask8"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow55" sourceRef="usertask8" targetRef="exclusivegateway7"></sequenceFlow>
-    <serviceTask id="servicetask20" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask20" name="ЗАпрошення в ЦНАП" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow56" name="ПРИЙТИ ПІШКИ" sourceRef="exclusivegateway7" targetRef="servicetask20">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVidpovid == 'sEnamnarochno'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask21" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask21" name="Повідомлення про пошту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow57" name="ВДІПРАВЛЕНО ЛИСТ" sourceRef="exclusivegateway7" targetRef="servicetask21">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVidpovid == 'sEnamPost'}]]></conditionExpression>
     </sequenceFlow>
@@ -806,7 +872,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="400.0" y="108.0"></omgdi:waypoint>
         <omgdi:waypoint x="803.0" y="108.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="528.0" y="88.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="39.0" x="528.0" y="88.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
@@ -855,14 +921,14 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="1012.0" y="280.0"></omgdi:waypoint>
         <omgdi:waypoint x="1116.0" y="326.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="1070.0" y="302.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="62.0" x="1070.0" y="302.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="1032.0" y="260.0"></omgdi:waypoint>
         <omgdi:waypoint x="1064.0" y="260.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="1089.0" y="218.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="48.0" x="1089.0" y="218.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
@@ -873,7 +939,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="1012.0" y="280.0"></omgdi:waypoint>
         <omgdi:waypoint x="910.0" y="326.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="871.0" y="288.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="87.0" x="871.0" y="288.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
@@ -908,14 +974,14 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="380.0" y="128.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="170.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="380.0" y="128.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="85.0" x="380.0" y="128.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="360.0" y="190.0"></omgdi:waypoint>
         <omgdi:waypoint x="315.0" y="190.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="327.0" y="160.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="39.0" x="327.0" y="160.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
@@ -938,14 +1004,14 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="242.0" y="488.0"></omgdi:waypoint>
         <omgdi:waypoint x="157.0" y="488.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="47.0" y="446.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="77.0" x="47.0" y="446.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
         <omgdi:waypoint x="262.0" y="508.0"></omgdi:waypoint>
         <omgdi:waypoint x="262.0" y="544.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="262.0" y="508.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="57.0" x="262.0" y="508.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
@@ -962,7 +1028,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="452.0" y="190.0"></omgdi:waypoint>
         <omgdi:waypoint x="452.0" y="460.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="459.0" y="272.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="63.0" x="459.0" y="272.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
@@ -985,14 +1051,14 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="452.0" y="730.0"></omgdi:waypoint>
         <omgdi:waypoint x="452.0" y="755.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="452.0" y="730.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="98.0" x="452.0" y="730.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
         <omgdi:waypoint x="432.0" y="710.0"></omgdi:waypoint>
         <omgdi:waypoint x="315.0" y="710.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="337.0" y="690.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="48.0" x="337.0" y="690.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
@@ -1032,7 +1098,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="472.0" y="1070.0"></omgdi:waypoint>
         <omgdi:waypoint x="504.0" y="1070.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="519.0" y="1020.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="84.0" x="519.0" y="1020.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
