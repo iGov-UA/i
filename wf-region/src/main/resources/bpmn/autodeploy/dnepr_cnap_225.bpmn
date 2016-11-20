@@ -597,7 +597,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <serviceTask id="servicetask13" name="Лист з оплатою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask13" name="Оплата пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -705,7 +705,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -932,23 +932,13 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
     <sequenceFlow id="flow47" sourceRef="servicetask16" targetRef="endevent4"></sequenceFlow>
     <userTask id="usertask7" name="ЦНАП видача відповіді" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" default="Виправлення технічної помилки у відомостях з ДГК, допущеної органом" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCity" name="Населений пункт, в якому знаходиться земельна ділянка; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sError" name="Суть виявленої помилки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKadastrObject" name="Oб'єкт з земельного кадастру; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVitiagNo" name="Реєстраційний номер витягу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVitiagDate" name="Дата видачі витягу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDovidkaNo" name="Реєстраційний номер довідки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDovidkaDate" name="Дата видачі довідки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCopyNo" name="Реєстраційний номер викопіювання; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCopyDate" name="Дата видачі викопіювання; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sRealErr" name="Документ, що підтверджує факт існування технічної помилки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sRealData" name="Документ, що підтверджує правильну редакцію зазначення відповідних відомостей; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
@@ -964,17 +954,6 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="asCnapObrobka" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Надіслати лист про оплату послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="iTemp1" name="витяг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="iTemp2" name="довідка" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="iTemp3" name="викопіювання" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/KadastrTehPomilka.html]" type="invisible" default="Повідомлення про виправлення технічної помилки" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fDock1},${fDock2},${fDock3}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
@@ -995,7 +974,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Документи надійшли в ЦНАП Ви можете прийти і забрати відповідь.&lt;/p&gt;
+&lt;p&gt;Документи по вашому зверненню №[sID_Order] надійшли в ЦНАП. Ви можете прийти і забрати відповідь.&lt;/p&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
@@ -1034,7 +1013,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Заяву оброблено. Ваше звернення задоволено.&lt;/p&gt;
-&lt;p&gt;Документи надійшли в ЦНАП. Відповідь буде надіслано вам поштою.&lt;/p&gt;
+&lt;p&gt;Документи по вашому зверненню №[sID_Order] надійшли в ЦНАП. Відповідь буде надіслано вам поштою.&lt;/p&gt;
 Якщо є питання то звертайтесь до ЦНАПу.&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
