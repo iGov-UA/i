@@ -18,8 +18,6 @@ import org.activiti.engine.identity.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.BaseEntityDao;
-import org.igov.model.process.ProcessSubject;
-import org.igov.model.process.ProcessUser;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupAndUser;
 import org.igov.model.subject.SubjectGroupTree;
@@ -110,7 +108,7 @@ public class SubjectGroupService {
 						}
 					}));
 			aChildResult.addAll(children);
-			getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue(), 1, aChildResult);
+			getChildren(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
 
 			// subjToNodeMapFiltr.put(groupFiltr, aChildResult);
 		}
@@ -155,6 +153,19 @@ public class SubjectGroupService {
 		return subjectGroupAndUser;
 
 	}
+
+
+	/**
+	 * проверяем входящий параметр deepLevel
+	 * @param deepLevel
+	 * @return
+	 */
+	public Long checkDeepLevel(Long deepLevel) {
+		if (deepLevel == null || deepLevel.intValue() == 0) {
+			return 1000L;
+		}
+		return deepLevel;
+	}
 	
 
 	/**
@@ -176,16 +187,13 @@ public class SubjectGroupService {
 	 * @return
 	 */
 	public List<SubjectGroup> getChildren(List<SubjectGroup> aChildLevel, List<Long> anID_ChildLevel,
-			Map<Long, List<SubjectGroup>> subjToNodeMap, Set<Long> anID_PerentAll, int deepLevelRequested,
+			Map<Long, List<SubjectGroup>> subjToNodeMap, Set<Long> anID_PerentAll, Long deepLevelRequested,
 			int deepLevelFact, List<SubjectGroup> result) {
 
 		List<SubjectGroup> aChildLevel_Result = new ArrayList<>();
 		List<Long> anID_ChildLevel_Result = new ArrayList<>();
-		if (deepLevelRequested == 0) {
-			deepLevelRequested = 1000;
-		}
 		LOG.info("aChildLevel: " + aChildLevel.size() + " anID_ChildLevel: " + anID_ChildLevel);
-		if (deepLevelFact < deepLevelRequested) {
+		if (deepLevelFact < deepLevelRequested.intValue()) {
 			for (Long nID_ChildLevel : anID_ChildLevel) {
 				if (anID_PerentAll.contains(nID_ChildLevel)) {
 					// LOG.info("nID_ChildLevel: " + nID_ChildLevel);
@@ -211,10 +219,10 @@ public class SubjectGroupService {
 				}
 			}
 			deepLevelFact++;
-			LOG.info("deepLevelFact: " + deepLevelFact + " deepLevelRequested: " + deepLevelRequested);
-			if (deepLevelFact < deepLevelRequested) {
+			LOG.info("deepLevelFact: " + deepLevelFact + " deepLevelRequested: " + deepLevelRequested.intValue());
+			if (deepLevelFact < deepLevelRequested.intValue()) {
 				getChildren(aChildLevel_Result, anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
-						deepLevelRequested, deepLevelFact, result);
+						checkDeepLevel(deepLevelRequested), deepLevelFact, result);
 			}
 		}
 		return result;
