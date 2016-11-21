@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.identity.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.BaseEntityDao;
@@ -20,6 +22,7 @@ import org.igov.model.process.ProcessSubjectDao;
 import org.igov.model.process.ProcessSubjectParentNode;
 import org.igov.model.process.ProcessSubjectResult;
 import org.igov.model.process.ProcessSubjectTree;
+import org.igov.model.process.ProcessUser;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -27,9 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-
 /**
  *
  * @author inna
@@ -44,8 +47,11 @@ public class ProcessSubjectService {
 	
 	 @Autowired
 	 private ProcessSubjectDao processSubjectDao;
+	 
+	 @Autowired
+		private IdentityService identityService;
 	
-	public ProcessSubjectResult getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel) {
+	public ProcessSubjectResult getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel,String sFind) {
 		
 		List<ProcessSubject> aChildResult = new ArrayList();
 		List<ProcessSubjectTree> processSubjectRelations = new ArrayList<>(baseEntityDao.findAll(ProcessSubjectTree.class));
@@ -108,8 +114,32 @@ public class ProcessSubjectService {
 			getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue(), 1, aChildResult);
 
 		}
+		
+		List<ProcessSubject> aChildResultByUser = new ArrayList();
+		if (aChildResult != null && !aChildResult.isEmpty()) {
+			for (ProcessSubject processSubject : aChildResult) {
+				List<ProcessUser> aSubjectUser = getUsersByGroupSubject(processSubject.getSnID_Process_Activiti());
+				final List<ProcessUser> processUserFiltr = Lists.newArrayList(Collections2
+						.filter(aSubjectUser,
+								new Predicate<ProcessUser>() {
+							@Override
+							public boolean apply(ProcessUser processUser) {
+								// получить только отфильтрованный список карт
+								return processUser.getsFirstName().contains(sFind);
+							}
+						}));
+				for(ProcessUser processUser:processUserFiltr) {
+					if(processUser.getsLogin().equals(processSubject.getsLogin())){
+						aChildResultByUser.add(processSubject);
+					}
+				}
+			}
+		}
+		
+		
+		
 		ProcessSubjectResult processSubjectResult = new ProcessSubjectResult();
-		processSubjectResult.setaProcessSubject(aChildResult);
+		processSubjectResult.setaProcessSubject(aChildResultByUser);
 		return processSubjectResult;
 		
 	}
@@ -193,6 +223,33 @@ public class ProcessSubjectService {
 			}
 		}
 		return result;
+	}
+	
+	
+	/**
+	 * Получение списка юзеров по ид группы 
+	 * @param sID_Group_Activiti
+	 * @return
+	 */
+	public List<ProcessUser> getUsersByGroupSubject(String snID_Process_Activiti) {
+
+		List<ProcessUser> amsUsers = new ArrayList<>();
+		List<User> aoUsers = snID_Process_Activiti != null
+				? identityService.createUserQuery().memberOfGroup(snID_Process_Activiti).list()
+				: identityService.createUserQuery().list();
+
+		for (User oUser : aoUsers) {
+			ProcessUser processUser = ProcessUser.BuilderHelper.buildSubjectUser(
+					oUser.getId() == null ? "" : oUser.getId(),
+					oUser.getFirstName() == null ? "" : oUser.getFirstName(),
+					oUser.getLastName() == null ? "" : oUser.getLastName(),
+					oUser.getEmail() == null ? "" : oUser.getEmail(), null);
+			amsUsers.add(processUser);
+
+		}
+
+		return amsUsers;
+
 	}
         
     /**
