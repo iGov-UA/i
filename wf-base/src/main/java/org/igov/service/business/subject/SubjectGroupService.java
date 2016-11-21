@@ -161,10 +161,7 @@ public class SubjectGroupService {
 	 * @return
 	 */
 	public Long checkDeepLevel(Long deepLevel) {
-		if (deepLevel == null) {
-			return 0L;
-		}
-		if (deepLevel.intValue() == 0) {
+		if (deepLevel == null || deepLevel.intValue() == 0) {
 			return 1000L;
 		}
 		return deepLevel;
