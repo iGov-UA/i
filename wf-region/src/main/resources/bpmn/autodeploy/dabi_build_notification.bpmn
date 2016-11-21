@@ -198,7 +198,6 @@
           <activiti:value id="sEnumNotDeveloped" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDesignerName" name="Найменування проектувальника, код згідно з ЄДРПОУ (у разі розроблення проекту на підставі будівельного паспорта)" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="tRespPersProject" name="Інформація про відповідальних осіб генерального проектувальника" type="table" default="${markerService.loadFromFile('KMDA/DABI_tables/tRespPersProject.json')}"></activiti:formProperty>
         <activiti:formProperty id="sProjectPibApprove" name="ПІБ та посада особи, яка затвердила проект" type="string"></activiti:formProperty>
         <activiti:formProperty id="sProjectDocAll" name="Дата затвердження" type="date"></activiti:formProperty>
@@ -467,12 +466,12 @@
     </boundaryEvent>
     <sequenceFlow id="flow42" sourceRef="boundarytimer4" targetRef="exclusivegateway4"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="exclusivegateway4" targetRef="usertask_step5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult=='false'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult=='False'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow44" sourceRef="usertask_step5" targetRef="exclusivegateway5"></sequenceFlow>
     <sequenceFlow id="flow45" sourceRef="exclusivegateway4" targetRef="exclusivegateway5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult=='true'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult=='True'}]]></conditionExpression>
     </sequenceFlow>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow46" sourceRef="exclusivegateway5" targetRef="parallelgateway3"></sequenceFlow>
@@ -551,10 +550,10 @@ execution.setVariable('sTextLetter', sMessage)</script>
         <omgdc:Bounds height="30.0" width="30.0" x="96.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask_UserGroup" id="BPMNShape_usertask_UserGroup">
-        <omgdc:Bounds height="55.0" width="105.0" x="478.0" y="102.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="121.0" x="470.0" y="102.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundarytimer4" id="BPMNShape_boundarytimer4">
-        <omgdc:Bounds height="30.0" width="30.0" x="558.0" y="132.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="562.0" y="129.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="510.0" y="180.0"></omgdc:Bounds>
@@ -620,7 +619,7 @@ execution.setVariable('sTextLetter', sMessage)</script>
         <omgdi:waypoint x="169.0" y="224.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="573.0" y="162.0"></omgdi:waypoint>
+        <omgdi:waypoint x="577.0" y="159.0"></omgdi:waypoint>
         <omgdi:waypoint x="530.0" y="180.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
