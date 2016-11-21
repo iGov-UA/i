@@ -16,7 +16,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  * @author dgroup
  * @since  08.01.2016
  */
-public class LoggerImpl implements Logger {
+public class LoggerIgov implements Logger {
 
     private static final int DEPTH_CALL_STACK_SLF4J = 7;
     private static final int DEPTH_CALL_STACK_IGOV  = 9;
@@ -29,11 +29,10 @@ public class LoggerImpl implements Logger {
     private Log task;
 
 
-    private LoggerImpl(Class<?> clazz, Set<Consumer> consumers) {
+    private LoggerIgov(Class<?> clazz, Set<Consumer> consumers) {
         this.log = LoggerFactory.getLogger(clazz);
         this.consumers = consumers;
     }
-
 
     // SLF4J approach
     public String trace(String msg, Object ... args) {
@@ -55,6 +54,7 @@ public class LoggerImpl implements Logger {
     public String error(String msg, Object ... args) {
         return error(fullMessage(msg, args), DEPTH_CALL_STACK_SLF4J);
     }
+
 
     public String error(String msg, Exception exp) {
         return error(msg, exp, DEPTH_CALL_STACK_SLF4J);
@@ -91,8 +91,7 @@ public class LoggerImpl implements Logger {
     }
 
 
-
-    public LogResponse errorHTTP(int status, String header, String msg, Object ...params) {
+    public LogResponse errorHTTP(int status, String header, String msg, Object... params) {
         return new LogResponseImpl(status, header, msg, params);
     }
 
@@ -138,7 +137,7 @@ public class LoggerImpl implements Logger {
     public String send() {
         for(Customize action : actions)
             msg = action.customize(msg);
-        task.doRecord();
+        task.sendMessageToAppender();
         return msg;
     }
 
@@ -159,11 +158,10 @@ public class LoggerImpl implements Logger {
     }
 
 
-
     String newRecord(String msg, Log log) {
         notNull(msg, "Log pattern cannot be a null");
         notifyConsumers(consumers, msg);
-        log.doRecord();
+        log.sendMessageToAppender();
         return msg;
     }
 
@@ -184,7 +182,7 @@ public class LoggerImpl implements Logger {
 
 
     public static Logger getLog(Class<?> clazz, Set<Consumer> consumers) {
-        return new LoggerImpl(clazz, consumers);
+        return new LoggerIgov(clazz, consumers);
     }
     public static Logger getLog(Class<?> clazz, Consumer ... consumers) {
         return getLog(clazz, Sets.newHashSet(consumers));
@@ -193,7 +191,7 @@ public class LoggerImpl implements Logger {
 
 
     /** Encapsulate particular operation (trace, debug, info, etc) */
-    private interface Log { void doRecord(); }
+    private interface Log { void sendMessageToAppender(); }
 
     /** Encapsulate particular customization of log message */
     private interface Customize { String customize(String msg); }
