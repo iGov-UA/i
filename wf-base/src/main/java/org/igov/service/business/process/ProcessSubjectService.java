@@ -147,7 +147,11 @@ public class ProcessSubjectService {
 		
 		
 		ProcessSubjectResult processSubjectResult = new ProcessSubjectResult();
+		if(sFind!=null && !sFind.isEmpty()) {
 		processSubjectResult.setaProcessSubject(aChildResultByUser);
+		}else {
+		processSubjectResult.setaProcessSubject(aChildResult);
+		}
 		return processSubjectResult;
 		
 	}
