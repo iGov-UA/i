@@ -114,13 +114,12 @@ public class SubjectGroupService {
 
 			// subjToNodeMapFiltr.put(groupFiltr, aChildResult);
 		}
-		List<SubjectGroup> aChildResultBysFind = new ArrayList();
 		// Получаем орг иерархию и людей
 		Map<SubjectGroup, List<SubjectUser>> subjUsers = new HashMap<>();
 		if (aChildResult != null && !aChildResult.isEmpty()) {
-			if (sFind != null && !sFind.isEmpty()) {
-				for (SubjectGroup subjectGroup : aChildResult) {
-					List<SubjectUser> aSubjectUser = getUsersByGroupSubject(subjectGroup.getsID_Group_Activiti());
+			for (SubjectGroup subjectGroup : aChildResult) {
+				List<SubjectUser> aSubjectUser = getUsersByGroupSubject(subjectGroup.getsID_Group_Activiti());
+				if (sFind != null && !sFind.isEmpty()) {
 					final List<SubjectUser> processUserFiltr = Lists
 							.newArrayList(Collections2.filter(aSubjectUser, new Predicate<SubjectUser>() {
 								@Override
@@ -130,12 +129,8 @@ public class SubjectGroupService {
 									return subjectUser.getsFirstName().contains(sFind);
 								}
 							}));
-						aChildResultBysFind.add(subjectGroup);
-						subjUsers.put(subjectGroup, processUserFiltr);
-				}
-			}else {
-				for (SubjectGroup subjectGroup : aChildResult) {
-					List<SubjectUser> aSubjectUser = getUsersByGroupSubject(subjectGroup.getsID_Group_Activiti());
+					subjUsers.put(subjectGroup, processUserFiltr);
+				} else {
 					subjUsers.put(subjectGroup, aSubjectUser);
 				}
 			}
@@ -154,11 +149,7 @@ public class SubjectGroupService {
 
 		}
 		SubjectGroupAndUser subjectGroupAndUser = new SubjectGroupAndUser();
-		if (sFind != null && !sFind.isEmpty()) {
-			subjectGroupAndUser.setaSubjectGroup(aChildResultBysFind);
-		} else {
-			subjectGroupAndUser.setaSubjectGroup(aChildResult);
-		}
+		subjectGroupAndUser.setaSubjectGroup(aChildResult);
 		subjectGroupAndUser.setaSubjectUser(userByGroup);
 
 		return subjectGroupAndUser;
