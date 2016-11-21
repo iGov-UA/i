@@ -105,29 +105,55 @@
                             <!--form-data="data.formData"-->
                             <!--ng-disabled="!isFieldWritable(field.writable)"-->
                             <!--name="field.id"></dropdown-organ>-->
+            <div ng-if="!(item.autocompleteName === 'SubjectRole')">
+              <ui-select dropdown-autocomplete ng-if="field.selectType=='autocomplete'"
+                         ng-model="field.value"
+                         name="{{field.id + rowIndex}}"
+                         ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                         ng-required="field.required"
+                         autocomplete-data="field.autocompleteData"
+                         autocomplete-name="field.autocompleteName"
+                         reach-infinity="requestMoreItems($select.items)"
+                         ng-disabled="!isFieldWritable(field.writable)"
+                         on-select="onSelectDataList($item, tableName, rowIndex)">
 
-            <ui-select dropdown-autocomplete ng-if="field.selectType=='autocomplete'"
-                       ng-model="field.value"
-                       name="{{field.id + rowIndex}}"
-                       ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
-                       ng-required="field.required"
-                       autocomplete-data="field.autocompleteData"
-                       autocomplete-name="field.autocompleteName"
-                       reach-infinity="requestMoreItems($select.items)"
-                       ng-disabled="!isFieldWritable(field.writable)"
-                       on-select="onSelectDataList($item, tableName, rowIndex)">
+                <ui-select-match>
+                  {{$select.selected[autocompleteData.titleProperty] || field.value}}
+                </ui-select-match>
+                <ui-select-choices refresh="refreshList(field.autocompleteData.titleProperty, $select.search, field.name)"
+                                   refresh-delay="50"
+                                   repeat="item[field.autocompleteData.valueProperty] as item in items track by item[field.autocompleteData.orderBy]">
+                                 <span title="{{item[field.autocompleteData.titleProperty]}}">
+                                   {{item[field.autocompleteData.titleProperty]}}
+                                 </span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
 
-              <ui-select-match>
-                {{$select.selected[autocompleteData.titleProperty] || field.value}}
-              </ui-select-match>
-              <ui-select-choices refresh="refreshList(field.autocompleteData.titleProperty, $select.search, field.name)"
-                                 refresh-delay="50"
-                                 repeat="item[field.autocompleteData.valueProperty] as item in items track by item[field.autocompleteData.orderBy]">
-                               <span title="{{item[field.autocompleteData.titleProperty]}}">
-                                 {{item[field.autocompleteData.titleProperty]}}
-                               </span>
-              </ui-select-choices>
-            </ui-select>
+            <div ng-if="item.autocompleteName === 'SubjectRole'">
+              <ui-select dropdown-autocomplete ng-if="item.selectType=='autocomplete'"
+                         ng-model="item.value"
+                         name="item.id"
+                         ng-class=""
+                         ng-required="item.required"
+                         autocomplete-data="item.autocompleteData"
+                         autocomplete-name="item.autocompleteName"
+                         reach-infinity="requestMoreItems($select.items)"
+                         ng-disabled="!isFieldWritable(field.writable)"
+                         on-select="onSelectDataList($item)">
+
+                <ui-select-match title="{{$select.selected}}">
+                  {{$select.selected[autocompleteData.titleProperty]}}
+                </ui-select-match>
+                <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search, item.name)"
+                                   refresh-delay="50"
+                                   repeat="field[item.autocompleteData.titleProperty] as field in items track by field[item.autocompleteData.orderBy]">
+                                 <span title="{{field[item.autocompleteData.titleProperty]}}">
+                                   {{field[item.autocompleteData.titleProperty]}}
+                                 </span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
           </div>
 
           <div style="padding:5px"
