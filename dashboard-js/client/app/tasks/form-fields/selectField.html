@@ -14,27 +14,66 @@
     <!--ng-disabled="!isFieldWritable(field.writable)"-->
     <!--name="field.id"></dropdown-organ>-->
 
-    <ui-select dropdown-autocomplete ng-if="item.selectType=='autocomplete'"
-               ng-model="item.value"
-               name="item.id"
-               ng-class=""
-               ng-required="item.required"
-               autocomplete-data="item.autocompleteData"
-               autocomplete-name="item.autocompleteName"
-               reach-infinity="requestMoreItems($select.items)"
-               on-select="onSelectDataList($item)">
+    <div ng-if="!isFormPropertyDisabled(item)">
 
-      <ui-select-match>
-        {{$select.selected[autocompleteData.titleProperty] || item.value}}
-      </ui-select-match>
-      <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search, item.name)"
-                         refresh-delay="50"
-                         repeat="field[item.autocompleteData.valueProperty] as field in items track by field[item.autocompleteData.orderBy]">
+        <div ng-if="item.autocompleteName === 'SubjectRole'">
+          <ui-select dropdown-autocomplete ng-if="item.selectType=='autocomplete'"
+                     ng-model="item.value"
+                     name="item.id"
+                     ng-class=""
+                     ng-required="item.required"
+                     autocomplete-data="item.autocompleteData"
+                     autocomplete-name="item.autocompleteName"
+                     reach-infinity="requestMoreItems($select.items)"
+                     on-select="onSelectDataList($item)">
+
+          <ui-select-match title="{{$select.selected}}">
+            {{$select.selected[autocompleteData.titleProperty]}}
+          </ui-select-match>
+          <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search, item.name)"
+                             refresh-delay="50"
+                             repeat="field[item.autocompleteData.titleProperty] as field in items track by field[item.autocompleteData.orderBy]">
                                  <span title="{{field[item.autocompleteData.titleProperty]}}">
                                    {{field[item.autocompleteData.titleProperty]}}
                                  </span>
-      </ui-select-choices>
-    </ui-select>
+          </ui-select-choices>
+          </ui-select>
+        </div>
+
+
+        <div ng-if="!(item.autocompleteName === 'SubjectRole')">
+          <ui-select dropdown-autocomplete ng-if="item.selectType=='autocomplete'"
+                     ng-model="item.value"
+                     name="item.id"
+                     ng-class=""
+                     ng-required="item.required"
+                     autocomplete-data="item.autocompleteData"
+                     autocomplete-name="item.autocompleteName"
+                     reach-infinity="requestMoreItems($select.items)"
+                     on-select="onSelectDataList($item)">
+
+          <ui-select-match title="{{$select.selected}}">
+            {{$select.selected[autocompleteData.titleProperty]}}
+          </ui-select-match>
+          <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search, item.name)"
+                             refresh-delay="50"
+                             repeat="field[item.autocompleteData.valueProperty] as field in items track by field[item.autocompleteData.orderBy]">
+                                 <span title="{{field[item.autocompleteData.titleProperty]}}">
+                                   {{field[item.autocompleteData.titleProperty]}}
+                                 </span>
+          </ui-select-choices>
+          </ui-select>
+        </div>
+
+    </div>
+
+    <span class="task-form-written-right-sight"
+          ng-if="isFormPropertyDisabled(item)"
+          style="white-space: pre-line"
+          name="{{item.id}}"
+          ng-readonly="isFormPropertyDisabled(item)"
+          ng-required="isRequired(item)">{{item.value}}
+      </span>
   </div>
   <span class="validation-message" ng-messages="isFormInvalid && isRequired(item) && form[item.id].$error">
       <span ng-message="required">Необхідно заповнити.</span>

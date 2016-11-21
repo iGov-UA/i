@@ -111,7 +111,7 @@ public class ProcessSubjectService {
 						}
 					}));
 			aChildResult.addAll(children);
-			getChildren(children, idChildren, subjToNodeMap, idParentList, deepLevel.intValue(), 1, aChildResult);
+			getChildren(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
 
 		}
 		
@@ -174,6 +174,20 @@ public class ProcessSubjectService {
 		 
 		return processSubjectDao.setProcessSubject(snID_Process_Activiti, sLogin, dtDatePlan, nOrder);
 	 }
+	 
+	 
+	 
+	 /**
+		 * проверяем входящий параметр deepLevel
+		 * @param deepLevel
+		 * @return
+		 */
+		public Long checkDeepLevel(Long deepLevel) {
+			if (deepLevel == null || deepLevel.intValue() == 0) {
+				return 1000L;
+			}
+			return deepLevel;
+		}
 	
 	
 	
@@ -196,16 +210,14 @@ public class ProcessSubjectService {
 	 * @return
 	 */
 	public List<ProcessSubject> getChildren(List<ProcessSubject> aChildLevel, List<Long> anID_ChildLevel,
-			Map<Long, List<ProcessSubject>> subjToNodeMap, Set<Long> anID_PerentAll, int deepLevelRequested,
+			Map<Long, List<ProcessSubject>> subjToNodeMap, Set<Long> anID_PerentAll, Long deepLevelRequested,
 			int deepLevelFact, List<ProcessSubject> result) {
 
 		List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
 		List<Long> anID_ChildLevel_Result = new ArrayList<>();
-		if (deepLevelRequested == 0) {
-			deepLevelRequested = 1000;
-		}
+		
 		LOG.info("aChildLevel: " + aChildLevel.size() + " anID_ChildLevel: " + anID_ChildLevel);
-		if (deepLevelFact < deepLevelRequested) {
+		if (deepLevelFact < deepLevelRequested.intValue()) {
 			for (Long nID_ChildLevel : anID_ChildLevel) {
 				if (anID_PerentAll.contains(nID_ChildLevel)) {
 					// достаем детей детей
@@ -231,9 +243,9 @@ public class ProcessSubjectService {
 			}
 			deepLevelFact++;
 			LOG.info("deepLevelFact: " + deepLevelFact + " deepLevelRequested: " + deepLevelRequested);
-			if (deepLevelFact < deepLevelRequested) {
+			if (deepLevelFact < deepLevelRequested.intValue()) {
 				getChildren(aChildLevel_Result, anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
-						deepLevelRequested, deepLevelFact, result);
+						checkDeepLevel(deepLevelRequested), deepLevelFact, result);
 			}
 		}
 		return result;
