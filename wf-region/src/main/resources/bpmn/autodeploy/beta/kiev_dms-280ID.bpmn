@@ -7,9 +7,6 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Нове прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Нове ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="Нове по батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="&lt;b&gt;Дана послуга доступна лише за місцем реєстрації, якщо Ви не можете обрати свій район, то у ньому послуга на iGov відсутня&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0" required="true"></activiti:formProperty>
@@ -69,7 +66,7 @@ execution.setVariable('sTicketCode', tickCode)
 <p>
 	Для того щоб закінчити процедуру необхідно:
 	<ul>
-		<li>У будь-якому банку зробити необхідні платежі та отримати квитанції про сплату.</li>
+		<li>У будь-якому банку сплатити адмінсбір та отримати квитанцію про сплату. Реквізити для сплати адмінсбору доступні за <a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a></li>
 		<li>Прийти з необхідними документами (перелік нижче) за адресою: ${sAddress}
 	</ul>
 </p>
@@ -122,9 +119,6 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Нове прізвище отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Нове ім'я отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="Нове по батькові отримувача паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження отримувача паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="finish" name="Результат візиту" type="enum" required="true">
