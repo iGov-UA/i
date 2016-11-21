@@ -27,9 +27,9 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
         Long idEntity = null;
         try {
             ProcessSubject processSubject = new ProcessSubject();
-            processSubject.setID_Process_Activiti(snID_Process_Activiti_Parent);
-            processSubject.setLogin(sLogin);
-            processSubject.setDateEdit(new DateTime(new Date()));
+            processSubject.setSnID_Process_Activiti(snID_Process_Activiti_Parent);
+            processSubject.setsLogin(sLogin);
+            processSubject.setsDateEdit(new DateTime(new Date()));
 
             ProcessSubjectStatus processSubjectStatus = new ProcessSubjectStatus();
             processSubjectStatus.setId(nOrder);
@@ -37,10 +37,10 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
             processSubject.setProcessSubjectStatus(processSubjectStatus);
 
             if (sDatePlan != null) {
-                processSubject.setDatePlan(sDatePlan);
+                processSubject.setsDatePlan(sDatePlan);
             }
             if (nOrder != null) {
-                processSubject.setOrder(nOrder);
+                processSubject.setnOrder(nOrder);
             }
             LOG.info(String.format("The new instance of ProcessSubject with "
                     + "snID_Process_Activiti=%s, sLogin=%s, sDatePlan=%s, nOrder=%s was created",
@@ -59,7 +59,7 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
         ProcessSubject processSubject = findByProcessActiviti(snID_Process_Activiti);
         try {
             if (processSubject != null) {
-                processSubject.setLogin(sLogin);
+                processSubject.setsLogin(sLogin);
                 processSubject = saveOrUpdate(processSubject);
                 LOG.info(String.format("Login=%s to entity with snID_Process_Activiti=%s was added",
                         sLogin, snID_Process_Activiti));
@@ -79,7 +79,7 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
         ProcessSubject processSubject = findByProcessActiviti(snID_Process_Activiti);
         try {
             if (processSubject != null) {
-                processSubject.setOrder(nOrder);
+                processSubject.setnOrder(nOrder);
                 processSubject = saveOrUpdate(processSubject);
                 LOG.info(String.format("Order=%s to entity with snID_Process_Activiti=%s was added",
                         nOrder, snID_Process_Activiti));
@@ -129,7 +129,7 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
         ProcessSubject processSubject = findByProcessActiviti(snID_Process_Activiti);
         try {
             if (processSubject != null) {
-                processSubject.setDatePlan(sDatePlan);
+                processSubject.setsDatePlan(sDatePlan);
                 processSubject = saveOrUpdate(processSubject);
                 LOG.info(String.format("DatePlan=%s to entity with snID_Process_Activiti=%s was added",
                         sDatePlan.toString("D"), snID_Process_Activiti));

@@ -70,7 +70,7 @@ public class ProcessSubjectService {
 					// мапа парент -ребенок
 					subjToNodeMap.put(parent.getId(), parentProcessSubject.getChildren());
 					// мапа группа-ид парента
-					mapGroupActiviti.put(parent.getID_Process_Activiti(), parent.getId());
+					mapGroupActiviti.put(parent.getSnID_Process_Activiti(), parent.getId());
 				} else {
 					for (ProcessSubjectParentNode processSubjectParentNode : parentProcessSubjects) {
 						// убираем дубликаты
@@ -81,7 +81,7 @@ public class ProcessSubjectService {
 							// мапа парент-ребенок
 							subjToNodeMap.put(parent.getId(), processSubjectParentNode.getChildren());
 							// мапа группа-ид парента
-							mapGroupActiviti.put(parent.getID_Process_Activiti(), parent.getId());
+							mapGroupActiviti.put(parent.getSnID_Process_Activiti(), parent.getId());
 						}
 					}
 				}

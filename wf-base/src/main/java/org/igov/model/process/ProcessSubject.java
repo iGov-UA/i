@@ -54,11 +54,11 @@ public class ProcessSubject extends AbstractEntity {
     @Column
     private DateTime sDatePlan;
     
-    public String getID_Process_Activiti() {
+    public String getSnID_Process_Activiti() {
         return snID_Process_Activiti;
     }
 
-    public void setID_Process_Activiti(String snID_Process_Activiti) {
+    public void setSnID_Process_Activiti(String snID_Process_Activiti) {
         this.snID_Process_Activiti = snID_Process_Activiti;
     }
 
@@ -70,35 +70,35 @@ public class ProcessSubject extends AbstractEntity {
         this.processSubjectStatus = processSubjectStatus;
     }
 
-    public Long getOrder() {
+    public Long getnOrder() {
         return nOrder;
     }
 
-    public void setOrder(Long nOrder) {
+    public void setnOrder(Long nOrder) {
         this.nOrder = nOrder;
     }
 
-    public String getLogin() {
+    public String getsLogin() {
         return sLogin;
     }
 
-    public void setLogin(String sLogin) {
+    public void setsLogin(String sLogin) {
         this.sLogin = sLogin;
     }
 
-    public DateTime getDateEdit() {
+    public DateTime getsDateEdit() {
         return sDateEdit;
     }
 
-    public void setDateEdit(DateTime sDateEdit) {
+    public void setsDateEdit(DateTime sDateEdit) {
         this.sDateEdit = sDateEdit;
     }
 
-    public DateTime getDatePlan() {
+    public DateTime getsDatePlan() {
         return sDatePlan;
     }
 
-    public void setDatePlan(DateTime sDatePlan) {
+    public void setsDatePlan(DateTime sDatePlan) {
         this.sDatePlan = sDatePlan;
     }
 
