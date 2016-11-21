@@ -110,6 +110,23 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
     };
 
     /*
+    * проверка поля таблицы на видимость. принцип как и isFieldWritable
+    * todo обьединить в общую функцию.
+     */
+    this.isVisible = function (field) {
+      if('bVisible' in field) {
+          if(typeof field === 'string' || field instanceof String) {
+              if(field === 'true') return true;
+              if(field === 'false') return false;
+          } else if (typeof field === 'boolean') {
+              return field;
+          }
+      } else {
+          return true;
+      }
+    };
+
+    /*
      * добавление новой строки в таблице, посредством копирования дефолтной строки (тк она образцовая),
      * addTableFieldsProperties() - для работы полей типа date, organJoin, select/autocomplete
      */

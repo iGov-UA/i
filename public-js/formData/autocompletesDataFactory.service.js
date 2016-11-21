@@ -20,8 +20,9 @@ angular.module('autocompleteService', [])
             apiUrl: './api/subject-role',
             titleProperty: 'sName',
             orderBy: 'sLogin',
-            prefixAssociatedField: 'sName',
-            valueProperty: 'sLogin'
+            prefixAssociatedField: 'sLogin',
+            valueProperty: 'sLogin',
+            additionalValueProperty: 'sName'
         },
         SubjectOrganJoinTax: {
             valueProperty: 'sName_UA',
