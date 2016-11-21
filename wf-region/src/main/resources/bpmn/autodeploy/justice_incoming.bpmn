@@ -23,7 +23,6 @@
         <activiti:formProperty id="markers1" name="Якщо електроний документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asEnumEdocs&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategoryIncoming&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumEdocs'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо службові листи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;asEnumOfficialLetters&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategoryIncoming&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOfficialLetters'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
-        
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
@@ -59,11 +58,12 @@
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sExecutor&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sName_SubjectRole&quot;,&quot;name&quot;:&quot;ФИО&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sExecutor&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sName_SubjectRole&quot;,&quot;name&quot;:&quot;ФИО&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;bVisible&quot;:&quot;false&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="sID_Group_Activiti" type="invisible" default="MJU_Dnipro_Top1"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="nDeepLevel" type="invisible" default="3"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sExecutor&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sName_SubjectRole&quot;,&quot;name&quot;:&quot;ФИО&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="ФИО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDateResolution" name="Дата резолюції" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asCreateOutcomingLetter" name="Сформувати вихідний документ; ;sID_CheckboxTrue=sEnumCreateOutcomingLetter" type="enum" default="sEnumNotCreateOutcomingLetter">
@@ -78,25 +78,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-var number=execution.getVariable('sID_Order_GovPublic')
-var fullNumber="вх-"+number+"/"
-execution.setVariable('sID_Order_GovPublic', fullNumber)
-
-var updatedDate = new Date();
-var days = 30;
-updatedDate.setDate(new Date().getDate() + days);
-var sNewDate = (updatedDate.getDate() + "." + (updatedDate.getMonth() + 1) + "." + updatedDate.getFullYear());
-execution.setVariable('sDateExecution', sNewDate)
-</script>
-    </scriptTask>
-    <sequenceFlow id="flow13" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow14" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow15" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <userTask id="usertask2" name="формування вихідного листа" activiti:candidateGroups="justice_common">
+    <userTask id="usertask2_yellow" name="формування вихідного листа" activiti:candidateGroups="justice_common">
       <extensionElements>
         <activiti:formProperty id="asCategoryIncoming" name="Категорія вхідного документу" type="enum" writable="false">
           <activiti:value id="sEnumCentralGov" name="документ центральних органів влади"></activiti:value>
@@ -128,26 +110,45 @@ execution.setVariable('sDateExecution', sNewDate)
           <activiti:value id="sEnumUrgentDoc" name="з ЕЦП"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
         </activiti:formProperty>
-       
         <activiti:formProperty id="sDateResolution" name="Дата резолюції" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="ФИО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа" type="file"></activiti:formProperty>
-          <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sTable2},${sAutorResolution}]]></activiti:expression>
+            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow16" sourceRef="exclusivegateway1" targetRef="usertask2">
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var number=execution.getVariable('sID_Order_GovPublic')
+var fullNumber="вх-"+number+"/"
+execution.setVariable('sID_Order_GovPublic', fullNumber)
+
+var updatedDate = new Date();
+var days = 30;
+updatedDate.setDate(new Date().getDate() + days);
+var sNewDate = (updatedDate.getDate() + "." + (updatedDate.getMonth() + 1) + "." + updatedDate.getFullYear());
+execution.setVariable('sDateExecution', sNewDate)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow13" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow15" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="exclusivegateway1" targetRef="usertask2_yellow">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asCreateOutcomingLetter=='sEnumCreateOutcomingLetter'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="exclusivegateway1" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asCreateOutcomingLetter=='sEnumNotCreateOutcomingLetter'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow18" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="usertask2_yellow" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_justice_incoming">
     <bpmndi:BPMNPlane bpmnElement="justice_incoming" id="BPMNPlane_justice_incoming">
@@ -160,14 +161,14 @@ execution.setVariable('sDateExecution', sNewDate)
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="380.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2_yellow" id="BPMNShape_usertask2_yellow">
+        <omgdc:Bounds height="55.0" width="105.0" x="580.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="240.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="520.0" y="47.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="580.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="730.0" y="50.0"></omgdc:Bounds>
