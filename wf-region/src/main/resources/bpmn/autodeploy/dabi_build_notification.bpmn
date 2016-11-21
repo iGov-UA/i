@@ -457,7 +457,7 @@
             <activiti:expression><![CDATA[sResult]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-      </extensionElements>                      
+      </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <boundaryEvent id="boundarytimer4" name="Timer" attachedToRef="usertask_UserGroup" cancelActivity="true">
@@ -471,7 +471,9 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow44" sourceRef="usertask_step5" targetRef="exclusivegateway5"></sequenceFlow>
-    <sequenceFlow id="flow45" sourceRef="exclusivegateway4" targetRef="exclusivegateway5"></sequenceFlow>
+    <sequenceFlow id="flow45" sourceRef="exclusivegateway4" targetRef="exclusivegateway5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult=='true'}]]></conditionExpression>
+    </sequenceFlow>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow46" sourceRef="exclusivegateway5" targetRef="parallelgateway3"></sequenceFlow>
     <sequenceFlow id="flow47" sourceRef="usertask_step2" targetRef="parallelgateway3"></sequenceFlow>
