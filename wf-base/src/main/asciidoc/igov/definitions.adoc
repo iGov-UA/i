@@ -1,0 +1,225 @@
+== Definitions
+=== ActionTaskLink
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|nID||false|integer (int64)|
+|nID_Process||false|integer (int64)|
+|nID_Subject_Holder||false|integer (int64)|
+|sKey||false|string|
+|===
+
+=== AttachmentEntityI
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|description||false|string|
+|id||false|string|
+|name||false|string|
+|processInstanceId||false|string|
+|taskId||false|string|
+|time||false|string (date-time)|
+|type||false|string|
+|url||false|string|
+|userId||false|string|
+|===
+
+=== DateTime
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|afterNow||false|boolean|
+|beforeNow||false|boolean|
+|equalNow||false|boolean|
+|===
+
+=== EscalationHistory
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|nID||false|integer (int64)|
+|nID_EscalationStatus||false|integer (int64)|
+|nID_Process||false|integer (int64)|
+|nID_Process_Root||false|integer (int64)|
+|nID_UserTask||false|integer (int64)|
+|sDate||false|<<DateTime>>|
+|===
+
+=== EscalationRule
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|nID||false|integer (int64)|
+|nID_EscalationRuleFunction||false|<<EscalationRuleFunction>>|
+|sCondition||false|string|
+|sID_BP||false|string|
+|sID_UserTask||false|string|
+|sPatternFile||false|string|
+|soData||false|string|
+|===
+
+=== EscalationRuleFunction
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|nID||false|integer (int64)|
+|sBeanHandler||false|string|
+|sName||false|string|
+|===
+
+=== EscalationStatus
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|nID||false|integer (int64)|
+|sID||false|string|
+|sNote||false|string|
+|===
+
+=== FlowProperty
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|bExclude||false|boolean|
+|nID||false|integer (int64)|
+|nID_FlowPropertyClass||false|<<FlowPropertyClass>>|
+|nLen||false|integer (int32)|
+|sData||false|string|
+|sDateTimeAt||false|string|
+|sDateTimeTo||false|string|
+|sLenType||false|string|
+|sName||false|string|
+|sRegionTime||false|string|
+|saRegionWeekDay||false|string|
+|===
+
+=== FlowPropertyClass
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|nID||false|integer (int64)|
+|sBeanName||false|string|
+|sName||false|string|
+|sPath||false|string|
+|===
+
+=== Group
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|id||false|string|
+|name||false|string|
+|type||false|string|
+|===
+
+=== LoginResponseI
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|session||false|string|
+|===
+
+=== LogoutResponseI
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|session||false|string|
+|===
+
+=== Map«string,string»
+=== ProcDefinitionI
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|category||false|string|
+|deploymentId||false|string|
+|description||false|string|
+|diagramResourceName||false|string|
+|id||false|string|
+|key||false|string|
+|name||false|string|
+|resourceName||false|string|
+|suspended||false|boolean|
+|tenantId||false|string|
+|version||false|integer (int32)|
+|===
+
+=== ProcessI
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|id||false|string|
+|===
+
+=== ProcessSubject
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|nID||false|integer (int64)|
+|nOrder||false|integer (int64)|
+|sDateEdit||false|<<DateTime>>|
+|sDatePlan||false|<<DateTime>>|
+|sLogin||false|string|
+|snID_Process_Activiti||false|string|
+|===
+
+=== ProcessSubjectResult
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|aProcessSubject||false|<<ProcessSubject>> array|
+|===
+
+=== SubjectGroup
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|nID||false|integer (int64)|
+|sChain||false|string|
+|sID_Group_Activiti||false|string|
+|sName||false|string|
+|===
+
+=== SubjectGroupAndUser
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|aSubjectGroup||false|<<SubjectGroup>> array|
+|aSubjectUser||false|<<SubjectUser>> array|
+|===
+
+=== SubjectUser
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|sEmail||false|string|
+|sFirstName||false|string|
+|sLastName||false|string|
+|sLogin||false|string|
+|sPicture||false|string|
+|===
+
+=== TaskAssigneeI
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|assignee||false|string|
+|category||false|string|
+|createTime||false|string|
+|delegationState||false|string|
+|description||false|string|
+|dueDate||false|string|
+|executionId||false|string|
+|formKey||false|string|
+|id||false|string|
+|name||false|string|
+|owner||false|string|
+|parentTaskId||false|string|
+|priority||false|integer (int32)|
+|processDefinitionId||false|string|
+|processInstanceId||false|string|
+|suspended||false|boolean|
+|taskDefinitionKey||false|string|
+|tenantId||false|string|
+|===
+

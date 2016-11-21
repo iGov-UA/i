@@ -1,12 +1,4 @@
 == Definitions
-=== AccessURL
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|name||false|string|
-|value||false|string|
-|===
-
 === ActionTaskLink
 [options="header"]
 |===
@@ -155,30 +147,6 @@
 |time||false|string (date-time)|
 |===
 
-=== Country
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|nID_UA||false|integer (int64)|
-|sID_Three||false|string|
-|sID_Two||false|string|
-|sNameShort_EN||false|string|
-|sNameShort_UA||false|string|
-|sReference_LocalISO||false|string|
-|===
-
-=== Currency
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|sID_Currency||false|string|
-|sID_UA||false|string|
-|sName_EN||false|string|
-|sName_UA||false|string|
-|===
-
 === DataResponse
 [options="header"]
 |===
@@ -225,9 +193,7 @@
 |Name|Description|Required|Schema|Default
 |afterNow||false|boolean|
 |beforeNow||false|boolean|
-|chronology||false|<<Chronology>>|
 |equalNow||false|boolean|
-|millis||false|integer (int64)|
 |===
 
 === DeploymentResourceResponse
@@ -251,53 +217,6 @@
 |name||false|string|
 |tenantId||false|string|
 |url||false|string|
-|===
-
-=== Document
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|contentType||false|string|
-|nID||false|integer (int64)|
-|oDocumentContentType||false|<<DocumentContentType>>|
-|oDocumentType||false|<<DocumentType>>|
-|oSignData||false|string|
-|oSubject||false|<<Subject>>|
-|oSubject_Upload||false|<<Subject>>|
-|sContentType||false|string|
-|sDate_Upload||false|<<DateTime>>|
-|sFile||false|string|
-|sID_Content||false|string|
-|sID_Subject_Upload||false|string|
-|sName||false|string|
-|sSubjectName_Upload||false|string|
-|===
-
-=== DocumentContentType
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|sName||false|string|
-|===
-
-=== DocumentOperator_SubjectOrgan
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|nID_SubjectOrgan||false|integer (int64)|
-|sHandlerClass||false|string|
-|sName||false|string|
-|===
-
-=== DocumentType
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|bHidden||false|boolean|
-|nID||false|integer (int64)|
-|sName||false|string|
 |===
 
 === EscalationHistory
@@ -759,55 +678,6 @@
 |variables||false|<<QueryVariable>> array|
 |===
 
-=== HistoryEvent
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|nID_HistoryEventType||false|integer (int64)|
-|nID_Subject||false|integer (int64)|
-|oDocument||false|<<Document>>|
-|oHistoryEvent_Service||false|<<HistoryEvent_Service>>|
-|oSubject||false|<<Subject>>|
-|sDate||false|string|
-|sEventName||false|string|
-|sMessage||false|string|
-|sSubjectInfo||false|string|
-|===
-
-=== HistoryEvent_Service
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|nID_Proccess_Escalation||false|integer (int64)|
-|nID_Proccess_Feedback||false|integer (int64)|
-|nID_Protected||false|integer (int64)|
-|nID_Region||false|integer (int64)|
-|nID_Server||false|integer (int32)|
-|nID_Service||false|integer (int64)|
-|nID_ServiceData||false|integer (int64)|
-|nID_StatusType||false|integer (int64)|
-|nID_Subject||false|integer (int64)|
-|nID_Task||false|integer (int64)|
-|nRate||false|integer (int32)|
-|nTimeMinutes||false|integer (int32)|
-|sBody||false|string|
-|sDate||false|<<DateTime>>|
-|sDateClose||false|<<DateTime>>|
-|sDateCreate||false|<<DateTime>>|
-|sHead||false|string|
-|sID||false|string|
-|sID_Order||false|string|
-|sID_Rate_Indirectly||false|string|
-|sID_StatusType||false|string|
-|sID_UA||false|string|
-|sName_UA_StatusType||false|string|
-|sToken||false|string|
-|sUserTaskName||false|string|
-|soData||false|string|
-|===
-
 === IOSpecification
 [options="header"]
 |===
@@ -994,73 +864,6 @@
 |version||false|integer (int32)|
 |===
 
-=== NewSubject
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|aSubjectAccountContact||false|<<NewSubjectContact>> array|
-|oSubjectHuman||false|<<NewSubjectHuman>>|
-|oSubjectOrgan||false|<<NewSubjectOrgan>>|
-|sID||false|string|
-|sLabel||false|string|
-|sLabelShort||false|string|
-|===
-
-=== NewSubjectAccount
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|oSubject||false|<<NewSubject>>|
-|sAccount||false|string|
-|===
-
-=== NewSubjectContact
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|oSubjectContactType||false|<<SubjectContactType>>|
-|sDate||false|<<DateTime>>|
-|sValue||false|string|
-|===
-
-=== NewSubjectHuman
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|oDefaultEmail||false|<<NewSubjectContact>>|
-|oDefaultPhone||false|<<NewSubjectContact>>|
-|sFamily||false|string|
-|sINN||false|string|
-|sName||false|string|
-|sPassportNumber||false|string|
-|sPassportSeria||false|string|
-|sSB||false|string|
-|sSurname||false|string|
-|===
-
-=== NewSubjectOrgan
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|aContact||false|<<NewSubjectContact>> array|
-|nID||false|integer (int64)|
-|sFormPrivacy||false|string|
-|sName||false|string|
-|sNameFull||false|string|
-|sOKPO||false|string|
-|===
-
-=== ObjectEarthTarget
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|sID_UA||false|string|
-|sName_UA||false|string|
-|===
-
 === ObjectNode
 [options="header"]
 |===
@@ -1088,16 +891,6 @@
 |valueNode||false|boolean|
 |===
 
-=== ObjectPlace_UA
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|nID_PlaceType||false|integer (int64)|
-|sID||false|string|
-|sName_UA||false|string|
-|===
-
 === Operation
 [options="header"]
 |===
@@ -1112,28 +905,6 @@
 |outMessageRef||false|string|
 |xmlColumnNumber||false|integer (int32)|
 |xmlRowNumber||false|integer (int32)|
-|===
-
-=== Place
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|nID_PlaceType||false|integer (int64)|
-|sID_UA||false|string|
-|sName||false|string|
-|sNameOriginal||false|string|
-|===
-
-=== PlaceType
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|bArea||false|boolean|
-|bRoot||false|boolean|
-|nID||false|integer (int64)|
-|nOrder||false|integer (int64)|
-|sName||false|string|
 |===
 
 === Pool
@@ -1409,67 +1180,6 @@
 |processDefinitionId||false|string|
 |===
 
-=== Subject
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|aSubjectAccountContact||false|<<SubjectContact>> array|
-|nID||false|integer (int64)|
-|sID||false|string|
-|sLabel||false|string|
-|sLabelShort||false|string|
-|===
-
-=== SubjectAccount
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|nID_Server||false|integer (int64)|
-|nID_Subject||false|integer (int64)|
-|sLogin||false|string|
-|sNote||false|string|
-|subjectAccountType||false|<<SubjectAccountType>>|
-|===
-
-=== SubjectAccountType
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|sID||false|string|
-|sNote||false|string|
-|===
-
-=== SubjectActionKVED
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|sID||false|string|
-|sNote||false|string|
-|===
-
-=== SubjectContact
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|sDate||false|<<DateTime>>|
-|sValue||false|string|
-|subjectContactType||false|<<SubjectContactType>>|
-|===
-
-=== SubjectContactType
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|sName_EN||false|string|
-|sName_RU||false|string|
-|sName_UA||false|string|
-|===
-
 === SubjectGroup
 [options="header"]
 |===
@@ -1486,75 +1196,6 @@
 |Name|Description|Required|Schema|Default
 |aSubjectGroup||false|<<SubjectGroup>> array|
 |aSubjectUser||false|<<SubjectUser>> array|
-|===
-
-=== SubjectHuman
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|aContact||false|<<SubjectContact>> array|
-|nID||false|integer (int64)|
-|oDefaultEmail||false|<<SubjectContact>>|
-|oDefaultPhone||false|<<SubjectContact>>|
-|oSex||false|enum (0, 1)|
-|oSubject||false|<<Subject>>|
-|sFamily||false|string|
-|sINN||false|string|
-|sName||false|string|
-|sPassportNumber||false|string|
-|sPassportSeria||false|string|
-|sSB||false|string|
-|sSurname||false|string|
-|subjectHumanIdType||false|enum (INN, Passport, Email, Phone)|
-|===
-
-=== SubjectOrgan
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|aContact||false|<<SubjectContact>> array|
-|nID||false|integer (int64)|
-|oSubject||false|<<Subject>>|
-|sFormPrivacy||false|string|
-|sName||false|string|
-|sNameFull||false|string|
-|sOKPO||false|string|
-|===
-
-=== SubjectOrganJoin
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|nID_City||false|integer (int64)|
-|nID_Region||false|integer (int64)|
-|sGeoLatitude||false|string|
-|sGeoLongitude||false|string|
-|sID_Privat||false|string|
-|sID_Public||false|string|
-|sID_UA||false|string|
-|sNameRu||false|string|
-|sNameUa||false|string|
-|subjectOrganId||false|integer (int64)|
-|===
-
-=== SubjectOrganJoinAttribute
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|sName||false|string|
-|sValue||false|string|
-|subjectOrganJoinId||false|integer (int64)|
-|===
-
-=== SubjectOrganJoinTax
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|nID_SubjectOrganJoin||false|integer (int32)|
-|sID_UA||false|string|
-|sName_UA||false|string|
 |===
 
 === SubjectUser

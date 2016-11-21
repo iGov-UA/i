@@ -126,7 +126,7 @@ public class ProcessSubjectService {
 								public boolean apply(ProcessUser processUser) {
 									// получить только отфильтрованный список по
 									// sFind в фио
-									return processUser.getsFirstName().contains(sFind);
+									return processUser.getsFirstName().contains(sFind.toLowerCase());
 								}
 							}));
 					// получаем только их логины
