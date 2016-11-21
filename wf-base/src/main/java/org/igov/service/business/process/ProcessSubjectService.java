@@ -117,33 +117,35 @@ public class ProcessSubjectService {
 		
 		List<ProcessSubject> aChildResultByUser = new ArrayList();
 		if (aChildResult != null && !aChildResult.isEmpty()) {
-			for (ProcessSubject processSubject : aChildResult) {
-				List<ProcessUser> aSubjectUser = getUsersByGroupSubject(processSubject.getSnID_Process_Activiti());
-				final List<ProcessUser> processUserFiltr = Lists.newArrayList(Collections2
-						.filter(aSubjectUser,
-								new Predicate<ProcessUser>() {
-							@Override
-							public boolean apply(ProcessUser processUser) {
-								// получить только отфильтрованный список по sFind в фио
-								return processUser.getsFirstName().contains(sFind);
-							}
-						}));
-				//получаем только их логины
-				final List<String> sFindLogin = Lists
-						.newArrayList(Collections2.transform(processUserFiltr, new Function<ProcessUser, String>() {
-							@Override
-							public String apply(ProcessUser processUser) {
-								return processUser.getsLogin();
-							}
-						}));
-				
-			//и оставляем только  processSubject чьи логины содержаться в отфильтрованном списке
-					if(sFindLogin.contains(processSubject.getsLogin())){
+			if (sFind != null && !sFind.isEmpty()) {
+				for (ProcessSubject processSubject : aChildResult) {
+					List<ProcessUser> aSubjectUser = getUsersByGroupSubject(processSubject.getSnID_Process_Activiti());
+					final List<ProcessUser> processUserFiltr = Lists
+							.newArrayList(Collections2.filter(aSubjectUser, new Predicate<ProcessUser>() {
+								@Override
+								public boolean apply(ProcessUser processUser) {
+									// получить только отфильтрованный список по
+									// sFind в фио
+									return processUser.getsFirstName().contains(sFind);
+								}
+							}));
+					// получаем только их логины
+					final List<String> sFindLogin = Lists
+							.newArrayList(Collections2.transform(processUserFiltr, new Function<ProcessUser, String>() {
+								@Override
+								public String apply(ProcessUser processUser) {
+									return processUser.getsLogin();
+								}
+							}));
+
+					// и оставляем только processSubject чьи логины содержаться
+					// в отфильтрованном списке
+					if (sFindLogin.contains(processSubject.getsLogin())) {
 						aChildResultByUser.add(processSubject);
 					}
+				}
 			}
 		}
-		
 		
 		
 		ProcessSubjectResult processSubjectResult = new ProcessSubjectResult();
