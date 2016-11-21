@@ -130,10 +130,6 @@ public class SubjectGroupService {
 									return subjectUser.getsFirstName().contains(sFind);
 								}
 							}));
-
-
-					// и оставляем только processSubject чьи логины содержаться
-					// в отфильтрованном списке
 						aChildResultBysFind.add(subjectGroup);
 						subjUsers.put(subjectGroup, processUserFiltr);
 				}
