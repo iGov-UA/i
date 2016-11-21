@@ -128,11 +128,17 @@ public class ProcessSubjectService {
 								return processUser.getsFirstName().contains(sFind);
 							}
 						}));
-				for(ProcessUser processUser:processUserFiltr) {
-					if(processUser.getsLogin().equals(processSubject.getsLogin())){
+				
+				final List<String> sFindLogin = Lists
+						.newArrayList(Collections2.transform(processUserFiltr, new Function<ProcessUser, String>() {
+							@Override
+							public String apply(ProcessUser processUser) {
+								return processUser.getsLogin();
+							}
+						}));
+					if(sFindLogin.contains(processSubject.getsLogin())){
 						aChildResultByUser.add(processSubject);
 					}
-				}
 			}
 		}
 		
