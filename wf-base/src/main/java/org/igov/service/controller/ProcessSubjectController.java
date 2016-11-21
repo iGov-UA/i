@@ -1,8 +1,6 @@
 
 package org.igov.service.controller;
 
-import java.util.List;
-
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectResult;
 import org.igov.service.business.process.ProcessSubjectService;
@@ -38,11 +36,12 @@ public class ProcessSubjectController {
     @RequestMapping(value = "/getProcessSubject", method = RequestMethod.GET)
     @ResponseBody
     public ProcessSubjectResult getProcessSubject(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
-    		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel)
+    		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
+    		 @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind)
             throws Exception  {
     	ProcessSubjectResult processSubjectResult = null;
     	try {
-    		processSubjectResult = processSubjectService.getCatalogProcessSubject(snID_Process_Activiti,nDeepLevel);
+    		processSubjectResult = processSubjectService.getCatalogProcessSubject(snID_Process_Activiti,nDeepLevel,sFind);
     		
     	} catch (Exception e) {
     		 LOG.error("FAIL: ", e);
