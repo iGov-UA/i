@@ -6,8 +6,6 @@
 package org.igov.service.business.subject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -20,6 +18,8 @@ import org.activiti.engine.identity.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.BaseEntityDao;
+import org.igov.model.process.ProcessSubject;
+import org.igov.model.process.ProcessUser;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupAndUser;
 import org.igov.model.subject.SubjectGroupTree;
@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
@@ -49,7 +50,7 @@ public class SubjectGroupService {
 	@Autowired
 	private IdentityService identityService;
 
-	public SubjectGroupAndUser getCatalogSubjectGroups(String sID_Group_Activiti, Long deepLevel) {
+	public SubjectGroupAndUser getCatalogSubjectGroups(String sID_Group_Activiti, Long deepLevel,String sFind) {
 		List<SubjectGroup> aChildResult = new ArrayList();
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 		List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
@@ -113,13 +114,34 @@ public class SubjectGroupService {
 
 			// subjToNodeMapFiltr.put(groupFiltr, aChildResult);
 		}
-
+		List<SubjectGroup> aChildResultBysFind = new ArrayList();
 		// Получаем орг иерархию и людей
 		Map<SubjectGroup, List<SubjectUser>> subjUsers = new HashMap<>();
 		if (aChildResult != null && !aChildResult.isEmpty()) {
-			for (SubjectGroup subjectGroup : aChildResult) {
-				List<SubjectUser> aSubjectUser = getUsersByGroupSubject(subjectGroup.getsID_Group_Activiti());
-				subjUsers.put(subjectGroup, aSubjectUser);
+			if (sFind != null && !sFind.isEmpty()) {
+				for (SubjectGroup subjectGroup : aChildResult) {
+					List<SubjectUser> aSubjectUser = getUsersByGroupSubject(subjectGroup.getsID_Group_Activiti());
+					final List<SubjectUser> processUserFiltr = Lists
+							.newArrayList(Collections2.filter(aSubjectUser, new Predicate<SubjectUser>() {
+								@Override
+								public boolean apply(SubjectUser subjectUser) {
+									// получить только отфильтрованный список по
+									// sFind в фио
+									return subjectUser.getsFirstName().contains(sFind);
+								}
+							}));
+
+
+					// и оставляем только processSubject чьи логины содержаться
+					// в отфильтрованном списке
+						aChildResultBysFind.add(subjectGroup);
+						subjUsers.put(subjectGroup, processUserFiltr);
+				}
+			}else {
+				for (SubjectGroup subjectGroup : aChildResult) {
+					List<SubjectUser> aSubjectUser = getUsersByGroupSubject(subjectGroup.getsID_Group_Activiti());
+					subjUsers.put(subjectGroup, aSubjectUser);
+				}
 			}
 		}
 		List<SubjectUser> userByGroup = Lists.newArrayList();
@@ -136,7 +158,11 @@ public class SubjectGroupService {
 
 		}
 		SubjectGroupAndUser subjectGroupAndUser = new SubjectGroupAndUser();
-		subjectGroupAndUser.setaSubjectGroup(aChildResult);
+		if (sFind != null && !sFind.isEmpty()) {
+			subjectGroupAndUser.setaSubjectGroup(aChildResultBysFind);
+		} else {
+			subjectGroupAndUser.setaSubjectGroup(aChildResult);
+		}
 		subjectGroupAndUser.setaSubjectUser(userByGroup);
 
 		return subjectGroupAndUser;

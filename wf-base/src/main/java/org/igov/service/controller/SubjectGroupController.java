@@ -53,11 +53,12 @@ public class SubjectGroupController {
     @RequestMapping(value = "/getSubjectGroups", method = RequestMethod.GET)
     @ResponseBody
     public SubjectGroupAndUser getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
-    		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel)
+    		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
+    		 @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind)
             throws Exception  {
     	SubjectGroupAndUser subjectGroupResult = null;
     	try {
-    		subjectGroupResult = subjectGroupService.getCatalogSubjectGroups(sID_Group_Activiti,nDeepLevel);
+    		subjectGroupResult = subjectGroupService.getCatalogSubjectGroups(sID_Group_Activiti,nDeepLevel,sFind);
     		
     	} catch (Exception e) {
     		 LOG.error("FAIL: ", e);
