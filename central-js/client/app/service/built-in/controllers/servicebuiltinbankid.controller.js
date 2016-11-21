@@ -3,8 +3,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               FormDataFactory, ActivitiService, ValidationService, ServiceService, oService, oServiceData,
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
               PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
-              ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory, TableService,
-              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory) {
+              ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
+              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService) {
 
       'use strict';
 
@@ -230,6 +230,17 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       }
 
+      // todo file in table
+      // function fixFileInTable (prop) {
+      //   angular.forEach(prop.aRow, function (fields) {
+      //     angular.forEach(fields.aField, function (item, key, obj) {
+      //       if(item.type === 'file' && item.props) {
+      //         obj[key].value = item.props.value.id;
+      //       }
+      //     })
+      //   })
+      // }
+
       iGovMarkers.validateMarkers(formFieldIDs);
       //save values for each property
       $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
@@ -263,7 +274,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
         angular.forEach($scope.activitiForm.formProperties, function (prop) {
           if (prop.type === 'table') {
-            $scope.data.formData.params[prop.id].value = prop.aRow;
+            // fixFileInTable(prop);
+            $scope.data.formData.params[prop.id].value = prop;
           }
         });
 
@@ -341,7 +353,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       $scope.validateForm = function (form) {
         var bValid = true;
-        ValidationService.validateByMarkers(form, null, true, this.data);
+        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {});
         return form.$valid && bValid;
       };
 
@@ -752,7 +764,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         $http.get('/api/order/getStartFormByTask', {
           params: {
             nID_Service: oService.nID,
-            sID_UA: oServiceData.oPlaceRoot ? oServiceData.oPlaceRoot.sID_UA : oServiceData.oPlace.sID_UA
+            sID_UA: oServiceData.oPlaceRoot ? oServiceData.oPlaceRoot.sID_UA : oServiceData.oPlace ? oServiceData.oPlace.sID_UA : ''
           }
         }).then(function (response) {
           var bFilled = $scope.bFilledSelfPrevious();
@@ -825,10 +837,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         $rootScope.isFileProcessUploading.bState = !$rootScope.isFileProcessUploading.bState;
         console.log("Switch $rootScope.isFileProcessUploading to " + $rootScope.isFileProcessUploading.bState);
       };
-
-      if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
-        $scope.fillSelfPrevious();
-      }
 
       // відображення напису про необхідність перевірки реєстраційних данних, переданих від BankID
       $scope.isShowMessageRequiringToValidateUserData = function () {
@@ -911,7 +919,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       TableService.init($scope.activitiForm.formProperties);
 
       $scope.addRow = function (form, id, index) {
-        ValidationService.validateByMarkers(form, null, true, this.data, true);
+        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {}, true);
         if (!form.$invalid) {
           $scope.tableIsInvalid = false;
           TableService.addRow(id, $scope.activitiForm.formProperties);
@@ -921,26 +929,20 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       };
       $scope.removeRow = function (index, form, id) {
-        angular.forEach($scope.activitiForm.formProperties, function (item, key, obj) {
-          if (item.id === id) {
-            obj[key].aRow.splice(index, 1);
-            if (!form.$invalid) {
-              $scope.tableIsInvalid = false;
-            }
-          }
-        });
+        TableService.removeRow($scope.activitiForm.formProperties, index, id);
+        if (!form.$invalid) {
+          $scope.tableIsInvalid = false;
+        }
       };
       $scope.rowLengthCheckLimit = function (table) {
-        return table.aRow.length >= table.nRowsLimit
+        return TableService.rowLengthCheckLimit(table);
       };
 
       $scope.isFieldWritable = function (field) {
-      // включил проверку тк иногда передается false/true как строка 'false'/'true'.
-        if(typeof field === 'string' || field instanceof String) {
-          if(field === 'true') return true;
-          if(field === 'false') return false;
-        } else if (typeof field === 'boolean') {
-          return field;
-        }
+        return TableService.isFieldWritable(field);
       };
+
+      if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
+        $scope.fillSelfPrevious();
+      }
     });

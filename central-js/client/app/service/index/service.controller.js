@@ -87,6 +87,10 @@ angular.module('app')
       return idPlaces.length > 0
     };
 
+    $scope.goToService = function (nID) {
+      $location.path("/service/"+nID+"/general");
+    };
+
     $scope.$on('$stateChangeStart', function(event, toState) {
       $scope.spinner = true;
       if(toState.name === 'index') {

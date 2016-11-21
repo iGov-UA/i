@@ -5,16 +5,21 @@
       <div class='table-ng-modal-close' ng-click='tableContentShow=false'>X</div>
     </div>
     <div class='col-md-12 table-ng-modal-dialog-content-view' ng-style='dialogStyle'>
+      <div class='table-ng-modal-dialog-content' ng-if="attachIsLoading">Завантаження таблицi...</div>
       <div class='table-ng-modal-dialog-content' ng-if="!attachIsLoading">
-        <h1>{{openedAttachTable.name}}</h1>
+        <h1>{{openedAttachTable.sFieldLabel || openedAttachTable.name}}</h1>
         <table>
           <thead>
           <tr>
-            <th ng-repeat="item in openedAttachTable.content[0].aField">{{item.name}}</th>
+            <th ng-if="openedAttachTable.content" ng-repeat="item in openedAttachTable.content[0].aField">{{item.sFieldLabel || item.name}}</th>
+            <th ng-if="!openedAttachTable.content" ng-repeat="item in openedAttachTable.aRow[0].aField">{{item.sFieldLabel || item.name}}</th>
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="row in openedAttachTable.content">
+          <tr ng-if="openedAttachTable.content" ng-repeat="row in openedAttachTable.content">
+            <td ng-repeat="item in row.aField">{{item.value ? item.value : (item.default? item.default : item.props.value)}}</td>
+          </tr>
+          <tr ng-if="!openedAttachTable.content" ng-repeat="row in openedAttachTable.aRow">
             <td ng-repeat="item in row.aField">{{item.value ? item.value : (item.default? item.default : item.props.value)}}</td>
           </tr>
           </tbody>

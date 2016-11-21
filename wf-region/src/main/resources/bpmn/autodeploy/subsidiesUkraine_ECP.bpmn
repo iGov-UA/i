@@ -183,7 +183,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення: Отримання субсидії на оплату житлово-комунальних послуг]]></activiti:expression>
@@ -637,7 +637,7 @@ ${sNameOrgan}<br/>
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 <p>На жаль, Ваше звернення №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг було відхилено.</p>
-<p>Причина вказана у файлі, який прикріплено до цього листа.</p>
+<p>Причина вказана у файлі, який прикріплено до цього листа. (Якщо прикріплений файл відсутній, просимо звернутись у  <a href="https://goo.gl/jUqX3p">форму технічної підтримки,</a>  вказавши номер звернення і район, до якого подавалась заявка)</p>
 <p>Коментар працівника УПСЗН (за наявності): ${comment1}</p>
 (Ви можете зберегти файли, що долучено до цього листа, на комп'ютер, та роздрукувати заповнені Вами Заяву і Декларацію на папері за потреби)<br />
 [pattern/mail/_common_signature_start.html]
@@ -675,14 +675,15 @@ ${sNameOrgan}<br/>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p>На жаль, Ваше звернення №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг було відхилено.</p>
-<p>Причина вказана у файлі, який прикріплено до цього листа.</p>
+ <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>Ваше звернення  №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг опрацьоване.</p>
+<p>Розмір субсидії вказаний у файлі, який прикріплено до цього листа. (Якщо прикріплений файл відсутній, просимо звернутись у  <a href="https://goo.gl/jUqX3p">форму технічної підтримки,</a>  вказавши номер звернення і район, до якого подавалась заявка)</p>
 <p>Коментар працівника УПСЗН (за наявності): ${comment1}</p>
 (Ви можете зберегти файли, що долучено до цього листа, на комп'ютер, та роздрукувати заповнені Вами Заяву і Декларацію на папері за потреби)<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br/>
+${sNameOrgan}<br /><br />
 [pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -864,9 +865,6 @@ ${sNameOrgan}<br/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="93.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="340.0" y="360.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="55.0" width="105.0" x="30.0" y="190.0"></omgdc:Bounds>

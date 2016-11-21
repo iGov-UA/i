@@ -156,6 +156,15 @@ angular.module('dashboardJsApp')
           return properties;
         };
 
+        var tableFields = $filter('filter')(formProperties, function(prop){
+          return prop.type == 'table';
+        });
+
+        if(tableFields.length > 0) {
+          angular.forEach(tableFields, function (table) {
+            self.uploadTable(table, taskId);
+          })
+        }
         var deferred = $q.defer();
 
         // upload files before form submitting
@@ -178,7 +187,26 @@ angular.module('dashboardJsApp')
 
         return deferred.promise;
       },
-      upload: function (files, taskId) {
+
+      uploadTable: function(files, taskId) {
+        var deferred = $q.defer();
+        var tableId = files.id;
+        var stringifyTable = JSON.stringify(files);
+        var data = {
+          sDescription: tableId + '[table][id='+ tableId +']',
+          sFileName: tableId + '.json',
+          sContent: stringifyTable
+        };
+
+        $http.post('/api/tasks/' + taskId + '/upload_content_as_attachment', data).success(function(uploadResult){
+          files.value = JSON.parse(uploadResult).id;
+          deferred.resolve();
+        });
+
+        return deferred.promise;
+      },
+
+      upload: function(files, taskId) {
         var deferred = $q.defer();
 
         var self = this;
@@ -195,6 +223,7 @@ angular.module('dashboardJsApp')
           },
           onCompleted: function (file, response) {
             scope.$apply(function () {
+              /*
               try {
                 deferred.resolve({
                   file: file,
@@ -204,6 +233,37 @@ angular.module('dashboardJsApp')
                 deferred.reject({
                   err: response
                 });
+              }
+              */
+
+              var oCheckSignReq = {};
+              try{
+                oCheckSignReq = angular.fromJson(response);
+              } catch (errParse){
+                self.value.signInfo = null;
+              }
+              if(oCheckSignReq.taskId && oCheckSignReq.id){
+                self.value = {id : oCheckSignReq.id, signInfo: null, fromDocuments: false};
+                simpleHttpPromise({
+                    method: 'GET',
+                    url: '/api/tasks/' + oCheckSignReq.taskId + '/attachments/' + oCheckSignReq.id + '/checkAttachmentSign'
+                  }
+                ).then(function (signInfo) {
+                  //self.value.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
+                  try {
+                    deferred.resolve({
+                      file: file,
+                      response: JSON.parse(response),
+                      signInfo: Object.keys(signInfo).length === 0 ? null : signInfo
+                    });
+                  } catch (e) {
+                    deferred.reject({
+                      err: response
+                    });
+                  }
+                }, function (err) {
+                  self.value.signInfo = null;
+                })
               }
             });
           }
@@ -296,10 +356,19 @@ angular.module('dashboardJsApp')
              * parse name string property to get file names sPrintFormFileAsPDF and sPrintFormFileAsIs
              */
             var fileName = null;
+
             if (typeof templateResult.fileField.name === 'string') {
               fileName = templateResult.fileField.name.split(/;/).reduce(function (prev, current) {
                 return prev += current.match(/sPrintFormFileAsPDF/i) || current.match(/sPrintFormFileAsIs/i) || [];
               }, '');
+
+              if(fileName === 'sPrintFormFileAsPDF'){
+                fileName = fileName + '.pdf';
+              }
+
+              if(fileName === 'sPrintFormFileAsIs'){
+                fileName = fileName + '.html';
+              }
             }
 
             $timeout(function () {

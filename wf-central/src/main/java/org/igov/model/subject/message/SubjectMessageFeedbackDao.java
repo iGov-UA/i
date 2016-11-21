@@ -1,6 +1,5 @@
 package org.igov.model.subject.message;
 
-import com.google.common.base.Optional;
 import org.igov.model.core.EntityDao;
 
 import java.util.List;
@@ -17,5 +16,5 @@ public interface SubjectMessageFeedbackDao extends EntityDao<Long, SubjectMessag
     
     SubjectMessageFeedback update(SubjectMessageFeedback subjectMessageFeedback);
     
-    Optional<SubjectMessageFeedback> findByOrder(String sID_Order);
+    SubjectMessageFeedback findByOrder(String sID_Order);
 }

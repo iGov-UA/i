@@ -6,10 +6,12 @@
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope', 'lunaService',
+      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
+      'lunaService', 'TableService', 'autocompletesDataFactory',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope, lunaService) {
+                $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
+                lunaService, TableService, autocompletesDataFactory) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -103,6 +105,32 @@
           }
         }
 
+        function searchSelectSubject() {
+          angular.forEach(taskForm, function (item) {
+            var isExecutorSelect = item.name.split(';')[2];
+            if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
+              var match;
+              if (((match = item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/)))
+                ||(item.type == 'select' && (match = item.id.match(/^s(Country)(_(\d+))?/))) || isExecutorSelect) {
+                if (match && autocompletesDataFactory[match[1]] && !isExecutorSelect) {
+                  item.type = 'select';
+                  item.selectType = 'autocomplete';
+                  item.autocompleteName = match[1];
+                  if (match[2])
+                    item.autocompleteName += match[2];
+                  item.autocompleteData = autocompletesDataFactory[match[1]];
+                } else if (!match && isExecutorSelect) {
+                  item.type = 'select';
+                  item.selectType = 'autocomplete';
+                  item.autocompleteName = 'SubjectRole';
+                  item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
+                }
+              }
+            }
+          })
+        }
+        searchSelectSubject();
+
         $scope.isShowExtendedLink = function () {
           return tasks.isFullProfileAvailableForCurrentUser(taskData);
         };
@@ -130,10 +158,18 @@
         $scope.markers = ValidationService.getValidationMarkers();
         $scope.bHasEmail = false;
         $scope.isClarifySending = false;
+        $scope.tableIsInvalid = false;
 
         $scope.validateForm = function(form) {
           var bValid = true;
-          ValidationService.validateByMarkers(form, null, true);
+          var oValidationFormData = {};
+          angular.forEach($scope.taskForm, function (field) {
+            oValidationFormData[field.id] = angular.copy(field);
+            if(field.type === 'file'){
+              //debugger;
+            }
+          });
+          ValidationService.validateByMarkers(form, null, true, oValidationFormData);
           return form.$valid && bValid;
         };
 
@@ -329,9 +365,17 @@
         };
 
         (function isTaskHasEmail() {
-          for(var i=0; i<$scope.taskData.aField.length; i++){
-            if($scope.taskData.aField[i].sID === "email"){
-              $scope.bHasEmail = true;
+          try{
+            for(var i=0; i<$scope.taskData.aField.length; i++){
+              if($scope.taskData.aField[i].sID === "email"){
+                $scope.bHasEmail = true;
+              }
+            }
+          } catch (err){
+            if($scope.taskData.code && $scope.taskData.message){
+              console.warn($scope.taskData.message);
+            } else {
+              console.error(err);
             }
           }
         })();
@@ -504,6 +548,7 @@
             if (filterResult && filterResult.length === 1) {
               filterResult[0].value = result.response.id;
               filterResult[0].fileName = result.response.name;
+              filterResult[0].signInfo = result.signInfo;
             }
           }).catch(function (err) {
             Modal.inform.error()('Помилка. ' + err.code + ' ' + err.message);
@@ -678,23 +723,52 @@
           return activeFieldsList.length > 0;
         };
 
-        $scope.openTableAttachment = function (id) {
-          angular.forEach($scope.taskData.aTable, function (table) {
-            if(table.id === id) {
-              $scope.openedAttachTable = table;
-            }
+        $scope.openTableAttachment = function (id, taskId) {
+          $scope.attachIsLoading = true;
+
+          tasks.getTableAttachment(taskId, id).then(function (res) {
+            $scope.openedAttachTable = JSON.parse(res);
+            fixFieldsForTable($scope.openedAttachTable);
+            $scope.attachIsLoading = false;
           });
+
           $scope.tableContentShow = !$scope.tableContentShow;
         };
 
-        var fixFieldsForTable = function () {
-          angular.forEach($scope.taskData.aTable, function (table) {
-            angular.forEach(table.content, function (row) {
+        // проверяем имя поля на наличие заметок
+        function fixName(item) {
+          var sFieldName = item.name || '';
+          var aNameParts = sFieldName.split(';');
+          var sFieldNotes = aNameParts[0].trim();
+          item.sFieldLabel = sFieldNotes;
+          sFieldNotes = null;
+          if (aNameParts.length > 1) {
+            sFieldNotes = aNameParts[1].trim();
+            if (sFieldNotes === '') {
+              sFieldNotes = null;
+            }
+          }
+          item.sFieldNotes = sFieldNotes;
+        }
+
+        var fixFieldsForTable = function (table) {
+            var tableRow;
+            fixName(table);
+            if('content' in table){
+              tableRow = table.content;
+            } else {
+              tableRow = table.aRow;
+            }
+            angular.forEach(tableRow, function (row) {
               angular.forEach(row.aField, function (field) {
+                fixName(field);
                 if(field.type === 'date') {
-                  var onlyDate = field.props.value.split('T')[0];
-                  var splitDate = onlyDate.split('-');
-                  field.props.value = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0]
+                  var match = /^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/.test(field.props.value);
+                  if(!match) {
+                    var onlyDate = field.props.value.split('T')[0];
+                    var splitDate = onlyDate.split('-');
+                    field.props.value = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0]
+                  }
                 }
                 if(field.type === 'enum') {
                   angular.forEach(field.a, function (item) {
@@ -705,37 +779,58 @@
                 }
               })
             });
-          })
         };
 
-        // при наличии полей типа "table" загружаем их с редиса и наполняем массив aTable.
-        $scope.getListOfTables = function () {
-          var itemsProcessed = 0;
-          $scope.taskData.aTable = [];
-          if($scope.taskData.aAttachment && $scope.taskData.aAttachment.length > 0)
-          angular.forEach($scope.taskData.aAttachment, function (attach) {
-            tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
-              ++itemsProcessed;
-              try {
-                var table = {};
-                table.name = attach.description;
-                table.id = attach.id;
-                table.content = JSON.parse(res);
-                for(var i=0; i<table.content.length; i++) {
-                  if(typeof table.content[i] === "string") {
-                    table.idName = table.content[i];
-                    delete table.content[i];
-                  }
-                }
-                $scope.taskData.aTable.push(table);
-              } catch (e) {
-
+        var idMatch = function () {
+          angular.forEach($scope.taskForm, function (item, key, obj) {
+            angular.forEach($scope.taskData.aAttachment, function (attachment) {
+              var reg = /(\[id=(\w+)\])/;
+              var match = attachment.description.match(reg);
+              if(match !== null && (item.id && match[2].toLowerCase() === item.id.toLowerCase() ||item.name && match[2].toLowerCase() === item.name.toLowerCase())) {
+                tasks.getTableAttachment(attachment.taskId, attachment.id).then(function (res) {
+                  obj[key] = JSON.parse(res);
+                  obj[key].description = attachment.description;
+                })
               }
-              if(itemsProcessed === $scope.taskData.aAttachment.length) fixFieldsForTable();
             })
           });
         };
-        $scope.getListOfTables();
+        // idMatch();
+
+        TableService.init($scope.taskForm);
+
+        $scope.addRow = function (form, id, index) {
+          ValidationService.validateByMarkers(form, null, true, null, true);
+          if (!form.$invalid) {
+            $scope.tableIsInvalid = false;
+            TableService.addRow(id, $scope.taskForm);
+          } else {
+            $scope.tableIsInvalid = true;
+            $scope.invalidTableNum = index;
+          }
+        };
+
+        $scope.removeRow = function (index, form, id) {
+          TableService.removeRow($scope.taskForm, index, id);
+          if (!form.$invalid) {
+            $scope.tableIsInvalid = false;
+          }
+        };
+        $scope.rowLengthCheckLimit = function (table) {
+          if(table.aRow) return table.aRow.length >= table.nRowsLimit
+        };
+
+        $scope.isFieldWritable = function (field) {
+          return TableService.isFieldWritable(field);
+        };
+
+        $scope.tableIsLoaded = function (item) {
+          return typeof item.aRow[0] !== 'number';
+        };
+
+        $scope.isVisible = function (field) {
+          return TableService.isVisible(field);
+        };
       }
 
     ])

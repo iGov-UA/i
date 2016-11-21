@@ -1,0 +1,39 @@
+{
+	"motion":
+	{
+		"ShowFieldsOnCondition_0":
+		{
+			"sNote":				["For Hide Invisible"],
+			"aField_ID":			["markers1", "sNotification_day","sID_Payment", "nID_Subject", "sID_Merchant", "sSum", "sID_Currency", "sDescription", "date_today", "sNameOrgan", "sPhoneOrgan", "sAddress", "sWorkTime", "bankIdPassport", "sSumNote"],
+			"asID_Field":			{"sClient":"asResultType"},
+			"sCondition":			"[sClient] == 'Not_Correct'"
+		},
+		"ShowFieldsOnCondition_1":
+		{
+			"aField_ID":	["asTypeMail","sWarning0","sPostAddress"],
+			"asID_Field":	{"sReason":"asResultType"},
+			"sCondition":	"[sReason] == 'sPost'"
+		},
+		"ValuesFieldsOnCondition_2":
+		{
+			"aField_ID":	["sWarning0"],
+			"asID_Field_sValue":	["15,80 гривень"],
+			"asID_Field":	{"sReason": "asTypeMail"},
+			"sCondition": 	"[sReason] == 'sRek'"
+		},
+		"ValuesFieldsOnCondition_3":
+		{
+			"aField_ID":	["sWarning0"],
+			"asID_Field_sValue":	["35,80 гривень"],
+			"asID_Field":	{"sReason": "asTypeMail"},
+			"sCondition": 	"[sReason] == 'sRekPrior'"
+		},
+		"ValuesFieldsOnCondition_4":
+		{
+			"aField_ID":	["sBankIdPassport"],
+			"asID_Field_sValue":	["[bankIdPassport]"],
+			"asID_Field":	{"sReason": "sID_Public_SubjectOrganJoin"},
+			"sCondition": 	"[sReason] == '0'"
+		}
+	}
+}

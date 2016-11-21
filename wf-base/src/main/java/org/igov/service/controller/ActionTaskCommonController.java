@@ -23,6 +23,7 @@ import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
+import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 import org.igov.io.mail.NotificationPatterns;
@@ -33,16 +34,19 @@ import org.igov.model.action.task.core.entity.*;
 import org.igov.model.action.task.core.entity.Process;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
+import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
+import org.igov.service.business.dfs.DfsService;
+import org.igov.service.business.dfs.DfsService_New;
 import org.igov.service.business.subject.message.MessageService;
 import org.igov.service.exception.*;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
+import org.igov.util.db.queryloader.QueryLoader;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,12 +68,9 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.apache.commons.mail.EmailException;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
-import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import static org.igov.util.Tool.sO;
-import org.igov.util.db.queryloader.QueryLoader;
 //import com.google.common.base.Optional;
 
 /**
@@ -89,8 +90,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public GeneralConfig generalConfig;
     @Autowired
     private TaskService taskService;
-    //@Autowired
-    //private ExceptionCommonController exceptionController;
     @Autowired
     private RuntimeService runtimeService;
     @Autowired
@@ -99,14 +98,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private FormService formService;
     @Autowired
     private RepositoryService repositoryService;
-    //@Autowired
-    //private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
-    @Autowired
-    private HistoryEventService historyEventService;
+    
     @Autowired
     private IdentityService identityService;
-    //@Autowired
-    //private ExceptionCommonController exceptionController;
+    
     @Autowired
     private NotificationPatterns oNotificationPatterns;
 
@@ -119,14 +114,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Autowired
     private DeleteProccess deleteProccess;
 
-    /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
-     @ResponseBody
-     public ResponseEntity<String> handleAccessException(Exception e) throws CommonServiceException {
-     return exceptionController.catchActivitiRestException(new CommonServiceException(
-     ExceptionCommonController.BUSINESS_ERROR_CODE,
-     e.getMessage(), e,
-     HttpStatus.FORBIDDEN));
-     }*/
+    @Autowired
+    private DfsService dfsService;
+    
+    @Autowired
+    private DfsService_New dfsService_new;
+
     @Autowired
     private ActionTaskService oActionTaskService;
 
@@ -745,9 +738,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     /**
-     * Method takes current value of process variable and if its value doesn't contain sInsertValue method appends it.
-     * Also if it contains sRemoveValue it will be removed.
-     * Can be used only with Strings
+     * Method takes current value of process variable and if its value doesn't
+     * contain sInsertValue method appends it. Also if it contains sRemoveValue
+     * it will be removed. Can be used only with Strings
+     *
      * @param snID_Process - id of Activiti Process
      * @param sKey - name of Variable on Activiti Process
      * @param sInsertValues - values which should be added.
@@ -768,14 +762,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("removeValues={} insertValues={}", sRemoveValues, sInsertValues);
             if (sInsertValues != null) {
                 for (String sInsertValue : sInsertValues) {
-                    if(!currentValue.contains(sInsertValue)){
+                    if (!currentValue.contains(sInsertValue)) {
                         currentValue = (currentValue.trim() + " " + sInsertValue).trim();
                     }
                 }
             }
-            if (sRemoveValues != null ) {
+            if (sRemoveValues != null) {
                 for (String sRemoveValue : sRemoveValues) {
-                    if(currentValue.contains(sRemoveValue)){
+                    if (currentValue.contains(sRemoveValue)) {
                         currentValue = currentValue.replace(sRemoveValue, "");
                     }
                 }
@@ -1150,7 +1144,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/downloadTasksData", method = RequestMethod.GET)
     @Transactional
     public void downloadTasksData(
-            @ApiParam(value = "название бизнесс процесса", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
+            @ApiParam(value = "название бизнес-процесса", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
             @ApiParam(value = "состояние задачи, по умолчанию исключается из фильтра Берется из поля taskDefinitionKey задачи", required = false) @RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
             @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. "
                     + "Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
@@ -1191,7 +1185,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     "Statistics for the business task '" + sID_BP
                     + "' not found. Wrong BP name.", Task.class);
         }
-
         Date dBeginDate = oActionTaskService.getBeginDate(dateAt);
         Date dEndDate = oActionTaskService.getEndDate(dateTo);
         String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
@@ -1331,7 +1324,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("Sending email with tasks data to email {}", sMailTo);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd");
             String sSubject = String.format("Выборка за: (%s)-(%s) для БП: %s ", sdf.format(dBeginDate), sdf.format(dEndDate), sID_BP);
-            String sFileExt = "csv";
+            String sFileExt = "text/csv";
             DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
             oMail._To(sMailTo);
             oMail._Head(sSubject);
@@ -1355,7 +1348,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             } else {
                 pi.close();
             }*/
-            httpResponse.setContentType("text/plain");
+            httpResponse.setContentType("text/csv;charset=windows-1251");
             httpResponse.getWriter().print("OK");
         }
 
@@ -1437,7 +1430,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param saField -- строка-массива полей (например:
      * "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
      * ) // * @param nID_Process - ид заявки
-     * @param soParams 
+     * @param soParams
      * @param sMail -- строка электронного адреса гражданина // * @param
      * nID_Server - ид сервера
      * @param sHead -- строка заголовка письма //опциональный (если не задан, то
@@ -2477,7 +2470,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.debug(e.getMessage());
         }
     }
-    
+
     @ApiOperation(value = "/removeOldProcess", notes = "##### Удаление закрытых процессов из таблиц активити#####\n\n")
     @RequestMapping(value = "/removeOldProcess", method = RequestMethod.GET)
     public @ResponseBody
@@ -2517,16 +2510,49 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return result;
     }
 
-
     @ApiOperation(value = "/closeProcess", notes = "##### Закрытие всех инстансов бизнес-процесса#####\n\n")
     @RequestMapping(value = "/closeProcess", method = RequestMethod.GET)
     public @ResponseBody
     void closeProcess(@ApiParam(value = "ид бизнес-процесса", required = true) @RequestParam(value = "sID_Process_Def", required = true) String sID_Process_Def,
             @ApiParam(value = "лимит количества заявок для удаления", required = false) @RequestParam(value = "nLimitCountRowDeleted", required = false) Integer nLimitCountRowDeleted) {
-        if(nLimitCountRowDeleted != null){
+        if (nLimitCountRowDeleted != null) {
             deleteProccess.setLimitCountRowDeleted(nLimitCountRowDeleted);
         }
         deleteProccess.closeProcess(sID_Process_Def);
+    }
+
+    @ApiOperation(value = "/getAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")
+    @RequestMapping(value = "/getAnswer_DFS", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAnswer_DFS(@ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String INN,
+            @ApiParam(value = "ИНН", required = true) @RequestParam(value = "sID_Process", required = true) String sID_Process) throws Exception {
+        Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
+        LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
+        String asID_Attach_Dfs = "";
+        if (task != null) {
+            asID_Attach_Dfs = dfsService.getAnswer(task.getId(), sID_Process, INN);
+            if (asID_Attach_Dfs != null && asID_Attach_Dfs.length() > 0) {
+                taskService.complete(task.getId());
+            }
+        }
+        return asID_Attach_Dfs;
+    }
+    
+    @ApiOperation(value = "/getAnswer_DFS_New", notes = "##### Получение ответов по процессам ДФС#####\n\n")
+    @RequestMapping(value = "/getAnswer_DFS_New", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAnswer_DFS_New(@ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String INN,
+            @ApiParam(value = "ИНН", required = true) @RequestParam(value = "sID_Process", required = true) String sID_Process) throws Exception {
+        Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
+        LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
+        String asID_Attach_Dfs = "";
+        if (task != null) {
+            asID_Attach_Dfs = dfsService_new.getAnswer(task.getId(), sID_Process, INN);
+            if (asID_Attach_Dfs != null && asID_Attach_Dfs.length() > 0) {
+                taskService.complete(task.getId());
+            }
+        }
+        return asID_Attach_Dfs;
     }
 
 }

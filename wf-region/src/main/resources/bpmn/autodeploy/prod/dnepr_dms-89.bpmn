@@ -47,6 +47,7 @@
           <activiti:value id="sYesR" name="Так"></activiti:value>
           <activiti:value id="sNoR" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Якщо Ви маєте дітей до 14 років, та другий з батьків зареєстрований за іншою адресою, то дітей потрібно зняти з реєстрації разом з Вами"></activiti:formProperty>
         <activiti:formProperty id="sWhenCome" name="Дата зняття з попереднього місця реєстрації; у форматі - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
@@ -141,10 +142,10 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення на тему: Реєстрація місця проживання особи]]></activiti:string>
@@ -407,14 +408,16 @@ execution.setVariable('sMaxPay', maxpay)
 											&lt;li&gt;проходження служби у військовій частині (довідка про проходження служби у військовій частині, видана командиром військової частини),&lt;/li&gt; 
 										&lt;/ul&gt;
 										&lt;li&gt;оригінал та копію військового квитка або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
-										&lt;li&gt;заяву про реєстрацію місця проживання, що знаходиться у додатках до листа;&lt;/li&gt;
-										&lt;li&gt;якщо Ви реєструєте нове місце проживання з одночасним зняттям з попередньго, то заяву про зняття з реєстрації (знаходиться у додатках до листа);&lt;/li&gt;
+										&lt;li&gt;заяву про реєстрацію місця проживання, що знаходиться у додатках до листа (розрукуйте на одному аркуші);&lt;/li&gt;
+										&lt;li&gt;якщо Ви реєструєте нове місце проживання з одночасним зняттям з попередньго, то заяву про зняття з реєстрації (знаходиться у додатках до листа, розрукуйте на одному аркуші);&lt;/li&gt;
+										&lt;li&gt;якщо Ви реєструєте нове місце проживання з одночасним зняттям з попередньго, то будинкову книгу або Форму А з ЖЕКу (ОСББ) з попереднього місця проживання;&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;	
 										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
 										&lt;ul&gt;
 										&lt;li&gt;У разі здійснення реєстрації за згодою власника/співвласників житла, наймача та членів його сім’ї, власник або власники житла повинні прийти до ${sOrganType} разом із Вами, та принести з собою паспорт та оригінали документів, які підтверджують право властності.&lt;/li&gt;
+										&lt;li&gt;Після візиту до до ${sOrganType} для завершення процесу реєстрації військовозобов'язані повинні встати на військовіий облік до військомату.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;

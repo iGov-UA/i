@@ -1,0 +1,205 @@
+<style>
+  .ui-select-choices-content {
+    top:100%;
+  }
+</style>
+<div ng-if="['table'].indexOf(item.type) > -1" class="row field-table">
+  <div class="col-sm-12" ng-if="tableIsLoaded(item)" style="margin-top: 3%; margin-bottom: 3%">
+
+    <div style="margin: 1% 0 0 5%;">
+      <p style="font-size: 15px;">{{item.name}}</p>
+      <span ng-if="isRequired(item) && item.writable" style="color: red">*</span>
+    </div>
+
+    <table ng-init="tableName = item.id">
+
+      <thead>
+
+      <tr class="table-thead">
+        <th ng-repeat="field in item.aRow[0].aField" ng-style="{'width' : field.nWidth}" ng-hide="!isVisible(field)">
+          <span>{{field.sFieldLabel || field.name}}</span>
+          <span style="display: block; text-align: center" class="s-field-notes"
+                ng-if="field.sFieldNotes!=null">
+            {{field.sFieldNotes}}
+          </span>
+        </th>
+        <th style="width:30px;border:none; background-color: transparent"></th>
+      </tr>
+
+      </thead>
+
+      <tbody ng-form='{{tableName}}'>
+
+      <tr ng-repeat="row in item.aRow track by $index" ng-init="rowIndex=$index">
+
+        <td ng-repeat="field in row.aField track by $index" style="border: 1px solid lightgrey" ng-hide="!isVisible(field)">
+
+          <div ng-if="['string'].indexOf(field.type) > -1">
+            <input class="inputs-in-table"
+                   ng-if='field.hasOwnProperty("default") || !field.hasOwnProperty("default") && !field.hasOwnProperty("value")'
+                   name="{{field.id + rowIndex}}"
+                   ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                   ng-required="field.required"
+                   ng-model="field.default"
+                   ng-disabled="!isFieldWritable(field.writable)"
+                   type="text">
+            <input class="inputs-in-table"
+                   ng-if='field.hasOwnProperty("value")'
+                   name="{{field.id + rowIndex}}"
+                   ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                   ng-required="field.required"
+                   ng-model="field.value"
+                   ng-disabled="!isFieldWritable(field.writable)"
+                   type="text">
+          </div>
+
+          <div ng-if="['enum'].indexOf(field.type) > -1">
+            <select name="{{field.id + rowIndex}}"
+                    ng-required="field.required"
+                    ng-model="field.value"
+                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                    ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in field.a"
+                    ng-disabled="!isFieldWritable(field.writable)"
+                    class="inputs-in-table">
+            </select>
+          </div>
+
+          <div ng-if="['long', 'double'].indexOf(field.type) > -1">
+            <input name="{{field.id + rowIndex}}"
+                   ng-if="field.hasOwnProperty('default') || !field.hasOwnProperty('default') && !field.hasOwnProperty('value')"
+                   ng-required="field.required"
+                   ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                   ng-model="field.default"
+                   class="inputs-in-table"
+                   ng-disabled="!isFieldWritable(field.writable)"
+                   type="number">
+            <input name="{{field.id + rowIndex}}"
+                   ng-if="field.hasOwnProperty('value')"
+                   ng-required="field.required"
+                   ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                   ng-model="field.value"
+                   class="inputs-in-table"
+                   ng-disabled="!isFieldWritable(field.writable)"
+                   type="number">
+          </div>
+
+          <div ng-if="['date'].indexOf(field.type) > -1">
+          <input datetimepicker
+                 class="form-control date-picker"
+                 ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                 name="{{field.id + rowIndex}}"
+                 ng-disabled="!isFieldWritable(field.writable)"
+                 ng-required="field.required"
+                 ng-model="field.props.value"
+                 format="DD/MM/YYYY"/>
+          </div>
+
+          <div ng-if="['select'].indexOf(field.type) > -1" ng-class="getBpAndFieldID(field)">
+            <!--<dropdown-organ ng-if="field.id==='sID_Public_SubjectOrganJoin'"-->
+                            <!--ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"-->
+                            <!--ng-model="field.value"-->
+                            <!--form-data-property="field"-->
+                            <!--service-data="oServiceData"-->
+                            <!--activiti-form="activitiForm"-->
+                            <!--ng-required="field.required"-->
+                            <!--form-data="data.formData"-->
+                            <!--ng-disabled="!isFieldWritable(field.writable)"-->
+                            <!--name="field.id"></dropdown-organ>-->
+            <div ng-if="!(item.autocompleteName === 'SubjectRole')">
+              <ui-select dropdown-autocomplete ng-if="field.selectType=='autocomplete'"
+                         ng-model="field.value"
+                         name="{{field.id + rowIndex}}"
+                         ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                         ng-required="field.required"
+                         autocomplete-data="field.autocompleteData"
+                         autocomplete-name="field.autocompleteName"
+                         reach-infinity="requestMoreItems($select.items)"
+                         ng-disabled="!isFieldWritable(field.writable)"
+                         on-select="onSelectDataList($item, tableName, rowIndex)">
+
+                <ui-select-match>
+                  {{$select.selected[autocompleteData.titleProperty] || field.value}}
+                </ui-select-match>
+                <ui-select-choices refresh="refreshList(field.autocompleteData.titleProperty, $select.search, field.name)"
+                                   refresh-delay="50"
+                                   repeat="item[field.autocompleteData.valueProperty] as item in items track by item[field.autocompleteData.orderBy]">
+                                 <span title="{{item[field.autocompleteData.titleProperty]}}">
+                                   {{item[field.autocompleteData.titleProperty]}}
+                                 </span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+
+            <div ng-if="item.autocompleteName === 'SubjectRole'">
+              <ui-select dropdown-autocomplete ng-if="item.selectType=='autocomplete'"
+                         ng-model="item.value"
+                         name="item.id"
+                         ng-class=""
+                         ng-required="item.required"
+                         autocomplete-data="item.autocompleteData"
+                         autocomplete-name="item.autocompleteName"
+                         reach-infinity="requestMoreItems($select.items)"
+                         ng-disabled="!isFieldWritable(field.writable)"
+                         on-select="onSelectDataList($item)">
+
+                <ui-select-match title="{{$select.selected}}">
+                  {{$select.selected[autocompleteData.titleProperty]}}
+                </ui-select-match>
+                <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search, item.name)"
+                                   refresh-delay="50"
+                                   repeat="field[item.autocompleteData.titleProperty] as field in items track by field[item.autocompleteData.orderBy]">
+                                 <span title="{{field[item.autocompleteData.titleProperty]}}">
+                                   {{field[item.autocompleteData.titleProperty]}}
+                                 </span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+          </div>
+
+          <div style="padding:5px"
+               class="error-popup"
+               ng-messages="form[tableName][field.id + rowIndex].$error" ng-if="form.$submitted && form[tableName][field.id + rowIndex].$invalid
+                                          || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName">
+            <span ng-message="required">Необхідно заповнити.</span>
+            <span ng-message="pattern">Значення має бути числом.</span>
+            <span ng-message="email">Помилка в email.</span>
+            <span ng-message="tel">Помилка в номері телефону.</span>
+            <span ng-message="autovin">Помилка у VIN-номері авто.</span>
+            <span ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</span>
+            <span ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</span>
+            <span ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</span>
+            <span ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
+                            х-місяців, х-років.
+                          </span>
+            <span ng-message="numberbetween">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</span>
+            <div ng-message="numberfractionalbetween">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</div>
+            <span ng-message="numbersaccounts">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</span>
+            <span ng-message="dateofbirth">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</span>
+            <span ng-message="CustomFormat">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</span>
+            <span ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</span>
+            <span ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</span>
+            <span ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</span>
+            <span ng-message="FileSign">Підпис не валідний або відсутній</span>
+            <span ng-message="FileExtensions">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</span>
+            <span ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</span>
+          </div>
+
+        </td>
+
+        <td style="padding: 0;" ng-if="$index !== 0">
+          <a href="#" class="btn btn-default remove-btn" ng-click="removeRow($index, form[tableName], item.id)">
+            <i style="color: #FF1F1F;" class="glyphicon glyphicon-remove"></i>
+          </a>
+        </td>
+
+      </tr>
+
+      </tbody>
+    </table>
+
+    <div style="text-align: left; margin-top: 3px">
+      <input type="button" ng-hide="rowLengthCheckLimit(item) && !item.aRow" class="add-row-button" ng-click="addRow(form[tableName], item.id, tableName)" value="Додати рядок">
+    </div>
+
+  </div>
+</div>

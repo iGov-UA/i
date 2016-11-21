@@ -77,6 +77,11 @@
           <checkbox-field></checkbox-field>
         </div>
 
+        <!--поле типа select-->
+        <div ng-if="item.value && isFormPropertyDisabled(item)">
+          <select-field></select-field>
+        </div>
+
         <!--поле типа user-->
         <p ng-if="item.type == 'user'">
           <label>{{sFieldLabel(item.name)}}</label>
@@ -177,6 +182,13 @@
 
         <!--поле типа file-->
         <file-formfield></file-formfield>
+
+        <!--поле типа table-->
+        <table-field></table-field>
+
+        <!--поле типа select-->
+        <select-field></select-field>
+
       </div>
 
       <!--атачи-->
@@ -188,13 +200,13 @@
         <div>
           <div class="dropup" ng-repeat="item in taskData.aAttachment" style="display: inline-block; position:relative;">
             <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
-              <p>{{item.description}}</p>
+              <p>{{item.description | tableButtonFilter}}</p>
               <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}"
                  target="_blank"
                  ng-if="!isTableAttachment(item.description)"
                  class="btn btn-info">Завантажити
               </a>
-              <a ng-click="openTableAttachment(item.id)"
+              <a ng-click="openTableAttachment(item.id, item.taskId)"
                  ng-if="isTableAttachment(item.description)"
                  class="btn btn-info">Переглянути
               </a>
@@ -213,7 +225,7 @@
                     ng-model="some"
                     title="{{item.description}}">
                     <!--ng-click="openModalWindow($event)">-->
-              {{item.description | cut : true : 25}}
+              {{item.description | cut : true : 25 | tableButtonFilter}}
             </button>
           </div>
         </div>

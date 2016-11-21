@@ -159,6 +159,30 @@ exports.post = function (options, onResult, data, json) {
     });
 };
 
+/**
+ * https://github.com/e-government-ua/i/issues/1382
+ * @param options
+ * @param onResult
+ */
+exports.uploadStream = function (options, onResult) {
+  var formData = {
+    taskId: options.taskId,
+    file: options.stream,
+    description: options.description
+  }, content = {
+    url: getRequestURL(options),
+    formData: formData,
+    headers: default_headers
+  };
+  request.post(content, function (error, response, body) {
+    if (!error) {
+      onResult(null, response.statusCode, body, response.headers);
+    } else {
+      onResult(error, null, null);
+    }
+  });
+};
+
 exports.put = function (options, onResult, data) {
   request.put(_.merge(getRequestOptions(options), data ? {
       json: true,
@@ -183,4 +207,48 @@ exports.del = function (options, onResult) {
       onResult(error, null, null);
     }
   });
+};
+
+/*
+ * sendGetRequest with central url using for select fields;
+ */
+exports.sendGetRequest = function (req, res, apiURL, params, callback, sHost, buffer) {
+  var options = {
+    path : apiURL,
+    query : params
+  };
+  var _callback = callback ? callback : this.getDefaultCallback(res);
+  var url = getRequestURLToCentral(options);
+  return request(url, _callback);
+};
+
+exports.getDefaultCallback = function (res) {
+  return function (error, response, body) {
+    if (error) {
+      res.status(500).send(error);
+    } else {
+      res.status(response.statusCode).send(body);
+    }
+  }
+};
+
+var getRequestURLToCentral = function (options) {
+
+  var requestURL = url.format({
+    protocol: config.activiti_central.prot,
+    hostname: config.activiti_central.host,
+    port: config.activiti_central.port,
+    pathname: '/' + (options.root || config.activiti_central.rest) + options.path
+  });
+  var qs = options.query;
+
+  return {
+    url: requestURL,
+    json: true,
+    qs: qs,
+    auth: {
+      username:config.activiti_central.username,
+      password:config.activiti_central.password
+    }
+  };
 };

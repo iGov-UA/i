@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="gni_69" name="ДФС - Надання витягу з реєстру платників єдиного податку" isExecutable="true">
-    <documentation>Рефакторинг: 28.04.2016. 
-Аналитик: Ставицкий В.Д.</documentation>
+    <documentation>
+    	Рефакторинг: 28.04.2016. Аналитик: Ставицкий В.Д.
+    	Рефакторинг с 19.10.16 по 20.10.16 Ставицкий В.Д. - Перевод на подписание принтформы ЕЦП, добавление принтформы в дашборд + маркеры принтформы  
+    	Рефакторинг с 09.11.16 Ставицкий В.Д. - Переделка заявления под подпись ЕЦП   	
+    </documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>        
@@ -20,33 +23,45 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" type="enum" default="yes" required="true">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="textArea" required="true"></activiti:formProperty>
 
-
-        <activiti:formProperty id="edrpou" name="Вкажіть код ЄДРПОУ; тільки цифрові позначення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sNameUr" name="Найменування підприємства" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddressFactualUr" name="Юридична адреса підприємства" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Вкажіть код ЄДРПОУ; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameUr" name="Найменування підприємства" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactualUr" name="Юридична адреса підприємства" type="textArea" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="info_1" type="label" default="&lt;a href=&quot;https://docs.google.com/document/d/17kd6pC_2PwfDgk1zJpZ6D1BkTRMJqDQLIAYq_9Pvri0/edit&quot; target=&quot;_blank&quot;&gt;примітка&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="info_2" name="Заповніть бланк" type="label" default="Завантажте &lt;a href=&quot;https://docs.google.com/document/d/1op393ACpXsaPwewbuvn4yir-8oskEXy83RcSXOuUnco/edit&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="zapit" name="Заповнений бланк" type="file" required="true"></activiti:formProperty>
+        
+		<activiti:formProperty id="sVf" name="Галочка физик" type="invisible" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sVu" name="Галочка юрик" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Автор звернення" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAdresECP" name="адресс" type="invisible" default=" "></activiti:formProperty>
+
 
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailCler1k" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerkGni69" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
 
         <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/gni_69_start.json')}"></activiti:formProperty>
+
+<!--  Вставка автоподписания ЭЦП начало ->
+	    <activiti:formProperty id="form_signed" name="Заява громадянина" type="file" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/gni_69_print_ecp.html"></activiti:formProperty>
+<!-  Вставка автоподписания ЭЦП конец  -->
+
+        
+        <activiti:formProperty id="info_1" type="label" default="&lt;a href=&quot;https://docs.google.com/document/d/17kd6pC_2PwfDgk1zJpZ6D1BkTRMJqDQLIAYq_9Pvri0/edit&quot; target=&quot;_blank&quot;&gt;примітка&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="info_2" name="Заповніть бланк" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/uc?export=download&amp;id=0B91XFkuwrCQbLUFXazBpQnhndVE&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
+        <activiti:formProperty id="zapit" name="Заповнений бланк" type="file" required="true"></activiti:formProperty>
+
+
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -59,7 +74,7 @@
     <serviceTask id="servicetask2" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerkGni69}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailCler1k}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -94,26 +109,27 @@
           <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header2.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваша заява на отримання витягу з реєстру платників єдиного податку, передана в роботу.
+				Ваша заява № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> на отримання витягу з реєстру платників єдиного податку, передана в роботу.
 			</p>			
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sPhoneOrgan}<br>
 			${sWorkTime}<br><br>
-			[pattern/mail/_common_signature_start.html]
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dfs_dnepr_vutyag_nalog_${sID_Public_SubjectOrganJoin}_${subekt}">
       <extensionElements>      
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Відділення фіскальної служби" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Орган обслуговування" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -123,18 +139,13 @@
           <activiti:value id="ur" name="по підприємству, як його представник"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="fio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>        
-        <activiti:formProperty id="bankIdAddressFactual" name="Місце реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" type="enum" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>    
                 
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameUr" name="Найменування Юридичноъ особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameUr" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressFactualUr" name="Юридична адреса підприємства; ;writable=false" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?; ;writable=false" type="string"></activiti:formProperty>
@@ -143,16 +154,23 @@
           <activiti:value id="accept" name="Надати витяг з реєстру платників єдиного податку"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні витягу"></activiti:value>
         </activiti:formProperty>
+
         <activiti:formProperty id="decision_reject" name="У разі відмови у наданні витягу оберіть причину" type="enum">
           <activiti:value id="not_subekt" name="не значиться зареєстрованим суб’єктом господарювання (фізичною особою–підприємцем або юридичною особою)"></activiti:value>
           <activiti:value id="not_payer" name="не платник єдиного податку"></activiti:value>
           <activiti:value id="yet" name="платником єдиного податку вже отримано Витяг з реєстру платників єдиного податку, заява щодо внесення нових змін до Реєстру не надходила"></activiti:value>
           <activiti:value id="other_reason" name="інша причина"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_1" name="Якщо обрали варіант &quot;інша причина&quot;, внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="Внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+
+        <activiti:formProperty id="sAvtor" name="Автор звернення" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAdresECP" name="адресс" type="invisible" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/gni_69_user.json')}"></activiti:formProperty>
-
+        
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/gni_69_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -250,10 +268,10 @@
 				Вам необхідно мати при собі оригінал паспорта громадянина України<br> 
 				та назвати номер запиту №[sID_Order]
 			</p>			
-			<br><br>			
-			[pattern/mail/_common_feedback.html]
+			<br><br>
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br />
+			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>

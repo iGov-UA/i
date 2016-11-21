@@ -9,7 +9,6 @@ import org.igov.io.mail.unisender.CreateCampaignRequest;
 import org.igov.io.mail.unisender.CreateEmailMessageRequest;
 import org.igov.io.mail.unisender.UniResponse;
 import org.igov.io.mail.unisender.UniSender;
-import org.igov.service.business.msg.MsgService;
 import org.igov.util.MethodsCallRunnerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,8 +53,6 @@ public class Mail extends Abstract_Mail {
     @Autowired
     UniSender oUniSender;
 
-    @Autowired
-    MsgService msgService;
 
     private final static Logger LOG = LoggerFactory.getLogger(Mail.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
@@ -123,7 +120,6 @@ public class Mail extends Abstract_Mail {
         } else {
             sendAlternativeWay(sbBody.toString());
         }
-        //        }
 
     }
 
@@ -346,7 +342,8 @@ public class Mail extends Abstract_Mail {
             }
 
             String sBody =  getBody();
-            sBody = sBody + "" + "<br>Для отписки перейдите по <a href=\"{{UnsubscribeUrl}}\">ссылке</a>";
+            //sBody = sBody + "" + "<br>Для отписки перейдите по <a href=\"{{UnsubscribeUrl}}\">ссылке</a>";
+            sBody = sBody + "" + "<br>Якщо Ви бажаєте відмовитися від повідомлень, будь ласка, натисніть <a href=\"{{UnsubscribeUrl}}\"тут</a>/";
 
             CreateEmailMessageRequest.Builder oBuilder = CreateEmailMessageRequest
                     //.getBuilder(sKey_Sender, "en")

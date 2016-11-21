@@ -5,22 +5,34 @@
  */
 package org.igov.model.subject;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.Column;
+
 import org.igov.model.core.NamedEntity;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *
  * @author olga
  */
+@javax.persistence.Entity
 public class SubjectGroup extends NamedEntity{
     
-    @JsonProperty(value = "sID_Group_Activiti")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@JsonProperty(value = "sID_Group_Activiti")
+	@Column
     private String sID_Group_Activiti;
     
     @JsonProperty(value = "sChain")
+    @Column
     private String sChain;
-
-    public String getsID_Group_Activiti() {
+    
+    
+	public String getsID_Group_Activiti() {
         return sID_Group_Activiti;
     }
 
@@ -35,5 +47,11 @@ public class SubjectGroup extends NamedEntity{
     public void setsChain(String sChain) {
         this.sChain = sChain;
     }
-    
+
+	@Override
+	public String toString() {
+		return "SubjectGroup [sID_Group_Activiti=" + sID_Group_Activiti + ", sChain=" + sChain + ", getName()="
+				+ getName() + ", getId()=" + getId() + "]";
+	}
+
 }
