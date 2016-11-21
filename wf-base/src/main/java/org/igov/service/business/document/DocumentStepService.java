@@ -263,6 +263,16 @@ public class DocumentStepService {
         Map<String,Object> mReturn;
         //a.get(1).getType().getInformation()
         for (FormProperty oProperty : a) {
+            String sID = oProperty.getId();
+            
+            
+            Boolean bWriteField=null;
+            for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
+                if(bWriteField==null){
+                    bWriteField = false;
+                }
+                bWriteField = bWriteField || oDocumentStepSubjectRight.getbWrite();
+            }            
             
         }                
         
