@@ -422,7 +422,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow42" sourceRef="boundarytimer4" targetRef="exclusivegateway4"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="exclusivegateway4" targetRef="usertask_step5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult == 'false'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult == 'False'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow44" sourceRef="usertask_step6" targetRef="usertask_step14"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -444,7 +444,9 @@ execution.setVariable('sTextLetter', sMessage)</script>
     <sequenceFlow id="flow46" sourceRef="scripttask1" targetRef="servicetask_step14.1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow47" sourceRef="usertask_step5" targetRef="exclusivegateway5"></sequenceFlow>
-    <sequenceFlow id="flow48" sourceRef="exclusivegateway4" targetRef="exclusivegateway5"></sequenceFlow>
+    <sequenceFlow id="flow48" sourceRef="exclusivegateway4" targetRef="exclusivegateway5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult == 'True'}]]></conditionExpression>
+    </sequenceFlow>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow49" sourceRef="exclusivegateway5" targetRef="parallelgateway3"></sequenceFlow>
     <sequenceFlow id="flow50" sourceRef="servicetask_step14.1" targetRef="parallelgateway3"></sequenceFlow>
