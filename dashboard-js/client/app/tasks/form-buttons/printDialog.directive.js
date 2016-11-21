@@ -9,9 +9,9 @@ angular.module('dashboardJsApp').directive('printDialog', [
       link: function($scope, $elem, attrs) {
         //console.log('printDialog $scope, attrs', $scope, attrs);
         // dirty hack to allow this directive be parsed on print form upload in task.service.js
-        if ($scope.containsPrintTemplate && $scope.containsPrintTemplate()) {
-          $scope.processedPrintTemplate = $scope.getPrintTemplate();
-        }
+      //  if ($scope.containsPrintTemplate && $scope.containsPrintTemplate()) {
+      //    $scope.processedPrintTemplate = $scope.getPrintTemplate();
+      //  }
         $scope.$watch('printModalState.show', function(newval, oldval) {
           if (oldval != newval) {
             if (newval == true) {
