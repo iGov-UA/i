@@ -124,7 +124,7 @@ public class SubjectGroupService {
 								public boolean apply(SubjectUser subjectUser) {
 									// получить только отфильтрованный список по
 									// sFind в фио
-									return subjectUser.getsFirstName().contains(sFind.toLowerCase());
+									return subjectUser.getsFirstName().toLowerCase().contains(sFind.toLowerCase());
 								}
 							}));
 					subjUsers.put(subjectGroup, processUserFiltr);
