@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="RDA_Dopomoga_na_likyvania_1103" name="Надання одноразової грошової допомоги на лікування громадянам" isExecutable="true">
+  <process id="rda_1421_likdopomoga" name="Надання одноразової грошової допомоги на лікування громадянам" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть необхідну РДА" type="select" default="0" required="true"></activiti:formProperty>
@@ -39,7 +39,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Заявка про ${sPosluga_name}</activiti:expression>
+          <activiti:expression>Заява про ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -74,7 +74,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
+          <activiti:expression>Нова заява про ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -92,7 +92,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRozrRah" name="№ розрахункового рахунку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="accept" name="Заявка передана на розгляд комісії з питань надання матеріальної допомоги"></activiti:value>
+          <activiti:value id="accept" name="Заява передана на розгляд комісії з питань надання матеріальної допомоги"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
@@ -142,7 +142,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow7" name="${decide == 'reject'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
+    <sequenceFlow id="flow7" name="ЗАЯВА ПОГАНА" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="Заява ОК" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -179,7 +179,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow8" name="${decide == 'accept'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
+    <sequenceFlow id="flow8" name="ЗАЯВА ОК" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -289,8 +289,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
     <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_RDA_Dopomoga_na_likyvania_1103">
-    <bpmndi:BPMNPlane bpmnElement="RDA_Dopomoga_na_likyvania_1103" id="BPMNPlane_RDA_Dopomoga_na_likyvania_1103">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_rda_1421_likdopomoga">
+    <bpmndi:BPMNPlane bpmnElement="rda_1421_likdopomoga" id="BPMNPlane_rda_1421_likdopomoga">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="170.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -367,14 +367,14 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <omgdi:waypoint x="682.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="615.0" y="250.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="95.0" x="516.0" y="280.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="516.0" y="280.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="702.0" y="270.0"></omgdi:waypoint>
         <omgdi:waypoint x="702.0" y="306.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="754.0" y="312.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="712.0" y="292.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -393,7 +393,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <omgdi:waypoint x="702.0" y="510.0"></omgdi:waypoint>
         <omgdi:waypoint x="822.0" y="540.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="720.0" y="505.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="87.0" x="720.0" y="505.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
