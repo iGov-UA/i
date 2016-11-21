@@ -23,6 +23,7 @@
         <activiti:formProperty id="markers1" name="Якщо електроний документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asEnumEdocs&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategoryIncoming&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumEdocs'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо службові листи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;asEnumOfficialLetters&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategoryIncoming&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOfficialLetters'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
+        
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
@@ -82,7 +83,14 @@
       <script>
 var number=execution.getVariable('sID_Order_GovPublic')
 var fullNumber="вх-"+number+"/"
-execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
+execution.setVariable('sID_Order_GovPublic', fullNumber)
+
+var updatedDate = new Date();
+var days = 30;
+updatedDate.setDate(new Date().getDate() + days);
+var sNewDate = (updatedDate.getDate() + "." + (updatedDate.getMonth() + 1) + "." + updatedDate.getFullYear());
+execution.setVariable('sDateExecution', sNewDate)
+</script>
     </scriptTask>
     <sequenceFlow id="flow13" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
