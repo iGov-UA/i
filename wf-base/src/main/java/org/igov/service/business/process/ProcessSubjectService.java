@@ -124,11 +124,11 @@ public class ProcessSubjectService {
 								new Predicate<ProcessUser>() {
 							@Override
 							public boolean apply(ProcessUser processUser) {
-								// получить только отфильтрованный список карт
+								// получить только отфильтрованный список по sFind в фио
 								return processUser.getsFirstName().contains(sFind);
 							}
 						}));
-				
+				//получаем только их логины
 				final List<String> sFindLogin = Lists
 						.newArrayList(Collections2.transform(processUserFiltr, new Function<ProcessUser, String>() {
 							@Override
@@ -136,6 +136,8 @@ public class ProcessSubjectService {
 								return processUser.getsLogin();
 							}
 						}));
+				
+			//и оставляем только  processSubject чьи логины содержаться в отфильтрованном списке
 					if(sFindLogin.contains(processSubject.getsLogin())){
 						aChildResultByUser.add(processSubject);
 					}
