@@ -3,7 +3,8 @@
 var compose = require('composable-middleware')
   , NodeCache = require("node-cache")
   , errors = require('../errors')
-  , subjectService = require('../../api/subject/subject.service');
+  , subjectService = require('../../api/subject/subject.service')
+  , config = require('../../config/environment');
 
 var serversCache = new NodeCache();
 
@@ -23,7 +24,7 @@ function _searchForHost (req, res, next) {
       if (!err) {
         if (!value) {
           subjectService.getServerRegion(nID_Server, function (httpError, sHost) {
-            if (!httpError) {
+            if (!httpError && !(sHost.code === 'BUSINESS_ERR')) {
               serversCache.set(nID_Server, sHost, 100000, function (cacheError, success) {
                 if (!cacheError && success) {
                   addRegion(req, sHost, false, nID_Server);
