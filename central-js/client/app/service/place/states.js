@@ -103,18 +103,24 @@ angular.module('app').config(function($stateProvider) {
         oServiceData: function($stateParams, service) {
           var aServiceData = service.aServiceData;
           var oServiceData = null;
-          angular.forEach(aServiceData, function(value, key) {
-            if (value.nID_City && value.nID_City.nID === $stateParams.city) {
+          if ($stateParams.city > 0) {
+            angular.forEach(aServiceData, function(value, key) {
               // if city is available for this service
-              oServiceData = value;
-            } else if(value.nID_Region && value.nID_Region.nID === $stateParams.region){
+              if (value.nID_City && value.nID_City.nID === $stateParams.city) {
+                oServiceData = value;
+              }
+            });
+          } else {
+            angular.forEach(aServiceData, function(value, key) {
               // if city isn't, but region is available for this service
-              oServiceData = value;
-            } else if (value.nID_ServiceType && !value.hasOwnProperty('nID_City') && !value.hasOwnProperty('nID_Region') && (value.nID_ServiceType.nID === 4 || value.nID_ServiceType.nID === 1 ) ) {
+              if (value.nID_Region && value.nID_Region.nID === $stateParams.region) {
+                oServiceData = value;
               // country level: service is defined, but no region and no city is
-              oServiceData = value;
-            }
-          });
+              } else if (value.nID_ServiceType && !value.hasOwnProperty('nID_City') && !value.hasOwnProperty('nID_Region') && (value.nID_ServiceType.nID === 4 || value.nID_ServiceType.nID === 1 ) ) {
+                oServiceData = value;
+              }
+            });
+          }
           return oServiceData;
         },
         BankIDLogin: function($q, $state, $location, $stateParams, UserService) {

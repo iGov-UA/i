@@ -746,7 +746,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
         return true;
       };
-      $scope.isShowFillSelfPrevious = false;
+
       $scope.fillSelfPrevious = function () {
 
         $http.get('/api/order/getStartFormByTask', {
@@ -765,7 +765,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               var property = $scope.data.formData.params[key];
 
               if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)) {
-                $scope.isShowFillSelfPrevious = true;
+
                 if (oField && oField !== null
                     && oField.type !== "file"
                     && oField.type !== "label"

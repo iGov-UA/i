@@ -63,32 +63,27 @@ module.exports.decryptContent = function (req, res) {
     var mail = result.loadedContent.formData ? result.loadedContent.formData.params.email : 'in.lermin@gmail.com';
     var formInn = result.loadedContent.formData ? result.loadedContent.formData.params.bankIdinn : '2943209693';
     var fiscalHeader = JSON.stringify({
-      "customerType": "physical",
+      "customerType":"physical",
       "fiscalClaimAction": "decrypt",
       "customerInn": formInn ? formInn : req.session.subject.sID,
-      "email": mail
+      "email":mail
     });
-
-    try {
-      userService.signFiles(
-        req.session.access.accessToken,
-        url.resolve(
-          originalURL(req, {}),
-          '/api/sign-content/decrypt/callback?nID_Server=' + req.query.nID_Server + '&restoreUrl=' + restoreUrl + '&fileName=' + fileName
-        ),
-        objectsToSign,
-        function (error, signResult) {
-          if (error) {
-            callbackAsync(error, result);
-          } else {
-            result.signResult = signResult;
-            callbackAsync(null, result);
-          }
-        },
-        fiscalHeader);
-    } catch (e) {
-      callbackAsync(e, result);
-    }
+    userService.signFiles(
+      req.session.access.accessToken,
+      url.resolve(
+        originalURL(req, {}),
+        '/api/sign-content/decrypt/callback?nID_Server=' + req.query.nID_Server + '&restoreUrl='+restoreUrl + '&fileName='+fileName
+      ),
+      objectsToSign,
+      function (error, signResult) {
+        if (error) {
+          callbackAsync(error, result);
+        } else {
+          result.signResult = signResult;
+          callbackAsync(null, result);
+        }
+      },
+      fiscalHeader);
 
     function originalURL(req, options) {
       options = options || {};
@@ -114,15 +109,9 @@ module.exports.decryptContent = function (req, res) {
     decryptContentAsync
   ], function (error, result) {
     if (error) {
-      req.session = null;
-
-      if (error === 'invalid_token') {
-        res.redirect(restoreUrl);
-      } else {
-        res.redirect(restoreUrl
-          + '?formID=' + formID
-          + '&error=' + JSON.stringify(error));
-      }
+      res.redirect(restoreUrl
+        + '?formID=' + formID
+        + '&error=' + JSON.stringify(error));
     } else {
       res.redirect(result.signResult.desc);
     }
@@ -198,7 +187,7 @@ module.exports.callback = function (req, res) {
 
   function handleResult(err, result) {
     if (err) {
-      res.redirect(restoreUrl + '&error=' + JSON.stringify(err));
+      res.redirect(restoreUrl+ '&error=' + JSON.stringify(err));
     } else {
       res.redirect(restoreUrl + '?signedFileID=' + result.signedFileID + '&fileName=' + fileName);
     }
