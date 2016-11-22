@@ -82,7 +82,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         var comment = template.match(/<!--[\s\S]*?-->/g);
         if(Array.isArray(comment)) {
           for(var i=0; i<comment.length; i++) {
-            comment[i] = comment[i].match(/([a-z][A-Z])\w+/)[0];
+            comment[i] = comment[i].match(/[a-zA-Z1-9]+/)[0];
           }
         }
         if(comment) matchesIds.push(comment);
