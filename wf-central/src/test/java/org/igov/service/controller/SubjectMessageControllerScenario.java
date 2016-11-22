@@ -61,6 +61,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("default")
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Ignore
 public class SubjectMessageControllerScenario {
 
 	public static final String SET_MESSAGE = "/subject/message/setMessage";
