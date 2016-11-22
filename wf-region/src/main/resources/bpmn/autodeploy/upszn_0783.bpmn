@@ -22,6 +22,17 @@
         <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації отримувача стипендії" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nTrust" name="Документ, який підтверджує статус піклувальника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nScanPassport" name="Скан-копія паспорта отримувача стипендії: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="transfer_type" name="Оберіть зручний для Вас спосіб перерахування коштів" type="enum" required="true">
+          <activiti:value id="attr1_post" name="через національного оператора поштового зв'язку"></activiti:value>
+          <activiti:value id="attr2_bank" name="на рахунок у банку"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="post_office" name="№ відділення поштового зв'язку (індекс); заповнюється у разі вибору такого варіанта перерахування коштів" type="string" default="-"></activiti:formProperty>
+        <activiti:formProperty id="bank_name" name="Назва банку; заповнюється у разі вибору такого варіанту перерахування коштів" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bank_mfo" name="МФО банку; заповнюється у разі вибору такого варіанта перерахування коштів" type="long"></activiti:formProperty>
+        <activiti:formProperty id="bank_okpo" name="ЄДРПОУ банку; заповнюється у разі вибору такого варіанта перерахування коштів" type="long"></activiti:formProperty>
+        <activiti:formProperty id="bank_account" name="Номер Вашого рахунку/картки в банку; заповнюється у разі вибору такого варіанта перерахування коштів" type="long"></activiti:formProperty>
+        <activiti:formProperty id="bankticket" name="Довідка з банку з реквізитами рахунку;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="вибір варіанту отримання грошей" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;post_office&quot;],&quot;asID_Field&quot;: {&quot;sTransfer&quot;: &quot;transfer_type&quot;},&quot;sCondition&quot;: &quot;[sTransfer] == 'attr1_post'&quot;},&quot;ShowFieldsOnCondition_2&quot;: {&quot;aField_ID&quot;: [&quot;bank_name&quot;,&quot;bank_mfo&quot;,&quot;bank_okpo&quot;,&quot;bank_account&quot;,&quot;bankticket&quot;],&quot;asID_Field&quot;: {&quot;sTransfer&quot;: &quot;transfer_type&quot;},&quot;sCondition&quot;: &quot;[sTransfer] == 'attr2_bank'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
@@ -104,6 +115,15 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="sEnumPersonal" name="Особисто отримувачем стипендії"></activiti:value>
           <activiti:value id="sEnumCare" name="Піклувальником"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="transfer_type" name="Cпосіб перерахування коштів" type="enum" writable="false">
+          <activiti:value id="attr1_post" name="через національного оператора поштового зв'язку"></activiti:value>
+          <activiti:value id="attr2_bank" name="на рахунок у банку"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="post_office" name="№ відділення поштового зв'язку (індекс); заповнюється у разі вибору такого варіанта перерахування коштів" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bank_name" name="Назва банку; заповнюється у разі вибору такого варіанта перерахування коштів" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bank_mfo" name="МФО банку; заповнюється у разі вибору такого варіанта перерахування коштів" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bank_okpo" name="ЄДРПОУ банку; заповнюється у разі вибору такого варіанта перерахування коштів" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bank_account" name="Номер рахунку; заповнюється у разі вибору такого варіанта перерахування коштів" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Задовільнити заяву"></activiti:value>
           <activiti:value id="reject" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
@@ -114,7 +134,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nTrust},${nScanPassport}</activiti:expression>
+            <activiti:expression>${nTrust},${nScanPassport},${bankticket}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
