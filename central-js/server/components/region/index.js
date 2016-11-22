@@ -16,8 +16,8 @@ function addRegion(req, sHost, isCacheUsed, nID_Server){
 }
 
 function _searchForHost (req, res, next) {
-  var nID_Server = (!req.query.nID_Server || req.query.nID_Server < 0) && req.query.nID_Server !== 0 ?
-    config.activiti.nID_Server : req.query.nID_Server;
+  var serverId = req.query.nID_Server || req.body.nID_Server;
+  var nID_Server = (!serverId || serverId < 0) && serverId !== 0 ? config.activiti.nID_Server : serverId;
 
   if (nID_Server !== undefined && nID_Server !== null && nID_Server !== "") {
     serversCache.get(nID_Server, function (err, value) {
