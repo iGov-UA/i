@@ -86,7 +86,7 @@ public class SubjectMessageController {
     private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
     @Autowired
     private ServerDao serverDao;
-    
+
     @Autowired
     HttpRequester httpRequester;
     
@@ -96,7 +96,7 @@ public class SubjectMessageController {
     @Autowired
     private TaskService taskService;
 
-    @ApiOperation(value = "Получение сообщения", notes = ""
+	@ApiOperation(value = "Получение сообщения", notes = ""
             + "Примеры: https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76\n"
             + "\n```json\n"
             + "Ответ:\n"
@@ -182,7 +182,7 @@ public class SubjectMessageController {
             LOG.warn("Error: {},incorrect param sID_Rate (not a number): {}", ex.getMessage(), sID_Rate);
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
-        
+
         //Boolean bExist = false;
         Map<String,Object> m = mInitOrderMessageFeedback(sID_Order, nRate);
         String sURL_Redirect = (String)m.get("sURL_Redirect");
@@ -190,7 +190,7 @@ public class SubjectMessageController {
         //String sURL_Redirect = initOrderMessageFeedback(sID_Order, nRate);
         oResponse.sendRedirect(sURL_Redirect);
         String sReturn = "Ok!";
-        
+
         //subjectMessagesDao.setMessage(oSubjectMessage_Rate);
         /*String sToken = RandomStringUtils.randomAlphanumeric(15);
          try {
@@ -234,7 +234,7 @@ public class SubjectMessageController {
             LOG.warn("incorrect param nID_Rate (not in range[1..5]): {}", nID_Rate);
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It is too short or too long number");
         }
-        
+
         String sURL_Redirect = null;
         String sReturn = null;
 
@@ -310,7 +310,7 @@ public class SubjectMessageController {
         }
         return m;//sURL_Redirect
     }
-    
+
     @ApiOperation(value = "/setMessageFeedback_Indirectly", notes = "")
     @RequestMapping(value = "/setMessageFeedback_Indirectly", method = RequestMethod.GET)
     public
@@ -459,7 +459,7 @@ public class SubjectMessageController {
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
-            
+
             if (bAuth) {
                 actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
             }
@@ -510,7 +510,7 @@ public class SubjectMessageController {
             subjectMessagesDao.setMessage(oSubjectMessage);
 
             Long messageID = oSubjectMessage.getId();
-            
+
             LOG.info("Successfully saved message with the ID {}", messageID);
 
             String sHost = null;
@@ -573,9 +573,9 @@ public class SubjectMessageController {
     ) throws CommonServiceException, IOException {
 
         LOG.info("Started! (sID_Source={}, nID_Service={}, nID={}, sID_Order={})", sID_Source, nID_Service, nID, sID_Order);
-       
+
         String responseMessage = null;
-        
+
         /*if(nID_Rate==null){
             nID_Rate=sID_Rate;
         }*/
@@ -587,7 +587,7 @@ public class SubjectMessageController {
             Map<String,Object> m = mInitOrderMessageFeedback(sID_Order, Integer.valueOf(""+nID_Rate));
             //sURL_Redirect = m.get("sURL_Redirect");
             bExist = (Boolean) m.get("bExist");
-        }//sID_Order!=null && 
+        }//sID_Order!=null &&
         if(bExist){//sURL_Redirect==null
             /*    throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "Cant save feedback! sID_Order="+sID_Order, HttpStatus.NOT_FOUND);*/
@@ -663,10 +663,10 @@ public class SubjectMessageController {
             }
             }
         return new ResponseEntity<>(oJSONObject.toString(), HttpStatus.CREATED);
-        
+
     }
 
-    
+
     @ApiOperation(value = "Сохранить ответ об отзыве по услуге от сторонней организации")
     @RequestMapping(value = "/setFeedbackAnswerExternal", method = RequestMethod.POST)
     public ResponseEntity<String> setFeedbackAnswerExternal(
@@ -709,8 +709,8 @@ public class SubjectMessageController {
             LOG.error("/setFeedbackAnswerExternal, message: {}", e.getMessage());
             throw new CommonServiceException(e.getMessage(), e);
         }
-    }    
-    
+    }
+
     @ApiOperation(value = "Получить отзыв по услуге от сторонней организации по номеру отзыва и паролю или все отзывы по сервису")
     @RequestMapping(value = "/getFeedbackExternal", method = RequestMethod.GET)
     public ResponseEntity<String> getFeedbackExternal(
@@ -722,7 +722,7 @@ public class SubjectMessageController {
 
             @ApiParam(value = "ID сервиса", required = false) @RequestParam(value = "nID_Service", required = false) Long nID_Service)
             throws CommonServiceException {
-        
+
         LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nID, sID_Token);
         if(nID!=null){
             SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nID);
@@ -745,7 +745,7 @@ public class SubjectMessageController {
                     //oSubjectMessageService.getAllSubjectMessageFeedbackBynID_Service(nID_Service); // return list of feedbacks by nID_Service
                     oSubjectMessageService.getAllSubjectMessageFeedback_Filtered(nID_Service, nID__LessThen_Filter, nRowsMax); // return list of feedbacks by nID_Service
                     //getAllSubjectMessageFeedbackBynID_Service(Long nID_service, Integer nID__LessThen_Filter, Integer nRowsMax)
-            
+
             for (SubjectMessageFeedback messageFeedback : feedbackList) {
                 messageFeedback.setsID_Token(null);
             }
@@ -754,7 +754,7 @@ public class SubjectMessageController {
         }else{
             throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "need parameters!", HttpStatus.NOT_FOUND);
-        }        
+        }
         /*
         LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nId, sID_Token);
         SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nId);
@@ -848,7 +848,7 @@ public class SubjectMessageController {
                 return mReturn;
 
                 /*} else {
-                 LOG.info("Skipping history event service " + oHistoryEvent_Service.getId() + " from processing as it contains wrong token: " + 
+                 LOG.info("Skipping history event service " + oHistoryEvent_Service.getId() + " from processing as it contains wrong token: " +
                  oHistoryEvent_Service.getsToken() + ":" + oHistoryEvent_Service.getsID_Order());
                  throw new CommonServiceException(
                  ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -920,7 +920,7 @@ public class SubjectMessageController {
                      HttpStatus.FORBIDDEN);
                      } else {
                      Optional<SubjectMessageType> subjectMessageType = subjectMessageTypeDao.findById(nID_SubjectMessageType);
-		    					
+
                      oSubjectMessage.setDate(new DateTime());
                      oSubjectMessage.setBody(sBody);
                      if (subjectMessageType.isPresent()){
@@ -987,41 +987,41 @@ public class SubjectMessageController {
     byte[] getMessageFile(
             @ApiParam(value = "Строка-ИД заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @ApiParam(value = "Номер-ИД сообщения", required = true) @RequestParam(value = "nID_Message", required = true) Long nID_Message) throws CommonServiceException{
-    	
+
     		//content of the message file
     		byte[] aByte = null;
     		try{
 	    		SubjectMessage message = subjectMessagesDao.getMessage(nID_Message);
 	    		if(message == null){
 	        		LOG.info("Message is not found by nID_Message {}", nID_Message);
-	    			CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");                
+	    			CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
 	                throw newErr;
-	    		}    	    	
-	    		LOG.info("Message is recieved by nID_Message {}", nID_Message);    		
+	    		}
+	    		LOG.info("Message is recieved by nID_Message {}", nID_Message);
 	    		if (isNotBlank(sID_Order)){
 	    			HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
 	                if (oHistoryEvent_Service != null) {
-                                LOG.info("oHistoryEvent_Service.getId()={},message.getnID_HistoryEvent_Service()={}", oHistoryEvent_Service.getId(),message.getnID_HistoryEvent_Service());    		
+                                LOG.info("oHistoryEvent_Service.getId()={},message.getnID_HistoryEvent_Service()={}", oHistoryEvent_Service.getId(),message.getnID_HistoryEvent_Service());
 	                	if (oHistoryEvent_Service.getId() == null){
 	                		LOG.info("ID_HIstoryEvent_Service of the order is empty {}", nID_Message);
-	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Order not found");                
+	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Order not found");
 	        				throw newErr;
 	                	}else if(!Objects.equals(oHistoryEvent_Service.getId(), message.getnID_HistoryEvent_Service())){
 	                		LOG.info("ID_HIstoryEvent_Service of the message is not equal to ID_HIstoryEvent_Service of the order {}", nID_Message);
-	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Alien order");                
+	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Alien order");
 	        				throw newErr;
 	                	}
 	                }
 	    		}
 	    		if (isNotBlank(message.getData())){
-	    			LOG.info("Field sData in message is not null");	    			
+	    			LOG.info("Field sData in message is not null");
 	    	        JSONArray sDataArrayJson = (new JSONObject(message.getData())).getJSONArray("aFile");
 	    			String sFileName = (String) ((JSONObject) sDataArrayJson.getJSONObject(0)).get("sFileName");
 	    			String sKey = (String) ((JSONObject) sDataArrayJson.getJSONObject(0)).get("sKey");
-	    			
+
 	    			LOG.info("sKey value {}",sKey);
 	    			LOG.info("sFileName value {}", sFileName);
-	    			    			    		       
+
                                 aByte = durableBytesDataStorage.getData(sKey);
                                 LOG.info("aByte.length={}", aByte.length);
 	    		}
@@ -1035,9 +1035,9 @@ public class SubjectMessageController {
     	            throw new CommonServiceException(500, "Unknown exception: " + e.getMessage());
     			}
     		}
-    	return aByte;    	
+    	return aByte;
     }
-    
+
     @ApiOperation(value = " Возвращает содержимое отсылаемого сообщения, если такое существует.", notes = ""
             + "Возвращает содержимое отсылаемого сообщения, если такое существует.:\n"
             + "Если не найдена запись SubjectMessage по ID или у найденного сообщения пустое поле, указывающее на контект сообщения, то метод возвращает ошибку с текстом сообщения \"Record not found\"\n"
