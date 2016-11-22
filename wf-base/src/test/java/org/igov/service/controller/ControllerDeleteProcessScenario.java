@@ -84,8 +84,8 @@ public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
                         )
         );
     }
-    
+
         //{nID_StatusType=12, sBody=Заявка видалена (testLogin): testReason, nID_Process=123, sUserTaskName=Заявка видалена}
         //{nID_StatusType=12, sBody=Заявка видалена (testLogin): testReason, nID_Process=123, sUserTaskName=Заявка видалена}
-    
+
 }
