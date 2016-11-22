@@ -1,6 +1,15 @@
 angular.module('autocompleteService')
     .controller('dropdownAutocompleteCtrl', function ($scope, $http, $filter, $timeout, $q) {
 
+    $scope.selectedValue = function (field, select) {
+      var val = field.name.split(';');
+      if(val.length === 3) {
+          return field.value;
+      } else {
+          return select;
+      }
+    };
+
     var hasNextChunk = true,
         queryParams = {params: {}},
         tempCollection, count = 30;
@@ -29,6 +38,10 @@ angular.module('autocompleteService')
 
     var getAdditionalPropertyName = function() {
         return ($scope.autocompleteData.additionalValueProperty ? $scope.autocompleteData.additionalValueProperty : $scope.autocompleteData.prefixAssociatedField) + '_' + $scope.autocompleteName;
+    };
+
+    var getNameWithPostFix = function (field) {
+      return field && field.id ? field.id.split('_') : null;
     };
 
     $scope.requestMoreItems = function(collection) {
@@ -117,9 +130,9 @@ angular.module('autocompleteService')
         }
         // }
     };
-
-    $scope.onSelectDataList = function (item, tableName, rowIndex) {
+    $scope.onSelectDataList = function (item, tableName, rowIndex, field) {
         var additionalPropertyName = getAdditionalPropertyName();
+        var nameWithPostFix = getNameWithPostFix(field);
         if (rowIndex || rowIndex >= 0) {
             var form = $scope.activitiForm ? $scope.activitiForm.formProperties : $scope.taskForm;
             angular.forEach(form, function (property) {
@@ -130,6 +143,11 @@ angular.module('autocompleteService')
                                 obj[key].default = item[$scope.autocompleteData.prefixAssociatedField];
                             } else {
                                 obj[key].value = item[$scope.autocompleteData.prefixAssociatedField];
+                            }
+                        }
+                        if(nameWithPostFix && nameWithPostFix[1]) {
+                            if(nameWithPostFix[1] === field.id.split('_')[1]) {
+                                obj[key].value = item[field.id.split('_')[0]];
                             }
                         }
                     });

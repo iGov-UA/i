@@ -115,10 +115,10 @@
                          autocomplete-name="field.autocompleteName"
                          reach-infinity="requestMoreItems($select.items)"
                          ng-disabled="!isFieldWritable(field.writable)"
-                         on-select="onSelectDataList($item, tableName, rowIndex)">
+                         on-select="onSelectDataList($item, tableName, rowIndex, field)">
 
                 <ui-select-match>
-                  {{$select.selected[autocompleteData.titleProperty] || field.value}}
+                  {{selectedValue(field, $select.selected[autocompleteData.titleProperty])}}
                 </ui-select-match>
                 <ui-select-choices refresh="refreshList(field.autocompleteData.titleProperty, $select.search, field.name)"
                                    refresh-delay="50"
@@ -140,10 +140,10 @@
                          autocomplete-name="item.autocompleteName"
                          reach-infinity="requestMoreItems($select.items)"
                          ng-disabled="!isFieldWritable(field.writable)"
-                         on-select="onSelectDataList($item)">
+                         on-select="onSelectDataList($item, tableName, rowIndex, field)">
 
-                <ui-select-match title="{{$select.selected}}">
-                  {{$select.selected[autocompleteData.titleProperty]}}
+                <ui-select-match>
+                  {{selectedValue(field, $select.selected[autocompleteData.titleProperty])}}
                 </ui-select-match>
                 <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search, item.name)"
                                    refresh-delay="50"
