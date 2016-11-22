@@ -34,7 +34,7 @@ module.exports.upload = function(req, res, target, error){
     target: target,
     secure: false
   }, function(e) {
-    if(e){
+    if(error){
       error(e);
     }
   });

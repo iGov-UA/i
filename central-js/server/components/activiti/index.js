@@ -144,7 +144,7 @@ module.exports.getDefaultCallback = function (res) {
     if (error) {
       res.status(500).send(error);
     } else {
-      res.status(response.statusCode).send(body||{});
+      res.status(response.statusCode).send(body);
     }
   }
 };
@@ -283,7 +283,6 @@ module.exports.sendDeleteRequest = function (req, res, apiURL, params, callback,
 };
 
 module.exports.getServerRegionHost = function (nID_Server, fCompleted) {
-  console.log('$..................getServerRegionHost nID_Server:', nID_Server);
   this.getServerRegion(nID_Server, function (oServer) {
     console.log("[getServerRegionHost]oServer=" + oServer);
     var sHost = null;

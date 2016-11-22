@@ -8,27 +8,29 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Звернення подане" type="enum" required="true">
           <activiti:value id="sEnumPersonal" name="Особисто отримувачем стипендії"></activiti:value>
           <activiti:value id="sEnumCare" name="Піклувальником"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sLastName" name="Прізвище отримувача стипендії" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFirstName" name="Ім'я отримувача стипендії" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMiddleName" name="По батькові отримувача стипендії" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nInn" name="ІПН отримувача стипендії" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sIdPassport" name="Паспортні дані отримувача стипендії" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації отримувача стипендії" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nTrust" name="Документ, який підтверджує статус піклувальника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nScanPassport" name="Скан-копія паспорта отримувача стипендії: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFirstName" name="Ім'я " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPrich" name="Причина заміни посвідчення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name="Завантажте документи, необхідні для визначення статусу «Ветеран праці». Якщо документ має декілька сторінок об'єднайте у pdf-файл або zip архів" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nCertif" name="Копія пенсійного посвідчення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nTrud" name="Документ, який підтверджує загальний трудовий стаж" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubstance" name="&quot;Ветеран праці&quot;" type="invisible" default="&quot;Ветеран праці&quot;"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sGroup" name="Група користувачів iGov" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Вибір категорії" type="markers" default="${markerService.loadFromFile('soczah/upszn_0783.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Вибір категорії" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sPrich&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumChange'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -75,46 +77,47 @@
           <activiti:string><![CDATA[Звернення на тему Надання стипендії особам, яким виповнилось 100 і більше років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-&lt;p&gt; Ваше звернення №[sID_Order] на тему: "Надання стипендії особам, яким виповнилось 100 і більше років" було зареєстровано у системі.&lt;br/&gt;
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt; Ваше звернення №[sID_Order] на тему: enum{[asType]} було зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Розгляд документів держслужбовцем" activiti:candidateGroups="${sGroup}">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Адреса електронної пошти заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGetFio" name="Отримувач стипендії; ;writable=false" type="string" default="${sLastName} ${sFirstName} ${sMiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sIdPassport" name="Паспортні дані отримувача стипендії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nInn" name="ІПН отримувача стипендії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації отримувача стипендії; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Звернення подане" type="enum" writable="false">
           <activiti:value id="sEnumPersonal" name="Особисто отримувачем стипендії"></activiti:value>
           <activiti:value id="sEnumCare" name="Піклувальником"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sLastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFirstName" name="Ім'я " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Задовільнити заяву"></activiti:value>
           <activiti:value id="reject" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sSubstance" name="«Ветеран праці»" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/kalush_soczah_401_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/upszn_0783_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/kalush_soczah_401_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nTrust},${nScanPassport}</activiti:expression>
+            <activiti:expression>${nCertif},${nTrud}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -143,28 +146,25 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Інформація щодо Надання стипендії особам, яким виповнилось 100 і більше років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-			&lt;p&gt; На жаль, Ваше звернення на тему: "Надання стипендії особам, яким виповнилось 100 і більше років" було відхилено.&lt;br/&gt;
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+			&lt;p&gt; На жаль, Ваше звернення на тему: enum{[asType]} було відхилено.&lt;br/&gt;
 			&lt;p&gt; Причина в наступному:&lt;br/&gt;
 			&lt;p&gt;${comment}&lt;/p&gt;
 			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
 			&lt;br /&gt;
 			${sPhoneOrgan}&lt;br /&gt;
-			[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_feedback.html]   	 
-[pattern/mail/new_design/_common_signature_start.html]
+			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}&lt;br /&gt;
-			[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-</activiti:expression>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" name="Недостатньо документів" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="Лист з запрошенням" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask5" name="Лист з запрошенням для отримання посвідчення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
       <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -185,10 +185,10 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Надання стипендії особам, яким виповнилось 100 і більше років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-			&lt;p&gt;Ваше звернення на тему: "Надання стипендії особам, яким виповнилось 100 і більше років" - розглянуте.&lt;/p&gt;
-			&lt;p&gt;Стипендію призначено.&lt;br/&gt;
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+			&lt;p&gt;Ваше звернення на тему: enum{[asType]} - розглянуте.&lt;/p&gt;
+			&lt;p&gt;Запрошуємо Вас отримати посвідчення за адресою:&lt;br/&gt;
 			&lt;/p&gt;
 			${sPhoneOrgan}&lt;br /&gt;
 			&lt;br /&gt;
@@ -196,13 +196,11 @@ ${sNameOrgan}&lt;br /&gt;
 			${sWorkTime}&lt;br /&gt;
 			${sAddress}&lt;br /&gt;
 			&lt;br /&gt;
-			[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_feedback.html]   	 
-[pattern/mail/new_design/_common_signature_start.html]
+			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}&lt;br /&gt;
-			[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-</activiti:expression>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

@@ -87,10 +87,11 @@ public class HttpRequester {
         StringBuilder osReturn = new StringBuilder();
         try {
             HttpURLConnection oConnection = (HttpURLConnection) oURL.openConnection();
-            if(sUser != null && sPassword != null){
-                String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
-                oConnection.setRequestProperty("authorization", "Basic " + sAuth);
-            }
+            //String sUser = generalConfig.getAuthLogin();
+            //String sPassword = generalConfig.getAuthPassword();
+            String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
+            oConnection.setRequestProperty("authorization", "Basic " + sAuth);
+
             oConnection.setRequestMethod(RequestMethod.POST.name());
             if(contentType != null){
                 oConnection.setRequestProperty("Content-Type", contentType);
