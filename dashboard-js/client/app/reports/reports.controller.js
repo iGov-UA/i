@@ -8,15 +8,15 @@
   reportsCtrl.$inject = ['$scope', '$timeout', 'Modal', 'reports', 'processes'];
   function reportsCtrl($scope, $timeout, Modal, reports, processes) {
     $scope.export = {};
-    $scope.export.from = '2015-06-01';
-    $scope.export.to = '2015-08-01';
+    $scope.export.from = '2016-11-18';
+    $scope.export.to = '2016-11-25';
     $scope.export.sBP = 'dnepr_spravka_o_doxodax';
     $scope.exportURL = "/reports";
     $scope.export.bExportAll  = false;
 
     $scope.statistic = {};
-    $scope.statistic.from = '2015-06-01';
-    $scope.statistic.to = '2015-08-01';
+    $scope.statistic.from = '2016-11-18';
+    $scope.statistic.to = '2016-11-25';
     $scope.statistic.sBP = 'dnepr_spravka_o_doxodax';
     $scope.statisticUrl = "/reports";
     $scope.date = {
