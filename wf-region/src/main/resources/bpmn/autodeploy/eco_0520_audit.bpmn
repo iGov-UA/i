@@ -110,7 +110,7 @@
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд комісії"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="маркер якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'||[sClient] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="нагадування" type="invisible"></activiti:formProperty>
@@ -176,9 +176,9 @@
           <activiti:value id="accept" name="документи заявника погоджено, призначити дату іспиту"></activiti:value>
           <activiti:value id="reject" name="відмова у допуску до іспиту"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDateExam" name="Вкажіть дату та час складання іспиту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAddressExam" name="Вкажіть адресу, за якою буде проводитись іспит" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="comment_2" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateExam" name="Вкажіть дату та час складання іспиту" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressExam" name="Вкажіть адресу, за якою буде проводитись іспит" type="string"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="маркер якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;comment_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'||[sClient] == 'відмова у допуску до іспиту'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers15" name="маркер якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;sDateExam&quot;,&quot;sAddressExam&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'accept'||[sClient] == 'документи заявника погоджено, призначити дату іспиту'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
@@ -238,8 +238,8 @@
           <activiti:value id="accept" name="рішення про видачу сертифіката"></activiti:value>
           <activiti:value id="reject" name="рішення про відмову у видачі сертифіката"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAddressSertificate" name="Вкажіть адресу, за якою аудітор може отримати сертифікат" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="comment_3" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressSertificate" name="Вкажіть адресу, за якою аудітор може отримати сертифікат" type="string"></activiti:formProperty>
+        <activiti:formProperty id="comment_3" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="маркер якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;comment_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'||[sClient] == 'рішення про відмову у видачі сертифіката'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers16" name="маркер якщо видача" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;sAddressSertificate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'accept'||[sClient] == 'рішення про видачу сертифіката'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
@@ -347,8 +347,10 @@
 [pattern/mail/new_design/_common_content_start.html]
 На жаль, Ваше звернення відхилено через недостатню або неправильну інформацію.<br>
 Коментар держслужбовця: ${comment_1}<br>
-Телефон для довідок:(044)206-31-54<br>
+<br>
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
+<br>
+Телефон для довідок:(044)206-31-54<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 Міністерство екології та природних ресурсів України<br>	   
