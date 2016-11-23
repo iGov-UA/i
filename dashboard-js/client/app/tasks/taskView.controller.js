@@ -126,10 +126,10 @@
             }
             return 0;
           });
-        }
+        }a
 
         // it's get hidden object with IdGroupNext
-        // hiddenObjById(getIdFromActivityProperty("sDestinationFieldID_sName"));
+        hiddenObjById(getIdFromActivityProperty("sDestinationFieldID_sName"));
         // it's get hidden object with IdGroupNext
         hiddenObjById(getIdFromActivityProperty("sSourceFieldID_sID_Group"));
 
