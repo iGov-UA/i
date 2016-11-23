@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="med_1562_zbroya" name="Видача медичної довідки для отримання дозволу на зброю (форма 127/о)" isExecutable="true">
+    <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть медичний заклад, в якому Ви бажаєте отримати медичну довідку для дозволу на зброю" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="lable" name="Зверніть увагу" type="label" default="&lt;b&gt;Запис на видачу медичної довідки для отримання дозволу на зброю (форма 127/о) проводиться особисто&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Телефон органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow23" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var src=execution.getVariable('date_of_visit')
+var year=src.substr(0,4)
+var month=src.substr(5,2)
+var day=src.substr(8,2)
+var hour=src.substr(11,2)
+var minutes=src.substr(14,2)
+var seconds='00'
+var delta=1
+if (day!='01')
+    {
+        day=day-delta
+    }
+else
+    {
+        if ((month!='01')&amp;&amp;(month!='03'))
+          {
+              month=month-1
+              day=30
+          }
+        else
+          {
+            if (month=='03')
+            {
+              month='02'
+              day='28'
+            }            
+          }
+     }
+var timer=year+'-'+month+'-'+day+'T'+hour+':'+minutes+':'+seconds
+execution.setVariable('sNotification_day', timer)</script>
+    </scriptTask>
+    <sequenceFlow id="flow28" sourceRef="scripttask1" targetRef="parallelgateway1"></sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow30" sourceRef="parallelgateway1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDate>${sNotification_day}</timeDate>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow31" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow34" name="${sCancelInfo != 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="endevent4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow33" name="${sCancelInfo == 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo == 'Заявка актуальна'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask6" name="Нагадування про візит" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки для отримання дозволу на зброю (форма 127/о)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>
+Чекаємо Вас за адресою: ${sAddress}<br>
+</p>
+<p>
+Дата та час візиту: ${date_of_visit}.
+</p>
+<p>
+										<b>Необхідні документи, які треба принести на видачу медичної довідки для отримання дозволу на зброю (форма 127/о):</b><br>
+									    <ul>
+										При собі мати:</ul>
+										<li>паспорт з обовязковою припискою по ${sArea};</li>
+										<li>кошти для оплати бланка довідки</li>
+										<ul>
+										Для чолоіків також необхідно мати військовий квиток або приписне свідотство!</ul>
+									</p>			
+									</p>
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow32" sourceRef="servicetask6" targetRef="parallelgateway2"></sequenceFlow>
+    <serviceTask id="servicetask2" name="${sLikari}" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки для отримання дозволу на зброю (форма 127/о)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+									<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+									<p>
+										Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
+										Ви записались на видачу медичної довідки для отримання дозволу на зброю (форма 127/о)
+									</p>
+									<p>
+										Для того щоб закінчити процедуру необхідно:<br>
+										<ul>
+										Прийти за адресою: ${sAddress}.</ul>
+										<ul>
+										При собі мати:</ul>
+										<li>паспорт з обовязковою припискою по ${sArea};</li>
+										<li>кошти для оплати бланка довідки</li>
+										<ul>
+										Для чолоіків також необхідно мати військовий квиток або приписне свідотство!</ul>
+									</p>
+                                       <p>
+                                       Дата та час візиту: ${date_of_visit}.
+                                       </p>
+										</ul>         
+									<p>[cancelTask]</p>                
+									[pattern/mail/_common_signature_start.html]
+									${sNameOrgan},<br>
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="${sLikari}" activiti:candidateGroups="zdov_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
+          <activiti:value id="reestr" name="Громадянин з'явився"></activiti:value>
+          <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="parallelgateway2"></sequenceFlow>
+    <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow36" sourceRef="parallelgateway2" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finish=='attr1_ok'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки для отримання дозволу на зброю (форма 127/о)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                              		Ви отримали послугу "Видача медичної довідки для отримання дозволу на зброю (форма 127/о)".
+                              		</p>
+                              		<p>
+                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
+                              		Дякуємо.
+									</p>
+                                    [pattern/mail/_common_signature_start.html]
+									${sNameOrgan},<br>
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_feedback.html]
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="endevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finish=='attr2_missed'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent4" name="End"></endEvent>
+    <sequenceFlow id="flow37" sourceRef="parallelgateway1" targetRef="servicetask2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_med_1562_zbroya">
+</definitions>
