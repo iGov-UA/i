@@ -30,6 +30,7 @@
         }
 
         function getObjFromTaskFormById(id) {
+          if(id == null) return null;
           for (var i = 0; i < taskForm.length; i++) {
             if (taskForm[i].id.includes(id)) {
               return taskForm[i];
@@ -50,24 +51,39 @@
           return aoNewUser;
         }
 
-        function getFromTaskFormObjWithIdGroupNext() {
+        function getIdFromActivityProperty(param) {
+          if(param == null) return null;
           var item = getObjFromTaskFormById("sLoginAsignee");
-
           if (item !== null) {
-            var as = getRegexContains(item.name, ';', "sSourceFieldID_sID_Group");
-            as = getRegexContains(as, ',', "sSourceFieldID_sID_Group");
+            var as = getRegexContains(item.name, ';', param);
+            as = getRegexContains(as, ',', param);
             var sID = as.split('=')[1];
-
-            return getObjFromTaskFormById(sID);
+            return sID;
           }
           return null;
+        }
+
+        $scope.updateAssigneeName = function(item){
+          if (item.id.includes("sLoginAsignee_")) {
+            if (item.id.includes("sLoginAsignee_")) {
+              for(var i = 0; i < item.enumValues.length;i++) {
+                if (item.value == item.enumValues[i].id) {
+                  var sAssigneeName= getObjFromTaskFormById(getIdFromActivityProperty("sDestinationFieldID_sName"));
+                  if (sAssigneeName != null) {
+                    sAssigneeName.value = item.enumValues[i].name;
+                    break;
+                  }
+                }
+              }
+            }
+          }
         }
 
         fillingUsers();
 
         function fillingUsers() {
           if (taskData.sLoginAssigned != null) {
-            var itemWith_sID = getFromTaskFormObjWithIdGroupNext();
+            var itemWith_sID = getObjFromTaskFormById(getIdFromActivityProperty("sSourceFieldID_sID_Group"));
 
             if (itemWith_sID !== null) {
               var group = itemWith_sID.value;
@@ -80,6 +96,7 @@
                     item.enumValues = convertUsersToEnum(users);
                     if(item.value == null){
                       item.value = item.enumValues[0].id;
+                      $scope.updateAssigneeName(item);
                     }
                   }
                 });
@@ -87,6 +104,11 @@
             }
           }
         }
+        function print(t) {
+          console.log(t);
+        }
+
+
 
         function sortUsersByAlphabet(items) {
           items.sort(function (a, b) {
@@ -106,10 +128,13 @@
           });
         }
 
-        hiddenObjWithGroupNext();
+        // it's get hidden object with IdGroupNext
+        // hiddenObjById(getIdFromActivityProperty("sDestinationFieldID_sName"));
+        // it's get hidden object with IdGroupNext
+        hiddenObjById(getIdFromActivityProperty("sSourceFieldID_sID_Group"));
 
-        function hiddenObjWithGroupNext() {
-          var itemWith_sID = getFromTaskFormObjWithIdGroupNext();
+        function hiddenObjById(id) {
+          var itemWith_sID = getObjFromTaskFormById(id);
           if (itemWith_sID !== null && itemWith_sID.readable) {
             itemWith_sID.readable = false;
           }
