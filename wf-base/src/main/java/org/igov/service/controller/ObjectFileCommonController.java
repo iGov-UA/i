@@ -293,7 +293,7 @@ public class ObjectFileCommonController {
         }
         LOG.info("attachmentId: " + attachmentId + " taskId: " + taskId + " nFile: " + nFile + " processInstanceId: " + processInstanceId);
         // Выбираем по процессу прикрепленные файлы
-        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, nFile, processInstanceId, null);
+        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, nFile, processInstanceId);
         String sFileName = attachmentRequested.getName();
         String description = attachmentRequested.getDescription();
         String type = attachmentRequested.getType();
@@ -448,7 +448,7 @@ public class ObjectFileCommonController {
                     Attachment.class);
         }
 
-        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, null, processInstanceId, taskId);
+        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, null, processInstanceId);
 
         InputStream attachmentStream = null;
         if (attachmentRequested != null) {

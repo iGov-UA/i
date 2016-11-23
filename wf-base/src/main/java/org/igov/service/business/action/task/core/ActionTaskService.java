@@ -621,7 +621,7 @@ public class ActionTaskService {
         return Long.toString(ToolLuna.getValidatedOriginalNumber(nID_Protected));
     }
 
-    public Attachment getAttachment(String attachmentId, Integer nFile, String processInstanceId, String sTaskID) {
+    public Attachment getAttachment(String attachmentId, Integer nFile, String processInstanceId) {
         String st = "Attachment for attachmentId = " + attachmentId
                 + " processInstanceId = " + processInstanceId
                 + " nFile = " + nFile;
@@ -636,16 +636,6 @@ public class ActionTaskService {
                 LOG.info("(null != nFile && nFile.equals(i + 1)) = " + (null != nFile && nFile.equals(i + 1)));
                 attachmentRequested = attachments.get(i);
                 break;
-            }
-        }
-        if (sTaskID != null && attachmentRequested == null){
-            List<Attachment> attachmentsFromTask = oTaskService.getTaskAttachments(sTaskID);
-            for (Attachment anAttachmentFromTask : attachmentsFromTask) {
-                LOG.info("Check attachment from task ID = " + anAttachmentFromTask.getId());
-                if (anAttachmentFromTask.getId().equalsIgnoreCase(attachmentId)) {
-                    attachmentRequested = anAttachmentFromTask;
-                    break;
-                }
             }
         }
         if (attachmentRequested == null && !attachments.isEmpty()) {
