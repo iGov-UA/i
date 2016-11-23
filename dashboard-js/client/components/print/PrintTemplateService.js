@@ -35,8 +35,9 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
           var result = false;
           if (item.id
             && item.id.indexOf('sBody') >= 0
-            && FieldMotionService.FieldMentioned.inShow(item.id)
-            && FieldMotionService.isFieldVisible(item.id, form)) {
+            && !FieldMotionService.FieldMentioned.inShow(item.id)
+            || (FieldMotionService.FieldMentioned.inShow(item.id)
+            && FieldMotionService.isFieldVisible(item.id, form))) {
             result = true;
             // На дашборде при вытягивани для формы печати пути к патерну, из значения поля -
             // брать название для каждого элемента комбобокса #792
