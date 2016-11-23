@@ -50,8 +50,8 @@ public class SetTasks_Listener implements TaskListener {
             InputStream json_Content = taskService.getAttachmentContent(sID_Attachment_Value);
  
             LOG.info("json_Content sTaskProcessDefinition_Value: " + taskService.getAttachmentContent(sTaskProcessDefinition_Value));
-            LOG.info("json_Content sBodyDocument_Value: " + taskService.getAttachmentContent(sBodyDocument_Value));
-            LOG.info("json_Content sLoginAuthor_Value: " + taskService.getAttachmentContent(sLoginAuthor_Value));
+            //LOG.info("json_Content sBodyDocument_Value: " + taskService.getAttachmentContent(sBodyDocument_Value));
+            //LOG.info("json_Content sLoginAuthor_Value: " + taskService.getAttachmentContent(sLoginAuthor_Value));
         }
          catch (Exception ex){
              LOG.error("SetTasks listener throws an error: " + ex.toString());
