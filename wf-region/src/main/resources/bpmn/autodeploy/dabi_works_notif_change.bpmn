@@ -405,7 +405,22 @@
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow45" sourceRef="boundarytimer3" targetRef="parallelgateway1"></sequenceFlow>
-    <userTask id="usertask_UserGroup" name="CheckAssigneeGroup" activiti:candidateGroups="kyiv_dabi_doc"></userTask>
+    <userTask id="usertask_UserGroup" name="CheckAssigneeGroup" activiti:candidateGroups="kyiv_dabi_doc">
+      <extensionElements>
+        <activiti:formProperty id="sResult" name="Виконавець - начальник відділу?" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${checkUserGroup}">
+          <activiti:field name="sGroupListener">
+            <activiti:expression><![CDATA[kyiv_dabi_permit_doc_boss]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sUsernameListener">
+            <activiti:expression><![CDATA[${sLoginAsignee}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="resultListener">
+            <activiti:expression><![CDATA[sResult]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>               
+    </userTask>
     <sequenceFlow id="flow46" sourceRef="parallelgateway6" targetRef="usertask_UserGroup"></sequenceFlow>
     <boundaryEvent id="boundarytimer4" name="Timer" attachedToRef="usertask_UserGroup" cancelActivity="true">
       <timerEventDefinition>
