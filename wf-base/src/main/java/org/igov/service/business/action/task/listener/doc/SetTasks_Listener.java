@@ -34,7 +34,7 @@ public class SetTasks_Listener implements TaskListener {
     @Override
     public void notify(DelegateTask delegateTask) {
         try{
-            /*String sTaskProcessDefinition_Value = 
+            String sTaskProcessDefinition_Value = 
                 getStringFromFieldExpression(this.sTaskProcessDefinition, delegateTask.getExecution());
             String sID_Attachment_Value = 
                 getStringFromFieldExpression(this.sID_Attachment, delegateTask.getExecution());
@@ -43,7 +43,7 @@ public class SetTasks_Listener implements TaskListener {
             String sLoginAuthor_Value = 
                 getStringFromFieldExpression(this.sLoginAuthor, delegateTask.getExecution());
  
-            LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
+            /*LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
                 + sTaskProcessDefinition_Value + " sID_Attachment_Value: " + sID_Attachment_Value + " sBodyDocument_Value: " +
                 sBodyDocument_Value + " sLoginAuthor_Value: " + sLoginAuthor_Value); */
  
