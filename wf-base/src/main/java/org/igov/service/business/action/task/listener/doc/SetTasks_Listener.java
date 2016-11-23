@@ -47,7 +47,7 @@ public class SetTasks_Listener implements TaskListener {
                 + sTaskProcessDefinition_Value + " sID_Attachment_Value: " + sID_Attachment_Value + " sBodyDocument_Value: " +
                 sBodyDocument_Value + " sLoginAuthor_Value: " + sLoginAuthor_Value);
  
-            InputStream json_Content = taskService.getAttachmentContent(sID_Attachment_Value);
+            //InputStream json_Content = taskService.getAttachmentContent(sID_Attachment_Value);
  
             LOG.info("json_Content: " + json_Content);
         }
