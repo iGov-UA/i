@@ -49,7 +49,7 @@ public class SetTasks_Listener implements TaskListener {
  
             //InputStream json_Content = taskService.getAttachmentContent(sID_Attachment_Value);
  
-            LOG.info("json_Content: " + json_Content);
+            //LOG.info("json_Content: " + json_Content);
         }
          catch (Exception ex){
              LOG.error("SetTasks listener throws an error: " + ex.toString());
