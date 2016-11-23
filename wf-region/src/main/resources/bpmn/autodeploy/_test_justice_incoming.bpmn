@@ -4,6 +4,9 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="email" name="email" type="string" default="email@email.com"></activiti:formProperty>
+        <activiti:formProperty id="sID_Attachment" name="sID_Attachment" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBodyDocument" name="sBodyDocument" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAuthor" name="sLoginAuthor" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="крок 1" activiti:candidateGroups="justice_common">
@@ -17,6 +20,9 @@
           <activiti:value id="sEnumCreateOutcomingLetter" name="сформувати"></activiti:value>
           <activiti:value id="sEnumNotCreateOutcomingLetter" name="не треба формувати поки що"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sID_Attachment" name="sID_Attachment" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBodyDocument" name="sBodyDocument" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAuthor" name="sLoginAuthor" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${SetTasks}">
