@@ -191,10 +191,6 @@
         <activiti:formProperty id="sID_NumberDABI" name="Реєстраційний номер з реєстру ДАБІ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="asSignatory" name="Особа, якій необхідно підписати документ" type="enum">
-          <activiti:value id="sEnumSignDirector" name="Директор"></activiti:value>
-          <activiti:value id="sEnumSignDeputy" name="Заступник директора"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notif_change_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notif_change_req.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
@@ -405,7 +401,22 @@
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow45" sourceRef="boundarytimer3" targetRef="parallelgateway1"></sequenceFlow>
-    <userTask id="usertask_UserGroup" name="CheckAssigneeGroup" activiti:candidateGroups="kyiv_dabi_doc"></userTask>
+    <userTask id="usertask_UserGroup" name="CheckAssigneeGroup" activiti:candidateGroups="kyiv_dabi_doc">
+      <extensionElements>
+        <activiti:formProperty id="sResult" name="Виконавець - начальник відділу?" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${checkUserGroup}">
+          <activiti:field name="sGroupListener">
+            <activiti:expression><![CDATA[kyiv_dabi_permit_doc_boss]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sUsernameListener">
+            <activiti:expression><![CDATA[${sLoginAsignee}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="resultListener">
+            <activiti:expression><![CDATA[sResult]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>               
+    </userTask>
     <sequenceFlow id="flow46" sourceRef="parallelgateway6" targetRef="usertask_UserGroup"></sequenceFlow>
     <boundaryEvent id="boundarytimer4" name="Timer" attachedToRef="usertask_UserGroup" cancelActivity="true">
       <timerEventDefinition>
