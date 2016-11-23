@@ -191,10 +191,6 @@
         <activiti:formProperty id="sID_NumberDABI" name="Реєстраційний номер з реєстру ДАБІ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="asSignatory" name="Особа, якій необхідно підписати документ" type="enum">
-          <activiti:value id="sEnumSignDirector" name="Директор"></activiti:value>
-          <activiti:value id="sEnumSignDeputy" name="Заступник директора"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notif_change_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notif_change_req.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
