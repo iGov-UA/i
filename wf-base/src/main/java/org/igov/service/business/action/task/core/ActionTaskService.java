@@ -641,7 +641,7 @@ public class ActionTaskService {
         if (sTaskID != null && attachmentRequested == null){
             List<Attachment> attachmentsFromTask = oTaskService.getTaskAttachments(sTaskID);
             for (Attachment anAttachmentFromTask : attachmentsFromTask) {
-                LOG.info("Check attachment from task ID = " + anAttachmentFromTask);
+                LOG.info("Check attachment from task ID = " + anAttachmentFromTask.getId());
                 if (anAttachmentFromTask.getId().equalsIgnoreCase(attachmentId)) {
                     attachmentRequested = anAttachmentFromTask;
                     break;
