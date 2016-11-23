@@ -5,21 +5,13 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTable1" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-                <activiti:formProperty id="sTable10" name="Тест" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sSubjectOrganJoinTax&quot;,&quot;name&quot;:&quot;Підрозділ митниці&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sID_UA_SubjectOrganJoinTax&quot;,&quot;name&quot;:&quot;Код митниці&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sObjectCustoms&quot;,&quot;name&quot;:&quot;Товары&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sID_UA_ObjectCustoms&quot;,&quot;name&quot;:&quot;Код товара&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sCountry&quot;,&quot;name&quot;:&quot;Страны&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sID_UA_Country&quot;,&quot;name&quot;:&quot;Код страны&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="крок 1" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Таблица с исполнителями" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sExecutor&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sName_SubjectRole&quot;,&quot;name&quot;:&quot;ФИО&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-
-        <activiti:formProperty id="sID_Group_Activiti" name="sID_Group_Activiti" type="string" default="MJU_Dnipro_Top1"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="nDeepLevel" type="string" default="3"></activiti:formProperty>
-       
-        <activiti:formProperty id="markers14" name="валідатор поля sBankMfoUah та sBankMfoCurrency" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_14&quot;:{&quot;aField_ID&quot;:[&quot;sBankMfoUah&quot;,&quot;sBankMfoCurrency&quot;],&quot;sFormat&quot;:&quot;######&quot;,&quot;sMessage&quot;:&quot;Невірний формат. МФО має складатися з 6 цифр&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -33,13 +25,13 @@
     <userTask id="usertask2" name="крок 2" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-       
+        <activiti:formProperty id="sTable1" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="валідатор поля sBankMfoUah та sBankMfoCurrency" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_14&quot;:{&quot;aField_ID&quot;:[&quot;sBankMfoUah&quot;,&quot;sBankMfoCurrency&quot;],&quot;sFormat&quot;:&quot;######&quot;,&quot;sMessage&quot;:&quot;Невірний формат. МФО має складатися з 6 цифр&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression><![CDATA[${sTable1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
