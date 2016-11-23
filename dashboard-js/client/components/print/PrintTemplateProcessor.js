@@ -44,7 +44,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
   return {
     processPrintTemplate: function (task, form, printTemplate, reg, fieldGetter) {
       var _printTemplate = printTemplate;
-      var templates = [], ids = [], found, idArray = [];
+      var templates = [], ids = [], found;
       while (found = reg.exec(_printTemplate)) {
         templates.push(found[1]);
         ids.push(found[2]);
@@ -82,7 +82,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         var comment = template.match(/<!--[\s\S]*?-->/g);
         if(Array.isArray(comment)) {
           for(var i=0; i<comment.length; i++) {
-            comment[i] = comment[i].match(/([a-z][A-Z])\w+/)[0];
+            comment[i] = comment[i].match(/[a-zA-Z1-9]+/)[0];
           }
         }
         if(comment) matchesIds.push(comment);

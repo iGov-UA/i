@@ -17,21 +17,20 @@ public class VSubjectGroupParentNode implements Serializable, IVisitable {
 
 	private SubjectGroup group;
 
-	List<VSubjectGroupChildrenNode> children = new ArrayList<>();
+	List<SubjectGroup> children = new ArrayList<>();
 
 
-	public VSubjectGroupParentNode(SubjectGroup group) {
-		this.group = group;
+	public VSubjectGroupParentNode() {
 	}
 
-	public void addChild(VSubjectGroupChildrenNode rootSubjectNode) {
-		children.add(rootSubjectNode);
+	public void addChild(SubjectGroup child) {
+		children.add(child);
 	}
 
 	@Override
 	public void accept(IVisitor visitor) {
 		visitor.deepLevel(this);
-		for (VSubjectGroupChildrenNode subjectGroupNode : children) {
+		for (SubjectGroup subjectGroupNode : children) {
 			subjectGroupNode.accept(visitor);
 		}
 
@@ -46,11 +45,11 @@ public class VSubjectGroupParentNode implements Serializable, IVisitable {
 		this.group = group;
 	}
 
-	public List<VSubjectGroupChildrenNode> getChildren() {
+	public List<SubjectGroup> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<VSubjectGroupChildrenNode> children) {
+	public void setChildren(List<SubjectGroup> children) {
 		this.children = children;
 	}
 

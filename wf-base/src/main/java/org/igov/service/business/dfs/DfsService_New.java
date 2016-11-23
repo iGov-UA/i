@@ -15,7 +15,6 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
-import org.igov.io.web.HttpRequester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +79,6 @@ public class DfsService_New {
             String sID_Attach_Dfs = asID_Attach_Dfs.deleteCharAt(asID_Attach_Dfs.length() - 1).toString();
             runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", sID_Attach_Dfs);
             taskService.setVariable(sID_Task, "anID_Attach_Dfs", sID_Attach_Dfs);
-            //taskService.complete(sID_Task);
         } else{
             runtimeService.setVariable(sID_Process, "anID_Attach_Dfs", " ");
             taskService.setVariable(sID_Task, "anID_Attach_Dfs", " ");

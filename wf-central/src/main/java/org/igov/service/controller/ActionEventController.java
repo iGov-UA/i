@@ -749,7 +749,7 @@ public class ActionEventController implements ControllerConstants {
                         }
                     }
 
-                    asCell.add(sDateCreate != null ? uDateFormat.format(sDateCreate.toDate()) : "");
+                    asCell.add(sDateCreate != null ?  uDateFormat.format(sDateCreate.toDate()) : "");
                     asCell.add(sDateClose != null ? uDateFormat.format(sDateClose.toDate()) : "");
 
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
