@@ -43,9 +43,9 @@ public class SetTasks_Listener implements TaskListener {
             String sLoginAuthor_Value = 
                 getStringFromFieldExpression(this.sLoginAuthor, delegateTask.getExecution());
  
-            /*LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
+            LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
                 + sTaskProcessDefinition_Value + " sID_Attachment_Value: " + sID_Attachment_Value + " sBodyDocument_Value: " +
-                sBodyDocument_Value + " sLoginAuthor_Value: " + sLoginAuthor_Value); */
+                sBodyDocument_Value + " sLoginAuthor_Value: " + sLoginAuthor_Value); 
  
             //InputStream json_Content = taskService.getAttachmentContent(sID_Attachment_Value);
  
