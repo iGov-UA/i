@@ -1,5 +1,4 @@
 package org.igov.model.process;
-
 import org.igov.model.core.EntityDao;
 import org.joda.time.DateTime;
 

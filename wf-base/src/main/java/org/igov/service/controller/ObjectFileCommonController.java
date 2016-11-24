@@ -830,17 +830,18 @@ public class ObjectFileCommonController {
         //D_FILL=HFILL=01012016
     }
     
-     @ApiOperation(value = "setTaskAttachment", notes
-            = "#####  Update/upload аттача таски в Mongo")
+    @ApiOperation(value = "setTaskAttachment", notes
+            = "#####  Set/update файла-атачмента к таске Activiti")
     @RequestMapping(value = "/setTaskAttachment", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public @ResponseBody
-    AttachmentEntityI setTaskAttachment(//ResponseEntity
-            @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
-            @ApiParam(value = "файл html. в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
-            @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "description") String description,
-            @ApiParam(value = "порядковый номер прикрепленного файла", required = true) @RequestParam(value = "nFile") Integer nFile)
-            throws IOException {
+    AttachmentEntityI setTaskAttachment(
+            @ApiParam(value = "строка-Логин пользователя", required = true) @RequestParam(value = "nTaskId") String taskId,
+            @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
+            @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "sDescription") String description,
+            @RequestParam(value = "sFileName") String sFileName,
+            @ApiParam(value = "id аттача Activiti", required = false) @RequestParam(value = "nID_Attach", required = false) String nID_Attach,
+            @RequestBody String sData) {
 
         String processInstanceId = null;
         String assignee = null;
@@ -851,41 +852,39 @@ public class ObjectFileCommonController {
             processInstanceId = task.getProcessInstanceId();
             assignee = task.getAssignee() != null ? task.getAssignee()
                     : "kermit";
-            LOG.debug("(processInstanceId={}, taskId={}, assignee={})", processInstanceId, taskId, assignee);
+            LOG.debug("processInstanceId:{}, taskId:{}, assignee:{} ", processInstanceId, taskId, assignee);
         } else {
             LOG.error("There is no tasks at all!");
+
         }
 
         identityService.setAuthenticatedUserId(assignee);
 
-        List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
-        for (Attachment oAttachment : attachments) {
-            try {
-                Attachment attachmentRequest = oActionTaskService.getAttachment(oAttachment.getId(), nFile, processInstanceId);
-                if (attachmentRequest != null) {
-                    taskService.deleteAttachment(attachmentRequest.getId());
-                    LOG.info("Attachment was deleted. nFile {} With name {} ",
-                            nFile, attachmentRequest.getName());
+        if (nID_Attach != null) {
+            List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
+            for (Attachment oAttachment : attachments) {
+                if (nID_Attach.equals(oAttachment.getId())) {
+                    taskService.deleteAttachment(nID_Attach);
+                    LOG.info("Attachment was deleted. nID_Attach {} ", nID_Attach);
                 }
-            } catch (ActivitiObjectNotFoundException oException) {
-                LOG.info(oException.getMessage());
             }
         }
 
-        String sFilename = file.getOriginalFilename();
-        LOG.debug("(sFilename={})", file.getOriginalFilename());
+        String sFilename = sFileName;
+        LOG.debug("sFilename={}", sFileName);
         sFilename = sTextTranslit(sFilename);
-        LOG.debug("(FileExtention:{}, fileContentType:{}, fileName:{}) ",
-                oActionTaskService.getFileExtention(file), file.getContentType(), sFilename);
+        LOG.debug("FileExtention: {}, fileContentType:{}, fileName:{}",
+                oActionTaskService.getFileExtention(sFileName), sContentType, sFilename);
         LOG.debug("description: {}", description);
 
-        Attachment oAttachment = taskService.createAttachment(file.getContentType() + ";" + oActionTaskService.getFileExtention(file), taskId,
-                processInstanceId, sFilename,
-                description, file.getInputStream());
+        Attachment attachment = taskService.createAttachment(sContentType + ";"
+                + oActionTaskService.getFileExtention(sFileName), taskId, processInstanceId,
+                sFilename, description,
+                new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
 
         AttachmentCover oAttachmentCover = new AttachmentCover();
-        return oAttachmentCover.apply(oAttachment);
+
+        return oAttachmentCover.apply(attachment);
     }
-    
 
 }

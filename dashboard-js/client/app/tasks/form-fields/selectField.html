@@ -1,0 +1,95 @@
+<div ng-if="['select'].indexOf(item.type) > -1" class="col-sm-12 form-field">
+  <div class="col-sm-6 task-form-title">
+    <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && !inUnassigned() && item.writable" style="color: red">*</span></label>
+  </div>
+  <div class="col-sm-6" style="padding-right: 0">
+    <!--<dropdown-organ ng-if="field.id==='sID_Public_SubjectOrganJoin'"-->
+    <!--ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"-->
+    <!--ng-model="field.value"-->
+    <!--form-data-property="field"-->
+    <!--service-data="oServiceData"-->
+    <!--activiti-form="activitiForm"-->
+    <!--ng-required="field.required"-->
+    <!--form-data="data.formData"-->
+    <!--ng-disabled="!isFieldWritable(field.writable)"-->
+    <!--name="field.id"></dropdown-organ>-->
+
+    <div ng-if="!isFormPropertyDisabled(item)">
+
+        <div ng-if="item.autocompleteName === 'SubjectRole'">
+          <ui-select dropdown-autocomplete ng-if="item.selectType=='autocomplete'"
+                     ng-model="item.value"
+                     name="item.id"
+                     ng-class=""
+                     ng-required="item.required"
+                     autocomplete-data="item.autocompleteData"
+                     autocomplete-name="item.autocompleteName"
+                     reach-infinity="requestMoreItems($select.items)"
+                     on-select="onSelectDataList($item)">
+
+          <ui-select-match title="{{$select.selected}}">
+            {{$select.selected[autocompleteData.titleProperty]}}
+          </ui-select-match>
+          <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search, item.name)"
+                             refresh-delay="50"
+                             repeat="field[item.autocompleteData.titleProperty] as field in items track by field[item.autocompleteData.orderBy]">
+                                 <span title="{{field[item.autocompleteData.titleProperty]}}">
+                                   {{field[item.autocompleteData.titleProperty]}}
+                                 </span>
+          </ui-select-choices>
+          </ui-select>
+        </div>
+
+
+        <div ng-if="!(item.autocompleteName === 'SubjectRole')">
+          <ui-select dropdown-autocomplete ng-if="item.selectType=='autocomplete'"
+                     ng-model="item.value"
+                     name="item.id"
+                     ng-class=""
+                     ng-required="item.required"
+                     autocomplete-data="item.autocompleteData"
+                     autocomplete-name="item.autocompleteName"
+                     reach-infinity="requestMoreItems($select.items)"
+                     on-select="onSelectDataList($item)">
+
+          <ui-select-match title="{{$select.selected}}">
+            {{$select.selected[autocompleteData.titleProperty]}}
+          </ui-select-match>
+          <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search, item.name)"
+                             refresh-delay="50"
+                             repeat="field[item.autocompleteData.valueProperty] as field in items track by field[item.autocompleteData.orderBy]">
+                                 <span title="{{field[item.autocompleteData.titleProperty]}}">
+                                   {{field[item.autocompleteData.titleProperty]}}
+                                 </span>
+          </ui-select-choices>
+          </ui-select>
+        </div>
+
+    </div>
+
+    <span class="task-form-written-right-sight"
+          ng-if="isFormPropertyDisabled(item)"
+          style="white-space: pre-line"
+          name="{{item.id}}"
+          ng-readonly="isFormPropertyDisabled(item)"
+          ng-required="isRequired(item)">{{item.value}}
+      </span>
+  </div>
+  <span class="validation-message" ng-messages="isFormInvalid && isRequired(item) && form[item.id].$error">
+      <span ng-message="required">Необхідно заповнити.</span>
+      <span ng-message="pattern">Значення має бути числом.</span>
+      <span ng-message="email">Помилка в email.</span>
+      <span ng-message="tel">Помилка в номері телефону.</span>
+      <span ng-message="autovin">Помилка у VIN-номері авто.</span>
+      <span ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</span>
+      <span ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</span>
+      <span ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</span>
+      <span ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів, х-місяців, х-років.</span>
+      <span ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</span>
+      <span ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</span>
+      <span ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</span>
+      <span ng-message="FileSign">Підпис не валідний або відсутній</span>
+      <span ng-message="numbersaccounts">Перевірте правильність уведеного номеру (літери не дозволені до заповнення)</span>
+      <span ng-message="documentdate">Дата може бути тільки формату ДД.ММ.PPPP.</span>
+    </span>
+</div>

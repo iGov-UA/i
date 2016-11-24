@@ -16,6 +16,14 @@ angular.module('autocompleteService', [])
             apiUrl: './api/object-customs',
             hasPaging: true
         },
+        SubjectRole: {
+            apiUrl: './api/subject-role',
+            titleProperty: 'sName',
+            orderBy: 'sLogin',
+            prefixAssociatedField: 'sLogin',
+            valueProperty: 'sLogin',
+            additionalValueProperty: 'sName'
+        },
         SubjectOrganJoinTax: {
             valueProperty: 'sName_UA',
             titleProperty: 'sName_UA',

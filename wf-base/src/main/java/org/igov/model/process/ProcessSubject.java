@@ -1,66 +1,59 @@
 package org.igov.model.process;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
 import org.hibernate.annotations.Type;
 import org.igov.model.core.AbstractEntity;
+import org.igov.util.JSON.JsonDateTimeDeserializer;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 
-@Entity
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+@javax.persistence.Entity
 public class ProcessSubject extends AbstractEntity {
 
-    @JsonProperty(value = "snID_Process_Activiti")
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@JsonProperty(value = "snID_Process_Activiti")
+    @Column
     private String snID_Process_Activiti;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = ProcessSubjectStatus.class)
     @JoinColumn(name = "nID_ProcessSubjectStatus")
     private ProcessSubjectStatus processSubjectStatus;
 
     @JsonProperty(value = "nOrder")
+    @Column
     private Long nOrder;
 
     @JsonProperty(value = "sLogin")
+    @Column
     private String sLogin;
 
-    @JsonProperty(value = "sDateEdit")
-    @Type(type = DATETIME_TYPE)
+    @JsonProperty(value="sDateEdit")
+    @JsonSerialize(using=JsonDateTimeSerializer.class)
+    @JsonDeserialize(using=JsonDateTimeDeserializer.class)
+    @Type(type=DATETIME_TYPE)
+    @Column
     private DateTime sDateEdit;
 
-    @JsonProperty(value = "sDatePlan")
-    @Type(type = DATETIME_TYPE)
+    @JsonProperty(value="sDatePlan")
+    @JsonSerialize(using=JsonDateTimeSerializer.class)
+    @JsonDeserialize(using=JsonDateTimeDeserializer.class)
+    @Type(type=DATETIME_TYPE)
+    @Column
     private DateTime sDatePlan;
     
-    /*
-    @OneToMany(targetEntity = ProcessSubjectTree.class, mappedBy = "processSubjectChild", cascade = CascadeType.ALL)
-    private List<ProcessSubjectTree> processChild;
-
-    @OneToMany(targetEntity = ProcessSubjectTree.class, mappedBy = "processSubjectParent", cascade = CascadeType.ALL)
-    private List<ProcessSubjectTree> processParent;  
-    
-
-    public List<ProcessSubjectTree> getProcessChild() {
-        return processChild;
-    }
-
-    public void setProcessChild(List<ProcessSubjectTree> processChild) {
-        this.processChild = processChild;
-    }
-
-    public List<ProcessSubjectTree> getProcessParent() {
-        return processParent;
-    }
-
-    public void setProcessParent(List<ProcessSubjectTree> processParent) {
-        this.processParent = processParent;
-    }
-    */
-
     public String getSnID_Process_Activiti() {
         return snID_Process_Activiti;
     }
