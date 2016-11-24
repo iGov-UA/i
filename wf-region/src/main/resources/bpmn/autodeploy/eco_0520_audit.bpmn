@@ -47,13 +47,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація;заповніть у разі необхідності" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="лінія Наукові праці" type="markers" default="{&quot;attributes&quot;:{&quot;Line_7&quot;:{&quot;aElement_ID&quot;:[&quot;sDocEmploymentHistory&quot;],&quot;sValue&quot;:&quot;Всі копії документів повинні бути завіреними в установленому порядку&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sDocEmploymentHistory" name="Витяг із трудової книжки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocInternship" name="Довідка про проходження стажування" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocDiploma" name="Копія диплома про вищу освіту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocForeignDiploma" name="Копія довідки про визнання іноземного документа про освіту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocScientificDegree" name="Копія документа для підтвердження наукового ступеня" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocLearning" name="Копія свідоцтва про проходження навчання з екологічного аудиту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocFoto" name="Фотокартка" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmploymentHistory" name="Витяг із трудової книжки" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocInternship" name="Довідка про проходження стажування" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocDiploma" name="Копія диплома про вищу освіту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocForeignDiploma" name="Копія довідки про визнання іноземного документа про освіту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocScientificDegree" name="Копія документа для підтвердження наукового ступеня" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocLearning" name="Копія свідоцтва про проходження навчання з екологічного аудиту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocFoto" name="Фотокартка" type="file"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="нагадування" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="маркер якщо є практичний досвід роботи з екологічного аудиту" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sPracticalExperience&quot;, &quot;markers9&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saQuestion1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
@@ -179,11 +179,12 @@
           <activiti:value id="accept" name="документи заявника погоджено, призначити дату іспиту"></activiti:value>
           <activiti:value id="reject" name="відмова у допуску до іспиту"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDateExam" name="Вкажіть дату та час складання іспиту" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateExam" name="Вкажіть дату складання іспиту" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sTimeExam" name="Вкажіть час складання іспиту" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressExam" name="Вкажіть адресу, за якою буде проводитись іспит" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="маркер якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;comment_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'||[sClient] == 'відмова у допуску до іспиту'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers15" name="маркер якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;sDateExam&quot;,&quot;sAddressExam&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'accept'||[sClient] == 'документи заявника погоджено, призначити дату іспиту'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name="маркер якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;sDateExam&quot;,&quot;sTimeExam&quot;,&quot;sAddressExam&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'accept'||[sClient] == 'документи заявника погоджено, призначити дату іспиту'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="нагадування" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/eco/eco_0520_audit_print.html" type="file"></activiti:formProperty>
@@ -388,7 +389,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 Документи, що Ви подавали в електронному вигляді для отримання допуску до участі у кваліфікаційному іспиті, розглянуто на засіданні Комісії із сертифікації.<br>
-Вам надано допуск до участі в іспиті і призначено дату його складання value{[sDateExam]}.<br>
+Вам надано допуск до участі в іспиті і призначено дату його складання value{[sDateExam]} value{[sTimeExam]}.<br>
 Іспит проводиться в письмовій формі, українською мовою за варіантами екзаменаційних білетів.<br>
 Адреса, де буде проводитись іспит: ${sAddressExam}<br>
 Кандидати, що прибули на іспит, повинні пред'явити документ, що посвідчує особу.<br>
@@ -430,7 +431,7 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Нагадуємо, що Вам надано допуск до участі в іспиті і призначено дату його складання value{[sDateExam]}.<br>
+Нагадуємо, що Вам надано допуск до участі в іспиті і призначено дату його складання ${sDateExam} value{[sTimeExam]}.<br>
 Адреса, де буде проводитись іспит: ${sAddressExam}<br>
 Кандидати, що прибули на іспит, повинні пред'явити документ, що посвідчує особу.<br>
 <br>
@@ -646,11 +647,11 @@ execution.setVariable('sListDocumentsLetter', res)</script>
     <sequenceFlow id="flow51" sourceRef="timerintermediatecatchevent1" targetRef="servicetask10"></sequenceFlow>
     <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('sDateExam');
-var year=src.substr(6,4);
-var month=src.substr(3,2);
-var day=src.substr(0,2);
-var hour=src.substr(11,2);
-var minutes=src.substr(14,2);
+var year=src.substr(1,4);
+var month=src.substr(5,2);
+var day=src.substr(8,2);
+var hour='00';
+var minutes='00';
 var seconds='00';
 var delta='-1';
 var date1 = year+'-'+month+'-'+day+' '+hour+':'+minutes+':'+seconds;
