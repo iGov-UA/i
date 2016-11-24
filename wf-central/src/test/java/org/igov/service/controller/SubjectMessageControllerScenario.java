@@ -66,6 +66,7 @@ public class SubjectMessageControllerScenario {
 
 	public static final String SET_MESSAGE = "/subject/message/setMessage";
 	public static final String SET_FEEDBACK_MESSAGE = "/subject/message/setMessageFeedbackExtended";
+	public static final String GET_FEEDBACK_EXTERNAL = "/subject/message/getFeedbackExternal";
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -78,8 +79,6 @@ public class SubjectMessageControllerScenario {
 	SubjectDao subjectDao;
 	@Autowired
 	GeneralConfig generalConfig;
-	@Autowired
-	private SubjectMessageService subjectMessageService;
 
 	@InjectMocks
 	@Autowired
@@ -331,9 +330,9 @@ public class SubjectMessageControllerScenario {
 
 		when(oHistoryEvent_Service.getsToken()).thenReturn(sValidToken);
 		when(historyEventServiceDao.getOrgerByID(sValidID_Order)).thenReturn(oHistoryEvent_Service);
-		when(oSubjectMessageService.createSubjectMessage(
-                sMessageHead(nDefaultID_SubjectMessageType, sValidID_Order), "", oHistoryEvent_Service.getnID_Subject(),
-				"", "", "", nDefaultID_SubjectMessageType)).thenReturn(oSubjectMessage_Feedback);
+		when(oSubjectMessageService.createSubjectMessage(sMessageHead(nDefaultID_SubjectMessageType, sValidID_Order),
+				"", oHistoryEvent_Service.getnID_Subject(), "", "", "", nDefaultID_SubjectMessageType))
+						.thenReturn(oSubjectMessage_Feedback);
 
 		mockMvc.perform(post(SET_FEEDBACK_MESSAGE).param("sID_Order", sValidID_Order).param("sToken", sValidToken)
 				.param("nID_SubjectMessageType", nDefaultID_SubjectMessageType.toString()).param("sBody", sValidBody))
@@ -341,33 +340,9 @@ public class SubjectMessageControllerScenario {
 		verify(subjectMessagesDao).setMessage(oSubjectMessage_Feedback);
 	}
 
-	@Ignore
-	@Test
-	public void shouldSetMessageFeedbackExtended() throws Exception {
-		String sValidID_Order = "123-456789";
-		String sValidToken = "sValidToken";
-		Long nDefaultID_SubjectMessageType = 2l;
-		String sValidBody = "sValidBody";
-		SubjectMessage oSubjectMessage_Feedback = mock(SubjectMessage.class);
-
-		JSONObject expectedResponseObject = new JSONObject();
-		expectedResponseObject.put("code", ExceptionCommonController.BUSINESS_ERROR_CODE);
-		expectedResponseObject.put("message", "Security Error");
-
-		when(oHistoryEvent_Service.getsToken()).thenReturn(sValidToken);
-		when(historyEventServiceDao.getOrgerByID(sValidID_Order)).thenReturn(oHistoryEvent_Service);
-
-		mockMvc.perform(post(SET_FEEDBACK_MESSAGE).param("sID_Order", sValidID_Order).param("sToken", sValidToken)
-				.param("nID_SubjectMessageType", nDefaultID_SubjectMessageType.toString()).param("sBody", sValidBody))
-				.andExpect(status().isForbidden()).andExpect(content().json(expectedResponseObject.toString()));
-
-		verify(subjectMessagesDao).setMessage(oSubjectMessage_Feedback);
-	}
-
 	@Test
 	public void shouldReturn403IfTokenIsNotCorrect() throws Exception {
-		//TODO check sValidID_Order
-		String sValidID_Order = "123-456789";
+		String sValidID_Order = "sValidID_Order";
 		String sWrongToken = "sWrongToken";
 		String sValidToken = "sValidToken";
 		String sEmptyToken = "";
@@ -377,8 +352,6 @@ public class SubjectMessageControllerScenario {
 		JSONObject expectedResponseObject = new JSONObject();
 		expectedResponseObject.put("code", ExceptionCommonController.BUSINESS_ERROR_CODE);
 		expectedResponseObject.put("message", "Security Error");
-
-		HistoryEvent_Service oHistoryEvent_Service = mock(HistoryEvent_Service.class);
 
 		when(oHistoryEvent_Service.getsToken()).thenReturn(sWrongToken);
 		when(historyEventServiceDao.getOrgerByID(sValidID_Order)).thenReturn(oHistoryEvent_Service);
@@ -392,19 +365,17 @@ public class SubjectMessageControllerScenario {
 				.andExpect(status().isForbidden()).andExpect(content().json(expectedResponseObject.toString()));
 	}
 
+	@Ignore
+	@Test
+	public void shouldReturn403IfRecordIsFoundAndFeedbackMessageIsNotEmpty() {
 
+	}
 
-	/*
-	 * @Test public void
-	 * shouldReturn403IfRecordIsFoundAndFeedbackMessageIsNotEmpty() {
-	 *
-	 * }
-	 *
-	 * @Test public void
-	 * shouldReturn404IfRecordIsNotFoundAndFeedbackMessageIsNotEmpty() {
-	 *
-	 * }
-	 **/
+	@Ignore
+	@Test
+	public void shouldReturn404IfRecordIsNotFoundAndFeedbackMessageIsNotEmpty() {
+
+	}
 
 	@Test
 	@Ignore
@@ -428,7 +399,7 @@ public class SubjectMessageControllerScenario {
 
 		expectedResponseObject.put("sURL", responseMessage);
 
-		when(subjectMessageService.setSubjectMessageFeedback(feedback.getsID_Source(), feedback.getsAuthorFIO(),
+		when(oSubjectMessageService.setSubjectMessageFeedback(feedback.getsID_Source(), feedback.getsAuthorFIO(),
 				feedback.getsMail(), feedback.getsHead(), feedback.getsBody(), feedback.getsPlace(),
 				feedback.getsEmployeeFIO(), feedback.getnID_Rate(), feedback.getnID_Service(), null, // sAnswer
 				null, // nId
@@ -445,7 +416,6 @@ public class SubjectMessageControllerScenario {
 	}
 
 	@Test
-	@Ignore
 	public void shouldReturnSubjectMessageFeedbackByIdAndToken() throws Exception {
 		SubjectMessageFeedback feedback = new SubjectMessageFeedback();
 		feedback.setId(1L);
@@ -468,11 +438,10 @@ public class SubjectMessageControllerScenario {
 
 		String expectedResponse = JsonRestUtils.toJson(feedbackWithNullToken);
 
-		when(subjectMessageService.getSubjectMessageFeedbackById(feedback.getId())).thenReturn(feedback);
+		when(oSubjectMessageService.getSubjectMessageFeedbackById(feedback.getId())).thenReturn(feedback);
 
-		mockMvc.perform(get("/subject/message/getFeedbackExternal").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(get(GET_FEEDBACK_EXTERNAL).contentType(MediaType.APPLICATION_JSON)
 				.param("nID", feedback.getId().toString()).param("sID_Token", feedback.getsID_Token()))
-
 				.andExpect(status().isOk()).andExpect(content().json(expectedResponse));
 	}
 
@@ -504,8 +473,8 @@ public class SubjectMessageControllerScenario {
 
 		String response = JsonRestUtils.toJson(expectedFeedbackList);
 
-		when(subjectMessageService.getSubjectMessageFeedbackById(feedback.getId())).thenReturn(feedback);
-		when(subjectMessageService.getAllSubjectMessageFeedbackBynID_Service(feedback.getnID_Service()))
+		when(oSubjectMessageService.getSubjectMessageFeedbackById(feedback.getId())).thenReturn(feedback);
+		when(oSubjectMessageService.getAllSubjectMessageFeedbackBynID_Service(feedback.getnID_Service()))
 				.thenReturn(expectedFeedbackList);
 
 		mockMvc.perform(get("/subject/message/getFeedbackExternal").contentType(MediaType.APPLICATION_JSON)
@@ -535,7 +504,7 @@ public class SubjectMessageControllerScenario {
 		expectedFeedback.setnID_Service(-1L);
 		expectedFeedback.setsAnswer(expectedComments);
 
-		when(subjectMessageService.setSubjectMessageFeedback(expectedFeedback.getsID_Source(),
+		when(oSubjectMessageService.setSubjectMessageFeedback(expectedFeedback.getsID_Source(),
 				expectedFeedback.getsAuthorFIO(), expectedFeedback.getsMail(), expectedFeedback.getsHead(),
 				expectedFeedback.getsBody(), expectedFeedback.getsPlace(), expectedFeedback.getsEmployeeFIO(),
 				expectedFeedback.getnID_Rate(), expectedFeedback.getnID_Service(), "feedbackAfterInit", null, null,
@@ -572,7 +541,7 @@ public class SubjectMessageControllerScenario {
 		expectedFeedback.setnID_Service(-1L);
 		expectedFeedback.setsAnswer(expectedComments);
 
-		when(subjectMessageService.setSubjectMessageFeedback(expectedFeedback.getsID_Source(),
+		when(oSubjectMessageService.setSubjectMessageFeedback(expectedFeedback.getsID_Source(),
 				expectedFeedback.getsAuthorFIO(), expectedFeedback.getsMail(), expectedFeedback.getsHead(),
 				expectedFeedback.getsBody(), expectedFeedback.getsPlace(), expectedFeedback.getsEmployeeFIO(),
 				expectedFeedback.getnID_Rate(), expectedFeedback.getnID_Service(), "feedbackAfterInit",
