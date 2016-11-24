@@ -5,6 +5,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.task.Attachment;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.igov.service.business.dfs.DfsService;
 import org.slf4j.LoggerFactory;
@@ -56,8 +57,8 @@ public class SetTasks_Listener implements TaskListener {
                 sContent_Value + " sAutorResolution: " + sAutorResolution_Value + " sTextResolution: " 
                 + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); 
  
-            InputStream json_Content = taskService.getAttachmentContent(sID_Attachment_Value);
-            LOG.info((json_Content.toString() != null) ? "JSON_TASKLST:" + json_Content.toString():"JSON null pointer error");
+            Attachment json_Content = taskService.getAttachment(sID_Attachment_Value);
+            LOG.info((json_Content != null) ? "JSON_TASKLST:" + json_Content.toString():"JSON null pointer error");
             
             //LOG.info("json_Content sTaskProcessDefinition_Value: " + taskService.getAttachmentContent(sTaskProcessDefinition_Value));
             //LOG.info("json_Content sBodyDocument_Value: " + taskService.getAttachmentContent(sBodyDocument_Value));
