@@ -52,17 +52,30 @@ public class SetTasks_Listener implements TaskListener {
             String sDateExecution_Value = 
                 getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution());
  
-            LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
+            /*LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
                 + sTaskProcessDefinition_Value + " sID_Attachment_Value: " + sID_Attachment_Value + " sContent: " +
                 sContent_Value + " sAutorResolution: " + sAutorResolution_Value + " sTextResolution: " 
                 + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); 
- 
+            */    
+            
+                       
+            Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
+            
+            if (attachment != null){
+                LOG.info("Attach id is: " + attachment.getId());
+            }
+            else{
+                LOG.info("Attach is null");
+            }
+            
+            /*
+            
             InputStream json_Content = taskService.getAttachmentContent(sTaskProcessDefinition_Value);
             LOG.info((json_Content != null) ? "JSON_TASKLST:" + json_Content.toString():"JSON_TASKLST null pointer error");
             
-            Attachment json_Attachment = taskService.getAttachment(sTaskProcessDefinition_Value);
-            LOG.info((json_Attachment != null) ? "JSON_ATTACHMENT:" + json_Attachment.toString():"JSON_ATTACHMENT null pointer error");
             
+            LOG.info((json_Attachment != null) ? "JSON_ATTACHMENT:" + json_Attachment.toString():"JSON_ATTACHMENT null pointer error");
+            */
             //LOG.info("json_Content sTaskProcessDefinition_Value: " + taskService.getAttachmentContent(sTaskProcessDefinition_Value));
             //LOG.info("json_Content sBodyDocument_Value: " + taskService.getAttachmentContent(sBodyDocument_Value));
             //LOG.info("json_Content sLoginAuthor_Value: " + taskService.getAttachmentContent(sLoginAuthor_Value));
