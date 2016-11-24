@@ -89,10 +89,10 @@ public class SubjectMessageController {
 
     @Autowired
     HttpRequester httpRequester;
-    
+
     @Autowired
     private NotificationPatterns oNotificationPatterns;
-    
+
     @Autowired
     private TaskService taskService;
 
