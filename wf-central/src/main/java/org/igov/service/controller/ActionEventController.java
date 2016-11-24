@@ -663,24 +663,10 @@ public class ActionEventController implements ControllerConstants {
                     if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null
                             && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
-                        if (oSubjectMessageFeedback.getoSubjectMessage().getBody() != null && oSubjectMessageFeedback.getoSubjectMessage().getHead() != null ) {
-                            LOG.info("1oSubjectMessageFeedback.getoSubjectMessage().getBody(): " + oSubjectMessageFeedback.getoSubjectMessage().getBody());
-                            LOG.info("2oSubjectMessageFeedback.getoSubjectMessage().getHead(): " + oSubjectMessageFeedback.getoSubjectMessage().getHead());  
-                        }
-                        if (oSubjectMessageFeedback.getsBody() != null && oSubjectMessageFeedback.getsHead() != null ) {
-                        LOG.info("3oSubjectMessageFeedback.getsBody(): " + oSubjectMessageFeedback.getsBody());
-                        LOG.info("4oSubjectMessageFeedback.getsHead(): " + oSubjectMessageFeedback.getsHead());
-                        }
                         } else {
                         sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
-                        if (oSubjectMessageFeedback.getoSubjectMessage().getBody() != null && oSubjectMessageFeedback.getoSubjectMessage().getHead() != null ) {
-                            LOG.info("5oSubjectMessageFeedback.getoSubjectMessage().getBody(): " + oSubjectMessageFeedback.getoSubjectMessage().getBody());
-                            LOG.info("6oSubjectMessageFeedback.getoSubjectMessage().getHead(): " + oSubjectMessageFeedback.getoSubjectMessage().getHead());  
-                        }
-                        if (oSubjectMessageFeedback.getsBody() != null && oSubjectMessageFeedback.getsHead() != null ) {
-                        LOG.info("7oSubjectMessageFeedback.getsBody(): " + oSubjectMessageFeedback.getsBody());
-                        LOG.info("8oSubjectMessageFeedback.getsHead(): " + oSubjectMessageFeedback.getsHead());
-                        }
+                        LOG.info("oSubjectMessageFeedback.getsBody(): " + sTextFeedback);
+                        LOG.info("oSubjectMessageFeedback.getsHead(): " + oSubjectMessageFeedback.getsHead());
                     }
                     // sTextFeedback
                     asCell.add(sTextFeedback);
