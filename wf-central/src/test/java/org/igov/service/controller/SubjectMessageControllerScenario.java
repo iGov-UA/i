@@ -61,7 +61,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("default")
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@Ignore
+
 public class SubjectMessageControllerScenario {
 
 	public static final String SET_MESSAGE = "/subject/message/setMessage";
@@ -96,10 +96,6 @@ public class SubjectMessageControllerScenario {
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-	}
-
-	@Before
-	public void initMocks() {
 		MockitoAnnotations.initMocks(this);
 	}
 
@@ -345,6 +341,29 @@ public class SubjectMessageControllerScenario {
 		verify(subjectMessagesDao).setMessage(oSubjectMessage_Feedback);
 	}
 
+	@Ignore
+	@Test
+	public void shouldSetMessageFeedbackExtended() throws Exception {
+		String sValidID_Order = "123-456789";
+		String sValidToken = "sValidToken";
+		Long nDefaultID_SubjectMessageType = 2l;
+		String sValidBody = "sValidBody";
+		SubjectMessage oSubjectMessage_Feedback = mock(SubjectMessage.class);
+
+		JSONObject expectedResponseObject = new JSONObject();
+		expectedResponseObject.put("code", ExceptionCommonController.BUSINESS_ERROR_CODE);
+		expectedResponseObject.put("message", "Security Error");
+
+		when(oHistoryEvent_Service.getsToken()).thenReturn(sValidToken);
+		when(historyEventServiceDao.getOrgerByID(sValidID_Order)).thenReturn(oHistoryEvent_Service);
+
+		mockMvc.perform(post(SET_FEEDBACK_MESSAGE).param("sID_Order", sValidID_Order).param("sToken", sValidToken)
+				.param("nID_SubjectMessageType", nDefaultID_SubjectMessageType.toString()).param("sBody", sValidBody))
+				.andExpect(status().isForbidden()).andExpect(content().json(expectedResponseObject.toString()));
+
+		verify(subjectMessagesDao).setMessage(oSubjectMessage_Feedback);
+	}
+
 	@Test
 	public void shouldReturn403IfTokenIsNotCorrect() throws Exception {
 		//TODO check sValidID_Order
@@ -373,30 +392,7 @@ public class SubjectMessageControllerScenario {
 				.andExpect(status().isForbidden()).andExpect(content().json(expectedResponseObject.toString()));
 	}
 
-	@Test
-	public void shouldSetMessageFeedbackExtended() throws Exception {
-		String sValidID_Order = "123-456789";
-		String sValidToken = "sValidToken";
-		Long nDefaultID_SubjectMessageType = 2l;
-		String sValidBody = "sValidBody";
-		SubjectMessage oSubjectMessage_Feedback = mock(SubjectMessage.class);
 
-		JSONObject expectedResponseObject = new JSONObject();
-		expectedResponseObject.put("code", ExceptionCommonController.BUSINESS_ERROR_CODE);
-		expectedResponseObject.put("message", "Security Error");
-
-		// HistoryEvent_Service oHistoryEvent_Service =
-		// mock(HistoryEvent_Service.class);
-
-		when(oHistoryEvent_Service.getsToken()).thenReturn(sValidToken);
-		when(historyEventServiceDao.getOrgerByID(sValidID_Order)).thenReturn(oHistoryEvent_Service);
-
-		mockMvc.perform(post(SET_FEEDBACK_MESSAGE).param("sID_Order", sValidID_Order).param("sToken", sValidToken)
-				.param("nID_SubjectMessageType", nDefaultID_SubjectMessageType.toString()).param("sBody", sValidBody))
-				.andExpect(status().isForbidden()).andExpect(content().json(expectedResponseObject.toString()));
-
-		verify(subjectMessagesDao).setMessage(oSubjectMessage_Feedback);
-	}
 
 	/*
 	 * @Test public void
@@ -410,28 +406,8 @@ public class SubjectMessageControllerScenario {
 	 * }
 	 **/
 
-	// @Test
-	// public void shouldReturn403IfIDSubgectMessageTypeIsNotDefault() throws
-	// Exception {
-	// String sValidID_Order = "sValidID_Order";
-	// String sValidToken = "sValidToken";
-	// Long nNonDefaultID_SubjectMessageType = -1l;
-	// String sValidBody = "sValidBody";
-	//
-	// JSONObject expectedResponseObject = new JSONObject();
-	// expectedResponseObject.put("code",
-	// ExceptionCommonController.BUSINESS_ERROR_CODE);
-	// expectedResponseObject.put("message", "Security Error");
-	//
-	// mockMvc.perform(post(SET_FEEDBACK_MESSAGE).param("sID_Order",
-	// sValidID_Order).param("sToken", sValidToken)
-	// .param("nID_SubjectMessageType",
-	// nNonDefaultID_SubjectMessageType.toString())
-	// .param("sBody", sValidBody)).andExpect(status().isForbidden())
-	// .andExpect(content().json(expectedResponseObject.toString()));
-	// }
-
 	@Test
+	@Ignore
 	public void shouldAddFeedbackToServiceAndReturnLink() throws Exception {
 		SubjectMessageFeedback feedback = new SubjectMessageFeedback();
 		feedback.setId(1L);
@@ -469,6 +445,7 @@ public class SubjectMessageControllerScenario {
 	}
 
 	@Test
+	@Ignore
 	public void shouldReturnSubjectMessageFeedbackByIdAndToken() throws Exception {
 		SubjectMessageFeedback feedback = new SubjectMessageFeedback();
 		feedback.setId(1L);
