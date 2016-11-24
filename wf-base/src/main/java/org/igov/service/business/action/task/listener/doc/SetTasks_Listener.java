@@ -57,7 +57,7 @@ public class SetTasks_Listener implements TaskListener {
                 + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); 
  
             InputStream json_Content = taskService.getAttachmentContent(sID_Attachment_Value);
-            LOG.info(json_Content.toString());
+            LOG.info((json_Content.toString() != null) ? "JSON_TASKLST:" + json_Content.toString():"JSON null pointer error");
             
             //LOG.info("json_Content sTaskProcessDefinition_Value: " + taskService.getAttachmentContent(sTaskProcessDefinition_Value));
             //LOG.info("json_Content sBodyDocument_Value: " + taskService.getAttachmentContent(sBodyDocument_Value));
