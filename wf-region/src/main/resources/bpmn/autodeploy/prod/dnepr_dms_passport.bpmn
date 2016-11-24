@@ -23,7 +23,8 @@
         <activiti:formProperty id="sNotification_day" name="Запуск таймера напоминания" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="sPaymentDMS" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdminBio" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTwoZagran" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocZagran" name="Документи у регіоні" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsZagran.json')}"></activiti:formProperty>
@@ -106,9 +107,9 @@ execution.setVariable('sEndDay', timerEnd)</script>
 	Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
-	Реквізити для сплати адмінсбору доступні за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a></b><br>
+	Реквізити для сплати адмінсбору доступні за <b><a href="${sAdminBio}" target="_blank">посиланням</a></b><br>
 	<b>Зверніть увагу:</b> В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС просимо наголосити це в банку, в іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.<br>
-	Також, якщо Ви бажаєте залишити попередній, ще діючий паспорт, необхідно роздруковувати, заповнювати і принесити заяву на зення попереднього закордонного паспорта, яка знаходиться в додаткових формах нижче в листі.
+	Також, якщо Ви бажаєте залишити попередній, ще діючий паспорт необхідно сплатити кошти за <a href="${sTwoZagran}" target="_blank"><b>реквізитами</b></a>, також просимо роздруковувати, заповнювати і приносити заяву на залишення попереднього закордонного паспорта, яка знаходиться в додаткових формах нижче в листі.
 </p>
 <p>
 	<b>Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон:</b>
@@ -162,7 +163,7 @@ ${sNameOrgan},<br>
 	Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
 	Для того щоб закінчити процедуру необхідно:
 	<ul>
-		<li>У будь-якому банку сплатити адмінсбір та отримати квитанцію про сплату.Реквізити для сплати адмінсбору доступні за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a></li>
+		<li>У будь-якому банку сплатити адмінсбір та отримати квитанцію про сплату.</li>
 		<li>Прийти за адресою: ${sAddress} з необхідними документами.</li>
 	</ul>
 </p>
@@ -171,9 +172,9 @@ ${sNameOrgan},<br>
 	Дата та час візиту: ${date_of_visit}
 </p>
 <p>
-	Реквізити для сплати адмінсбору доступні за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a></b><br>
+	Реквізити для сплати адмінсбору доступні за <b><a href="${sAdminBio}" target="_blank">посиланням</a></b><br>
 	<b>Зверніть увагу:</b> В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС просимо наголосити це в банку, в іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.<br>
-	Також, якщо Ви бажаєте залишити попередній, ще діючий паспорт, необхідно роздруковувати, заповнювати і принести заяву на збереження попереднього закордонного паспорта, яка знаходиться в додаткових формах нижче в листі.
+	Також, якщо Ви бажаєте залишити попередній, ще діючий паспорт необхідно сплатити кошти за <a href="${sTwoZagran}" target="_blank"><b>реквізитами</b></a>, також просимо роздруковувати, заповнювати і приносити заяву на залишення попереднього закордонного паспорта, яка знаходиться в додаткових формах нижче в листі.
 </p>
 <p>
 	<b>Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон:</b>
@@ -376,14 +377,14 @@ execution.setVariable('sCustom', custom)</script>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="800.0" y="147.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="883.0" y="92.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="971.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="55.0" width="105.0" x="851.0" y="188.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
+        <omgdc:Bounds height="40.0" width="40.0" x="883.0" y="92.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="48.0" y="112.0"></omgdi:waypoint>
@@ -467,9 +468,10 @@ execution.setVariable('sCustom', custom)</script>
         <omgdi:waypoint x="840.0" y="167.0"></omgdi:waypoint>
         <omgdi:waypoint x="971.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="840.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="883.0" y="112.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="956.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="988.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="988.0" y="185.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
         <omgdi:waypoint x="903.0" y="132.0"></omgdi:waypoint>
@@ -480,10 +482,9 @@ execution.setVariable('sCustom', custom)</script>
         <omgdi:waypoint x="988.0" y="112.0"></omgdi:waypoint>
         <omgdi:waypoint x="988.0" y="150.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="956.0" y="215.0"></omgdi:waypoint>
-        <omgdi:waypoint x="988.0" y="215.0"></omgdi:waypoint>
-        <omgdi:waypoint x="988.0" y="185.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="840.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="883.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

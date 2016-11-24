@@ -1,6 +1,15 @@
 angular.module('autocompleteService')
     .controller('dropdownAutocompleteCtrl', function ($scope, $http, $filter, $timeout, $q) {
 
+    $scope.selectedValue = function (field, select) {
+      var val = field.name.split(';');
+      if(val.length === 3) {
+          return field.value;
+      } else {
+          return select;
+      }
+    };
+
     var hasNextChunk = true,
         queryParams = {params: {}},
         tempCollection, count = 30;
@@ -20,24 +29,19 @@ angular.module('autocompleteService')
                 });
             } else if(typeof res.data === 'object' && res.data.aSubjectUser) {
                 angular.forEach(res.data.aSubjectUser, function (user) {
-                    user.sFind = user.sFirstName + " " + user.sLastName;
+                    user.sName = user.sFirstName + " " + user.sLastName;
                 })
             }
-            /*
-             if (res.config.url.indexOf('object-customs') > 0){
-             angular.forEach(res.data, function (el) {
-             if (angular.isDefined(el.sID_UA) && angular.isDefined(el.sName_UA)) {
-             el.sName_UA = el.sID_UA + " " + el.sName_UA;
-             }
-             });
-             }
-             */
             return res;
         });
     }
 
     var getAdditionalPropertyName = function() {
         return ($scope.autocompleteData.additionalValueProperty ? $scope.autocompleteData.additionalValueProperty : $scope.autocompleteData.prefixAssociatedField) + '_' + $scope.autocompleteName;
+    };
+
+    var getNameWithPostFix = function (field) {
+      return field && field.id ? field.id.split('_') : null;
     };
 
     $scope.requestMoreItems = function(collection) {
@@ -80,12 +84,33 @@ angular.module('autocompleteService')
             if(ps && ps.indexOf('sID_SubjectRole=Executor') > -1) {
                 var param = ps.split(',');
                 angular.forEach(param, function (p) {
-                    angular.forEach($scope.taskForm, function (field) {
+                    angular.forEach($scope.taskForm, function (field, key) {
+                        if('aRow' in field) {
+                            angular.forEach(field.aRow, function (row, rkey) {
+                                angular.forEach(row.aField, function (f, fkey) {
+                                    if(p.split('=')[1] === f.id) {
+                                        setParams(f, key, rkey, fkey);
+                                    }
+                                })
+                            })
+                        }
                         if(p.split('=')[1] === field.id) {
-                            queryParams.params[field.id] = field.value;
+                            setParams(field, key);
                         }
                     })
                 });
+                function setParams(field, key, rowKey, fieldKey) {
+                    queryParams.params[field.id] = field.value;
+                    if(key && rowKey && fieldKey) {
+                        $scope.$watch('taskForm['+ key +'].aRow['+ rowKey + '].aField[' + fieldKey + '].value', function (newValue) {
+                            $scope.refreshList(field.id, newValue);
+                        })
+                    } else {
+                        $scope.$watch('taskForm['+ key +'].value', function (newValue) {
+                            $scope.refreshList($scope.taskForm[key].id, newValue);
+                        })
+                    }
+                }
                 if(queryValue) {
                     queryParams.params.sFind = queryValue;
                 }
@@ -105,9 +130,9 @@ angular.module('autocompleteService')
         }
         // }
     };
-
-    $scope.onSelectDataList = function (item, tableName, rowIndex) {
+    $scope.onSelectDataList = function (item, tableName, rowIndex, field) {
         var additionalPropertyName = getAdditionalPropertyName();
+        var nameWithPostFix = getNameWithPostFix(field);
         if (rowIndex || rowIndex >= 0) {
             var form = $scope.activitiForm ? $scope.activitiForm.formProperties : $scope.taskForm;
             angular.forEach(form, function (property) {
@@ -118,6 +143,11 @@ angular.module('autocompleteService')
                                 obj[key].default = item[$scope.autocompleteData.prefixAssociatedField];
                             } else {
                                 obj[key].value = item[$scope.autocompleteData.prefixAssociatedField];
+                            }
+                        }
+                        if(nameWithPostFix && nameWithPostFix[1]) {
+                            if(nameWithPostFix[1] === field.id.split('_')[1]) {
+                                obj[key].value = item[field.id.split('_')[0]];
                             }
                         }
                     });

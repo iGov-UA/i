@@ -81,6 +81,7 @@ angular.module('app').controller('PlaceController',
       if(!isChangeInProcess) {
         // діємо в залежності від доступності сервісу
         var stateToGo = PlacesService.getServiceStateForPlace();
+
         // отримати дані сервісу та його опис
         var oAvail = PlacesService.serviceAvailableIn();
         var foundInCountry;

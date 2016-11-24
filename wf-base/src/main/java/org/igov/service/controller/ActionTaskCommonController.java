@@ -23,6 +23,7 @@ import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
+import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 import org.igov.io.mail.NotificationPatterns;
@@ -33,16 +34,19 @@ import org.igov.model.action.task.core.entity.*;
 import org.igov.model.action.task.core.entity.Process;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
+import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
+import org.igov.service.business.dfs.DfsService;
+import org.igov.service.business.dfs.DfsService_New;
 import org.igov.service.business.subject.message.MessageService;
 import org.igov.service.exception.*;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
+import org.igov.util.db.queryloader.QueryLoader;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,17 +68,9 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
-import org.activiti.engine.task.Attachment;
-import org.apache.commons.mail.EmailException;
-import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
-import org.igov.service.business.action.task.systemtask.DeleteProccess;
-import org.igov.service.business.dfs.DfsService;
-import org.igov.service.business.dfs.DfsService_New;
 import static org.igov.util.Tool.sO;
-import org.igov.util.db.queryloader.QueryLoader;
 //import com.google.common.base.Optional;
 
 /**
@@ -1148,7 +1144,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/downloadTasksData", method = RequestMethod.GET)
     @Transactional
     public void downloadTasksData(
-            @ApiParam(value = "название бизнесс процесса", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
+            @ApiParam(value = "название бизнес-процесса", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
             @ApiParam(value = "состояние задачи, по умолчанию исключается из фильтра Берется из поля taskDefinitionKey задачи", required = false) @RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
             @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. "
                     + "Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
@@ -1189,7 +1185,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     "Statistics for the business task '" + sID_BP
                     + "' not found. Wrong BP name.", Task.class);
         }
-
         Date dBeginDate = oActionTaskService.getBeginDate(dateAt);
         Date dEndDate = oActionTaskService.getEndDate(dateTo);
         String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
@@ -1329,7 +1324,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("Sending email with tasks data to email {}", sMailTo);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd");
             String sSubject = String.format("Выборка за: (%s)-(%s) для БП: %s ", sdf.format(dBeginDate), sdf.format(dEndDate), sID_BP);
-            String sFileExt = "csv";
+            String sFileExt = "text/csv";
             DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
             oMail._To(sMailTo);
             oMail._Head(sSubject);
@@ -1353,7 +1348,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             } else {
                 pi.close();
             }*/
-            httpResponse.setContentType("text/plain");
+            httpResponse.setContentType("text/csv;charset=windows-1251");
             httpResponse.getWriter().print("OK");
         }
 

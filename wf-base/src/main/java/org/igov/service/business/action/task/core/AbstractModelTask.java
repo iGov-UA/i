@@ -354,7 +354,9 @@ public abstract class AbstractModelTask {
                             sDescription="";
                         }
                         if(getField(oFormData, sID_Field).getType() instanceof TableFormType){
-                            sDescription = sDescription+"[table]";
+                            //sDescription = sDescription+"[table]";
+                            sDescription = sDescription+"[table][id="+sID_Field+"]";
+                            
                         }
                         LOG.info("(sDescription={})", sDescription);
                     
