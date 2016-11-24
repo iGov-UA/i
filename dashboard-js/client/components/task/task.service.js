@@ -252,13 +252,7 @@ angular.module('dashboardJsApp')
               try{
                 oCheckSignReq = angular.fromJson(response);
               } catch (errParse){
-                if(self.value){
-                  self.value.signInfo = null;
-                } else {
-                  self.value = {
-                    signInfo: null
-                  }
-                }
+                self.value.signInfo = null;
               }
               if(oCheckSignReq.taskId && oCheckSignReq.id){
                 self.value = {id : oCheckSignReq.id, signInfo: null, fromDocuments: false};
@@ -280,13 +274,7 @@ angular.module('dashboardJsApp')
                     });
                   }
                 }, function (err) {
-                  if(self.value){
-                    self.value.signInfo = null;
-                  } else {
-                    self.value = {
-                      signInfo: null
-                    }
-                  }
+                  self.value.signInfo = null;
                 })
               }
             });
