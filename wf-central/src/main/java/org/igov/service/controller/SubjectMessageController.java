@@ -726,6 +726,10 @@ public class SubjectMessageController {
         LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nID, sID_Token);
         if(nID!=null){
             SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nID);
+//            LOG.info("feedback.getsBody(): " + feedback.getsBody());
+//            LOG.info("feedback.getsHead(): " + feedback.getsHead());
+//            LOG.info("feedback.getoSubjectMessage().getHead(): " + feedback.getoSubjectMessage().getHead());
+//            LOG.info("feedback.getoSubjectMessage().getBody(): " + feedback.getoSubjectMessage().getBody());
             if (feedback != null) {
                 if (sID_Token!=null && sID_Token.equals(feedback.getsID_Token())) {
                     //feedback.setsID_Token(null);
