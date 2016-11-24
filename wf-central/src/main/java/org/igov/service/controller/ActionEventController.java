@@ -665,7 +665,15 @@ public class ActionEventController implements ControllerConstants {
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
                         } else {
                         sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
+                        
+                        if (oSubjectMessageFeedback.getsBody() != null) {
+                            LOG.info("1oSubjectMessageFeedback.getoSubjectMessage().getBody(): " + oSubjectMessageFeedback.getsBody());
                         }
+                        if (oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
+                            LOG.info("2oSubjectMessageFeedback.getoSubjectMessage().getBody(): " + oSubjectMessageFeedback.getoSubjectMessage().getBody());
+                        }
+
+                    }
                     // sTextFeedback
                     asCell.add(sTextFeedback);
                     // sUserTaskName
