@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="myProcess" name="My process" isExecutable="true">
+  <process id="system_task" name="system_task" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Attachment" name="sTable2 - таблица с исполнителями" type="string"></activiti:formProperty>
@@ -8,9 +8,11 @@
         <activiti:formProperty id="sAutorResolution" name="sAutorResolution - Автор резолюції" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="sTextResolution - Текст резолюції" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="sDateExecution - Термін виконання" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sName_isExecute" name="sName_isExecute" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="Задача" activiti:candidateUsers="${sLogin_isExecute}">
+    <userTask id="usertask1" name="Задача" activiti:assignee="${sLogin_isExecute}">
       <extensionElements>
         <activiti:formProperty id="sID_Attachment" name="sTable2 - таблица с исполнителями" type="string"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="sContent - Короткий зміст документа" type="string"></activiti:formProperty>
@@ -23,8 +25,8 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
-    <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_system_task">
+    <bpmndi:BPMNPlane bpmnElement="system_task" id="BPMNPlane_system_task">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
