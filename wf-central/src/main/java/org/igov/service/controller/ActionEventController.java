@@ -666,17 +666,22 @@ public class ActionEventController implements ControllerConstants {
 //                        } else {
 //                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
 //                        }
-                        try {
-                                           
+                        
+                         sTextFeedback = "";                  
                         if (oSubjectMessageFeedback != null) {
                             LOG.info("!!!!!oSubjectMessageFeedback: " + oSubjectMessageFeedback);
                             if (oSubjectMessageFeedback.getoSubjectMessage() != null) {
-                            LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage(): " + oSubjectMessageFeedback.getoSubjectMessage());    
+                            LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage(): " + oSubjectMessageFeedback.getoSubjectMessage());
+                            sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
+                            
                             }
-                        sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
-                        } else {
-                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
-                        }
+                        else {
+                        LOG.info("SubjectMessage() = null");
+                        } 
+                        } 
+                        else {
+                        LOG.info("SubjectMessageFeedback() = null");
+                        } 
                         
                     // sTextFeedback
                     asCell.add(sTextFeedback);
@@ -754,9 +759,7 @@ public class ActionEventController implements ControllerConstants {
 
                     asCell.add(sDateCreate != null ?  uDateFormat.format(sDateCreate.toDate()) : "");
                     asCell.add(sDateClose != null ? uDateFormat.format(sDateClose.toDate()) : "");
-                    } catch (Exception e) {
-                        LOG.error("MyException => " + e.toString());
-                    }
+                   
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
             }
