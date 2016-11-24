@@ -660,12 +660,24 @@ public class ActionEventController implements ControllerConstants {
                             = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
                     LOG.info("found oSubjectMessageFeedback: " + oSubjectMessageFeedback);
                     
-                    if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null
-                            && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
+//                    if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null
+//                            && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
+//                        sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
+//                        } else {
+//                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
+//                        }
+                        try {
+                                           
+                        if (oSubjectMessageFeedback != null) {
+                            LOG.info("!!!!!oSubjectMessageFeedback: " + oSubjectMessageFeedback);
+                            if (oSubjectMessageFeedback.getoSubjectMessage() != null) {
+                            LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage(): " + oSubjectMessageFeedback.getoSubjectMessage());    
+                            }
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
                         } else {
                         sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
                         }
+                        
                     // sTextFeedback
                     asCell.add(sTextFeedback);
                     // sUserTaskName
@@ -703,7 +715,7 @@ public class ActionEventController implements ControllerConstants {
 
                     asCell.add(oHistoryEvent_Service.getnID_ServiceData() != null ? oHistoryEvent_Service.getnID_ServiceData().toString() : "");
                     //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
+                        
                     sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order()
                             + "&bIncludeGroups=false&bIncludeStartForm=false&bIncludeAttachments=false&bIncludeMessages=false";
 
@@ -711,7 +723,7 @@ public class ActionEventController implements ControllerConstants {
                     DateTime sDateClose = oHistoryEvent_Service.getsDateClose();
 
                     SimpleDateFormat uDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+                        
                     if ((sDateCreate == null || sDateClose == null) && (oHistoryEvent_Service.getnID_StatusType() != HistoryEvent_Service_StatusType.ABSENT.getnID())) {
                         try {
 
@@ -742,7 +754,9 @@ public class ActionEventController implements ControllerConstants {
 
                     asCell.add(sDateCreate != null ?  uDateFormat.format(sDateCreate.toDate()) : "");
                     asCell.add(sDateClose != null ? uDateFormat.format(sDateClose.toDate()) : "");
-
+                    } catch (Exception e) {
+                        LOG.error("MyException => " + e.toString());
+                    }
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
             }
