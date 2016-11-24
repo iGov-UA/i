@@ -119,7 +119,7 @@ exports.index = function (req, res) {
     } else if (req.query.filterType === 'unassigned') {
       query.candidateUser = user.id;
       query.unassigned = true;
-      query.includeProcessVariables = true;
+      query.includeProcessVariables = false;
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
       query.taskAssignee = user.id;

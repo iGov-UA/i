@@ -110,8 +110,8 @@
             var isExecutorSelect = item.name.split(';')[2];
             if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
               var match;
-              if (((match = item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/)))
-                ||(item.type == 'select' && (match = item.id.match(/^s(Country)(_(\d+))?/))) || isExecutorSelect) {
+              if (((match = item.id ? item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/) : false))
+                ||(item.type == 'select' && (match = item.id ? item.id.match(/^s(Country)(_(\d+))?/) : false)) || isExecutorSelect) {
                 if (match && autocompletesDataFactory[match[1]] && !isExecutorSelect) {
                   item.type = 'select';
                   item.selectType = 'autocomplete';
