@@ -729,3 +729,30 @@ exports.getMessageFile = function (req, res) {
   };
   activiti.filedownload(req, res, options);
 };
+
+exports.setTaskAttachment = function (req, res) {
+  async.waterfall([
+    function (callback) {
+      callback(null, {content: req.body.sContent, contentType: 'text/html', url: 'setTaskAttachment'});
+    },
+    function (data, callback) {
+      if (data.url === 'setTaskAttachment') {
+        activiti.post({
+          path: 'object/file/' + data.url,
+          query: {
+            nTaskId: req.params.taskId,
+            sContentType: data.contentType,
+            sDescription: req.body.sDescription,
+            sFileName: req.body.sFileName,
+            nID_Attach: req.body.nID_Attach
+          },
+          headers: {
+            'Content-Type': data.contentType + ';charset=utf-8'
+          }
+        }, function (error, statusCode, result) {
+          error ? res.send(error) : res.status(statusCode).json(result);
+        }, data.content, false);
+      }
+    }
+  ]);
+};
