@@ -140,7 +140,7 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
-      submitTaskForm: function (taskId, formProperties, task) {
+      submitTaskForm: function (taskId, formProperties, task, attachments) {
         var self = this;
         var createProperties = function (formProperties) {
           var properties = new Array();
@@ -162,7 +162,18 @@ angular.module('dashboardJsApp')
 
         if(tableFields.length > 0) {
           angular.forEach(tableFields, function (table) {
-            self.uploadTable(table, taskId);
+            if(attachments.length > 0) {
+              angular.forEach(attachments, function (attachment) {
+                var name = attachment.description.match(/(\[id=(\w+)\])/)[2];
+                if(name.toLowerCase() === table.id.toLowerCase()) {
+                  var description = attachment.description.split('[')[0];
+                  self.uploadTable(table, taskId, attachment.id, description);
+                }
+              });
+            } else {
+              var name = table.name.split(';')[0];
+              self.uploadTable(table, taskId, null, name);
+            }
           })
         }
         var deferred = $q.defer();
@@ -188,17 +199,18 @@ angular.module('dashboardJsApp')
         return deferred.promise;
       },
 
-      uploadTable: function(files, taskId) {
+      uploadTable: function(files, taskId, attachmentID, description) {
         var deferred = $q.defer();
         var tableId = files.id;
         var stringifyTable = JSON.stringify(files);
         var data = {
-          sDescription: tableId + '[table][id='+ tableId +']',
+          sDescription: description + '[table][id='+ tableId +']',
           sFileName: tableId + '.json',
-          sContent: stringifyTable
+          sContent: stringifyTable,
+          nID_Attach: attachmentID
         };
 
-        $http.post('/api/tasks/' + taskId + '/upload_content_as_attachment', data).success(function(uploadResult){
+        $http.post('/api/tasks/' + taskId + '/setTaskAttachment', data).success(function(uploadResult){
           files.value = JSON.parse(uploadResult).id;
           deferred.resolve();
         });
