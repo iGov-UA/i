@@ -98,6 +98,8 @@
                       item.value = item.enumValues[0].id;
                       $scope.updateAssigneeName(item);
                     }
+                    // hidden sAssignName
+                    hiddenObjById(getIdFromActivityProperty("sDestinationFieldID_sName"));
                   }
                 });
               }
@@ -128,9 +130,8 @@
           });
         }
 
-        // it's get hidden object with IdGroupNext
-        hiddenObjById(getIdFromActivityProperty("sDestinationFieldID_sName"));
-        // it's get hidden object with IdGroupNext
+
+        //hidden IdGroupNext
         hiddenObjById(getIdFromActivityProperty("sSourceFieldID_sID_Group"));
 
         function hiddenObjById(id) {
