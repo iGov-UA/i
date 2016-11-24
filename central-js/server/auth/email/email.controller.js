@@ -86,6 +86,7 @@ module.exports.editFio = function (req, res) {
     if (error) {
       res.status(401).send(error);
     } else {
+      req.session.prepare.data.user.customer = {};
       var customer = req.session.prepare.data.user.customer;
 
       if (firstName) {
