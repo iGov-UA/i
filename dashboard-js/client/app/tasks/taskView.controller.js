@@ -490,7 +490,7 @@
             $scope.taskForm.isInProcess = true;
 
             rollbackReadonlyEnumFields();
-            tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask)
+            tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment)
               .then(function (result) {
                 var sMessage = "Форму відправлено.";
                 angular.forEach($scope.taskForm, function (oField) {
