@@ -180,7 +180,7 @@
           <activiti:value id="reject" name="відмова у допуску до іспиту"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateExam" name="Вкажіть дату складання іспиту" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sTimeExam" name="Вкажіть час складання іспиту" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sTimeExam" name="Вкажіть час складання іспиту" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressExam" name="Вкажіть адресу, за якою буде проводитись іспит" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="маркер якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;comment_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'||[sClient] == 'відмова у допуску до іспиту'&quot;}}}"></activiti:formProperty>
@@ -431,7 +431,7 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Нагадуємо, що Вам надано допуск до участі в іспиті і призначено дату його складання value{[sDateExam]} value{[sTimeExam]}.<br>
+Нагадуємо, що Вам надано допуск до участі в іспиті і призначено дату його складання ${sDateExam} value{[sTimeExam]}.<br>
 Адреса, де буде проводитись іспит: ${sAddressExam}<br>
 Кандидати, що прибули на іспит, повинні пред'явити документ, що посвідчує особу.<br>
 <br>
