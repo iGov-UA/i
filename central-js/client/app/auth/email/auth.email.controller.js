@@ -73,6 +73,8 @@ angular.module('auth').controller('AuthByEmailController', function ($window, $s
           });
         }
       }
+    }, function (errResp) {
+      alert(errResp.data.message);
     }).finally(function () {
       stopProcessing();
     });
