@@ -659,6 +659,12 @@ public class ActionEventController implements ControllerConstants {
                     SubjectMessageFeedback oSubjectMessageFeedback
                             = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
                     LOG.info("found oSubjectMessageFeedback: " + oSubjectMessageFeedback);
+                    
+                    LOG.info("111oSubjectMessageFeedback.getsBody(): " + oSubjectMessageFeedback.getsBody());
+                    LOG.info("222oSubjectMessageFeedback.getsBody(): " + oSubjectMessageFeedback.getsHead());
+                    LOG.info("333oSubjectMessageFeedback.getoSubjectMessage().getBody(): " + oSubjectMessageFeedback.getoSubjectMessage().getBody());
+                    LOG.info("444oSubjectMessageFeedback.getoSubjectMessage().getHead(): " + oSubjectMessageFeedback.getoSubjectMessage().getHead());
+                   
                     if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null
                             && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
