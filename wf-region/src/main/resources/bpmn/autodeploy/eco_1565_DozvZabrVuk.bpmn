@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="eco_1564_DozvDocVukid" isExecutable="true">
+  <process id="eco_1564_DozvDocVukid" name="Внесення організації до Переліку установ, організацій та закладів, яким надається право на розробку документів, що обґрунтовують обсяги викидів для підприємств, установ, організацій та громадян - суб’єктів підприємницької діяльності " isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи" type="string" required="true"></activiti:formProperty>
@@ -93,7 +93,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="РЕЄСТРАЦІЯ" activiti:candidateGroups="reg_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="РЕЄСТРАЦІЯ" activiti:candidateGroups="test_ECO">
       <extensionElements>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
@@ -118,7 +118,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask4" name="РОЗПОДІЛ КЕРІВНИКОМ" activiti:candidateGroups="KerAtmPov_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask4" name="РОЗПОДІЛ КЕРІВНИКОМ" activiti:candidateGroups="test_ECO">
       <extensionElements>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
@@ -149,7 +149,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="ОПРАЦЮВАННЯ" activiti:candidateGroups="vukAtmPov_${asSotrudik}_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="ОПРАЦЮВАННЯ" activiti:candidateGroups="test_ECO">
       <extensionElements>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
@@ -257,7 +257,7 @@ ${sPhoneOrgan}&lt;/p&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow10" name="Відмова" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
-    <userTask id="usertask3" name="ВИДАЧА" activiti:candidateGroups="reg_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3" name="ВИДАЧА" activiti:candidateGroups="test_ECO">
       <extensionElements>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
