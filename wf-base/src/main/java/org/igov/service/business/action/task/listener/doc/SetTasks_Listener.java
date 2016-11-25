@@ -73,17 +73,20 @@ public class SetTasks_Listener implements TaskListener {
                
                 try {
                     
-                    LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow"));
-                    LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
+                    //LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow"));
+                    //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
                         
-                    JSONArray arr = (JSONArray) oJSONObject.get("aRow");
+                    JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
                     
-                    if (arr != null){
-                                                
-                        LOG.info("JSONArray length " + arr.size());
-                        
-                        for (int i = 0; i < arr.size(); i++){
-                            LOG.info("json array element" + i + " is " + arr.get(i).toString());
+                    if (aJsonRow != null){
+                        for (int i = 0; i < aJsonRow.size(); i++){
+                            //LOG.info("json array element" + i + " is " + arr.get(i).toString());
+                            JSONObject sJsonField =  (JSONObject) aJsonRow.get(i);
+                            JSONArray aJsonField = (JSONArray) sJsonField.get("aField");
+                            
+                            for (int j = 0; j < aJsonField.size(); j++){
+                                LOG.info("json array element" + i + " is " + aJsonField.get(i).toString());
+                            }
                         }
                     }
                     else{
