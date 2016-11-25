@@ -81,6 +81,9 @@ public class ObjectFileCommonController {
     private IdentityService identityService;
 
     @Autowired
+    private RuntimeService oRuntimeService;
+    
+    @Autowired
     private GeneralConfig generalConfig;
     //@Autowired
     //private BankIDConfig bankIDConfig;
@@ -609,6 +612,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "sDescription") String description,
             @RequestParam(value = "sFileName") String sFileName,
+            @RequestParam(value = "sID_Field", required = false) String sID_Field,
             @RequestBody String sData) {
 
         String processInstanceId = null;
@@ -639,7 +643,10 @@ public class ObjectFileCommonController {
                 + oActionTaskService.getFileExtention(sFileName), taskId, processInstanceId,
                 sFilename, description,
                 new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
-
+        if(attachment != null && sID_Field != null && !"".equals(sID_Field.trim())){
+            oRuntimeService.setVariable(processInstanceId, sID_Field, attachment.getId());
+            LOG.debug("setVariable: processInstanceId = {}, sID_Field = {}, attachmentId = {}", processInstanceId, sID_Field, attachment.getId());
+        }
         AttachmentCover oAttachmentCover = new AttachmentCover();
 
         return oAttachmentCover.apply(attachment);
