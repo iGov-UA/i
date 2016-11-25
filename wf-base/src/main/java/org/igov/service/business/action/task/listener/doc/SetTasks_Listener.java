@@ -5,7 +5,8 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
-import org.activiti.engine.impl.util.json.JSONArray;
+//import org.activiti.engine.impl.util.json.JSONArray;
+import org.json.simple.JSONArray;
 import org.apache.commons.io.IOUtils;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.slf4j.LoggerFactory;
@@ -72,17 +73,20 @@ public class SetTasks_Listener implements TaskListener {
                
                 try {
                     
-                    LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow"));
-                    LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
+                    //LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow"));
+                    //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
                         
-                    JSONArray arr = (JSONArray) oJSONObject.get("aRow");
+                    JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
                     
-                    if (arr != null){
-                                                
-                        LOG.info("JSONArray length " + arr.length());
-                        
-                        for (int i = 0; i < arr.length(); i++){
-                            LOG.info("json array element" + i + " is " + arr.getJSONObject(i).toString());
+                    if (aJsonRow != null){
+                        for (int i = 0; i < aJsonRow.size(); i++){
+                            //LOG.info("json array element" + i + " is " + arr.get(i).toString());
+                            JSONObject sJsonField =  (JSONObject) aJsonRow.get(i);
+                            JSONArray aJsonField = (JSONArray) sJsonField.get("aField");
+                            
+                            for (int j = 0; j < aJsonField.size(); j++){
+                                LOG.info("json array element" + i + " is " + aJsonField.get(j).toString());
+                            }
                         }
                     }
                     else{
