@@ -68,7 +68,9 @@ public class SetTasks_Listener implements TaskListener {
             InputStream attachmentContent = taskService.getAttachmentContent("23620188");
             
             if (attachmentContent != null){
-                //LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
+                
+                LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
+                
                 JSONObject oJSONObject = (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
                 //aJSONObject = new JSONParser()
                
@@ -77,7 +79,7 @@ public class SetTasks_Listener implements TaskListener {
                     //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
                 
                     JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
-                    //Map<String, String> resultJsonMap = new HashMap<String, String>();
+                    Map<String, String> resultJsonMap = new HashMap<String, String>();
                     
                     if (aJsonRow != null){
                         for (int i = 0; i < aJsonRow.size(); i++){
@@ -88,8 +90,20 @@ public class SetTasks_Listener implements TaskListener {
                                 JSONObject sJsonElem =  (JSONObject) aJsonField.get(j);
                                 String id =  sJsonElem.get("id").toString();
                                 String value =  sJsonElem.get("value").toString();
-                                LOG.info("json array id " + id + " and value " + value);
+                                resultJsonMap.put(id, value);
+                                //LOG.info("json array id " + id + " and value " + value);
                             }
+                        }
+                        resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
+                        resultJsonMap.put("sID_Attachment", sID_Attachment_Value);
+                        resultJsonMap.put("sContent", sContent_Value);
+                        resultJsonMap.put("sAutorResolution", sAutorResolution_Value);
+                        resultJsonMap.put("sDateExecution", sDateExecution_Value);
+                        resultJsonMap.put("sTextResolution", sTextResolution_Value);
+                        
+                        for (String key : resultJsonMap.keySet())
+                        {
+                            LOG.info(key + ":" + resultJsonMap.get(key));
                         }
                     }
                     else{
