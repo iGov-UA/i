@@ -79,7 +79,7 @@ public class SetTasks_Listener implements TaskListener {
                     //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
                 
                     JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
-                    Map<String, String> resultJsonMap = new HashMap<String, String>();
+                    //Map<String, String> resultJsonMap = new HashMap<String, String>();
                     
                     if (aJsonRow != null){
                         for (int i = 0; i < aJsonRow.size(); i++){
@@ -90,8 +90,8 @@ public class SetTasks_Listener implements TaskListener {
                                 JSONObject sJsonElem =  (JSONObject) aJsonField.get(j);
                                 String id =  sJsonElem.get("id").toString();
                                 String value =  sJsonElem.get("value").toString();
-                                resultJsonMap.put(id, value);
-                                //LOG.info("json array id " + id + " and value " + value);
+                                //resultJsonMap.put(id, value);
+                                LOG.info("json array id " + id + " and value " + value);
                             }
                         }
                         /*resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
