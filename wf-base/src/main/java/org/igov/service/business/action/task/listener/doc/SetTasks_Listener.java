@@ -5,6 +5,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.impl.util.json.JSONArray;
 import org.apache.commons.io.IOUtils;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,13 @@ public class SetTasks_Listener implements TaskListener {
             if (attachmentContent != null){
                 //LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
                 JSONObject oJSONObject = (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
-                LOG.info("aRow: " + ((JSONObject)(oJSONObject.get("aRow"))).toJSONString());
+                //aJSONObject = new JSONParser()
+                JSONArray arr = (JSONArray) oJSONObject.get("aRow");
+                for (int i = 0; i < arr.length(); i++){
+                    LOG.info("json array element" + i + " is " + arr.get(i).toString());
+                }
+
+                //LOG.info("aRow: " + ((JSONObject)(oJSONObject.get("aRow"))).toJSONString());
             }
             else{
                 LOG.info("attachmentContent is null");
