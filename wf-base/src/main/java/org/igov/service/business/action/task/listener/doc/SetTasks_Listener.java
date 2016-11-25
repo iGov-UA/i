@@ -5,12 +5,15 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
-import org.activiti.engine.task.Attachment;
+//import org.activiti.engine.impl.util.json.JSONArray;
+import org.json.simple.JSONArray;
+import org.apache.commons.io.IOUtils;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
-import org.igov.service.business.dfs.DfsService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  *
@@ -59,13 +62,42 @@ public class SetTasks_Listener implements TaskListener {
             */    
             
                        
-            Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
+            //Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
             
-            if (attachment != null){
-                LOG.info("Attach id is: " + attachment.getId());
+            InputStream attachmentContent = taskService.getAttachmentContent("23620188");
+            
+            if (attachmentContent != null){
+                //LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
+                JSONObject oJSONObject = (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
+                //aJSONObject = new JSONParser()
+               
+                try {
+                    
+                    LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow"));
+                    LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
+                        
+                    JSONArray arr = (JSONArray) oJSONObject.get("aRow");
+                    
+                    if (arr != null){
+                                                
+                        LOG.info("JSONArray length " + arr.size());
+                        
+                        for (int i = 0; i < arr.size(); i++){
+                            LOG.info("json array element" + i + " is " + arr.get(i).toString());
+                        }
+                    }
+                    else{
+                        LOG.info("JSONArray is null");
+                    }
+                }catch(Exception ex)
+                {
+                    LOG.info("json array code throw an exception: " + ex.toString());
+                }
+
+                //LOG.info("aRow: " + oJSONObject.get("aRow"));
             }
             else{
-                LOG.info("Attach is null");
+                LOG.info("attachmentContent is null");
             }
             
             /*

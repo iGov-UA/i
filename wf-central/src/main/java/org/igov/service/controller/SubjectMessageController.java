@@ -6,8 +6,6 @@ import org.activiti.engine.ActivitiException;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.activiti.engine.task.Task;
-import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
@@ -53,7 +51,6 @@ import static org.apache.commons.lang3.StringUtils.*;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 import org.igov.io.mail.NotificationPatterns;
-import org.igov.util.Tool;
 import static org.igov.util.Tool.sO;
 
 @Controller
@@ -913,30 +910,7 @@ public class SubjectMessageController {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             if (oHistoryEvent_Service != null) {
                 if (oHistoryEvent_Service.getsToken() != null && oHistoryEvent_Service.getsToken().equals(sToken)) {
-                    /*List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", oHistoryEvent_Service.getId());
-                     if (aSubjectMessage != null && !aSubjectMessage.isEmpty()){
-                     for (SubjectMessage oSubjectMessage : aSubjectMessage){
-                     if (oSubjectMessage.getBody() != null && !oSubjectMessage.getBody().trim().isEmpty()){
-                     LOG.warn("Body in Subject message does already exist");
-                     throw new CommonServiceException(
-                     ExceptionCommonController.BUSINESS_ERROR_CODE,
-                     "Already exists",
-                     HttpStatus.FORBIDDEN);
-                     } else {
-                     Optional<SubjectMessageType> subjectMessageType = subjectMessageTypeDao.findById(nID_SubjectMessageType);
-
-                     oSubjectMessage.setDate(new DateTime());
-                     oSubjectMessage.setBody(sBody);
-                     if (subjectMessageType.isPresent()){
-                     oSubjectMessage.setSubjectMessageType(subjectMessageType.get());
-                     LOG.info("Set SubjectMessageType with ID = "+nID_SubjectMessageType);
-                     }
-                     subjectMessagesDao.saveOrUpdate(oSubjectMessage);
-                     oHistoryEvent_Service.setsToken("");
-                     historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
-                     }
-                     }
-                     } else {*/
+                    
                     SubjectMessage oSubjectMessage_Feedback = oSubjectMessageService.createSubjectMessage(
                             sMessageHead(nID_SubjectMessageType, sID_Order), "", oHistoryEvent_Service.getnID_Subject(),
                             "", "", "", nID_SubjectMessageType);//2l
@@ -945,12 +919,7 @@ public class SubjectMessageController {
                     LOG.info("No SubjectMessage records found, create new!");
                     oHistoryEvent_Service.setsToken("");
                     historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
-                    //test-trigger/////
-                    /*throw new CommonServiceException(
-                     ExceptionCommonController.BUSINESS_ERROR_CODE,
-                     "Record Not Found",
-                     HttpStatus.NOT_FOUND);*/
-                    //}
+                    
                 } else {
                     LOG.warn("Skipping history event service from processing as it contains wrong token: {}", oHistoryEvent_Service.getsToken());
                     throw new CommonServiceException(
