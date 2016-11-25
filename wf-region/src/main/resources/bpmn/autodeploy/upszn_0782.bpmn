@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="upszn_0782" name="Надання з Єдиного державного автоматизованого реєстру осіб, які мають право на пільги, довідок про перебування на обліку" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Звернення подане" type="enum" required="true">
+          <activiti:value id="sEnumPersonal" name="Особисто"></activiti:value>
+          <activiti:value id="sEnumCare" name="Довіреною особою або піклувальником"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sLastName" name="Прізвище отримувача пільг" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFirstName" name="Ім'я отримувача пільг" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMiddleName" name="По батькові отримувача пільг" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nInn" name="ІПН отримувача пільг" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sIdPassport" name="Паспортні дані отримувача пільг" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації отримувача пільг" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nTrust" name="Документ, який підтверджує статус довіреної особи або піклувальника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nScanPassport" name="Скан-копія паспорта отримувача пільг: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nScanINN" name="Довідка про присвоєння індивідуального податкового номеру (ІПН)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nScanFamily" name="Довідка про склад сім’ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nScanBenefit" name="Документи, що підтверджують право пільговика та членів його сім’ї на пільги; декілька сторінок об'єднайте у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nScanInvalid" name="Довідка МСЕК про інвалідність" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nScanPens" name="Копія пенсійного посвідчення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="Група користувачів iGov" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Вибір категорії" type="markers" default="${markerService.loadFromFile('soczah/upszn_0783.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Повідомлення держслужбовця про звернення" activiti:async="true" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. Надання з Єдиного державного автоматизованого реєстру осіб, які мають право на пільги, довідок про перебування на обліку]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask3" name="Направлення громадянину листа про отримання звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему Надання з Єдиного державного автоматизованого реєстру осіб, які мають право на пільги, довідок про перебування на обліку]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<p> Ваше звернення №[sID_Order] на тему: "Надання з Єдиного державного автоматизованого реєстру осіб, які мають право на пільги, довідок про перебування на обліку" було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br />
+${sPhoneOrgan}<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <userTask id="usertask1" name="Розгляд документів держслужбовцем" activiti:candidateGroups="upszn${nArea}">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGetFio" name="Отримувач пільг; ;writable=false" type="string" default="${sLastName} ${sFirstName} ${sMiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIdPassport" name="Паспортні дані отримувача пільг; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nInn" name="ІПН отримувача пільг; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації отримувача пільг; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Звернення подане" type="enum" writable="false">
+          <activiti:value id="sEnumPersonal" name="Особисто"></activiti:value>
+          <activiti:value id="sEnumCare" name="Довіреною особою або піклувальником"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="accept" name="Задовільнити заяву, видати довідку"></activiti:value>
+          <activiti:value id="reject" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="result" name="Завантажте довідку з реєстру" type="file"></activiti:formProperty>
+        <activiti:formProperty id="marker21" name="required" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decide&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'accept'&quot;}}}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nTrust},${nScanPassport},${nScanINN},${nScanFamily},${nScanBenefit},${nScanInvalid},${nScanPens}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask4" name="Лист про неповний пакет документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Інформація щодо Надання з Єдиного державного автоматизованого реєстру осіб, які мають право на пільги, довідок про перебування на обліку]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+			<p> На жаль, Ваше звернення на тему: "Надання з Єдиного державного автоматизованого реєстру осіб, які мають право на пільги, довідок про перебування на обліку" було відхилено.<br/>
+			<p> Причина в наступному:<br/>
+			<p>${comment}</p>
+			<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+			<br />
+			${sPhoneOrgan}<br />
+			[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow7" name="Недостатньо документів" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="Лист з запрошенням" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Надання з Єдиного державного автоматизованого реєстру осіб, які мають право на пільги, довідок про перебування на обліку]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+			<p>Ваше звернення на тему: "Надання з Єдиного державного автоматизованого реєстру осіб, які мають право на пільги, довідок про перебування на обліку" - розглянуте.</p>
+			<p>Довідка готова. У разі необхідності ви можете отримати оригінал в Управлінні соцзахисту населення:<br/>
+			</p>
+			${sPhoneOrgan}<br />
+			<br />
+			<br />
+			${sWorkTime}<br />
+			${sAddress}<br />
+			<br />
+			[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow9" name="Повний пакет документів" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="nArea" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var gr = [ "upszn1", "upszn2", "upszn3", "upszn4", "upszn5", "upszn6", "upszn7", "upszn8", "upszn9", "upszn10", "upszn11", "upszn12", "upszn13", "upszn14", "upszn15", "upszn16", "upszn17", "upszn18", "upszn19", "upszn20", "upszn21", "upszn22", "upszn23", "upszn24", "upszn25", "upszn26", "upszn27", "upszn28", "upszn29", "upszn30", "upszn31", "upszn32", "upszn33", "upszn34", "upszn35", "upszn36", "upszn37", "upszn38", "upszn39", "upszn40", "upszn41", "upszn42", "upszn43", "upszn44", "upszn45", "upszn46", "upszn47", "upszn48", "upszn49", "upszn50", "upszn51", "upszn52", "upszn53", "upszn54", "upszn55", "upszn56", "upszn57", "upszn58", "upszn59", "upszn60", "upszn61", "upszn62", "upszn63", "upszn64", "upszn65", "upszn66", "upszn67", "upszn68", "upszn69", "upszn70", "upszn71", "upszn72", "upszn73", "upszn74", "upszn75", "upszn76", "upszn77", "upszn78", "upszn79", "upszn80", "upszn81", "upszn82", "upszn83", "upszn84", "upszn85", "upszn86", "upszn87", "upszn88", "upszn89", "upszn90", "upszn91", "upszn92", "upszn93", "upszn94", "upszn95", "upszn96", "upszn97", "upszn98", "upszn99", "upszn100", "upszn101", "upszn102", "upszn103", "upszn104", "upszn105", "upszn106", "upszn107", "upszn108", "upszn109", "upszn110", "upszn111", "upszn112", "upszn113", "upszn114", "upszn115", "upszn116", "upszn117", "upszn118", "upszn119", "upszn120", "upszn121", "upszn122", "upszn123", "upszn124", "upszn125", "upszn126", "upszn127", "upszn128", "upszn129", "upszn130", "upszn131", "upszn132", "upszn133", "upszn134", "upszn135", "upszn136", "upszn137", "upszn138", "upszn139", "upszn140", "upszn141", "upszn142", "upszn143", "upszn144", "upszn145", "upszn146", "upszn147", "upszn148", "upszn149", "upszn150", "upszn151", "upszn152", "upszn153", "upszn154", "upszn155", "upszn156", "upszn157", "upszn158", "upszn159", "upszn160", "upszn161", "upszn162", "upszn163", "upszn164", "upszn165", "upszn166", "upszn167", "upszn168", "upszn169", "upszn170", "upszn171", "upszn172", "upszn173", "upszn174", "upszn175", "upszn176", "upszn177", "upszn178", "upszn179", "upszn180", "upszn181", "upszn182", "upszn183", "upszn184", "upszn185", "upszn186", "upszn187", "upszn188", "upszn189", "upszn190", "upszn191", "upszn192", "upszn193", "upszn194", "upszn195", "upszn196", "upszn197", "upszn198", "upszn199", "upszn200", "upszn201", "upszn202", "upszn203", "upszn204", "upszn205", "upszn206", "upszn207", "upszn208", "upszn209", "upszn210", "upszn211", "upszn212", "upszn213", "upszn214", "upszn215", "upszn216", "upszn217", "upszn218", "upszn219", "upszn220", "upszn221", "upszn222", "upszn223", "upszn224", "upszn225", "upszn226", "upszn227", "upszn228", "upszn229", "upszn230", "upszn231", "upszn232", "upszn233", "upszn234", "upszn235", "upszn236", "upszn237", "upszn238", "upszn239", "upszn240", "upszn241", "upszn242", "upszn243", "upszn244", "upszn245", "upszn246", "upszn247", "upszn248", "upszn249", "upszn250", "upszn251", "upszn252", "upszn253", "upszn254", "upszn255", "upszn256", "upszn257", "upszn258", "upszn259", "upszn260", "upszn261", "upszn262", "upszn263", "upszn264", "upszn265", "upszn266", "upszn267", "upszn268", "upszn269", "upszn270", "upszn271", "upszn272", "upszn273", "upszn274", "upszn275", "upszn276", "upszn277", "upszn278", "upszn279", "upszn280", "upszn281", "upszn282", "upszn283", "upszn284", "upszn285", "upszn286", "upszn287", "upszn288", "upszn289", "upszn290", "upszn291", "upszn292", "upszn293", "upszn294", "upszn295", "upszn296", "upszn297", "upszn298", "upszn299", "upszn300", "upszn301", "upszn302", "upszn303", "upszn304", "upszn305", "upszn306", "upszn307", "upszn308", "upszn309", "upszn310", "upszn311", "upszn312", "upszn313", "upszn314", "upszn315", "upszn316", "upszn317", "upszn318", "upszn319", "upszn320", "upszn321", "upszn322", "upszn323", "upszn324", "upszn325", "upszn326", "upszn327", "upszn328", "upszn329", "upszn330", "upszn331", "upszn332", "upszn333", "upszn334", "upszn335", "upszn336", "upszn337", "upszn338", "upszn339", "upszn340", "upszn341", "upszn342", "upszn343", "upszn344", "upszn345", "upszn346", "upszn347", "upszn348", "upszn349", "upszn350", "upszn351", "upszn352", "upszn353", "upszn354", "upszn355", "upszn356", "upszn357", "upszn358", "upszn359", "upszn360", "upszn361", "upszn362", "upszn363", "upszn364", "upszn365", "upszn366", "upszn367", "upszn368", "upszn369", "upszn370", "upszn371", "upszn372", "upszn373", "upszn374", "upszn375", "upszn376", "upszn377", "upszn378", "upszn379", "upszn380", "upszn381", "upszn382", "upszn383", "upszn384", "upszn385", "upszn386", "upszn387", "upszn388", "upszn389", "upszn390", "upszn391", "upszn392", "upszn393", "upszn394", "upszn395", "upszn396", "upszn397", "upszn398", "upszn399", "upszn400", "upszn401", "upszn402", "upszn403", "upszn404", "upszn405", "upszn406", "upszn407", "upszn408", "upszn409", "upszn410", "upszn411", "upszn412", "upszn413", "upszn414", "upszn415", "upszn416", "upszn417", "upszn418", "upszn419", "upszn420", "upszn421", "upszn422", "upszn423", "upszn424", "upszn425", "upszn426", "upszn427", "upszn428", "upszn429", "upszn430", "upszn431", "upszn432", "upszn433", "upszn434", "upszn435", "upszn436", "upszn437", "upszn438", "upszn439", "upszn440", "upszn441", "upszn442", "upszn443", "upszn444", "upszn445", "upszn446", "upszn447", "upszn448", "upszn449", "upszn450", "upszn451", "upszn452", "upszn453", "upszn454", "upszn455", "upszn456", "upszn457", "upszn458", "upszn459", "upszn460", "upszn461", "upszn462", "upszn463", "upszn464", "upszn465", "upszn466", "upszn467", "upszn468", "upszn469", "upszn470", "upszn471", "upszn472", "upszn473", "upszn474", "upszn475", "upszn476", "upszn477", "upszn478", "upszn479", "upszn480", "upszn481", "upszn482", "upszn483", "upszn484", "upszn485", "upszn486", "upszn487", "upszn488", "upszn489", "upszn490", "upszn491", "upszn492", "upszn493", "upszn494", "upszn495", "upszn496", "upszn497", "upszn498", "upszn499", "upszn500", "upszn501", "upszn502", "upszn503", "upszn504", "upszn505", "upszn506", "upszn507", "upszn508", "upszn509", "upszn510", "upszn511", "upszn512", "upszn513", "upszn514", "upszn515", "upszn516", "upszn517", "upszn518", "upszn519", "upszn520", "upszn521", "upszn522", "upszn523", "upszn524", "upszn525", "upszn526", "upszn527", "upszn528", "upszn529", "upszn530", "upszn531", "upszn532", "upszn533", "upszn534", "upszn535", "upszn536", "upszn537", "upszn538", "upszn539", "upszn540", "upszn541", "upszn542", "upszn543", "upszn544", "upszn545", "upszn546", "upszn547", "upszn548", "upszn549", "upszn550", "upszn551", "upszn552", "upszn553", "upszn554", "upszn555", "upszn556", "upszn557", "upszn558", "upszn559", "upszn560", "upszn561", "upszn562", "upszn563", "upszn564", "upszn565", "upszn566", "upszn567", "upszn568", "upszn569", "upszn570", "upszn571", "upszn572", "upszn573", "upszn574", "upszn575", "upszn576", "upszn577", "upszn578", "upszn579", "upszn580", "upszn581", "upszn582", "upszn583", "upszn584", "upszn585", "upszn586", "upszn587", "upszn588", "upszn589", "upszn590", "upszn591", "upszn592", "upszn593", "upszn594", "upszn595", "upszn596", "upszn597", "upszn598", "upszn599", "upszn600",   "upszn601", "upszn602", "upszn603", "upszn604", "upszn605", "upszn606", "upszn607", "upszn608", "upszn609", "upszn610", "upszn611", "upszn612", "upszn613", "upszn614", "upszn615", "upszn616", "upszn617", "upszn618", "upszn619", "upszn620", "upszn621", "upszn622", "upszn623", "upszn624", "upszn625", "upszn626", "upszn627", "upszn628", "upszn629", "upszn630", "upszn631", "upszn632", "upszn633", "upszn634", "upszn635", "upszn636", "upszn637", "upszn638", "upszn639", "upszn640", "upszn641", "upszn642", "upszn643", "upszn644", "upszn645", "upszn646", "upszn647", "upszn648", "upszn649", "upszn650", "upszn651", "upszn652", "upszn653", "upszn654", "upszn655", "upszn656", "upszn657", "upszn658", "upszn659", "upszn660", "upszn661", "upszn662", "upszn663", "upszn664", "upszn665", "upszn666", "upszn667", "upszn668", "upszn669", "upszn670", "upszn671", "upszn672", "upszn673", "upszn674", "upszn675", "upszn676", "upszn677", "upszn678", "upszn679", "upszn680", "upszn681", "upszn682", "upszn683", "upszn684", "upszn685", "upszn686", "upszn687", "upszn688", "upszn689", "upszn690", "upszn691", "upszn692", "upszn693", "upszn694", "upszn695", "upszn696", "upszn697"]
+var So = [ "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11", "s12", "s13", "s14", "s15", "s16", "s17", "s18", "s19", "s20", "s21", "s22", "s23", "s24", "s25", "s26", "s27", "s28", "s29", "s30", "s31", "s32", "s33", "s34", "s35", "s36", "s37", "s38", "s39", "s40", "s41", "s42", "s43", "s44", "s45", "s46", "s47", "s48", "s49", "s50", "s51", "s52", "s53", "s54", "s55", "s56", "s57", "s58", "s59", "s60", "s61", "s62", "s63", "s64", "s65", "s66", "s67", "s68", "s69", "s70", "s71", "s72", "s73", "s74", "s75", "s76", "s77", "s78", "s79", "s80", "s81", "s82", "s83", "s84", "s85", "s86", "s87", "s88", "s89", "s90", "s91", "s92", "s93", "s94", "s95", "s96", "s97", "s98", "s99", "s100", "s101", "s102", "s103", "s104", "s105", "s106", "s107", "s108", "s109", "s110", "s111", "s112", "s113", "s114", "s115", "s116", "s117", "s118", "s119", "s120", "s121", "s122", "s123", "s124", "s125", "s126", "s127", "s128", "s129", "s130", "s131", "s132", "s133", "s134", "s135", "s136", "s137", "s138", "s139", "s140", "s141", "s142", "s143", "s144", "s145", "s146", "s147", "s148", "s149", "s150", "s151", "s152", "s153", "s154", "s155", "s156", "s157", "s158", "s159", "s160", "s161", "s162", "s163", "s164", "s165", "s166", "s167", "s168", "s169", "s170", "s171", "s172", "s173", "s174", "s175", "s176", "s177", "s178", "s179", "s180", "s181", "s182", "s183", "s184", "s185", "s186", "s187", "s188", "s189", "s190", "s191", "s192", "s193", "s194", "s195", "s196", "s197", "s198", "s199", "s200", "s201", "s202", "s203", "s204", "s205", "s206", "s207", "s208", "s209", "s210", "s211", "s212", "s213", "s214", "s215", "s216", "s217", "s218", "s219", "s220", "s221", "s222", "s223", "s224", "s225", "s226", "s227", "s228", "s229", "s230", "s231", "s232", "s233", "s234", "s235", "s236", "s237", "s238", "s239", "s240", "s241", "s242", "s243", "s244", "s245", "s246", "s247", "s248", "s249", "s250", "s251", "s252", "s253", "s254", "s255", "s256", "s257", "s258", "s259", "s260", "s261", "s262", "s263", "s264", "s265", "s266", "s267", "s268", "s269", "s270", "s271", "s272", "s273", "s274", "s275", "s276", "s277", "s278", "s279", "s280", "s281", "s282", "s283", "s284", "s285", "s286", "s287", "s288", "s289", "s290", "s291", "s292", "s293", "s294", "s295", "s296", "s297", "s298", "s299", "s300", "s301", "s302", "s303", "s304", "s305", "s306", "s307", "s308", "s309", "s310", "s311", "s312", "s313", "s314", "s315", "s316", "s317", "s318", "s319", "s320", "s321", "s322", "s323", "s324", "s325", "s326", "s327", "s328", "s329", "s330", "s331", "s332", "s333", "s334", "s335", "s336", "s337", "s338", "s339", "s340", "s341", "s342", "s343", "s344", "s345", "s346", "s347", "s348", "s349", "s350", "s351", "s352", "s353", "s354", "s355", "s356", "s357", "s358", "s359", "s360", "s361", "s362", "s363", "s364", "s365", "s366", "s367", "s368", "s369", "s370", "s371", "s372", "s373", "s374", "s375", "s376", "s377", "s378", "s379", "s380", "s381", "s382", "s383", "s384", "s385", "s386", "s387", "s388", "s389", "s390", "s391", "s392", "s393", "s394", "s395", "s396", "s397", "s398", "s399", "s400", "s401", "s402", "s403", "s404", "s405", "s406", "s407", "s408", "s409", "s410", "s411", "s412", "s413", "s414", "s415", "s416", "s417", "s418", "s419", "s420", "s421", "s422", "s423", "s424", "s425", "s426", "s427", "s428", "s429", "s430", "s431", "s432", "s433", "s434", "s435", "s436", "s437", "s438", "s439", "s440", "s441", "s442", "s443", "s444", "s445", "s446", "s447", "s448", "s449", "s450", "s451", "s452", "s453", "s454", "s455", "s456", "s457", "s458", "s459", "s460", "s461", "s462", "s463", "s464", "s465", "s466", "s467", "s468", "s469", "s470", "s471", "s472", "s473", "s474", "s475", "s476", "s477", "s478", "s479", "s480", "s481", "s482", "s483", "s484", "s485", "s486", "s487", "s488", "s489", "s490", "s491", "s492", "s493", "s494", "s495", "s496", "s497", "s498", "s499", "s500", "s501", "s502", "s503", "s504", "s505", "s506", "s507", "s508", "s509", "s510", "s511", "s512", "s513", "s514", "s515", "s516", "s517", "s518", "s519", "s520", "s521", "s522", "s523", "s524", "s525", "s526", "s527", "s528", "s529", "s530", "s531", "s532", "s533", "s534", "s535", "s536", "s537", "s538", "s539", "s540", "s541", "s542", "s543", "s544", "s545", "s546", "s547", "s548", "s549", "s550", "s551", "s552", "s553", "s554", "s555", "s556", "s557", "s558", "s559", "s560", "s561", "s562", "s563", "s564", "s565", "s566", "s567", "s568", "s569", "s570", "s571", "s572", "s573", "s574", "s575", "s576", "s577", "s578", "s579", "s580", "s581", "s582", "s583", "s584", "s585", "s586", "s587", "s588", "s589", "s590", "s591", "s592", "s593", "s594", "s595", "s596", "s597", "s598", "s599", "s600",   "s601", "s602", "s603", "s604", "s605", "s606", "s607", "s608", "s609", "s610", "s611", "s612", "s613", "s614", "s615", "s616", "s617", "s618", "s619", "s620", "s621", "s622", "s623", "s624", "s625", "s626", "s627", "s628", "s629", "s630", "s631", "s632", "s633", "s634", "s635", "s636", "s637", "s638", "s639", "s640", "s641", "s642", "s643", "s644", "s645", "s646", "s647", "s648", "s649", "s650", "s651", "s652", "s653", "s654", "s655", "s656", "s657", "s658", "s659", "s660", "s661", "s662", "s663", "s664", "s665", "s666", "s667", "s668", "s669", "s670", "s671", "s672", "s673", "s674", "s675", "s676", "s677", "s678", "s679", "s680", "s681", "s682", "s683", "s684", "s685", "s686", "s687", "s688", "s689", "s690", "s691", "s692", "s693", "s694", "s695", "s696", "s697"]
+for (var i = 0; i&lt;697; i++){
+var per = So[i]
+if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
+var per1 = gr[i]
+break}}
+execution.setVariable('nArea', per1)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_upszn_0782">
+    <bpmndi:BPMNPlane bpmnElement="upszn_0782" id="BPMNPlane_upszn_0782">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="75.0" width="105.0" x="90.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="130.0" y="131.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="407.0" y="282.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="85.0" width="115.0" x="240.0" y="82.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="75.0" width="105.0" x="372.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="75.0" width="111.0" x="510.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="546.0" y="195.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="70.0" width="105.0" x="371.0" y="181.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="72.0" width="141.0" x="495.0" y="264.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="170.0" y="1.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="65.0" y="124.0"></omgdi:waypoint>
+        <omgdi:waypoint x="90.0" y="124.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="145.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="144.0" y="299.0"></omgdi:waypoint>
+        <omgdi:waypoint x="407.0" y="299.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="355.0" y="124.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="124.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="477.0" y="124.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="124.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="565.0" y="162.0"></omgdi:waypoint>
+        <omgdi:waypoint x="566.0" y="195.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="546.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="476.0" y="216.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="488.0" y="170.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="566.0" y="235.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="264.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="575.0" y="222.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="423.0" y="251.0"></omgdi:waypoint>
+        <omgdi:waypoint x="424.0" y="282.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="495.0" y="300.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="299.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="142.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="142.0" y="29.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="28.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="275.0" y="28.0"></omgdi:waypoint>
+        <omgdi:waypoint x="297.0" y="27.0"></omgdi:waypoint>
+        <omgdi:waypoint x="297.0" y="82.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
