@@ -94,12 +94,12 @@ public class SetTasks_Listener implements TaskListener {
                                 //LOG.info("json array id " + id + " and value " + value);
                             }
                         }
-                        resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
+                        /*resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
                         resultJsonMap.put("sID_Attachment", sID_Attachment_Value);
                         resultJsonMap.put("sContent", sContent_Value);
                         resultJsonMap.put("sAutorResolution", sAutorResolution_Value);
                         resultJsonMap.put("sDateExecution", sDateExecution_Value);
-                        resultJsonMap.put("sTextResolution", sTextResolution_Value);
+                        resultJsonMap.put("sTextResolution", sTextResolution_Value);*/
                         
                         /*for (String key : resultJsonMap.keySet())
                         {
