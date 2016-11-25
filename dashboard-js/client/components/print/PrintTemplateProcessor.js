@@ -96,15 +96,15 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       });
 
       angular.forEach(idArray, function(id) {
-        angular.forEach(form.taskData.aTable, function(table) {
-          if(table.idName === id[0]) {
+        angular.forEach(form, function(item) {
+          if(item.id === id[0]) {
             angular.forEach(templates, function (template) {
               var commentedField = template.match(/<!--.*?-->/)[0];
               var uncommentedField = commentedField.split('--')[1];
               var result = uncommentedField.slice(1);
               if(result == id[0]){
-                var withAddedRowsTemplate = template.repeat(table.content.length - 1);
-                angular.forEach(table.content, function (row) {
+                var withAddedRowsTemplate = template.repeat(item.aRow.length - 1);
+                angular.forEach(item.aRow, function (row) {
                   angular.forEach(row.aField, function (field) {
                     var fieldId = field.value ? field.value : (field.default ? field.default : field.props.value);
                     withAddedRowsTemplate = self.populateSystemTag(withAddedRowsTemplate, '['+ field.id +']', fieldId, true);

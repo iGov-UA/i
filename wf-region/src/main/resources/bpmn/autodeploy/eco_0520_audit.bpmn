@@ -187,6 +187,9 @@
         <activiti:formProperty id="markers15" name="маркер якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;sDateExam&quot;,&quot;sTimeExam&quot;,&quot;sAddressExam&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'accept'||[sClient] == 'документи заявника погоджено, призначити дату іспиту'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="нагадування" type="invisible"></activiti:formProperty>
+         <activiti:formProperty id="per1" name="нагадування" type="invisible"></activiti:formProperty>
+          <activiti:formProperty id="per2" name="нагадування" type="invisible"></activiti:formProperty>
+           <activiti:formProperty id="per3" name="нагадування" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/eco/eco_0520_audit_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/eco/eco_0520_audit_card_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0520_audit_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
@@ -417,6 +420,44 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <serviceTask id="servicetask10" name="нагадування заявнику про дату та час іспиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+Нагадуємо, що Вам надано допуск до участі в іспиті і призначено дату його складання ${sDateExam} value{[sTimeExam]}.<br>
+Адреса, де буде проводитись іспит: ${sAddressExam}<br>
+Кандидати, що прибули на іспит, повинні пред'явити документ, що посвідчує особу.<br>
+<br>
+Телефон для довідок:(044)206-31-54<br>
+Режим роботи з 9.00 до 18.00 в п’ятницю з 9.00 до 16.45<br>
+Обідня перерва з 13.00 до 13.45<br>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+Міністерство екології та природних ресурсів України<br>	   
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Nagaduvannya pro ispit. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Видача сертифіката екологічного аудитора]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <serviceTask id="servicetask12" name="повідомлення заявника про відмову у допуску до іспиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -513,7 +554,6 @@ ${sListDocumentsLetter}
 [pattern/mail/new_design/_common_content_start.html]
 За результатми іспиту прийнято рішення про відмову у видачі сертифіката.<br>
 Коментар держслужбовця: ${comment_3}<br>
-<br>
 Кандидати, які не склали кваліфікаційний іспит, мають право складати його повторно на загальних умовах не раніше ніж через 6 місяців. <br>
 <br>
 Якщо кандидати не згодні з рішенням екзаменаційної комісії, вони  мають право подати апеляцію до Комісії із сертифікації, яка складається у письмовій формі.<br>
@@ -589,6 +629,7 @@ execution.setVariable('sListDocumentsLetter', res)</script>
     <sequenceFlow id="flow38" sourceRef="exclusivegateway2" targetRef="servicetask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="servicetask10" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow41" sourceRef="usertask3" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
@@ -602,8 +643,64 @@ execution.setVariable('sListDocumentsLetter', res)</script>
     </sequenceFlow>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow47" sourceRef="servicetask11" targetRef="endevent5"></sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDate>${sNotification_day}</timeDate>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow51" sourceRef="timerintermediatecatchevent1" targetRef="servicetask10"></sequenceFlow>
+    <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var per1 = "";
+var per2 = "";
+var per3 = "";
+var src=execution.getVariable('sDateExam');
+var type = typeof(src)
+var result = valueOf(src)
+execution.setVariable('per2', src)
+execution.setVariable('per1', type)
+execution.setVariable('per3',result)
+</script>
+    </scriptTask>
     <sequenceFlow id="flow54" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow55" sourceRef="servicetask9" targetRef="usertask3"></sequenceFlow>
+    <serviceTask id="servicetask13" name="нагадування заявнику про дату та час іспиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+${per1} type
+${per2} src
+${per3} result
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+Міністерство екології та природних ресурсів України<br>	   
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Nagaduvannya pro ispit. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Видача сертифіката екологічного аудитора]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow60" sourceRef="scripttask2" targetRef="servicetask13"></sequenceFlow>
+    <endEvent id="endevent7" name="End"></endEvent>
+    <sequenceFlow id="flow62" sourceRef="servicetask13" targetRef="endevent7"></sequenceFlow>
+    <sequenceFlow id="flow63" sourceRef="servicetask9" targetRef="scripttask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_eco_0520_audit">
     <bpmndi:BPMNPlane bpmnElement="eco_0520_audit" id="BPMNPlane_eco_0520_audit">
@@ -620,7 +717,7 @@ execution.setVariable('sListDocumentsLetter', res)</script>
         <omgdc:Bounds height="82.0" width="166.0" x="473.0" y="334.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="82.0" width="166.0" x="473.0" y="550.0"></omgdc:Bounds>
+        <omgdc:Bounds height="82.0" width="166.0" x="473.0" y="749.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="82.0" width="177.0" x="267.0" y="37.0"></omgdc:Bounds>
@@ -637,14 +734,17 @@ execution.setVariable('sListDocumentsLetter', res)</script>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
         <omgdc:Bounds height="82.0" width="171.0" x="268.0" y="423.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="82.0" width="171.0" x="270.0" y="749.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
         <omgdc:Bounds height="83.0" width="171.0" x="661.0" y="422.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
-        <omgdc:Bounds height="82.0" width="171.0" x="270.0" y="650.0"></omgdc:Bounds>
+        <omgdc:Bounds height="82.0" width="171.0" x="270.0" y="849.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="82.0" width="171.0" x="661.0" y="650.0"></omgdc:Bounds>
+        <omgdc:Bounds height="82.0" width="171.0" x="661.0" y="849.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="83.0" width="105.0" x="142.0" y="36.0"></omgdc:Bounds>
@@ -656,10 +756,22 @@ execution.setVariable('sListDocumentsLetter', res)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="535.0" y="444.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="535.0" y="670.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="535.0" y="869.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
-        <omgdc:Bounds height="35.0" width="35.0" x="177.0" y="674.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="177.0" y="873.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="338.0" y="696.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="167.0" x="272.0" y="610.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
+        <omgdc:Bounds height="82.0" width="171.0" x="60.0" y="630.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
+        <omgdc:Bounds height="35.0" width="35.0" x="177.0" y="740.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="555.0" y="218.0"></omgdi:waypoint>
@@ -709,9 +821,13 @@ execution.setVariable('sListDocumentsLetter', res)</script>
         <omgdi:waypoint x="535.0" y="464.0"></omgdi:waypoint>
         <omgdi:waypoint x="439.0" y="464.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="441.0" y="790.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="790.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="556.0" y="632.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="670.0"></omgdi:waypoint>
+        <omgdi:waypoint x="556.0" y="831.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="869.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
         <omgdi:waypoint x="115.0" y="77.0"></omgdi:waypoint>
@@ -722,30 +838,41 @@ execution.setVariable('sListDocumentsLetter', res)</script>
         <omgdi:waypoint x="860.0" y="463.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="832.0" y="691.0"></omgdi:waypoint>
-        <omgdi:waypoint x="877.0" y="690.0"></omgdi:waypoint>
+        <omgdi:waypoint x="832.0" y="890.0"></omgdi:waypoint>
+        <omgdi:waypoint x="877.0" y="889.0"></omgdi:waypoint>
         <omgdi:waypoint x="877.0" y="481.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="575.0" y="690.0"></omgdi:waypoint>
-        <omgdi:waypoint x="661.0" y="691.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="889.0"></omgdi:waypoint>
+        <omgdi:waypoint x="661.0" y="890.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="535.0" y="690.0"></omgdi:waypoint>
-        <omgdi:waypoint x="441.0" y="691.0"></omgdi:waypoint>
+        <omgdi:waypoint x="535.0" y="889.0"></omgdi:waypoint>
+        <omgdi:waypoint x="441.0" y="890.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
-        <omgdi:waypoint x="270.0" y="691.0"></omgdi:waypoint>
-        <omgdi:waypoint x="212.0" y="691.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="890.0"></omgdi:waypoint>
+        <omgdi:waypoint x="212.0" y="890.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="355.0" y="731.0"></omgdi:waypoint>
+        <omgdi:waypoint x="355.0" y="749.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
         <omgdi:waypoint x="556.0" y="416.0"></omgdi:waypoint>
         <omgdi:waypoint x="555.0" y="444.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
+      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
+        <omgdi:waypoint x="272.0" y="637.0"></omgdi:waypoint>
+        <omgdi:waypoint x="231.0" y="671.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
+        <omgdi:waypoint x="145.0" y="712.0"></omgdi:waypoint>
+        <omgdi:waypoint x="194.0" y="740.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
         <omgdi:waypoint x="353.0" y="505.0"></omgdi:waypoint>
-        <omgdi:waypoint x="353.0" y="591.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="591.0"></omgdi:waypoint>
+        <omgdi:waypoint x="355.0" y="610.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

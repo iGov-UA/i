@@ -5,6 +5,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.task.Attachment;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.igov.service.business.dfs.DfsService;
 import org.slf4j.LoggerFactory;
@@ -51,12 +52,30 @@ public class SetTasks_Listener implements TaskListener {
             String sDateExecution_Value = 
                 getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution());
  
-            LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
+            /*LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
                 + sTaskProcessDefinition_Value + " sID_Attachment_Value: " + sID_Attachment_Value + " sContent: " +
                 sContent_Value + " sAutorResolution: " + sAutorResolution_Value + " sTextResolution: " 
                 + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); 
- 
-            //InputStream json_Content = taskService.getAttachmentContent(sID_Attachment_Value);
+            */    
+            
+                       
+            Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
+            
+            if (attachment != null){
+                LOG.info("Attach id is: " + attachment.getId());
+            }
+            else{
+                LOG.info("Attach is null");
+            }
+            
+            /*
+            
+            InputStream json_Content = taskService.getAttachmentContent(sTaskProcessDefinition_Value);
+            LOG.info((json_Content != null) ? "JSON_TASKLST:" + json_Content.toString():"JSON_TASKLST null pointer error");
+            
+            
+            LOG.info((json_Attachment != null) ? "JSON_ATTACHMENT:" + json_Attachment.toString():"JSON_ATTACHMENT null pointer error");
+            */
             //LOG.info("json_Content sTaskProcessDefinition_Value: " + taskService.getAttachmentContent(sTaskProcessDefinition_Value));
             //LOG.info("json_Content sBodyDocument_Value: " + taskService.getAttachmentContent(sBodyDocument_Value));
             //LOG.info("json_Content sLoginAuthor_Value: " + taskService.getAttachmentContent(sLoginAuthor_Value));
