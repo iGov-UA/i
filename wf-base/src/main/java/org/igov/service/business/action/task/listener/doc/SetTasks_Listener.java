@@ -67,7 +67,7 @@ public class SetTasks_Listener implements TaskListener {
             if (attachmentContent != null){
                 //LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
                 JSONObject oJSONObject = (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
-                LOG.info("oJSONObject: " + oJSONObject.toJSONString());
+                LOG.info("oJSONObject: " + oJSONObject.get("aRow").toString());
             }
             else{
                 LOG.info("attachmentContent is null");
