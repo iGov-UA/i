@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-89" name="Реєстрація місця проживання особи (із опцією одночасного зняття з реєстрації з попереднього місця)" isExecutable="true">
-    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 23.11.2016</documentation>
+    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 25.11.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -109,7 +109,7 @@ execution.setVariable('sMaxPay', maxpay)
 	  </script>
     </scriptTask>
     <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
-    <serviceTask id="servicetask3" name=" Повідомлення громадянина  про успішну реєстрацію звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask3" name="Повідомлення громадянина  про успішну реєстрацію звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -314,7 +314,7 @@ execution.setVariable('sMaxPay', maxpay)
 									&lt;p&gt;
 										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
 										&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
-										Призначення платежу: адмін. збір за реєстрацію місця проживання ...вказати П.І.Б... ​&lt;/i&gt;
+										Призначення платежу: адмін. збір за реєстрацію місця проживання ...вказати П.І.Б...&lt;/i&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
@@ -377,7 +377,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено звернення на тему: Реєстрація нового місця проживання]]></activiti:string>
+          <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Реєстрація нового місця проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -398,7 +398,7 @@ execution.setVariable('sMaxPay', maxpay)
 									&lt;p&gt;
 										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
 										&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
-										Призначення платежу: адмін. збір за реєстрацію місця проживання​ П.І.Б.&lt;/i&gt;
+										Призначення платежу: адмін. збір за реєстрацію місця проживання​ ...вказати П.І.Б...&lt;/i&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
