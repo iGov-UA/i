@@ -5,11 +5,14 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.impl.util.json.JSONArray;
+import org.apache.commons.io.IOUtils;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
-import org.igov.service.business.dfs.DfsService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  *
@@ -51,14 +54,41 @@ public class SetTasks_Listener implements TaskListener {
             String sDateExecution_Value = 
                 getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution());
  
-            LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
+            /*LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
                 + sTaskProcessDefinition_Value + " sID_Attachment_Value: " + sID_Attachment_Value + " sContent: " +
                 sContent_Value + " sAutorResolution: " + sAutorResolution_Value + " sTextResolution: " 
                 + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); 
- 
-            InputStream json_Content = taskService.getAttachmentContent(sID_Attachment_Value);
-            LOG.info(json_Content.toString());
+            */    
             
+                       
+            //Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
+            
+            InputStream attachmentContent = taskService.getAttachmentContent("23620188");
+            
+            if (attachmentContent != null){
+                //LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
+                JSONObject oJSONObject = (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
+                //aJSONObject = new JSONParser()
+                //JSONArray arr = (JSONArray) oJSONObject.get("aRow");
+                
+                //for (int i = 0; i < arr.length(); i++){
+                //    LOG.info("json array element" + i + " is " + arr.get(i).toString());
+                //}
+
+                LOG.info("aRow: " + oJSONObject.get("aRow"));
+            }
+            else{
+                LOG.info("attachmentContent is null");
+            }
+            
+            /*
+            
+            InputStream json_Content = taskService.getAttachmentContent(sTaskProcessDefinition_Value);
+            LOG.info((json_Content != null) ? "JSON_TASKLST:" + json_Content.toString():"JSON_TASKLST null pointer error");
+            
+            
+            LOG.info((json_Attachment != null) ? "JSON_ATTACHMENT:" + json_Attachment.toString():"JSON_ATTACHMENT null pointer error");
+            */
             //LOG.info("json_Content sTaskProcessDefinition_Value: " + taskService.getAttachmentContent(sTaskProcessDefinition_Value));
             //LOG.info("json_Content sBodyDocument_Value: " + taskService.getAttachmentContent(sBodyDocument_Value));
             //LOG.info("json_Content sLoginAuthor_Value: " + taskService.getAttachmentContent(sLoginAuthor_Value));
