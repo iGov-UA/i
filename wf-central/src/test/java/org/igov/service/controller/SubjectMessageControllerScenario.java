@@ -443,7 +443,7 @@ public class SubjectMessageControllerScenario {
 	}
 
 	@Test
-	public void shouldReturnListOfSubjectMessageFeedbackBynID_Service() throws Exception {
+	public void shouldReturnFilteredListOfSubjectMessageFeedbackBynID_Service() throws Exception {
 		SubjectMessageFeedback feedback = new SubjectMessageFeedback();
 		feedback.setId(1L);
 		feedback.setsID_Source("-1");
