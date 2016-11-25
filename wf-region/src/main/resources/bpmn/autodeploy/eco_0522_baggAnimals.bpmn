@@ -22,9 +22,16 @@
         <activiti:formProperty id="sMethod" name="Передбачений спосіб добування тварин, занесених до Червоної книги України" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameResponsible" name="Прізвище, ім'я, по-батькові відповідальної особи, на яку необхідно видати дозвіл" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOffers" name="Пропозиції про місце та спосіб зберігання зібраного наукового та колекційного матеріалу" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="відомості про чисельність видів тварин" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sFaunaQuantity&quot;],&quot;sValue&quot;:&quot;Відомості про чисельність видів тварин чи рослин&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sFaunaQuantity" name="Види тварин чи рослин; Чисельність" type="table" default="${markerService.loadFromFile('table/eco/eco_0522_baggAnimals_table.json')}"></activiti:formProperty>
-        
+        <activiti:formProperty id="markersLine_1" name="відомості про чисельність видів тварин" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sFaunaQuantity&quot;],&quot;sValue&quot;:&quot;Відомості про чисельність видів тварин чи рослин&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFaunaQuantity" name="Види тварин чи рослин; Чисельність" type="table" default="${markerService.loadFromFile('table/eco/eco_0522_baggAnimals_table.json')}"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Погодження з постійним користувачем природних ресурсів;У разі добування (збирання) тварин і рослин, занесених до Червоної книги України, на територіях заповідників, національних природних парків та інших установ природно-заповідного фонду України" type="file"></activiti:formProperty>
+        <activiti:formProperty id="asDelivery" name="Оберіть спосіб отримання дозволу" type="enum" required="true">
+          <activiti:value id="sEnumSelf" name="особисто заявникові або представнику за довіреністю"></activiti:value>
+          <activiti:value id="sEnumPost" name="надіслати поштою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdressDelivery" name="Адреса, за якою надіслати оригінал документу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('eco/eco_0522_baggAnimals_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="requiredFields1" type="markers" default="${markerService.loadFromFile('eco/eco_0522_baggAnimals_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sListDocument" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListPogodgennya" name="Список документів" type="invisible"></activiti:formProperty>
       </extensionElements>
@@ -38,14 +45,13 @@
           <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Видача дозволу на проведення робіт (крім будівельних) на землях водного фонду.]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Видача дозволу на добування тварин, занесених до Червоної книги України та дозволу на збирання рослин, занесених до Червоної книги України.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення замовнику про доставку заяви до відділу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
@@ -69,7 +75,7 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>Ваше звернення щодо видачи дозволу на проведення робіт (крім будівельних) на землях водного фонду доставлено до Міністерства екології та природних ресурсів України.<br>
+<p>Ваше звернення щодо видачи дозволу на добування тварин, занесених до Червоної книги України та дозволу на збирання рослин, занесених до Червоної книги України доставленно до відділу.<br>
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
 Телефон для довідок: (044) 206-31-54<br>
 [pattern/mail/new_design/_common_content_end.html]
@@ -86,49 +92,19 @@
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRefEntity" name="Суб'єкт звернення" type="enum" writable="false">
-          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
-          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressCompany" name="Місце знаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdressIndividual" name="Місце проживання фізичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код юридичної особи за ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи - платника податків та інших обов'язкових платежів; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeWork" name="Зазначити конкретні види робіт, указуються їх місце проведення та обсяги; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateStart" name="Дата початку проведення робіт; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sDateEnd" name="Дата закінчення проведення робіт; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sAgreement" name="Погодження; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asDelivery" name="Спосіб отримання дозволу" type="enum" writable="false">
-          <activiti:value id="sEnumSelf" name="особисто заявникові або представнику за довіреністю"></activiti:value>
-          <activiti:value id="sEnumPost" name="надіслати поштою"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sAdressDelivery" name="Адреса, за якою надіслати оригінал документу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sInfo_3" name="Погодження питання видачі дозволу із" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="bLocalAuthorities" name="Органами місцевого самоврядування; ;sID_CheckboxTrue=sCheckYes" type="enum" writable="false">
-          <activiti:value id="sCheckYes" name="так"></activiti:value>
-          <activiti:value id="sCheckNo" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bCadastre" name="Держгеокадастром; ;sID_CheckboxTrue=sCheckYes" type="enum" writable="false">
-          <activiti:value id="sCheckYes" name="так"></activiti:value>
-          <activiti:value id="sCheckNo" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bFishAgency" name="Держрибагентством; ;sID_CheckboxTrue=sCheckYes" type="enum" writable="false">
-          <activiti:value id="sCheckYes" name="так"></activiti:value>
-          <activiti:value id="sCheckNo" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bForestAgency" name="Територіальними органами Держлісагентства; ;sID_CheckboxTrue=sCheckYes" type="enum" writable="false">
-          <activiti:value id="sCheckYes" name="так"></activiti:value>
-          <activiti:value id="sCheckNo" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bMinInfrastr" name="Мінінфраструктури; ;sID_CheckboxTrue=sCheckYes" type="enum" writable="false">
-          <activiti:value id="sCheckYes" name="так"></activiti:value>
-          <activiti:value id="sCheckNo" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bBottom" name="Проведення робіт, пов’язаних з експлуатаційним днопоглибленням на внутрішніх підхідних, судноплавних каналах та портових акваторіях, з метою підтримання заданих навігаційних габаритів; ;sID_CheckboxTrue=sCheckYes" type="enum" writable="false">
-          <activiti:value id="sCheckYes" name="так"></activiti:value>
-          <activiti:value id="sCheckNo" name="ні"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sSummary" name="Назва та коротка анотація відповідної державної наукової програми, в завдання якої входить виконання робіт з вказаними в клопотанні (заявці) видами тварин чи рослин, занесеними до Червоної книги України; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sReasoning" name="Вид тварини або рослини, кількість необхідних особин чи рослин, гнізд, яєць, плодів, насіння, інших частин чи продуктів та обгрунтування добування (збирання) такої кількості тварин (рослин), занесених до Червоної книги України; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceExtraction" name="Місце добування (збирання) - область, район, водойма, урочище; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_1" name="Строки добування" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateStart" name="Від; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateEnd" name="До; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sGoal" name="Мета добування (збирання) тварин чи рослин, занесених до Червоної книги України, та їх подальше використання; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sMethod" name="Передбачений спосіб добування тварин, занесених до Червоної книги України; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNameResponsible" name="Прізвище, ім'я, по-батькові відповідальної особи, на яку необхідно видати дозвіл; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOffers" name="Пропозиції про місце та спосіб зберігання зібраного наукового та колекційного матеріалу; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asDecide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="sEnumOk" name="Документи прийняти в роботу"></activiti:value>
           <activiti:value id="sEnumFailure" name="Відмовити заявнику"></activiti:value>
@@ -139,11 +115,10 @@
         <activiti:formProperty id="sListPogodgennya" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0522_baggAnimals_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="requiredFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0522_baggAnimals_4.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="printFields" type="markers" default="${markerService.loadFromFile('eco/eco_0522_baggAnimals_5pr.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFileLocalAuthorities},${nFileCadastre},${nFileFishAgency},${nFileForestAgency},${nFileMinInfrastr},${nScanPassport},${bankId_scan_inn}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${nFaunaQuantity}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -169,12 +144,12 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача дозволу на проведення робіт (крім будівельних) на землях водного фонду]]></activiti:string>
+          <activiti:string><![CDATA[Видача дозволу на добування тварин, занесених до Червоної книги України та дозволу на збирання рослин, занесених до Червоної книги України]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>Ваше звернення щодо видачи дозволу на проведення робіт (крім будівельних) на землях водного фонду зареєстровано. Відповідь Ви отримаєте протягом 30-ти календарних днів.</p>
+<p>Ваше звернення щодо видачи дозволу на добування тварин, занесених до Червоної книги України та дозволу на збирання рослин, занесених до Червоної книги України зареєстровано. Відповідь Ви отримаєте протягом 30-ти календарних днів.</p>
 Телефон для довідок: (044) 206-31-54<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -207,7 +182,7 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>На жаль, Ваше звернення щодо видачи дозволу на проведення робіт (крім будівельних) на землях водного фонду було відхилено.<br>
+<p>На жаль, Ваше звернення щодо видачи дозволу на добування тварин, занесених до Червоної книги України та дозволу на збирання рослин, занесених до Червоної книги України було відхилено.<br>
 Коментар співробітника сектору обліку дозвільної документації:<br>
 <i>${sCommentReject}</i></p>
 <p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a>, врахувавши коментар спеціаліста.</p>
@@ -238,12 +213,12 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача дозволу на проведення робіт (крім будівельних) на землях водного фонду]]></activiti:string>
+          <activiti:string><![CDATA[Видача дозволу на добування тварин, занесених до Червоної книги України та дозволу на збирання рослин, занесених до Червоної книги України]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>Ваше звернення щодо видачи дозволу на проведення робіт (крім будівельних) на землях водного фонду було оброблено.<br>
+<p>Ваше звернення щодо видачи дозволу на добування тварин, занесених до Червоної книги України та дозволу на збирання рослин, занесених до Червоної книги України оброблено.<br>
 Оригінал дозволу буде направлено поштою за адресою: ${sAdressDelivery}.</p>
 Телефон для довідок: (044) 206-31-54<br>
 [pattern/mail/new_design/_common_content_end.html]
@@ -270,49 +245,19 @@
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRefEntity" name="Суб'єкт звернення" type="enum" writable="false">
-          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
-          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressCompany" name="Місце знаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdressIndividual" name="Місце проживання фізичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код юридичної особи за ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи - платника податків та інших обов'язкових платежів" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTypeWork" name="Зазначити конкретні види робіт, указуються їх місце проведення та обсяги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateStart" name="Дата початку проведення робіт" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateEnd" name="Дата закінчення проведення робіт" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAgreement" name="Погодження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asDelivery" name="Спосіб отримання дозволу" type="enum" writable="false">
-          <activiti:value id="sEnumSelf" name="особисто заявникові або представнику за довіреністю"></activiti:value>
-          <activiti:value id="sEnumPost" name="надіслати поштою"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sAdressDelivery" name="Адреса, за якою надіслати оригінал документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sInfo_3" name="Погодження питання видачі дозволу із" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="bLocalAuthorities" name="Органами місцевого самоврядування; ;sID_CheckboxTrue=sCheckYes" type="enum" writable="false">
-          <activiti:value id="sCheckYes" name="так"></activiti:value>
-          <activiti:value id="sCheckNo" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bCadastre" name="Держгеокадастром; ;sID_CheckboxTrue=sCheckYes" type="enum" writable="false">
-          <activiti:value id="sCheckYes" name="так"></activiti:value>
-          <activiti:value id="sCheckNo" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bFishAgency" name="Держрибагентством; ;sID_CheckboxTrue=sCheckYes" type="enum" writable="false">
-          <activiti:value id="sCheckYes" name="так"></activiti:value>
-          <activiti:value id="sCheckNo" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bForestAgency" name="Територіальними органами Держлісагентства; ;sID_CheckboxTrue=sCheckYes" type="enum" writable="false">
-          <activiti:value id="sCheckYes" name="так"></activiti:value>
-          <activiti:value id="sCheckNo" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bMinInfrastr" name="Мінінфраструктури; ;sID_CheckboxTrue=sCheckYes" type="enum" writable="false">
-          <activiti:value id="sCheckYes" name="так"></activiti:value>
-          <activiti:value id="sCheckNo" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bBottom" name="Проведення робіт, пов’язаних з експлуатаційним днопоглибленням на внутрішніх підхідних, судноплавних каналах та портових акваторіях, з метою підтримання заданих навігаційних габаритів; ;sID_CheckboxTrue=sCheckYes" type="enum" writable="false">
-          <activiti:value id="sCheckYes" name="так"></activiti:value>
-          <activiti:value id="sCheckNo" name="ні"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sSummary" name="Назва та коротка анотація відповідної державної наукової програми, в завдання якої входить виконання робіт з вказаними в клопотанні (заявці) видами тварин чи рослин, занесеними до Червоної книги України" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReasoning" name="Вид тварини або рослини, кількість необхідних особин чи рослин, гнізд, яєць, плодів, насіння, інших частин чи продуктів та обгрунтування добування (збирання) такої кількості тварин (рослин), занесених до Червоної книги України" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceExtraction" name="Місце добування (збирання) - область, район, водойма, урочище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_1" name="Строки добування" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateStart" name="Від" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateEnd" name="До" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sGoal" name="Мета добування (збирання) тварин чи рослин, занесених до Червоної книги України, та їх подальше використання" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMethod" name="Передбачений спосіб добування тварин, занесених до Червоної книги України" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameResponsible" name="Прізвище, ім'я, по-батькові відповідальної особи, на яку необхідно видати дозвіл" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOffers" name="Пропозиції про місце та спосіб зберігання зібраного наукового та колекційного матеріалу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecidePermit" name="Обробка заяви. Видача дозволу, або лист з відмовою" type="enum" required="true">
           <activiti:value id="sEnumOffice" name="Відправити повідомлення про необхідність забрати дозвіл"></activiti:value>
           <activiti:value id="sEnumPost" name="Відправити повідомлення про відправку дозволу поштою"></activiti:value>
@@ -348,12 +293,12 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача дозволу на проведення робіт (крім будівельних) на землях водного фонду]]></activiti:string>
+          <activiti:string><![CDATA[Видача дозволу на добування тварин, занесених до Червоної книги України та дозволу на збирання рослин, занесених до Червоної книги України]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>Ваше звернення щодо видачи дозволу на проведення робіт (крім будівельних) на землях водного фонду було оброблено.<br>
+<p>Ваше звернення щодо видачи дозволу на добування тварин, занесених до Червоної книги України та дозволу на збирання рослин, занесених до Червоної книги України було оброблено.<br>
 Оригінал дозволу Ви можете отримати за адресою: м. Київ, вул. Митрополита Василя Липківського, 35.</p>
 Дозвіл на проведення робіт (крім будівельних) на землях водного фонду, видається згідно з поданою заявою особисто заявникові або представнику за довіреністю.<br><br>
 Режим роботи:<br>
@@ -392,12 +337,12 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача дозволу на проведення робіт (крім будівельних) на землях водного фонду]]></activiti:string>
+          <activiti:string><![CDATA[Видача дозволу на добування тварин, занесених до Червоної книги України та дозволу на збирання рослин, занесених до Червоної книги України]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>Ваше звернення щодо видачи дозволу на проведення робіт (крім будівельних) на землях водного фонду було оброблено.<br>
+<p>Ваше звернення щодо видачи дозволу на добування тварин, занесених до Червоної книги України та дозволу на збирання рослин, занесених до Червоної книги України було оброблено.<br>
 Лист про відмову у видачі дозволу буде направлено поштою за адресою: ${sAdressDelivery}.</p>
 Телефон для довідок: (044) 206-31-54<br>
 [pattern/mail/new_design/_common_content_end.html]
@@ -415,71 +360,12 @@
     <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow16" sourceRef="servicetask7" targetRef="endevent4"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script list Documents" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var per1 = ' '
-var per2 = ' '
-var per3 = ' '
-var per4 = ' '
-var per5 = ' '
-var per6 = ' '
-var per7 = ' '
-var per8 = ' '
-var per9 = ' '
-var per10 = ' '
-var per11 = ' '
-var per12 = ' '
-var per13 = ' '
-var listDoc = 'res'
-
-if(execution.getVariable('nFile5') != null){
-per1 = '&lt;li&gt;Засвідчені юридичною особою копії установчих документів.&lt;/li&gt;'
-}
-if(execution.getVariable('bankId_scan_inn') != null){
-per2 = '&lt;li&gt;Копія реєстраційного номера облікової картки платника податків – фізичної особи.&lt;/li&gt;'
-}
-if(execution.getVariable('nFile6') != null){
-per3 = '&lt;li&gt;Проект на проведення робіт на землях водного фонду, що містить розділ про оцінку впливу на навколишнє природне середовище, погоджений з Мінприроди, Держводагентством та Держгеонадрами.&lt;/li&gt;'
-}
-if(execution.getVariable('nScanPassport') != null){
-per4 = '&lt;li&gt;Копія паспорту&lt;/li&gt;'
-}
-if(execution.getVariable('nFile1') != null){
-per5 = '&lt;li&gt;Копія статуту (положення)&lt;/li&gt;'
-}
-if(execution.getVariable('nFile2') != null){
-per6 = '&lt;li&gt;Копія паспорта акваторії та/або судноплавного, внутрішнього підхідного каналу&lt;/li&gt;'
-}
-if(execution.getVariable('nFile3') != null){
-per7 = '&lt;li&gt;Дані останніх контрольних промірів глибин з обґрунтуванням (розрахунком) обсягів днопоглиблювальних робіт&lt;/li&gt;'
-}
-if(execution.getVariable('nFile4') != null){
-per8 = '&lt;li&gt;Матеріали щодо оцінки впливу на навколишнє природне середовище&lt;/li&gt;'
-}
-if(execution.getVariable('nFileLocalAuthorities') != null){
-per9 = '&lt;li&gt;Копія погодження з органами місцевого самоврядування&lt;/li&gt;'
-}
-if(execution.getVariable('nFileCadastre') != null){
-per10 = '&lt;li&gt;Копія погодження з Держгеокадастром&lt;/li&gt;'
-}
-if(execution.getVariable('nFileFishAgency') != null){
-per11 = '&lt;li&gt;Копія погодження з Держрибагентством&lt;/li&gt;'
-}
-if(execution.getVariable('nFileForestAgency') != null){
-per12 = '&lt;li&gt;Копія погодження з територіальними органами Держлісагентства&lt;/li&gt;'
-}
-if(execution.getVariable('nFileMinInfrastr') != null){
-per13 = '&lt;li&gt;Копія погодження з Мінінфраструктури&lt;/li&gt;'
-}
-listDoc = '&lt;ol&gt;' + per1 + per2 + per3 + per4 + per5 + per6 + per7 + per8 + per9 + per10 + per11 + per12 + per13 + '&lt;/ol&gt;'
-
-execution.setVariable('sListDocument', listDoc)</script>
-    </scriptTask>
-    <sequenceFlow id="flow17" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_eco_0522_baggAnimals">
     <bpmndi:BPMNPlane bpmnElement="eco_0522_baggAnimals" id="BPMNPlane_eco_0522_baggAnimals">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="450.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="450.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="166.0" x="385.0" y="195.0"></omgdc:Bounds>
@@ -526,13 +412,6 @@ execution.setVariable('sListDocument', listDoc)</script>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="655.0" y="914.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="156.0" x="390.0" y="110.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="467.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="468.0" y="110.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="468.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="468.0" y="275.0"></omgdi:waypoint>
@@ -593,7 +472,7 @@ execution.setVariable('sListDocument', listDoc)</script>
         <omgdi:waypoint x="672.0" y="914.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="468.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="467.0" y="125.0"></omgdi:waypoint>
         <omgdi:waypoint x="468.0" y="195.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
