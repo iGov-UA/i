@@ -59,13 +59,15 @@ public class SetTasks_Listener implements TaskListener {
             */    
             
                        
-            Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
+            //Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
             
-            if (attachment != null){
-                LOG.info("Attach id is: " + attachment.getId());
+            InputStream attachmentContent = taskService.getAttachmentContent("23620188");
+            
+            if (attachmentContent != null){
+                LOG.info("attachmentContent id is: " + attachmentContent.toString());
             }
             else{
-                LOG.info("Attach is null");
+                LOG.info("attachmentContent is null");
             }
             
             /*
