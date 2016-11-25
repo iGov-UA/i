@@ -6,6 +6,7 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.task.Attachment;
+import org.apache.commons.io.IOUtils;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.igov.service.business.dfs.DfsService;
 import org.slf4j.LoggerFactory;
@@ -63,8 +64,10 @@ public class SetTasks_Listener implements TaskListener {
             
             InputStream attachmentContent = taskService.getAttachmentContent("23620188");
             
+            
+            
             if (attachmentContent != null){
-                LOG.info("attachmentContent id is: " + attachmentContent.toString());
+                LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
             }
             else{
                 LOG.info("attachmentContent is null");
