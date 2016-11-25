@@ -365,20 +365,18 @@ public class SubjectMessageControllerScenario {
 				.andExpect(status().isForbidden()).andExpect(content().json(expectedResponseObject.toString()));
 	}
 
-	@Ignore
+	// TODO
+	// @Test
+	// public void shouldReturn403IfRecordIsFoundAndFeedbackMessageIsNotEmpty()
+	// {
+	// }
+	//
+	// @Test
+	// public void
+	// shouldReturn404IfRecordIsNotFoundAndFeedbackMessageIsNotEmpty() {
+	// }
+
 	@Test
-	public void shouldReturn403IfRecordIsFoundAndFeedbackMessageIsNotEmpty() {
-
-	}
-
-	@Ignore
-	@Test
-	public void shouldReturn404IfRecordIsNotFoundAndFeedbackMessageIsNotEmpty() {
-
-	}
-
-	@Test
-	@Ignore
 	public void shouldAddFeedbackToServiceAndReturnLink() throws Exception {
 		SubjectMessageFeedback feedback = new SubjectMessageFeedback();
 		feedback.setId(1L);
@@ -392,11 +390,10 @@ public class SubjectMessageControllerScenario {
 		feedback.setnID_Service(-1L);
 		feedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
 
-		JSONObject expectedResponseObject = new JSONObject();
-
 		String responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
 				generalConfig.getSelfHost(), feedback.getnID_Service(), feedback.getId(), feedback.getsID_Token());
 
+		JSONObject expectedResponseObject = new JSONObject();
 		expectedResponseObject.put("sURL", responseMessage);
 
 		when(oSubjectMessageService.setSubjectMessageFeedback(feedback.getsID_Source(), feedback.getsAuthorFIO(),
@@ -445,7 +442,6 @@ public class SubjectMessageControllerScenario {
 				.andExpect(status().isOk()).andExpect(content().json(expectedResponse));
 	}
 
-	@Ignore
 	@Test
 	public void shouldReturnListOfSubjectMessageFeedbackBynID_Service() throws Exception {
 		SubjectMessageFeedback feedback = new SubjectMessageFeedback();
@@ -473,15 +469,20 @@ public class SubjectMessageControllerScenario {
 
 		String response = JsonRestUtils.toJson(expectedFeedbackList);
 
-		when(oSubjectMessageService.getSubjectMessageFeedbackById(feedback.getId())).thenReturn(feedback);
-		when(oSubjectMessageService.getAllSubjectMessageFeedbackBynID_Service(feedback.getnID_Service()))
-				.thenReturn(expectedFeedbackList);
+		Long nID__LessThen_Filter = -1L;
+		Integer nRowsMax = -1;
+
+		when(oSubjectMessageService.getAllSubjectMessageFeedback_Filtered(feedback.getnID_Service(),
+				nID__LessThen_Filter, nRowsMax)).thenReturn(expectedFeedbackList);
 
 		mockMvc.perform(get("/subject/message/getFeedbackExternal").contentType(MediaType.APPLICATION_JSON)
-				.param("nID", feedback.getId().toString()).param("sID_Token", feedback.getsID_Token())
-				.param("nID_Service", feedback.getnID_Service().toString()))
-
+				/* .param("nID", feedback.getId().toString()) */.param("sID_Token", feedback.getsID_Token())
+				.param("nID__LessThen_Filter", String.valueOf(nID__LessThen_Filter))
+				.param("nRowsMax", String.valueOf(nRowsMax)).param("nID_Service", feedback.getnID_Service().toString()))
 				.andExpect(status().isOk()).andExpect(content().json(response));
+
+		verify(oSubjectMessageService).getAllSubjectMessageFeedback_Filtered(feedback.getnID_Service(),
+				nID__LessThen_Filter, nRowsMax);
 	}
 
 	// TODO: THIS TEST SHOULD BE INTEGRATIONAL OR REFACTORED
