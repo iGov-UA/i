@@ -1,6 +1,8 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
@@ -61,7 +63,6 @@ public class SetTasks_Listener implements TaskListener {
                 + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); 
             */    
             
-                       
             //Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
             
             InputStream attachmentContent = taskService.getAttachmentContent("23620188");
@@ -72,20 +73,22 @@ public class SetTasks_Listener implements TaskListener {
                 //aJSONObject = new JSONParser()
                
                 try {
-                    
                     //LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow"));
                     //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
-                        
+                
                     JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
+                    //Map<String, String> resultJsonMap = new HashMap<String, String>();
                     
                     if (aJsonRow != null){
                         for (int i = 0; i < aJsonRow.size(); i++){
                             //LOG.info("json array element" + i + " is " + arr.get(i).toString());
                             JSONObject sJsonField =  (JSONObject) aJsonRow.get(i);
                             JSONArray aJsonField = (JSONArray) sJsonField.get("aField");
-                            
                             for (int j = 0; j < aJsonField.size(); j++){
-                                LOG.info("json array element" + i + " is " + aJsonField.get(j).toString());
+                                JSONObject sJsonElem =  (JSONObject) aJsonField.get(j);
+                                String id =  sJsonElem.get("id").toString();
+                                String value =  sJsonElem.get("value").toString();
+                                LOG.info("json array id " + id + " and value " + value);
                             }
                         }
                     }
