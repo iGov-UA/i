@@ -5,13 +5,13 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
-import org.activiti.engine.task.Attachment;
 import org.apache.commons.io.IOUtils;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
-import org.igov.service.business.dfs.DfsService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  *
@@ -64,10 +64,10 @@ public class SetTasks_Listener implements TaskListener {
             
             InputStream attachmentContent = taskService.getAttachmentContent("23620188");
             
-            
-            
             if (attachmentContent != null){
-                LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
+                //LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
+                JSONObject oJSONObject = (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
+                LOG.info("oJSONObject: " + oJSONObject.toJSONString());
             }
             else{
                 LOG.info("attachmentContent is null");
