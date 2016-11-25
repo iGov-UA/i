@@ -93,7 +93,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="РЕЄСТРАЦІЯ" activiti:candidateGroups="reg_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="РЕЄСТРАЦІЯ" activiti:candidateGroups="test_ECO">
       <extensionElements>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
@@ -118,7 +118,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask4" name="РОЗПОДІЛ КЕРІВНИКОМ" activiti:candidateGroups="KerAtmPov_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask4" name="РОЗПОДІЛ КЕРІВНИКОМ" activiti:candidateGroups="test_ECO">
       <extensionElements>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
@@ -149,7 +149,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="ОПРАЦЮВАННЯ" activiti:candidateGroups="vukAtmPov_${asSotrudik}_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="ОПРАЦЮВАННЯ" activiti:candidateGroups="test_ECO">
       <extensionElements>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
@@ -257,7 +257,7 @@ ${sPhoneOrgan}&lt;/p&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow10" name="Відмова" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
-    <userTask id="usertask3" name="ВИДАЧА" activiti:candidateGroups="reg_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3" name="ВИДАЧА" activiti:candidateGroups="test_ECO">
       <extensionElements>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
@@ -393,6 +393,9 @@ ${sNameOrgan}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="590.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="60.0" width="105.0" x="740.0" y="118.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="740.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -419,9 +422,6 @@ ${sNameOrgan}&lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="775.0" y="550.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="60.0" width="105.0" x="740.0" y="118.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="5.0" y="147.0"></omgdi:waypoint>
