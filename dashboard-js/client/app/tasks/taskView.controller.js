@@ -98,6 +98,8 @@
                       item.value = item.enumValues[0].id;
                       $scope.updateAssigneeName(item);
                     }
+                    // hidden sAssignName
+                    hiddenObjById(getIdFromActivityProperty("sDestinationFieldID_sName"));
                   }
                 });
               }
