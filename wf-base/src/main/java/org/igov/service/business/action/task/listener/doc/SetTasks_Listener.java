@@ -101,10 +101,10 @@ public class SetTasks_Listener implements TaskListener {
                         resultJsonMap.put("sDateExecution", sDateExecution_Value);
                         resultJsonMap.put("sTextResolution", sTextResolution_Value);
                         
-                        for (String key : resultJsonMap.keySet())
+                        /*for (String key : resultJsonMap.keySet())
                         {
                             LOG.info(key + ":" + resultJsonMap.get(key));
-                        }
+                        }*/
                     }
                     else{
                         LOG.info("JSONArray is null");
