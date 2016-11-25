@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="med_1563_zbroya" name="Видача медичної довідки психіатра для отримання дозволу на зброю" isExecutable="true">
+  <process id="med_1567_vodinnya" name="Видача медичної довідки психіатра щодо придатності до керування транспортним засобом" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -8,8 +8,8 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть медичний заклад, в якому Ви бажаєте отримати медичну довідку для дозволу на зброю" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="lable" name="Зверніть увагу" type="label" default="&lt;b&gt;Запис на видачу медичної довідки для отримання дозволу на зброю проводиться особисто&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть медичний заклад, в якому Ви бажаєте отримати медичну довідку психіатра щодо придатності до керування транспортним засобом" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="lable" name="Зверніть увагу" type="label" default="&lt;b&gt;Запис на видачу медичної довідки психіатра щодо придатності до керування транспортним засобом проводиться особисто&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
@@ -85,7 +85,7 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки психіатра для отримання дозволу на зброю]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки психіатра щодо придатності до керування транспортним засобом]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -97,7 +97,7 @@ execution.setVariable('sNotification_day', timer)</script>
 Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
-										<b>Необхідні документи, які треба принести на видачу медичної довідки для отримання дозволу на зброю:</b><br>
+										<b>Необхідні документи, які треба принести на видачу медичної довідки психіатра щодо придатності до керування транспортним засобом:</b><br>
 									    <ul>
 										При собі мати:</ul>
 										<li>паспорт з обовязковою припискою по ${sArea};</li>
@@ -120,7 +120,7 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки психіатра для отримання дозволу на зброю]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки психіатра щодо придатності до керування транспортним засобом]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -130,10 +130,10 @@ ${sNameOrgan},<br>
 									<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 									<p>
 										Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
-										Ви записались на видачу медичної довідки для отримання дозволу на зброю (форма 127/о)
+										Ви записались на видачу медичної довідки психіатра щодо придатності до керування транспортним засобом 
 									</p>
-									<p>
-										Для того щоб закінчити процедуру необхідно прийти за адресою: ${sAddress}.
+									<p><ul>
+										Для того щоб закінчити процедуру необхідно прийти за адресою: ${sAddress}.</ul>
 										<ul>
 										При собі мати:</ul>
 										<li>паспорт з обовязковою припискою по ${sArea};</li>
@@ -163,7 +163,7 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="${sLikari}" activiti:candidateGroups="zdov_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="${sLikari}" activiti:candidateGroups="medvod_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
@@ -198,13 +198,13 @@ ${sNameOrgan},<br>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки психіатра для отримання дозволу на зброю]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки психіатра щодо придатності до керування транспортним засобом]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                              		Ви отримали послугу "Видача медичної довідки психіатра для отримання дозволу на зброю".
+                              		Ви отримали послугу "Видача медичної довідки психіатра щодо придатності до керування транспортним засобом".
                               		</p>
                               		<p>
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
@@ -226,8 +226,8 @@ ${sNameOrgan},<br>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow37" sourceRef="parallelgateway1" targetRef="servicetask2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_med_1563_zbroya">
-    <bpmndi:BPMNPlane bpmnElement="med_1563_zbroya" id="BPMNPlane_med_1563_zbroya">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_med_1567_vodinnya">
+    <bpmndi:BPMNPlane bpmnElement="med_1567_vodinnya" id="BPMNPlane_med_1567_vodinnya">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="16.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
