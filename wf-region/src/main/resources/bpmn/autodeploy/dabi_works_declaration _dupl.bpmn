@@ -727,10 +727,12 @@
             <activiti:expression><![CDATA[sResult]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-      </extensionElements>        
+      </extensionElements>
     </userTask>
     <boundaryEvent id="boundarytimer6" name="Timer" attachedToRef="usertask_UserGroup" cancelActivity="true">
-      <timerEventDefinition></timerEventDefinition>
+      <timerEventDefinition>
+        <timeDuration>PT5S</timeDuration>
+      </timerEventDefinition>
     </boundaryEvent>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow67" sourceRef="boundarytimer6" targetRef="exclusivegateway1"></sequenceFlow>
