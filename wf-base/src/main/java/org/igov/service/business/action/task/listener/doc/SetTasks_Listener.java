@@ -5,7 +5,8 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
-import org.activiti.engine.impl.util.json.JSONArray;
+//import org.activiti.engine.impl.util.json.JSONArray;
+import org.json.simple.JSONArray;
 import org.apache.commons.io.IOUtils;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.slf4j.LoggerFactory;
@@ -79,10 +80,10 @@ public class SetTasks_Listener implements TaskListener {
                     
                     if (arr != null){
                                                 
-                        LOG.info("JSONArray length " + arr.length());
+                        LOG.info("JSONArray length " + arr.size());
                         
-                        for (int i = 0; i < arr.length(); i++){
-                            LOG.info("json array element" + i + " is " + arr.getJSONObject(i).toString());
+                        for (int i = 0; i < arr.size(); i++){
+                            LOG.info("json array element" + i + " is " + arr.get(i).toString());
                         }
                     }
                     else{
