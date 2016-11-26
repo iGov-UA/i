@@ -186,7 +186,7 @@ angular.module('dashboardJsApp')
         uiUploader.removeAll();
         uiUploader.addFiles(files);
         uiUploader.startUpload({
-          url: '/api/tasks/' + taskId + '/attachments',
+          url: '/api/tasks/' + taskId + '/attachments/' + sID_Field + '/upload',
           concurrency: 1,
           onProgress: function (file) {
             scope.$apply(function () {
@@ -340,6 +340,7 @@ angular.module('dashboardJsApp')
              * parse name string property to get file names sPrintFormFileAsPDF and sPrintFormFileAsIs
              */
             var fileName = null;
+            var sFileFieldID = null;
 
             if (typeof templateResult.fileField.name === 'string') {
               fileName = templateResult.fileField.name.split(/;/).reduce(function (prev, current) {
@@ -353,6 +354,8 @@ angular.module('dashboardJsApp')
               if(fileName === 'sPrintFormFileAsIs'){
                 fileName = fileName + '.html';
               }
+
+              sFileFieldID = templateResult.fileField.id;
             }
 
             $timeout(function () {
@@ -360,6 +363,7 @@ angular.module('dashboardJsApp')
               var data = {
                 sDescription: 'User form',
                 sFileName: fileName || 'User form.html',
+                sID_Field: sFileFieldID,
                 sContent: html
               };
 

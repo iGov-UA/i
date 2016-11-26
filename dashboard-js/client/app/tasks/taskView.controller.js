@@ -512,7 +512,7 @@
         };
 
         $scope.upload = function (files, propertyID) {
-          tasks.upload(files, $scope.taskId).then(function (result) {
+          tasks.upload(files, $scope.taskId, propertyID).then(function (result) {
             var filterResult = $scope.taskForm.filter(function (property) {
               return property.id === propertyID;
             });
