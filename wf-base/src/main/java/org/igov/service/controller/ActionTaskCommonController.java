@@ -2564,7 +2564,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getDocumentStepRights", method = RequestMethod.GET)
     public @ResponseBody
     String getDocumentStepRights(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
-            @ApiParam(value = "snID_Process_Activiti", required = true) @RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti) throws Exception {
+            @ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {
         /*Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
         LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
         String asID_Attach_Dfs = "";
@@ -2575,7 +2575,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
         }
         return asID_Attach_Dfs;*/
-        return oDocumentStepService.getDocumentStepRights(sLogin, snID_Process_Activiti);
+        return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
     }
 
     
