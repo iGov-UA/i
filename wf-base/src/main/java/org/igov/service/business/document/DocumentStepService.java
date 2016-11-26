@@ -164,7 +164,16 @@ public class DocumentStepService {
         return resultFields;
     }
 
-    public JSONObject getDocumentStepRights(String sLogin, String snID_Process_Activiti){
+    public Map<String,Object> getDocumentStepLogins(String snID_Process_Activiti){//JSONObject 
+        LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
+        Map<String,Object> mReturn = new HashMap();
+        
+        
+        return mReturn;
+    }
+
+    
+    public Map<String,Object> getDocumentStepRights(String sLogin, String snID_Process_Activiti){//JSONObject
         //assume that we can have only one active task per process at the same time
         LOG.info("sLogin={}, snID_Process_Activiti={}", sLogin, snID_Process_Activiti);
         List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
@@ -423,16 +432,7 @@ public class DocumentStepService {
 //                .active()
 //                .singleResult();
 
-
-
-
-
-
-
-
-
-
-        return null;
+        return mReturn;
     }
 
     private Map<String, Object> buildGrunts(List<DocumentStepSubjectRight> rightsFromStep,
