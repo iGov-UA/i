@@ -78,6 +78,8 @@ public class SubjectMessageService {
             sHead = "Коментар служби підтримки за результатами контакту з відповідальним посадовцем по заяві " + sID_Order;
         } else if (nID_SubjectMessageType == 10l) {
             sHead = "Відправлено листа";
+        } else if (nID_SubjectMessageType == 11l) {
+            sHead = "Отримано криптопакунок";
         }
 
         return sHead;

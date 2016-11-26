@@ -1,6 +1,8 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
@@ -61,30 +63,48 @@ public class SetTasks_Listener implements TaskListener {
                 + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); 
             */    
             
-                       
             //Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
             
             InputStream attachmentContent = taskService.getAttachmentContent("23620188");
             
             if (attachmentContent != null){
-                //LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
+                
+                LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
+                
                 JSONObject oJSONObject = (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
                 //aJSONObject = new JSONParser()
                
                 try {
+                    //LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow"));
+                    //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
+                
+                    JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
+                    //Map<String, String> resultJsonMap = new HashMap<String, String>();
                     
-                    LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow"));
-                    LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
-                        
-                    JSONArray arr = (JSONArray) oJSONObject.get("aRow");
-                    
-                    if (arr != null){
-                                                
-                        LOG.info("JSONArray length " + arr.size());
-                        
-                        for (int i = 0; i < arr.size(); i++){
-                            LOG.info("json array element" + i + " is " + arr.get(i).toString());
+                    if (aJsonRow != null){
+                        for (int i = 0; i < aJsonRow.size(); i++){
+                            //LOG.info("json array element" + i + " is " + arr.get(i).toString());
+                            JSONObject sJsonField =  (JSONObject) aJsonRow.get(i);
+                            JSONArray aJsonField = (JSONArray) sJsonField.get("aField");
+                            for (int j = 0; j < aJsonField.size(); j++){
+                                JSONObject sJsonElem =  (JSONObject) aJsonField.get(j);
+                                String id =  sJsonElem.get("id").toString();
+                                String value =  sJsonElem.get("value").toString();
+                                //resultJsonMap.put(id, value);
+                                LOG.info("json array id " + id + " and value " + value);
+                            }
                         }
+                        /*resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
+                        resultJsonMap.put("sID_Attachment", sID_Attachment_Value);
+                        resultJsonMap.put("sContent", sContent_Value);
+                        resultJsonMap.put("sAutorResolution", sAutorResolution_Value);
+                        resultJsonMap.put("sDateExecution", sDateExecution_Value);
+                        resultJsonMap.put("sTextResolution", sTextResolution_Value);*/
+                        
+                        /*for (String key : resultJsonMap.keySet())
+                        {
+                            LOG.info(key + ":" + resultJsonMap.get(key));
+                        }*/
                     }
                     else{
                         LOG.info("JSONArray is null");
