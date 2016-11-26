@@ -57,11 +57,11 @@ public class SetTasks_Listener implements TaskListener {
             String sDateExecution_Value = 
                 getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution());
  
-            /*LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
+            LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
                 + sTaskProcessDefinition_Value + " sID_Attachment_Value: " + sID_Attachment_Value + " sContent: " +
                 sContent_Value + " sAutorResolution: " + sAutorResolution_Value + " sTextResolution: " 
                 + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); 
-            */    
+                
             
             //Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
             
