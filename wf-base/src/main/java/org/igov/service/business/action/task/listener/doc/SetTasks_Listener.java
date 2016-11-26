@@ -65,7 +65,7 @@ public class SetTasks_Listener implements TaskListener {
             
             //Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
             
-            InputStream attachmentContent = taskService.getAttachmentContent("23620188");
+            InputStream attachmentContent = taskService.getAttachmentContent(sID_Attachment_Value);
             
             if (attachmentContent != null){
                 
