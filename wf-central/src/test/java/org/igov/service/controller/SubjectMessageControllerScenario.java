@@ -64,6 +64,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class SubjectMessageControllerScenario {
 
+	public static final String GET_MESSAGE = "/subject/message/getMessage";
 	public static final String SET_MESSAGE = "/subject/message/setMessage";
 	public static final String SET_FEEDBACK_MESSAGE = "/subject/message/setMessageFeedbackExtended";
 	public static final String GET_FEEDBACK_EXTERNAL = "/subject/message/getFeedbackExternal";
@@ -98,24 +99,27 @@ public class SubjectMessageControllerScenario {
 		MockitoAnnotations.initMocks(this);
 	}
 
-	@Ignore
 	@Test
 	public void firstShouldSuccessfullySetAndGetMassage() throws Exception {
-		String messageBody = "XXX";
+		String sBody = "XXX";
+		String sHead = "expect";
+		String sContacts = "093";
+		String sData = "some data";
+		String sMail = "ukr.net";
+		String nID_SubjectMessageType = "1";
 		String jsonAfterSave = mockMvc
-				.perform(post("/subject/message/setMessage").contentType(MediaType.APPLICATION_JSON)
-						.param("sHead", "expect").param("sBody", messageBody).param("sContacts", "093")
-						.param("sData", "some data").param("sMail", "ukr.net").param("nID_SubjectMessageType", "1"))
+				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", sHead)
+						.param("sBody", sBody).param("sContacts", sContacts).param("sData", sData).param("sMail", sMail)
+						.param("nID_SubjectMessageType", nID_SubjectMessageType))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		SubjectMessage savedMessage = JsonRestUtils.readObject(jsonAfterSave, SubjectMessage.class);
 		assertNotNull(savedMessage.getId());
 		assertNotNull(savedMessage.getSubjectMessageType());
 		assertEquals(1L, savedMessage.getSubjectMessageType().getId().longValue());
-		assertEquals(messageBody, savedMessage.getBody());
+		assertEquals(sBody, savedMessage.getBody());
 		assertEquals(0L, savedMessage.getId_subject().longValue());
 
-		String jsonAfterGet = mockMvc
-				.perform(get("/subject/message/getMessage").param("nID", "" + savedMessage.getId()))
+		String jsonAfterGet = mockMvc.perform(get(GET_MESSAGE).param("nID", "" + savedMessage.getId()))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		assertEquals(jsonAfterSave, jsonAfterGet);
 	}
