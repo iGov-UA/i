@@ -247,6 +247,8 @@ public class DocumentStepService {
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new LinkedList(aDocumentStepSubjectRight_Common);
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
         LOG.debug("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
+
+        Map<String,Object> mReturn = new HashMap();
         
         Boolean bWrite=null;
         for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
@@ -255,39 +257,162 @@ public class DocumentStepService {
             }
             bWrite = bWrite || oDocumentStepSubjectRight.getbWrite();
         }
+        mReturn.put("bWrite", bWrite);
         
         //oTaskActive.
-                
+        //List<Map<String,Object>> aFieldRight = new LinkedList();
+        List<String> asID_Field_Read = new LinkedList();
+        List<String> asID_Field_Write = new LinkedList();
+        
+        //Map<String,Object> mFieldRight = new HashMap();
         List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();
-        //List<Map<String,Object>> aReturn = new LinkedList();
-        Map<String,Object> mReturn;
         //a.get(1).getType().getInformation()
+        
+
+        //Boolean bWriteField=null;
+        for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
+            List<String> asID_Field_Read_Temp = new LinkedList();
+            List<String> asID_Field_Write_Temp = new LinkedList();
+            //Boolean bInclude=null;
+            for(DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()){
+                String sMask=oDocumentStepSubjectRightField.getsMask_FieldID();
+                if(sMask!=null){
+                    Boolean bNot=false;
+                    if(sMask.startsWith("!")){
+                        bNot=true;
+                        sMask=sMask.substring(1);
+                    }
+                    Boolean bEndsWith=false;
+                    Boolean bStartWith=false;
+                    Boolean bAll="*".equals(sMask);
+                    if(!bAll){
+                        if(sMask.startsWith("*")){
+                            bEndsWith=true;
+                            sMask=sMask.substring(1);
+                        }
+                        if(sMask.endsWith("*")){
+                            bStartWith=true;
+                            sMask=sMask.substring(0,sMask.length()-1);
+                        }
+                    }
+                    for (FormProperty oProperty : a) {
+                        String sID = oProperty.getId();
+                        Boolean bFound=false;
+                        if(bStartWith&&bEndsWith){
+                            bFound=sID.contains(sMask);
+                        }else if(bStartWith){
+                            bFound=sID.startsWith(sMask);
+                        }else if(bEndsWith){
+                            bFound=sID.endsWith(sMask);
+                        }
+                        if(bAll||bFound){
+                            Boolean bWriteField = oDocumentStepSubjectRightField.getbWrite();
+                            //if(bWriteField!=null){
+                                //mFieldRight.put(sID, bWriteField);
+                                if(bNot){
+                                    if(bWriteField){
+                                        asID_Field_Write_Temp.remove(sID);
+                                    }else{
+                                        asID_Field_Read_Temp.remove(sID);
+                                    }
+                                }else{
+                                    if(bWriteField){
+                                        asID_Field_Write_Temp.add(sID);
+                                    }else{
+                                        asID_Field_Read_Temp.add(sID);
+                                    }
+                                }
+                                //aFieldRight.add(m);
+                            //}        
+                            
+                            /*if(bWriteField==null){
+                                bWriteField = false;
+                            }
+                            bWriteField = bWriteField || oDocumentStepSubjectRightField.getbWrite();*/
+                        }
+                    }
+                    
+                }
+            }
+            asID_Field_Read.addAll(asID_Field_Read_Temp);
+            asID_Field_Write.addAll(asID_Field_Write_Temp);
+        }
+        
+        /*
         for (FormProperty oProperty : a) {
             String sID = oProperty.getId();
             
-            
             Boolean bWriteField=null;
             for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
-                if(bWriteField==null){
-                    bWriteField = false;
+                Boolean bInclude=null;
+                for(DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()){
+                    String sMask=oDocumentStepSubjectRightField.getsMask_FieldID();
+                    if(sMask!=null){
+                        Boolean bFound=false;
+                        Boolean bNot=false;
+                        if(sMask.startsWith("!")){
+                            bNot=true;
+                            sMask=sMask.substring(1);
+                        }
+                        Boolean bEndsWith=false;
+                        if(sMask.startsWith("*")){
+                            bEndsWith=true;
+                            sMask=sMask.substring(1);
+                        }
+                        Boolean bStartWith=false;
+                        if(sMask.endsWith("*")){
+                            bStartWith=true;
+                            sMask=sMask.substring(0,sMask.length()-1);
+                        }
+                        if(bStartWith&&bEndsWith){
+                            bFound=sID.contains(sMask);
+                        }else if(bStartWith){
+                            bFound=sID.startsWith(sMask);
+                        }else if(bEndsWith){
+                            bFound=sID.endsWith(sMask);
+                        }
+                        if(bFound){
+                            if(bWriteField==null){
+                                bWriteField = false;
+                            }
+                            bWriteField = bWriteField || oDocumentStepSubjectRightField.getbWrite();
+                        }
+                    }
                 }
-                bWriteField = bWriteField || oDocumentStepSubjectRight.getbWrite();
-            }            
-            
-        }                
+            }
+            if(bWriteField!=null){
+                //mFieldRight.put(sID, bWriteField);
+                if(bWriteField){
+                    asID_Field_Write.add(sID);
+                }else{
+                    asID_Field_Read.add(sID);
+                }
+                //aFieldRight.add(m);
+            }
+
+        }
+        */
+        
+        //mReturn.put("mFieldRight", mFieldRight);
+        mReturn.put("asID_Field_Write", asID_Field_Write);
+        mReturn.put("asID_Field_Read", asID_Field_Read);
         
         //Let's find current active task properties
+        /*
         Set<String> taskFormPropertiesIDs = new TreeSet<>();
         TaskFormData oTaskFormData = oFormService.getTaskFormData(sKey_UserTask);
 
         taskFormPropertiesIDs
                 .addAll(oTaskFormData.getFormProperties().stream().map(FormProperty::getId).collect(Collectors.toList()));
+        */
 
         //grunts for specific field when we accumulating from single DocumentStepSubjectRight are summed in
         // prohibitive way
         //First of all we process rights from common step.
 
+        /*
         Map<String, Object> resultGruntsFromCommonStep = buildGrunts(aDocumentStepSubjectRight_Common, taskFormPropertiesIDs);
+        */
 
 
 
