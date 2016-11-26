@@ -548,7 +548,8 @@ public class ObjectFileCommonController {
     AttachmentEntityI putAttachmentsToExecution(//ResponseEntity
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
             @ApiParam(value = "файл html. в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
-            @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "description") String description)
+            @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "description") String description,
+            @ApiParam(value = "ИД поля формы, к которому загружается файл", required = false) @RequestParam(value = "sID_Field") String sID_Field)
             throws IOException {
 
         String processInstanceId = null;
@@ -577,6 +578,10 @@ public class ObjectFileCommonController {
         Attachment oAttachment = taskService.createAttachment(file.getContentType() + ";" + oActionTaskService.getFileExtention(file), taskId,
                 processInstanceId, sFilename,// file.getOriginalFilename()
                 description, file.getInputStream());
+        if(oAttachment != null && sID_Field != null && !"".equals(sID_Field.trim())){
+            oRuntimeService.setVariable(processInstanceId, sID_Field, oAttachment.getId());
+            LOG.debug("setVariable: processInstanceId = {}, sID_Field = {}, attachmentId = {}", processInstanceId, sID_Field, oAttachment.getId());
+        }
 
         AttachmentCover oAttachmentCover = new AttachmentCover();
         return oAttachmentCover.apply(oAttachment);
