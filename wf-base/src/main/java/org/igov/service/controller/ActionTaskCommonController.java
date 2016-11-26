@@ -68,6 +68,7 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.igov.model.document.DocumentStepSubjectRight;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
@@ -119,7 +120,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     
     @Autowired
     private DfsService_New dfsService_new;
-
+    
     @Autowired
     private ActionTaskService oActionTaskService;
 
@@ -135,6 +136,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Autowired
     private Mail oMail;
 
+    @Autowired
+    private DocumentStepService oDocumentStepService;
+    
     /**
      * Загрузка задач из Activiti:
      *
@@ -2555,4 +2559,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return asID_Attach_Dfs;
     }
 
+    
+    @ApiOperation(value = "/getDocumentStepRights", notes = "##### Получение списка прав у логина по документу#####\n\n")
+    @RequestMapping(value = "/getDocumentStepRights", method = RequestMethod.GET)
+    public @ResponseBody
+    String getDocumentStepRights(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
+            @ApiParam(value = "snID_Process_Activiti", required = true) @RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti) throws Exception {
+        /*Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
+        LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
+        String asID_Attach_Dfs = "";
+        if (task != null) {
+            asID_Attach_Dfs = dfsService_new.getAnswer(task.getId(), sID_Process, INN);
+            if (asID_Attach_Dfs != null && asID_Attach_Dfs.length() > 0) {
+                taskService.complete(task.getId());
+            }
+        }
+        return asID_Attach_Dfs;*/
+        return oDocumentStepService.getDocumentStepRights(sLogin, snID_Process_Activiti);
+    }
+
+    
 }
