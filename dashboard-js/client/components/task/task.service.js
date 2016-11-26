@@ -178,7 +178,7 @@ angular.module('dashboardJsApp')
 
         return deferred.promise;
       },
-      upload: function (files, taskId) {
+      upload: function (files, taskId, sID_Field) {
         var deferred = $q.defer();
 
         var self = this;
