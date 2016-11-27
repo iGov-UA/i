@@ -73,12 +73,15 @@ public class SetTasks_Listener implements TaskListener {
                 LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
                 
                 JSONObject oJSONObject = (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
+                LOG.info("JSON String: " + oJSONObject.toJSONString());
+                
+                
+                //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
+                
+
                 //aJSONObject = new JSONParser()
                
-                try {
-                    LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow").toString());
-                    //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
-                
+                    
                     /*JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
                     //Map<String, String> resultJsonMap = new HashMap<String, String>();
                     
@@ -110,11 +113,7 @@ public class SetTasks_Listener implements TaskListener {
                     else{
                         LOG.info("JSONArray is null");
                     }*/
-                }catch(Exception ex)
-                {
-                    LOG.info("json array code throw an exception: " + ex.toString());
-                }
-
+    
                 //LOG.info("aRow: " + oJSONObject.get("aRow"));
             }
             else{
