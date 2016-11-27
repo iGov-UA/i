@@ -8,7 +8,7 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 //import org.activiti.engine.impl.util.json.JSONArray;
-import org.json.simple.JSONArray;
+
 import org.apache.commons.io.IOUtils;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.slf4j.LoggerFactory;
@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONArray;
 
 /**
  *
@@ -72,13 +73,16 @@ public class SetTasks_Listener implements TaskListener {
                 LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
                 
                 JSONObject oJSONObject = (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
+                LOG.info("JSON String: " + oJSONObject.toJSONString());
+                
+                
+                //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
+                
+
                 //aJSONObject = new JSONParser()
                
-                try {
-                    LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow"));
-                    //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
-                
-                    JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
+                    
+                    /*JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
                     //Map<String, String> resultJsonMap = new HashMap<String, String>();
                     
                     if (aJsonRow != null){
@@ -92,7 +96,7 @@ public class SetTasks_Listener implements TaskListener {
                                 String value =  sJsonElem.get("value").toString();
                                 //resultJsonMap.put(id, value);
                                 LOG.info("json array id " + id + " and value " + value);
-                            }*/
+                            }
                         }
                         /*resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
                         resultJsonMap.put("sID_Attachment", sID_Attachment_Value);
@@ -104,16 +108,12 @@ public class SetTasks_Listener implements TaskListener {
                         /*for (String key : resultJsonMap.keySet())
                         {
                             LOG.info(key + ":" + resultJsonMap.get(key));
-                        }*/
+                        }
                     }
                     else{
                         LOG.info("JSONArray is null");
-                    }
-                }catch(Exception ex)
-                {
-                    LOG.info("json array code throw an exception: " + ex.toString());
-                }
-
+                    }*/
+    
                 //LOG.info("aRow: " + oJSONObject.get("aRow"));
             }
             else{
@@ -132,8 +132,8 @@ public class SetTasks_Listener implements TaskListener {
             //LOG.info("json_Content sBodyDocument_Value: " + taskService.getAttachmentContent(sBodyDocument_Value));
             //LOG.info("json_Content sLoginAuthor_Value: " + taskService.getAttachmentContent(sLoginAuthor_Value));
         }
-         catch (Exception ex){
-             LOG.error("SetTasks listener throws an error: " + ex.toString());
+         catch (Exception e){
+             LOG.error("SetTasks listener throws an error: " + e.toString());
         }
     }
 }
