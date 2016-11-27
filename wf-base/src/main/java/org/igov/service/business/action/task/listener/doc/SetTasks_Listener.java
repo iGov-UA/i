@@ -75,7 +75,7 @@ public class SetTasks_Listener implements TaskListener {
                 //aJSONObject = new JSONParser()
                
                 try {
-                    //LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow"));
+                    LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow"));
                     //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
                 
                     JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
