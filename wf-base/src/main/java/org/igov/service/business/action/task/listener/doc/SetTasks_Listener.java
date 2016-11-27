@@ -76,10 +76,10 @@ public class SetTasks_Listener implements TaskListener {
                 //aJSONObject = new JSONParser()
                
                 try {
-                    LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow"));
+                    LOG.info("oJSONObject aRow is: " + oJSONObject.get("aRow").toString());
                     //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
                 
-                    JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
+                    /*JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
                     //Map<String, String> resultJsonMap = new HashMap<String, String>();
                     
                     if (aJsonRow != null){
@@ -93,7 +93,7 @@ public class SetTasks_Listener implements TaskListener {
                                 String value =  sJsonElem.get("value").toString();
                                 //resultJsonMap.put(id, value);
                                 LOG.info("json array id " + id + " and value " + value);
-                            }*/
+                            }
                         }
                         /*resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
                         resultJsonMap.put("sID_Attachment", sID_Attachment_Value);
@@ -105,11 +105,11 @@ public class SetTasks_Listener implements TaskListener {
                         /*for (String key : resultJsonMap.keySet())
                         {
                             LOG.info(key + ":" + resultJsonMap.get(key));
-                        }*/
+                        }
                     }
                     else{
                         LOG.info("JSONArray is null");
-                    }
+                    }*/
                 }catch(Exception ex)
                 {
                     LOG.info("json array code throw an exception: " + ex.toString());
