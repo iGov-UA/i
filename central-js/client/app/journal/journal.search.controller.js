@@ -348,4 +348,8 @@ angular.module('journal').controller('JournalSearchController', function (
     })
   };
 
+  $scope.download = function(nID){
+
+  };
+
 });
