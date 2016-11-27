@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import org.activiti.engine.identity.User;
 
 @Service
 public class DocumentStepService {
@@ -54,6 +55,9 @@ public class DocumentStepService {
     @Autowired
     private FormService oFormService;
 
+    @Autowired
+    private IdentityService oIdentityService;
+    
     public void setDocumentSteps(String snID_Process_Activiti, String soJSON) {
         JSONObject steps = new JSONObject(soJSON);
         List<DocumentStep> resultSteps = new ArrayList<>();
@@ -235,11 +239,32 @@ public class DocumentStepService {
             //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common
         }
 
+        final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
+        
         for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
             Map<String,Object> m = new HashMap();
             m.put("sDate", oDocumentStepSubjectRight.getsDate());//"2016-05-15 12:12:34"
             m.put("bWrite", oDocumentStepSubjectRight.getbWrite());//false
             m.put("sName", oDocumentStepSubjectRight.getsName());//"Главный контроллирующий"
+            String sID_Group = new StringBuilder(sGroupPrefix).append(oDocumentStepSubjectRight.getsKey_GroupPostfix()).toString();
+            List<User> aUser = oIdentityService.createUserQuery().memberOfGroup(sID_Group).list();
+            List<Map<String,Object>> a = new LinkedList();
+            for(User oUser : aUser){
+                Map<String,Object> mUser = new HashMap();
+                mUser.put("sLogin", oUser.getId());
+                //mUser.put("sFirstName", oUser.getFirstName());
+                //mUser.put("sLastName", oUser.getLastName());
+                mUser.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
+                a.add(mUser);
+            }
+            m.put("aUser", aUser);
+            String sLogin = oDocumentStepSubjectRight.getsLogin();
+            if(sLogin!=null){
+                User oUser = oIdentityService.createUserQuery().userId(sLogin).singleResult();
+                //m.put("sFirstName", oUser.getFirstName());
+                //m.put("sLastName", oUser.getLastName());
+                m.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
+            }
             mReturn.put(oDocumentStepSubjectRight.getsLogin(), m);
         }
         
@@ -522,6 +547,10 @@ public class DocumentStepService {
 
         }
         */
+        
+        for(String sID_Field_Write : asID_Field_Write){
+            asID_Field_Read.remove(sID_Field_Write);
+        }
         
         //mReturn.put("mFieldRight", mFieldRight);
         mReturn.put("asID_Field_Write", asID_Field_Write);
