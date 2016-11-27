@@ -82,12 +82,14 @@ public class SetTasks_Listener implements TaskListener {
                 //aJSONObject = new JSONParser()
                
                     
-                    /*JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
+                    JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
                     //Map<String, String> resultJsonMap = new HashMap<String, String>();
                     
                     if (aJsonRow != null){
                         for (int i = 0; i < aJsonRow.size(); i++){
                             LOG.info("json array element" + i + " is " + aJsonRow.get(i).toString());
+                            
+                        }
                             /*JSONObject sJsonField =  (JSONObject) aJsonRow.get(i);
                             JSONArray aJsonField = (JSONArray) sJsonField.get("aField");
                             for (int j = 0; j < aJsonField.size(); j++){
@@ -108,11 +110,11 @@ public class SetTasks_Listener implements TaskListener {
                         /*for (String key : resultJsonMap.keySet())
                         {
                             LOG.info(key + ":" + resultJsonMap.get(key));
-                        }
+                        }*/
                     }
                     else{
                         LOG.info("JSONArray is null");
-                    }*/
+                    }
     
                 //LOG.info("aRow: " + oJSONObject.get("aRow"));
             /*
