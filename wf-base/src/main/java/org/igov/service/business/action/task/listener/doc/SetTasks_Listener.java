@@ -1,5 +1,6 @@
 package org.igov.service.business.action.task.listener.doc;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -58,21 +60,20 @@ public class SetTasks_Listener implements TaskListener {
             String sDateExecution_Value = 
                 getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution());
  
-            LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
+            /*LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
                 + sTaskProcessDefinition_Value + " sID_Attachment_Value: " + sID_Attachment_Value + " sContent: " +
                 sContent_Value + " sAutorResolution: " + sAutorResolution_Value + " sTextResolution: " 
-                + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); 
+                + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); */
                 
             
             //Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
             
             InputStream attachmentContent = taskService.getAttachmentContent(sID_Attachment_Value);
             
-            if (attachmentContent != null){
-                
-                LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
-                
-                JSONObject oJSONObject = (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
+            
+                //LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
+                JSONParser parser = new JSONParser();
+                JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
                 LOG.info("JSON String: " + oJSONObject.toJSONString());
                 
                 
@@ -115,11 +116,6 @@ public class SetTasks_Listener implements TaskListener {
                     }*/
     
                 //LOG.info("aRow: " + oJSONObject.get("aRow"));
-            }
-            else{
-                LOG.info("attachmentContent is null");
-            }
-            
             /*
             
             InputStream json_Content = taskService.getAttachmentContent(sTaskProcessDefinition_Value);
@@ -132,7 +128,7 @@ public class SetTasks_Listener implements TaskListener {
             //LOG.info("json_Content sBodyDocument_Value: " + taskService.getAttachmentContent(sBodyDocument_Value));
             //LOG.info("json_Content sLoginAuthor_Value: " + taskService.getAttachmentContent(sLoginAuthor_Value));
         }
-         catch (Exception e){
+         catch (IOException | ParseException e){
              LOG.error("SetTasks listener throws an error: " + e.toString());
         }
     }
