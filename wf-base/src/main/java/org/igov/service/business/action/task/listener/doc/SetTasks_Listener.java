@@ -8,7 +8,7 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 //import org.activiti.engine.impl.util.json.JSONArray;
-import org.json.simple.JSONArray;
+
 import org.apache.commons.io.IOUtils;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.slf4j.LoggerFactory;
@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONArray;
 
 /**
  *
@@ -132,8 +133,8 @@ public class SetTasks_Listener implements TaskListener {
             //LOG.info("json_Content sBodyDocument_Value: " + taskService.getAttachmentContent(sBodyDocument_Value));
             //LOG.info("json_Content sLoginAuthor_Value: " + taskService.getAttachmentContent(sLoginAuthor_Value));
         }
-         catch (Exception ex){
-             LOG.error("SetTasks listener throws an error: " + ex.toString());
+         catch (Exception e){
+             LOG.error("SetTasks listener throws an error: " + e.toString());
         }
     }
 }
