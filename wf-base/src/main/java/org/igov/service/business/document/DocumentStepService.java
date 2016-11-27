@@ -585,6 +585,43 @@ public class DocumentStepService {
         return mReturn;
     }
 
+    
+//3.4) setDocumentStep(snID_Process_Activiti, bNext) //проставить номер шаг (bNext=true > +1 иначе -1) в поле таски с id=sKey_Step_Document    
+    public void setDocumentStep(String snID_Process_Activiti, Boolean bNext){//JSONObject
+        //assume that we can have only one active task per process at the same time
+        LOG.info("bNext={}, snID_Process_Activiti={}", bNext, snID_Process_Activiti);
+        List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
+        if(aTaskActive.size() < 1 || aTaskActive.get(0) == null){
+            throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
+        }
+        /*Task oTaskActive = aTaskActive.get(0);
+        String sKey_UserTask = oTaskActive.getTaskDefinitionKey();
+        String snID_Task = oTaskActive.getId();
+        String sID_BP = oTaskActive.getProcessDefinitionId();
+        LOG.info("sID_BP={}", sID_BP);
+        if(sID_BP!=null && sID_BP.contains(":")){
+            String[] as = sID_BP.split("\\:");
+            sID_BP = as[0];
+            LOG.info("FIX(:) sID_BP={}", sID_BP);
+        }
+        if(sID_BP!=null && sID_BP.contains(".")){
+            String[] as = sID_BP.split("\\.");
+            sID_BP = as[0];
+            LOG.info("FIX(.) sID_BP={}", sID_BP);
+        }*/
+ 
+        ProcessInstance oProcessInstance = runtimeService
+                .createProcessInstanceQuery()
+                .processInstanceId(snID_Process_Activiti)
+                .active()
+                .singleResult();
+        Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+        
+        String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document");
+        runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
+        
+    }
+        
     private Map<String, Object> buildGrunts(List<DocumentStepSubjectRight> rightsFromStep,
             Set<String> taskFormPropertiesIDs) {
         Map<String, Object> resultGruntsFromCommonStep = new HashMap<>();
