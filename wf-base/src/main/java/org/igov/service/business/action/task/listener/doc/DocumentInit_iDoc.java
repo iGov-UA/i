@@ -1,6 +1,7 @@
 package org.igov.service.business.action.task.listener.doc;
 
 
+import java.util.logging.Level;
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -48,7 +49,11 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
             oDocumentStepService.checkDocumentInit(execution.getProcessInstanceId());
         } catch (Exception oException) {
             LOG.error("", oException);
-            throw oException;
+            try {
+                throw oException;
+            } catch (Exception ex) {
+                java.util.logging.Logger.getLogger(DocumentInit_iDoc.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
