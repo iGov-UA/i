@@ -89,9 +89,10 @@ public class SetTasks_Listener implements TaskListener {
                         for (int i = 0; i < aJsonRow.size(); i++){
                             LOG.info("json array element" + i + " is " + aJsonRow.get(i).toString());
                             
-                        }
-                            /*JSONObject sJsonField =  (JSONObject) aJsonRow.get(i);
+                        
+                            JSONObject sJsonField =  (JSONObject) aJsonRow.get(i);
                             JSONArray aJsonField = (JSONArray) sJsonField.get("aField");
+                            
                             for (int j = 0; j < aJsonField.size(); j++){
                                 JSONObject sJsonElem =  (JSONObject) aJsonField.get(j);
                                 String id =  sJsonElem.get("id").toString();
