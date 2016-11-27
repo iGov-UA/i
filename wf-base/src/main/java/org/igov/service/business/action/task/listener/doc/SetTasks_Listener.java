@@ -60,14 +60,11 @@ public class SetTasks_Listener implements TaskListener {
             String sDateExecution_Value = 
                 getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution());
  
-            /*LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
+            LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: " 
                 + sTaskProcessDefinition_Value + " sID_Attachment_Value: " + sID_Attachment_Value + " sContent: " +
                 sContent_Value + " sAutorResolution: " + sAutorResolution_Value + " sTextResolution: " 
-                + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); */
+                + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); 
                 
-            
-            //Attachment attachment = taskService.getAttachment(sID_Attachment_Value);
-            
             InputStream attachmentContent = taskService.getAttachmentContent(sID_Attachment_Value);
             
             
@@ -81,9 +78,8 @@ public class SetTasks_Listener implements TaskListener {
 
                 //aJSONObject = new JSONParser()
                
-                    
-                    JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
-                    //Map<String, String> resultJsonMap = new HashMap<String, String>();
+                JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
+                    Map<String, String> resultJsonMap = new HashMap<String, String>();
                     
                     if (aJsonRow != null){
                         for (int i = 0; i < aJsonRow.size(); i++){
@@ -97,21 +93,22 @@ public class SetTasks_Listener implements TaskListener {
                                 JSONObject sJsonElem =  (JSONObject) aJsonField.get(j);
                                 String id =  sJsonElem.get("id").toString();
                                 String value =  sJsonElem.get("value").toString();
-                                //resultJsonMap.put(id, value);
+                                resultJsonMap.put(id, value);
                                 LOG.info("json array id " + id + " and value " + value);
                             }
                         }
-                        /*resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
+                        
+                        resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
                         resultJsonMap.put("sID_Attachment", sID_Attachment_Value);
                         resultJsonMap.put("sContent", sContent_Value);
                         resultJsonMap.put("sAutorResolution", sAutorResolution_Value);
                         resultJsonMap.put("sDateExecution", sDateExecution_Value);
-                        resultJsonMap.put("sTextResolution", sTextResolution_Value);*/
+                        resultJsonMap.put("sTextResolution", sTextResolution_Value);
                         
-                        /*for (String key : resultJsonMap.keySet())
+                        for (String key : resultJsonMap.keySet())
                         {
-                            LOG.info(key + ":" + resultJsonMap.get(key));
-                        }*/
+                            LOG.info("resultJsonMap: " + key + " : " + resultJsonMap.get(key));
+                        }
                     }
                     else{
                         LOG.info("JSONArray is null");
