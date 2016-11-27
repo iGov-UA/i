@@ -618,8 +618,23 @@ public class DocumentStepService {
         Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
         
         String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document");
-        runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
+        LOG.debug("BEFORE:sKey_Step_Document={}", sKey_Step_Document);
         
+        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        LOG.debug("aDocumentStep={}", aDocumentStep);
+        
+        Long nOrder = null;
+        for(DocumentStep oDocumentStep : aDocumentStep){
+            if(nOrder!=null){
+                sKey_Step_Document = oDocumentStep.getsKey_Step();
+                break;
+            }
+            if(nOrder==null && sKey_Step_Document.equals(oDocumentStep.getsKey_Step())){
+                nOrder=oDocumentStep.getnOrder();
+            }
+        }
+        LOG.debug("AFTER:sKey_Step_Document={}", sKey_Step_Document);
+        runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
     }
         
     private Map<String, Object> buildGrunts(List<DocumentStepSubjectRight> rightsFromStep,
