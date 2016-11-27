@@ -76,8 +76,7 @@ public class SetTasks_Listener implements TaskListener {
                 JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
                 LOG.info("JSON String: " + oJSONObject.toJSONString());
                 
-                
-                //LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
+                LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
                 
 
                 //aJSONObject = new JSONParser()
