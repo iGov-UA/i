@@ -165,13 +165,130 @@ public class DocumentStepService {
     }
 
     public Map<String,Object> getDocumentStepLogins(String snID_Process_Activiti){//JSONObject 
+        //assume that we can have only one active task per process at the same time
         LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
+        List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
+        if(aTaskActive.size() < 1 || aTaskActive.get(0) == null){
+            throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
+        }
+        Task oTaskActive = aTaskActive.get(0);
+        String sKey_UserTask = oTaskActive.getTaskDefinitionKey();
+        String snID_Task = oTaskActive.getId();
+        String sID_BP = oTaskActive.getProcessDefinitionId();
+        LOG.info("sID_BP={}", sID_BP);
+        if(sID_BP!=null && sID_BP.contains(":")){
+            String[] as = sID_BP.split("\\:");
+            sID_BP = as[0];
+            LOG.info("FIX(:) sID_BP={}", sID_BP);
+        }
+        if(sID_BP!=null && sID_BP.contains(".")){
+            String[] as = sID_BP.split("\\.");
+            sID_BP = as[0];
+            LOG.info("FIX(.) sID_BP={}", sID_BP);
+        }
+ 
+        ProcessInstance oProcessInstance = runtimeService
+                .createProcessInstanceQuery()
+                .processInstanceId(snID_Process_Activiti)
+                .active()
+                .singleResult();
+        Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+        
+        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        LOG.debug("aDocumentStep={}", aDocumentStep);
+        
+        DocumentStep oDocumentStep_Common = aDocumentStep
+                .stream()
+                .filter(o -> o.getsKey_Step().equals("_"))
+                .findAny()
+                .orElse(null);
+        LOG.debug("oDocumentStep_Common={}", oDocumentStep_Common);
+        
+        String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document");
+        if(StringUtils.isEmpty(sKey_Step_Document)){
+            //throw new IllegalStateException("There is no active Document Sep." +
+            //        " Process variable sKey_Step_Document is empty.");
+            //sKey_Step_Document="1";
+        }
+        DocumentStep oDocumentStep_Active = aDocumentStep
+                .stream()
+                .filter(o -> sKey_Step_Document == null ? o.getnOrder().equals(1) : o.getsKey_Step().equals(sKey_Step_Document))
+                .findAny()
+                .orElse(null);
+        LOG.debug("oDocumentStep_Active={}", oDocumentStep_Active);
+        if(oDocumentStep_Active == null){
+            throw new IllegalStateException("There is no active Document Sep, process variable sKey_Step_Document="
+                    + sKey_Step_Document);
+        }        
+
+
         Map<String,Object> mReturn = new HashMap();
         
+
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new LinkedList();
+        for(DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Common.getRights()){
+            aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
+            //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common
+        }
+        for(DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Active.getRights()){
+            aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
+            //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common
+        }
+
+        for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
+            Map<String,Object> m = new HashMap();
+            m.put("sDate", oDocumentStepSubjectRight.getsDate());//"2016-05-15 12:12:34"
+            m.put("bWrite", oDocumentStepSubjectRight.getbWrite());//false
+            m.put("sName", oDocumentStepSubjectRight.getsName());//"Главный контроллирующий"
+            mReturn.put(oDocumentStepSubjectRight.getsLogin(), m);
+        }
         
+        /*
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = oDocumentStep_Common
+                .getRights()
+                .stream()
+                .filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsLogin())))
+                .collect(Collectors.toList());
+        LOG.debug("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
+
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active
+                .getRights()
+                .stream()
+                .filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix())))
+                .collect(Collectors.toList());
+        LOG.debug("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
+
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new LinkedList(aDocumentStepSubjectRight_Common);
+        aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
+        LOG.debug("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);        
+        */
+        
+        
+/*
+{
+        "login1": { //DocumentStepSubjectRight.sLogin 
+            "sDate": "2016-05-13 10:10:01" //DocumentStepSubjectRight.sDate
+            , "bWrite": true //DocumentStepSubjectRight.bWrite
+            , sName: "Главный визирующий" //DocumentStepSubjectRight.sName
+        }
+        ,"login2": {
+            "sDate": "2016-05-15 12:12:34"
+            , "bWrite": false
+            , sName: "Главный контроллирующий"
+        }
+        ,"login3": {
+            "sDate": "2016-05-15 12:12:35"
+            , "bWrite": false
+            , sName: "Главный исполнитель"
+        }
+}        
+*/
         return mReturn;
     }
 
+    /*public DocumentStep oDocumentStep_Active(String snID_Process_Activiti){
+        return oDocumentStep_Active;
+    }*/
     
     public Map<String,Object> getDocumentStepRights(String sLogin, String snID_Process_Activiti){//JSONObject
         //assume that we can have only one active task per process at the same time
@@ -195,7 +312,6 @@ public class DocumentStepService {
             sID_BP = as[0];
             LOG.info("FIX(.) sID_BP={}", sID_BP);
         }
-        final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
  
         ProcessInstance oProcessInstance = runtimeService
                 .createProcessInstanceQuery()
@@ -230,7 +346,9 @@ public class DocumentStepService {
             throw new IllegalStateException("There is no active Document Sep, process variable sKey_Step_Document="
                     + sKey_Step_Document);
         }
-
+        
+        //DocumentStep = oDocumentStep_Active = oDocumentStep_Active(snID_Process_Activiti);
+        
         List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
         Set<String> asID_Group = new HashSet<>();
         if(aGroup != null){
@@ -238,6 +356,8 @@ public class DocumentStepService {
         }
         LOG.debug("sLogin={}, asID_Group={}",sLogin, asID_Group);
         //Lets collect DocumentStepSubjectRight by according users groups
+
+        final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = oDocumentStep_Common
                 .getRights()
@@ -257,6 +377,7 @@ public class DocumentStepService {
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
         LOG.debug("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
 
+        
         Map<String,Object> mReturn = new HashMap();
         
         Boolean bWrite=null;
