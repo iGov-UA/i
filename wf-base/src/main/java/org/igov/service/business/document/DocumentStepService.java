@@ -1,5 +1,7 @@
 package org.igov.service.business.document;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
@@ -22,6 +24,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.activiti.engine.identity.User;
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+import org.igov.util.Tool;
 
 @Service
 public class DocumentStepService {
@@ -585,6 +589,132 @@ public class DocumentStepService {
         return mReturn;
     }
 
+    public void checkDocumentInit(String snID_Process_Activiti) throws IOException, URISyntaxException{//JSONObject
+        //assume that we can have only one active task per process at the same time
+        LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
+        List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
+        if(aTaskActive.size() < 1 || aTaskActive.get(0) == null){
+            throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
+        }
+        Task oTaskActive = aTaskActive.get(0);
+//        String sKey_UserTask = oTaskActive.getTaskDefinitionKey();
+//        String snID_Task = oTaskActive.getId();
+        String sID_BP = oTaskActive.getProcessDefinitionId();
+        LOG.info("sID_BP={}", sID_BP);
+        if(sID_BP!=null && sID_BP.contains(":")){
+            String[] as = sID_BP.split("\\:");
+            sID_BP = as[0];
+            LOG.info("FIX(:) sID_BP={}", sID_BP);
+        }
+        if(sID_BP!=null && sID_BP.contains(".")){
+            String[] as = sID_BP.split("\\.");
+            sID_BP = as[0];
+            LOG.info("FIX(.) sID_BP={}", sID_BP);
+        }
+ 
+        ProcessInstance oProcessInstance = runtimeService
+                .createProcessInstanceQuery()
+                .processInstanceId(snID_Process_Activiti)
+                .active()
+                .singleResult();
+        Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+        
+        String sKey_Step_Document = mProcessVariable.containsKey("sKey_Step_Document") ? (String) mProcessVariable.get("sKey_Step_Document") : null;
+        if("".equals(sKey_Step_Document)){
+            sKey_Step_Document=null;
+        }
+        LOG.debug("BEFORE:sKey_Step_Document={}", sKey_Step_Document);
+        
+        if(sKey_Step_Document==null){
+            
+            byte[] aByteDocument = getFileData_Pattern("document/"+sID_BP+".json");
+            if(aByteDocument!=null && aByteDocument.length>0){
+                String soJSON = null;
+                soJSON = Tool.sData(aByteDocument);
+                setDocumentSteps(snID_Process_Activiti, soJSON);
+
+                List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+                LOG.debug("aDocumentStep={}", aDocumentStep);
+
+                if(aDocumentStep.size()>1){
+                    aDocumentStep.get(1);
+                }else if(aDocumentStep.size()>0){
+                    aDocumentStep.get(0);
+                }else{
+                }
+
+                LOG.debug("AFTER:sKey_Step_Document={}", sKey_Step_Document);
+                runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
+            }
+        }
+    }
+    
+//3.4) setDocumentStep(snID_Process_Activiti, bNext) //проставить номер шаг (bNext=true > +1 иначе -1) в поле таски с id=sKey_Step_Document    
+    public void setDocumentStep(String snID_Process_Activiti, String sKey_Step){//JSONObject
+        //assume that we can have only one active task per process at the same time
+        LOG.info("sKey_Step={}, snID_Process_Activiti={}", sKey_Step, snID_Process_Activiti);
+        List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
+        if(aTaskActive.size() < 1 || aTaskActive.get(0) == null){
+            throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
+        }
+        /*Task oTaskActive = aTaskActive.get(0);
+        String sKey_UserTask = oTaskActive.getTaskDefinitionKey();
+        String snID_Task = oTaskActive.getId();
+        String sID_BP = oTaskActive.getProcessDefinitionId();
+        LOG.info("sID_BP={}", sID_BP);
+        if(sID_BP!=null && sID_BP.contains(":")){
+            String[] as = sID_BP.split("\\:");
+            sID_BP = as[0];
+            LOG.info("FIX(:) sID_BP={}", sID_BP);
+        }
+        if(sID_BP!=null && sID_BP.contains(".")){
+            String[] as = sID_BP.split("\\.");
+            sID_BP = as[0];
+            LOG.info("FIX(.) sID_BP={}", sID_BP);
+        }*/
+ 
+        ProcessInstance oProcessInstance = runtimeService
+                .createProcessInstanceQuery()
+                .processInstanceId(snID_Process_Activiti)
+                .active()
+                .singleResult();
+        Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+        
+        String sKey_Step_Document = mProcessVariable.containsKey("sKey_Step_Document") ? (String) mProcessVariable.get("sKey_Step_Document") : null;
+        if("".equals(sKey_Step_Document)){
+            sKey_Step_Document=null;
+        }
+        LOG.debug("BEFORE:sKey_Step_Document={}", sKey_Step_Document);
+        
+        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        LOG.debug("aDocumentStep={}", aDocumentStep);
+        
+        if(sKey_Step!=null){
+            sKey_Step_Document = sKey_Step;
+        }else if(sKey_Step_Document==null){
+            if(aDocumentStep.size()>1){
+                aDocumentStep.get(1);
+            }else if(aDocumentStep.size()>0){
+                aDocumentStep.get(0);
+            }else{
+            }
+        }else{
+            Long nOrder = null;
+            for(DocumentStep oDocumentStep : aDocumentStep){
+                if(nOrder!=null){
+                    sKey_Step_Document = oDocumentStep.getsKey_Step();
+                    break;
+                }
+                if(nOrder==null && sKey_Step_Document.equals(oDocumentStep.getsKey_Step())){
+                    nOrder=oDocumentStep.getnOrder();
+                }
+            }
+        }
+        
+        LOG.debug("AFTER:sKey_Step_Document={}", sKey_Step_Document);
+        runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
+    }
+        
     private Map<String, Object> buildGrunts(List<DocumentStepSubjectRight> rightsFromStep,
             Set<String> taskFormPropertiesIDs) {
         Map<String, Object> resultGruntsFromCommonStep = new HashMap<>();
