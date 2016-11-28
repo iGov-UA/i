@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
@@ -20,6 +21,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 
+import org.igov.model.process.ProcessSubjectDao;
+import org.igov.model.process.ProcessSubject;
+import org.igov.model.process.ProcessSubjectTree;
+import org.igov.model.process.ProcessSubjectTreeDao;
 /**
  *
  * @author Kovilin
@@ -43,11 +48,22 @@ public class SetTasks_Listener implements TaskListener {
      
     @Autowired
     private TaskService taskService;
+    
+    @Autowired
+    private ProcessSubjectDao processSubject;
 
+    @Autowired
+    private ProcessSubjectTreeDao processSubjectTree;
+    
+    @Autowired
+    private RuntimeService runtimeService;
+    
     @Override
     public void notify(DelegateTask delegateTask) {
+
+        Map<String, Object> resultJsonMap = new HashMap<String, Object>();
+
         try{
-        
             String sTaskProcessDefinition_Value = 
                 getStringFromFieldExpression(this.sTaskProcessDefinition, delegateTask.getExecution());
             String sID_Attachment_Value = 
@@ -76,7 +92,6 @@ public class SetTasks_Listener implements TaskListener {
             LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
             
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
-            Map<String, String> resultJsonMap = new HashMap<String, String>();
                     
             if (aJsonRow != null){
                 for (int i = 0; i < aJsonRow.size(); i++){
@@ -114,5 +129,14 @@ public class SetTasks_Listener implements TaskListener {
         catch (IOException | ParseException e){
              LOG.error("SetTasks listener throws an error: " + e.toString());
         }
+        
+        ProcessSubject oProcessSubject = new ProcessSubject();
+        ProcessSubjectTree oProcessSubjectTree = new ProcessSubjectTree();
+        
+        processSubject.saveOrUpdate(oProcessSubject);
+        
+        processSubjectTree.saveOrUpdate(oProcessSubjectTree);
+        
+        runtimeService.startProcessInstanceByKey("system_task", resultJsonMap);
     }
 }
