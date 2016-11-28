@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
-import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -40,14 +39,6 @@ public class DocumentStepService {
     private GenericEntityDao<Long, DocumentStep> documentStepDao;
 
     @Autowired
-    @Qualifier("documentStepSubjectRightDao")
-    private GenericEntityDao<Long, DocumentStepSubjectRight> documentStepSubjectRightDao;
-
-    @Autowired
-    @Qualifier("documentStepSubjectRightFieldDao")
-    private GenericEntityDao<Long, DocumentStepSubjectRightField> documentStepSubjectRightFieldDao;
-
-    @Autowired
     private TaskService oTaskService;
 
     @Autowired
@@ -55,9 +46,6 @@ public class DocumentStepService {
 
     @Autowired
     private RuntimeService runtimeService;
-
-    @Autowired
-    private RepositoryService repositoryService;
 
     @Autowired
     private FormService oFormService;
