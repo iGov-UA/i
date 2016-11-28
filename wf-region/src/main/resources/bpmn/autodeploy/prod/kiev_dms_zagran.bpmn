@@ -27,7 +27,6 @@
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="sPaymentDMS" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsZagran.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -71,7 +70,7 @@ execution.setVariable('sTicketCode', tickCode)
 								<p>
 								Для того щоб закінчити процедуру необхідно:
 								<ul>
-								<li>У будь-якому банку зробити необхідні платежі та отримати квитанції про сплату. Реквізити для сплати адмінсбору доступні за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a></b><br></li>
+								<li>У будь-якому банку зробити необхідні платежі та отримати квитанції про сплату.</li>
 								<li>Прийти з необхідними документами (перелік нижче) за адресою: ${sAddress}
 								</ul>
 								</p>
@@ -80,12 +79,12 @@ execution.setVariable('sTicketCode', tickCode)
 									Номер талону - ${sTicketNumber}, орієнтовна дата та час візиту - ${sNotification_day}. 
 								</p>
 								<p>
-									У зв'язку з очікуванням зміни системи сплати за оформлення закордонного паспорту, ми не можемо надати реквізити.<br>
-									Для отримання реквізитів для сплати Вам потрібно з'явитись у підрозділ ДМС за 20-30 хвилин до обраного часу та сплатити за послугу.<br>
+									Реквізити для сплати держмита доступні за <a href="https://dmsu.gov.ua/invoice/invoice.php" target="_blank"><b>посиланням</a></b><br>
+									Ви також можете сплатити за послуги, у терміналі, який розміщено в підрозділі ДМС.
 									<b>Зверніть увагу:</b> В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу). В іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.
 								</p>
 								<p>
-								<b>Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон:</b>
+								<b>Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон:</b><br>
 									<ul>
 										<li>оригінал та копію паспорта громадянина України;</li>
 										<li>оригінал та копію паспорта громадянина України для виїзду за кордон (за наявності);</li>
@@ -133,6 +132,7 @@ execution.setVariable('sTicketCode', tickCode)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
+    <sequenceFlow id="flow28" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finish=='attr1_ok'}]]></conditionExpression>
@@ -171,31 +171,6 @@ execution.setVariable('sTicketCode', tickCode)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow39" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
-    <scriptTask id="scripttask3" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var delta='10';
-var unixdate= Math.round((new Date()).getTime());
-var unixdate=unixdate+86400*1000*delta;
-var new_src = new Date(unixdate);
-var d = new_src.getDate();
-if (d &lt; 10) d = "0"+d;
-var m = new_src.getMonth();
-var m = (+m + +1);
-if (m &lt; 10) m = "0"+m;
-
-var new_year = new_src.getFullYear();
-var new_hour = new_src.getHours();
-var new_minutes = new_src.getMinutes();
-var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
-execution.setVariable('sNotification_day', timer)
-</script>
-    </scriptTask>
-    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask2" cancelActivity="true">
-      <timerEventDefinition>
-        <timeDate>${sEndDay}</timeDate>
-      </timerEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow41" sourceRef="escalationTimer" targetRef="scripttask3"></sequenceFlow>
-    <sequenceFlow id="flow42" sourceRef="scripttask3" targetRef="exclusivegateway1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_dms_zagran">
     <bpmndi:BPMNPlane bpmnElement="kiev_dms_zagran" id="BPMNPlane_kiev_dms_zagran">
@@ -220,20 +195,14 @@ execution.setVariable('sNotification_day', timer)
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="440.0" y="85.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="escalationTimer" id="BPMNShape_escalationTimer">
-        <omgdc:Bounds height="30.0" width="30.0" x="515.0" y="76.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="688.0" y="92.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="560.0" y="92.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="835.0" y="150.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="707.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="729.0" y="190.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="562.0" y="85.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="601.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="48.0" y="112.0"></omgdi:waypoint>
@@ -255,28 +224,24 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="415.0" y="112.0"></omgdi:waypoint>
         <omgdi:waypoint x="440.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="545.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="112.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="708.0" y="132.0"></omgdi:waypoint>
-        <omgdi:waypoint x="708.0" y="215.0"></omgdi:waypoint>
-        <omgdi:waypoint x="729.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="580.0" y="132.0"></omgdi:waypoint>
+        <omgdi:waypoint x="580.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="601.0" y="217.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="728.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="724.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="724.0" y="150.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="834.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="218.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="185.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="545.0" y="91.0"></omgdi:waypoint>
-        <omgdi:waypoint x="562.0" y="112.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="667.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="688.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="706.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="724.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="724.0" y="185.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

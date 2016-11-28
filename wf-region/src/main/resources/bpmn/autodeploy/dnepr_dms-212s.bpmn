@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-212s" name="Зняття з реєстрації місця проживання дитини до чотирнадцяти років" isExecutable="true">
+    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 25.11.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Якщо Ви будете реєструвати нове місце проживання у межах міста,у якому вже працює послуга &lt;a href=&quot;https://igov.org.ua/service/184/general&quot;&gt;реєстрації місця проживання&lt;/a&gt;, рекомендуємо Вам замовити реєстрацію із одночасним зняттям. Це зменшить кількість візитів і збереже Ваш час."></activiti:formProperty>
@@ -35,7 +36,7 @@
         <activiti:formProperty id="sKab89" name="Номер кабінету" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган реєстрації" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"  default=" "></activiti:formProperty>
@@ -60,22 +61,29 @@
 var year=src.substr(0,4)
 var month=src.substr(5,2)
 var day=src.substr(8,2)
+
 var minpay='12,33'
 var maxpay='36,98'
-if (month=='12')
-    {
-        minpay='13,18'
-        maxpay='39,53'
-    }
+
+if (year=='2017') {
+	minpay='27,20'
+    maxpay='81,60'
+}
+else
+	if (month=='12') {
+		minpay='13,60'
+	    maxpay='40,80'
+	}
+
 execution.setVariable('sMinPay', minpay)
 execution.setVariable('sMaxPay', maxpay)
 	  </script>
     </scriptTask>
     <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -89,7 +97,7 @@ execution.setVariable('sMaxPay', maxpay)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow20" sourceRef="servicetask4" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask3" name="Повідомлення громадянина  про успішну реєстрацію звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -98,13 +106,13 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання дитини до чотирнадцяти років]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Зняття з реєстрації місця проживання дитини до чотирнадцяти років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі [sID_Order]. 
+										Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. 
 								    &lt;/p&gt;
 									&lt;p&gt;
 										Спеціалісти ${sOrganType} оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час. 
@@ -127,10 +135,10 @@ execution.setVariable('sMaxPay', maxpay)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="[Етап I] Перевірка вхідних даних (1-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, призначаєте дату та час, коли громадянин має прийти до вас для отримання штампу про реєстрацію"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -140,7 +148,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAreabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lable1" type="label" default="Дані дитини, яку будуть знімати з реєстрації"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name=" " type="label" default="Дані дитини, яку будуть знімати з реєстрації"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -178,7 +186,7 @@ execution.setVariable('sMaxPay', maxpay)
     <sequenceFlow id="flow11" name="${sWorkerDecision=='sDecline'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sDecline'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask5" name="Повідомлення громадянина про відхилення звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -187,7 +195,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання дитини до чотирнадцяти років]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: Зняття з реєстрації місця проживання дитини до чотирнадцяти років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -225,7 +233,7 @@ execution.setVariable('sMaxPay', maxpay)
     <sequenceFlow id="flow34" sourceRef="exclusivegateway1" targetRef="servicetask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sAccept'&&sFlag=='true'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask9" name="E-Mail призначення візиту Днепр" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask9" name="Повідомлення громадянина про призначення візиту Днепр + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -234,7 +242,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання дитини до чотирнадцяти років]]></activiti:string>
+          <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Зняття з реєстрації місця проживання дитини до чотирнадцяти років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -302,7 +310,7 @@ execution.setVariable('sMaxPay', maxpay)
     <sequenceFlow id="flow10" name="${sWorkerDecision=='sAccept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sAccept'&&sFlag!='true'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask6" name="Повідомлення громадянина про призначення візиту + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -311,7 +319,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання дитини до чотирнадцяти років]]></activiti:string>
+          <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Зняття з реєстрації місця проживання дитини до чотирнадцяти років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -374,10 +382,10 @@ execution.setVariable('sMaxPay', maxpay)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
-    <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2_red" name="[Етап II] Візит громадянина (2-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та знімаєте з реєстрації дитину."></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -388,7 +396,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAreabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lable1" type="label" default="Дані дитини, яку будуть знімати з реєстрації"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name=" " type="label" default="Дані дитини, яку будуть знімати з реєстрації"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -438,7 +446,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання дитини до чотирнадцяти років]]></activiti:string>
+          <activiti:string><![CDATA[Опрацьовано звернення на тему: Зняття з реєстрації місця проживання дитини до чотирнадцяти років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]

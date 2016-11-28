@@ -1,8 +1,12 @@
 package org.igov.model.process;
 
-import javax.persistence.Entity;
 import org.igov.model.core.NamedEntity;
 
-@Entity
+@javax.persistence.Entity
 public class ProcessSubjectStatus extends NamedEntity {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 }
