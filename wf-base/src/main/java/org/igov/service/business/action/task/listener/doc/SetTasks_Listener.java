@@ -5,7 +5,7 @@ import java.io.InputStream;
 //import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-//import org.activiti.engine.RuntimeService;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
@@ -56,7 +56,7 @@ public class SetTasks_Listener implements TaskListener {
     @Autowired
     private TaskService taskService;
     
-   /* @Autowired
+    @Autowired
     private ProcessSubjectDao processSubject;
 
     @Autowired
@@ -65,8 +65,7 @@ public class SetTasks_Listener implements TaskListener {
     @Autowired
     private RuntimeService runtimeService;
     
-    @Autowired
-    private ProcessSubjectStatus processSubjectStatus;*/
+    private ProcessSubjectStatus processSubjectStatus;
     
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -103,7 +102,7 @@ public class SetTasks_Listener implements TaskListener {
             
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
             
-           /* ProcessSubject oProcessSubject = new ProcessSubject();
+            ProcessSubject oProcessSubject = new ProcessSubject();
             processSubjectStatus.setId(1L);
             oProcessSubject.setProcessSubjectStatus(processSubjectStatus);
             oProcessSubject.setSnID_Process_Activiti(delegateTask.getExecution().getId());
@@ -117,7 +116,7 @@ public class SetTasks_Listener implements TaskListener {
             LOG.info("Order: " + oProcessSubject);
             LOG.info("DateEdit: " + oProcessSubject.getsDateEdit().toString());
             LOG.info("DatePlan: " + oProcessSubject.getsDatePlan().toString());
-            LOG.info("Login: " + oProcessSubject.getsLogin());*/
+            LOG.info("Login: " + oProcessSubject.getsLogin());
             
             
             if (aJsonRow != null){
