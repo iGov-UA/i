@@ -7,6 +7,6 @@ import org.igov.model.core.EntityDao;
  */
 public interface ProcessSubjectTreeDao extends EntityDao<Long, ProcessSubjectTree>{
     
-    Long setProcessSubject(ProcessSubject processSubjectParent, ProcessSubject processSubjectChild);
+   // Long setProcessSubject(ProcessSubject processSubjectParent, ProcessSubject processSubjectChild);
 
 }

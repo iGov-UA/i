@@ -65,7 +65,8 @@ public class SetTasks_Listener implements TaskListener {
     @Autowired
     protected RuntimeService runtimeService;
     
-    //private ProcessSubjectStatus processSubjectStatus;
+    //@Autowired
+    private ProcessSubjectStatus processSubjectStatus;
     
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -103,8 +104,8 @@ public class SetTasks_Listener implements TaskListener {
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
             
             ProcessSubject oProcessSubject = new ProcessSubject();
-            //processSubjectStatus.setId(1L);
-            //oProcessSubject.setProcessSubjectStatus(processSubjectStatus);
+            processSubjectStatus.setId(1L);
+            oProcessSubject.setProcessSubjectStatus(processSubjectStatus);
             oProcessSubject.setSnID_Process_Activiti(delegateTask.getExecution().getId());
             oProcessSubject.setnOrder(0L);
             oProcessSubject.setsDateEdit(new DateTime());
