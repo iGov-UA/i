@@ -60,30 +60,35 @@ module.exports.decryptContent = function (req, res) {
    */
   function decryptContentAsync(result, callbackAsync) {
 
-    var mail = result.loadedContent.formData ? result.loadedContent.formData.params.email : 'in.lermin@gmail.com';
-    var formInn = result.loadedContent.formData ? result.loadedContent.formData.params.bankIdinn : '2943209693';
+    var mail = result.loadedContent.formData ? result.loadedContent.formData.params.email : '';
+    var formInn = result.loadedContent.formData ? result.loadedContent.formData.params.bankIdinn : '';
     var fiscalHeader = JSON.stringify({
       "customerType":"physical",
       "fiscalClaimAction": "decrypt",
       "customerInn": formInn ? formInn : req.session.subject.sID,
       "email":mail
     });
-    userService.signFiles(
-      req.session.access.accessToken,
-      url.resolve(
-        originalURL(req, {}),
-        '/api/sign-content/decrypt/callback?nID_Server=' + req.query.nID_Server + '&restoreUrl='+restoreUrl + '&fileName='+fileName
-      ),
-      objectsToSign,
-      function (error, signResult) {
-        if (error) {
-          callbackAsync(error, result);
-        } else {
-          result.signResult = signResult;
-          callbackAsync(null, result);
-        }
-      },
-      fiscalHeader);
+
+    try {
+      userService.signFiles(
+        req.session.access.accessToken,
+        url.resolve(
+          originalURL(req, {}),
+          '/api/sign-content/decrypt/callback?nID_Server=' + req.query.nID_Server + '&restoreUrl=' + restoreUrl + '&fileName=' + fileName
+        ),
+        objectsToSign,
+        function (error, signResult) {
+          if (error) {
+            callbackAsync(error, result);
+          } else {
+            result.signResult = signResult;
+            callbackAsync(null, result);
+          }
+        },
+        fiscalHeader);
+    } catch (e) {
+      callbackAsync(e, result);
+    }
 
     function originalURL(req, options) {
       options = options || {};
@@ -109,9 +114,15 @@ module.exports.decryptContent = function (req, res) {
     decryptContentAsync
   ], function (error, result) {
     if (error) {
-      res.redirect(restoreUrl
-        + '?formID=' + formID
-        + '&error=' + JSON.stringify(error));
+      req.session = null;
+
+      if (error === 'invalid_token') {
+        res.redirect(restoreUrl);
+      } else {
+        res.redirect(restoreUrl
+          + '?formID=' + formID
+          + '&error=' + JSON.stringify(error));
+      }
     } else {
       res.redirect(result.signResult.desc);
     }

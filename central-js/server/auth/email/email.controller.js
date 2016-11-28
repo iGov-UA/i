@@ -23,8 +23,8 @@ function verifiedCallback(asyncCallback) {
   return httpCallback(function (error, verifyingResult) {
     if (error) {
       asyncCallback(error, null)
-    } else if (!verifyingResult.bVerified) {
-      asyncCallback({msg: 'ошибка ввода кода подтверждения электронного адреса'}, null)
+    } else if (!verifyingResult.bVerified  || verifyingResult.bVerified === 'false') {
+      asyncCallback({message: 'Невірний код підтвердження електронної адреси'}, null)
     } else {
       asyncCallback(null, true);
     }
@@ -86,6 +86,7 @@ module.exports.editFio = function (req, res) {
     if (error) {
       res.status(401).send(error);
     } else {
+      req.session.prepare.data.user.customer = {};
       var customer = req.session.prepare.data.user.customer;
 
       if (firstName) {
