@@ -7,28 +7,12 @@
       </extensionElements>
     </startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <userTask id="usertask1" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка" activiti:candidateGroups="sales">
+    <userTask id="usertask1" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка">
       <extensionElements>
         <activiti:formProperty id="Variable" name="Variable" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression>sLoginAsignee_step11</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${chekForCompleteParallelProcessTest}">
-          <activiti:field name="paramName">
-            <activiti:expression>sOpenGate</activiti:expression>
-          </activiti:field>
-          <activiti:field name="checkValue">
-            <activiti:expression>true</activiti:expression>
-          </activiti:field>
-          <activiti:field name="sErrorMessage">
-            <activiti:expression>Неможливо опрацювати задачу. Будь ласка, зачекайте інформацію про об'єкт від співробітника відділу дозвільних документів.</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
