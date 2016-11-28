@@ -113,7 +113,7 @@ public class SetTasks_Listener implements TaskListener {
             oProcessSubject.setsDatePlan(new DateTime(df.parse(sDateExecution_Value)));
             oProcessSubject.setsLogin(sAutorResolution_Value);
             
-            /*LOG.info("processSubjectStatus: " + ((oProcessSubject.getProcessSubjectStatus().getId().toString() == null)
+            /*LOG.info("processSubjectStatus: " + ((oProcessSubject.getProcessSubjectStatus().getId().toString() != null)
                     ? oProcessSubject.getProcessSubjectStatus().getId().toString():"processSubjectStatus is null"));*/
             LOG.info("ID_Process_Activiti: " + oProcessSubject.getSnID_Process_Activiti());
             LOG.info("Order: " + oProcessSubject.getnOrder().toString());
@@ -149,7 +149,7 @@ public class SetTasks_Listener implements TaskListener {
                         resultJsonMap.put("sTextResolution", sTextResolution_Value);
                         
                         ProcessInstance oInstanse = runtimeService.startProcessInstanceByKey("system_task", resultJsonMap);
-                        LOG.info("Instanse aktiviti id: " + oInstanse.getActivityId());
+                        LOG.info("Instanse aktiviti id: " + (oInstanse != null ? oInstanse.getId():" oInstanse is null"));
                         LOG.info("json array id " + id + " and value " + value);
                     }
                 }
