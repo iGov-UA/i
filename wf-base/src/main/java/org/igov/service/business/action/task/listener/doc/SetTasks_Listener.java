@@ -2,6 +2,7 @@ package org.igov.service.business.action.task.listener.doc;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.activiti.engine.RuntimeService;
@@ -9,13 +10,12 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
-//import org.activiti.engine.impl.util.json.JSONArray;
 
-import org.apache.commons.io.IOUtils;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
@@ -23,8 +23,14 @@ import org.json.simple.parser.ParseException;
 
 import org.igov.model.process.ProcessSubjectDao;
 import org.igov.model.process.ProcessSubject;
+import org.igov.model.process.ProcessSubjectStatus;
 import org.igov.model.process.ProcessSubjectTree;
 import org.igov.model.process.ProcessSubjectTreeDao;
+
+import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+
 /**
  *
  * @author Kovilin
@@ -57,6 +63,9 @@ public class SetTasks_Listener implements TaskListener {
     
     @Autowired
     private RuntimeService runtimeService;
+    
+    @Autowired
+    private ProcessSubjectStatus processSubjectStatus;
     
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -92,7 +101,16 @@ public class SetTasks_Listener implements TaskListener {
             LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
             
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
-                    
+            
+            ProcessSubject oProcessSubject = new ProcessSubject();
+            processSubjectStatus.setId(1L);
+            oProcessSubject.setProcessSubjectStatus(processSubjectStatus);
+            oProcessSubject.setSnID_Process_Activiti(delegateTask.getExecution().getId());
+            oProcessSubject.setnOrder(0L);
+            oProcessSubject.setsDateEdit(new DateTime());
+            oProcessSubject.setsDatePlan(DateTime.parse(sDateExecution_Value));
+            oProcessSubject.setsLogin(sAutorResolution_Value);
+            
             if (aJsonRow != null){
                 for (int i = 0; i < aJsonRow.size(); i++){
                     LOG.info("json array element" + i + " is " + aJsonRow.get(i).toString());
@@ -130,10 +148,10 @@ public class SetTasks_Listener implements TaskListener {
              LOG.error("SetTasks listener throws an error: " + e.toString());
         }
         
-        ProcessSubject oProcessSubject = new ProcessSubject();
-        ProcessSubjectTree oProcessSubjectTree = new ProcessSubjectTree();
         
-        processSubject.saveOrUpdate(oProcessSubject);
+        ProcessSubjectTree oProcessSubjectTree = new ProcessSubjectTree();
+        //oProcessSubject.
+        //processSubject.saveOrUpdate(oProcessSubject);
         
         processSubjectTree.saveOrUpdate(oProcessSubjectTree);
         
