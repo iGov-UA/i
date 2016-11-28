@@ -643,7 +643,7 @@ public class DocumentStepService {
     }
     
 //3.4) setDocumentStep(snID_Process_Activiti, bNext) //проставить номер шаг (bNext=true > +1 иначе -1) в поле таски с id=sKey_Step_Document    
-    public void setDocumentStep(String snID_Process_Activiti, String sKey_Step){//JSONObject
+    public String setDocumentStep(String snID_Process_Activiti, String sKey_Step){//JSONObject
         //assume that we can have only one active task per process at the same time
         LOG.info("sKey_Step={}, snID_Process_Activiti={}", sKey_Step, snID_Process_Activiti);
         List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
@@ -706,6 +706,7 @@ public class DocumentStepService {
         
         LOG.debug("AFTER:sKey_Step_Document={}", sKey_Step_Document);
         runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
+        return "";
     }
         
     private Map<String, Object> buildGrunts(List<DocumentStepSubjectRight> rightsFromStep,
