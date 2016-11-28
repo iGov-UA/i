@@ -2,6 +2,8 @@ package org.igov.service.business.action.task.listener.doc;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 //import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,19 +106,21 @@ public class SetTasks_Listener implements TaskListener {
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
             
             ProcessSubject oProcessSubject = new ProcessSubject();
-            //processSubjectStatus.setId(1L);
-            //oProcessSubject.setProcessSubjectStatus(processSubjectStatus);
+            processSubjectStatus.setId(1L);
+            oProcessSubject.setProcessSubjectStatus(processSubjectStatus);
             oProcessSubject.setSnID_Process_Activiti(delegateTask.getExecution().getId());
             oProcessSubject.setnOrder(0L);
             oProcessSubject.setsDateEdit(new DateTime());
-            //oProcessSubject.setsDatePlan(DateTime.parse(sDateExecution_Value));
+            DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+            oProcessSubject.setsDatePlan(new DateTime(df.parse(sDateExecution_Value)));
             oProcessSubject.setsLogin(sAutorResolution_Value);
             
-            //LOG.info("processSubjectStatus: " + oProcessSubject.getProcessSubjectStatus().getId().toString());
+            LOG.info("processSubjectStatus: " + ((oProcessSubject.getProcessSubjectStatus().getId().toString() == null)
+                    ? oProcessSubject.getProcessSubjectStatus().getId().toString():"processSubjectStatus is null"));
             LOG.info("ID_Process_Activiti: " + oProcessSubject.getSnID_Process_Activiti());
             LOG.info("Order: " + oProcessSubject.getnOrder().toString());
-            //LOG.info("DateEdit: " + oProcessSubject.getsDateEdit().toString());
-            //LOG.info("DatePlan: " + oProcessSubject.getsDatePlan().toString());
+            LOG.info("DateEdit: " + oProcessSubject.getsDateEdit().toString());
+            LOG.info("DatePlan: " + oProcessSubject.getsDatePlan().toString());
             LOG.info("Login: " + oProcessSubject.getsLogin());
             
             
