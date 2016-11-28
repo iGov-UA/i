@@ -30,19 +30,19 @@
             <activiti:string><![CDATA[system_task]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression>${sTable2}</activiti:expression>
           </activiti:field>
           <activiti:field name="sContent">
-            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
+            <activiti:expression>${sContent}</activiti:expression>
           </activiti:field>
           <activiti:field name="sAutorResolution">
-            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
+            <activiti:expression>${sAutorResolution}</activiti:expression>
           </activiti:field>
           <activiti:field name="sTextResolution">
-            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
+            <activiti:expression>${sTextResolution}</activiti:expression>
           </activiti:field>
           <activiti:field name="sDateExecution">
-            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
+            <activiti:expression>${sDateExecution}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -58,7 +58,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression>${sTable2}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -75,15 +75,14 @@
     <sequenceFlow id="flow18" sourceRef="usertask2_yellow" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-import org.igov.service.business.document.DocumentStepService;
 var updatedDate = new Date();
 var days = 30;
 updatedDate.setDate(new Date().getDate() + days);
 var sNewDate = (updatedDate.getDate() + "." + (updatedDate.getMonth() + 1) + "." + updatedDate.getFullYear());
-execution.setVariable('sDateExecution', sNewDate)
+execution.setVariable('sDateExecution', sNewDate);
 
-var processInstanceId = execution.getProcessInstanceId()
-documentStepService.setDocumentStep(processInstanceId)</script>
+var processInstanceId = execution.getProcessInstanceId();
+org.igov.service.business.document.documentStepService.setDocumentStep(processInstanceId);</script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
