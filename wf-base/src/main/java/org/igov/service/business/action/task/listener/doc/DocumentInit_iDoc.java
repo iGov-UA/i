@@ -46,7 +46,7 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
         
         DelegateExecution execution = delegateTask.getExecution();
         try {
-            oDocumentStepService.checkDocumentInit(execution.getProcessInstanceId());
+            oDocumentStepService.checkDocumentInit(execution);
         } catch (Exception oException) {
             LOG.error("", oException);
             try {

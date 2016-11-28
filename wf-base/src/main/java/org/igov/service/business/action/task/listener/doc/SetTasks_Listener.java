@@ -1,24 +1,36 @@
 package org.igov.service.business.action.task.listener.doc;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.io.InputStream;
+//import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+//import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
-//import org.activiti.engine.impl.util.json.JSONArray;
-
 import org.apache.commons.io.IOUtils;
+
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
-import org.json.simple.parser.ParseException;
+/*import org.json.simple.parser.ParseException;
+
+import org.igov.model.process.ProcessSubjectDao;
+import org.igov.model.process.ProcessSubject;
+import org.igov.model.process.ProcessSubjectStatus;
+import org.igov.model.process.ProcessSubjectTree;
+import org.igov.model.process.ProcessSubjectTreeDao;
+
+import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;*/
 
 /**
  *
@@ -43,9 +55,24 @@ public class SetTasks_Listener implements TaskListener {
      
     @Autowired
     private TaskService taskService;
+    
+   /* @Autowired
+    private ProcessSubjectDao processSubject;
 
+    @Autowired
+    private ProcessSubjectTreeDao processSubjectTree;
+    
+    @Autowired
+    private RuntimeService runtimeService;
+    
+    @Autowired
+    private ProcessSubjectStatus processSubjectStatus;*/
+    
     @Override
     public void notify(DelegateTask delegateTask) {
+
+        Map<String, Object> resultJsonMap = new HashMap<>();
+
         try{
             String sTaskProcessDefinition_Value = 
                 getStringFromFieldExpression(this.sTaskProcessDefinition, delegateTask.getExecution());
@@ -68,67 +95,74 @@ public class SetTasks_Listener implements TaskListener {
             InputStream attachmentContent = taskService.getAttachmentContent(sID_Attachment_Value);
             
             
-                //LOG.info("attachmentContent id is: " + IOUtils.toString(attachmentContent));
-                JSONParser parser = new JSONParser();
-                JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
-                LOG.info("JSON String: " + oJSONObject.toJSONString());
+            JSONParser parser = new JSONParser();
+            JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
+            LOG.info("JSON String: " + oJSONObject.toJSONString());
                 
-                LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
-                
-
-                //aJSONObject = new JSONParser()
-               
-                JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
-                    Map<String, String> resultJsonMap = new HashMap<String, String>();
-                    
-                    if (aJsonRow != null){
-                        for (int i = 0; i < aJsonRow.size(); i++){
-                            LOG.info("json array element" + i + " is " + aJsonRow.get(i).toString());
+            LOG.info("JSON objectType is: " +  oJSONObject.get("aRow").getClass());
+            
+            JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
+            
+           /* ProcessSubject oProcessSubject = new ProcessSubject();
+            processSubjectStatus.setId(1L);
+            oProcessSubject.setProcessSubjectStatus(processSubjectStatus);
+            oProcessSubject.setSnID_Process_Activiti(delegateTask.getExecution().getId());
+            oProcessSubject.setnOrder(0L);
+            oProcessSubject.setsDateEdit(new DateTime());
+            oProcessSubject.setsDatePlan(DateTime.parse(sDateExecution_Value));
+            oProcessSubject.setsLogin(sAutorResolution_Value);
+            
+            LOG.info("processSubjectStatus: " + oProcessSubject.getProcessSubjectStatus().getName());
+            LOG.info("ID_Process_Activiti: " + oProcessSubject.getSnID_Process_Activiti());
+            LOG.info("Order: " + oProcessSubject);
+            LOG.info("DateEdit: " + oProcessSubject.getsDateEdit().toString());
+            LOG.info("DatePlan: " + oProcessSubject.getsDatePlan().toString());
+            LOG.info("Login: " + oProcessSubject.getsLogin());*/
+            
+            
+            if (aJsonRow != null){
+                for (int i = 0; i < aJsonRow.size(); i++){
+                    LOG.info("json array element" + i + " is " + aJsonRow.get(i).toString());
                             
-                        
-                            JSONObject sJsonField =  (JSONObject) aJsonRow.get(i);
-                            JSONArray aJsonField = (JSONArray) sJsonField.get("aField");
+                    JSONObject sJsonField =  (JSONObject) aJsonRow.get(i);
+                    JSONArray aJsonField = (JSONArray) sJsonField.get("aField");
                             
-                            for (int j = 0; j < aJsonField.size(); j++){
-                                JSONObject sJsonElem =  (JSONObject) aJsonField.get(j);
-                                String id =  sJsonElem.get("id").toString();
-                                String value =  sJsonElem.get("value").toString();
-                                resultJsonMap.put(id, value);
-                                LOG.info("json array id " + id + " and value " + value);
-                            }
-                        }
+                    for (int j = 0; j < aJsonField.size(); j++){
+                        JSONObject sJsonElem =  (JSONObject) aJsonField.get(j);
                         
-                        resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
-                        resultJsonMap.put("sID_Attachment", sID_Attachment_Value);
-                        resultJsonMap.put("sContent", sContent_Value);
-                        resultJsonMap.put("sAutorResolution", sAutorResolution_Value);
-                        resultJsonMap.put("sDateExecution", sDateExecution_Value);
-                        resultJsonMap.put("sTextResolution", sTextResolution_Value);
+                        String id =  sJsonElem.get("id").toString();
+                        String value =  sJsonElem.get("value").toString();
+                        resultJsonMap.put(id, value);
+                        LOG.info("json array id " + id + " and value " + value);
+                    }
+                }
                         
-                        for (String key : resultJsonMap.keySet())
-                        {
-                            LOG.info("resultJsonMap: " + key + " : " + resultJsonMap.get(key));
-                        }
-                    }
-                    else{
-                        LOG.info("JSONArray is null");
-                    }
-    
-                //LOG.info("aRow: " + oJSONObject.get("aRow"));
-            /*
-            
-            InputStream json_Content = taskService.getAttachmentContent(sTaskProcessDefinition_Value);
-            LOG.info((json_Content != null) ? "JSON_TASKLST:" + json_Content.toString():"JSON_TASKLST null pointer error");
-            
-            
-            LOG.info((json_Attachment != null) ? "JSON_ATTACHMENT:" + json_Attachment.toString():"JSON_ATTACHMENT null pointer error");
-            */
-            //LOG.info("json_Content sTaskProcessDefinition_Value: " + taskService.getAttachmentContent(sTaskProcessDefinition_Value));
-            //LOG.info("json_Content sBodyDocument_Value: " + taskService.getAttachmentContent(sBodyDocument_Value));
-            //LOG.info("json_Content sLoginAuthor_Value: " + taskService.getAttachmentContent(sLoginAuthor_Value));
+                resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
+                resultJsonMap.put("sID_Attachment", sID_Attachment_Value);
+                resultJsonMap.put("sContent", sContent_Value);
+                resultJsonMap.put("sAutorResolution", sAutorResolution_Value);
+                resultJsonMap.put("sDateExecution", sDateExecution_Value);
+                resultJsonMap.put("sTextResolution", sTextResolution_Value);
+                        
+                for (String key : resultJsonMap.keySet())
+                {
+                    LOG.info("resultJsonMap: " + key + " : " + resultJsonMap.get(key));
+                }
+            }
+            else{
+                LOG.info("JSONArray is null");
+            }
         }
-         catch (IOException | ParseException e){
+        catch (Exception e){
              LOG.error("SetTasks listener throws an error: " + e.toString());
         }
+        
+        
+        //ProcessSubjectTree oProcessSubjectTree = new ProcessSubjectTree();
+        //oProcessSubject.
+        //processSubject.saveOrUpdate(oProcessSubject);
+        
+        //processSubjectTree.saveOrUpdate(oProcessSubjectTree);
+        //runtimeService.startProcessInstanceByKey("system_task", resultJsonMap);
     }
 }
