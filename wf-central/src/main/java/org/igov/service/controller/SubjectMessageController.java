@@ -440,16 +440,22 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
             @ApiParam(value = "строка-массива параметров", required = false) @RequestParam(value = "soParams", required = false) String soParams,
             @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
-            @ApiParam(value = "строка-Ключ записи redis", required = false) @RequestParam(value = "sID_File", required = false) String sID_File,
+            @ApiParam(value = "Строка-ИД записи/файла (в оперативном кеше 'StorageTemp' (например Redis))", required = false) @RequestParam(value = "sID_File", required = false) String sID_File,
+//            @ApiParam(value = "строка-ИД источника записи/файла (TempCentral(default), StaticRegion)", required = false) @RequestParam(value = "sID_FileSource", required = false, defaultValue = "TempCentral") String sID_FileSource,
+//            @ApiParam(value = "строка-ИД автора записи (Self(default), SFS)", required = false) @RequestParam(value = "sID_FileAuthor", required = false, defaultValue = "Self") String sID_FileAuthor,
             @ApiParam(value = "строка-Название файла", required = false) @RequestParam(value = "sFileName", required = false) String sFileName,
+            @ApiParam(value = "строка-типа контента файла", required = false) @RequestParam(value = "sFileContentType", required = false) String sFileContentType,
             @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType,
             @ApiParam(value = "Заголовок сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "электронка, но которую отсылаем", required = false) @RequestParam(value = "sMail", required = false) String sMail,
             @ApiParam(value = "указывать дату и время отправки письма", required = false) @RequestParam(value = "bAddDate", required = false, defaultValue = "false") Boolean bAddDate,
-            @ApiParam(value = "Ключ записи в Монго ДБ", required = false) @RequestParam(value = "sID_DataLink", required = false) String sID_DataLink
+            @ApiParam(value = "Строка-ИД(ключ) записи/файла", required = false) @RequestParam(value = "sID_DataLink", required = false) String sID_DataLink,
+            @ApiParam(value = "Строка-ИД(ключ) источника записи/файла (Central(default), Region)", required = false) @RequestParam(value = "sID_DataLinkSource", required = false, defaultValue = "Region") String sID_DataLinkSource,
+            @ApiParam(value = "Строка-ИД(ключ) автора записи/файла (System(default), SFS)", required = false) @RequestParam(value = "sID_DataLinkAuthor", required = false, defaultValue = "System") String sID_DataLinkAuthor
             //,//, defaultValue = "4"
     ) throws CommonServiceException {
-
+        //12;ServiceCryptedFileRecived;Получен криптированный файл/пакет
+        //sID_FileAuthor//SFS
         Long nID_HistoryEvent_Service;
         SubjectMessage oSubjectMessage;
         LOG.info("setServiceMessage started for the sID_Order {}", sID_Order);
@@ -460,42 +466,57 @@ public class SubjectMessageController {
             if (bAuth) {
                 actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
             }
-
+        
             if (isNotBlank(sID_File)) {
-                LOG.info("sID_File param is not null {}. File name is {}", sID_File, sFileName);
-                byte[] aByte_FileContent = null;
-                try {
-                    byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
-                    LOG.info("Size of bytes: {}", aByte_FileContent_Redis.length);
-                    ByteArrayMultipartFile oByteArrayMultipartFile = null;
-                    oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByte_FileContent_Redis);
-                    if (oByteArrayMultipartFile != null) {
-                        aByte_FileContent = oByteArrayMultipartFile.getBytes();
-                        LOG.info("Size of multi part content: {}", aByte_FileContent_Redis.length);
-                    } else {
-                        LOG.error("oByteArrayMultipartFile==null! sID_File={}", sID_File);
+                LOG.info("sID_File={}, sFileName={}", sID_File, sFileName);
+                    byte[] aByte_FileContent = null;
+                    try {
+                        byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
+                        LOG.info("Size of bytes: {}", aByte_FileContent_Redis.length);
+                        ByteArrayMultipartFile oByteArrayMultipartFile = null;
+                        oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByte_FileContent_Redis);
+                        if (oByteArrayMultipartFile != null) {
+                            aByte_FileContent = oByteArrayMultipartFile.getBytes();
+                            LOG.info("Size of multi part content: {}", aByte_FileContent_Redis.length);
+                        } else {
+                            LOG.error("oByteArrayMultipartFile==null! sID_File={}", sID_File);
+                            throw new FileServiceIOException(
+                                    FileServiceIOException.Error.REDIS_ERROR, "oByteArrayMultipartFile==null! sID_File=" + sID_File);
+                        }
+                    } catch (RecordInmemoryException e) {
+                        LOG.warn("Error: {}", e.getMessage(), e);
                         throw new FileServiceIOException(
-                                FileServiceIOException.Error.REDIS_ERROR, "oByteArrayMultipartFile==null! sID_File=" + sID_File);
+                                FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
+                    } catch (ClassNotFoundException | IOException e) {
+                        LOG.error("Error: {}", e.getMessage(), e);
+                        throw new ActivitiException(e.getMessage(), e);
                     }
-                } catch (RecordInmemoryException e) {
-                    LOG.warn("Error: {}", e.getMessage(), e);
-                    throw new FileServiceIOException(
-                            FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
-                } catch (ClassNotFoundException | IOException e) {
-                    LOG.error("Error: {}", e.getMessage(), e);
-                    throw new ActivitiException(e.getMessage(), e);
-                }
-                String sKey = accessDataDao.setAccessData(aByte_FileContent);   //accessDataService
-                LOG.info("Saved to Mongo! (sKey={},aByte_FileContent.length={})", sKey, aByte_FileContent.length);
-                JSONArray oaFile = new JSONArray();
-                JSONObject o = new JSONObject();
-                o.put("sFileName", sFileName);//sID_File
-                o.put("sKey", sKey);
-                oaFile.put(o);
-                sData = new JSONObject().put("aFile", oaFile).toString();
-                LOG.info("sData={}", sData);
+                    sID_DataLink = accessDataDao.setAccessData(aByte_FileContent);   //accessDataService//sKey
+                    sID_DataLinkSource="Central";
+                    LOG.info("Saved to Mongo! (sID_DataLink={},aByte_FileContent.length={})", sID_DataLink, aByte_FileContent.length);                    
             }
 
+            if (isNotBlank(sID_DataLink)) {
+                //LOG.info("sID_DataLink={}, sFileName={}", sID_DataLink, sFileName);
+                if("Central".equals(sID_DataLinkSource)){
+                }else if("Region".equals(sID_DataLinkSource)){
+                }else{
+                    throw new CommonServiceException(500, "{sID_Order=" + sID_Order + ", sID_DataLinkSource="+sID_DataLinkSource+"}:Invalid sID_DataLinkSource!");
+                }
+                JSONArray oaFile = new JSONArray();
+                JSONObject o = new JSONObject();
+                o.put("sFileName", sFileName);
+                o.put("sFileContentType", sFileContentType);
+                 o.put("sKey", sID_DataLink); //TODO: заменить на клиенте использование на одноименный параметр сущности
+                //o.put("sID_DataLink", sID_DataLink);
+                o.put("sID_DataLinkSource", sID_DataLinkSource); //TODO: заменить на сервере и клиенте использование на одноименный параметр сущности 
+                o.put("sID_DataLinkAuthor", sID_DataLinkAuthor); //TODO: заменить на сервере и клиенте использование на одноименный параметр сущности
+                //sID_FileAuthor//SFS
+                oaFile.put(o);
+                sData = new JSONObject().put("aFile", oaFile).toString();
+                LOG.info("sData={}", sData);                
+            }
+            
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                     sID_Order), sBody, nID_Subject, sMail != null ? sMail : "", "", sData, nID_SubjectMessageType);

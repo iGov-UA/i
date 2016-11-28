@@ -1,0 +1,54 @@
+{
+    "_": {
+        "deps_canclers": {
+            "bWrite":true
+            ,"asID_Field_Read":[
+                "*"
+            ]
+            ,"asID_Field_Write":[
+                "*"
+            ]
+        }
+    }
+    , "decisioners": {
+        "dep1_boss1": {
+            "bWrite":true
+            ,"asID_Field_Read":[
+                "*"
+            ]
+            ,"asID_Field_Write":[
+                "*"
+            ]
+        }
+        ,"dep1_boss2": {
+            "bWrite":true
+            ,"asMask_FieldID_Read":[
+                "*"
+                , "!sSystemField"
+                , "!sReport*"
+            ]
+            ,"asMask_FieldID_Write":[
+                "sResolution1"
+                ,"sComments1"
+            ]
+        }
+    }
+    ,"sender": {
+        "dep1_middle": {
+            "bWrite":false
+            ,"asMask_FieldID_Read":[
+                "sResolution1"
+                , "sComments1"
+            ]
+            ,"asMask_FieldID_Write":[
+                "sReport1"
+                , "sCommentExecute*"
+            ]
+        }
+    }
+    ,"checker": {
+        "dep1_jun": {
+                "bWrite":false
+        }
+    }
+}
