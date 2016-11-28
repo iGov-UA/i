@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.identity.User;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.util.Tool;
@@ -589,17 +590,19 @@ public class DocumentStepService {
         return mReturn;
     }
 
-    public void checkDocumentInit(String snID_Process_Activiti) throws IOException, URISyntaxException{//JSONObject
+    public void checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException{//JSONObject
         //assume that we can have only one active task per process at the same time
+        String snID_Process_Activiti = execution.getId();
         LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
-        List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
-        if(aTaskActive.size() < 1 || aTaskActive.get(0) == null){
-            throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
-        }
-        Task oTaskActive = aTaskActive.get(0);
+        //List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
+        //if(aTaskActive.size() < 1 || aTaskActive.get(0) == null){
+        //    throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
+        //}
+        //Task oTaskActive = aTaskActive.get(0);
 //        String sKey_UserTask = oTaskActive.getTaskDefinitionKey();
 //        String snID_Task = oTaskActive.getId();
-        String sID_BP = oTaskActive.getProcessDefinitionId();
+        //String sID_BP = oTaskActive.getProcessDefinitionId();
+        String sID_BP = execution.getProcessDefinitionId();
         LOG.info("sID_BP={}", sID_BP);
         if(sID_BP!=null && sID_BP.contains(":")){
             String[] as = sID_BP.split("\\:");
