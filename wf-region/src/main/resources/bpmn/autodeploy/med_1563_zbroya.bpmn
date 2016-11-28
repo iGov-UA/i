@@ -88,15 +88,16 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки психіатра для отримання дозволу на зброю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>
-Чекаємо Вас за адресою: ${sAddress}<br>
-</p>
-<p>
-Дата та час візиту: ${date_of_visit}.
-</p>
-<p>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+                                        [pattern/mail/new_design/_common_content_start.html]
+                                        <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                        <p>
+                                        Чекаємо Вас за адресою: ${sAddress}, амбулаторно-поліклінічне відділення 3 поверх, кабінет №8<br>
+                                        </p>
+                                        <p>
+                                        Дата та час візиту: ${date_of_visit}.
+                                        </p>
+                                        <p>
 										<b>Необхідні документи, які треба принести на видачу медичної довідки для отримання дозволу на зброю:</b><br>
 									  
 										При собі мати:
@@ -106,10 +107,11 @@ execution.setVariable('sNotification_day', timer)</script>
 										Для чолоіків також необхідно мати військовий квиток або приписне свідотство!
 									</p>			
 									</p>
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan},<br>
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+                                        [pattern/mail/new_design/_common_content_end.html]
+                                        [pattern/mail/new_design/_common_signature_start.html]
+                                        ${sNameOrgan},<br>
+                                        [pattern/mail/new_design/_common_signature_end.html]
+                                        [pattern/mail/new_design/_common_footer.html]]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -126,14 +128,15 @@ ${sNameOrgan},<br>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+                                        [pattern/mail/new_design/_common_content_start.html]
 									<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 									<p>
 										Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
 										Ви записались на видачу медичної довідки для отримання дозволу на зброю
 									</p>
 									<p>
-										Для того щоб закінчити процедуру необхідно прийти за адресою: ${sAddress}.
+										Для того щоб закінчити процедуру необхідно прийти за адресою: ${sAddress}, амбулаторно-поліклінічне відділення 3 поверх, кабінет №8.
 										При собі мати:
 										<li>паспорт з обовязковою припискою по ${sArea};</li>
 										<li>кошти для оплати бланка довідки</li>
@@ -144,10 +147,11 @@ ${sNameOrgan},<br>
                                        </p>
 										</ul>         
 									<p>[cancelTask]</p>                
-									[pattern/mail/_common_signature_start.html]
+									[pattern/mail/new_design/_common_content_end.html]
+                                    [pattern/mail/new_design/_common_signature_start.html]
 									${sNameOrgan},<br>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/new_design/_common_signature_end.html]
+                                    [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -199,7 +203,8 @@ ${sNameOrgan},<br>
           <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки психіатра для отримання дозволу на зброю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+                                        [pattern/mail/new_design/_common_content_start.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
                               		Ви отримали послугу "Видача медичної довідки психіатра для отримання дозволу на зброю".
@@ -208,11 +213,12 @@ ${sNameOrgan},<br>
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
                               		Дякуємо.
 									</p>
-                                    [pattern/mail/_common_signature_start.html]
+                                    [pattern/mail/new_design/_common_content_end.html]
+                                    [pattern/mail/new_design/_common_feedback.html]        
+                                    [pattern/mail/new_design/_common_signature_start.html]
 									${sNameOrgan},<br>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/new_design/_common_signature_end.html]
+                                    [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
