@@ -69,11 +69,13 @@ public class SetTasks_Listener implements TaskListener {
     protected RuntimeService runtimeService;
     
     //@Autowired
-    private ProcessSubjectStatus processSubjectStatus;
+    //private ProcessSubjectStatus processSubjectStatus;
     
     @Override
     public void notify(DelegateTask delegateTask) {
-
+        
+        ProcessSubjectStatus processSubjectStatus = new ProcessSubjectStatus();
+        
         try{
             String sTaskProcessDefinition_Value = 
                 getStringFromFieldExpression(this.sTaskProcessDefinition, delegateTask.getExecution());
@@ -148,16 +150,18 @@ public class SetTasks_Listener implements TaskListener {
                         resultJsonMap.put("sDateExecution", sDateExecution_Value);
                         resultJsonMap.put("sTextResolution", sTextResolution_Value);
                         
-                        ProcessInstance oInstanse = runtimeService.startProcessInstanceByKey("system_task", resultJsonMap);
-                        LOG.info("Instanse aktiviti id: " + (oInstanse != null ? oInstanse.getId():" oInstanse is null"));
-                        LOG.info("json array id " + id + " and value " + value);
+                        for (String key : resultJsonMap.keySet())
+                        {
+                            LOG.info("resultJsonMap: " + key + " : " + resultJsonMap.get(key));
+                        }
+                        
+                        //ProcessInstance oInstanse = runtimeService.startProcessInstanceByKey("system_task", resultJsonMap);
+                        //LOG.info("Instanse aktiviti id: " + (oInstanse != null ? oInstanse.getId():" oInstanse is null"));
+                        //LOG.info("json array id " + id + " and value " + value);
                     }
                 }
                         
-                /*for (String key : resultJsonMap.keySet())
-                {
-                    LOG.info("resultJsonMap: " + key + " : " + resultJsonMap.get(key));
-                }*/
+                /**/
             }
             else{
                 LOG.info("JSONArray is null");
