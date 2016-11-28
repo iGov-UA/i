@@ -109,7 +109,7 @@ public class SetTasks_Listener implements TaskListener {
             oProcessSubject.setSnID_Process_Activiti(delegateTask.getExecution().getId());
             oProcessSubject.setnOrder(0L);
             oProcessSubject.setsDateEdit(new DateTime());
-            oProcessSubject.setsDatePlan(DateTime.parse(sDateExecution_Value));
+            //oProcessSubject.setsDatePlan(DateTime.parse(sDateExecution_Value));
             oProcessSubject.setsLogin(sAutorResolution_Value);
             
             //LOG.info("processSubjectStatus: " + oProcessSubject.getProcessSubjectStatus().getId().toString());
