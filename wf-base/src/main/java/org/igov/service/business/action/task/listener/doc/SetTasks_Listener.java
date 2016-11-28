@@ -69,13 +69,11 @@ public class SetTasks_Listener implements TaskListener {
     protected RuntimeService runtimeService;
     
     //@Autowired
-    //private ProcessSubjectStatus processSubjectStatus;
+    private ProcessSubjectStatus processSubjectStatus;
     
     @Override
     public void notify(DelegateTask delegateTask) {
-        
-        ProcessSubjectStatus processSubjectStatus = new ProcessSubjectStatus();
-        
+
         try{
             String sTaskProcessDefinition_Value = 
                 getStringFromFieldExpression(this.sTaskProcessDefinition, delegateTask.getExecution());
@@ -130,6 +128,9 @@ public class SetTasks_Listener implements TaskListener {
             
             if (aJsonRow != null){
                 for (int i = 0; i < aJsonRow.size(); i++){
+                    
+                    Map<String, Object> resultJsonMap = new HashMap<>();
+                    
                     LOG.info("json array element" + i + " is " + aJsonRow.get(i).toString());
                             
                     JSONObject sJsonField =  (JSONObject) aJsonRow.get(i);
@@ -137,31 +138,35 @@ public class SetTasks_Listener implements TaskListener {
                             
                     for (int j = 0; j < aJsonField.size(); j++){
                         
-                        Map<String, Object> resultJsonMap = new HashMap<>();
+                        
                         JSONObject sJsonElem =  (JSONObject) aJsonField.get(j);
                         String id =  sJsonElem.get("id").toString();
                         String value =  sJsonElem.get("value").toString();
                         
                         resultJsonMap.put(id, value);
-                        resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
-                        resultJsonMap.put("sID_Attachment", sID_Attachment_Value);
-                        resultJsonMap.put("sContent", sContent_Value);
-                        resultJsonMap.put("sAutorResolution", sAutorResolution_Value);
-                        resultJsonMap.put("sDateExecution", sDateExecution_Value);
-                        resultJsonMap.put("sTextResolution", sTextResolution_Value);
-                        
-                        for (String key : resultJsonMap.keySet())
-                        {
-                            LOG.info("resultJsonMap: " + key + " : " + resultJsonMap.get(key));
-                        }
-                        
-                        //ProcessInstance oInstanse = runtimeService.startProcessInstanceByKey("system_task", resultJsonMap);
-                        //LOG.info("Instanse aktiviti id: " + (oInstanse != null ? oInstanse.getId():" oInstanse is null"));
-                        //LOG.info("json array id " + id + " and value " + value);
+
+                       // 
+                       // 
+                       // LOG.info("json array id " + id + " and value " + value);
                     }
+
+                    resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
+                    resultJsonMap.put("sID_Attachment", sID_Attachment_Value);
+                    resultJsonMap.put("sContent", sContent_Value);
+                    resultJsonMap.put("sAutorResolution", sAutorResolution_Value);
+                    resultJsonMap.put("sDateExecution", sDateExecution_Value);
+                    resultJsonMap.put("sTextResolution", sTextResolution_Value);
+                    
+                    for (String key : resultJsonMap.keySet())
+                    {
+                        LOG.info("resultJsonMap: " + key + " : " + resultJsonMap.get(key));
+                    }
+                    
+                    
+                    ProcessInstance oInstanse = runtimeService.startProcessInstanceByKey("system_task", resultJsonMap);
+                    LOG.info("Instanse aktiviti id: " + (oInstanse != null ? oInstanse.getId():" oInstanse is null"));
                 }
-                        
-                /**/
+                 
             }
             else{
                 LOG.info("JSONArray is null");
