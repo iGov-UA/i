@@ -1,17 +1,18 @@
 package org.igov.io;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.igov.util.ToolLuna.getProtectedNumber;
 import javax.annotation.PostConstruct;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import org.springframework.context.annotation.Scope;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.igov.util.ToolLuna.getProtectedNumber;
 
 /**
  * @author bw
