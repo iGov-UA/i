@@ -12,6 +12,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.commons.io.IOUtils;
 
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
@@ -73,8 +74,6 @@ public class SetTasks_Listener implements TaskListener {
     @Override
     public void notify(DelegateTask delegateTask) {
 
-        Map<String, Object> resultJsonMap = new HashMap<>();
-
         try{
             String sTaskProcessDefinition_Value = 
                 getStringFromFieldExpression(this.sTaskProcessDefinition, delegateTask.getExecution());
@@ -95,7 +94,6 @@ public class SetTasks_Listener implements TaskListener {
                 + sTextResolution_Value + " sDateExecution: " + sDateExecution_Value ); 
                 
             InputStream attachmentContent = taskService.getAttachmentContent(sID_Attachment_Value);
-            
             
             JSONParser parser = new JSONParser();
             JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
@@ -123,6 +121,10 @@ public class SetTasks_Listener implements TaskListener {
             LOG.info("DatePlan: " + oProcessSubject.getsDatePlan().toString());
             LOG.info("Login: " + oProcessSubject.getsLogin());
             
+            processSubject.saveOrUpdate(oProcessSubject);
+            
+            ProcessSubjectTree oProcessSubjectTree = new ProcessSubjectTree();
+            oProcessSubjectTree.setProcessSubjectParent(oProcessSubject);
             
             if (aJsonRow != null){
                 for (int i = 0; i < aJsonRow.size(); i++){
@@ -132,26 +134,30 @@ public class SetTasks_Listener implements TaskListener {
                     JSONArray aJsonField = (JSONArray) sJsonField.get("aField");
                             
                     for (int j = 0; j < aJsonField.size(); j++){
-                        JSONObject sJsonElem =  (JSONObject) aJsonField.get(j);
                         
+                        Map<String, Object> resultJsonMap = new HashMap<>();
+                        JSONObject sJsonElem =  (JSONObject) aJsonField.get(j);
                         String id =  sJsonElem.get("id").toString();
                         String value =  sJsonElem.get("value").toString();
+                        
                         resultJsonMap.put(id, value);
+                        resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
+                        resultJsonMap.put("sID_Attachment", sID_Attachment_Value);
+                        resultJsonMap.put("sContent", sContent_Value);
+                        resultJsonMap.put("sAutorResolution", sAutorResolution_Value);
+                        resultJsonMap.put("sDateExecution", sDateExecution_Value);
+                        resultJsonMap.put("sTextResolution", sTextResolution_Value);
+                        
+                        ProcessInstance oInstanse = runtimeService.startProcessInstanceByKey("system_task", resultJsonMap);
+                        LOG.info("Instanse aktiviti id: " + oInstanse.getActivityId());
                         LOG.info("json array id " + id + " and value " + value);
                     }
                 }
                         
-                resultJsonMap.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
-                resultJsonMap.put("sID_Attachment", sID_Attachment_Value);
-                resultJsonMap.put("sContent", sContent_Value);
-                resultJsonMap.put("sAutorResolution", sAutorResolution_Value);
-                resultJsonMap.put("sDateExecution", sDateExecution_Value);
-                resultJsonMap.put("sTextResolution", sTextResolution_Value);
-                        
-                for (String key : resultJsonMap.keySet())
+                /*for (String key : resultJsonMap.keySet())
                 {
                     LOG.info("resultJsonMap: " + key + " : " + resultJsonMap.get(key));
-                }
+                }*/
             }
             else{
                 LOG.info("JSONArray is null");
@@ -161,11 +167,11 @@ public class SetTasks_Listener implements TaskListener {
              LOG.error("SetTasks listener throws an error: " + e.toString());
         }
         
-        //ProcessSubjectTree oProcessSubjectTree = new ProcessSubjectTree();
+        //
         //oProcessSubject.
         //processSubject.saveOrUpdate(oProcessSubject);
         
         //processSubjectTree.saveOrUpdate(oProcessSubjectTree);
-        //runtimeService.startProcessInstanceByKey("system_task", resultJsonMap);
+        //
     }
 }
