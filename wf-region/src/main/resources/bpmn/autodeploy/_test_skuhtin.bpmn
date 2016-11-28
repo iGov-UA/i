@@ -4,42 +4,12 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sLoginAsignee_step11" name="assignedUser" type="string" default="gonzo"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Документ" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <userTask id="usertask1" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка">
+    <userTask id="usertask1" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjectReference" name="Посилання на картку об’єкта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCommentBossInspectionDepartment" name="Коментар начальника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sOrderSchedule" name="Наказ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nOrderSchedule" name="Наказ про планову перевірку" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sControlOrganizationName" name="Найменування органу державного архітектурно-будівельного контролю (місцезнаходження, телефон, електронна адреса)" type="textArea" default="Департамент з питань державного архітектурно-будівельного контролю міста Києва виконавчого органу Київської міської ради (Київської міської державної адміністрації)"></activiti:formProperty>
-        <activiti:formProperty id="sDateDirection" name="Дата направлення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNumberDirection" name="Номер направлення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asNumberOfPersons" name="Кількість осіб, які здійснюють перевірку" type="enum" required="true">
-          <activiti:value id="sEnumPersons_1" name="1"></activiti:value>
-          <activiti:value id="sEnumPersons_2" name="2"></activiti:value>
-          <activiti:value id="sEnumPersons_3" name="3"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPosition_1" name="Посада, ПІБ першої особи, яка здійснює перевірку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPosition_2" name="Посада, ПІБ другої особи, яка здійснює перевірку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPosition_3" name="Посада, ПІБ третьої особи, яка здійснює перевірку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObjectName" name="Найменування об’єкту, на якому необхідно здійснити перевірку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObjectAddress" name="Місцезнаходження об’єкту, на якому необхідно здійснити перевірку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sOrderUnscheduled" name="На підставі наказу або розпорядження (Найменування органу державного архітектурно-будівельного контролю, дата та номер наказу)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBaseControl" name="Підстава" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sValidityControl" name="Строк дії направлення" type="string" default="з __ до __ 20 __ року" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_direct" name="[pattern/print/kiev/DABI_insp_napravlennya.html]" type="invisible" default="Направлення" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_direct" name="Направлення;Направлення;pattern/print/kiev/DABI_insp_napravlennya.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sOpenGate" name="Checking Variable" type="string" default="false"></activiti:formProperty>
+        <activiti:formProperty id="Variable" name="Variable" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression>sLoginAsignee_step11</activiti:expression>
