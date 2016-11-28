@@ -615,13 +615,13 @@ public class DocumentStepService {
             LOG.info("FIX(.) sID_BP={}", sID_BP);
         }
  
-        ProcessInstance oProcessInstance = runtimeService
+        /*ProcessInstance oProcessInstance = runtimeService
                 .createProcessInstanceQuery()
                 .processInstanceId(snID_Process_Activiti)
                 .active()
                 .singleResult();
-        Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
-        
+        Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();*/
+        Map<String, Object> mProcessVariable = execution.getVariables();
         String sKey_Step_Document = mProcessVariable.containsKey("sKey_Step_Document") ? (String) mProcessVariable.get("sKey_Step_Document") : null;
         if("".equals(sKey_Step_Document)){
             sKey_Step_Document=null;

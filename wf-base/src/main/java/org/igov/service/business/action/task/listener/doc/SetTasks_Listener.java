@@ -71,7 +71,7 @@ public class SetTasks_Listener implements TaskListener {
     @Override
     public void notify(DelegateTask delegateTask) {
 
-        Map<String, Object> resultJsonMap = new HashMap<String, Object>();
+        Map<String, Object> resultJsonMap = new HashMap<>();
 
         try{
             String sTaskProcessDefinition_Value = 
