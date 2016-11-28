@@ -1,21 +1,13 @@
 package org.igov.service.listener;
 
-//import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
-//import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.ExecutionListener;
 import org.activiti.engine.delegate.Expression;
-//import org.activiti.engine.delegate.TaskListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
-import org.igov.service.controller.ExceptionCommonController;
-import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 
 @Component("chekForCompleteParallelProcess")
 public class CheckParallelProcessListener implements ExecutionListener {
@@ -25,8 +17,6 @@ public class CheckParallelProcessListener implements ExecutionListener {
     private Expression checkValue;
     private Expression sErrorMessage;
 
-    //@Autowired
-    //private RuntimeService runtimeService;
     @Override
     public void notify(DelegateExecution oExecution) throws TaskAlreadyUnboundException {
         //DelegateExecution oExecution = delegateTask.getExecution();
