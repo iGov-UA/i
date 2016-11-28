@@ -74,8 +74,7 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow18" sourceRef="usertask2_yellow" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>import org.igov.service.business.document.DocumentStepService;
-
+      <script>
 var updatedDate = new Date();
 var days = 30;
 updatedDate.setDate(new Date().getDate() + days);
@@ -83,7 +82,7 @@ var sNewDate = (updatedDate.getDate() + "." + (updatedDate.getMonth() + 1) + "."
 execution.setVariable('sDateExecution', sNewDate);
 
 var processInstanceId = execution.getProcessInstanceId();
-documentStepService.setDocumentStep(processInstanceId);</script>
+org.igov.service.business.document.DocumentStepService.documentStepService.setDocumentStep(processInstanceId);</script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
