@@ -121,7 +121,7 @@ public class SetTasks_Listener implements TaskListener {
             LOG.info("DatePlan: " + oProcessSubject.getsDatePlan().toString());
             LOG.info("Login: " + oProcessSubject.getsLogin());
             
-            processSubject.saveOrUpdate(oProcessSubject);
+            //processSubject.saveOrUpdate(oProcessSubject);
             
             ProcessSubjectTree oProcessSubjectTree = new ProcessSubjectTree();
             oProcessSubjectTree.setProcessSubjectParent(oProcessSubject);
