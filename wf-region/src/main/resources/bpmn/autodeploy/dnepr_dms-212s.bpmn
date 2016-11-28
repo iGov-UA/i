@@ -477,10 +477,10 @@ execution.setVariable('sMaxPay', maxpay)
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow36" name="${asResult=='Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="servicetask8">
+    <sequenceFlow id="flow36" name="${sIsCancellCustomeVizite=='False'}" sourceRef="exclusivegateway3" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sIsCancellCustomeVizite=='False'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow37" name="${sIsCancellCustomeVizite=='True'}" sourceRef="exclusivegateway3" targetRef="endevent3">
+    <sequenceFlow id="flow37" name="${sIsCancellCustomeVizite!='False'}" sourceRef="exclusivegateway3" targetRef="endevent3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sIsCancellCustomeVizite!='False'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="scripttask2" targetRef="exclusivegateway3"></sequenceFlow>
@@ -501,6 +501,9 @@ execution.setVariable('sMaxPay', maxpay)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="27.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="65.0" width="105.0" x="907.0" y="193.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="73.0" width="110.0" x="248.0" y="106.0"></omgdc:Bounds>
@@ -543,9 +546,6 @@ execution.setVariable('sMaxPay', maxpay)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
         <omgdc:Bounds height="40.0" width="40.0" x="939.0" y="297.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="65.0" width="105.0" x="907.0" y="193.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="75.0" y="142.0"></omgdi:waypoint>
