@@ -27,7 +27,9 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.identity.User;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.util.Tool;
+import org.springframework.stereotype.Component;
 
+@Component("documentStepService")
 @Service
 public class DocumentStepService {
 
