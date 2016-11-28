@@ -111,6 +111,14 @@ public class SetTasks_Listener implements TaskListener {
             oProcessSubject.setsDatePlan(DateTime.parse(sDateExecution_Value));
             oProcessSubject.setsLogin(sAutorResolution_Value);
             
+            LOG.info("processSubjectStatus: " + oProcessSubject.getProcessSubjectStatus().getName());
+            LOG.info("ID_Process_Activiti: " + oProcessSubject.getSnID_Process_Activiti());
+            LOG.info("Order: " + oProcessSubject);
+            LOG.info("DateEdit: " + oProcessSubject.getsDateEdit().toString());
+            LOG.info("DatePlan: " + oProcessSubject.getsDatePlan().toString());
+            LOG.info("Login: " + oProcessSubject.getsLogin());
+            
+            
             if (aJsonRow != null){
                 for (int i = 0; i < aJsonRow.size(); i++){
                     LOG.info("json array element" + i + " is " + aJsonRow.get(i).toString());
@@ -144,17 +152,16 @@ public class SetTasks_Listener implements TaskListener {
                 LOG.info("JSONArray is null");
             }
         }
-        catch (IOException | ParseException e){
+        catch (Exception e){
              LOG.error("SetTasks listener throws an error: " + e.toString());
         }
         
         
-        ProcessSubjectTree oProcessSubjectTree = new ProcessSubjectTree();
+        //ProcessSubjectTree oProcessSubjectTree = new ProcessSubjectTree();
         //oProcessSubject.
         //processSubject.saveOrUpdate(oProcessSubject);
         
-        processSubjectTree.saveOrUpdate(oProcessSubjectTree);
-        
-        runtimeService.startProcessInstanceByKey("system_task", resultJsonMap);
+        //processSubjectTree.saveOrUpdate(oProcessSubjectTree);
+        //runtimeService.startProcessInstanceByKey("system_task", resultJsonMap);
     }
 }
