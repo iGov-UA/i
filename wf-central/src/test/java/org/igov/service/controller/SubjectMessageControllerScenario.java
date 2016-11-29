@@ -175,13 +175,17 @@ public class SubjectMessageControllerScenario {
 
 	@Test
 	public void testSetMessage_nIDSubject_sMailNull() throws Exception {
-		String messageBody = "XXX";
-		String messageHead = "expect";
-		String jsonAfterSave = mockMvc
-				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", messageHead)
-						.param("sBody", messageBody).param("nID_Subject", "22"))
-				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		subjectMessage.setHead(sHead);
+		subjectMessage.setBody(sBody);
+		subjectMessage.setId_subject(nID_Subject);
+		subjectMessage.setDate(new DateTime());
+		when(oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, null, null, null,
+				null)).thenReturn(subjectMessage);
 
+		String jsonAfterSave = mockMvc
+				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", sHead)
+						.param("sBody", sBody).param("nID_Subject", String.valueOf(nID_Subject)))
+				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 	}
 
 	@Ignore
