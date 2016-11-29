@@ -3,7 +3,7 @@ angular.module('app')
 
   var servicesCache = {};
 
-  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, category, subcat, situation, filter) {
+  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, category, subcat, situation, filter, sID_SubjectOwner) {
     var asIDPlaceUA = asIDPlacesUA && asIDPlacesUA.length > 0 ? asIDPlacesUA.reduce(function (ids, current, index) {
       return ids + ',' + current;
     }) : null;
@@ -20,13 +20,14 @@ angular.module('app')
         && !subcat && category !== 'business') {
       // пока есть параметр bNew ввожу доп проверку, после нужно будет убрать
       // пока не реализованы теги нового бизнеса, вернул в проверку старый.
-      if(sFind || filter) {
+      if(sFind || filter/* || sID_SubjectOwner*/) {
         var data = {
           asIDPlaceUA: asIDPlaceUA,
           sFind: sFind || null,
           bShowEmptyFolders: bShowEmptyFolders,
           nID_Category: nID_Category,
-          bNew: true
+          bNew: true,
+          sID_SubjectOwner : sID_SubjectOwner
         };
         return $http.get('./api/catalog/getCatalogTree', {
           params: data,
@@ -40,7 +41,8 @@ angular.module('app')
           asIDPlaceUA: asIDPlaceUA,
           sFind: sFind || null,
           bShowEmptyFolders: bShowEmptyFolders,
-          nID_Category: nID_Category
+          nID_Category: nID_Category,
+          sID_SubjectOwner : sID_SubjectOwner
         };
         return $http.get('./api/catalog/getCatalogTree', {
           params: data,
