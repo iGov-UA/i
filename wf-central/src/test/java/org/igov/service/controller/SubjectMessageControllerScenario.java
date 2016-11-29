@@ -188,16 +188,21 @@ public class SubjectMessageControllerScenario {
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 	}
 
-	@Ignore
 	@Test
 	public void testSetMessage_nIDSubject_sMailEmpty() throws Exception {
-		String messageBody = "XXX";
-		String messageHead = "expect";
-		String jsonAfterSave = mockMvc
-				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", messageHead)
-						.param("sBody", messageBody).param("nID_Subject", "22").param("sMail", ""))
-				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		subjectMessage.setHead(sHead);
+		subjectMessage.setBody(sBody);
+		subjectMessage.setId_subject(nID_Subject);
+		subjectMessage.setDate(new DateTime());
+		String sEmptyMail="";
+		subjectMessage.setMail(sEmptyMail);
+		when(oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sEmptyMail, null, null,
+				null)).thenReturn(subjectMessage);
 
+		String jsonAfterSave = mockMvc
+				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", sHead)
+						.param("sBody", sBody).param("nID_Subject", String.valueOf(nID_Subject)).param("sMail", sEmptyMail))
+				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 	}
 
 	@Ignore
@@ -209,7 +214,6 @@ public class SubjectMessageControllerScenario {
 				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", messageHead)
 						.param("sBody", messageBody).param("nID_Subject", "22").param("sMail", "test@igov.org.ua"))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-
 	}
 
 	@Ignore
