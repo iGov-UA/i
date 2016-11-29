@@ -1,4 +1,5 @@
 package org.igov.model.process;
+import com.google.common.base.Optional;
 import org.igov.model.core.EntityDao;
 import org.joda.time.DateTime;
 
@@ -16,5 +17,5 @@ public interface ProcessSubjectDao extends EntityDao<Long, ProcessSubject>{
     
     ProcessSubject setProcessSubjectDatePlan(String snID_Process_Activiti, DateTime sDatePlan);
     
-    ProcessSubject findByProcessActiviti(String snID_Process_Activiti);
+    Optional<ProcessSubject>  findByProcessActivitiId(String snID_Process_Activiti);
 }
