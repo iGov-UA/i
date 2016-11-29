@@ -357,10 +357,15 @@ public class ProcessSubjectService {
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
             
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
-            ProcessSubject oProcessSubjectParent = processSubjectDao
-                    .setProcessSubject(snProcess_ID, sAutorResolution,
-                            new DateTime(df.parse(sDateExecution)), 0L, processSubjectStatus);
-
+            
+            ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActiviti(snProcess_ID);
+            
+            if (oProcessSubjectParent == null){
+                oProcessSubjectParent = processSubjectDao
+                        .setProcessSubject(snProcess_ID, sAutorResolution,
+                                new DateTime(df.parse(sDateExecution)), 0L, processSubjectStatus);
+            }
+            
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
                     + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
                     + sContent + " sAutorResolution: " + sAutorResolution + " sTextResolution: "
