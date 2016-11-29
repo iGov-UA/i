@@ -28,8 +28,6 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
             processSubject.setSnID_Process_Activiti(snID_Process_Activiti);
             processSubject.setsLogin(sLogin);
             processSubject.setsDateEdit(new DateTime(new Date()));
-            processSubjectStatus.setId(nOrder);
-            processSubjectStatus.setName(sLogin);
             processSubject.setProcessSubjectStatus(processSubjectStatus);
 
             if (sDatePlan != null) {
