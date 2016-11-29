@@ -6,7 +6,9 @@
 package org.igov.service.business.dfs;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import java.util.logging.Level;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Attachment;
@@ -39,9 +42,12 @@ import org.xml.sax.SAXException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.service.business.action.event.HistoryEventService;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import org.igov.service.business.action.task.listener.doc.SendDocument_SWinEd;
 import org.igov.service.controller.ActionTaskCommonController;
+import org.igov.service.exception.FileServiceIOException;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
@@ -110,8 +116,50 @@ public class DfsService {
                             LOG.info("ToJournal-PROCESS sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
                             try {
                                 String sMail="";
+                                /*
+                                byte[] aByte_FileContent = null;
+                                try {
+                                    byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
+                                    oByteArrayMultipartFile                                    
+                                    
+                                    LOG.info("Size of bytes: {}", aByte_FileContent_Redis.length);
+                                    ByteArrayMultipartFile oByteArrayMultipartFile = null;
+                                    oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByte_FileContent_Redis);
+                                    if (oByteArrayMultipartFile != null) {
+                                        aByte_FileContent = oByteArrayMultipartFile.getBytes();
+                                        LOG.info("Size of multi part content: {}", aByte_FileContent_Redis.length);
+                                    } else {
+                                        LOG.error("oByteArrayMultipartFile==null! sID_File={}", sID_File);
+                                        throw new FileServiceIOException(
+                                                FileServiceIOException.Error.REDIS_ERROR, "oByteArrayMultipartFile==null! sID_File=" + sID_File);
+                                    }
+                                } catch (RecordInmemoryException e) {
+                                    LOG.warn("Error: {}", e.getMessage(), e);
+                                    throw new FileServiceIOException(
+                                            FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
+                                } catch (ClassNotFoundException | IOException e) {
+                                    LOG.error("Error: {}", e.getMessage(), e);
+                                    throw new ActivitiException(e.getMessage(), e);
+                                }
+                                sID_DataLink = accessDataDao.setAccessData(aByte_FileContent);                                
+                                */
+
+//                                BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
+//                                byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
+
+                                /*
                                 BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
-                                byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
+                                byte[] byteFile = IOUtils.toByteArray(oBufferedInputStream);
+
+                                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteFile);
+                                ObjectInputStream ois = new ObjectInputStream(byteArrayInputStream);
+                                ByteArrayMultipartFile contentMultipartFile = (ByteArrayMultipartFile) ois.readObject();
+                                ois.close();
+                                //return contentMultipartFile;
+                                byte[] aByte = contentMultipartFile.getBytes();
+                                */
+                                
+                                byte[] aByte = oByteArrayMultipartFile.getBytes();
                                 saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби"
                                         , "Отримана відповідь від Державної Фіскальної Служби у вигляді криптопакету: "+sFileName
                                         , aByte
