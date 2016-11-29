@@ -55,7 +55,7 @@ angular.module('iGovMarkers')
         aField_ID: ['date_of_birth'],
         sFormat: 'YYYY-MM-DD',  // задаємо формат дати
         bFuture: false,         // дата має бути у минулому
-        sMessage: 'Виберіть коректну дату - дата не може бути більше поточної'
+        sMessage: 'Виберіть коректну дату - дата не може бути більше поточної.'
       }
       ,CodeKVED: {
         aField_ID: ['kved']
@@ -66,29 +66,51 @@ angular.module('iGovMarkers')
       ,CodeMFO: {
         aField_ID: ['mfo']
       }
+      ,StringRange: { 
+    	  aField_ID: ['string'],
+    	  aField_Type: ['string'], 
+    	  nMin: 0,
+    	  nMax: 256,
+    	  sMessage: 'Повинно бути від 0 до 256 символів.'
+      }
+     ,LongNumber: { 
+    	  aField_ID: ['long'],
+    	  aField_Type: ['long'],
+    	  nMin: 1,
+    	  nMax: 1000, 
+    	  sMessage: 'Повинно бути цілим числом від 1 до 1000.'
+      }
+      ,DoubleNumber: { // Подільне число   
+    	  aField_ID: ['double'],
+    	  aField_Type: ['double'],
+    	  nMin: 1, 
+    	  nMax: 10000000,
+    	  //sSeparator: '.',
+    	  sMessage: 'Повинно бути подільним числом та розділене ",".'
+      }
       ,NumberBetween: { //Целочисленное между
         aField_ID: ['numberBetween'],
         nMin: 1,
         nMax: 999,
-        sMessage: 'Перевірте правильність заповнення - число поверхів складається максимум з трьох цифр'
+        sMessage: 'Перевірте правильність заповнення - число поверхів складається максимум з трьох цифр.'
       }
       ,NumberFractionalBetween: { //Дробное число между
         aField_ID: ['total_place'],
         nMin: 0,
         nMax: 99999999,
-        sMessage: 'Перевірте правильність заповнення поля - площа приміщення може складатися максимум з 8 цифр'
+        sMessage: 'Перевірте правильність заповнення поля - площа приміщення може складатися максимум з 8 цифр.'
       }
       ,Numbers_Accounts: { //разрешены цифры и дефисы, буквы любые запрещены
         aField_ID: ['!', 'number_cnap'],
         //aField_ID: ['house_number', 'gas_number', 'coolwater_number', 'hotwater_number', 'waterback_number', 'warming_number', 'electricity_number', 'garbage_number'],
-        sMessage: 'Перевірте правильність уведеного номеру (літери не дозволені до заповнення)'
+        sMessage: 'Перевірте правильність уведеного номеру (літери не дозволені до заповнення).'
       }
       //,CustomFormat_NumberKadastr:  //унифицированный валидатор проверки кодов/номеров(с кастомным сообщением), с заданным количеством и последовательностью знаков
       ,CustomFormat_1: { //унифицированный валидатор проверки кодов/номеров(с кастомным сообщением), с заданным количеством и последовательностью знаков
         aField_ID: ['landNumb'],
         //sFormat: 'хххххххххх:хх:ххх:хххх',
         sFormat: '##########:##:###:####',
-        sMessage: 'Невірний кадастровий номер, введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх'
+        sMessage: 'Невірний кадастровий номер, введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх.'
       }
       ,FileSign : {
         aField_ID: ['bankId_scan_inn1','bankId_scan_passport1']
@@ -103,7 +125,7 @@ angular.module('iGovMarkers')
       }
     },
     attributes: {
-      Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true}
+      Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true}, 
     },
     motion: {
       ReplaceTextSymbols_1: {
