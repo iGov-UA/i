@@ -200,7 +200,8 @@ module.exports.callback = function (req, res) {
     if (err) {
       res.redirect(restoreUrl+ '&error=' + JSON.stringify(err));
     } else {
-      res.redirect(restoreUrl + '?signedFileID=' + result.signedFileID + '&fileName=' + fileName);
+      var sign = restoreUrl.search(/\?/mg) >= 0 ? '&' : '?';
+      res.redirect(restoreUrl + sign +'signedFileID=' + result.signedFileID + '&fileName=' + fileName);
     }
   }
 
