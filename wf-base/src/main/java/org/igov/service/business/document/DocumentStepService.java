@@ -528,7 +528,6 @@ public class DocumentStepService {
         } else {
             long count = historyService
                 .createHistoricProcessInstanceQuery()
-                .processInstanceId(snID_Process_Activiti.trim())
                 .count();
             LOG.info("oProcessInstance is null snID_Process_Activiti={} count={}", snID_Process_Activiti,count);
         }
