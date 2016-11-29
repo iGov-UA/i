@@ -487,7 +487,7 @@ public class DocumentStepService {
         LOG.info("sKey_Step={}, snID_Process_Activiti={}", sKey_Step, snID_Process_Activiti);
         HistoricProcessInstance oProcessInstance = historyService
                 .createHistoricProcessInstanceQuery()
-                .processInstanceId(snID_Process_Activiti)
+                .processInstanceId(snID_Process_Activiti.trim())
                 .singleResult();
         if (oProcessInstance != null) {
             Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
