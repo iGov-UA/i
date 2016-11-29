@@ -12,7 +12,7 @@ public interface ProcessSubjectDao extends EntityDao<Long, ProcessSubject>{
     
     ProcessSubject setProcessSubjectOrder(String snID_Process_Activiti, Long nOrder);
     
-    ProcessSubject setProcessSubjectStatus(String snID_Process_Activiti, Long nID_ProcessSubjectStatus);
+    ProcessSubject setProcessSubjectStatus(String snID_Process_Activiti, ProcessSubjectStatus processSubjectStatus);
     
     ProcessSubject setProcessSubjectDatePlan(String snID_Process_Activiti, DateTime sDatePlan);
 }

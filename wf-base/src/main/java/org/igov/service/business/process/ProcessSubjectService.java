@@ -328,7 +328,8 @@ public class ProcessSubjectService {
      * @return
      */
     public ProcessSubject setProcessSubjectStatus(String snID_Process_Activiti, Long nID_ProcessSubjectStatus) {
-        return processSubjectDao.setProcessSubjectStatus(snID_Process_Activiti, nID_ProcessSubjectStatus);
+        ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(nID_ProcessSubjectStatus);
+        return processSubjectDao.setProcessSubjectStatus(snID_Process_Activiti, processSubjectStatus);
     }
 
     /**
