@@ -526,7 +526,10 @@ public class DocumentStepService {
             LOG.debug("AFTER:sKey_Step_Document={}", sKey_Step_Document);
             runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
         } else {
-            LOG.info("oProcessInstance is null snID_Process_Activiti={}", snID_Process_Activiti);
+            long count = historyService
+                .createHistoricProcessInstanceQuery()
+                .count();
+            LOG.info("oProcessInstance is null snID_Process_Activiti={} count={}", snID_Process_Activiti,count);
         }
 
         return "";
