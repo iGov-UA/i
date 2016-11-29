@@ -660,15 +660,15 @@ public class ActionEventController implements ControllerConstants {
                             = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
                     LOG.info("found oSubjectMessageFeedback: " + oSubjectMessageFeedback);
                     
-//                    if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null
-//                            && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
-//                        sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
-//                        } else {
-//                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
-//                        }
+                    if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null
+                            && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
+                        sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
+                        } else {
+                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
+                        }
                         
                     // Кусок кода для теста. После тестирования будет убрано.
-                         sTextFeedback = "";                  
+                       /*  sTextFeedback = "";                  
                         if (oSubjectMessageFeedback != null) {
                             LOG.info("!!!!!oSubjectMessageFeedback.getsBody(): " + oSubjectMessageFeedback.getsBody());
                             LOG.info("!!!!!oSubjectMessageFeedback.getsHead(): " + oSubjectMessageFeedback.getsHead());
@@ -692,7 +692,7 @@ public class ActionEventController implements ControllerConstants {
                         } 
                         else {
                         LOG.info("SubjectMessageFeedback() = null");
-                        } 
+                        } */
                         
                     // sTextFeedback
                     asCell.add(sTextFeedback);
