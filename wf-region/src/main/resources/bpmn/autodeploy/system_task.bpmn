@@ -7,7 +7,7 @@
         <activiti:formProperty id="sContent" name="sContent - Короткий зміст документа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="sAutorResolution - Автор резолюції" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="sTextResolution - Текст резолюції" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="sDateExecution - Термін виконання" type="date"></activiti:formProperty>
+       
         <activiti:formProperty id="sName_isExecute" name="sName_isExecute" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="string"></activiti:formProperty>
@@ -19,10 +19,12 @@
         <activiti:formProperty id="sContent" name="sContent - Короткий зміст документа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="sAutorResolution - Автор резолюції" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="sTextResolution - Текст резолюції" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="sDateExecution - Термін виконання" type="date"></activiti:formProperty>
+       
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecute&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFirstName_isExecute&quot;,&quot;name&quot;:&quot;First Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLastName_isExecute&quot;,&quot;name&quot;:&quot;Last Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_isExecute&quot;,&quot;name&quot;:&quot;Login&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-       
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_Top1"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="3"></activiti:formProperty>
+        
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="string"></activiti:formProperty>
           <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
