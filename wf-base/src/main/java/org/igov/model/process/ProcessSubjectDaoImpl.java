@@ -1,5 +1,6 @@
 package org.igov.model.process;
 
+import com.google.common.base.Optional;
 import java.util.Date;
 import org.hibernate.HibernateException;
 import org.igov.model.core.GenericEntityDao;
@@ -28,8 +29,6 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
             processSubject.setSnID_Process_Activiti(snID_Process_Activiti);
             processSubject.setsLogin(sLogin);
             processSubject.setsDateEdit(new DateTime(new Date()));
-            processSubjectStatus.setId(nOrder);
-            processSubjectStatus.setName(sLogin);
             processSubject.setProcessSubjectStatus(processSubjectStatus);
 
             if (sDatePlan != null) {
@@ -116,5 +115,10 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
     private ProcessSubject findByProcessActiviti(String snID_Process_Activiti) throws HibernateException {
         return findByExpected("snID_Process_Activiti", snID_Process_Activiti);
     }
-
+    
+    //whitout exception
+    @Override
+    public ProcessSubject findByProcessActivitiId(String snID_Process_Activiti){
+        return findBy("snID_Process_Activiti", snID_Process_Activiti).orNull();
+    }
 }

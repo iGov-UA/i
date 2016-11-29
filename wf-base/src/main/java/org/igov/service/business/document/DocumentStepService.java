@@ -47,7 +47,7 @@ public class DocumentStepService {
 
     @Autowired
     private RuntimeService runtimeService;
-    
+
     @Autowired
     private HistoryService historyService;
 
@@ -365,7 +365,7 @@ public class DocumentStepService {
         List<String> asID_Field_Write = new LinkedList();
 
         List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();
-        
+
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             List<String> asID_Field_Read_Temp = new LinkedList();
             List<String> asID_Field_Write_Temp = new LinkedList();
@@ -482,48 +482,54 @@ public class DocumentStepService {
     }
 
 //3.4) setDocumentStep(snID_Process_Activiti, bNext) //проставить номер шаг (bNext=true > +1 иначе -1) в поле таски с id=sKey_Step_Document    
-    public String setDocumentStep(String snID_Process_Activiti, String sKey_Step) {//JSONObject
+    public String setDocumentStep(String snID_Process_Activiti, String sKey_Step) throws Exception {//JSONObject
         //assume that we can have only one active task per process at the same time
         LOG.info("sKey_Step={}, snID_Process_Activiti={}", sKey_Step, snID_Process_Activiti);
         HistoricProcessInstance oProcessInstance = historyService
                 .createHistoricProcessInstanceQuery()
-                .processInstanceId(snID_Process_Activiti)
+                .processInstanceId(snID_Process_Activiti.trim())
+                .includeProcessVariables()
                 .singleResult();
-        Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+        if (oProcessInstance != null) {
+            Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
 
-        String sKey_Step_Document = mProcessVariable.containsKey("sKey_Step_Document") ? (String) mProcessVariable.get("sKey_Step_Document") : null;
-        if ("".equals(sKey_Step_Document)) {
-            sKey_Step_Document = null;
-        }
-        LOG.debug("BEFORE:sKey_Step_Document={}", sKey_Step_Document);
+            String sKey_Step_Document = mProcessVariable.containsKey("sKey_Step_Document") ? (String) mProcessVariable.get("sKey_Step_Document") : null;
+            if ("".equals(sKey_Step_Document)) {
+                sKey_Step_Document = null;
+            }
+            LOG.debug("BEFORE:sKey_Step_Document={}", sKey_Step_Document);
 
-        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
-        LOG.debug("aDocumentStep={}", aDocumentStep);
+            List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+            LOG.debug("aDocumentStep={}", aDocumentStep);
 
-        if (sKey_Step != null) {
-            sKey_Step_Document = sKey_Step;
-        } else if (sKey_Step_Document == null) {
-            if (aDocumentStep.size() > 1) {
-                aDocumentStep.get(1);
-            } else if (aDocumentStep.size() > 0) {
-                aDocumentStep.get(0);
+            if (sKey_Step != null) {
+                sKey_Step_Document = sKey_Step;
+            } else if (sKey_Step_Document == null) {
+                if (aDocumentStep.size() > 1) {
+                    aDocumentStep.get(1);
+                } else if (aDocumentStep.size() > 0) {
+                    aDocumentStep.get(0);
+                } else {
+                }
             } else {
+                Long nOrder = null;
+                for (DocumentStep oDocumentStep : aDocumentStep) {
+                    if (nOrder != null) {
+                        sKey_Step_Document = oDocumentStep.getsKey_Step();
+                        break;
+                    }
+                    if (nOrder == null && sKey_Step_Document.equals(oDocumentStep.getsKey_Step())) {
+                        nOrder = oDocumentStep.getnOrder();
+                    }
+                }
             }
+
+            LOG.debug("AFTER:sKey_Step_Document={}", sKey_Step_Document);
+            runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
         } else {
-            Long nOrder = null;
-            for (DocumentStep oDocumentStep : aDocumentStep) {
-                if (nOrder != null) {
-                    sKey_Step_Document = oDocumentStep.getsKey_Step();
-                    break;
-                }
-                if (nOrder == null && sKey_Step_Document.equals(oDocumentStep.getsKey_Step())) {
-                    nOrder = oDocumentStep.getnOrder();
-                }
-            }
+            throw new Exception("oProcessInstance is null snID_Process_Activiti = " + snID_Process_Activiti);
         }
 
-        LOG.debug("AFTER:sKey_Step_Document={}", sKey_Step_Document);
-        runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
         return "";
     }
 }
