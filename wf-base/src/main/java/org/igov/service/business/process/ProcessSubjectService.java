@@ -355,6 +355,8 @@ public class ProcessSubjectService {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
 
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+            
+            //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             ProcessSubject oProcessSubjectParent = processSubjectDao
                     .setProcessSubject(snProcess_ID, sAutorResolution,
                             new DateTime(df.parse(sDateExecution)), 0L, processSubjectStatus);
