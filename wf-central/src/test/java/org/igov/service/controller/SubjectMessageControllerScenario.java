@@ -83,31 +83,33 @@ public class SubjectMessageControllerScenario {
 	@Autowired
 	private SubjectMessageController subjectMessageController;
 //	@Mock
-	@Autowired
-	private SubjectMessagesDao subjectMessagesDao;
+//	@Autowired
+//	private SubjectMessagesDao subjectMessagesDao;
 	@Mock
 	private HistoryEvent_ServiceDao historyEventServiceDao;
 	@Mock
 	private HistoryEvent_Service oHistoryEvent_Service;
 	@Mock
 	private SubjectMessageService oSubjectMessageService;
+	private SubjectMessage subjectMessage;
+
+	private String sHead = "expect";
+	private String sBody = "XXX";
+	private Long nID_Subject = 1L;
+	private String sMail = "ukr.net";
+	private String sContacts = "093";
+	private String sData = "some data";
+	private Long nID_SubjectMessageType = SubjectMessageType.DEFAULT.getId();
 
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		MockitoAnnotations.initMocks(this);
+		subjectMessage = new SubjectMessage();
 	}
 
 	@Test
 	public void firstShouldSuccessfullySetAndGetMassage() throws Exception {
-		String sHead = "expect";
-		String sBody = "XXX";
-		Long nID_Subject = 1L;
-		String sMail = "ukr.net";
-		String sContacts = "093";
-		String sData = "some data";
-		Long nID_SubjectMessageType = 1L;
-		SubjectMessage subjectMessage = new SubjectMessage();
 		subjectMessage.setHead(sHead);
 		subjectMessage.setBody(sBody);
 		subjectMessage.setId_subject(nID_Subject);
@@ -116,7 +118,6 @@ public class SubjectMessageControllerScenario {
 		subjectMessage.setData(sData);
 		subjectMessage.setDate(new DateTime());
 		subjectMessage.setSubjectMessageType(SubjectMessageType.DEFAULT);
-
 		when(oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData,
 				nID_SubjectMessageType)).thenReturn(subjectMessage);
 
@@ -143,19 +144,35 @@ public class SubjectMessageControllerScenario {
 
 	@Ignore
 	@Test
+	// null not allowed for column nid_subject
 	public void nextShouldSuccessfullySetMassageWithDefaultSubjectID() throws Exception {
-		mockMvc.perform(post("/subject/message/setMessage").contentType(MediaType.APPLICATION_JSON)
-				.param("sHead", "expect").param("sBody", "XXX").param("sMail", "ukr.net")).andExpect(status().isOk());
+		subjectMessage.setHead(sHead);
+		subjectMessage.setBody(sBody);
+		subjectMessage.setMail(sMail);
+		subjectMessage.setDate(new DateTime());
+		when(oSubjectMessageService.createSubjectMessage(sHead, sBody, null, sMail, null, null,
+				null)).thenReturn(subjectMessage);
+
+		mockMvc.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON)
+				.param("sHead", sHead).param("sBody", sBody).param("sMail", sMail)).andExpect(status().isOk());
 	}
 
-	@Ignore
 	@Test
 	public void shouldFailedNoObligatedParam() throws Exception {
-		mockMvc.perform(post("/subject/message/setMessage").contentType(MediaType.APPLICATION_JSON)
-				.param("sBody", "XXXXXxxx").param("sMail", "ukr.ed")).andExpect(status().isBadRequest());
+		subjectMessage.setBody(sBody);
+		subjectMessage.setId_subject(nID_Subject);
+		subjectMessage.setMail(sMail);
+		subjectMessage.setContacts(sContacts);
+		subjectMessage.setData(sData);
+		subjectMessage.setDate(new DateTime());
+		subjectMessage.setSubjectMessageType(SubjectMessageType.DEFAULT);
+		when(oSubjectMessageService.createSubjectMessage(null, sBody, nID_Subject, sMail, sContacts, sData,
+				nID_SubjectMessageType)).thenReturn(subjectMessage);
+
+		mockMvc.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON)
+				.param("sBody", sBody).param("sMail", sMail)).andExpect(status().isBadRequest());
 	}
 
-	@Ignore
 	@Test
 	public void testSetMessage_nIDSubject_sMailNull() throws Exception {
 		String messageBody = "XXX";
@@ -352,7 +369,6 @@ public class SubjectMessageControllerScenario {
 		String sMail = "ukr.net";
 		String sContacts = "093";
 		String sData = "some data";
-		Long nID_SubjectMessageType = 1L;
 		SubjectMessage oSubjectMessage_Feedback = new SubjectMessage();
 		oSubjectMessage_Feedback.setHead(sHead);
 		oSubjectMessage_Feedback.setBody(sBody);
@@ -363,7 +379,6 @@ public class SubjectMessageControllerScenario {
 		oSubjectMessage_Feedback.setDate(new DateTime());
 		oSubjectMessage_Feedback.setSubjectMessageType(SubjectMessageType.DEFAULT);
 
-//		SubjectMessage oSubjectMessage_Feedback = mock(SubjectMessage.class);
 		HistoryEvent_Service oHistoryEvent_Service = mock(HistoryEvent_Service.class);
 
 		when(oHistoryEvent_Service.getsToken()).thenReturn(sValidToken);
