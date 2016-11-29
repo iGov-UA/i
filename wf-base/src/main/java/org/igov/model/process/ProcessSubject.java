@@ -44,7 +44,7 @@ public class ProcessSubject extends AbstractEntity {
     
     @JsonProperty(value = "aUser")
     @Transient
-    private List<String> aUser;
+    private List<ProcessUser> aUser;
 
     @JsonProperty(value = "sDateEdit")
     @JsonSerialize(using = JsonDateTimeSerializer.class)
@@ -106,6 +106,14 @@ public class ProcessSubject extends AbstractEntity {
 
     public void setsDatePlan(DateTime sDatePlan) {
         this.sDatePlan = sDatePlan;
+    }
+
+    public List<ProcessUser> getaUser() {
+        return aUser;
+    }
+
+    public void setaUser(List<ProcessUser> aUser) {
+        this.aUser = aUser;
     }
 
     @Override
