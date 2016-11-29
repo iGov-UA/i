@@ -356,19 +356,13 @@ public class ProcessSubjectService {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
 
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            
-            //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
-            
-            Optional<ProcessSubject> oProcessSubject = processSubjectDao.findByProcessActivitiId(snProcess_ID);
-            
-            ProcessSubject oProcessSubjectParent = null;
-                    
-            if (oProcessSubject == null){
+
+            ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
+                        //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
+            if (oProcessSubjectParent == null){
                 oProcessSubjectParent = processSubjectDao
                         .setProcessSubject(snProcess_ID, sAutorResolution,
                                 new DateTime(df.parse(sDateExecution)), 0L, processSubjectStatus);
-            }else{
-                oProcessSubjectParent = oProcessSubject.get();
             }
             
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "

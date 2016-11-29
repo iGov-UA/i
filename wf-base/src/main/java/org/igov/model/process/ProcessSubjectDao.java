@@ -17,5 +17,5 @@ public interface ProcessSubjectDao extends EntityDao<Long, ProcessSubject>{
     
     ProcessSubject setProcessSubjectDatePlan(String snID_Process_Activiti, DateTime sDatePlan);
     
-    Optional<ProcessSubject>  findByProcessActivitiId(String snID_Process_Activiti);
+    ProcessSubject findByProcessActivitiId(String snID_Process_Activiti);
 }

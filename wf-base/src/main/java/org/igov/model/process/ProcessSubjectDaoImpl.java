@@ -118,7 +118,7 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
     
     //whitout exception
     @Override
-    public Optional<ProcessSubject> findByProcessActivitiId(String snID_Process_Activiti){
-        return findBy("snID_Process_Activiti", snID_Process_Activiti);
+    public ProcessSubject findByProcessActivitiId(String snID_Process_Activiti){
+        return findBy("snID_Process_Activiti", snID_Process_Activiti).orNull();
     }
 }
