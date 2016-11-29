@@ -482,7 +482,7 @@ public class DocumentStepService {
     }
 
 //3.4) setDocumentStep(snID_Process_Activiti, bNext) //проставить номер шаг (bNext=true > +1 иначе -1) в поле таски с id=sKey_Step_Document    
-    public String setDocumentStep(String snID_Process_Activiti, String sKey_Step) {//JSONObject
+    public String setDocumentStep(String snID_Process_Activiti, String sKey_Step) throws Exception {//JSONObject
         //assume that we can have only one active task per process at the same time
         LOG.info("sKey_Step={}, snID_Process_Activiti={}", sKey_Step, snID_Process_Activiti);
         HistoricProcessInstance oProcessInstance = historyService
@@ -528,11 +528,12 @@ public class DocumentStepService {
             runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
         } else {
             ProcessInstance processInstance = runtimeService
-                .createProcessInstanceQuery()
-                .processInstanceId(snID_Process_Activiti.trim())
-                .includeProcessVariables()
-                .singleResult();
-            LOG.info("oProcessInstance is null snID_Process_Activiti={} processInstance={}", snID_Process_Activiti,processInstance);
+                    .createProcessInstanceQuery()
+                    .processInstanceId(snID_Process_Activiti.trim())
+                    .includeProcessVariables()
+                    .singleResult();
+            LOG.info("oProcessInstance is null snID_Process_Activiti={} processInstance={}", snID_Process_Activiti, processInstance);
+            throw new Exception("oProcessInstance is null snID_Process_Activiti = " + snID_Process_Activiti + " processInstance = " + processInstance);
         }
 
         return "";
