@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -355,11 +356,9 @@ public class ProcessSubjectService {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
 
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            
-            //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
-            
-            ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActiviti(snProcess_ID);
-            
+
+            ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
+                        //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (oProcessSubjectParent == null){
                 oProcessSubjectParent = processSubjectDao
                         .setProcessSubject(snProcess_ID, sAutorResolution,
