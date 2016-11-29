@@ -183,6 +183,9 @@ public class ProcessSubjectService {
         } else {
             processSubjectResult.setaProcessSubject(aChildResult);
         }
+        for(ProcessSubject processSubject : processSubjectResult.getaProcessSubject()){
+            processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
+        }
         return processSubjectResult;
 
     }
