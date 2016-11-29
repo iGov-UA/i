@@ -5,7 +5,8 @@ import org.joda.time.DateTime;
 
 public interface ProcessSubjectDao extends EntityDao<Long, ProcessSubject>{
     
-    Long setProcessSubject(String snID_Process_Activiti__Parent, String sLogin, DateTime sDatePlan, Long nOrder);
+    ProcessSubject setProcessSubject(String snID_Process_Activiti, String sLogin, DateTime sDatePlan, 
+            Long nOrder, ProcessSubjectStatus processSubjectStatus);
     
     ProcessSubject setProcessSubjectLogin(String snID_Process_Activiti, String sLogin);
     

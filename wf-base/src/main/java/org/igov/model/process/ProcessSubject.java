@@ -18,12 +18,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @javax.persistence.Entity
 public class ProcessSubject extends AbstractEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@JsonProperty(value = "snID_Process_Activiti")
+    @JsonProperty(value = "snID_Process_Activiti")
     @Column
     private String snID_Process_Activiti;
 
@@ -40,20 +40,20 @@ public class ProcessSubject extends AbstractEntity {
     @Column
     private String sLogin;
 
-    @JsonProperty(value="sDateEdit")
-    @JsonSerialize(using=JsonDateTimeSerializer.class)
-    @JsonDeserialize(using=JsonDateTimeDeserializer.class)
-    @Type(type=DATETIME_TYPE)
+    @JsonProperty(value = "sDateEdit")
+    @JsonSerialize(using = JsonDateTimeSerializer.class)
+    @JsonDeserialize(using = JsonDateTimeDeserializer.class)
+    @Type(type = DATETIME_TYPE)
     @Column
     private DateTime sDateEdit;
 
-    @JsonProperty(value="sDatePlan")
-    @JsonSerialize(using=JsonDateTimeSerializer.class)
-    @JsonDeserialize(using=JsonDateTimeDeserializer.class)
-    @Type(type=DATETIME_TYPE)
+    @JsonProperty(value = "sDatePlan")
+    @JsonSerialize(using = JsonDateTimeSerializer.class)
+    @JsonDeserialize(using = JsonDateTimeDeserializer.class)
+    @Type(type = DATETIME_TYPE)
     @Column
     private DateTime sDatePlan;
-    
+
     public String getSnID_Process_Activiti() {
         return snID_Process_Activiti;
     }

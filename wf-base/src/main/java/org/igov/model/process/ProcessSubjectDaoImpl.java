@@ -23,15 +23,14 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
 
     @Transactional
     @Override
-    public Long setProcessSubject(String snID_Process_Activiti_Parent, String sLogin, DateTime sDatePlan, Long nOrder) {
-        Long idEntity = null;
+    public ProcessSubject setProcessSubject(String snID_Process_Activiti, String sLogin, DateTime sDatePlan, 
+            Long nOrder, ProcessSubjectStatus processSubjectStatus) {
+        ProcessSubject processSubject = null;
         try {
-            ProcessSubject processSubject = new ProcessSubject();
-            processSubject.setSnID_Process_Activiti(snID_Process_Activiti_Parent);
+            processSubject = new ProcessSubject();
+            processSubject.setSnID_Process_Activiti(snID_Process_Activiti);
             processSubject.setsLogin(sLogin);
             processSubject.setsDateEdit(new DateTime(new Date()));
-
-            ProcessSubjectStatus processSubjectStatus = new ProcessSubjectStatus();
             processSubjectStatus.setId(nOrder);
             processSubjectStatus.setName(sLogin);
             processSubject.setProcessSubjectStatus(processSubjectStatus);
@@ -44,13 +43,13 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
             }
             LOG.info(String.format("The new instance of ProcessSubject with "
                     + "snID_Process_Activiti=%s, sLogin=%s, sDatePlan=%s, nOrder=%s was created",
-                    snID_Process_Activiti_Parent, sLogin, sDatePlan.toString("D"), nOrder));
-            idEntity = saveOrUpdate(processSubject).getId();
-            LOG.info(String.format("Entity was added with id=%s", idEntity));
+                    snID_Process_Activiti, sLogin, sDatePlan.toString("D"), nOrder));
+            processSubject = saveOrUpdate(processSubject);
+            LOG.info(String.format("Entity was added with id=%s", processSubject.getId()));
         } catch (Exception e) {
             LOG.warn("(Fail set process {})", e.getMessage());
         }
-        return idEntity;
+        return processSubject;
     }
 
     @Transactional
