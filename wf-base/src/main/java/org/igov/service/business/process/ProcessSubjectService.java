@@ -33,8 +33,21 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.apache.commons.io.IOUtils;
 import org.igov.model.process.ProcessSubjectStatus;
 import org.igov.model.process.ProcessSubjectStatusDao;
+import org.igov.model.process.ProcessSubjectTreeDao;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -50,11 +63,20 @@ public class ProcessSubjectService {
     private BaseEntityDao<Long> baseEntityDao;
 
     @Autowired
+    private IdentityService identityService;
+
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    protected RuntimeService runtimeService;
+
+    @Autowired
     private ProcessSubjectDao processSubjectDao;
 
     @Autowired
-    private IdentityService identityService;
-    
+    private ProcessSubjectTreeDao processSubjectTreeDao;
+
     @Autowired
     private ProcessSubjectStatusDao processSubjectStatusDao;
 
@@ -318,10 +340,82 @@ public class ProcessSubjectService {
      */
     public ProcessSubject setProcessSubjectDatePlan(String snID_Process_Activiti, String sDatePlan) {
 
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         DateTime dtDatePlan = formatter.parseDateTime(sDatePlan);
-
         return processSubjectDao.setProcessSubjectDatePlan(snID_Process_Activiti, dtDatePlan);
+    }
+
+    public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
+            String sContent, String sAutorResolution, String sTextResolution, 
+            String sDateExecution, String snProcess_ID) {
+
+        try {
+            
+            ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
+
+            DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+            ProcessSubject oProcessSubjectParent = processSubjectDao
+                    .setProcessSubject(snProcess_ID, sAutorResolution,
+                            new DateTime(df.parse(sDateExecution)), 0L, processSubjectStatus);
+
+            LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
+                    + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
+                    + sContent + " sAutorResolution: " + sAutorResolution + " sTextResolution: "
+                    + sTextResolution + " sDateExecution: " + sDateExecution);
+
+            InputStream attachmentContent = taskService.getAttachmentContent(sID_Attachment);
+
+            JSONParser parser = new JSONParser();
+            JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
+            LOG.info("JSON String: " + oJSONObject.toJSONString());
+
+            LOG.info("JSON aRow is: " + oJSONObject.get("aRow").getClass());
+
+            JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
+            Map<String, Object> mParamDocument = new HashMap<>();
+            mParamDocument.put("sTaskProcessDefinition", sTaskProcessDefinition);
+            mParamDocument.put("sID_Attachment", sID_Attachment);
+            mParamDocument.put("sContent", sContent);
+            mParamDocument.put("sAutorResolution", sAutorResolution);
+            mParamDocument.put("sDateExecution", sDateExecution);
+            mParamDocument.put("sTextResolution", sTextResolution);
+
+            if (aJsonRow != null) {
+                for (int i = 0; i < aJsonRow.size(); i++) {
+
+                    Map<String, Object> mParamTask = new HashMap<>();
+
+                    LOG.info("json array element" + i + " is " + aJsonRow.get(i).toString());
+
+                    JSONObject sJsonField = (JSONObject) aJsonRow.get(i);
+                    JSONArray aJsonField = (JSONArray) sJsonField.get("aField");
+                    mParamTask.putAll(mParamDocument);
+                    for (int j = 0; j < aJsonField.size(); j++) {
+                        JSONObject sJsonElem = (JSONObject) aJsonField.get(j);
+                        String id = sJsonElem.get("id").toString();
+                        String value = sJsonElem.get("value").toString();
+                        mParamTask.put(id, value);
+                    }
+                    LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
+
+                    ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
+                    LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
+                    if (oProcessInstanceChild != null) {
+                        ProcessSubject oProcessSubjectChild = processSubjectDao
+                                .setProcessSubject(oProcessInstanceChild.getId(), (String) mParamTask.get("sLogin_isExecute"),
+                                        new DateTime(df.parse(sDateExecution)), new Long(i + 1), processSubjectStatus);
+                        ProcessSubjectTree oProcessSubjectTreeParent = new ProcessSubjectTree();
+                        oProcessSubjectTreeParent.setProcessSubjectParent(oProcessSubjectParent);
+                        oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
+                        processSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
+                    }
+                }
+            } else {
+                LOG.info("JSONArray is null");
+            }
+        } catch (java.text.ParseException | IOException | ParseException e) {
+            LOG.error("SetTasks listener throws an error: " + e.toString());
+        }
     }
 
 }

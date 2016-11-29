@@ -115,7 +115,7 @@ public class ProcessSubjectController {
     }
 
     @ApiOperation(value = "Сохранить процесс", notes = "##### Пример:\n"
-            + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/setProcessSubjectDatePlan?snID_Process_Activiti=MJU_Dnipro&sDatePlan=19-11-2016 \n")
+            + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/setProcessSubjectDatePlan?snID_Process_Activiti=MJU_Dnipro&sDatePlan=2016-11-19 \n")
     @RequestMapping(value = "/setProcessSubjectDatePlan", method = RequestMethod.GET)
     @ResponseBody
     public ProcessSubject setProcessSubjectDatePlan(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
