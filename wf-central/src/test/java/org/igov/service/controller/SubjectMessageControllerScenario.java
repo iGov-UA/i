@@ -60,7 +60,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("default")
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@Ignore
 public class SubjectMessageControllerScenario {
 
 	public static final String GET_MESSAGE = "/subject/message/getMessage";
@@ -83,7 +82,8 @@ public class SubjectMessageControllerScenario {
 	@InjectMocks
 	@Autowired
 	private SubjectMessageController subjectMessageController;
-	@Mock
+//	@Mock
+	@Autowired
 	private SubjectMessagesDao subjectMessagesDao;
 	@Mock
 	private HistoryEvent_ServiceDao historyEventServiceDao;
@@ -98,12 +98,11 @@ public class SubjectMessageControllerScenario {
 		MockitoAnnotations.initMocks(this);
 	}
 
-	@Ignore
 	@Test
 	public void firstShouldSuccessfullySetAndGetMassage() throws Exception {
 		String sHead = "expect";
 		String sBody = "XXX";
-		Long nID_subject = 1L;
+		Long nID_Subject = 1L;
 		String sMail = "ukr.net";
 		String sContacts = "093";
 		String sData = "some data";
@@ -111,35 +110,35 @@ public class SubjectMessageControllerScenario {
 		SubjectMessage subjectMessage = new SubjectMessage();
 		subjectMessage.setHead(sHead);
 		subjectMessage.setBody(sBody);
-		subjectMessage.setId_subject(nID_subject);
+		subjectMessage.setId_subject(nID_Subject);
 		subjectMessage.setMail(sMail);
 		subjectMessage.setContacts(sContacts);
 		subjectMessage.setData(sData);
-//		subjectMessage.setSubjectMessageType(SubjectMessageType.DEFAULT);
-//		 SubjectMessage subjectMessage = mock(SubjectMessage.class);
+		subjectMessage.setDate(new DateTime());
+		subjectMessage.setSubjectMessageType(SubjectMessageType.DEFAULT);
 
-//		when(oSubjectMessageService.createSubjectMessage(sHead, sBody, oHistoryEvent_Service.getnID_Subject(), sMail, sContacts, sData,
-//				nID_SubjectMessageType)).thenReturn(subjectMessage);
+		when(oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData,
+				nID_SubjectMessageType)).thenReturn(subjectMessage);
 
 		String jsonAfterSave = mockMvc
 				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", sHead)
-						.param("sBody", sBody).param("sMail", sMail)
-						.param("sContacts", sContacts).param("sData", sData)
-						.param("nID_SubjectMessageType","1"))
+						.param("sBody", sBody).param("nID_Subject", String.valueOf(nID_Subject))
+						.param("sMail", sMail).param("sContacts", sContacts).param("sData", sData)
+						.param("nID_SubjectMessageType",String.valueOf(nID_SubjectMessageType)))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
-//		SubjectMessage savedMessage = JsonRestUtils.readObject(jsonAfterSave, SubjectMessage.class);
-//		assertNotNull(savedMessage.getId());
-//		assertNotNull(savedMessage.getSubjectMessageType());
-//		assertEquals(subjectMessage.getSubjectMessageType().getId().longValue(),
-//				savedMessage.getSubjectMessageType().getId().longValue());
-//		assertEquals(subjectMessage.getBody(), savedMessage.getBody());
-//		assertEquals(subjectMessage.getId_subject().longValue(), savedMessage.getId_subject().longValue());
+		SubjectMessage savedMessage = JsonRestUtils.readObject(jsonAfterSave, SubjectMessage.class);
+		assertNotNull(savedMessage.getId());
+		assertNotNull(savedMessage.getSubjectMessageType());
+		assertEquals(subjectMessage.getSubjectMessageType().getId().longValue(),
+				savedMessage.getSubjectMessageType().getId().longValue());
+		assertEquals(subjectMessage.getBody(), savedMessage.getBody());
+		assertEquals(subjectMessage.getId_subject().longValue(), savedMessage.getId_subject().longValue());
 
-		// String jsonAfterGet = mockMvc.perform(get(GET_MESSAGE).param("nID",
-		// "" + savedMessage.getId()))
-		// .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-		// assertEquals(jsonAfterSave, jsonAfterGet);
+		 String jsonAfterGet = mockMvc.perform(get(GET_MESSAGE).param("nID",
+		 "" + savedMessage.getId()))
+		 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		 assertEquals(jsonAfterSave, jsonAfterGet);
 	}
 
 	@Ignore
@@ -347,7 +346,24 @@ public class SubjectMessageControllerScenario {
 		Long nDefaultID_SubjectMessageType = 2l;
 		String sValidBody = "sValidBody";
 
-		SubjectMessage oSubjectMessage_Feedback = mock(SubjectMessage.class);
+		String sHead = "expect";
+		String sBody = "XXX";
+		Long nID_Subject = 1L;
+		String sMail = "ukr.net";
+		String sContacts = "093";
+		String sData = "some data";
+		Long nID_SubjectMessageType = 1L;
+		SubjectMessage oSubjectMessage_Feedback = new SubjectMessage();
+		oSubjectMessage_Feedback.setHead(sHead);
+		oSubjectMessage_Feedback.setBody(sBody);
+		oSubjectMessage_Feedback.setId_subject(nID_Subject);
+		oSubjectMessage_Feedback.setMail(sMail);
+		oSubjectMessage_Feedback.setContacts(sContacts);
+		oSubjectMessage_Feedback.setData(sData);
+		oSubjectMessage_Feedback.setDate(new DateTime());
+		oSubjectMessage_Feedback.setSubjectMessageType(SubjectMessageType.DEFAULT);
+
+//		SubjectMessage oSubjectMessage_Feedback = mock(SubjectMessage.class);
 		HistoryEvent_Service oHistoryEvent_Service = mock(HistoryEvent_Service.class);
 
 		when(oHistoryEvent_Service.getsToken()).thenReturn(sValidToken);
@@ -359,7 +375,6 @@ public class SubjectMessageControllerScenario {
 		mockMvc.perform(post(SET_FEEDBACK_MESSAGE).param("sID_Order", sValidID_Order).param("sToken", sValidToken)
 				.param("nID_SubjectMessageType", nDefaultID_SubjectMessageType.toString()).param("sBody", sValidBody))
 				.andExpect(status().isOk()).andExpect(content().string("Ok"));
-		verify(subjectMessagesDao).setMessage(oSubjectMessage_Feedback);
 	}
 
 	@Test
