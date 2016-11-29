@@ -671,10 +671,20 @@ public class ActionEventController implements ControllerConstants {
                          sTextFeedback = "";                  
                         if (oSubjectMessageFeedback != null) {
                             LOG.info("!!!!!oSubjectMessageFeedback.getsBody(): " + oSubjectMessageFeedback.getsBody());
+                            LOG.info("!!!!!oSubjectMessageFeedback.getsHead(): " + oSubjectMessageFeedback.getsHead());
+                            LOG.info("!!!!!oSubjectMessageFeedback.getsMail(): " + oSubjectMessageFeedback.getsMail());
                             if (oSubjectMessageFeedback.getoSubjectMessage() != null) {
+                                if (oSubjectMessageFeedback.getoSubjectMessage().getoMail() != null) {
+                                  LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage().getoMail().getsValue(): " + oSubjectMessageFeedback.getoSubjectMessage().getoMail().getsValue());  
+                                } else {
+                                LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getoMail() = null");
+                                }
                             
                             sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
                             LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage().getBody(): " + sTextFeedback);
+                            LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage().getHead(): " + oSubjectMessageFeedback.getoSubjectMessage().getHead());
+                            LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage().getMail(): " + oSubjectMessageFeedback.getoSubjectMessage().getMail());
+                            
                             }
                         else {
                         LOG.info("SubjectMessage() = null");
