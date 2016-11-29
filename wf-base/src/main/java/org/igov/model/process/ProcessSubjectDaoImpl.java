@@ -111,7 +111,7 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
         return processSubject;
     }
 
-    private ProcessSubject findByProcessActiviti(String snID_Process_Activiti) throws HibernateException {
+    public ProcessSubject findByProcessActiviti(String snID_Process_Activiti) throws HibernateException {
         return findByExpected("snID_Process_Activiti", snID_Process_Activiti);
     }
 
