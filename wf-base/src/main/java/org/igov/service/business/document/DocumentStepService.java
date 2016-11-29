@@ -527,13 +527,7 @@ public class DocumentStepService {
             LOG.debug("AFTER:sKey_Step_Document={}", sKey_Step_Document);
             runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
         } else {
-            ProcessInstance processInstance = runtimeService
-                    .createProcessInstanceQuery()
-                    .processInstanceId(snID_Process_Activiti.trim())
-                    .includeProcessVariables()
-                    .singleResult();
-            LOG.info("oProcessInstance is null snID_Process_Activiti={} processInstance={}", snID_Process_Activiti, processInstance);
-            throw new Exception("oProcessInstance is null snID_Process_Activiti = " + snID_Process_Activiti + " processInstance = " + processInstance);
+            throw new Exception("oProcessInstance is null snID_Process_Activiti = " + snID_Process_Activiti);
         }
 
         return "";
