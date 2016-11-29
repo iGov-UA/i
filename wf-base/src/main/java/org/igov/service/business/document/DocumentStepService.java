@@ -488,6 +488,7 @@ public class DocumentStepService {
         HistoricProcessInstance oProcessInstance = historyService
                 .createHistoricProcessInstanceQuery()
                 .processInstanceId(snID_Process_Activiti.trim())
+                .includeProcessVariables()
                 .singleResult();
         if (oProcessInstance != null) {
             Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
@@ -526,10 +527,12 @@ public class DocumentStepService {
             LOG.debug("AFTER:sKey_Step_Document={}", sKey_Step_Document);
             runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
         } else {
-            long count = historyService
-                .createHistoricProcessInstanceQuery()
-                .count();
-            LOG.info("oProcessInstance is null snID_Process_Activiti={} count={}", snID_Process_Activiti,count);
+            ProcessInstance processInstance = runtimeService
+                .createProcessInstanceQuery()
+                .processInstanceId(snID_Process_Activiti.trim())
+                .includeProcessVariables()
+                .singleResult();
+            LOG.info("oProcessInstance is null snID_Process_Activiti={} processInstance={}", snID_Process_Activiti,processInstance);
         }
 
         return "";
