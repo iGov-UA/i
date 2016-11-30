@@ -142,6 +142,7 @@ angular.module('dashboardJsApp')
 
       submitTaskForm: function (taskId, formProperties, task, attachments) {
         var self = this;
+        var promises = [];
         var createProperties = function (formProperties) {
           var properties = new Array();
           for (var i = 0; i < formProperties.length; i++) {
@@ -167,19 +168,21 @@ angular.module('dashboardJsApp')
                 var name = attachment.description.match(/(\[id=(\w+)\])/)[2];
                 if(name.toLowerCase() === table.id.toLowerCase()) {
                   var description = attachment.description.split('[')[0];
-                  self.uploadTable(table, taskId, attachment.id, description);
+                  promises.push(self.uploadTable(table, taskId, attachment.id, description));
                 }
               });
             } else {
               var name = table.name.split(';')[0];
-              self.uploadTable(table, taskId, null, name);
+              promises.push(self.uploadTable(table, taskId, null, name));
             }
           })
         }
         var deferred = $q.defer();
 
         // upload files before form submitting
-        this.uploadTaskFiles(formProperties, task, taskId).then(function () {
+        promises.push(this.uploadTaskFiles(formProperties, task, taskId));
+
+        $q.all(promises).then(function () {
           var submitTaskFormData = {
             'taskId': taskId,
             'properties': createProperties(formProperties)

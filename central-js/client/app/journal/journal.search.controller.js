@@ -347,5 +347,4 @@ angular.module('journal').controller('JournalSearchController', function (
       }
     })
   };
-
 });

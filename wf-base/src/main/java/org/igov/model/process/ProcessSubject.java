@@ -14,20 +14,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.util.List;
+import javax.persistence.Transient;
 
 @javax.persistence.Entity
 public class ProcessSubject extends AbstractEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@JsonProperty(value = "snID_Process_Activiti")
+    @JsonProperty(value = "snID_Process_Activiti")
     @Column
     private String snID_Process_Activiti;
 
-    @JsonIgnore
+    @JsonProperty(value = "oProcessSubjectStatus")
     @ManyToOne(targetEntity = ProcessSubjectStatus.class)
     @JoinColumn(name = "nID_ProcessSubjectStatus")
     private ProcessSubjectStatus processSubjectStatus;
@@ -39,21 +41,25 @@ public class ProcessSubject extends AbstractEntity {
     @JsonProperty(value = "sLogin")
     @Column
     private String sLogin;
+    
+    @JsonProperty(value = "aUser")
+    @Transient
+    private List<ProcessUser> aUser;
 
-    @JsonProperty(value="sDateEdit")
-    @JsonSerialize(using=JsonDateTimeSerializer.class)
-    @JsonDeserialize(using=JsonDateTimeDeserializer.class)
-    @Type(type=DATETIME_TYPE)
+    @JsonProperty(value = "sDateEdit")
+    @JsonSerialize(using = JsonDateTimeSerializer.class)
+    @JsonDeserialize(using = JsonDateTimeDeserializer.class)
+    @Type(type = DATETIME_TYPE)
     @Column
     private DateTime sDateEdit;
 
-    @JsonProperty(value="sDatePlan")
-    @JsonSerialize(using=JsonDateTimeSerializer.class)
-    @JsonDeserialize(using=JsonDateTimeDeserializer.class)
-    @Type(type=DATETIME_TYPE)
+    @JsonProperty(value = "sDatePlan")
+    @JsonSerialize(using = JsonDateTimeSerializer.class)
+    @JsonDeserialize(using = JsonDateTimeDeserializer.class)
+    @Type(type = DATETIME_TYPE)
     @Column
     private DateTime sDatePlan;
-    
+
     public String getSnID_Process_Activiti() {
         return snID_Process_Activiti;
     }
@@ -100,6 +106,14 @@ public class ProcessSubject extends AbstractEntity {
 
     public void setsDatePlan(DateTime sDatePlan) {
         this.sDatePlan = sDatePlan;
+    }
+
+    public List<ProcessUser> getaUser() {
+        return aUser;
+    }
+
+    public void setaUser(List<ProcessUser> aUser) {
+        this.aUser = aUser;
     }
 
     @Override

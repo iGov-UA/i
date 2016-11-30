@@ -1,4 +1,4 @@
-<div class="list-group">
+﻿<div class="list-group">
   <place></place>
 
   <style>
@@ -88,7 +88,7 @@
       <div class="col-md-12">
         <div class="highlight">
           <form name="form" novalidate>
-            <div class="clearfix" ng-if="oServiceData.oPlace && isShowFillSelfPrevious">
+            <div class="clearfix" ng-if="oServiceData.oPlace">
                 <a class="pull-right" ng-hide="paramsBackup !== null" href ng-click="fillSelfPrevious()">Заповнити даними попередньої заявки</a>
                 <a class="pull-right" ng-hide="paramsBackup === null" href ng-click="fillSelfPreviousBack()">Відмінити авто-заповнені дані</a>
             </div>
@@ -158,7 +158,7 @@
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
                 <label style="color: red;"
                        ng-if="isFieldRequired(property)==true">* </label>
-                <span ng-if="property.sFieldLabel">{{property.sFieldLabel}}:</span>
+                <span ng-if="property.sFieldLabel">{{property.sFieldLabel}} :</span>
 
                 <div class="s-field-notes"
                      ng-if="property.sFieldNotes!=null">
@@ -438,6 +438,9 @@
                           <span ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
                             х-місяців, х-років.
                           </span>
+			              <span ng-message="string">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
+			              <span ng-message="long">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
+			              <span ng-message="double">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
                           <span ng-message="numberbetween">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
                           <div ng-message="numberfractionalbetween">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</div>
                           <span ng-message="numbersaccounts">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
@@ -745,6 +748,9 @@
                 <div ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
                   х-місяців, х-років.
                 </div>
+                <div ng-message="string">{{ form[property.id].lastErrorMessage }}</div>
+                <div ng-message="long">{{ form[property.id].lastErrorMessage }}</div>
+                <div ng-message="double">{{ form[property.id].lastErrorMessage }}</div>               
                 <div ng-message="numberbetween">{{ form[property.id].lastErrorMessage }}</div>
                 <div ng-message="numberfractionalbetween">{{ form[property.id].lastErrorMessage }}</div>
                 <div ng-message="numbersaccounts">{{ form[property.id].lastErrorMessage }}</div>

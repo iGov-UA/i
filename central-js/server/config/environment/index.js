@@ -189,7 +189,8 @@ var all = {
     port: sURLBackCentralParts ? sURLBackCentralParts.port : process.env.ACTIVITI_PORT,
     path: sURLBackCentralParts ? sURLBackCentralParts.suffix : process.env.ACTIVITI_PATH,
     username: processProps.Back_Central ? processProps.Back_Central.sLogin_Back_Central : process.env.ACTIVITI_USER,
-    password: processProps.Back_Central ? processProps.Back_Central.sPassword_Back_Central : process.env.ACTIVITI_PASSWORD
+    password: processProps.Back_Central ? processProps.Back_Central.sPassword_Back_Central : process.env.ACTIVITI_PASSWORD,
+    nID_Server: processProps.Back_Central ? processProps.Back_Central.nID_Server_Back_Central : null
   },
 
   bankid: {

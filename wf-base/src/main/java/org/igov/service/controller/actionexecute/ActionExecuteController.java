@@ -3,18 +3,17 @@ package org.igov.service.controller.actionexecute;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
-import java.util.List;
-
 import org.apache.commons.mail.EmailException;
 import org.igov.io.mail.Mail;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
 import org.igov.model.action.execute.item.ActionExecuteOldDAO;
 import org.igov.model.action.execute.item.ActionExecuteStatus;
 import org.igov.model.action.execute.item.ActionExecuteStatusDAO;
+import org.igov.service.business.action.execute.ActionExecuteService;
+import org.igov.service.business.action.execute.old.ActionExecuteOldService;
 import org.igov.service.exception.CommonServiceException;
-import org.igov.util.MethodsCallRunnerUtil;
 import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.MethodsCallRunnerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 @Api(tags = {"ActionExecuteController"})
@@ -43,6 +44,12 @@ public class ActionExecuteController {
 	private ActionExecuteOldDAO actionExecuteOldDAO;
 	@Autowired
     private MethodsCallRunnerUtil methodCallRunner;
+
+    @Autowired
+    private ActionExecuteService actionExecuteService;
+
+    @Autowired
+    private ActionExecuteOldService actionExecuteOldService;
 
     @ApiOperation(value = "Получение массива всех акций ", notes = "")
     @RequestMapping(value = "/getActionExecuteStatuses", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
@@ -68,9 +75,9 @@ public class ActionExecuteController {
 
         ResponseEntity<String> res;
         if(bOldOnly)
-    			res = JsonRestUtils.toJsonResponse(actionExecuteOldDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
+    			res = JsonRestUtils.toJsonResponse(actionExecuteOldService.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
     		else
-    			res = JsonRestUtils.toJsonResponse(actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
+    			res = JsonRestUtils.toJsonResponse(actionExecuteService.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
             
         	return res;
     }
@@ -105,9 +112,9 @@ public class ActionExecuteController {
             @ApiParam(value = "булевый флаг, если указан true, то переместить из олд-а в основную (по умолчанию false)", required = false) @RequestParam(value = "bBack", required = false, defaultValue = "false") Boolean bBack)
             throws EmailException {
         if (bBack)
-            actionExecuteOldDAO.moveActionExecuteOld(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
+            actionExecuteOldService.moveActionExecuteOld(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
     	else
-    		actionExecuteDAO.moveActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);    	
+    		actionExecuteService.moveActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
     	return null;
     }
 
