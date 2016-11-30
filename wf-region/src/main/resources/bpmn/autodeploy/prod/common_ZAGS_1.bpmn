@@ -51,8 +51,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sSourceType" name="Обране Джерело надходження звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asMarriageTerm" name="Чи маєте Ви поважні причини для скорочення місячного строку реєстрації шлюбу;(медична довідка про вагітність нареченої, свідоцтво про народження спільної дитини, медична довідка, що підтверджує безпосередню загрозу для життя нареченого або нареченої)" type="enum">
-          <activiti:value id="sEnum1" name="Ні, не маємо"></activiti:value>
-          <activiti:value id="sEnum2" name="Так, маємо поважні причини і бажаємо скорочення місячного строку"></activiti:value>
+            <activiti:value id="sEnum2" name="Так, маємо поважні причини і бажаємо скорочення місячного строку"></activiti:value>
+            <activiti:value id="sEnum1" name="Ні, не маємо"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу" type="file"></activiti:formProperty>
         <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="invisible"></activiti:formProperty>
@@ -148,6 +148,7 @@
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії" type="string"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Спосіб сплати держ.мита; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="пільги"></activiti:value>
           <activiti:value id="sEnum2" name="оплата онлайн"></activiti:value>
@@ -262,6 +263,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі заяви" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії (в заяві)" type="string"  writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Спосіб сплати держ.мита" type="enum" writable="false">
           <activiti:value id="sEnum1" name="пільги"></activiti:value>
@@ -372,10 +374,8 @@
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
-<h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
-
-<br><br>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start_noBankIDname.html]
 
 Співробітник ДРАЦС успішно прийняв та перевірив Вашу заявку на реєстрацію шлюбу.<br> 
 Примітка співробітника: ${comment}<br>
@@ -421,11 +421,12 @@
 Розрахунковий рахунок: <b>31258232100157</b><br>
 Вартість скороченого обряду (15 хвилин): <b> 140 грн </b><br>
 <br>
-Телефон для довідок: ${sPhoneOrgan} <br>                                 
-[pattern/mail/_common_signature_start.html]
-${sMail_Signature} <br><br>
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+Телефон для довідок: ${sPhoneOrgan} <br> 
+[pattern/mail/new_design/_common_content_end.html]                                
+[pattern/mail/new_design/_common_signature_start.html]
+${sMail_Signature} <br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
@@ -450,20 +451,17 @@ ${sMail_Signature} <br><br>
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
-<h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
-<br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start_noBankIDname.html]
 На жаль, Вам відмовлено в наданні послуги.<br>
 Підстава: <br>
 ${comment}<br><br>
-
 Телефон для довідок: ${sPhoneOrgan} <br>
-[pattern/mail/_common_signature_start.html]
-${sMail_Signature}<br /><br />
-[pattern/mail/_common_signature_end.html] 
- 
-
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]                
+[pattern/mail/new_design/_common_signature_start.html]
+${sMail_Signature}<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -488,15 +486,15 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
- <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
-
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+ [pattern/mail/new_design/_common_content_start_noBankIDname.html]
 Дякуємо, Вам що скористались нашим сервісом подання заяви про державну реєстрацію шлюбу!<br /><br />
-
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sMail_Signature}<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -513,15 +511,16 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
- <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+ [pattern/mail/new_design/_common_content_start_noBankIDname.html]
                                     
-Ваше звернення [sID_Order] успішно зареєстровано. <br />
-Результат обробки звернення будуть спрямовані на цей е-мейл протягом 3-х днів. <br />
-[pattern/mail/_common_signature_start.html]
-${sMail_Signature}<br /><br />
-[pattern/mail/_common_signature_end.html] 
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+Ваше звернення [sID_Order] успішно зареєстровано. <br>
+Результат обробки звернення будуть спрямовані на цей е-мейл протягом 3-х днів. <br>
+[pattern/mail/new_design/_common_content_end.html]  
+[pattern/mail/new_design/_common_signature_start.html]
+${sMail_Signature}<br>
+[pattern/mail/new_design/_common_signature_end.html] 
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -551,6 +550,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі заяви" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії (в заяві)" type="string"  writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Спосіб сплати держ.мита" type="enum" writable="false">
           <activiti:value id="sEnum1" name="пільги"></activiti:value>
           <activiti:value id="sEnum2" name="оплата онлайн"></activiti:value>
@@ -662,19 +662,17 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
-<h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
-<br />
-На жаль, Вам відмовлено в реєстраціі шлюбу.<br />
-Підстава: <br />
-${comment}<br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start_noBankIDname.html]
 
-[pattern/mail/_common_signature_start.html]
-${sMail_Signature}<br /><br />
-[pattern/mail/_common_signature_end.html] 
- 
-
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+На жаль, Вам відмовлено в реєстраціі шлюбу.<br>
+Підстава: <br>
+${comment}<br>
+[pattern/mail/new_design/_common_content_end.html]  
+[pattern/mail/new_design/_common_signature_start.html]
+${sMail_Signature}<br>
+[pattern/mail/new_design/_common_signature_end.html] 
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -746,8 +744,8 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start_noBankIDname.html]
 <br>
 Щоб завершити процедуру подання заявки, Вам потрібно сплатити державне мито 0.87 грн. Ви можете зробити це прямо зараз, натиснувши на цю кнопку.<br>
 Після натискання кнопки “Оплатить” Вас буде перенаправлено на сторінку оплати.
@@ -756,9 +754,10 @@ ${sMail_Signature}<br /><br />
 [paymentButton_LiqPay]
 <br>
 Якщо впродовж двох днів з моменту подання звернення оплата не надійде, ваше звернення буде відхілено.<br>
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -791,16 +790,16 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
-<h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
-<br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start_noBankIDname.html]
+
 На жаль, Ви не сплатили держ. мито протягом двох днів.<br>
 Ви можете подати заяву ще раз.<br>
-
-[pattern/mail/_common_signature_start.html]
-${sMail_Signature}<br /><br />
-[pattern/mail/_common_signature_end.html] 
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_content_end.html] 
+[pattern/mail/new_design/_common_signature_start.html]
+${sMail_Signature}<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -961,11 +960,9 @@ execution.setVariable('sCountPayment', src)</script>
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
-<h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
-
-<br><br>
-
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start_noBankIDname.html]
+<br>
 Співробітник ДРАЦС успішно прийняв та перевірив Вашу заявку на реєстрацію шлюбу.<br> 
 Примітка співробітника: ${comment}<br>
 <br>
@@ -1011,10 +1008,11 @@ execution.setVariable('sCountPayment', src)</script>
 Вартість повного обряду (45 хвилин): <b> 337 грн </b><br>
 <br>
 Телефон для довідок: ${sPhoneOrgan} <br>                                 
-[pattern/mail/_common_signature_start.html]
-${sMail_Signature} <br><br>
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_content_end.html] 
+[pattern/mail/new_design/_common_signature_start.html]
+${sMail_Signature} <br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
