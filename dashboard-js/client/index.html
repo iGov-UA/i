@@ -10,13 +10,13 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <meta name="google-site-verification" content="v7I-KwwBF8yKUd96C0iYAI8UIXOXkNzzbz1Y39FH-7g" />
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
       <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
       <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css" />
       <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+      <link rel="stylesheet" href="bower_components/ui-select/dist/select.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -36,17 +36,6 @@
       <link rel="stylesheet" href="components/todo/todo.css">
       <!-- endinjector -->
     <!-- endbuild -->
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-87120836-1', 'auto');
-      ga('send', 'pageview');
-
-    </script>
-
   </head>
   <body ng-app="dashboardJsApp">
     <!--[if lt IE 7]>
@@ -82,6 +71,7 @@
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
       <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
       <script src="bower_components/angular-ui-validate/dist/validate.js"></script>
+      <script src="bower_components/ui-select/dist/select.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
       <script src="bower_components/moment/locale/uk.js"></script>
@@ -91,6 +81,11 @@
         <script src="app/app.js"></script>
           <!-- injector:js -->
           <script src="public-js/markers/module.js"></script>
+          <script src="public-js/formData/autocompletesDataFactory.service.js"></script>
+          <script src="public-js/formData/datepickerFactory.service.js"></script>
+          <script src="public-js/formData/dropdownAutocomplete.directive.js"></script>
+          <script src="public-js/formData/dropdownAutocompleteCtrl.controller.js"></script>
+          <script src="public-js/formData/table.service.js"></script>
           <script src="public-js/markers/defaults.js"></script>
           <script src="public-js/markers/factory.js"></script>
           <script src="public-js/markers/field.attributes.service.js"></script>
@@ -167,6 +162,7 @@
           <script src="components/env/env.config.service.js"></script>
           <script src="components/escalations/escalations.service.js"></script>
           <script src="components/filters/splitDate.filter.js"></script>
+          <script src="components/filters/tableButton.filter.js"></script>
           <script src="components/filters/wordCut.filter.js"></script>
           <script src="components/groups/group.service.js"></script>
           <script src="components/igovWhenScrolled/igovWhenScrolled.directive.js"></script>

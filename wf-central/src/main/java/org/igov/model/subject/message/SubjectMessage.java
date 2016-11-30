@@ -124,6 +124,7 @@ public class SubjectMessage extends AbstractEntity {
        return ((this.oMail != null) ? ((this.oMail.getsValue() != null) ? this.oMail.getsValue() : ""): ""); 
     }
     public void setMail(String mail) {
+//        SubjectContact.getNewSubjectContact(oMail);
         this.mail = mail;
     }
 
@@ -173,6 +174,7 @@ public class SubjectMessage extends AbstractEntity {
 
     public void setoMail(SubjectContact oMail) {
         this.oMail = oMail;
+//        oMail.setsValue(mail);
     }
 
     public Subject getoSubject() {

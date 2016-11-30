@@ -84,39 +84,6 @@ angular.module('dashboardJsApp')
           };
         },
 
-        submitTaskQuestion: function(callBack) {
-          var isYesButton = false;
-          var warningModal = openModal({
-            modal: {
-              dismissable: true,
-              title: 'Уточнення!',
-              html: '<strong>' + 'Почати опрацювання задачі ?' + '</strong>',
-              buttons: [{
-                classes: 'btn-success',
-                text: ' Так ',
-                click: function(e) {
-                  isYesButton = true;
-                  warningModal.close(e);
-                }
-              }, {
-                classes: 'btn-success',
-                text: ' Ні ',
-                click: function(e) {
-                  console.log(isYesButton);
-                  warningModal.close(e);
-                }
-              }]
-            }
-          }, 'modal-success');
-
-          warningModal.result.then(function(event) {
-            if (callBack && typeof(callBack) === "function" && isYesButton) {
-              callBack.apply(event);
-            }
-          });
-
-        },
-
         success: function(callBack) {
           return function() {
             var args = Array.prototype.slice.call(arguments),

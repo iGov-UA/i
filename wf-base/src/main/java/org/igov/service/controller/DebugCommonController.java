@@ -155,8 +155,8 @@ public class DebugCommonController {
             @ApiParam(value = "", required = false) @RequestParam(value = "sInfo", required = false) String sInfo)
             throws CommonServiceException, TaskAlreadyUnboundException {
 
-        String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг es.kievcity.gov.ua.<\n<br>"
-                + "З повагою, команда порталу  es.kievcity.gov.ua";
+        String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
+                + "З повагою, команда порталу  iGov.org.ua";
 
         try {
             oActionTaskService.cancelTasksInternal(nID_Protected, sInfo);
@@ -327,7 +327,7 @@ public class DebugCommonController {
     public @ResponseBody
     String loadPayments() {
     	paymentProcessorService.loadPaymentInformation();
-        return "successfull";
+        return "successful";
 
     }
 

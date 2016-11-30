@@ -9,6 +9,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class Cherg {
     private String urlFreeTime = "/freetime";
     private String urlSetReserve = "/set_reserve";
     private String urlConfirmReserve = "/confirm_reserve";
+    private String urlWorkdays = "/workdays";
     private String login;
     private String password;
     private String basicAuthHeader;
@@ -108,6 +110,80 @@ public class Cherg {
 
         LOG.info("Result:{}", dates);
         return dates;
+
+    }
+
+    public JSONArray getSlotFreeDaysArray(Integer nID_Service_Private) throws Exception {
+        if (nID_Service_Private == null) {
+            LOG.error("service_id=={}", nID_Service_Private);
+            throw new IllegalArgumentException("nID_Service_Private is null");
+        }
+
+        MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
+        LOG.debug("nID_Service_Private={}", nID_Service_Private);
+        mParam.add("service_id", nID_Service_Private.toString());
+
+        HttpHeaders oHttpHeaders = new HttpHeaders();
+        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+        oHttpHeaders.set("Authorization", this.basicAuthHeader);
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+        HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlWorkdays)
+                ._Data(mParam)
+                ._Header(oHttpHeaders)
+                ._Send();
+        String sReturn = oHttpEntityCover.sReturn();
+        if (!oHttpEntityCover.bStatusOk()) {
+            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
+                    urlBasePart + urlWorkdays,
+                    mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
+                    + oHttpEntityCover.nStatus());
+        } else if ( sReturn == null ) {
+            throw new Exception("Response is null for: [sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
+                    + oHttpEntityCover.nStatus());
+        }
+
+        JSONParser oJSONParser = new JSONParser();
+        JSONObject oJSONObjectGot;
+        JSONArray oaJSONArrayReturn = null;
+	try {
+	    oJSONObjectGot = (JSONObject) oJSONParser.parse(sReturn);
+	
+	    JSONArray oaJSONArray =  new JSONArray();
+	    if (!oJSONObjectGot.get("status-code").equals("0")) {
+	       LOG.error("code=={}, detail=={}", oJSONObjectGot.get("status-code"), oJSONObjectGot.get("status-detail"));
+	    }else{
+	       oaJSONArray = (JSONArray) oJSONObjectGot.get("data");
+	       LOG.info("Workdays all days:{}", oaJSONArray);
+	    }
+
+	    oaJSONArrayReturn = new JSONArray();
+	    for(Object o:oaJSONArray) {
+	       JSONObject oJSONObject = (JSONObject) o;
+	       String sDate = oJSONObject.get("date").toString();
+	       String snDateType = oJSONObject.get("work_day").toString();
+	       if ( snDateType.equals("1")) {
+		   oaJSONArrayReturn.add(sDate);
+	       }
+	    }
+	    
+	} catch (ParseException e) {
+            LOG.error("Error parsing response = {}", sReturn, e);
+            throw new Exception("Error parsing response for: [sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
+                    + oHttpEntityCover.nStatus());
+	}
+
+        return oaJSONArrayReturn;
+    }
+    
+    public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
+        JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
+        
+	JSONObject oJSONObjectReturn = new JSONObject();
+	oJSONObjectReturn.put("aDate", oaJSONArray);
+        LOG.info("Workdays only work days:{}", oJSONObjectReturn.toJSONString());
+        
+        return oJSONObjectReturn.toString();
 
     }
 

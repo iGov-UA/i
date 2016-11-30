@@ -16,6 +16,14 @@ angular.module('autocompleteService', [])
             apiUrl: './api/object-customs',
             hasPaging: true
         },
+        SubjectRole: {
+            apiUrl: './api/subject-role',
+            titleProperty: 'sName',
+            orderBy: 'sLogin',
+            prefixAssociatedField: 'sLogin',
+            valueProperty: 'sLogin',
+            additionalValueProperty: 'sName'
+        },
         SubjectOrganJoinTax: {
             valueProperty: 'sName_UA',
             titleProperty: 'sName_UA',
@@ -24,7 +32,8 @@ angular.module('autocompleteService', [])
             apiUrl: './api/subject/organs/join-tax',
             init: function (scope) {
                 // данный $watch нужен для полей в таблице
-                angular.forEach(scope.activitiForm.formProperties, function (table, tableKey) {
+                var form = scope.activitiForm ? scope.activitiForm.formProperties : scope.taskForm;
+                angular.forEach(form, function (table, tableKey) {
                     if(table.type === 'table') {
                         angular.forEach(table.aRow, function (row, rowKey) {
                             angular.forEach(row.aField, function (field, fieldKey) {
@@ -41,6 +50,15 @@ angular.module('autocompleteService', [])
                 scope.$watch("formData.params['sID_Public_SubjectOrganJoin'].nID", function (newValue) {
                     scope.refreshList('nID_SubjectOrganJoin', newValue);
                 });
+                if(scope.taskForm){
+                    angular.forEach(scope.taskForm, function (item, key) {
+                        if(item.id === 'sID_Public_SubjectOrganJoin') {
+                            scope.$watch("taskForm["+ key +"].nID", function (newValue) {
+                                scope.refreshList('nID_SubjectOrganJoin', newValue);
+                            });
+                        }
+                    })
+                }
             }
         },
         ObjectEarthTarget: {

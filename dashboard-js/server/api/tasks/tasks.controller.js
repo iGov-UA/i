@@ -8,22 +8,23 @@ var authService = require('../../auth/activiti/basic');
 var async = require('async');
 var tasksService = require('./tasks.service');
 var environment = require('../../config/environment');
-var config = require(__dirname + '/../../..' + '/process.json').env;
 var request = require('request');
+var pdfConversion = require('phantom-html-to-pdf')();
+
 /*
-var nodeLocalStorage = require('node-localstorage').LocalStorage;
-var localStorage = new nodeLocalStorage('./scratch');
-*/
+ var nodeLocalStorage = require('node-localstorage').LocalStorage;
+ var localStorage = new nodeLocalStorage('./scratch');
+ */
 function createHttpError(error, statusCode) {
   return {httpError: error, httpStatus: statusCode};
 }
 
 function step(input, lowerFunction, withoutResult) {
   return withoutResult ? function (callback) {
-    lowerFunction(callback, input)
+    lowerFunction(callback, input);
   } : function (result, callback) {
     lowerFunction(result, callback, input);
-  }
+  };
 }
 
 function loadGroups(wfCallback, assigneeID) {
@@ -46,7 +47,7 @@ function loadTasksForOtherUsers(usersIDs, wfCallback, currentUserID) {
   var tasks = [];
   usersIDs = usersIDs
     .filter(function (usersID) {
-      return usersID !== currentUserID
+      return usersID !== currentUserID;
     });
 
   async.forEach(usersIDs, function (usersID, frCallback) {
@@ -118,7 +119,7 @@ exports.index = function (req, res) {
     } else if (req.query.filterType === 'unassigned') {
       query.candidateUser = user.id;
       query.unassigned = true;
-      query.includeProcessVariables = true;
+      query.includeProcessVariables = false;
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
       query.taskAssignee = user.id;
@@ -233,22 +234,6 @@ exports.getAttachments = function (req, res) {
     }
   });
 };
-exports.saveChangesTask = function (req, res) {
-  var options = {
-    path: '/action/task/saveForm',
-    query: {
-      sParams: req.body
-    }
-  };
-
-  activiti.post(options, function (error, statusCode, result) {
-    if (error) {
-      res.send(error);
-    } else {
-      res.status(statusCode).json(result);
-    }
-  }, req.body);
-};
 
 exports.getOrderMessages = function (req, res) {
   var options = {
@@ -260,16 +245,16 @@ exports.getOrderMessages = function (req, res) {
 
   activiti.get(options, function (error, statusCode, result) {
     if (error) {
-      console.log("[getOrderMessages]:error="+error);
+      console.log("[getOrderMessages]:error=" + error);
       res.status(200).json("[]");
       //res.send(error);
     } else {
-        console.log("[getOrderMessages]:result="+result);
-        if(statusCode!==200){
-            res.status(200).json("[]");
-        }else{
-            res.status(statusCode).json(result);
-        }
+      console.log("[getOrderMessages]:result=" + result);
+      if (statusCode !== 200) {
+        res.status(200).json("[]");
+      } else {
+        res.status(statusCode).json(result);
+      }
     }
   });
 };
@@ -295,17 +280,17 @@ exports.getAttachmentContentTable = function (req, res) {
     }
   };
   activiti.get(options, function (error, statusCode, result) {
-    if(error) {
-      res.send(error)
+    if (error) {
+      res.send(error);
     } else if (statusCode == 500) {
-      console.log(statusCode, "isn't table attachment")
-    }else {
+      console.log(statusCode, "isn't table attachment");
+    } else {
       res.status(statusCode).json(result);
     }
   });
 };
 
-exports.submitForm = function (req, res) { // Опрацювати
+exports.submitForm = function (req, res) {
   var options = {
     path: 'form/form-data'
   };
@@ -315,17 +300,7 @@ exports.submitForm = function (req, res) { // Опрацювати
   }, req.body);
 };
 
-exports.saveChangesTaskForm = function (req, res) {
-  var options = {
-    path: 'form/form-data'
-  };
-  activiti.put(options, function (error, statusCode, result) {
-    res.statusCode = statusCode;
-    res.send(result);
-  }, req.body);
-};
-
-exports.updateTask = function (req, res) { // Взяти в роботу
+exports.updateTask = function (req, res) {
   var options = {
     path: 'runtime/tasks/' + req.params.taskId
   };
@@ -342,6 +317,9 @@ exports.getTask = function (req, res) {
   //activiti.put(options, function (error, statusCode, result) {
   activiti.get(options, function (error, statusCode, result) {
     res.statusCode = statusCode;
+    if(typeof(result) === 'number'){
+      result = '' + result;
+    }
     res.send(result);
   }, req.body);
 };
@@ -376,27 +354,27 @@ exports.getTasksByText = function (req, res) {
 };
 
 /*
-exports.getProcesses = function (req, res) {
-  var user = JSON.parse(req.cookies.user);
-  var roles = JSON.stringify(user.roles);
-  //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
-  var options = {
-    path: 'analytic/process/getProcesses',
-    query: {
-      'sID_': req.query.sID,
-      'asID_Group': roles
-    }
-  };
-  activiti.get(options, function (error, statusCode, result) {
-    error ? res.send(error) : res.status(statusCode).json(result);
-    //error ? res.send(error) : res.status(statusCode).json("[\"4585243\"]");
-  });
-};
-*/
+ exports.getProcesses = function (req, res) {
+ var user = JSON.parse(req.cookies.user);
+ var roles = JSON.stringify(user.roles);
+ //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
+ var options = {
+ path: 'analytic/process/getProcesses',
+ query: {
+ 'sID_': req.query.sID,
+ 'asID_Group': roles
+ }
+ };
+ activiti.get(options, function (error, statusCode, result) {
+ error ? res.send(error) : res.status(statusCode).json(result);
+ //error ? res.send(error) : res.status(statusCode).json("[\"4585243\"]");
+ });
+ };
+ */
 exports.getProcesses = function (req, res) {
   var currentUser = JSON.parse(req.cookies.user);
   var userRoles = authService.getCashedUserGroups(currentUser);
-  if(userRoles){
+  if (userRoles) {
     currentUser.roles = userRoles;
     var options = {
       path: 'analytic/process/getProcesses',
@@ -414,15 +392,15 @@ exports.getProcesses = function (req, res) {
         activiti.get({
           path: 'action/identity/getGroups',
           query: {
-            sLogin : currentUser.id
+            sLogin: currentUser.id
           },
-          json : true
+          json: true
         }, function (error, statusCode, result) {
           if (error) {
             callback(error, null);
           } else {
             var resultGroups;
-            if((typeof result == "object") && (result instanceof Array)){
+            if ((typeof result == "object") && (result instanceof Array)) {
               currentUser['roles'] = result.map(function (group) {
                 return group.id;
               });
@@ -450,7 +428,7 @@ exports.getProcesses = function (req, res) {
     ], function (error, result) {
       authService.setCashedUserGroups(currentUser, currentUser.roles);
       error ? res.send(error) : res.json(result);
-    })
+    });
   }
 };
 
@@ -474,31 +452,74 @@ exports.getPatternFile = function (req, res) {
     }
   };
 
-  options.query.sPathFile = options.query.sPathFile.replace(/^sPrintFormFileAsIs=pattern\//, '');
-  if(options.query.sPathFile.indexOf('sPrintFormFileAsPDF=pattern/') == 0){
-    options.query.sPathFile = options.query.sPathFile.replace(/^sPrintFormFileAsPDF=pattern\//, '');
-    activiti.filedownloadPDF(req, res, options);
-  } else {
-    activiti.filedownload(req, res, options);
-  }
-
+  options.query.sPathFile = options.query.sPathFile.replace(/^sPrintFormFileAsPDF=pattern\/|^sPrintFormFileAsIs=pattern\//, '');
+  activiti.filedownload(req, res, options);
 };
 
+/**
+ * https://github.com/e-government-ua/i/issues/1382
+ * added pdf conversion if file name is sPrintFormFileAsPDF
+ */
 exports.upload_content_as_attachment = function (req, res) {
-  activiti.post({
-    path: 'object/file/upload_content_as_attachment',
-    query: {
-      nTaskId: req.params.taskId,
-      sContentType: 'text/html',
-      sDescription: req.body.sDescription,
-      sFileName: req.body.sFileName
+  async.waterfall([
+    function (callback) {
+      if (req.body.sFileName === 'sPrintFormFileAsPDF.pdf') {
+        var options = {
+          html: req.body.sContent,
+          allowLocalFilesAccess: true,
+          paperSize: {
+            format: 'A4', orientation: 'portrait'
+          },
+          fitToPage: true,
+          customHeaders: [],
+          settings: {
+            javascriptEnabled: true
+          },
+          format: {
+            quality: 100
+          }
+        };
+        pdfConversion(options, function (err, pdf) {
+          callback(err, {content: pdf.stream, contentType: 'application/json', url: 'upload_file_as_attachment'});
+        });
+      } else {
+        callback(null, {content: req.body.sContent, contentType: 'text/html', url: 'upload_content_as_attachment'});
+      }
     },
-    headers: {
-      'Content-Type': 'text/html;charset=utf-8'
+    function (data, callback) {
+      if (data.url === 'upload_content_as_attachment') {
+        activiti.post({
+          path: 'object/file/' + data.url,
+          query: {
+            nTaskId: req.params.taskId,
+            sContentType: data.contentType,
+            sDescription: req.body.sDescription,
+            sFileName: req.body.sFileName
+          },
+          headers: {
+            'Content-Type': data.contentType + ';charset=utf-8'
+          }
+        }, function (error, statusCode, result) {
+          error ? res.send(error) : res.status(statusCode).json(result);
+        }, data.content, false);
+      }
+
+      if (data.url === 'upload_file_as_attachment') {
+        activiti.uploadStream({
+          path: 'object/file/' + data.url,
+          taskId: req.params.taskId,
+          stream: data.content,
+          description: req.body.sDescription,
+          headers: {
+            'Content-Type': data.contentType + ';charset=utf-8'
+          }
+        }, function (error, statusCode, result) {
+          pdfConversion.kill();
+          error ? res.send(error) : res.status(statusCode).json(result);
+        });
+      }
     }
-  }, function (error, statusCode, result) {
-    error ? res.send(error) : res.status(statusCode).json(result);
-  }, req.body.sContent, false);
+  ]);
 };
 
 exports.setTaskQuestions = function (req, res) {
@@ -515,11 +536,14 @@ exports.setTaskQuestions = function (req, res) {
 exports.postServiceMessage = function(req, res){
   var oData = req.body;
   var oDateNew = {
-    'sID_Order': config.Back_Region.nID_Server_Back_Region + '-' + oData.nID_Process,
+    'sID_Order': environment.activiti.nID_Server + '-' + oData.nID_Process,
     'sBody': oData.sBody,
-    'nID_SubjectMessageType' : 9
+    'nID_SubjectMessageType' : 9,
+    'sMail': oData.sMail,
+    'soParams': oData.soParams
   };
-  var sURL = config.Back_Central.sURL_Back_Central + '/subject/message/setServiceMessage';
+  var central = environment.activiti_central;
+  var sURL = central.prot + '://' + central.host + ':' + central.port + '/' + central.rest + '/subject/message/setServiceMessage';
   var callback = function(error, response, body) {
     res.send(body);
     res.end();
@@ -527,9 +551,9 @@ exports.postServiceMessage = function(req, res){
   return request.post({
     'url': sURL,
     'auth': {
-    'username': config.Back_Central.sLogin_Back_Central,
-      'password': config.Back_Central.sPassword_Back_Central
-  },
+      'username': central.username,
+      'password': central.password
+    },
     'qs': oDateNew
   }, callback);
 };
@@ -590,36 +614,36 @@ exports.unassign = function (req, res) {
 };
 
 /*
-exports.getTaskData = function(req, res) {
-  var options = {
-    path: 'action/task/getTaskData',
-    query: req.query,
-    json: true
-  };
+ exports.getTaskData = function(req, res) {
+ var options = {
+ path: 'action/task/getTaskData',
+ query: req.query,
+ json: true
+ };
 
-  activiti.get(options, function (error, statusCode, body) {
-    if (error) {
-      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while loading task data', error);
-      res.status(500).send(error);
-      return;
-    }
-    var currentUser = JSON.parse(req.cookies.user);
-    var UserFromStorage = JSON.parse(localStorage.getItem('user'));
-    currentUser.roles = UserFromStorage.roles;
-    // После запуска существует вероятность, что объекта req.session еще не ссуществует и чтобы не вывалилась ошибка
-    // пропускаем проверку. todo: При следующем релизе нужно удалить условие !req.session
-    //var cashedGr = authService.getCashedUserGroups(currentUser);
+ activiti.get(options, function (error, statusCode, body) {
+ if (error) {
+ error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while loading task data', error);
+ res.status(500).send(error);
+ return;
+ }
+ var currentUser = JSON.parse(req.cookies.user);
+ var UserFromStorage = JSON.parse(localStorage.getItem('user'));
+ currentUser.roles = UserFromStorage.roles;
+ // После запуска существует вероятность, что объекта req.session еще не ссуществует и чтобы не вывалилась ошибка
+ // пропускаем проверку. todo: При следующем релизе нужно удалить условие !req.session
+ //var cashedGr = authService.getCashedUserGroups(currentUser);
 
-    if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
-      res.status(200).send(body);
-    else {
-      error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
-      res.status(403).send(error);
-    }
-  });
-};
-*/
-exports.getTaskData = function (req, res){
+ if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
+ res.status(200).send(body);
+ else {
+ error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
+ res.status(403).send(error);
+ }
+ });
+ };
+ */
+exports.getTaskData = function (req, res) {
   var options = {
     path: 'action/task/getTaskData',
     query: req.query,
@@ -629,7 +653,7 @@ exports.getTaskData = function (req, res){
   var currentUser = JSON.parse(req.cookies.user);
 
   var userRoles = authService.getCashedUserGroups(currentUser);
-  if(userRoles){
+  if (userRoles) {
     currentUser.roles = userRoles;
     activiti.get(options, function (error, statusCode, body) {
       if (error) {
@@ -638,7 +662,7 @@ exports.getTaskData = function (req, res){
         return;
       }
 
-      if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
+      if (!req.session || tasksService.isTaskDataAllowedForUser(body, currentUser))
         res.status(200).send(body);
       else {
         error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
@@ -651,15 +675,15 @@ exports.getTaskData = function (req, res){
         activiti.get({
           path: 'action/identity/getGroups',
           query: {
-            sLogin : currentUser.id
+            sLogin: currentUser.id
           },
-          json : true
+          json: true
         }, function (error, statusCode, result) {
           if (error) {
             callback(error, null);
           } else {
             var resultGroups;
-            if((typeof result == "object") && (result instanceof Array)){
+            if ((typeof result == "object") && (result instanceof Array)) {
               currentUser['roles'] = result.map(function (group) {
                 return group.id;
               });
@@ -684,7 +708,7 @@ exports.getTaskData = function (req, res){
         return;
       }
       authService.setCashedUserGroups(currentUser, currentUser.roles);
-      if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
+      if (!req.session || tasksService.isTaskDataAllowedForUser(body, currentUser))
         res.status(200).send(body);
       else {
         error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
@@ -694,7 +718,7 @@ exports.getTaskData = function (req, res){
   }
 };
 
-exports.getMessageFile = function(req, res) {
+exports.getMessageFile = function (req, res) {
   var options = {
     path: 'action/task/getMessageFile_Local',
     query: {
@@ -704,4 +728,31 @@ exports.getMessageFile = function(req, res) {
     json: true
   };
   activiti.filedownload(req, res, options);
+};
+
+exports.setTaskAttachment = function (req, res) {
+  async.waterfall([
+    function (callback) {
+      callback(null, {content: req.body.sContent, contentType: 'text/html', url: 'setTaskAttachment'});
+    },
+    function (data, callback) {
+      if (data.url === 'setTaskAttachment') {
+        activiti.post({
+          path: 'object/file/' + data.url,
+          query: {
+            nTaskId: req.params.taskId,
+            sContentType: data.contentType,
+            sDescription: req.body.sDescription,
+            sFileName: req.body.sFileName,
+            nID_Attach: req.body.nID_Attach
+          },
+          headers: {
+            'Content-Type': data.contentType + ';charset=utf-8'
+          }
+        }, function (error, statusCode, result) {
+          error ? res.send(error) : res.status(statusCode).json(result);
+        }, data.content, false);
+      }
+    }
+  ]);
 };

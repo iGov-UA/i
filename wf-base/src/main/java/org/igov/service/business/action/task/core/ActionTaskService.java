@@ -622,24 +622,38 @@ public class ActionTaskService {
     }
 
     public Attachment getAttachment(String attachmentId, Integer nFile, String processInstanceId) {
-        String st = "Attachment for attachmentId = " + attachmentId  
-                    + " processInstanceId = " + processInstanceId 
-                    + " nFile = " + nFile;
+        String st = "Attachment for attachmentId = " + attachmentId
+                + " processInstanceId = " + processInstanceId
+                + " nFile = " + nFile;
         LOG.info("Find " + st);
         List<Attachment> attachments = oTaskService.getProcessInstanceAttachments(processInstanceId);
+        LOG.info("Attachments list size = " + attachments.size());
         Attachment attachmentRequested = null;
         for (int i = 0; i < attachments.size(); i++) {
+            LOG.info("Check attachment ID = " + attachments.get(i).getId() + "; name = " + attachments.get(i).getName());
             if (attachments.get(i).getId().equalsIgnoreCase(attachmentId) || (null != nFile && nFile.equals(i + 1))) {
+                LOG.info("attachments.get(i).getId().equalsIgnoreCase(attachmentId) = " + attachments.get(i).getId().equalsIgnoreCase(attachmentId));
+                LOG.info("(null != nFile && nFile.equals(i + 1)) = " + (null != nFile && nFile.equals(i + 1)));
                 attachmentRequested = attachments.get(i);
                 break;
             }
         }
+        if (attachmentRequested == null){
+            try{
+                attachmentRequested = oTaskService.getAttachment(attachmentId);
+                LOG.info("Get attachment from taskService ID = " + attachmentRequested.getId() + "; name = " + attachmentRequested.getName());
+            } catch (Exception oException){
+                LOG.info("Attachment not found in task service");
+            }
+        }
         if (attachmentRequested == null && !attachments.isEmpty()) {
+            LOG.info("(attachmentRequested == null && !attachments.isEmpty()) = TRUE");
             attachmentRequested = attachments.get(0);
         }
         if (attachmentRequested == null) {
             throw new ActivitiObjectNotFoundException(st + " not found!");
         }
+        LOG.info("Return attachment whith ID = " + attachmentRequested.getId());
         return attachmentRequested;
     }
 
@@ -1432,19 +1446,20 @@ public class ActionTaskService {
         String sName = ProcessDefinition.getName();
         LOG.info("название услуги (БП) sName={}", sName);
         
-        HistoricProcessInstance HistoricProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().
+        HistoricProcessInstance historicProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().
         		processInstanceId(oHistoricTaskInstance.getProcessInstanceId()).
         		includeProcessVariables().singleResult();
-        String sPlace = HistoricProcessInstance.getProcessVariables().containsKey("sPlace") ? (String) HistoricProcessInstance.getProcessVariables().get("sPlace") : "";
+        String sPlace = historicProcessInstance.getProcessVariables().containsKey("sPlace") ? (String) historicProcessInstance.getProcessVariables().get("sPlace") : "";
         LOG.info("Found process instance with variables. sPlace {}", sPlace);
         
-        ProcessInstanceHistoryLog ProcessInstanceHistoryLog = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
-                nID_Task.toString())).singleResult();
+        //ProcessInstanceHistoryLog ProcessInstanceHistoryLog = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
+        //        nID_Task.toString())).singleResult();
+        
         DateTimeFormatter oDateTimeFormatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
-        Date oDateCreate = ProcessInstanceHistoryLog.getStartTime();
+        Date oDateCreate = historicProcessInstance.getStartTime();
         String sDateCreate = oDateTimeFormatter.print(oDateCreate.getTime());
         LOG.info("дата создания процесса sDateCreate={}", sDateCreate);
-        Date oDateClose = ProcessInstanceHistoryLog.getEndTime();
+        Date oDateClose = historicProcessInstance.getEndTime();
         String sDateClose = oDateClose==null ? null : oDateTimeFormatter.print(oDateClose.getTime());
         LOG.info("дата создания процесса sDateClose={}", sDateClose);
 

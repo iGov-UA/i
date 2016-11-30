@@ -60,7 +60,9 @@ module.exports.getServiceFeedback = function (req, res) {
     'qs': {
       'sID_Token': data.sID_Token || 123,
       'nID_Service': req.params.nID,
-      'nID': data.sID_Order
+      'nID': data.sID_Order,
+      'nID__LessThen_Filter': data.nID__LessThen_Filter,
+      'nRowsMax': data.nRowsMax
     }
   }, callback);
 };

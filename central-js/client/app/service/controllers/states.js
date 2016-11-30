@@ -1,11 +1,17 @@
 angular.module('app')
 .controller('ServiceFormController', function ($scope, service, regions, AdminService,
                                                ServiceService, TitleChangeService, CatalogService,
-                                               $anchorScroll, $rootScope, feedback) {
+                                               $anchorScroll, $rootScope, feedback, statesRepository) {
   $scope.spinner = true;
   $scope.service = service;
   $scope.regions = regions;
   $scope.bAdmin = AdminService.isAdmin();
+
+  if(statesRepository.isKyivCity()){
+    $scope.bHideTab = true;
+  } else {
+    $scope.bHideTab = false;
+  }
 
   //TODO should be refactored after refactoring for single controller for app/service/index.html
   $scope.feedback = feedback;
@@ -32,7 +38,7 @@ angular.module('app')
   $anchorScroll();
 });
 
-angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope, $anchorScroll, TitleChangeService) {
+angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope, $anchorScroll, statesRepository, TitleChangeService) {
   var subscriptions = [];
   messageBusService.subscribe('catalog:update', function (data) {
     $scope.mainSpinner = false;
@@ -41,6 +47,8 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
     $scope.spinner = false;
     $rootScope.rand = (Math.random() * 10).toFixed(2);
   }, false);
+
+  $scope.isKyivCity = !!statesRepository.isKyivCity();
 
   $scope.$on('$destroy', function () {
     subscriptions.forEach(function (item) {
@@ -96,7 +104,7 @@ angular.module('app').controller('OldBusinessController', function ($scope, Admi
   $anchorScroll();
 });
 
-angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce, $anchorScroll, TitleChangeService, $location) {
+angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, statesRepository, $rootScope, $sce, $anchorScroll, TitleChangeService, $location) {
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
 
@@ -123,7 +131,18 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
     $scope.category = $scope.catalog;
   }
   $scope.trustAsHtml = function (string) {
-    return $sce.trustAsHtml(string);
+    if(statesRepository.isKyivCity()){
+      return $sce.trustAsHtml(string.replace(new RegExp('igov.org.ua', 'g'), 'es.kievcity.gov.ua').
+        replace(new RegExp('iGov.org.ua', 'g'), 'es.kievcity.gov.ua').
+        replace(new RegExp('iGOV.org.ua', 'g'), 'es.kievcity.gov.ua').
+        replace(/\b[Ii][Gg][Oo][Vv]\b/g, 'KievCity').
+        replace(new RegExp('es\.kievcity\.gov\.ua\/wf\/', 'g'), 'igov.org.ua/wf/'));
+    } else {
+      return $sce.trustAsHtml(string);
+    }
+  };
+  $scope.goToService = function (nID) {
+    $location.path("/service/"+nID+"/general");
   };
   $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {
@@ -368,35 +387,70 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
     dateFrom = $scope.getTimeInterval($scope.statisticDateBegin);
     dateTo = $scope.getTimeInterval($scope.statisticDateEnd);
     exclude = $scope.sanIDServiceExclude;
+    var sCodepage = 'utf-8';
 
-    ServiceService.getServiceHistoryReport(dateFrom, dateTo, exclude).then(function (res) {
+    ServiceService.getServiceHistoryReport(dateFrom, dateTo, exclude, sCodepage).then(function (res) {
       var resp = res.data;
-      var responseSplited = resp.split(';');
-      var correct = responseSplited[12].split('\n');
-      responseSplited.splice(0, 13, correct[1]);
+      var responseSplited = resp.split(new RegExp(/\n/g));
+      var correct = [];
+      angular.forEach(responseSplited, function (row) {
+        correct.push(row.split(';'));
+      });
+      var columnID = {
+        sID_Order: null,
+        nID_Server: null,
+        nID_Service: null,
+        sID_Place: null,
+        nID_Subject: null,
+        nRate: null,
+        sTextFeedback: null,
+        sUserTaskName: null,
+        sHead: null,
+        sBody: null,
+        nTimeMinutes: null,
+        sPhone: null,
+        nID_ServiceData: null,
+        sDateCreate: null,
+        sDateClose: null
+      };
+      for (var j = 0; j < correct[0].length; j++){
+        columnID = {
+          sID_Order: 'sID_Order' === correct[0][j] ? j : columnID.sID_Order,
+          nID_Server: 'nID_Server' === correct[0][j] ? j : columnID.nID_Server,
+          nID_Service: 'nID_Service' === correct[0][j] ? j : columnID.nID_Service,
+          sID_Place: 'sID_Place' === correct[0][j] ? j : columnID.sID_Place,
+          nID_Subject: 'nID_Subject' === correct[0][j] ? j : columnID.nID_Subject,
+          nRate: 'nRate' === correct[0][j] ? j : columnID.nRate,
+          sTextFeedback: 'sTextFeedback' === correct[0][j] ? j : columnID.sTextFeedback,
+          sUserTaskName: 'sUserTaskName' === correct[0][j] ? j : columnID.sUserTaskName,
+          sHead: 'sHead' === correct[0][j] ? j : columnID.sHead,
+          sBody: 'sBody' === correct[0][j] ? j : columnID.sBody,
+          nTimeMinutes: 'nTimeMinutes' === correct[0][j] ? j : columnID.nTimeMinutes,
+          sPhone: 'sPhone' === correct[0][j] ? j : columnID.sPhone,
+          nID_ServiceData: 'nID_ServiceData' === correct[0][j] ? j : columnID.nID_ServiceData,
+          sDateCreate: 'sDateCreate' === correct[0][j] ? j : columnID.sDateCreate,
+          sDateClose: 'sDateClose' === correct[0][j] ? j : columnID.sDateClose
+        };
+      }
 
       $scope.statistics = [];
       var statistic = {};
 
-      for (var i = 0; i < responseSplited.length; i++) {
-        var n = 12 * i;
-        if (n + 2 > responseSplited.length) {
-          break
-        }
+      for (var i = 1; i < correct.length; i++) {
         statistic = {
-          sID_Order: responseSplited[n],
-          nID_Server: Number(responseSplited[1 + n]),
-          nID_Service: Number(responseSplited[2 + n]),
-          sID_Place: Number(responseSplited[3 + n]),
-          nID_Subject: Number(responseSplited[4 + n]),
-          nRate: Number(responseSplited[5 + n]),
-          sTextFeedback: responseSplited[6 + n],
-          sUserTaskName: responseSplited[7 + n],
-          sHead: responseSplited[8 + n],
-          sBody: responseSplited[9 + n],
-          nTimeMinutes: Number(responseSplited[10 + n]),
-          sPhone: responseSplited[11 + n],
-          nID_ServiceData: ''
+          sID_Order: angular.isNumber(columnID.sID_Order) ? correct[i][columnID.sID_Order] : '',
+          nID_Server: angular.isNumber(columnID.nID_Server) ? Number(correct[i][columnID.nID_Server]) : '',
+          nID_Service: angular.isNumber(columnID.nID_Service) ? Number(correct[i][columnID.nID_Service]) : '',
+          sID_Place: angular.isNumber(columnID.sID_Place) ? Number(correct[i][columnID.sID_Place]) : '',
+          nID_Subject: angular.isNumber(columnID.nID_Subject) ? Number(correct[i][columnID.nID_Subject]) : '',
+          nRate: angular.isNumber(columnID.nRate) ? Number(correct[i][columnID.nRate]) : '',
+          sTextFeedback: angular.isNumber(columnID.sTextFeedback) ? correct[i][columnID.sTextFeedback] : '',
+          sUserTaskName: angular.isNumber(columnID.sUserTaskName) ? correct[i][columnID.sUserTaskName] : '',
+          sHead: angular.isNumber(columnID.sHead) ? correct[i][columnID.sHead] : '',
+          sBody: angular.isNumber(columnID.sBody) ? correct[i][columnID.sBody] : '',
+          nTimeMinutes: angular.isNumber(columnID.nTimeMinutes) ? Number(correct[i][columnID.nTimeMinutes]) : '',
+          sPhone: angular.isNumber(columnID.sPhone) ? correct[i][columnID.sPhone] : '',
+          nID_ServiceData: angular.isNumber(columnID.nID_ServiceData) ? Number(correct[i][columnID.nID_ServiceData]) : ''
         };
 
         $scope.statistics.push(statistic);

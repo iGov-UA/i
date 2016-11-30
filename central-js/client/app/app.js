@@ -47,8 +47,11 @@ angular.module('app', [
   datepickerConfig.formatMonth = 'MMM';
   datepickerConfig.startingDay = 1;
   datepickerPopupConfig.clearText = 'Очистити';
-}).run(function ($rootScope, $state) {
+}).run(function ($rootScope, $state, statesRepository) {
   $rootScope.state = $state;
+  $rootScope.profile = {
+    isKyivCity : !!statesRepository.isKyivCity()
+  };
   $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
     if (error && error.data) {
       console.error('stateChangeError', error.data);

@@ -315,7 +315,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGetCode','38728533')          			
 				execution.setVariable('sVarWhoPayGet','Херсонска філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26008020033416')          			
-				execution.setVariable('sVarSumPay','1023.09')       
+				execution.setVariable('sVarSumPay','997.64')       
 				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}')   			
           	}
           	if (sVarCNAP=='port_Chernomorsk')
@@ -426,6 +426,7 @@ execution.setVariable('sID_Payment', Pay)
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1_yellow"></sequenceFlow>
     <userTask id="usertask1_yellow" name="Перевірка вхідних даних" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sArea" name="Назва порту до якого подана заявка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, то громадянину надсилається лист із реквізитами для сплати"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -474,7 +475,6 @@ execution.setVariable('sID_Payment', Pay)
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/data_seaman.html]" type="invisible" default="Дані громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/data_seaman.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="SUMMA" name="Cумма платежу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="OPERDAYDATE" name="Дата здійснення платежу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
@@ -613,7 +613,7 @@ execution.setVariable('sID_Payment', Pay)
 										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
 										Ви можете перевірити їх у файлі, що додається.<br>
 										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
-										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
+										За відсутності сплати через 5 днів дана заявка буде видалена автоматично, а Ви, протягом наступних 5 днів, отримаєте повідомлення на цю електронну адресу.
 									</p>
 									<p>
 										<b style="color:red">УВАГА!!!</b> Відлік часу для надання послуги починається з моменту зарахування коштів на рахунок ДП "АМПУ".
@@ -622,7 +622,7 @@ execution.setVariable('sID_Payment', Pay)
 										Реквізити для сплати:<br>
 										${sPortRekv}<br>
 										${slabelSum}<br>
-										<b>Призначення платежу:</b> ;sID_Order=[sID_Order];сплата за видачу/обмін посвідчення особи моряка<br>
+										Призначення платежу:<b>;sID_Order=[sID_Order];</b>сплата за видачу/обмін посвідчення особи моряка<br>
 										або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)<br>
 										[paymentButton_LiqPay]
 									</p>
@@ -706,6 +706,7 @@ execution.setVariable('sDate_of_print', timer)</script>
     </sequenceFlow>
     <userTask id="usertask2_green" name="Підготовка до друку" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sArea" name="Назва порту до якого подана заявка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -847,6 +848,7 @@ execution.setVariable('sMoz2', moz2)
     <sequenceFlow id="flow41" sourceRef="scripttask3" targetRef="usertask2_red"></sequenceFlow>
     <userTask id="usertask2_red" name="Друк посвідчення" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sArea" name="Назва порту до якого подана заявка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -945,6 +947,7 @@ execution.setVariable('sMoz2', moz2)
     <sequenceFlow id="flow25" sourceRef="servicetask8" targetRef="usertask3"></sequenceFlow>
     <userTask id="usertask3" name="Очікування візиту громадянина" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sArea" name="Назва порту до якого подана заявка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку паспорту посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -981,6 +984,12 @@ execution.setVariable('sMoz2', moz2)
           <activiti:value id="sNoTake" name="Громадянину відмовлено у видачі документу"></activiti:value>
           <activiti:value id="sMistake" name="Заявка взята в роботу помилково"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asReasonReject" name="Причина відмови" type="enum">
+          <activiti:value id="sYong" name="за посвідченням звернувся заявник, який не досяг шістнадцятирічного віку"></activiti:value>
+          <activiti:value id="sNoDocs" name="заявник не надав усіх документів та інформації, необхідних для видачі посвідчення"></activiti:value>
+          <activiti:value id="sTermLive" name="закінчився термін, протягом якого заявник мав змогу забрати посвідчення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -1032,6 +1041,7 @@ execution.setVariable('sMoz2', moz2)
     <endEvent id="endevent4" name="End"></endEvent>
     <userTask id="usertask4_green" name="Заміна бланку посвідчення" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sArea" name="Назва порту до якого подана заявка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -1170,6 +1180,7 @@ execution.setVariable('sMoz2', moz2)
     <sequenceFlow id="flow52" sourceRef="scripttask7" targetRef="usertask5_red"></sequenceFlow>
     <userTask id="usertask5_red" name="Друк посвідчення після заміни бланку" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sArea" name="Назва порту до якого подана заявка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumber1" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -1355,6 +1366,7 @@ execution.setVariable('sMoz2', moz2)
     <sequenceFlow id="flow58" sourceRef="scripttask9" targetRef="usertask7_red"></sequenceFlow>
     <userTask id="usertask7_red" name="Друк посвідчення після заміни бланку2" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sArea" name="Назва порту до якого подана заявка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumber2" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>

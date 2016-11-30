@@ -12,15 +12,17 @@
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до посадовців якого Ви бажаєте записатись на прийом" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до посадовців якого Ви бажаєте записатись на прийом" type="select" required="true" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sLabelHerson"  name="Зони відповідальності у Херсонському МВК" type="label" default="можна переглянути за &lt;a href=&quot;https://docs.google.com/document/d/1z6oUvwWnzqacgJbfZn3-ogh9f-KwcmvnH-2-LwEnkB0/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="До кого саме Ви маєте намір записатись на прийом" type="enum"></activiti:formProperty>
         <activiti:formProperty id="sPosadaVid" name="До кого саме Ви маєте намір записатись на прийом" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRozkladPriyom" name="Розклад прийому" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Вкажіть день, у який Ви бажаєте записатись на прийом" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMessageText" name="Стислий зміст питання" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk226" name="електронна пошта; для тестування отримання пошти працівником відповідального органу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk226" name="електронна пошта; для тестування отримання пошти працівником відповідального органу" type="string" required="true" default="klimkovichy@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="markers_herson" type="markers" default="${markerService.loadFromFile('ternopol_oda_226_herson.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -96,20 +98,21 @@
         <activiti:formProperty id="sPosadaVid" name="До кого саме записується на прийом громадянин" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Бажаний день прийому" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMessageText" name="Стислий зміст питання" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum">
+        <activiti:formProperty id="decide" name="Рішення про прийняття або відхилення заяви" type="enum" required="true">
           <activiti:value id="accept" name="Записати громадянина"></activiti:value>
           <activiti:value id="reject" name="Скасувати запис"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="lable2" name="Важливо" type="label" default="Будь ласка, внесіть дату прийому у  поле &quot;Призначений день прийому&quot; у разі погодження. Якщо у прийомі відмовлено, у  полі &quot;Призначений день прийому&quot; треба зробити відмітку  &quot;Запис скасовано&quot; "></activiti:formProperty>
-        <activiti:formProperty id="visitDay1" name="Призначений день прийому" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDay1" name="Призначений день прийому" type="date"></activiti:formProperty>
         <activiti:formProperty id="NumbPers" name="Номер особи в черзі" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі або додайте коментар стосовно прийому при запрошенні громадянина" type="textArea" default=" "></activiti:formProperty>
+        
+        <activiti:formProperty id="markers" name="markers_required" type="markers" default="${markerService.loadFromFile('ternopol_oda_226.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow3" name="${proverka=='reject'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverka=='reject'}]]></conditionExpression>
+    <sequenceFlow id="flow3" name="${decide=='reject'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="Відмова у реєстрації звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -149,8 +152,8 @@
       </extensionElements>
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow4" name="${proverka=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverka=='accept'}]]></conditionExpression>
+    <sequenceFlow id="flow4" name="${decide=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask3" name="Лист з запрошенням" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -205,12 +208,14 @@
         <activiti:formProperty id="sMessageText" name="Стислий зміст питання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vizit" name="Результат розгляду" type="enum">
+        <activiti:formProperty id="vizit" name="Результат розгляду" type="enum" required="true">
           <activiti:value id="ok" name="Вирішено позитивно"></activiti:value>
           <activiti:value id="ok1" name="Надано роз’яснення"></activiti:value>
           <activiti:value id="nejav2" name="Відмовлено"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
+      
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow19" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
@@ -270,7 +275,11 @@
              </p>
              [pattern/mail/_common_signature_start.html]
              ${sNameOrgan}</p>
-             [pattern/mail/_common_footer.html]]]></activiti:expression>
+             [pattern/mail/_common_signature_end.html]
+             [pattern/mail/_common_feedback.html]
+             [pattern/mail/_common_footer.html]]]>
+             
+            </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>

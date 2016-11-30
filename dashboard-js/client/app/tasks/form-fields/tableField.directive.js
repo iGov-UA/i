@@ -5,4 +5,4 @@ angular.module('dashboardJsApp')
       restrict: 'E',
       templateUrl: 'app/tasks/form-fields/tableField.html'
     };
-  });
+});

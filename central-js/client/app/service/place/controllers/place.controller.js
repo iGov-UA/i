@@ -14,6 +14,7 @@ angular.module('app').controller('PlaceController',
             isLoggedIn,
             regions,
             service,
+            statesRepository,
             feedback) {
 
     var self = this;
@@ -26,6 +27,12 @@ angular.module('app').controller('PlaceController',
     $scope.$location = $location;
     $scope.bAdmin = AdminService.isAdmin();
     $scope.state = $state.get($state.current.name);
+
+    if(statesRepository.isKyivCity()){
+      $scope.bHideTab = true;
+    } else {
+      $scope.bHideTab = false;
+    }
 
     //TODO should be removed after refactoring for single controller for app/service/index.html
     $scope.feedback = feedback;
@@ -60,7 +67,7 @@ angular.module('app').controller('PlaceController',
       var isStaying = !stateToGo
         || ($state.current.name === stateToGo)
         || $state.current.name === 'index.service.general.place.built-in.bankid'
-        || $state.current.name === 'index.service.general.place.built-in.bankid.submitted'
+        || $state.current.name === 'index.service.general.place.built-in.bankid.submitted';
       return {isStaying: isStaying, isLoggedIn: false};
     }
 
@@ -96,17 +103,16 @@ angular.module('app').controller('PlaceController',
           }
         });
 
-        // console.info('PROCESS Place сhange, $state:', $state.current.name, ', to go:', stateToGo);
-        if (isPlaceChoosingState($state) && isNewPlace(region, city) && isLoggedIn) {
-          isChangeInProcess = true;
-          $state.go('index.service.general.place.built-in.bankid', getBuiltInBankIDStateParams()).finally(function () {
-            isChangeInProcess = false;
-          });
-        } else if (!isStayingOnCurrentState($state, stateToGo).isStaying) {
+        if (!isStayingOnCurrentState($state, stateToGo).isStaying) {
           isChangeInProcess = true;
           $state.go(stateToGo, {id: oService.nID}, {location: false}).finally(function () {
             isChangeInProcess = false;
           })
+        } else if (isPlaceChoosingState($state) && isNewPlace(region, city) && isLoggedIn) {
+          isChangeInProcess = true;
+          $state.go('index.service.general.place.built-in.bankid', getBuiltInBankIDStateParams()).finally(function () {
+            isChangeInProcess = false;
+          });
         } else {
           isChangeInProcess = false;
         }

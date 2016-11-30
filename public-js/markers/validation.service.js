@@ -42,7 +42,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
   };
 
   /**
-   * Основний метод валідації. Призначає валідатори полям форми form (за назвами полів з параметру markers),
+   * Основний метод валідації. Призначає валідатори полям форми form (за назвами полів та типами з параметру markers),
    * а також проводить першу валідіацію, якщо параметр immediateValidation === true;
    *
    * Параметри:
@@ -72,10 +72,10 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     // поместил в проверку тк ранее при сабмите, если параметр data не передавали, formData не могла взять параметры с undefined
     // и были ошибки
     if (data) {
-      self.oFormDataParams = data.formData.params || {};
+      self.oFormDataParams = data || {};
     }
 
-    angular.forEach(markers.validate, function (marker, markerName) {
+    	angular.forEach(markers.validate, function (marker, markerName) {
       /*
       var isOrganJoinInclude = false;
       var isOrganNoInclude = true;
@@ -96,7 +96,19 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 */
       angular.forEach(form, function (formField) {
 
-        self.setValidatorByMarker(marker, markerName, formField, immediateValidation, false, newRow);
+    	  try { 
+    		  self.setValidatorByMarker(marker, markerName, formField, immediateValidation, false, newRow);
+    	  } 
+    	  catch(e) {
+
+    		  if(formField != null && formField.$name != null) { 
+        		  console.log("Marker " + markerName + " mistake to formField=" + formField.$name + " - " + e); 
+    		  }
+    		  else {
+    			  console.log("Marker " + markerName + " mistake - " + e);
+    		  } 
+
+    	  }
       });
     });
   };
@@ -125,13 +137,34 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
   self.setValidatorByMarker = function (marker, markerName, formField, immediateValidation, forceValidation, newRow) {
 
     markerName = self.trimMarkerName(markerName);
-
+    
+    var formFieldType = ""; //angular.element(formField).attr("ng-switch-when"); 
     var keyByMarkerName = self.validatorNameByMarkerName[markerName];
-    var fieldNameIsListedInMarker = formField && formField.$name && _.indexOf(marker.aField_ID, formField.$name) !== -1;
-    var existingValidator = formField && formField.$validators && formField.$validators[keyByMarkerName];
 
+    var fieldNameIsListedInMarker = false;
+    var fieldTypeIsListedInMarker = false;
+    var existingValidator = false; 
+    
+    if((formField != null) && (formField.$name != null)) { 
+    
+    	fieldNameIsListedInMarker = (formField != null) && (formField.$name != null) && (_.indexOf(marker.aField_ID, formField.$name) !== -1);
+
+    	var element = document.getElementsByName(formField.$name); 
+    	if( element.length > 0 && element[0].attributes["ng-switch-when"] != null) {
+    		formFieldType = element[0].attributes["ng-switch-when"].value;
+    	}
+
+    	fieldTypeIsListedInMarker = (formField != null) && (formFieldType != null) && (_.indexOf(marker.aField_Type, formFieldType) !== -1); 
+    	
+    	existingValidator = (formField != null) && formField.$validators && formField.$validators[keyByMarkerName];
+
+    }
+
+    if(formField && (fieldNameIsListedInMarker || fieldTypeIsListedInMarker) ) 
+    	console.log( markerName + " formField.$name=" + formField.$name + " formField.attributes[ng-switch-when]=" + formFieldType + " fieldNameIsListedInMarker=" + fieldNameIsListedInMarker + " fieldTypeIsListedInMarker=" + fieldTypeIsListedInMarker );
+   
     // для того чтобы валидация работала в таблице, нужно добраться до полей, вводится доп проверка.
-    if(!fieldNameIsListedInMarker) {
+    if(!fieldNameIsListedInMarker && !fieldTypeIsListedInMarker) {
       angular.forEach(formField, function (field) {
         if(typeof field === 'object') {
           if(newRow) field = formField;
@@ -166,7 +199,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       })
     }
     // Встановлюємо валідатор Angular - тільки для поля, що згадується у маркері валідації, і тільки один раз.
-    if ((fieldNameIsListedInMarker /* || forceValidation */ ) && !existingValidator) {
+    if (( (fieldNameIsListedInMarker || fieldTypeIsListedInMarker) /* || forceValidation */ ) && !existingValidator) {
 
       // запам'ятовуємо опції маркера щоб передати параметри типу sMessage, sFormat, bFuture, bLess, nDays ітн.
       var markerOptions = angular.copy(marker) || {};
@@ -189,7 +222,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         // використати існуючий валідатор
         self.setValidatorByMarker(marker, markerOptions.inheritedValidator, formField, immediateValidation, true);
       }
-    } else if (fieldNameIsListedInMarker && existingValidator) {
+    } else if ( ( fieldNameIsListedInMarker || fieldTypeIsListedInMarker ) && existingValidator) {
       if (immediateValidation === true) {
         formField.$validate();
       }
@@ -216,8 +249,18 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     CustomFormat: 'CustomFormat',
     FileSign: 'FileSign',
     FileExtensions: 'FileExtensions',
-    FieldNotEmptyAndNonZero: 'FieldNotEmptyAndNonZero'
+    FieldNotEmptyAndNonZero: 'FieldNotEmptyAndNonZero',
+    LongNumber: 'long',
+    DoubleNumber: 'double',
+    StringRange: 'string'
   };
+
+  // Масив валідаторів за типом поля 
+  self.validatorNameByType = { 
+		  long: 'LongNumber',
+		  double: 'DoubleNumber',
+		  string: 'StringRange'
+  }; 
 
   /**
    * Отримати замикання функції-валідатора за назвою маркера валідації
@@ -589,7 +632,143 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
       return bValid;
     },
+    
+    /**
+     * 'StringRange' - строка з визначеною довжиною
+     * @Author ushatel 
+     *   
+     * StringRange: { // Строка з визначеною довжиною  
+     * 		aField_ID: ['string'],
+     * 		nMin: 1, 
+     * 		nMax: 3, 
+     * 		sMessage: '' 
+     * }  
+     */
+    'StringRange': function( modelValue, viewValue, options ) {
+    	
+    	if((modelValue === null) || modelValue === '') { 
+    		return true; 
+    	} 
+    	
+    	if(!options ) {
+    		return false; 
+    	}
 
+    	if(options.nMin === null || (options.nMax != null && options.nMin > options.nMax)) { 
+    		options.nMin = 0; 
+    	}
+
+    	if(options.nMax === null || (options.nMin != null && options.nMin > options.nMax)) { 
+    		options.nMax = 200; 
+    	}
+
+    	var bValid = modelValue.length >= options.nMin && modelValue.length <= options.nMax;  
+
+    	if(bValid === null || bValid === false) { 
+    		options.lastError = options.sMessage || ("Довжина строки має бути від '" + options.nMin + "' до '" + options.nMax + "'"); 
+    	}
+
+    	if(!bValid) {
+    		console.log("StringRange verification not passed '"+ modelValue +"' : " + options.lastError );
+    	}
+    	
+    	return bValid; 
+    },
+    
+    /**
+     * 'LongNumber' - неподільне число 
+     * @Author ushatel 
+     * 
+     * Текст помилки: options.sMessage або 'Число має бути між ' + options.nMin + ' та ' + options.nMax;  
+     * Формат маркера: 
+     * 
+     * LongNumber: { // Неподільне в діапазоні 
+     * 		aField_ID: ['long'],
+     * 		aField_Type: ['long'], 
+     * 		nMin: 1, 
+     * 		nMax: 3, 
+     * 		sMessage: '' 
+     * } 
+     */
+    'LongNumber': function(modelValue, viewValue, options) { 
+
+    	if(modelValue === null || modelValue === '') {
+    		return true;
+    	}
+    	
+    	if(!options) { 
+    		return false; 
+    	}
+    	
+    	if(options.nMin === null || ( options.nMax != null && options.nMax < options.nMin )) {
+    		options.nMin = 0; 
+    	}
+
+
+    	if(options.nMax === null || ( options.nMin != null && options.nMin > options.nMax )) { 
+    		options.nMax = Number.MAX_VALUE;
+    	}
+    	
+    	var bValid = (parseFloat(modelValue) - Math.floor(modelValue) == 0) && (parseInt(modelValue) >= options.nMin) && (parseInt(modelValue) <= options.nMax);
+    	
+    	if(bValid === null || bValid === false) {
+    		options.lastError = options.sMessage || ('Неподільне число між ' + options.nMin + ' та ' + options.nMax); 
+    	}   	
+    	
+    	if(!bValid) {
+    		console.log( "LongNumber verification not passed for '" + modelValue + "' : " + options.lastError );
+    	}
+    	
+    	return bValid; 
+    }, 
+    
+    /** 
+     * 'DoubleNumber' - подільне число
+     * @Author ushatel 
+     *  
+     * Текст помилки: options.sMessage або 'Подільне число має бути між ' + options.nMin + ' та ' + options.nMax;   
+     * 
+     * DoubleNumber: { // Подільне в діапазоні 
+     * 		aField_ID: ['double'],
+     * 		aFiled_Type: ['double'],
+     * 		nMin: 1, 
+     * 		nMax: 10000000, 
+     * 		sMessage: '' 
+     * } 
+     */
+    'DoubleNumber': function(modelValue, viewValue, options) { 
+    	
+    	if((modelValue === null) || modelValue == '') {
+    		return true;
+    	}
+    	
+    	if(!options) {
+    		return false;
+    	}
+    	
+    	if(options.nMin === null || ( options.nMax != null && options.nMax < options.nMin ) ) { 
+    		options.nMin = 0;
+    	}
+    	
+    	if(options.nMax === null || ( options.nMin != null && options.nMin > options.nMax ) ) { 
+    		options.nMax = 10000000;  
+    	}
+    	
+    	var parsedFloat = parseFloat(modelValue); 
+    	
+    	var bValid = (parsedFloat - Math.floor(modelValue) != 0) && (parsedFloat > options.nMin) && (parsedFloat < options.nMax);   
+
+    	if(bValid === null || bValid === false) { 
+    		options.lastError = options.sMessage || ('Подільне число має бути між ' + options.nMin + ' та ' + options.nMax); 
+    	}
+    	
+    	if(!bValid) {
+    		console.log("DoubleNumber verification not passed '" + modelValue + "' : " + options.lastError); 
+    	}
+
+    	return bValid; 
+    }, 
+    
     /**
      'NumberBetween' - тільки цифри, максимум 3
      Текст помилки: options.sMessage або 'Число має бути між ' + options.nMin + ' та ' + options.nMax;
@@ -772,12 +951,15 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
       var params = self.oFormDataParams;
       for(var paramObj in params) if (params.hasOwnProperty(paramObj)){
-        if(params[paramObj].value && params[paramObj].value.id && params[paramObj].fileName){
-          if(modelValue.id === params[paramObj].value.id){
-            sFileName = params[paramObj].fileName;
-            break;
-          }
-        }
+        if(params[paramObj].value && params[paramObj].fileName){
+            if(modelValue.id === params[paramObj].value.id){
+              sFileName = params[paramObj].fileName;
+              break;
+            } else if (modelValue.id === params[paramObj].value) {
+              sFileName = params[paramObj].fileName;
+              break;
+            }
+        }      
       }
 
       var aExtensions = options.saExtension.split(',');

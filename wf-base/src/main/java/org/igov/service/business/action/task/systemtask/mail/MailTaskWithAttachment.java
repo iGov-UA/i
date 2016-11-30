@@ -46,7 +46,11 @@ public class MailTaskWithAttachment extends Abstract_MailTaskCustom {
             if(nAt>=0){
                 sExt = sFileName.substring(nAt);
             }
-            sFileName = "Attach_"+oAttachment.getId()+sExt; //
+            
+            if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml") && !sFileName.toLowerCase().endsWith(".rpl")) {
+                sFileName = "Attach_"+oAttachment.getId()+sExt; //
+            }
+            
             sFileExt = oAttachment.getType();
             oInputStream_Attachment = oExecution.getEngineServices().getTaskService()
                     .getAttachmentContent(oAttachment.getId());

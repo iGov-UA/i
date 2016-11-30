@@ -230,6 +230,17 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       }
 
+      // todo file in table
+      // function fixFileInTable (prop) {
+      //   angular.forEach(prop.aRow, function (fields) {
+      //     angular.forEach(fields.aField, function (item, key, obj) {
+      //       if(item.type === 'file' && item.props) {
+      //         obj[key].value = item.props.value.id;
+      //       }
+      //     })
+      //   })
+      // }
+
       iGovMarkers.validateMarkers(formFieldIDs);
       //save values for each property
       $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
@@ -263,6 +274,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
         angular.forEach($scope.activitiForm.formProperties, function (prop) {
           if (prop.type === 'table') {
+            // fixFileInTable(prop);
             $scope.data.formData.params[prop.id].value = prop;
           }
         });
@@ -341,7 +353,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       $scope.validateForm = function (form) {
         var bValid = true;
-        ValidationService.validateByMarkers(form, null, true, this.data);
+        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {});
         return form.$valid && bValid;
       };
 
@@ -653,8 +665,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         var b = FieldMotionService.FieldMentioned.inRequired(property.id) ?
             FieldMotionService.isFieldRequired(property.id, $scope.data.formData.params) : property.required;
         if($scope.data.formData.params[property.id] instanceof SignFactory){
-          $scope.sign.checked = b;
           $scope.isSignNeededRequired = b;
+          if(!($scope.isSignNeeded && !$scope.isSignNeededRequired)){
+            $scope.sign.checked = b;
+          }
         }
         return b;
       };
@@ -745,12 +759,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         return true;
       };
 
+      $scope.isShowFillSelfPrevious = false;
       $scope.fillSelfPrevious = function () {
 
         $http.get('/api/order/getStartFormByTask', {
           params: {
             nID_Service: oService.nID,
-            sID_UA: oServiceData.oPlaceRoot ? oServiceData.oPlaceRoot.sID_UA : oServiceData.oPlace.sID_UA
+            sID_UA: oServiceData.oPlaceRoot ? oServiceData.oPlaceRoot.sID_UA : oServiceData.oPlace ? oServiceData.oPlace.sID_UA : ''
           }
         }).then(function (response) {
           var bFilled = $scope.bFilledSelfPrevious();
@@ -763,7 +778,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               var property = $scope.data.formData.params[key];
 
               if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)) {
-
+            	$scope.isShowFillSelfPrevious = true;
                 if (oField && oField !== null
                     && oField.type !== "file"
                     && oField.type !== "label"
@@ -823,10 +838,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         $rootScope.isFileProcessUploading.bState = !$rootScope.isFileProcessUploading.bState;
         console.log("Switch $rootScope.isFileProcessUploading to " + $rootScope.isFileProcessUploading.bState);
       };
-
-      if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
-        $scope.fillSelfPrevious();
-      }
 
       // відображення напису про необхідність перевірки реєстраційних данних, переданих від BankID
       $scope.isShowMessageRequiringToValidateUserData = function () {
@@ -931,4 +942,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       $scope.isFieldWritable = function (field) {
         return TableService.isFieldWritable(field);
       };
+
+      if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
+        $scope.fillSelfPrevious();
+      }
     });

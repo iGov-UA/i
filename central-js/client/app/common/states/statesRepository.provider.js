@@ -73,7 +73,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
 
     if (domen.split(':')[0] !== 'localhost') {
-      if (domen.indexOf('kievcity') >= 0) {
+      if (domen.indexOf('kievcity') >= 0 || domen.indexOf('kiev.test.') >= 0 || domen.indexOf('test.kiev.') >= 0) {
         //https://es.kievcity.gov.ua
         this.mode = 'kyiv';
         //this.mode = modes.kyiv;
@@ -123,6 +123,14 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     return this.mode === 'local' || this.mode === 'igov';
   };
 
+  this.isKyivCity = function () {
+    return this.mode === 'kyiv';
+  };
+
+  this.isDFS = function () {
+    return this.mode === 'dfs';
+  };
+
   var getHeader = function (mode) {
     var hdr;
     if (!!modes[mode]) {
@@ -159,6 +167,12 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
         footer: {
           templateUrl: getFooter(this.mode),
           controller: 'FooterController'
+        }
+      },
+      resolve: {
+        title: function () {
+          var title = selfProvider.isKyivCity() ? '' : 'iGov – ';
+          $('title').html(title + 'Портал державних послуг');
         }
       }
     };
@@ -242,6 +256,14 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
   StatesRepository.prototype.isCentral = function () {
     return selfProvider.isCentral();
+  };
+
+  StatesRepository.prototype.isKyivCity = function () {
+    return selfProvider.isKyivCity();
+  };
+
+  StatesRepository.prototype.isDFS = function () {
+    return selfProvider.isDFS();
   };
 
   this.$get = [function StatesRepositoryFactory() {

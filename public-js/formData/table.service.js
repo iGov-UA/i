@@ -23,19 +23,26 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
                         }
                         item.sFieldNotes = sFieldNotes;
 
+                        var isExecutorSelect = item.name.split(';')[2];
+
                         if (item.type === 'date') {
                             obj[key].props = DatepickerFactory.prototype.createFactory();
-                        }else if (item.type === 'select' || item.type === 'string') {
+                        }else if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
                             var match;
                             if (((match = item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/)))
-                                ||(item.type == 'select' && (match = item.id.match(/^s(Country)(_(\d+))?/)))) {
-                                if (autocompletesDataFactory[match[1]]) {
+                                ||(item.type == 'select' && (match = item.id.match(/^s(Country)(_(\d+))?/))) || isExecutorSelect) {
+                                if (match && autocompletesDataFactory[match[1]] && !isExecutorSelect) {
                                     item.type = 'select';
                                     item.selectType = 'autocomplete';
                                     item.autocompleteName = match[1];
                                     if (match[2])
                                         item.autocompleteName += match[2];
                                     item.autocompleteData = autocompletesDataFactory[match[1]];
+                                } else if (!match && isExecutorSelect) {
+                                    item.type = 'select';
+                                    item.selectType = 'autocomplete';
+                                    item.autocompleteName = 'SubjectRole';
+                                    item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
                                 }
                             }
                         }
@@ -90,9 +97,9 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
      */
 
     this.isFieldWritable = function (field) {
-        if(!field){
-            return true
-        } else {
+        if(!field) {
+            return true;
+        } else{
             if(typeof field === 'string' || field instanceof String) {
                 if(field === 'true') return true;
                 if(field === 'false') return false;
@@ -100,6 +107,23 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
                 return field;
             }
         }
+    };
+
+    /*
+    * проверка поля таблицы на видимость. принцип как и isFieldWritable
+    * todo обьединить в общую функцию.
+     */
+    this.isVisible = function (field) {
+      if('bVisible' in field) {
+          if(typeof field === 'string' || field instanceof String) {
+              if(field === 'true') return true;
+              if(field === 'false') return false;
+          } else if (typeof field === 'boolean') {
+              return field;
+          }
+      } else {
+          return true;
+      }
     };
 
     /*

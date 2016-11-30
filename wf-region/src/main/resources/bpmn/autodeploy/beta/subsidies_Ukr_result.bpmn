@@ -16,6 +16,7 @@
           <activiti:value id="Enum1" name="Так"></activiti:value>
           <activiti:value id="Enum2" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="SubsReqv" name="Внесіть відомості щодо попередньої субсидії: номер, або дату звернення; за наявності" type="string"></activiti:formProperty>
         <activiti:formProperty id="rName" name="номер р-на соцзащиты" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="group" name="група" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
@@ -24,60 +25,62 @@
         <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nArea" name="Графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="result" name="ОБОВ'ЯЗКОВО додайте файл з розрахунком, якщо субсидію призначено" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="прячем резалт" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'картошечка'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Лист-привітання громадянина" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: Отримання інформації про призначення субсидії на оплату житлово-комунальних послуг</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: Отримання інформації про призначення субсидії на оплату житлово-комунальних послуг]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
-			Ваше звернення №[sID_Order] щодо отримання інформації про призначення субсидії на оплату житлово-комунальних послуг успішно зареєстроване.&lt;br /&gt;
-			Ви отримаєте відповідь протягом п'яти робочих днів.
-			&lt;/p&gt;
-			&lt;p&gt;Контакти підрозділу соцзахисту, яке буде займатися обробкою Вашого звернення:&lt;/p&gt;
-			&lt;p&gt;${sNameOrgan}.&lt;br /&gt;
-			${sAddress}&lt;br /&gt;
-			${sWorkTime}&lt;br /&gt;
-			${sPhoneOrgan}&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+			Ваше звернення №[sID_Order] щодо отримання інформації про призначення субсидії на оплату житлово-комунальних послуг успішно зареєстроване.<br />
+			Ви отримаєте відповідь протягом найближчого часу.
+			</p>
+			<p>Контакти підрозділу соцзахисту, яке буде займатися обробкою Вашого звернення:</p>
+			<p>${sNameOrgan}.<br />
+			${sAddress}<br />
+			${sWorkTime}<br />
+			${sPhoneOrgan}</p>
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
+			${sNameOrgan}<br />
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>tanyazol@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Отримання інформації про призначення субсидії на оплату житлово-комунальних послуг. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Отримання інформації про призначення субсидії на оплату житлово-комунальних послуг. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -94,6 +97,7 @@
           <activiti:value id="Enum1" name="Так"></activiti:value>
           <activiti:value id="Enum2" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="SubsReqv" name="Відомості щодо попередньої субсидії: номер, або дата звернення, за наявності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Заявнику призначено субсидію?" type="enum" required="true">
@@ -101,10 +105,12 @@
           <activiti:value id="Enum2" name="Заява на субсидію в процесі опрацювання"></activiti:value>
           <activiti:value id="Enum3" name="Субсидія не призначалась"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="result" name="ОБОВ'ЯЗКОВО додайте файл з розрахунком, якщо субсидію призначено" type="file"></activiti:formProperty>
+        <activiti:formProperty id="result" name="ОБОВ'ЯЗКОВО додайте файл з розрахунком, якщо субсидію призначено" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="required" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="прячем резалт" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal_2&quot;},&quot;sCondition&quot;:&quot;[sClient] != 'картошечка'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -116,32 +122,33 @@
     <serviceTask id="servicetask3" name="Скан розрахунку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Отримання інформації про призначення субсидії на оплату житлово-комунальних]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Результат Вашого звернення з приводу призначення субсидії знаходиться у прикріпленому нижче файлі.&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Результат Вашого звернення з приводу призначення субсидії знаходиться у прикріпленому нижче файлі. (Якщо прикріплений файл відсутній, просимо звернутись у  <a href="https://goo.gl/jUqX3p">форму технічної підтримки,</a>  вказавши номер звернення і район, до якого подавалась заявка)</p>
 			[pattern/mail/_common_signature_start.html]
-			&lt;p&gt;${sNameOrgan}&lt;br /&gt;
-			&lt;/p&gt;
+			<p>${sNameOrgan}<br />
+			</p>
             [pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+            [pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${result}</activiti:expression>
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -151,32 +158,34 @@
     <serviceTask id="servicetask4" name="В процесі обробці" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA["   "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Отримання інформації про призначення субсидії на оплату житлово-комунальних]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Ваше звернення з приводу призначення субсидії знаходиться в опрацюванні.&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Ваше звернення з приводу призначення субсидії знаходиться в опрацюванні, інформація про суму субсидії відсутня в системі. 
+			Ви можете подати повторну <a href="https://igov.org.ua/service/21/general" target="_blank">заяву</a> на отримання інформації про субсидію через 2-4 тижні.</p>
 			[pattern/mail/_common_signature_start.html]
-			&lt;p&gt;${sNameOrgan}&lt;br /&gt;
-			&lt;/p&gt;
+			<p>${sNameOrgan}<br />
+			</p>
             [pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+            [pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -186,32 +195,33 @@
     <serviceTask id="servicetask6" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA["  "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Отримання інформації про призначення субсидії на оплату житлово-комунальних]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними УПСЗН субсидія не призначалась.&lt;/p&gt;
-			&lt;p&gt;За необхідності Ви можете подати дані на призначення субсидіі  на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>За даними УПСЗН субсидія не призначалась.</p>
+			<p>За необхідності Ви можете подати дані на призначення субсидіі  на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
 			[pattern/mail/_common_signature_start.html]
-			&lt;p&gt;${sNameOrgan}&lt;br /&gt;&lt;/p&gt;
+			<p>${sNameOrgan}<br /></p>
             [pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+            [pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

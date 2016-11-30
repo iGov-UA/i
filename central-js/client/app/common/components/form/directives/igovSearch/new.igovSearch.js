@@ -1,11 +1,11 @@
 angular.module('app')
   .directive("newIgovSearch", ['CatalogService', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', '$filter', 'messageBusService', 'stateStorageService', 'AdminService', '$state', '$stateParams', '$rootScope',
-    function(CatalogService, statesRepository, RegionListFactory, LocalityListFactory, $filter, messageBusService, stateStorageService, AdminService, $state, $stateParams, $rootScope) {
+    function (CatalogService, statesRepository, RegionListFactory, LocalityListFactory, $filter, messageBusService, stateStorageService, AdminService, $state, $stateParams, $rootScope) {
       var directive = {
         restrict: 'E',
         scope: {},
         templateUrl: 'app/common/components/form/directives/igovSearch/new.igovSearch.html',
-        link: function($scope, $el, $attr) {
+        link: function ($scope, $el, $attr) {
           var fullCatalog = [];
           var subscriptions = [];
           var sID_Order_RegExp = /^\d$|^\d-$|^\d-\d+$/;
@@ -20,6 +20,7 @@ angular.module('app')
           $scope.localityList = new LocalityListFactory();
           $scope.operators = [];
           $scope.check = false;
+          $scope.isColumnStyleView = !!statesRepository.isDFS();
           $scope.mainSearchView = false;
           $scope.catalogCounts = {};
 
@@ -54,28 +55,32 @@ angular.module('app')
             if ($scope.bShowExtSearch && $scope.data.region !== null && $scope.data.region !== "") {
               var places = [$scope.data.city === null ? $scope.data.region : ''].concat($scope.data.city === null ? $scope.data.region.aCity : $scope.data.city);
 
-              result = places.map(function(e) { return e.sID_UA; });
+              result = places.map(function (e) {
+                return e.sID_UA;
+              });
             } else {
               result = statesRepository.getIDPlaces();
             }
             return result;
           }
+
           function updateCatalog(ctlg) {
             $scope.catalog = ctlg;
             if ($scope.operator == -1) {
               // временно для старого бизнеса, после реализации тегов - удалить.
-              if($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
+              if ($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
                 $scope.operators = CatalogService.getOperatorsOld(ctlg);
-              }else {
+              } else {
                 $scope.operators = CatalogService.getOperators(ctlg);
               }
             }
             messageBusService.publish('catalog:update', ctlg);
           }
+
           // получаем к-во услуг готовых/скоро/в работе
-          function getCounts (category) {
-            var countCategory = category && category.aService ? category : 'business';
-            if(countCategory === 'business') {
+          function getCounts(category) {
+            var countCategory = category && category.aService || category && category[0].aService ? category : 'business';
+            if (countCategory === 'business') {
               CatalogService.getModeSpecificServices(null, "", false, countCategory).then(function (res) {
                 $scope.catalogCounts = CatalogService.getCatalogCounts(res)
               })
@@ -83,13 +88,14 @@ angular.module('app')
               $scope.catalogCounts = CatalogService.getCatalogCounts(countCategory)
             }
           }
-          getCounts ();
+
+          getCounts();
 
           function isFilterActive() {
             $rootScope.mainSearchView = !!(($state.is('index') || $state.is('index.catalog')) && $scope.data.region);
           }
 
-          $scope.search = function() {
+          $scope.search = function () {
             if (sID_Order_RegExp.test($scope.sSearch)) {
               return null;
             }
@@ -100,51 +106,71 @@ angular.module('app')
             $scope.catalog = [];
             $scope.category = $stateParams.catID;
             $scope.subcategory = $stateParams.scatID;
-            if($state.is('index.situation')){
+            if ($state.is('index.situation')) {
               $scope.situation = $stateParams.sitID;
               // поиск для старого бизнеса, когда будут доработаны теги в новом - удалить.
             } else if ($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
               $scope.category = 'business';
             }
-            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID, $rootScope.mainFilterCatalog).then(function (result) {
-              if(!$state.is('index')
-                  && !$state.is('index.catalog') && !$state.is("index.oldbusiness") && !$state.is("index.subcategory")) {
+
+            var sID_SubjectOwner = !!statesRepository.isDFS() ? 'SFS' : null;
+
+            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID, $rootScope.mainFilterCatalog, sID_SubjectOwner).then(function (result) {
+              console.log('========== debagger ==========');
+
+              console.log("Start set full catalog logic;");
+              if (!$state.is('index')
+                && !$state.is('index.catalog') && !$state.is("index.oldbusiness") && !$state.is("index.subcategory")) {
+                console.log('var 1');
                 fullCatalog = result[0];
-              }else if($state.is("index.oldbusiness") && result.length === 1 && result[0].aSubcategory.length > 0) {
+              } else if ($state.is("index.oldbusiness") && result.length === 1 && result[0].aSubcategory.length > 0) {
+                console.log('var 2');
                 fullCatalog = result[0];
               } else {
+                console.log('var 3');
                 fullCatalog = result;
               }
+
+              console.log('Start updating catalog') ;
               if ($scope.bShowExtSearch || $scope.getOrgan) {
+                console.log('var 1');
                 $scope.filterByExtSearch();
               } else if ($scope.check) {
                 updateCatalog(angular.copy(fullCatalog));
+                console.log('var 2');
                 $scope.check = false;
               } else {
+                console.log('var 3');
                 updateCatalog(angular.copy(fullCatalog));
               }
-              if(result.length === 0) {
+
+              if (result.length === 0) {
+                console.log('result.length == 0');
                 $rootScope.wasSearched = true;
               }
+              console.log('========== debagger ==========');
+              debugger;
+
               $rootScope.resultsAreLoading = false;
               getCounts(fullCatalog);
             });
           };
+
           $scope.searching = function () {
             // проверка на минимальне к-во символов в поисковике (искать должно от 3 символов)
-            if($scope.sSearch.length >= 3 && $state.is("index.oldbusiness")) {
+            if ($scope.sSearch.length >= 3 && $state.is("index.oldbusiness")) {
               // после реализации тегов в бизнесе - удалить.
               $rootScope.busSpinner = true;
               $scope.overallSearch();
               $rootScope.mainSearchView = true;
               $rootScope.valid = true;
-            } else if($scope.sSearch.length >= 3 && ($state.is("index") || $state.is("index.catalog"))) {
+            } else if ($scope.sSearch.length >= 3 && ($state.is("index") || $state.is("index.catalog"))) {
               $rootScope.resultsAreLoading = true;
               $rootScope.mainSearchView = true;
               $rootScope.busSpinner = true;
               $scope.search();
               $rootScope.valid = true;
-            }else if($rootScope.valid) {
+            } else if ($rootScope.valid) {
               $rootScope.resultsAreLoading = true;
               $rootScope.valid = false;
               $rootScope.mainSearchView = false;
@@ -176,7 +202,7 @@ angular.module('app')
             });
           };
           $scope.searchOrder = function () {
-            if(sID_Order_Full_RegExp.test($scope.sSearch)) {
+            if (sID_Order_Full_RegExp.test($scope.sSearch)) {
               $state.go('index.search', {sID_Order: $scope.sSearch});
             } else {
               var ngModelController = $el.find('input').first().data().$ngModelController;
@@ -186,14 +212,23 @@ angular.module('app')
           };
           // method to filter full catalog depending on current extended search parameters
           // choosen by user
-          $scope.filterByExtSearch = function() {
+          $scope.filterByExtSearch = function () {
             $scope.check = true;
+            var ctlg;
+
+            var filterCriteria = {};
+            if ($scope.operator != -1) {
+              filterCriteria.sSubjectOperatorName = $scope.operator;
+            }
+            if ($scope.getOrgan) {
+              filterCriteria.sSubjectOperatorName = $scope.getOrgan;
+            }
+
             // сейчас джава выдает другие номера статусов, поэтому меняю для работоспособности. убрать когда теги в бизнесе будут готовы.
             // убрать когда теги в бизнесе будут готовы.
-            if($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
-              var filterCriteria = {};
+            if ($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
               var selectedStatus;
-              if($scope.selectedStatus == 0) {
+              if ($scope.selectedStatus == 0) {
                 selectedStatus = 1;
               } else if ($scope.selectedStatus == 1) {
                 selectedStatus = 2;
@@ -201,90 +236,79 @@ angular.module('app')
               if ($scope.selectedStatus != -1) {
                 filterCriteria.nStatus = selectedStatus;
               }
-              if ($scope.operator != -1) {
-                filterCriteria.sSubjectOperatorName = $scope.operator;
-              }
-              if ($scope.getOrgan) {
-                filterCriteria.sSubjectOperatorName = $scope.getOrgan;
-              }
+
               // create a copy of current fullCatalog
-              var ctlg = angular.copy(fullCatalog);
-              angular.forEach(ctlg, function(category) {
-                angular.forEach(category.aSubcategory, function(subCategory) {
+              ctlg = angular.copy(fullCatalog);
+              angular.forEach(ctlg, function (category) {
+                angular.forEach(category.aSubcategory, function (subCategory) {
                   // leave services that match filterCriteria
                   subCategory.aService = $filter('filter')(subCategory.aService, filterCriteria);
                 });
                 // leave subcategories that are not empty
-                category.aSubcategory = $filter('filter')(category.aSubcategory, function(subCategory) {
+                category.aSubcategory = $filter('filter')(category.aSubcategory, function (subCategory) {
                   if (subCategory.aService.length > 0) {
                     return true;
                   }
                 });
               });
               // leave categories that are not empty
-              ctlg = $filter('filter')(ctlg, function(category) {
-                if (category.aSubcategory.length >0 ) {
+              ctlg = $filter('filter')(ctlg, function (category) {
+                if (category.aSubcategory.length > 0) {
                   return true;
                 }
               });
-              updateCatalog(ctlg);
             } else {
-              var filterCriteria = {};
               if ($scope.selectedStatus != -1) {
                 filterCriteria.nStatus = $scope.selectedStatus;
               }
-              if ($scope.operator != -1) {
-                filterCriteria.sSubjectOperatorName = $scope.operator;
-              }
-              if ($scope.getOrgan) {
-                filterCriteria.sSubjectOperatorName = $scope.getOrgan;
-              }
+
               // create a copy of current fullCatalog
-              var ctlg = angular.copy(fullCatalog);
+              ctlg = angular.copy(fullCatalog);
               ctlg.aService = $filter('filter')(ctlg.aService, filterCriteria);
               // TODO поправить
-              ctlg.aServiceTag_Child = $filter('filter')(ctlg.aServiceTag_Child, function(category) {
+              ctlg.aServiceTag_Child = $filter('filter')(ctlg.aServiceTag_Child, function (category) {
                 return true;
               });
-              updateCatalog(ctlg);
             }
+
+            updateCatalog(ctlg);
           };
 
-          $scope.onExtSearchClick = function() {
+          $scope.onExtSearchClick = function () {
             $scope.bShowExtSearch = !$scope.bShowExtSearch;
             if ($scope.bShowExtSearch) {
               $scope.searching();
             }
           };
-          $scope.clear = function() {
+          $scope.clear = function () {
             restoreSettings(defaultSettings);
-            if($rootScope.mainFilterCatalog) $rootScope.mainFilterCatalog = false;
+            if ($rootScope.mainFilterCatalog) $rootScope.mainFilterCatalog = false;
             $scope.searching();
           };
-          $scope.loadRegionList = function(search) {
+          $scope.loadRegionList = function (search) {
             return $scope.regionList.load(null, search);
           };
-          $scope.onSelectRegionList = function($item) {
+          $scope.onSelectRegionList = function ($item) {
             $rootScope.resultsAreLoading = true;
             $scope.data.region = $item;
             $scope.regionList.select($item);
             $scope.data.city = null;
             $scope.localityList.reset();
-            if($state.is('index') || $state.is('index.catalog')){
+            if ($state.is('index') || $state.is('index.catalog')) {
               $rootScope.mainFilterCatalog = true;
             }
             $scope.search();
-            $scope.localityList.load(null, $item.nID, null).then(function(cities) {
+            $scope.localityList.load(null, $item.nID, null).then(function (cities) {
               $scope.localityList.typeahead.defaultList = cities;
             });
             isFilterActive()
           };
 
-          $scope.loadLocalityList = function(search) {
+          $scope.loadLocalityList = function (search) {
             return $scope.localityList.load(null, $scope.data.region.nID, search);
           };
 
-          $scope.onSelectLocalityList = function($item, $model, $label) {
+          $scope.onSelectLocalityList = function ($item, $model, $label) {
             $rootScope.resultsAreLoading = true;
             $scope.data.city = $item;
             $scope.localityList.select($item, $model, $label);
@@ -293,13 +317,13 @@ angular.module('app')
           };
           $scope.search();
 
-          var subscriberId = messageBusService.subscribe('catalog:initUpdate', function() {
+          var subscriberId = messageBusService.subscribe('catalog:initUpdate', function () {
             $scope.search();
           });
           subscriptions.push(subscriberId);
 
           // save current state on scope destroy
-          $scope.$on('$destroy', function() {
+          $scope.$on('$destroy', function () {
             var state = {};
             state.sSearch = $scope.sSearch;
             state.operator = $scope.operator;
@@ -307,38 +331,38 @@ angular.module('app')
             state.bShowExtSearch = $scope.bShowExtSearch;
             state.data = $scope.data;
             stateStorageService.setState('igovSearch', state);
-            subscriptions.forEach(function(item) {
+            subscriptions.forEach(function (item) {
               messageBusService.unsubscribe(item);
             });
           });
           jQuery.fn.highlight = function (str, className) {
             var regex = new RegExp(str, "gi");
             return this.each(function () {
-              $(this).contents().filter(function() {
+              $(this).contents().filter(function () {
                 return this.nodeType == 3 && regex.test(this.nodeValue);
-              }).replaceWith(function() {
-                return (this.nodeValue || "").replace(regex, function(match) {
+              }).replaceWith(function () {
+                return (this.nodeValue || "").replace(regex, function (match) {
                   return "<span class=\"" + className + "\">" + match + "</span>";
                 });
               });
             });
           };
           $rootScope.$watch('rand', function () {
-            if($scope.sSearch.length >= 3) {
+            if ($scope.sSearch.length >= 3) {
               setTimeout(function () {
                 $(".igov-container a").highlight($scope.sSearch, "marked-string");
               }, 100)
             }
           });
-          $scope.$watch('data.region', function() {
-            if(!$scope.data.region) {
+          $scope.$watch('data.region', function () {
+            if (!$scope.data.region) {
               $rootScope.resultsAreLoading = true;
               $rootScope.mainFilterCatalog = false;
               isFilterActive();
               $scope.searching();
             }
           });
-          $scope.$on('$stateChangeSuccess', function(event, toState) {
+          $scope.$on('$stateChangeSuccess', function (event, toState) {
             if (toState.resolve) {
               $scope.spinner = true;
               $scope.search();
