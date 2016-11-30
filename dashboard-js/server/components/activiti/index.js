@@ -168,7 +168,8 @@ exports.uploadStream = function (options, onResult) {
   var formData = {
     taskId: options.taskId,
     file: options.stream,
-    description: options.description
+    description: options.description,
+    sID_Field: options.sID_Field
   }, content = {
     url: getRequestURL(options),
     formData: formData,
