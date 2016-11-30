@@ -92,6 +92,7 @@
           <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
           <activiti:value id="sNo1" name="Ні, буду отримувати вперше"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sOldPomData" name="Серія, номер старого посвідчення та назва порту, який його видав" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть місто, у якому Ви плануєте отримувати документ" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="slabelSum" name="Зверніть увагу" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="asHavePay" name="Чи має громадянин квитанцію про сплату за посвідчення особи?" type="enum" required="true">
@@ -110,6 +111,11 @@
         <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити, заповнити та вклеїти фотокартку до &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYYzZmclRXdUF4UjA&quot;&gt;анкети для видачі/обміну посвідчення особи моряка&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="nDocAnketa" name="Кольорова скан-копія заповненої анкети" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable2" name="Зверніть увагу" type="label" default="&lt;b&gt;Перед замовленням послуги уважно перевірте достовірність усіх внесених даних&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion1" name="Ви надаєте згоду на обробку Ваших персональних даних у обсязі, необхідному для отримання послуги;;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище дитини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
@@ -371,7 +377,7 @@ execution.setVariable('sID_Payment', Pay)
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[valery.stavitsky@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -456,6 +462,7 @@ execution.setVariable('sID_Payment', Pay)
           <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
           <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sOldPomData" name="Серія, номер старого посвідчення та назва порту, який його видав" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPassportBase" name="Документ, який є підставою для отримання посвідчення особи моряка" type="enum" writable="false">
           <activiti:value id="sStud" name="довідка з навчального закладу (для студентів)"></activiti:value>
           <activiti:value id="sContract" name="трудовий договор (контракт)"></activiti:value>
@@ -874,6 +881,7 @@ execution.setVariable('sMoz2', moz2)
           <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
           <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sOldPomData" name="Серія, номер старого посвідчення та назва порту, який його видав" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат друку" type="enum" required="true">
           <activiti:value id="sReestr" name="Дані по документу внесено коректно"></activiti:value>
           <activiti:value id="sNejav" name="Треба змінити номер бланку"></activiti:value>
@@ -974,6 +982,7 @@ execution.setVariable('sMoz2', moz2)
           <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
           <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sOldPomData" name="Серія, номер старого посвідчення та назва порту, який його видав" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPassportBase" name="Документ, який є підставою для отримання посвідчення особи моряка" type="enum" writable="false">
           <activiti:value id="sStud" name="довідка з навчального закладу (для студентів)"></activiti:value>
           <activiti:value id="sContract" name="трудовий договор (контракт)"></activiti:value>

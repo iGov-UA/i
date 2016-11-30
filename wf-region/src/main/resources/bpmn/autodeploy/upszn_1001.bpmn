@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="upszn_1001" name="Дозвіл на застосування праці іноземців та осіб без громадянства" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nScanPassport" name="Скан-копія паспорта заявника: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Звернення подане" type="enum" required="true">
+          <activiti:value id="sEnumPersonal" name="Особисто"></activiti:value>
+          <activiti:value id="sEnumCare" name="Довіреною особою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nTrust" name="Документ, який підтверджує статус довіреної особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDirFio" name="Прізвище та ініціали керівника підприємства" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asService" name="Оберіть тип послуги" type="enum" required="true">
+          <activiti:value id="sEnumGet" name="Видача дозволу"></activiti:value>
+          <activiti:value id="sEnumLong" name="Продовження дії дозволу"></activiti:value>
+          <activiti:value id="sEnumDel" name="Анулювання дозволу"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOrgName" name="Повне та скорочене найменування підприємства, установи, організації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEmployee" name="Прізвище, ім’я, по батькові кандидата на посаду" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCountry" name="Громадянство кандидата на посаду" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sJob" name="Посада (професія); згідно з Національним класифікатором України ДК 003:2010 “Класифікатор професій”" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="slabel" name="Підстава, на якій кандидата буде прийнято на роботу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="saQuestion1" name="є кваліфікованим працівником;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion2" name="претендує на зайняття посади керівника, заступника керівника або іншої керівної посади за умови, що такий іноземець чи особа без громадянства є засновником або учасником підприємства, установи, організації;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion3" name="претендує на зайняття посади, яка передбачає створення об’єктів авторського права або суміжних прав як основний трудовий обов’язок;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion4" name="претендує на зайняття посади у суб’єкта індустрії програмної продукції;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sStatus" name="Назва та реквізити документу, що підтверджує статус суб’єкта індустрії програмної продукції" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion5" name="направлений закордонним роботодавцем в Україну для виконання певного обсягу робіт (послуг) на підставі договорів (контрактів), укладених між вітчизняним та іноземним суб’єктом господарювання, за умови, що чисельність кваліфікованих іноземців, які залучаються в рамках таких договорів (контрактів), не перевищує половини загальної чисельності осіб, що працюватимуть на умовах таких договорів (контрактів);позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion6" name="належить до категорії “внутрішньокорпоративні цесіонарії” відповідно до графіка специфічних зобов’язань у секторі послуг Протоколу про вступ України до СОТ (стаття II Генеральної угоди про торгівлю послугами);позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion7" name="є іноземцем чи особою без громадянства, стосовно якої прийнято рішення про оформлення документів для вирішення питання щодо визнання біженцем або особою, яка потребує додаткового захисту;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion8" name="має диплом навчального закладу, віднесеного до першої сотні у світовому рейтингу;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRating" name="Назва ретингу, в якому присутній навчальний заклад" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="kved" name="Код виду економічної діяльності згідно з Національним класифікатором України “Класифікація видів економічної діяльності” ДК 009:2010" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Місцезнаходження підприємства, установи, організації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPosada" name="Посада керівника підприємства,установи, організації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nStudy" name="Копії документів про освіту або кваліфікацію іноземця чи особи без громадянства" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nForeignPassport" name="Копії сторінок паспортного документа іноземця чи особи без громадянства з особистими даними разом з перекладом українською мовою, засвідченим в установленому законодавством порядку" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nMedic" name="Документ, виданий лікувально-профілактичним закладом про те, що особа не хвора на хронічний алкоголізм, токсикоманію, наркоманію або інші інфекційні захворювання, перелік яких визначено МОЗ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSecret" name="Довідку, скріплену печаткою та завірену підписом роботодавця про те, що посада, на якій застосовуватиметься праця іноземця чи особи без громадянства, відповідно до законодавства не пов’язана з належністю до громадянства України і не потребує надання допуску до державної таємниці. У разі наявності в роботодавця режимно-секретного органу зазначена довідка подається також за підписом керівника такого органу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nCrimeUkr" name="Довідку МВС про те, що іноземець чи особа без громадянства, які на момент оформлення дозволу перебувають на території України, не відбувають покарання за скоєння злочину та стосовно них не здійснюється кримінальне провадження" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="slabel1" name="За бажанням, Ви можете замовити довідку, скориставшись полугою" type="label" default="&lt;a href=&quot;https://igov.org.ua/service/1/general&quot;&gt;Надання довідки про притягнення до кримінальної відповідальності&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nCrimeForeign" name="Довідку уповноваженого органу країни походження (перебування) про те, що іноземець чи особа без громадянства, які на момент оформлення дозволу перебувають за межами України, не відбувають покарання за скоєння злочину та стосовно них не здійснюється кримінальне провадження" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="Група користувачів iGov" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Вибір категорії" type="markers" default="${markerService.loadFromFile('soczah/upszn_0783.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Повідомлення держслужбовця про звернення" activiti:async="true" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. Дозвіл на застосування праці іноземців та осіб без громадянства]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask3" name="Направлення громадянину листа про отримання звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему Дозвіл на застосування праці іноземців та осіб без громадянства]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<p> Ваше звернення №[sID_Order] на тему: "Дозвіл на застосування праці іноземців та осіб без громадянства" було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br />
+${sPhoneOrgan}<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <userTask id="usertask1" name="Первинна обробка документів" activiti:candidateGroups="upszn${nArea}">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIdPassport" name="Паспортні дані отримувача стипендії; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nInn" name="ІПН отримувача стипендії; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації отримувача стипендії; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Звернення подане" type="enum" writable="false">
+          <activiti:value id="sEnumPersonal" name="Особисто отримувачем стипендії"></activiti:value>
+          <activiti:value id="sEnumCare" name="Довіреною особою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDirFio" name="Прізвище та ініціали керівника підприємства" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asService" name="Тип послуги" type="enum" writable="false">
+          <activiti:value id="sEnumGet" name="Видача дозволу"></activiti:value>
+          <activiti:value id="sEnumLong" name="Продовження дії дозволу"></activiti:value>
+          <activiti:value id="sEnumDel" name="Анулювання дозволу"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOrgName" name="Повне та скорочене найменування підприємства, установи, організації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEmployee" name="Прізвище, ім’я, по батькові кандидата на посаду; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry" name="Громадянство кандидата на посаду; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sJob" name="Посада (професія); згідно з Національним класифікатором України ДК 003:2010 “Класифікатор професій”;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="slabel" name="Підстава, на якій кандидата буде прийнято на роботу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="saQuestion1" name="є кваліфікованим працівником;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion2" name="претендує на зайняття посади керівника, заступника керівника або іншої керівної посади за умови, що такий іноземець чи особа без громадянства є засновником або учасником підприємства, установи, організації;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion3" name="претендує на зайняття посади, яка передбачає створення об’єктів авторського права або суміжних прав як основний трудовий обов’язок;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion4" name="претендує на зайняття посади у суб’єкта індустрії програмної продукції;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sStatus" name="Назва та реквізити документу, що підтверджує статус суб’єкта індустрії програмної продукції; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion5" name="направлений закордонним роботодавцем в Україну для виконання певного обсягу робіт (послуг) на підставі договорів (контрактів), укладених між вітчизняним та іноземним суб’єктом господарювання, за умови, що чисельність кваліфікованих іноземців, які залучаються в рамках таких договорів (контрактів), не перевищує половини загальної чисельності осіб, що працюватимуть на умовах таких договорів (контрактів);позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion6" name="належить до категорії “внутрішньокорпоративні цесіонарії” відповідно до графіка специфічних зобов’язань у секторі послуг Протоколу про вступ України до СОТ (стаття II Генеральної угоди про торгівлю послугами);позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion7" name="є іноземцем чи особою без громадянства, стосовно якої прийнято рішення про оформлення документів для вирішення питання щодо визнання біженцем або особою, яка потребує додаткового захисту;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion8" name="має диплом навчального закладу, віднесеного до першої сотні у світовому рейтингу;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRating" name="Назва ретингу, в якому присутній навчальний заклад; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="kved" name="КВЕД; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Місцезнаходження підприємства, установи, організації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosada" name="Посада керівника підприємства,установи, організації; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="accept" name="Прийняти заяву"></activiti:value>
+          <activiti:value id="reject" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/upszn_1001_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/upszn_1001_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nTrust},${nScanPassport},${bankticket},${nStudy},${nForeignPassport},${nMedic},${nSecret},${nCrimeUkr},${nCrimeForeign}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask4" name="Лист про неповний пакет документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Інформація щодо Дозвіл на застосування праці іноземців та осіб без громадянства]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+			<p> На жаль, Ваше звернення на тему: "Дозвіл на застосування праці іноземців та осіб без громадянства" було відхилено.<br/>
+			<p> Причина в наступному:<br/>
+			<p>${comment}</p>
+			<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+			<br />
+			${sPhoneOrgan}<br />
+			[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow7" name="Недостатньо документів" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="Лист з запрошенням" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Дозвіл на застосування праці іноземців та осіб без громадянства]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+			<p>Ваше звернення на тему: "Дозвіл на застосування праці іноземців та осіб без громадянства" - розглянуте.</p>
+			<p>Стипендію призначено.<br/>
+			</p>
+			${sPhoneOrgan}<br />
+			<br />
+			<br />
+			${sWorkTime}<br />
+			${sAddress}<br />
+			<br />
+			[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow9" name="Повний пакет документів" sourceRef="exclusivegateway1" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <userTask id="usertask2" name="Рішення про видачу дозволу">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIdPassport" name="Паспортні дані отримувача стипендії; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nInn" name="ІПН отримувача стипендії; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації отримувача стипендії; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Звернення подане" type="enum" writable="false">
+          <activiti:value id="sEnumPersonal" name="Особисто отримувачем стипендії"></activiti:value>
+          <activiti:value id="sEnumCare" name="Довіреною особою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDirFio" name="Прізвище та ініціали керівника підприємства" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asService" name="Тип послуги" type="enum" writable="false">
+          <activiti:value id="sEnumGet" name="Видача дозволу"></activiti:value>
+          <activiti:value id="sEnumLong" name="Продовження дії дозволу"></activiti:value>
+          <activiti:value id="sEnumDel" name="Анулювання дозволу"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOrgName" name="Повне та скорочене найменування підприємства, установи, організації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEmployee" name="Прізвище, ім’я, по батькові кандидата на посаду; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry" name="Громадянство кандидата на посаду; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sJob" name="Посада (професія); згідно з Національним класифікатором України ДК 003:2010 “Класифікатор професій”;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="slabel" name="Підстава, на якій кандидата буде прийнято на роботу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="saQuestion1" name="є кваліфікованим працівником;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion2" name="претендує на зайняття посади керівника, заступника керівника або іншої керівної посади за умови, що такий іноземець чи особа без громадянства є засновником або учасником підприємства, установи, організації;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion3" name="претендує на зайняття посади, яка передбачає створення об’єктів авторського права або суміжних прав як основний трудовий обов’язок;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion4" name="претендує на зайняття посади у суб’єкта індустрії програмної продукції;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sStatus" name="Назва та реквізити документу, що підтверджує статус суб’єкта індустрії програмної продукції; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion5" name="направлений закордонним роботодавцем в Україну для виконання певного обсягу робіт (послуг) на підставі договорів (контрактів), укладених між вітчизняним та іноземним суб’єктом господарювання, за умови, що чисельність кваліфікованих іноземців, які залучаються в рамках таких договорів (контрактів), не перевищує половини загальної чисельності осіб, що працюватимуть на умовах таких договорів (контрактів);позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion6" name="належить до категорії “внутрішньокорпоративні цесіонарії” відповідно до графіка специфічних зобов’язань у секторі послуг Протоколу про вступ України до СОТ (стаття II Генеральної угоди про торгівлю послугами);позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion7" name="є іноземцем чи особою без громадянства, стосовно якої прийнято рішення про оформлення документів для вирішення питання щодо визнання біженцем або особою, яка потребує додаткового захисту;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saQuestion8" name="має диплом навчального закладу, віднесеного до першої сотні у світовому рейтингу;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRating" name="Назва ретингу, в якому присутній навчальний заклад; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="kved" name="КВЕД; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Місцезнаходження підприємства, установи, організації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosada" name="Посада керівника підприємства,установи, організації; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="accept" name="Прийняти заяву"></activiti:value>
+          <activiti:value id="reject" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/upszn_1001_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/upszn_1001_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nTrust},${nScanPassport},${bankticket},${nStudy},${nForeignPassport},${nMedic},${nSecret},${nCrimeUkr},${nCrimeForeign}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask6" name="Лист відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Інформація щодо Дозвіл на застосування праці іноземців та осіб без громадянства]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+			<p> На жаль, Ваше звернення на тему: "Дозвіл на застосування праці іноземців та осіб без громадянства" було відхилено.<br/>
+			<p> Причина в наступному:<br/>
+			<p>${comment}</p>
+			<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+			<br />
+			${sPhoneOrgan}<br />
+			[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow12" sourceRef="usertask2" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="exclusivegateway3" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="exclusivegateway3" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask7" name="Лист про успішну первинну обробку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow16" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_upszn_1001">
+    <bpmndi:BPMNPlane bpmnElement="upszn_1001" id="BPMNPlane_upszn_1001">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="75.0" width="105.0" x="90.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="130.0" y="131.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="230.0" y="492.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="85.0" width="115.0" x="240.0" y="82.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="80.0" width="105.0" x="373.0" y="85.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="75.0" width="111.0" x="510.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="546.0" y="181.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="70.0" width="105.0" x="373.0" y="167.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="72.0" width="141.0" x="495.0" y="474.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="75.0" width="111.0" x="511.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="545.0" y="410.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="70.0" width="105.0" x="373.0" y="396.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="63.0" width="105.0" x="513.0" y="238.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="65.0" y="124.0"></omgdi:waypoint>
+        <omgdi:waypoint x="90.0" y="124.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="145.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="144.0" y="509.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="509.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="355.0" y="124.0"></omgdi:waypoint>
+        <omgdi:waypoint x="373.0" y="125.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="478.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="124.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="565.0" y="162.0"></omgdi:waypoint>
+        <omgdi:waypoint x="566.0" y="181.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="546.0" y="201.0"></omgdi:waypoint>
+        <omgdi:waypoint x="478.0" y="202.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="491.0" y="146.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="566.0" y="221.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="238.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="575.0" y="208.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="373.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="247.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="247.0" y="492.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="495.0" y="510.0"></omgdi:waypoint>
+        <omgdi:waypoint x="265.0" y="509.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="195.0" y="124.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="124.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="566.0" y="395.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="410.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="565.0" y="450.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="474.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="545.0" y="430.0"></omgdi:waypoint>
+        <omgdi:waypoint x="478.0" y="431.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="425.0" y="466.0"></omgdi:waypoint>
+        <omgdi:waypoint x="247.0" y="492.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="565.0" y="301.0"></omgdi:waypoint>
+        <omgdi:waypoint x="566.0" y="320.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

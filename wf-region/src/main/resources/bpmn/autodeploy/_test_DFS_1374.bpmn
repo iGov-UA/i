@@ -77,6 +77,8 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Ви подавали звернення на тему Запит до ДФС. &lt;br /&gt;
+
+Ви можете відкрити криптопакет відповіді ДФС з допомогою  &lt;a href="https://alpha.test.igov.org.ua/journal/answer/DFS"&gt;цього інструменту&lt;/a&gt; із використанням своєї ЕЦП, що ви використали під час подання запиту. &lt;br /&gt; &lt;br /&gt;
                         [pattern/mail/_common_signature_end.html]
                         [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -87,7 +89,7 @@
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask2" name="Получение ответа">
+    <userTask id="usertask2" name="Получение ответа" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="result" name="Результат" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="anID_Attach_Dfs" name="Файл с ответом" writable="false"></activiti:formProperty>
@@ -105,31 +107,25 @@
     </userTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <boundaryEvent id="getAnswerTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
-      <extensionElements>
-        <activiti:executionListener event="start" delegateExpression="${TransferDocumentAnswer_SWinEd}">
-          <activiti:field name="sINN">
-            <activiti:expression>${bankIdinn}</activiti:expression>
-          </activiti:field>
-        </activiti:executionListener>
-      </extensionElements>
       <timerEventDefinition>
-        <timeDuration>PT7M</timeDuration>
+        <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow13" sourceRef="getAnswerTimer" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
-      <extensionElements>
-        <activiti:executionListener event="start" delegateExpression="${TransferDocumentAnswer_SWinEd}">
-          <activiti:field name="sINN">
-            <activiti:expression>${bankIdinn}</activiti:expression>
-          </activiti:field>
-        </activiti:executionListener>
-      </extensionElements>
       <timerEventDefinition>
         <timeDuration>PT7M</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
-    <sequenceFlow id="flow14" sourceRef="timerintermediatecatchevent1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="timerintermediatecatchevent1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow16" sourceRef="exclusivegateway1" targetRef="timerintermediatecatchevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${anID_Attach_Dfs == ''}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${anID_Attach_Dfs != ''}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_DFS_1374">
     <bpmndi:BPMNPlane bpmnElement="_test_DFS_1374" id="BPMNPlane__test_DFS_1374">
@@ -143,32 +139,47 @@
         <omgdc:Bounds height="30.0" width="30.0" x="225.0" y="133.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="67.0" width="105.0" x="340.0" y="114.0"></omgdc:Bounds>
+        <omgdc:Bounds height="67.0" width="105.0" x="530.0" y="114.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="540.0" y="130.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="700.0" y="129.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="300.0" y="410.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="295.0" y="218.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="280.0" y="200.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="330.0" y="129.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="418.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="445.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="98.0" y="146.0"></omgdi:waypoint>
         <omgdi:waypoint x="150.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="240.0" y="163.0"></omgdi:waypoint>
-        <omgdi:waypoint x="297.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="255.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="297.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="392.0" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="347.0" y="164.0"></omgdi:waypoint>
+        <omgdi:waypoint x="347.0" y="218.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="347.0" y="218.0"></omgdi:waypoint>
+        <omgdi:waypoint x="438.0" y="166.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="418.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="365.0" y="146.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="458.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
