@@ -328,9 +328,8 @@ angular.module('journal').controller('JournalSearchController', function (
           animation: true,
           size: 'lg',
           templateUrl: 'app/journal/letterModal.html',
-          controller: function ($scope, $modalInstance, message) {
-            $scope.message = message;
-
+          controller: function ($scope, $modalInstance, message, $sce) {
+            $scope.message = $sce.trustAsHtml(message);
             $scope.close = function () {
               $modalInstance.close();
             }
