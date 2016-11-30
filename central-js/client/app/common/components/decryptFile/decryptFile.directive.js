@@ -8,7 +8,6 @@
     return {
       restrict: 'EA',
       scope: {
-        options: '=',
         oServiceData: '=',
         onFileUploadSuccess: '&'
       },
@@ -21,93 +20,47 @@
   }
 
   /* @ngInject */
-  function DecryptFileController($scope, $q, $location, $window, ErrorsFactory, uiUploader, ActivitiService, MessagesService){
+  function DecryptFileController($scope, $q, $location, $window, uiUploader, ActivitiService){
     var vm = this;
-    var nID_Server = -1;
+    var nID_Server = 5;
 
     vm.file = {};
     vm.onSelect = onSelect;
-    vm.onDownload = onDownload;
 
     activate();
 
     function activate(){
-      vm.file.isUploading = false;
+      $scope.$watch('vm.file.isUploading', function(){
+      })
     }
 
     function onSelect($files){
-      upload($files, {nID_Server:nID_Server});
-    }
-
-    function onDownload(){
-      MessagesService.getSubjectMessageData(vm.options.id).then(function (res) {
-        if(angular.isString(res.data)){
-
-          var content = new Blob([res.data], {type: 'application/x-www-form-urlencoded'});
-          var arrFiles = [];
-
-          arrFiles.push(content);
-          upload(arrFiles, {nID_Server:nID_Server});
-
-        } else {
-          ErrorsFactory.push({type:"danger", text: "Виникла помилка при отриманні файлу"});
-        }
-      });
+      upload($files, {nID_Server:5});
     }
 
     function upload (files, oServiceData) {
       uiUploader.removeAll();
       uiUploader.addFiles(files);
 
-      vm.file.fileName = files[0].name || vm.options.fileName;
+      vm.file.fileName = files[0].name;
 
       uiUploader.startUpload({
         url: ActivitiService.getUploadFileURL(oServiceData),
         concurrency: 1,
         onProgress: function (file) {
           vm.file.isUploading = true;
-          $scope.$apply();
         },
-        onCompleted: function (file, fileId) {
-          var fileObj;
-
-          try{
-            fileObj = JSON.parse(fileId);
-          }catch(e){
-            fileObj = {};
-          }
-
-          if(!fileObj.error){
-            vm.file.value = {id : fileId, signInfo: null, fromDocuments: false};
-          }else{
-            vm.file.error = fileObj.error;
-          }
-          $scope.$apply();
+        onCompleted: function (file, fileid) {
+          vm.file.value = {id : fileid, signInfo: null, fromDocuments: false};
         },
         onCompletedAll: function () {
-
-          if(!vm.file.error){
-            vm.onFileUploadSuccess(vm.file);
-          }
-
           vm.file.isUploading = false;
+          vm.onFileUploadSuccess(vm.file);
           $scope.$apply();
 
-          if(vm.file.error){
-            ErrorsFactory.push({
-              type: "denger",
-              oData: {
-                sHead: 'Помилка сервера.',
-                sBody: 'Файл не завантажено.',
-                sFunc: 'DecryptFileController'
-              }
-            });
-          }
+          decrypt(vm.file);
 
-          if(!vm.file.error){
-            decrypt(vm.file);
-          }
-        }
+          console.log('All files loaded successfully');}
       });
     }
 

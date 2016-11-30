@@ -68,7 +68,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-public abstract class Abstract_MailTaskCustom implements JavaDelegate {
+public abstract class Abstract_MailTaskCustom extends AbstractModelTask implements JavaDelegate {
 
     static final transient Logger LOG = LoggerFactory
             .getLogger(Abstract_MailTaskCustom.class);
@@ -790,7 +790,9 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         String sBodySource = getStringFromFieldExpression(text, oExecution);
         String sBody = replaceTags(sBodySource, oExecution);
 
-        saveServiceMessage_Mail(sHead, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), saToMail);
+        saveServiceMessage(sHead, saToMail, sBody,
+                generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution
+                        .getProcessInstanceId())));
 
         Mail oMail = context.getBean(Mail.class);
 
@@ -841,44 +843,42 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     public void execute(DelegateExecution oExecution) throws Exception {
     }
 
-    protected void saveServiceMessage_Mail(String sHead, String sBody, String sID_Order, String sMail) {
+    protected void saveServiceMessage(String sHead, String sTo, String sBody,
+            String sID_Order) {
 
         if (sBody != null && sBody.contains("Шановний колего!")) {
             //Не сохраняем в истории заявки гражданина письмо чиновнику //Юлия
             return;
         }
 
-        final Map<String, String> mParam = new HashMap<>();
-        mParam.put("sHead", "Відправлено листа");//"Відправлено листа"
-        mParam.put("sBody", sHead);//sBody
-        mParam.put("sID_Order", sID_Order);
-        mParam.put("sMail", sMail);
-        //mParam.put("nID_Subject", "0");
-        //mParam.put("sContacts", "0");
-        //params.put("sData", "0");
-        
-        mParam.put("nID_SubjectMessageType", "" + 10L);
-        mParam.put("sID_DataLinkSource", "Region");
-        mParam.put("sID_DataLinkAuthor", "System");
-        String sID_DataLink;
-        sID_DataLink = durableBytesDataStorage.saveData(sBody.getBytes(Charset.forName("UTF-8")));
-        mParam.put("sID_DataLink", sID_DataLink);
+        final Map<String, String> params = new HashMap<>();
+        params.put("sID_Order", sID_Order);
+        params.put("sHead", "Відправлено листа");
+        params.put("sBody", sHead);
+        params.put("sMail", sTo);
+        params.put("nID_SubjectMessageType", "" + 10L);
+        params.put("nID_Subject", "0");
+        params.put("sContacts", "0");
+        params.put("sData", "0");
+        params.put("RequestMethod", RequestMethod.GET.name());
+        String key;
+        key = durableBytesDataStorage.saveData(sBody.getBytes(Charset
+                .forName("UTF-8")));
+        params.put("sID_DataLink", key);
 
-        mParam.put("RequestMethod", RequestMethod.GET.name());
-        
-        ScheduledExecutorService oScheduledExecutorService = Executors
+        ScheduledExecutorService executor = Executors
                 .newSingleThreadScheduledExecutor();
-        Runnable oRunnable = new Runnable() {
+        Runnable task = new Runnable() {
 
             @Override
             public void run() {
                 LOG.info(
                         "try to save service message with params with a delay: (params={})",
-                        mParam);
+                        params);
                 String jsonServiceMessage;
                 try {
                     jsonServiceMessage = historyEventService
-                            .addServiceMessage(mParam);
+                            .addServiceMessage(params);
                     LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
                 } catch (Exception e) {
                     LOG.error("( saveServiceMessage error={})", e.getMessage());
@@ -887,12 +887,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         };
         // run saving message in 10 seconds so history event will be in the
         // database already by that time
-        oScheduledExecutorService.schedule(oRunnable, 10, TimeUnit.SECONDS);
-        oScheduledExecutorService.shutdown();
+        executor.schedule(task, 10, TimeUnit.SECONDS);
+        executor.shutdown();
 
         LOG.info(
                 "Configured thread to run in 10 seconds with params: (params={})",
-                mParam);
+                params);
     }
 
 }

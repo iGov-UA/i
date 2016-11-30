@@ -15,8 +15,9 @@ import org.igov.model.subject.SubjectDao;
 import org.igov.model.subject.SubjectHuman;
 import org.igov.model.subject.SubjectHumanDao;
 import org.igov.model.subject.message.SubjectMessageFeedback;
-import org.igov.model.subject.message.SubjectMessageType;
+import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.subject.SubjectMessageService;
+import org.igov.service.exception.CommonServiceException;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
@@ -34,7 +35,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
+
+import io.swagger.annotations.ApiParam;
 
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.model.subject.message.SubjectMessage;
@@ -44,7 +48,9 @@ import org.junit.Assert;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -55,9 +61,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("default")
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+
 public class SubjectMessageControllerScenario {
 
-	public static final String GET_MESSAGE = "/subject/message/getMessage";
 	public static final String SET_MESSAGE = "/subject/message/setMessage";
 	public static final String SET_FEEDBACK_MESSAGE = "/subject/message/setMessageFeedbackExtended";
 	public static final String GET_FEEDBACK_EXTERNAL = "/subject/message/getFeedbackExternal";
@@ -78,128 +84,82 @@ public class SubjectMessageControllerScenario {
 	@Autowired
 	private SubjectMessageController subjectMessageController;
 	@Mock
+	private SubjectMessagesDao subjectMessagesDao;
+	@Mock
 	private HistoryEvent_ServiceDao historyEventServiceDao;
 	@Mock
 	private HistoryEvent_Service oHistoryEvent_Service;
 	@Mock
 	private SubjectMessageService oSubjectMessageService;
-	private SubjectMessage subjectMessage;
-
-	private String sHead = "expect";
-	private String sBody = "XXX";
-	private Long nID_Subject = 1L;
-	private String sMail = "ukr.net";
-	private String sContacts = "093";
-	private String sData = "some data";
-	private Long nID_SubjectMessageType = SubjectMessageType.DEFAULT.getId();
 
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		MockitoAnnotations.initMocks(this);
-		subjectMessage = new SubjectMessage();
 	}
 
+	@Ignore
 	@Test
 	public void firstShouldSuccessfullySetAndGetMassage() throws Exception {
-		subjectMessage.setHead(sHead);
-		subjectMessage.setBody(sBody);
-		subjectMessage.setId_subject(nID_Subject);
-		subjectMessage.setMail(sMail);
-		subjectMessage.setContacts(sContacts);
-		subjectMessage.setData(sData);
-		subjectMessage.setDate(new DateTime());
-		subjectMessage.setSubjectMessageType(SubjectMessageType.DEFAULT);
-		when(oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData,
-				nID_SubjectMessageType)).thenReturn(subjectMessage);
-
+		String messageBody = "XXX";
 		String jsonAfterSave = mockMvc
-				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", sHead)
-						.param("sBody", sBody).param("nID_Subject", String.valueOf(nID_Subject)).param("sMail", sMail)
-						.param("sContacts", sContacts).param("sData", sData)
-						.param("nID_SubjectMessageType", String.valueOf(nID_SubjectMessageType)))
+				.perform(post("/subject/message/setMessage").contentType(MediaType.APPLICATION_JSON)
+						.param("sHead", "expect").param("sBody", messageBody).param("sContacts", "093")
+						.param("sData", "some data").param("sMail", "ukr.net").param("nID_SubjectMessageType", "1"))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-
 		SubjectMessage savedMessage = JsonRestUtils.readObject(jsonAfterSave, SubjectMessage.class);
 		assertNotNull(savedMessage.getId());
 		assertNotNull(savedMessage.getSubjectMessageType());
-		assertEquals(subjectMessage.getSubjectMessageType().getId().longValue(),
-				savedMessage.getSubjectMessageType().getId().longValue());
-		assertEquals(subjectMessage.getBody(), savedMessage.getBody());
-		assertEquals(subjectMessage.getId_subject().longValue(), savedMessage.getId_subject().longValue());
+		assertEquals(1L, savedMessage.getSubjectMessageType().getId().longValue());
+		assertEquals(messageBody, savedMessage.getBody());
+		assertEquals(0L, savedMessage.getId_subject().longValue());
 
-		String jsonAfterGet = mockMvc.perform(get(GET_MESSAGE).param("nID", "" + savedMessage.getId()))
+		String jsonAfterGet = mockMvc
+				.perform(get("/subject/message/getMessage").param("nID", "" + savedMessage.getId()))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		assertEquals(jsonAfterSave, jsonAfterGet);
 	}
 
 	@Ignore
 	@Test
-	// null not allowed for column nid_subject
 	public void nextShouldSuccessfullySetMassageWithDefaultSubjectID() throws Exception {
-		subjectMessage.setHead(sHead);
-		subjectMessage.setBody(sBody);
-		subjectMessage.setMail(sMail);
-		subjectMessage.setDate(new DateTime());
-		when(oSubjectMessageService.createSubjectMessage(sHead, sBody, null, sMail, null, null, null))
-				.thenReturn(subjectMessage);
-
-		mockMvc.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", sHead)
-				.param("sBody", sBody).param("sMail", sMail)).andExpect(status().isOk());
-	}
-
-	@Test
-	public void shouldFailedNoObligatedParam() throws Exception {
-		subjectMessage.setBody(sBody);
-		subjectMessage.setId_subject(nID_Subject);
-		subjectMessage.setMail(sMail);
-		subjectMessage.setContacts(sContacts);
-		subjectMessage.setData(sData);
-		subjectMessage.setDate(new DateTime());
-		subjectMessage.setSubjectMessageType(SubjectMessageType.DEFAULT);
-		when(oSubjectMessageService.createSubjectMessage(null, sBody, nID_Subject, sMail, sContacts, sData,
-				nID_SubjectMessageType)).thenReturn(subjectMessage);
-
-		mockMvc.perform(
-				post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sBody", sBody).param("sMail", sMail))
-				.andExpect(status().isBadRequest());
-	}
-
-	@Test
-	public void testSetMessage_nIDSubject_sMailNull() throws Exception {
-		subjectMessage.setHead(sHead);
-		subjectMessage.setBody(sBody);
-		subjectMessage.setId_subject(nID_Subject);
-		subjectMessage.setDate(new DateTime());
-		when(oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, null, null, null, null))
-				.thenReturn(subjectMessage);
-
-		String jsonAfterSave = mockMvc
-				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", sHead)
-						.param("sBody", sBody).param("nID_Subject", String.valueOf(nID_Subject)))
-				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-	}
-
-	@Test
-	public void testSetMessage_nIDSubject_sMailEmpty() throws Exception {
-		subjectMessage.setHead(sHead);
-		subjectMessage.setBody(sBody);
-		subjectMessage.setId_subject(nID_Subject);
-		subjectMessage.setDate(new DateTime());
-		String sEmptyMail = "";
-		subjectMessage.setMail(sEmptyMail);
-		when(oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sEmptyMail, null, null, null))
-				.thenReturn(subjectMessage);
-
-		String jsonAfterSave = mockMvc.perform(
-				post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", sHead).param("sBody", sBody)
-						.param("nID_Subject", String.valueOf(nID_Subject)).param("sMail", sEmptyMail))
-				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		mockMvc.perform(post("/subject/message/setMessage").contentType(MediaType.APPLICATION_JSON)
+				.param("sHead", "expect").param("sBody", "XXX").param("sMail", "ukr.net")).andExpect(status().isOk());
 	}
 
 	@Ignore
 	@Test
-	// null not allowed for column nid_subject
+	public void shouldFailedNoObligatedParam() throws Exception {
+		mockMvc.perform(post("/subject/message/setMessage").contentType(MediaType.APPLICATION_JSON)
+				.param("sBody", "XXXXXxxx").param("sMail", "ukr.ed")).andExpect(status().isBadRequest());
+	}
+
+	@Ignore
+	@Test
+	public void testSetMessage_nIDSubject_sMailNull() throws Exception {
+		String messageBody = "XXX";
+		String messageHead = "expect";
+		String jsonAfterSave = mockMvc
+				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", messageHead)
+						.param("sBody", messageBody).param("nID_Subject", "22"))
+				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+	}
+
+	@Ignore
+	@Test
+	public void testSetMessage_nIDSubject_sMailEmpty() throws Exception {
+		String messageBody = "XXX";
+		String messageHead = "expect";
+		String jsonAfterSave = mockMvc
+				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", messageHead)
+						.param("sBody", messageBody).param("nID_Subject", "22").param("sMail", ""))
+				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+	}
+
+	@Ignore
+	@Test
 	public void testSetMessage_nIDSubject() throws Exception {
 		String messageBody = "XXX";
 		String messageHead = "expect";
@@ -207,23 +167,17 @@ public class SubjectMessageControllerScenario {
 				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", messageHead)
 						.param("sBody", messageBody).param("nID_Subject", "22").param("sMail", "test@igov.org.ua"))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
 	}
 
 	@Ignore
 	@Test
-	// null not allowed for column nid_subject
 	public void testSetMessageMailEmpty_nIDSubjectNull() throws Exception {
-		subjectMessage.setHead(sHead);
-		subjectMessage.setBody(sBody);
-		String sEmptyMail = "";
-		subjectMessage.setMail(sEmptyMail);
-		subjectMessage.setDate(new DateTime());
-		when(oSubjectMessageService.createSubjectMessage(sHead, sBody, null, sEmptyMail, null, null, null))
-				.thenReturn(subjectMessage);
-
+		String messageBody = "XXX";
+		String messageHead = "expect";
 		String jsonAfterSave = mockMvc
-				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", sHead)
-						.param("sBody", sBody).param("sMail", sEmptyMail))
+				.perform(post(SET_MESSAGE).contentType(MediaType.APPLICATION_JSON).param("sHead", messageHead)
+						.param("sBody", messageBody).param("sMail", ""))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
 	}
@@ -371,22 +325,7 @@ public class SubjectMessageControllerScenario {
 		Long nDefaultID_SubjectMessageType = 2l;
 		String sValidBody = "sValidBody";
 
-//		String sHead = "expect";
-//		String sBody = "XXX";
-//		Long nID_Subject = 1L;
-//		String sMail = "ukr.net";
-//		String sContacts = "093";
-//		String sData = "some data";
-		SubjectMessage oSubjectMessage_Feedback = subjectMessage;
-		oSubjectMessage_Feedback.setHead(sHead);
-		oSubjectMessage_Feedback.setBody(sBody);
-		oSubjectMessage_Feedback.setId_subject(nID_Subject);
-		oSubjectMessage_Feedback.setMail(sMail);
-		oSubjectMessage_Feedback.setContacts(sContacts);
-		oSubjectMessage_Feedback.setData(sData);
-		oSubjectMessage_Feedback.setDate(new DateTime());
-		oSubjectMessage_Feedback.setSubjectMessageType(SubjectMessageType.DEFAULT);
-
+		SubjectMessage oSubjectMessage_Feedback = mock(SubjectMessage.class);
 		HistoryEvent_Service oHistoryEvent_Service = mock(HistoryEvent_Service.class);
 
 		when(oHistoryEvent_Service.getsToken()).thenReturn(sValidToken);
@@ -398,6 +337,7 @@ public class SubjectMessageControllerScenario {
 		mockMvc.perform(post(SET_FEEDBACK_MESSAGE).param("sID_Order", sValidID_Order).param("sToken", sValidToken)
 				.param("nID_SubjectMessageType", nDefaultID_SubjectMessageType.toString()).param("sBody", sValidBody))
 				.andExpect(status().isOk()).andExpect(content().string("Ok"));
+		verify(subjectMessagesDao).setMessage(oSubjectMessage_Feedback);
 	}
 
 	@Test
@@ -425,18 +365,20 @@ public class SubjectMessageControllerScenario {
 				.andExpect(status().isForbidden()).andExpect(content().json(expectedResponseObject.toString()));
 	}
 
-	// TODO
-	// @Test
-	// public void shouldReturn403IfRecordIsFoundAndFeedbackMessageIsNotEmpty()
-	// {
-	// }
-	//
-	// @Test
-	// public void
-	// shouldReturn404IfRecordIsNotFoundAndFeedbackMessageIsNotEmpty() {
-	// }
+	@Ignore
+	@Test
+	public void shouldReturn403IfRecordIsFoundAndFeedbackMessageIsNotEmpty() {
+
+	}
+
+	@Ignore
+	@Test
+	public void shouldReturn404IfRecordIsNotFoundAndFeedbackMessageIsNotEmpty() {
+
+	}
 
 	@Test
+	@Ignore
 	public void shouldAddFeedbackToServiceAndReturnLink() throws Exception {
 		SubjectMessageFeedback feedback = new SubjectMessageFeedback();
 		feedback.setId(1L);
@@ -450,10 +392,11 @@ public class SubjectMessageControllerScenario {
 		feedback.setnID_Service(-1L);
 		feedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
 
+		JSONObject expectedResponseObject = new JSONObject();
+
 		String responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
 				generalConfig.getSelfHost(), feedback.getnID_Service(), feedback.getId(), feedback.getsID_Token());
 
-		JSONObject expectedResponseObject = new JSONObject();
 		expectedResponseObject.put("sURL", responseMessage);
 
 		when(oSubjectMessageService.setSubjectMessageFeedback(feedback.getsID_Source(), feedback.getsAuthorFIO(),
@@ -502,8 +445,9 @@ public class SubjectMessageControllerScenario {
 				.andExpect(status().isOk()).andExpect(content().json(expectedResponse));
 	}
 
+	@Ignore
 	@Test
-	public void shouldReturnFilteredListOfSubjectMessageFeedbackBynID_Service() throws Exception {
+	public void shouldReturnListOfSubjectMessageFeedbackBynID_Service() throws Exception {
 		SubjectMessageFeedback feedback = new SubjectMessageFeedback();
 		feedback.setId(1L);
 		feedback.setsID_Source("-1");
@@ -529,20 +473,15 @@ public class SubjectMessageControllerScenario {
 
 		String response = JsonRestUtils.toJson(expectedFeedbackList);
 
-		Long nID__LessThen_Filter = -1L;
-		Integer nRowsMax = -1;
-
-		when(oSubjectMessageService.getAllSubjectMessageFeedback_Filtered(feedback.getnID_Service(),
-				nID__LessThen_Filter, nRowsMax)).thenReturn(expectedFeedbackList);
+		when(oSubjectMessageService.getSubjectMessageFeedbackById(feedback.getId())).thenReturn(feedback);
+		when(oSubjectMessageService.getAllSubjectMessageFeedbackBynID_Service(feedback.getnID_Service()))
+				.thenReturn(expectedFeedbackList);
 
 		mockMvc.perform(get("/subject/message/getFeedbackExternal").contentType(MediaType.APPLICATION_JSON)
-				/* .param("nID", feedback.getId().toString()) */.param("sID_Token", feedback.getsID_Token())
-				.param("nID__LessThen_Filter", String.valueOf(nID__LessThen_Filter))
-				.param("nRowsMax", String.valueOf(nRowsMax)).param("nID_Service", feedback.getnID_Service().toString()))
-				.andExpect(status().isOk()).andExpect(content().json(response));
+				.param("nID", feedback.getId().toString()).param("sID_Token", feedback.getsID_Token())
+				.param("nID_Service", feedback.getnID_Service().toString()))
 
-		verify(oSubjectMessageService).getAllSubjectMessageFeedback_Filtered(feedback.getnID_Service(),
-				nID__LessThen_Filter, nRowsMax);
+				.andExpect(status().isOk()).andExpect(content().json(response));
 	}
 
 	// TODO: THIS TEST SHOULD BE INTEGRATIONAL OR REFACTORED

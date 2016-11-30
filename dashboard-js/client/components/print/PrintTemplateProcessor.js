@@ -78,7 +78,6 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         ids.push(found[2]);
       }
       var matchesIds = [];
-      // ищем маркеры что определяют в принтформе таблицы
       angular.forEach(templates, function (template) {
         var comment = template.match(/<!--[\s\S]*?-->/g);
         if(Array.isArray(comment)) {
@@ -89,7 +88,6 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         if(comment) matchesIds.push(comment);
       });
 
-      // формируем массив из ид маркеров таблиц что встретились в принтформе
       angular.forEach(matchesIds, function (ids) {
         var arr = ids.filter(function(item, pos, self) {
           return self.indexOf(item) == pos;
@@ -97,8 +95,6 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         idArray.push(arr);
       });
 
-      // когда ид маркера принтформы совпало с ид таблицы - заменяем теги на поля таблицы. проверяем к-во строк таблицы
-      // если больше одной - клонируем до нужного к-ва, после наполняем таблицей.
       angular.forEach(idArray, function(id) {
         angular.forEach(form, function(item) {
           if(item.id === id[0]) {
@@ -107,10 +103,10 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
               var uncommentedField = commentedField.split('--')[1];
               var result = uncommentedField.slice(1);
               if(result == id[0]){
-                var withAddedRowsTemplate = template.repeat(item.aRow.length);
+                var withAddedRowsTemplate = template.repeat(item.aRow.length - 1);
                 angular.forEach(item.aRow, function (row) {
                   angular.forEach(row.aField, function (field) {
-                    var fieldId = field.value ? field.value : (field.default ? field.default : (field.props ? field.props.value : ''));
+                    var fieldId = field.value ? field.value : (field.default ? field.default : field.props.value);
                     withAddedRowsTemplate = self.populateSystemTag(withAddedRowsTemplate, '['+ field.id +']', fieldId, true);
                   })
                 });

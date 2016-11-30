@@ -144,7 +144,7 @@ module.exports.getDefaultCallback = function (res) {
     if (error) {
       res.status(500).send(error);
     } else {
-      res.status(response.statusCode).send(body||{});
+      res.status(response.statusCode).send(body);
     }
   }
 };

@@ -13,16 +13,16 @@ public class ProcessSubjectTree extends AbstractEntity {
     /**
 	 * 
 	 */
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @JsonProperty(value = "processSubjectChild")
-    @ManyToOne(targetEntity = ProcessSubject.class)
-    @JoinColumn(name="nID_ProcessSubject_Child", nullable = false, updatable = false)
+	 @JsonProperty(value = "processSubjectChild")
+	 @ManyToOne(targetEntity = ProcessSubject.class)
+	 @JoinColumn(name="nID_ProcessSubject_Child", nullable = false, updatable = false)
     private ProcessSubject processSubjectChild;
 
-    @JsonProperty(value = "processSubjectParent")
-    @ManyToOne(targetEntity = ProcessSubject.class)
-    @JoinColumn(name="nID_ProcessSubject_Parent", nullable = false, updatable = false)
+	 @JsonProperty(value = "processSubjectParent")
+	 @ManyToOne(targetEntity = ProcessSubject.class)
+	 @JoinColumn(name="nID_ProcessSubject_Parent", nullable = false, updatable = false)
     private ProcessSubject processSubjectParent;
     
     

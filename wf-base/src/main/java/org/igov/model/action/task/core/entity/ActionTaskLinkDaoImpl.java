@@ -31,7 +31,7 @@ public class ActionTaskLinkDaoImpl extends GenericEntityDao<Long, ActionTaskLink
         if (sKey != null) {
             criteria.add(Restrictions.eq("sKey", sKey));
         }
-        if (nIdSubjectHolder != null) { 
+        if (nIdSubjectHolder != null) {
             criteria.add(Restrictions.eq("nIdSubjectHolder", nIdSubjectHolder));
         }
 

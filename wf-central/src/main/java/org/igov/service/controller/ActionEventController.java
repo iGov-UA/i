@@ -660,30 +660,19 @@ public class ActionEventController implements ControllerConstants {
                             = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
                     LOG.info("found oSubjectMessageFeedback: " + oSubjectMessageFeedback);
                     
-                    if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null
-                            && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
-                        sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
-                        } else {
-                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
-                        }
+//                    if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null
+//                            && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
+//                        sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
+//                        } else {
+//                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
+//                        }
                         
-                    // Кусок кода для теста. После тестирования будет убрано.
-                       /*  sTextFeedback = "";                  
+                         sTextFeedback = "";                  
                         if (oSubjectMessageFeedback != null) {
-                            LOG.info("!!!!!oSubjectMessageFeedback.getsBody(): " + oSubjectMessageFeedback.getsBody());
-                            LOG.info("!!!!!oSubjectMessageFeedback.getsHead(): " + oSubjectMessageFeedback.getsHead());
-                            LOG.info("!!!!!oSubjectMessageFeedback.getsMail(): " + oSubjectMessageFeedback.getsMail());
+                            LOG.info("!!!!!oSubjectMessageFeedback: " + oSubjectMessageFeedback);
                             if (oSubjectMessageFeedback.getoSubjectMessage() != null) {
-                                if (oSubjectMessageFeedback.getoSubjectMessage().getoMail() != null) {
-                                  LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage().getoMail().getsValue(): " + oSubjectMessageFeedback.getoSubjectMessage().getoMail().getsValue());  
-                                } else {
-                                LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getoMail() = null");
-                                }
-                            
+                            LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage(): " + oSubjectMessageFeedback.getoSubjectMessage());
                             sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
-                            LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage().getBody(): " + sTextFeedback);
-                            LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage().getHead(): " + oSubjectMessageFeedback.getoSubjectMessage().getHead());
-                            LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage().getMail(): " + oSubjectMessageFeedback.getoSubjectMessage().getMail());
                             
                             }
                         else {
@@ -692,7 +681,7 @@ public class ActionEventController implements ControllerConstants {
                         } 
                         else {
                         LOG.info("SubjectMessageFeedback() = null");
-                        } */
+                        } 
                         
                     // sTextFeedback
                     asCell.add(sTextFeedback);

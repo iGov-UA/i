@@ -1,11 +1,21 @@
 package org.igov.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.apache.commons.beanutils.MethodUtils;
 import org.igov.model.action.execute.item.ActionExecute;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
+import org.igov.model.action.execute.item.ActionExecuteOldDAO;
 import org.igov.model.action.execute.item.ActionExecuteStatusDAO;
-import org.igov.service.business.action.execute.ActionExecuteService;
 import org.igov.service.exception.CommonServiceException;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -15,23 +25,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
-
 @Component
 public class MethodsCallRunnerUtil {
 
 	@Autowired
 	private ActionExecuteDAO actionExecuteDAO;
-
+	@Autowired
+	private ActionExecuteOldDAO actionExecuteOldDAO;
 	@Autowired
 	private ActionExecuteStatusDAO actionExecuteStatusDAO;
-
-	@Autowired
-	private ActionExecuteService actionExecuteService;
-
 	
 	@Autowired
 	private ApplicationContext springContext;
@@ -127,7 +129,8 @@ public class MethodsCallRunnerUtil {
 			LOG.info("method is-{}", method!=null?"not null":"null");
 
 			//TODO move to separate method 
-			ActionExecute actionExecute = actionExecuteService.setActionExecute(1L, new DateTime(), new DateTime(), 0, className, methodName, parameters!=null?toByteArray(parameters):new byte[0], new JSONArray(parameters).toString(), null);
+			ActionExecute actionExecute = new ActionExecute();
+			actionExecute = actionExecuteDAO.setActionExecute(1l, new DateTime(), new DateTime(), 0, className, methodName, parameters!=null?toByteArray(parameters):new byte[0], new JSONArray(parameters).toString(), null);
 			actionExecuteDAO.saveOrUpdate(actionExecute);
 			
 			LOG.info("Method is saved!");
@@ -139,13 +142,13 @@ public class MethodsCallRunnerUtil {
 					ret = method.invoke(o);
 				LOG.info("return is {}",ret!=null?ret:null);
 
-				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(2L));
+				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(2l));
 				LOG.info("Trying to move actionExecute to old table");
-				actionExecuteService.moveActionExecute(actionExecute);
+				actionExecuteDAO.moveActionExecute(actionExecute);
 				LOG.info("ActionExecute is moved");
 
 			}catch(InvocationTargetException e){
-				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(4L));
+				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(4l));
 				actionExecute.setnTry(1);
 				actionExecuteDAO.saveOrUpdate(actionExecute);
 				LOG.info("error during invoke method {}",e);
@@ -162,7 +165,7 @@ public class MethodsCallRunnerUtil {
 	public Object runMethod(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID) throws CommonServiceException{
 		try{
 			Object ret = null;
-			List<ActionExecute> actionExecuteLsit = actionExecuteService.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
+			List<ActionExecute> actionExecuteLsit = actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
 			LOG.info("actionExecuteLsit size -{}",actionExecuteLsit.size());
 			for(ActionExecute actionExecute:actionExecuteLsit){
 				Class<?> c = Class.forName(actionExecute.getsObject());
@@ -206,7 +209,7 @@ public class MethodsCallRunnerUtil {
 						ret = method.invoke(o);
 					LOG.info("return is {}",ret!=null?ret:null);
 					actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(2l));
-					actionExecuteService.moveActionExecute(actionExecute);
+					actionExecuteDAO.moveActionExecute(actionExecute);
 				}catch(InvocationTargetException e){
 					actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(4l));
 					actionExecute.setnTry(actionExecute.getnTry()+1);

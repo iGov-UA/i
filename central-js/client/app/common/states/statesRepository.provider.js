@@ -127,10 +127,6 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     return this.mode === 'kyiv';
   };
 
-  this.isDFS = function () {
-    return this.mode === 'dfs';
-  };
-
   var getHeader = function (mode) {
     var hdr;
     if (!!modes[mode]) {
@@ -260,10 +256,6 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
   StatesRepository.prototype.isKyivCity = function () {
     return selfProvider.isKyivCity();
-  };
-
-  StatesRepository.prototype.isDFS = function () {
-    return selfProvider.isDFS();
   };
 
   this.$get = [function StatesRepositoryFactory() {

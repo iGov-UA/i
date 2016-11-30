@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_test_justice_setTasks" name="_test_justice_setTasks" isExecutable="true">
+  <process id="_test_justice_setTasks" name="Мінюст - вихідна кореспонденція" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="email" name="email" type="string" default="email@email.com"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="крок 1" activiti:candidateGroups="justice_common">
@@ -22,7 +21,6 @@
           <activiti:value id="sEnumCreateOutcomingLetter" name="сформувати"></activiti:value>
           <activiti:value id="sEnumNotCreateOutcomingLetter" name="не треба формувати поки що"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ид процесса" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
@@ -79,8 +77,6 @@ updatedDate.setDate(new Date().getDate() + days);
 var sNewDate = (updatedDate.getDate() + "." + (updatedDate.getMonth() + 1) + "." + updatedDate.getFullYear());
 execution.setVariable('sDateExecution', sNewDate)
 
-var processInstanceId= execution.getProcessInstanceId()
-execution.setVariable('processInstanceId', processInstanceId)
 </script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>

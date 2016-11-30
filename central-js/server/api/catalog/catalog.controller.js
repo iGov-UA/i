@@ -110,8 +110,7 @@ module.exports.getCatalogTreeTag = function (req, res) {
       asIDPlaceUA: req.query.asIDPlaceUA || null,
       bShowEmptyFolders: req.query.bShowEmptyFolders || false,
       nID_Category: req.query.nID_Category || 1,
-      bNew: req.query.bNew,
-      sID_SubjectOwner: req.query.sID_SubjectOwner || null
+      bNew: req.query.bNew
     }
   };
 
@@ -129,26 +128,7 @@ module.exports.getCatalogTreeTag = function (req, res) {
         }
       };
 
-      var query = {
-        'nID_Category': options.params.nID_Category,
-        'sFind': options.params.sFind,
-        'asID_Place_UA': options.params.asIDPlaceUA,
-        'bShowEmptyFolders': options.params.bShowEmptyFolders
-      };
-
-      if (options.params.bNew) {
-        query['bNew'] = options.params.bNew;
-      }
-
-      if (options.params.sID_SubjectOwner) {
-        query['sID_SubjectOwner'] = options.params.sID_SubjectOwner;
-        if(!query.sFind && query.sID_SubjectOwner === 'SFS'){
-          //query.sFind = 'надання';
-        }
-      }
-
       // пока есть параметр bNew ввожу доп проверку, после нужно будет убрать
-      /*
       if(options.params.bNew) {
         var url = buildUrl('/action/item/getCatalogTreeTag');
         return request.get({
@@ -182,17 +162,7 @@ module.exports.getCatalogTreeTag = function (req, res) {
             'bShowEmptyFolders': options.params.bShowEmptyFolders
           }
         }, callback);
-      }*/
-      var url = buildUrl('/action/item/getCatalogTreeTag');
-      return request.get({
-        'url': url,
-        'auth': {
-          'username': options.username,
-          'password': options.password
-        },
-        json: true,
-        'qs': query
-      }, callback);
+      }
     }
   });
 };
