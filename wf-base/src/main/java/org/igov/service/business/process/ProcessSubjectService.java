@@ -359,8 +359,7 @@ public class ProcessSubjectService {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
 
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            //DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
+            
             ProcessSubject oProcessSubjectParent = null;
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
@@ -372,6 +371,18 @@ public class ProcessSubjectService {
             }else{
                 oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
+            }
+            
+            List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(snProcess_ID); // Find all children for document
+            
+            if (aProcessSubjectChild.size() > 0){ 
+                for (ProcessSubjectTree testChild : aProcessSubjectChild)
+                {
+                    LOG.info("test child login: " + testChild.getProcessSubjectChild().getsLogin() +
+                            "test child ID: " + testChild.getProcessSubjectChild().getSnID_Process_Activiti());
+                }
+            }else{
+                LOG.info("ProcessSubjectTree list is empty!!!!");
             }
             
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
