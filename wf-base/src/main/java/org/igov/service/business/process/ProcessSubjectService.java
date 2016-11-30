@@ -375,15 +375,21 @@ public class ProcessSubjectService {
             
             List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
             
-            /*if (aProcessSubjectChild.size() > 0){ 
+            if (aProcessSubjectChild != null){ 
+                
+                if (aProcessSubjectChild.isEmpty())
+                {
+                    LOG.info("aProcessSubjectChild is Empry");
+                }
+                
                 for (ProcessSubjectTree testChild : aProcessSubjectChild)
                 {
                     LOG.info("test child login: " + testChild.getProcessSubjectChild().getsLogin() +
                             "test child ID: " + testChild.getProcessSubjectChild().getSnID_Process_Activiti());
                 }
             }else{
-                LOG.info("ProcessSubjectTree list is empty!!!!");
-            }*/
+                LOG.info("ProcessSubjectTree list is null");
+            }
             
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
                     + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
