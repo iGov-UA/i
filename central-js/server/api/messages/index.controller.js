@@ -65,6 +65,23 @@ module.exports.get = function(req, res) {
     }, callback);
 };
 
+module.exports.getMessageFile = function (req, res) {
+  var options = getOptions(req);
+  var url = options.protocol + '://' + options.hostname + options.path + '/subject/message/getMessageFile?nID_Message=' + req.query.nID;
+
+  var r = request({
+    json: true,
+    url: url,
+    auth: {
+      'username': options.username,
+      'password': options.password
+    }});
+
+  req.pipe(r).on('response', function (response) {
+    response.headers['content-type'] = 'application/octet-stream';
+  }).pipe(res);
+};
+
 module.exports.getSubjectMessageData = function(req, res) {
   var options = getOptions(req);
   var url = options.protocol + '://' + options.hostname + options.path + '/subject/message/getSubjectMessageData?nID_SubjectMessage=' + req.query.nID;
