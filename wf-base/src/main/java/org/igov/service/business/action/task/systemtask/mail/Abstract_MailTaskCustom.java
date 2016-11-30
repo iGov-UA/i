@@ -68,7 +68,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-public abstract class Abstract_MailTaskCustom implements JavaDelegate {
+public abstract class Abstract_MailTaskCustom extends AbstractModelTask implements JavaDelegate {
 
     static final transient Logger LOG = LoggerFactory
             .getLogger(Abstract_MailTaskCustom.class);
