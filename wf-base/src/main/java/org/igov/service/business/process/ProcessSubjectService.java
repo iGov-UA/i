@@ -373,7 +373,7 @@ public class ProcessSubjectService {
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
             }
             
-            List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(snProcess_ID); // Find all children for document
+            /*List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(snProcess_ID); // Find all children for document
             
             if (aProcessSubjectChild.size() > 0){ 
                 for (ProcessSubjectTree testChild : aProcessSubjectChild)
@@ -383,7 +383,7 @@ public class ProcessSubjectService {
                 }
             }else{
                 LOG.info("ProcessSubjectTree list is empty!!!!");
-            }
+            }*/
             
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
                     + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
