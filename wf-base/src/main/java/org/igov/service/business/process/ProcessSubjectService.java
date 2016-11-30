@@ -373,9 +373,9 @@ public class ProcessSubjectService {
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
             }
             
-            /*List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(snProcess_ID); // Find all children for document
+            List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
             
-            if (aProcessSubjectChild.size() > 0){ 
+            /*if (aProcessSubjectChild.size() > 0){ 
                 for (ProcessSubjectTree testChild : aProcessSubjectChild)
                 {
                     LOG.info("test child login: " + testChild.getProcessSubjectChild().getsLogin() +
