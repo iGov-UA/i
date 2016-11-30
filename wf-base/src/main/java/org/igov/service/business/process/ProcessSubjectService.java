@@ -358,8 +358,8 @@ public class ProcessSubjectService {
             
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
 
-            //DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+            //DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
             ProcessSubject oProcessSubjectParent = null;
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
