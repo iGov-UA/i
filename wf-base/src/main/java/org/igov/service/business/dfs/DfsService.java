@@ -147,7 +147,7 @@ public class DfsService {
 //                                BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
 //                                byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
 
-                                /*
+                                
                                 BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
                                 byte[] byteFile = IOUtils.toByteArray(oBufferedInputStream);
 
@@ -157,9 +157,10 @@ public class DfsService {
                                 ois.close();
                                 //return contentMultipartFile;
                                 byte[] aByte = contentMultipartFile.getBytes();
-                                */
                                 
-                                byte[] aByte = oByteArrayMultipartFile.getBytes();
+                                
+//                                byte[] aByte = oByteArrayMultipartFile.getBytes();
+                                
                                 saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби"
                                         , "Отримана відповідь від Державної Фіскальної Служби у вигляді криптопакету: "+sFileName
                                         , aByte
