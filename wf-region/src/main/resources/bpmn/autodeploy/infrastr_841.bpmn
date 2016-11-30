@@ -43,7 +43,7 @@
           <activiti:value id="online" name="В єлектронній формі через мережу інтернет"></activiti:value>
           <activiti:value id="offline" name="У паперовій формі особисто забрати"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all" name="Заява громадянина з ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/infr/min_equip_ecp.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -148,7 +148,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocAnketa},${nDocTO},${nDocFlag},${nDocVlasn},${nDocPass},${form_signed}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocAnketa},${nDocTO},${nDocFlag},${nDocVlasn},${nDocPass},${form_signed_all}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
