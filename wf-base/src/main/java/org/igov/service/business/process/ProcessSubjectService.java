@@ -354,6 +354,8 @@ public class ProcessSubjectService {
             String sContent, String sAutorResolution, String sTextResolution, 
             String sDateExecution, String snProcess_ID) {
 
+        LOG.info("I can't find this log!");
+        
         try {
             
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
