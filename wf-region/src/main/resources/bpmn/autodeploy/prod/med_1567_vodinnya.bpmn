@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="med_1562_zapys" name="Запис на прийом до лікаря" isExecutable="true">
+  <process id="med_1567_vodinnya" name="Видача медичної довідки психіатра щодо придатності до керування транспортним засобом" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -8,42 +8,16 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть медичний заклад, в який Ви бажаєте записатись на прийом" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="Rayon" name="Просимо вказати з якого Ви району" type="enum">
-        <activiti:value id="berezh" name="Бережанський район"></activiti:value>
-        <activiti:value id="borshch" name="Борщівський район"></activiti:value>
-        <activiti:value id="buch" name="Бучацький район"></activiti:value>
-        <activiti:value id="gus" name="Гусятинський район"></activiti:value>
-        <activiti:value id="zalishch" name="Заліщицький район"></activiti:value>
-        <activiti:value id="zbarazh" name="Збаразький район"></activiti:value>
-        <activiti:value id="zboriv" name="Зборівський район"></activiti:value>
-        <activiti:value id="kozova" name="Козівський район"></activiti:value>
-        <activiti:value id="kremen" name="Кременецький район"></activiti:value>
-        <activiti:value id="lanov" name="Лановецький район"></activiti:value>
-        <activiti:value id="monas" name="Монастириський район"></activiti:value>
-        <activiti:value id="pidvol" name="Підволочиський район"></activiti:value>
-        <activiti:value id="pidgai" name="Підгаєцький район"></activiti:value>
-        <activiti:value id="tereb" name="Теребовлянський район"></activiti:value>
-        <activiti:value id="tern" name="Тернопільський район"></activiti:value>
-        <activiti:value id="chort" name="Чортківський район"></activiti:value>
-        <activiti:value id="shums" name="Шумський район"></activiti:value>
-        <activiti:value id="ternopil" name="м.Тернопіль"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="&lt;b&gt;Запис на прийом до лікаря проводиться особисто, також запис до лікарів першого неврологічного відділення проводиться за телефоном (0352) 43-57-73&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="Viddilennya" name="Просимо вказати необхідне Вам відділення" type="enum">
-        <activiti:value id="nevrol" name="Перше неврологічне відділення"></activiti:value>
-        </activiti:formProperty>     
-        <activiti:formProperty id="sLikar" name="Оберіть лікаря до якого Ви бажаєте записатись на прийом" type="enum"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть медичний заклад, в якому Ви бажаєте отримати медичну довідку психіатра щодо придатності до керування транспортним засобом" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="lable" name="Зверніть увагу" type="label" default="&lt;b&gt;Запис на видачу медичної довідки психіатра щодо придатності до керування транспортним засобом проводиться особисто&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sLikari" name="Лікарі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/medicine.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -111,28 +85,25 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Запис на прийом до лікаря]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки психіатра щодо придатності до керування транспортним засобом]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
                                         [pattern/mail/new_design/_common_content_start.html]
                                         <p>
-                                        Чекаємо Вас за адресою: ${sAddress}<br>
+                                        Чекаємо Вас за адресою: ${sAddress}, амбулаторно-поліклінічне відділення 3 поверх, кабінет №8<br>
                                         </p>
                                         <p>
                                         Дата та час візиту: ${date_of_visit}.
                                         </p>
                                         <p>
-										<b>Необхідні документи, які треба принести до ${sLikari}:</b><br>
-									    <ul>
-										Прийти за адресою: ${sAddress}.</ul>
-										<ul>
-										При собі мати:</ul>
-										<ul><li>Направлення;</li>
-										<li>Флюрографію та ренген;</li>
-										<li>Первинну документацію (за навності)</li>
-										</ul>
-									    </p>
+										<b>Необхідні документи, які треба принести на видачу медичної довідки психіатра щодо придатності до керування транспортним засобом:</b><br>
+										При собі мати:
+										<li>паспорт з обовязковою припискою по ${sArea};</li>
+										<li>кошти для оплати бланка довідки</li>
+										Для чолоіків також необхідно мати військовий квиток або приписне свідотство!
+									</p>			
+									</p>
                                         [pattern/mail/new_design/_common_content_end.html]
                                         [pattern/mail/new_design/_common_signature_start.html]
                                         ${sNameOrgan},<br>
@@ -142,13 +113,13 @@ execution.setVariable('sNotification_day', timer)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow32" sourceRef="servicetask6" targetRef="parallelgateway2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="${sLikari}" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="медична довідка щодо придатності до керування транспортним засобом" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Запис на прийом до лікаря]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки психіатра щодо придатності до керування транспортним засобом]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -158,18 +129,14 @@ execution.setVariable('sNotification_day', timer)</script>
                                         [pattern/mail/new_design/_common_content_start.html]
 									<p>
 										Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
-										Ви записались до ${sLikari}
+										Ви записались на видачу медичної довідки психіатра щодо придатності до керування транспортним засобом 
 									</p>
-									<p>
-										Для того щоб закінчити процедуру необхідно:<br>
-										<ul>
-										Прийти за адресою: ${sAddress}.</ul>
-										<ul>
-										При собі мати:</ul>
-										<ul><li>Направлення;</li>
-										<li>Флюрографію та ренген;</li>
-										<li>Первинну документацію (за навності)</li>
-										</ul>
+									<p><ul>
+										Для того щоб закінчити процедуру необхідно прийти за адресою: ${sAddress}, амбулаторно-поліклінічне відділення 3 поверх, кабінет №8.</ul>
+										При собі мати:
+										<li>паспорт з обовязковою припискою по ${sArea};</li>
+										<li>кошти для оплати бланка довідки</li>
+										Для чолоіків також необхідно мати військовий квиток або приписне свідотство!
 									</p>
                                        <p>
                                        Дата та час візиту: ${date_of_visit}.
@@ -194,41 +161,18 @@ execution.setVariable('sNotification_day', timer)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="${sLikari}" activiti:candidateGroups="med_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="медична довідка щодо придатності до керування транспортним засобом" activiti:candidateGroups="medvod_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLikar" name="Лікар до якого записались на прийом" type="enum" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Rayon" name="Просимо вказати з якого Ви району" type="enum" writable="false">>
-        <activiti:value id="berezh" name="Бережанський район"></activiti:value>
-        <activiti:value id="borshch" name="Борщівський район"></activiti:value>
-        <activiti:value id="buch" name="Бучацький район"></activiti:value>
-        <activiti:value id="gus" name="Гусятинський район"></activiti:value>
-        <activiti:value id="zalishch" name="Заліщицький район"></activiti:value>
-        <activiti:value id="zbarazh" name="Збаразький район"></activiti:value>
-        <activiti:value id="zboriv" name="Зборівський район"></activiti:value>
-        <activiti:value id="kozova" name="Козівський район"></activiti:value>
-        <activiti:value id="kremen" name="Кременецький район"></activiti:value>
-        <activiti:value id="lanov" name="Лановецький район"></activiti:value>
-        <activiti:value id="monas" name="Монастириський район"></activiti:value>
-        <activiti:value id="pidvol" name="Підволочиський район"></activiti:value>
-        <activiti:value id="pidgai" name="Підгаєцький район"></activiti:value>
-        <activiti:value id="tereb" name="Теребовлянський район"></activiti:value>
-        <activiti:value id="tern" name="Тернопільський район"></activiti:value>
-        <activiti:value id="chort" name="Чортківський район"></activiti:value>
-        <activiti:value id="shums" name="Шумський район"></activiti:value>
-        <activiti:value id="ternopil" name="м.Тернопіль"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sLikari" name="Лікарі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин з'явився"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
@@ -252,13 +196,13 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Запис на прийом до лікаря]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача медичної довідки психіатра щодо придатності до керування транспортним засобом]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
                                         [pattern/mail/new_design/_common_content_start.html]
                                     <p>
-                              		Ви отримали послугу "Записатись на прийом до лікаря".
+                              		Ви отримали послугу "Видача медичної довідки психіатра щодо придатності до керування транспортним засобом".
                               		</p>
                               		<p>
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
@@ -281,8 +225,8 @@ execution.setVariable('sNotification_day', timer)</script>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow37" sourceRef="parallelgateway1" targetRef="servicetask2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_med_1562_zapys">
-    <bpmndi:BPMNPlane bpmnElement="med_1562_zapys" id="BPMNPlane_med_1562_zapys">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_med_1567_vodinnya">
+    <bpmndi:BPMNPlane bpmnElement="med_1567_vodinnya" id="BPMNPlane_med_1567_vodinnya">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="16.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

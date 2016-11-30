@@ -29,10 +29,10 @@
         <activiti:value id="shums" name="Шумський район"></activiti:value>
         <activiti:value id="ternopil" name="м.Тернопіль"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="&lt;b&gt;Запис на прийом до лікаря проводиться особисто, також запис до лікарів першого неврологічного відділення проводиться за телефоном (0352) 43-57-73&lt;/b&gt;"></activiti:formProperty>     
+        <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="&lt;b&gt;Запис на прийом до лікаря проводиться особисто, також запис до лікарів першого неврологічного відділення проводиться за телефоном (0352) 43-57-73&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="Viddilennya" name="Просимо вказати необхідне Вам відділення" type="enum">
-        <activiti:value id="nevrol1" name="Перше неврологічне відділення"></activiti:value>
-        </activiti:formProperty> 
+        <activiti:value id="nevrol" name="Перше неврологічне відділення"></activiti:value>
+        </activiti:formProperty>     
         <activiti:formProperty id="sLikar" name="Оберіть лікаря до якого Ви бажаєте записатись на прийом" type="enum"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
@@ -114,15 +114,15 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:string><![CDATA[Звернення на тему: Запис на прийом до лікаря]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>
-Чекаємо Вас за адресою: ${sAddress}<br>
-</p>
-<p>
-Дата та час візиту: ${date_of_visit}.
-</p>
-<p>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+                                        [pattern/mail/new_design/_common_content_start.html]
+                                        <p>
+                                        Чекаємо Вас за адресою: ${sAddress}<br>
+                                        </p>
+                                        <p>
+                                        Дата та час візиту: ${date_of_visit}.
+                                        </p>
+                                        <p>
 										<b>Необхідні документи, які треба принести до ${sLikari}:</b><br>
 									    <ul>
 										Прийти за адресою: ${sAddress}.</ul>
@@ -132,11 +132,12 @@ execution.setVariable('sNotification_day', timer)</script>
 										<li>Флюрографію та ренген;</li>
 										<li>Первинну документацію (за навності)</li>
 										</ul>
-									</p>
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan},<br>
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+									    </p>
+                                        [pattern/mail/new_design/_common_content_end.html]
+                                        [pattern/mail/new_design/_common_signature_start.html]
+                                        ${sNameOrgan},<br>
+                                        [pattern/mail/new_design/_common_signature_end.html]
+                                        [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -153,8 +154,8 @@ ${sNameOrgan},<br>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-									<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+                                        [pattern/mail/new_design/_common_content_start.html]
 									<p>
 										Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
 										Ви записались до ${sLikari}
@@ -175,10 +176,11 @@ ${sNameOrgan},<br>
                                        </p>
 										</ul>         
 									<p>[cancelTask]</p>                
-									[pattern/mail/_common_signature_start.html]
+									[pattern/mail/new_design/_common_content_end.html]
+                                    [pattern/mail/new_design/_common_signature_start.html]
 									${sNameOrgan},<br>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/new_design/_common_signature_end.html]
+                                    [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -253,8 +255,8 @@ ${sNameOrgan},<br>
           <activiti:string><![CDATA[Звернення на тему: Запис на прийом до лікаря]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+                                        [pattern/mail/new_design/_common_content_start.html]
                                     <p>
                               		Ви отримали послугу "Записатись на прийом до лікаря".
                               		</p>
@@ -262,11 +264,12 @@ ${sNameOrgan},<br>
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
                               		Дякуємо.
 									</p>
-                                    [pattern/mail/_common_signature_start.html]
+                                    [pattern/mail/new_design/_common_content_end.html]
+                                    [pattern/mail/new_design/_common_feedback.html]        
+                                    [pattern/mail/new_design/_common_signature_start.html]
 									${sNameOrgan},<br>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/new_design/_common_signature_end.html]
+                                    [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
