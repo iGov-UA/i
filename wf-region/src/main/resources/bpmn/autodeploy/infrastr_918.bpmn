@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="infrastr_918" name="Видача ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом" isExecutable="true">
+    <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asOwnerType" name="Здобувач ліцензії" type="enum" required="true">
+          <activiti:value id="sCompany" name="юридична особа"></activiti:value>
+          <activiti:value id="sMan" name="фізична особа-підприємець"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sVlasn" type="label" default="Дані щодо здобувача ліцензії"></activiti:formProperty>
+        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCompAdress" name="Поштовий індекс та адреса місцезнаходження юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA3" name="Прізвище керівника юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA3" name="Ім'я керівника юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA3" name="По батькові керівника юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCompForm" name="Організаційно-правова форма" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По батькові здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManPassport" name="№, серія паспорту здобувача ліцензії, ким і коли виданий" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManAdress" name="Поштовий індекс та адреса здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManInn" name="ІПН здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон здобувача ліцензії" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="privateMail" name="E-mail здобувача ліцензії" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asPassShip" name="Чи потрібна ліцензія на перевезення пасажирів річковим, морським транспортом" type="enum" default="sPassShipNo" required="true">
+          <activiti:value id="sPassShipOk" name="Так"></activiti:value>
+          <activiti:value id="sPassShipNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asScrapShip" name="Чи потрібна ліцензія на перевезення небезпечних вантажів річковим, морським транспортом" type="enum" default="sScrapShipNo" required="true">
+          <activiti:value id="sScrapShipOk" name="Так"></activiti:value>
+          <activiti:value id="sScrapShipNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTrashShip" name="Чи потрібна ліцензія на перевезення небезпечних відходів річковим, морським транспортом" type="enum" default="sTrashShipNo" required="true">
+          <activiti:value id="sTrashShipOk" name="Так"></activiti:value>
+          <activiti:value id="sTrashShipNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPassSmalShip" name="Чи потрібна ліцензія на перевезення пасажирів малими/маломірними суднами" type="enum" default="sPassSmalShipNo" required="true">
+          <activiti:value id="sPassSmalShipOk" name="Так"></activiti:value>
+          <activiti:value id="sPassSmalShipNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="slabelSize" name="Зверніть увагу" type="label" default="Розмір файлів та архівів не може перевищувати 5Мб"></activiti:formProperty>
+        <activiti:formProperty id="nPassport" name="Копія паспорта керівника здобувача ліцензії (або довіреної особи);Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити та заповнити &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYVmFXN1NsYThxZ0E&quot;&gt;Відомості про наявність матеріально-технічної бази та спеціалістів, необхідних для провадження господарської діяльності&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="nDocVidom" name="Відомості про наявність матеріально-технічної бази та спеціалістів, необхідних для провадження господарської діяльності" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocKvalif" name="Копії кваліфікаційних документів членів екіпажу;Об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocSvid" name="Копія класифікаційного свідоцтва судна" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocKvalif1" name="Копії свідоцтва на право управління малим/маломірним судном спеціалістів, які забезпечуватимуть надання відповідних послуг;Об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nShipTiket" name="Копія суднового білета" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; Для пасажирських суден" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocSafety" name="Копія свідоцтва про управління безпекою;В разі наявності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocSysSafety" name="Копія документа про відповідність системи управління безпекою;В разі наявності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocCharter" name=" Копія договору бербоут-чартеру;В разі наявності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocBezpek" name="Копія акта огляду судна Укртрансбезпекою" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_license.json')}"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/infr/sea_licenseECP.html"></activiti:formProperty>
+        <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sK1" name="Діяльність для якої потрібна ліцензія1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sK2" name="Діяльність для якої потрібна ліцензія2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sK3" name="Діяльність для якої потрібна ліцензія3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sK4" name="Діяльність для якої потрібна ліцензія4" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask6"></sequenceFlow>
+    <serviceTask id="servicetask6" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask6">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow49" sourceRef="boundaryerror1" targetRef="endevent7"></sequenceFlow>
+    <endEvent id="endevent7" name="End"></endEvent>
+    <sequenceFlow id="flow47" sourceRef="servicetask6" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[valery.stavitsky@gmail.com]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Нова заявка на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Повідомлення про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Видача ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    					<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+								<p>
+            						Ваша заявка на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом успішно зареєстрована на порталі №[sID_Order].<br>
+									Спеціалісти Державної служби України з безпеки на транспорті повинні дати відповідь найближчим часом.
+                                </p>
+                                [pattern/mail/_common_signature_start.html]
+								Державна служба України з безпеки на транспорті,<br>
+								[pattern/mail/_common_signature_end.html]
+								[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${form_signed}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="infr_rechmor_2">
+      <extensionElements>
+        <activiti:formProperty id="sFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний  телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Е-mail" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asOwnerType" name="Здобувач ліцензії" type="enum" writable="false">
+          <activiti:value id="sCompany" name="юридична особа"></activiti:value>
+          <activiti:value id="sMan" name="фізична особа-підприємець"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sVlasn" name=" " type="label" default="Дані щодо здобувача ліцензії"></activiti:formProperty>
+        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompPIB" name="ПІБ керівника юридичної особи" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVlasnPIB" name="ПІБ здобувача ліцензії" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sManPassport" name="№, серія паспорту здобувача ліцензії, ким і коли виданий" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sManAdress" name="Адреса здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sManInn" name="ІПН здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privateMail" name="E-mail здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompForm" name="Організаційно-правова форма" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
+          <activiti:value id="accept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
+          <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата найближчого засідання комісії" type="date"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для отримання ліцензії у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/sea_license.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/sea_license.html" type="file"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nPassport},${nDocVidom},${nDocKvalif},${nDocBezpek},${nDocSvid},${nDocPass},${nDocSafety},${nDocSysSafety},${nDocCharter},${nDocKvalif1},${nShipTiket},${form_signed}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow5" name="${decide == 'reject'}" sourceRef="exclusivegateway3" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask3" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				На жаль, ми змушені відмовити Вам у наданні послуги за заявкою №[sID_Order].
+			</p>
+			<p>
+			Коментар державного службовця:<br>
+			${comment}
+			</p>
+			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+			[pattern/mail/_common_signature_start.html]
+			Державна служба України з безпеки на транспорті.</p>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent5"></sequenceFlow>
+    <endEvent id="endevent5" name="End"></endEvent>
+    <sequenceFlow id="flow7" name="decide == 'accept'" sourceRef="exclusivegateway3" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask4" name="Документи в порядку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Ваша заявка №[sID_Order] на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом перевірена.<br>
+			   У документах помилок не виявлено.<br>
+			   ${comment}
+			</p> 
+			<p>
+			Для того щоб закінчити процедуру видачі сліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом необхідно:<br>
+			<ul>
+			<li>Відвідати Державну службу України з безпеки на транспорті за адресою: м. Київ, пр. Перемоги, 14</li>
+			<li>Роздрукувати та підписати заяву з файлу, що додається.</li>
+			<li>Привезти заяву та оригінали документів та передати Державну службу України з безпеки на транспорті до засідання комісії.</li>
+			</ul>
+			</p> 
+			<p>
+			Дата засідання найближчої комісії: value{[sDate]}<br>
+			У разі позитивного рішення комісії Ви отримаєте ліцензію поштою на адресу: ${sManAdress}${sCompAdress}
+			</p> 
+			[pattern/mail/_common_signature_start.html]
+			Державна служба України з безпеки на транспорті,<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow44" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
+    <userTask id="usertask2" name="Очікування рішення комісії" activiti:candidateGroups="infr_rechmor_2">
+      <extensionElements>
+        <activiti:formProperty id="sFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний  телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Е-mail" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asOwnerType" name="Здобувач ліцензії" type="enum" writable="false">
+          <activiti:value id="sCompany" name="юридична особа"></activiti:value>
+          <activiti:value id="sMan" name="фізична особа-підприємець"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sVlasn" name=" " type="label" default="Дані щодо здобувача ліцензії"></activiti:formProperty>
+        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompPIB" name="ПІБ керівника юридичної особи" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVlasnPIB" name="ПІБ здобувача ліцензії" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sManPassport" name="№, серія паспорту здобувача ліцензії, ким і коли виданий" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sManAdress" name="Адреса здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sManInn" name="ІПН здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privateMail" name="E-mail здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompForm" name="Організаційно-правова форма" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asLicense" name="Рішення комісії про надання ліцензії" type="enum" required="true">
+          <activiti:value id="sLicenseOk" name="Комісія вирішила надати ліцензію"></activiti:value>
+          <activiti:value id="sLicenseNo" name="Комісія вирішила відмовити в наданні ліцензії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Коментар до рішення" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nKomis" name="Копія рішення комісії про надання ліцензії" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nBill" name="Рахунок для сплати" type="file" default=" "></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow45" sourceRef="usertask2" targetRef="servicetask5"></sequenceFlow>
+    <serviceTask id="servicetask5" name="Відповідь після розгляду комісії" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Ваша заявка №[sID_Order] на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом пройшла розляд комісії.<br>
+			   enum{[asLicense]}.<br>
+			   Копію рішення комісії Ви знайдете у файлах, що додаються<br>
+			   Оригінал рішення комісії Ви отримаєте поштою на адресу: ${sManAdress}${sCompAdress}<br>
+			   ${sComment}
+			</p> 
+			<p>
+			Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
+            Дякуємо.
+			</p> 
+			[pattern/mail/_common_signature_start.html]
+			Державна служба України з безпеки на транспорті,<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${nKomis}, ${nBill}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Komisiya vinesla rishennya za zvernennyam [sID_Order]. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow46" sourceRef="servicetask5" targetRef="endevent6"></sequenceFlow>
+    <endEvent id="endevent6" name="End"></endEvent>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_infrastr_918">
+    <bpmndi:BPMNPlane bpmnElement="infrastr_918" id="BPMNPlane_infrastr_918">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="71.0" width="105.0" x="61.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="61.0" y="165.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
+        <omgdc:Bounds height="35.0" width="35.0" x="111.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="71.0" width="105.0" x="185.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="71.0" width="105.0" x="311.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="71.0" width="111.0" x="441.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="581.0" y="137.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="71.0" width="111.0" x="701.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
+        <omgdc:Bounds height="35.0" width="35.0" x="851.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="75.0" width="111.0" x="546.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="549.0" y="310.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="709.0" y="310.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
+        <omgdc:Bounds height="35.0" width="35.0" x="851.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="36.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="61.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="76.0" y="195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="128.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
+        <omgdi:waypoint x="166.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="185.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="290.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="311.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="416.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="441.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="552.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="581.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="621.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="701.0" y="157.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="95.0" x="606.0" y="122.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="812.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="601.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="601.0" y="210.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="87.0" x="607.0" y="176.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="601.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="601.0" y="310.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="654.0" y="337.0"></omgdi:waypoint>
+        <omgdi:waypoint x="709.0" y="337.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="814.0" y="337.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="337.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
