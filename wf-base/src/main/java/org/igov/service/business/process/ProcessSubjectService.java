@@ -384,10 +384,12 @@ public class ProcessSubjectService {
                     LOG.info("aProcessSubjectChild is Empry");
                 }
                 
+                int testCounter = 0;
                 for (ProcessSubjectTree testChild : aProcessSubjectChild)
                 {
-                    LOG.info("test child login: " + testChild.getProcessSubjectChild().getsLogin() +
-                            "test child ID: " + testChild.getProcessSubjectChild().getSnID_Process_Activiti());
+                    testCounter++;
+                    LOG.info("test child login number " + testCounter + " :" + testChild.getProcessSubjectChild().getsLogin() +
+                             "test child ID: number " + testCounter + " :" + testChild.getProcessSubjectChild().getSnID_Process_Activiti());
                 }
             }else{
                 LOG.info("ProcessSubjectTree list is null");
