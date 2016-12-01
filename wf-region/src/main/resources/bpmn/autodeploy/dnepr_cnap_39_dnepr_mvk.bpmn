@@ -38,7 +38,8 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i75116857714"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума платежу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума платежу" type="invisible" default="16.09"></activiti:formProperty>
+        <activiti:formProperty id="sSumScreen" name="Сума платежу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
@@ -86,7 +87,7 @@
           <activiti:value id="sPost" name="поштовим відправленням (послуга сплачується онлайн)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="Номер транзакції платежу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума платежу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSumScreen" name="Сума платежу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPostAddress" name="Адреса, на яку надіслати листа; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeMail" name="Оберіть тип поштового відправлення" type="enum" writable="false">
           <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
@@ -147,7 +148,7 @@
           <activiti:value id="sPost" name="поштовим відправленням (послуга сплачується онлайн)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="Номер транзакції платежу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума платежу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSumScreen" name="Сума платежу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPostAddress" name="Адреса, на яку надіслати листа; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeMail" name="Оберіть тип поштового відправлення" type="enum" writable="false">
           <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
@@ -408,6 +409,7 @@ if (typeMail === 'sRekPrior') {
 	sumNote = "Загальна сума сплати становить 36.45 грн (до вартості послуги 35.80 грн. буде додано комісію 1,8%)";
 }
 execution.setVariable('sSum', sum);
+execution.setVariable('sSumScreen', sum.toString());
 execution.setVariable('sSumNote', sumNote);
 
 var delta='1';
