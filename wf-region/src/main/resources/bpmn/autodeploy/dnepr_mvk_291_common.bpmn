@@ -1136,7 +1136,6 @@
         <activiti:formProperty id="sChannelApplicant" name="Канал зв'язку з заявником" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Завантажте скан-копію звернення (за наявностю)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="asStatusOperator" name="Обробка звернення" type="enum" required="true">
           <activiti:value id="sEnumSendEmail" name="Відправити швидку відповідь на е-mail"></activiti:value>
           <activiti:value id="sEnumSendInFrontOffice" name="Відправити до фронт-офісу для письмової відповіді"></activiti:value>
@@ -2413,6 +2412,11 @@ execution.setVariable('sAnswerEmail', res)</script>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1},${anID_Attach_UkrDoc}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow30" name="asStatusOperator=='sEnumSendInCallCenter'" sourceRef="exclusivegateway1" targetRef="usertask3">
@@ -3813,7 +3817,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
 Ваше звернення до Дніпропетровської міської ради - опрацьовано.<br><br>
 Рішення міської ради: ${sDocument_Body_UkrDoc}<br><br>
 Номер документа: ${sID_Document_UkrDoc}<br>
-Друкована відповідь Вам буде вислана за адресою: ${sAdress}
+Друкована відповідь Вам буде надіслана за адресою: ${sAdress}
 </p>
 Телефони для довідок:<br>
 +380 56 732 12 12<br>

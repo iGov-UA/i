@@ -39,7 +39,7 @@
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nArea" name="Група користувачів iGov" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Вибір категорії" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sPrich&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumChange'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Вибір категорії" type="markers" default="${markerService.loadFromFile('soczah/upszn_0783.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -129,7 +129,7 @@ ${sNameOrgan}<br />
           <activiti:value id="reject" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/kalush_soczah_401_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/upszn_0783_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/upszn_0783_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
