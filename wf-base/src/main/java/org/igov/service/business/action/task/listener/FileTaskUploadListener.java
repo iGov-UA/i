@@ -27,8 +27,8 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
 
     private static final long serialVersionUID = 1L;
     
-    @Autowired
-    private TaskService taskService;
+    //@Autowired
+    //private TaskService taskService;
 
     @Override
     public void notify(DelegateTask oTask) {
