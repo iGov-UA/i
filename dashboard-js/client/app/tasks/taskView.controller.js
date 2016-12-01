@@ -656,7 +656,6 @@
 
         $scope.isFormInvalid = false;
         $scope.submitTask = function (form) {
-          console.log(form);
           $scope.validateForm(form);
           if(form.$invalid){
             $scope.isFormInvalid = true;
@@ -744,9 +743,8 @@
         return true;
       }
       $scope.saveChangesTask = function (form) {
-        console.log(form);
-
           if ($scope.selectedTask && $scope.taskForm) {
+            console.log($scope.taskForm);
             $scope.taskForm.isSubmitted = true;
 
             $scope.taskForm.isInProcess = true;
