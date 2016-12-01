@@ -372,7 +372,7 @@ public class ProcessSubjectService {
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
             }
             
-            List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
+            /*List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
             
             ///Delete after testing--------
             if (aProcessSubjectChild != null){ 
@@ -391,7 +391,7 @@ public class ProcessSubjectService {
                 }
             }else{
                 LOG.info("ProcessSubjectTree list is null");
-            }///--------///
+            }///--------///*/
             
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
                     + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "

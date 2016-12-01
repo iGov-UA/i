@@ -191,11 +191,12 @@
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/eco/eco_0520_audit_card_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0520_audit_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/eco/eco_0520_audit_card_print.html]" type="invisible" default="особиста картка" writable="false"></activiti:formProperty>
-     	<activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${bankId_scan_passport},${sDocEmploymentHistory},${sDocInternship},${sDocDiploma},${sDocForeignDiploma},${sDocScientificDegree},${sDocLearning},${sDocFoto},${sEducation},${slanguage},${sEcoActivity},${sEducationTraining},${sPracticalExperience},${sResearch}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask3" name="прийняття рішення про видачу сертифіката або відмову" activiti:candidateGroups="eco_audit">
@@ -258,7 +259,7 @@
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/eco/eco_0520_audit_card_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0520_audit_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/eco/eco_0520_audit_card_print.html]" type="invisible" default="особиста картка" writable="false"></activiti:formProperty>
-   		<activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${bankId_scan_passport},${sDocEmploymentHistory},${sDocInternship},${sDocDiploma},${sDocForeignDiploma},${sDocScientificDegree},${sDocLearning},${sDocFoto},${sEducation},${slanguage},${sEcoActivity},${sEducationTraining},${sPracticalExperience},${sResearch}]]></activiti:expression>
           </activiti:field>
