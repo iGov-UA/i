@@ -4,7 +4,8 @@
 		"ShowFieldsOnCondition_0":
 		{
 			"sNote":		["For Hide Invisible"],
-			"aField_ID":	["nID_Department_visitDay", "sCancelInfo","bankIdPassport", "sNameOrgan","sOrganType","sPhoneOrgan","sAddress","sArea","sRegistrationOrgan","sKab89","date_today","sFlag","sIsCancellCustomeVizite","markers1"],
+			"aField_ID":	["nID_Department_visitDay", "sCancelInfo","bankIdPassport", "sNameOrgan","sOrganType","sPhoneOrgan","sAddress",
+							 "sArea","sRegistrationOrgan","sKab89","date_today","sFlag","sIsCancellCustomeVizite","markers1","sAdd_SpisokDocs"],
 			"asID_Field":	{"sClient":"asForMySelf"},
 			"sCondition":	"[sClient] == 'Not_Correct'"
 		},
@@ -52,6 +53,31 @@
 			"aField_ID":	["sNameOtherDocument1"],
 			"asID_Field":	{"sClient":"asEnumTypeDocument1"},
 			"sCondition":	"[sClient] == 'sEnumElement_Other'"
+		},
+		"ShowFieldsOnCondition_5":
+		{
+			"aField_ID":	["sNameAnotheReason_GetDovidka"],
+			"asID_Field":	{"sClient":"asTargetGetDovidka"},
+			"sCondition":	"[sClient] == 'sEnum_AnotheReason'"
+		},
+		"RequiredFieldsOnCondition_5": 
+		{
+			"aField_ID":	["sNameAnotheReason_GetDovidka"],
+			"asID_Field":	{"sClient":"asTargetGetDovidka"},
+			"sCondition":	"[sClient] == 'sEnum_AnotheReason'"
+
+		},
+		"ShowFieldsOnCondition_6":
+		{
+			"aField_ID":	["nFile_SvidoztvoNarodzennya"],
+			"asID_Field":	{"sClient":"asTargetGetDovidka","sTerm2":"asEnumTypeDocument1"},
+			"sCondition":	"([sClient] == 'sEnum_GetPassport_First' || [sTerm2] == 'sEnumElement_SvidoztvoNarodz')"
+		},
+		"RequiredFieldsOnCondition_6": 
+		{
+			"aField_ID":	["nFile_SvidoztvoNarodzennya"],
+			"asID_Field":	{"sClient":"asTargetGetDovidka","sTerm2":"asEnumTypeDocument1"},
+			"sCondition":	"([sClient] == 'sEnum_GetPassport_First' || [sTerm2] == 'sEnumElement_SvidoztvoNarodz')"
 		}
 	}
 }
