@@ -435,13 +435,13 @@ public class ProcessSubjectService {
                     
                     boolean continueFlag = false;
                     
-                    for (ProcessSubjectTree child:  aProcessSubjectChild)    
+                    /*for (ProcessSubjectTree child:  aProcessSubjectChild)    
                     {
                         if (child.getProcessSubjectChild().getsLogin().equals(mParamTask.get("sLogin_isExecute").toString())){
                             continueFlag = true;
                             break;
                         }
-                    }
+                    }*/
                     
                     if (continueFlag == false)
                     {
