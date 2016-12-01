@@ -583,7 +583,7 @@ public abstract class AbstractModelTask {
         LOG.info("(sAttachmentsForSend={})", sAttachments);
         List<Attachment> aAttachment = new ArrayList<>();
         String[] asID_Attachment = sAttachments.split(",");
-        List<String> aAttachmentNotFound = new ArrayList<String>();
+        List<String> aAttachmentNotFound = new ArrayList<>();
         for (String sID_Attachment : asID_Attachment) {
             //log.info("sID_Attachment=" + sID_Attachment);
             if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
@@ -593,7 +593,7 @@ public abstract class AbstractModelTask {
                 if (oAttachment != null) {
                     aAttachment.add(oAttachment);
                 } else {
-                    aAttachmentNotFound.add(sID_Attachment);
+                    aAttachmentNotFound.add(sID_AttachmentTrimmed);
                 }
             } else {
                 LOG.warn("(sID_Attachment={})", sID_Attachment);
