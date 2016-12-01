@@ -18,6 +18,6 @@ public class ProcessSubjectTreeDaoImpl extends GenericEntityDao<Long, ProcessSub
     
     @Override
     public List<ProcessSubjectTree> findChildren(String snID_Process_Activiti){
-        return findAllBy("processSubjectParent.snID_Process_Activiti", snID_Process_Activiti);
+        return findAllBy("processSubjectChild.snID_Process_Activiti", snID_Process_Activiti);
     }
 }
