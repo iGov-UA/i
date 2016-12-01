@@ -437,7 +437,7 @@ public class ProcessSubjectService {
                     
                     for (ProcessSubjectTree child:  aProcessSubjectChild)    
                     {
-                        if (child.getProcessSubjectChild().getsLogin().equals(mParamDocument.get("sLogin_isExecute").toString())){
+                        if (child.getProcessSubjectChild().getsLogin().equals(mParamTask.get("sLogin_isExecute").toString())){
                             continueFlag = true;
                             break;
                         }
