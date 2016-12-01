@@ -73,6 +73,8 @@ import org.igov.model.document.DocumentStepSubjectRight;
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import org.igov.service.business.document.DocumentStepService;
 import static org.igov.util.Tool.sO;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 //import com.google.common.base.Optional;
 
 /**
@@ -2594,6 +2596,60 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         return asID_Attach_Dfs;*/
         return oDocumentStepService.getDocumentStepLogins(nID_Process+"");
+    }
+    
+    //save curretn values to Form
+    @ApiOperation(value = "saveForm", notes = "saveForm")
+    @RequestMapping(value = "/saveForm", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public HttpServletRequest saveForm(
+            @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams, HttpServletRequest req)
+            throws ParseException, CommonServiceException, IOException {
+        StringBuilder osRequestBody = new StringBuilder();
+        BufferedReader oReader = req.getReader();
+        String line;
+        if (oReader != null) {
+            while ((line = oReader.readLine()) != null) {
+                osRequestBody.append(line);
+            }
+        }
+        try {
+            LOG.info("osRequestBody " + osRequestBody.toString());            
+            org.json.simple.JSONObject jsonObj = (org.json.simple.JSONObject) new JSONParser().parse(osRequestBody.toString());
+            LOG.info("Succ. parsing of input data passed");
+            String nID_Task = null;
+            if (jsonObj.containsKey("taskId")) {
+                nID_Task = jsonObj.get("taskId").toString();
+            } else {
+                LOG.error("Variable \"taskId\" not found");
+            }
+            LOG.info("taskId = " + nID_Task);
+            Map<String, String> values = new HashMap<>();            
+            org.json.simple.JSONArray dates = null;
+            if (jsonObj.containsKey("properties")) {                
+                dates = (org.json.simple.JSONArray) jsonObj.get("properties");
+            } else {
+                LOG.error("Variable \"properties\" not found");
+            }        
+            LOG.info("properties = " + dates.toJSONString());
+
+            org.json.simple.JSONObject result;
+            Iterator<org.json.simple.JSONObject> datesIterator = dates.iterator();
+            while (datesIterator.hasNext()) {
+                result = datesIterator.next();
+                values.put(result.get("id").toString(), (String) result.get("value"));
+            }
+            formService.saveFormData(nID_Task, values);
+            LOG.info("Process of update data finiched");
+            return req;
+        } catch (Exception e) {
+            String message = "The process of update variables fail.";
+            LOG.debug(message);
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    message,
+                    HttpStatus.FORBIDDEN);
+        }
+
     }
     
 }
