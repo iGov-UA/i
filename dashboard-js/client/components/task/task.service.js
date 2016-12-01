@@ -165,11 +165,14 @@ angular.module('dashboardJsApp')
           angular.forEach(tableFields, function (table) {
             if(attachments.length > 0) {
               angular.forEach(attachments, function (attachment) {
-                var name = attachment.description.match(/(\[id=(\w+)\])/)[2];
-                if(name.toLowerCase() === table.id.toLowerCase()) {
-                  var description = attachment.description.split('[')[0];
-                  promises.push(self.uploadTable(table, taskId, attachment.id, description));
-                }
+                var matchTableId = attachment.description.match(/(\[id=(\w+)\])/);
+                if(attachment.description.indexOf('[table]') !== -1 && matchTableId !== null){
+                  var name = matchTableId[2];
+	              if(name.toLowerCase() === table.id.toLowerCase()) {
+	                var description = attachment.description.split('[')[0];
+	                promises.push(self.uploadTable(table, taskId, attachment.id, description));
+	              }
+              	}
               });
             } else {
               var name = table.name.split(';')[0];

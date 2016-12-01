@@ -354,12 +354,14 @@ public class ProcessSubjectService {
             String sContent, String sAutorResolution, String sTextResolution, 
             String sDateExecution, String snProcess_ID) {
 
+        LOG.info("I can't find this log!");
+        
         try {
             
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
 
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-
+            
             ProcessSubject oProcessSubjectParent = null;
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
@@ -371,6 +373,24 @@ public class ProcessSubjectService {
             }else{
                 oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
+            }
+            
+            List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
+            
+            if (aProcessSubjectChild != null){ 
+                
+                if (aProcessSubjectChild.isEmpty())
+                {
+                    LOG.info("aProcessSubjectChild is Empry");
+                }
+                
+                for (ProcessSubjectTree testChild : aProcessSubjectChild)
+                {
+                    LOG.info("test child login: " + testChild.getProcessSubjectChild().getsLogin() +
+                            "test child ID: " + testChild.getProcessSubjectChild().getSnID_Process_Activiti());
+                }
+            }else{
+                LOG.info("ProcessSubjectTree list is null");
             }
             
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "

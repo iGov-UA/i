@@ -1,4 +1,5 @@
 package org.igov.model.process;
+import java.util.List;
 import org.igov.model.core.EntityDao;
 
 /**
@@ -7,6 +8,6 @@ import org.igov.model.core.EntityDao;
  */
 public interface ProcessSubjectTreeDao extends EntityDao<Long, ProcessSubjectTree>{
     
-   // Long setProcessSubject(ProcessSubject processSubjectParent, ProcessSubject processSubjectChild);
+   List<ProcessSubjectTree> findChildren(String snID_Process_Activiti);
 
 }

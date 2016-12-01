@@ -40,16 +40,14 @@
     }
 
     function onDownload(){
-      MessagesService.getSubjectMessageData(vm.options.id).then(function (res) {
-        if(angular.isString(res.data)){
-
-          var content = new Blob([res.data], {type: 'application/x-www-form-urlencoded'});
+      MessagesService.getMessageFile(vm.options.id).then(function (res) {
+        if(!res.err){
+          var content = new Blob([res], {type: 'application/octet-stream'});
           var arrFiles = [];
 
           arrFiles.push(content);
           upload(arrFiles, {nID_Server:nID_Server});
-
-        } else {
+        }else {
           ErrorsFactory.push({type:"danger", text: "Виникла помилка при отриманні файлу"});
         }
       });
