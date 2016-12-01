@@ -8,6 +8,6 @@ import org.igov.model.core.EntityDao;
  */
 public interface ProcessSubjectTreeDao extends EntityDao<Long, ProcessSubjectTree>{
     
-   List<ProcessSubjectTree> findChildren(String snID_Process_Activiti);
+   //List<ProcessSubjectTree> findChildren(String snID_Process_Activiti);
 
 }
