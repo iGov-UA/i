@@ -357,7 +357,7 @@ public class ProcessSubjectService {
         try {
             
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
-            DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+            DateFormat df = new SimpleDateFormat("d.M.yyyy");
             ProcessSubject oProcessSubjectParent = null;
 
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
@@ -461,7 +461,8 @@ public class ProcessSubjectService {
             } else {
                 LOG.info("JSONArray is null");
             }
-        } catch (java.text.ParseException | IOException | ParseException e) {
+        } 
+        catch (java.text.ParseException | IOException | ParseException e) {
             LOG.error("SetTasks listener throws an error: " + e.toString());
         }
     }
