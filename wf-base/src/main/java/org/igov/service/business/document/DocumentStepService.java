@@ -255,6 +255,7 @@ public class DocumentStepService {
             mParamDocumentStepSubjectRight.put("sName", oDocumentStepSubjectRight.getsName());//"Главный контроллирующий"
             String sID_Group = new StringBuilder(sGroupPrefix).append(oDocumentStepSubjectRight.getsKey_GroupPostfix()).toString();
             List<User> aUser = oIdentityService.createUserQuery().memberOfGroup(sID_Group).list();
+            LOG.info("sID_Group={}, aUser={}", sID_Group, aUser);
             List<Map<String, Object>> a = new LinkedList();
             for (User oUser : aUser) {
                 Map<String, Object> mUser = new HashMap();
@@ -268,8 +269,10 @@ public class DocumentStepService {
                 User oUser = oIdentityService.createUserQuery().userId(sLogin).singleResult();
                 mParamDocumentStepSubjectRight.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
             }
+            LOG.info("mParamDocumentStepSubjectRight={}", mParamDocumentStepSubjectRight);
             mReturn.put(oDocumentStepSubjectRight.getsLogin(), mParamDocumentStepSubjectRight);
         }
+        LOG.info("mReturn={}", mReturn);
 
         return mReturn;
     }
