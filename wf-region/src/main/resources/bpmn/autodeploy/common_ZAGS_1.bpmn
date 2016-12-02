@@ -59,7 +59,6 @@
         <activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення обряду" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText4" name=" " type="label" default="Якщо Ви не знайшли в обраному відділі ДРАЦС зручну дату та час, Ви можете обрати будь-який інший відділ ДРАЦС"></activiti:formProperty>
-        <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="_____________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Власне ім'я" type="string"></activiti:formProperty>
@@ -132,7 +131,7 @@
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask3"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask2"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -932,7 +931,7 @@ execution.setVariable('sCountPayment', src)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow69" sourceRef="servicetask1" targetRef="exclusivegateway4"></sequenceFlow>
+    <sequenceFlow id="flow69" sourceRef="servicetask1" targetRef="scripttask3"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
         <timeDuration>PT1H</timeDuration>
@@ -1054,7 +1053,7 @@ var timeVisit=day+'.'+month+'.'+year+' '+hour+':'+minutes
 
 execution.setVariable('sWeddingDay', timeVisit)</script>
     </scriptTask>
-    <sequenceFlow id="flow78" sourceRef="scripttask3" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow78" sourceRef="scripttask3" targetRef="exclusivegateway4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_1">
     <bpmndi:BPMNPlane bpmnElement="common_zags_1" id="BPMNPlane_common_zags_1">
@@ -1176,11 +1175,11 @@ execution.setVariable('sWeddingDay', timeVisit)</script>
         <omgdc:Bounds height="63.0" width="213.0" x="654.0" y="864.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="91.0" y="84.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="466.0" y="8.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="36.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="91.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="243.0" y="111.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="395.0" y="152.0"></omgdi:waypoint>
@@ -1343,8 +1342,8 @@ execution.setVariable('sWeddingDay', timeVisit)</script>
         <omgdi:waypoint x="893.0" y="523.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
-        <omgdi:waypoint x="529.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="570.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="453.0" y="84.0"></omgdi:waypoint>
+        <omgdi:waypoint x="518.0" y="63.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
         <omgdi:waypoint x="893.0" y="351.0"></omgdi:waypoint>
@@ -1394,8 +1393,8 @@ execution.setVariable('sWeddingDay', timeVisit)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
-        <omgdi:waypoint x="196.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="243.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="518.0" y="63.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="91.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
