@@ -455,27 +455,37 @@ public class DocumentStepService {
         if ("".equals(sKey_Step_Document)) {
             sKey_Step_Document = null;
         }
-        LOG.debug("BEFORE:sKey_Step_Document={}", sKey_Step_Document);
+        LOG.info("BEFORE:sKey_Step_Document={}", sKey_Step_Document);
 
         if (sKey_Step_Document == null) {
 
-            byte[] aByteDocument = getFileData_Pattern("document/" + sID_BP + ".json");
+            String sPath = "document/" + sID_BP + ".json";
+            LOG.info("sPath={}", sPath);
+            byte[] aByteDocument = getFileData_Pattern(sPath);
             if (aByteDocument != null && aByteDocument.length > 0) {
                 String soJSON = null;
                 soJSON = Tool.sData(aByteDocument);
+                LOG.info("soJSON={}", soJSON);
+                
                 setDocumentSteps(snID_Process_Activiti, soJSON);
 
                 List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
-                LOG.debug("aDocumentStep={}", aDocumentStep);
+                LOG.info("aDocumentStep={}", aDocumentStep);
 
                 if (aDocumentStep.size() > 1) {
-                    aDocumentStep.get(1);
+                    DocumentStep oDocumentStep = aDocumentStep.get(1);
+                    sKey_Step_Document = oDocumentStep.getsKey_Step();
                 } else if (aDocumentStep.size() > 0) {
-                    aDocumentStep.get(0);
+                    DocumentStep oDocumentStep = aDocumentStep.get(0);
+                    sKey_Step_Document = oDocumentStep.getsKey_Step();
+                    //sKey_Step_Document = aDocumentStep.get(0);
                 } else {
+                    sKey_Step_Document = "_";
                 }
-
-                LOG.debug("AFTER:sKey_Step_Document={}", sKey_Step_Document);
+                
+                
+                LOG.info("AFTER:sKey_Step_Document={}", sKey_Step_Document);
+                LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
                 runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
             }
         }
