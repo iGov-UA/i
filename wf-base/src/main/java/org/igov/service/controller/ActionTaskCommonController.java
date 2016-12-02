@@ -2584,7 +2584,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ApiOperation(value = "/getDocumentStepLogins", notes = "##### Получение списка прав у логина по документу#####\n\n")
     @RequestMapping(value = "/getDocumentStepLogins", method = RequestMethod.GET)
     public @ResponseBody
-    Map<String,Object> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
+    //Map<String,Object> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
+    List<Map<String,Object>> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
         /*Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
         LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
         String asID_Attach_Dfs = "";

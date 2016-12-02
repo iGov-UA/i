@@ -168,7 +168,7 @@ public class DocumentStepService {
         return resultFields;
     }
 
-    public Map<String, Object> getDocumentStepLogins(String snID_Process_Activiti) {//JSONObject 
+    public List<Map<String, Object>> getDocumentStepLogins(String snID_Process_Activiti) {//JSONObject //Map<String, Object>
         //assume that we can have only one active task per process at the same time
         LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
         List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
@@ -232,7 +232,8 @@ public class DocumentStepService {
                     + sKey_Step_Document);
         }
 
-        Map<String, Object> mReturn = new HashMap();
+        //Map<String, Object> mReturn = new HashMap();
+        List<Map<String, Object>> amReturn = new LinkedList();
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new LinkedList();
         if(oDocumentStep_Common!=null){
@@ -252,7 +253,7 @@ public class DocumentStepService {
             Map<String, Object> mParamDocumentStepSubjectRight = new HashMap();
             mParamDocumentStepSubjectRight.put("sDate",  oDocumentStepSubjectRight.getsDate()==null?"":oDocumentStepSubjectRight.getsDate().toString());//"2016-05-15 12:12:34"
             mParamDocumentStepSubjectRight.put("bWrite", oDocumentStepSubjectRight.getbWrite());//false
-            mParamDocumentStepSubjectRight.put("sName", oDocumentStepSubjectRight.getsName()==null?"":oDocumentStepSubjectRight.getsName().toString());//"Главный контроллирующий"
+            mParamDocumentStepSubjectRight.put("sName", oDocumentStepSubjectRight.getsName()==null?"":oDocumentStepSubjectRight.getsName());//"Главный контроллирующий"
             String sID_Group = new StringBuilder(sGroupPrefix).append(oDocumentStepSubjectRight.getsKey_GroupPostfix()).toString();
             List<User> aUser = oIdentityService.createUserQuery().memberOfGroup(sID_Group).list();
             LOG.info("sID_Group={}, aUser={}", sID_Group, aUser);
@@ -269,14 +270,17 @@ public class DocumentStepService {
             LOG.info("sLogin={}", sLogin);
             if (sLogin != null) {
                 User oUser = oIdentityService.createUserQuery().userId(sLogin).singleResult();
+                mParamDocumentStepSubjectRight.put("sLogin", oUser.getId());
                 mParamDocumentStepSubjectRight.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
-                mReturn.put(sLogin, mParamDocumentStepSubjectRight);
+                //mReturn.put(sLogin, mParamDocumentStepSubjectRight);
             }
             LOG.info("mParamDocumentStepSubjectRight={}", mParamDocumentStepSubjectRight);
+            amReturn.add(mParamDocumentStepSubjectRight);
         }
-        LOG.info("mReturn={}", mReturn);
+        //LOG.info("mReturn={}", mReturn);
+        LOG.info("amReturn={}", amReturn);
 
-        return mReturn;
+        return amReturn;//mReturn
     }
 
     /*public DocumentStep oDocumentStep_Active(String snID_Process_Activiti){
