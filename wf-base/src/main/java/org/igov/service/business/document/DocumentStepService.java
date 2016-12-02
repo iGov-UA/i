@@ -206,14 +206,14 @@ public class DocumentStepService {
         LOG.info("mProcessVariable(added)={}", mProcessVariable);
 
         List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
-        LOG.debug("aDocumentStep={}", aDocumentStep);
+        LOG.info("aDocumentStep={}", aDocumentStep);
 
         DocumentStep oDocumentStep_Common = aDocumentStep
                 .stream()
                 .filter(o -> o.getsKey_Step().equals("_"))
                 .findAny()
                 .orElse(null);
-        LOG.debug("oDocumentStep_Common={}", oDocumentStep_Common);
+        LOG.info("oDocumentStep_Common={}", oDocumentStep_Common);
 
         String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document");
         if (StringUtils.isEmpty(sKey_Step_Document)) {
@@ -226,7 +226,7 @@ public class DocumentStepService {
                 .filter(o -> sKey_Step_Document == null ? o.getnOrder().equals(1) : o.getsKey_Step().equals(sKey_Step_Document))
                 .findAny()
                 .orElse(null);
-        LOG.debug("oDocumentStep_Active={}", oDocumentStep_Active);
+        LOG.info("oDocumentStep_Active={}", oDocumentStep_Active);
         if (oDocumentStep_Active == null) {
             throw new IllegalStateException("There is no active Document Sep, process variable sKey_Step_Document="
                     + sKey_Step_Document);
@@ -235,9 +235,11 @@ public class DocumentStepService {
         Map<String, Object> mReturn = new HashMap();
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new LinkedList();
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Common.getRights()) {
-            aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
-            //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common
+        if(oDocumentStep_Common!=null){
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Common.getRights()) {
+                aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
+                //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common
+            }
         }
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Active.getRights()) {
             aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
