@@ -30,7 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -328,11 +327,11 @@ public class ProcessSubjectService {
      * Задать статус
      *
      * @param snID_Process_Activiti
-     * @param nID_ProcessSubjectStatus
+     * @param sID_ProcessSubjectStatus
      * @return
      */
-    public ProcessSubject setProcessSubjectStatus(String snID_Process_Activiti, Long nID_ProcessSubjectStatus) {
-        ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(nID_ProcessSubjectStatus);
+    public ProcessSubject setProcessSubjectStatus(String snID_Process_Activiti, String sID_ProcessSubjectStatus) {
+        ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByExpected("sID", sID_ProcessSubjectStatus);
         return processSubjectDao.setProcessSubjectStatus(snID_Process_Activiti, processSubjectStatus);
     }
 
@@ -354,15 +353,14 @@ public class ProcessSubjectService {
             String sContent, String sAutorResolution, String sTextResolution, 
             String sDateExecution, String snProcess_ID) {
 
-        //LOG.info("I can't find this log!");
-        
         try {
             
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
-
+            DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            
+            String sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
             ProcessSubject oProcessSubjectParent = null;
+            LOG.info("DATATIMEVALUE: " + sTaskDateFormat);
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
                 oProcessSubjectParent = processSubjectDao
@@ -375,8 +373,9 @@ public class ProcessSubjectService {
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
             }
             
-            /*List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
+            List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
             
+            ///Delete after testing--------
             if (aProcessSubjectChild != null){ 
                 
                 if (aProcessSubjectChild.isEmpty())
@@ -384,14 +383,16 @@ public class ProcessSubjectService {
                     LOG.info("aProcessSubjectChild is Empry");
                 }
                 
+                int testCounter = 0;
                 for (ProcessSubjectTree testChild : aProcessSubjectChild)
                 {
-                    LOG.info("test child login: " + testChild.getProcessSubjectChild().getsLogin() +
-                            "test child ID: " + testChild.getProcessSubjectChild().getSnID_Process_Activiti());
+                    testCounter++;
+                    LOG.info("test child login number " + testCounter + " :" + testChild.getProcessSubjectChild().getsLogin() +
+                             "test child ID: number " + testCounter + " :" + testChild.getProcessSubjectChild().getSnID_Process_Activiti());
                 }
             }else{
                 LOG.info("ProcessSubjectTree list is null");
-            }*/
+            }///--------///
             
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
                     + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
@@ -412,7 +413,7 @@ public class ProcessSubjectService {
             mParamDocument.put("sID_Attachment", sID_Attachment);
             mParamDocument.put("sContent", sContent);
             mParamDocument.put("sAutorResolution", sAutorResolution);
-            mParamDocument.put("sDateExecution", sDateExecution);
+            mParamDocument.put("sDateExecution", sTaskDateFormat);
             mParamDocument.put("sTextResolution", sTextResolution);
 
             if (aJsonRow != null) {
@@ -432,25 +433,38 @@ public class ProcessSubjectService {
                         mParamTask.put(id, value);
                     }
                     LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
-
-                    ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
-                    LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
-                    if (oProcessInstanceChild != null) {
-                        ProcessSubject oProcessSubjectChild = processSubjectDao
-                                .setProcessSubject(oProcessInstanceChild.getId(), (String) mParamTask.get("sLogin_isExecute"),
-                                        new DateTime(df.parse(sDateExecution)), new Long(i + 1), processSubjectStatus);
-                        ProcessSubjectTree oProcessSubjectTreeParent = new ProcessSubjectTree();
-                        oProcessSubjectTreeParent.setProcessSubjectParent(oProcessSubjectParent);
-                        oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
-                        processSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
+                    
+                    boolean continueFlag = false;
+                    
+                    for (ProcessSubjectTree child:  aProcessSubjectChild)    
+                    {
+                        if (child.getProcessSubjectChild().getsLogin().equals(mParamTask.get("sLogin_isExecute").toString())){
+                            continueFlag = true;
+                            break;
+                        }
+                    }
+                    
+                    if (continueFlag == false)
+                    {
+                        ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
+                        LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
+                        if (oProcessInstanceChild != null) {
+                            ProcessSubject oProcessSubjectChild = processSubjectDao
+                                    .setProcessSubject(oProcessInstanceChild.getId(), (String) mParamTask.get("sLogin_isExecute"),
+                                            new DateTime(dfTask.parse(sTaskDateFormat)), new Long(i + 1), processSubjectStatus);
+                            ProcessSubjectTree oProcessSubjectTreeParent = new ProcessSubjectTree();
+                            oProcessSubjectTreeParent.setProcessSubjectParent(oProcessSubjectParent);
+                            oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
+                            processSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
+                        }
                     }
                 }
             } else {
                 LOG.info("JSONArray is null");
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             LOG.error("SetTasks listener throws an error: " + e.toString());
         }
     }
-
 }
