@@ -316,6 +316,12 @@ public class SubjectMessageService {
                 subjectMessage.setsSubjectInfo(sAuthorFIO);
                 if (sMail != null) {
                     subjectMessage.setMail(sMail);
+                    if (subjectMessage.getoMail() != subjectContactDao.findoMail(subjectMessage.getoMail())) { // if (!sMail.equals(subjectMessage.getoMail().getsValue()))
+                        LOG.info("subjectMessage.getoMail() != subjectContactDao.findoMail(subjectMessage.getoMail()");
+                    } else {
+                        subjectContactDao.saveOrUpdate(subjectMessage.getoMail());
+                    }
+                    
                 }
                 if (nID_Subject != null) {
                     subjectMessage.setId_subject(nID_Subject);
