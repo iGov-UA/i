@@ -354,7 +354,7 @@ public class ProcessSubjectService {
             String sContent, String sAutorResolution, String sTextResolution, 
             String sDateExecution, String snProcess_ID) {
 
-        LOG.info("I can't find this log!");
+        //LOG.info("I can't find this log!");
         
         try {
             
@@ -375,7 +375,7 @@ public class ProcessSubjectService {
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
             }
             
-            List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
+            /*List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
             
             if (aProcessSubjectChild != null){ 
                 
@@ -391,7 +391,7 @@ public class ProcessSubjectService {
                 }
             }else{
                 LOG.info("ProcessSubjectTree list is null");
-            }
+            }*/
             
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
                     + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
@@ -448,7 +448,7 @@ public class ProcessSubjectService {
             } else {
                 LOG.info("JSONArray is null");
             }
-        } catch (java.text.ParseException | IOException | ParseException e) {
+        } catch (Exception e) {
             LOG.error("SetTasks listener throws an error: " + e.toString());
         }
     }
