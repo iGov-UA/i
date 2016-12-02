@@ -318,8 +318,12 @@ public class SubjectMessageService {
                     subjectMessage.setMail(sMail);
                     if (subjectMessage.getoMail() != subjectContactDao.findoMail(subjectMessage.getoMail())) { // if (!sMail.equals(subjectMessage.getoMail().getsValue()))
                         LOG.info("subjectMessage.getoMail() != subjectContactDao.findoMail(subjectMessage.getoMail()");
+                        LOG.info("1subjectMessage.getMail()" + subjectMessage.getMail());
+                        LOG.info("2subjectMessage.getMail()" + subjectMessage.getoMail().getsValue());
                     } else {
                         subjectContactDao.saveOrUpdate(subjectMessage.getoMail());
+                        LOG.info("3subjectMessage.getMail()" + subjectMessage.getMail());
+                        LOG.info("4subjectMessage.getMail()" + subjectMessage.getoMail().getsValue());
                     }
                     
                 }
