@@ -90,7 +90,7 @@ execution.setVariable('sDateExecution', sNewDate);</script>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask2" name="получение ИД процесса" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var processInstanceId = execution.getProcessInstanceId();
-var result = documentStepService.setDocumentStep(processInstanceId, null);</script>
+execution.setVariable('processInstanceId', processInstanceId)</script>
     </scriptTask>
     <sequenceFlow id="flow22" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
   </process>
