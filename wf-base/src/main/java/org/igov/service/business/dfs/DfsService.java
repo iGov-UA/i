@@ -144,10 +144,11 @@ public class DfsService {
                                 sID_DataLink = accessDataDao.setAccessData(aByte_FileContent);                                
                                 */
 
-//                                BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
-//                                byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
+                                BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
+                                byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
 
                                 
+                                /*
                                 BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
                                 byte[] byteFile = IOUtils.toByteArray(oBufferedInputStream);
 
@@ -157,6 +158,7 @@ public class DfsService {
                                 ois.close();
                                 //return contentMultipartFile;
                                 byte[] aByte = contentMultipartFile.getBytes();
+                                */
                                 
                                 
 //                                byte[] aByte = oByteArrayMultipartFile.getBytes();
@@ -170,6 +172,7 @@ public class DfsService {
                                         , sFileContentType
                                                 );
                             } catch (Exception ex) {
+                                LOG.error("ToJournal sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
                                 java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         } else {
@@ -224,6 +227,8 @@ public class DfsService {
         mParam.put("sID_DataLink", sID_DataLink);
         
         mParam.put("RequestMethod", RequestMethod.GET.name());
+        
+        LOG.info("ToJournal-PROCESS mParam=" + mParam);
 
         ScheduledExecutorService oScheduledExecutorService = Executors
                 .newSingleThreadScheduledExecutor();
