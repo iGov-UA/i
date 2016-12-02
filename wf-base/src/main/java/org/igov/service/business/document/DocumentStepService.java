@@ -194,6 +194,15 @@ public class DocumentStepService {
                 .active()
                 .singleResult();
         Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+        LOG.info("mProcessVariable={}", mProcessVariable);
+        //Map<String, Object> mProcessVariable = new HashMap();
+        String snID_Task = oTaskActive.getId();
+        List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();                    
+        for (FormProperty oProperty : a) {
+            mProcessVariable.put(oProperty.getId(), oProperty.getValue());
+            //String sID = oProperty.getId();
+        }
+        LOG.info("mProcessVariable(added)={}", mProcessVariable);
 
         List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.debug("aDocumentStep={}", aDocumentStep);
@@ -273,7 +282,6 @@ public class DocumentStepService {
             throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
         }
         Task oTaskActive = aTaskActive.get(0);
-        String snID_Task = oTaskActive.getId();
         String sID_BP = oTaskActive.getProcessDefinitionId();
         LOG.info("sID_BP={}", sID_BP);
         if (sID_BP != null && sID_BP.contains(":")) {
@@ -293,8 +301,15 @@ public class DocumentStepService {
                 .active()
                 .singleResult();
         Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
-        
         LOG.info("mProcessVariable={}", mProcessVariable);
+        //Map<String, Object> mProcessVariable = new HashMap();
+        String snID_Task = oTaskActive.getId();
+        List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();                    
+        for (FormProperty oProperty : a) {
+            mProcessVariable.put(oProperty.getId(), oProperty.getValue());
+            //String sID = oProperty.getId();
+        }
+        LOG.info("mProcessVariable(added)={}", mProcessVariable);
 
         List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.info("aDocumentStep={}", aDocumentStep);
@@ -504,6 +519,12 @@ public class DocumentStepService {
                 .singleResult();
         if (oProcessInstance != null) {
             Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+            //Map<String, Object> mProcessVariable = new HashMap();
+            /*List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();                    
+            for (FormProperty oProperty : a) {
+                mProcessVariable.put(oProperty.getId(), oProperty.getValue());
+                //String sID = oProperty.getId();
+            }*/
 
             String sKey_Step_Document = mProcessVariable.containsKey("sKey_Step_Document") ? (String) mProcessVariable.get("sKey_Step_Document") : null;
             if ("".equals(sKey_Step_Document)) {
@@ -538,6 +559,18 @@ public class DocumentStepService {
 
             LOG.debug("AFTER:sKey_Step_Document={}", sKey_Step_Document);
             runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
+            //oProcessInstance.setProcessVariables();
+            //runtimeService.set
+            /*
+            ProcessInstance oProcessInstance = runtimeService
+                .createProcessInstanceQuery()
+                .processInstanceId(snID_Process_Activiti)
+                .active()
+                .singleResult();
+            Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+            */
+            
+            
         } else {
             throw new Exception("oProcessInstance is null snID_Process_Activiti = " + snID_Process_Activiti);
         }
