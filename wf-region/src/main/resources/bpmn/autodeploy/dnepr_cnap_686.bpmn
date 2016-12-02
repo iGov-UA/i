@@ -335,7 +335,9 @@
         <activiti:formProperty id="sNameService" type="invisible" default="Державна реєстрація змін до відомостей про фізичну особу – підприємця"></activiti:formProperty>
       </extensionElements>
     </startEvent>
+
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+
     <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_all_pay">
       <extensionElements>
         <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur_"></activiti:formProperty>
@@ -668,9 +670,11 @@
           	}
 		</script>
     </scriptTask>
+
     <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateGroups="jur_${asChoiceCNAP}">
       <extensionElements>
         <activiti:formProperty id="group_found" name="Найденная группа по префиксу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версия" type="string" default="001"></activiti:formProperty>
 
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asChoiceCNAP" name="Виконувач послуги" type="enum" writable="false">
@@ -828,16 +832,17 @@
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print_pay.html]" type="invisible" default="Квитанція про сплату за послугу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
     </userTask>
     <userTask id="usertask4" name="Надання послуги" activiti:candidateGroups="jur_all">
       <extensionElements>
+        <activiti:formProperty id="sVersion" name="Версия" type="string" default="001"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>
