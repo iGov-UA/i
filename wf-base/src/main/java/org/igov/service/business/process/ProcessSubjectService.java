@@ -445,6 +445,7 @@ public class ProcessSubjectService {
                     
                     if (continueFlag == false)
                     {
+                        LOG.info("DATATIMEVALUE:" + (new DateTime(dfTask.parse(sDateExecution)).toString()));
                         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
                         LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                         if (oProcessInstanceChild != null) {
