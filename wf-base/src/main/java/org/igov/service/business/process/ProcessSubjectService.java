@@ -358,7 +358,7 @@ public class ProcessSubjectService {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
             DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            String sTaskDateFormat = dfTask.format(new DateTime(df.parse(sDateExecution)));
+            String sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
             ProcessSubject oProcessSubjectParent = null;
             LOG.info("DATATIMEVALUE: " + sTaskDateFormat);
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
@@ -451,7 +451,7 @@ public class ProcessSubjectService {
                         if (oProcessInstanceChild != null) {
                             ProcessSubject oProcessSubjectChild = processSubjectDao
                                     .setProcessSubject(oProcessInstanceChild.getId(), (String) mParamTask.get("sLogin_isExecute"),
-                                            new DateTime(df.parse(sDateExecution)), new Long(i + 1), processSubjectStatus);
+                                            new DateTime(dfTask.parse(sTaskDateFormat)), new Long(i + 1), processSubjectStatus);
                             ProcessSubjectTree oProcessSubjectTreeParent = new ProcessSubjectTree();
                             oProcessSubjectTreeParent.setProcessSubjectParent(oProcessSubjectParent);
                             oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
