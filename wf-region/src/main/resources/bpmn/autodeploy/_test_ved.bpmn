@@ -9,20 +9,20 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="маркер якщо показати таблицю" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sTable1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saQuestion2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNazvanie" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="маркер якщо показати таблицю" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNazvanie&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saQuestion2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="крок 1" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sNazvanie" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sTable1}]]></activiti:expression>
+            <activiti:expression><![CDATA[${sNazvanie}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -30,13 +30,13 @@
     <userTask id="usertask2" name="крок 2" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sNazvanie" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="валідатор поля sBankMfoUah та sBankMfoCurrency" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_14&quot;:{&quot;aField_ID&quot;:[&quot;sBankMfoUah&quot;,&quot;sBankMfoCurrency&quot;],&quot;sFormat&quot;:&quot;######&quot;,&quot;sMessage&quot;:&quot;Невірний формат. МФО має складатися з 6 цифр&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sTable1}]]></activiti:expression>
+            <activiti:expression><![CDATA[${sNazvanie}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
