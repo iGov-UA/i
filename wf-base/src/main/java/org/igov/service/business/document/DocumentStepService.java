@@ -293,16 +293,18 @@ public class DocumentStepService {
                 .active()
                 .singleResult();
         Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+        
+        LOG.info("mProcessVariable={}", mProcessVariable);
 
         List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
-        LOG.debug("aDocumentStep={}", aDocumentStep);
+        LOG.info("aDocumentStep={}", aDocumentStep);
 
         DocumentStep oDocumentStep_Common = aDocumentStep
                 .stream()
                 .filter(o -> o.getsKey_Step().equals("_"))
                 .findAny()
                 .orElse(null);
-        LOG.debug("oDocumentStep_Common={}", oDocumentStep_Common);
+        LOG.info("oDocumentStep_Common={}", oDocumentStep_Common);
 
         String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document");
         if (StringUtils.isEmpty(sKey_Step_Document)) {
@@ -315,9 +317,9 @@ public class DocumentStepService {
                 .filter(o -> sKey_Step_Document == null ? o.getnOrder().equals(1) : o.getsKey_Step().equals(sKey_Step_Document))
                 .findAny()
                 .orElse(null);
-        LOG.debug("oDocumentStep_Active={}", oDocumentStep_Active);
+        LOG.info("oDocumentStep_Active={}", oDocumentStep_Active);
         if (oDocumentStep_Active == null) {
-            throw new IllegalStateException("There is no active Document Sep, process variable sKey_Step_Document="
+            throw new IllegalStateException("There is no active Document Step, process variable sKey_Step_Document="
                     + sKey_Step_Document);
         }
 
@@ -327,7 +329,7 @@ public class DocumentStepService {
         if (aGroup != null) {
             aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
         }
-        LOG.debug("sLogin={}, asID_Group={}", sLogin, asID_Group);
+        LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
         //Lets collect DocumentStepSubjectRight by according users groups
 
         final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
