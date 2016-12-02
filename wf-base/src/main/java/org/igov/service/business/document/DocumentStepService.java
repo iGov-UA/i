@@ -250,9 +250,9 @@ public class DocumentStepService {
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             Map<String, Object> mParamDocumentStepSubjectRight = new HashMap();
-            mParamDocumentStepSubjectRight.put("sDate", oDocumentStepSubjectRight.getsDate());//"2016-05-15 12:12:34"
+            mParamDocumentStepSubjectRight.put("sDate",  oDocumentStepSubjectRight.getsDate()==null?"":oDocumentStepSubjectRight.getsDate().toString());//"2016-05-15 12:12:34"
             mParamDocumentStepSubjectRight.put("bWrite", oDocumentStepSubjectRight.getbWrite());//false
-            mParamDocumentStepSubjectRight.put("sName", oDocumentStepSubjectRight.getsName());//"Главный контроллирующий"
+            mParamDocumentStepSubjectRight.put("sName", oDocumentStepSubjectRight.getsName()==null?"":oDocumentStepSubjectRight.getsName().toString());//"Главный контроллирующий"
             String sID_Group = new StringBuilder(sGroupPrefix).append(oDocumentStepSubjectRight.getsKey_GroupPostfix()).toString();
             List<User> aUser = oIdentityService.createUserQuery().memberOfGroup(sID_Group).list();
             LOG.info("sID_Group={}, aUser={}", sID_Group, aUser);
@@ -265,12 +265,13 @@ public class DocumentStepService {
             }
             mParamDocumentStepSubjectRight.put("aUser", aUser);
             String sLogin = oDocumentStepSubjectRight.getsLogin();
+            LOG.info("sLogin={}", sLogin);
             if (sLogin != null) {
                 User oUser = oIdentityService.createUserQuery().userId(sLogin).singleResult();
                 mParamDocumentStepSubjectRight.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
+                mReturn.put(sLogin, mParamDocumentStepSubjectRight);
             }
             LOG.info("mParamDocumentStepSubjectRight={}", mParamDocumentStepSubjectRight);
-            mReturn.put(oDocumentStepSubjectRight.getsLogin(), mParamDocumentStepSubjectRight);
         }
         LOG.info("mReturn={}", mReturn);
 
