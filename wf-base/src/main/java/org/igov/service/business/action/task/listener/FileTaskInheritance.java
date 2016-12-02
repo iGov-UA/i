@@ -1,6 +1,5 @@
 package org.igov.service.business.action.task.listener;
 
-import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
@@ -91,7 +90,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
         int n = 0;
         for (Attachment attachment : attachmentsToAdd) {
             n++;
-            LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getName()={},attachment.getDescription()={})"
+            LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getDescription()={})"
                     , n, task.getId(), task.getExecution().getProcessInstanceId(),attachment.getName(),attachment.getDescription());
             Attachment newAttachment = taskService.createAttachment(
                     attachment.getType(), task.getId(),

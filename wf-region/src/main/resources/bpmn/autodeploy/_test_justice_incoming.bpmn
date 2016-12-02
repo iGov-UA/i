@@ -4,8 +4,8 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="email" name="email" type="string" default="email@email.com"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="крок 1" activiti:candidateGroups="justice_common">
@@ -90,7 +90,7 @@ execution.setVariable('sDateExecution', sNewDate);</script>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask2" name="получение ИД процесса" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var processInstanceId = execution.getProcessInstanceId();
-var result = documentStepService.setDocumentStep(processInstanceId, null);</script>
+execution.setVariable('processInstanceId', processInstanceId)</script>
     </scriptTask>
     <sequenceFlow id="flow22" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
   </process>
