@@ -421,6 +421,7 @@
             <activiti:expression><![CDATA[${sDocChild1},${sDocChild2},${sDocChild3},${sDocChild4},${sDocChild5},${sDocMarriage},${sDocNoMarriage},${sDocPrevious},${sNumberPassport},${sDocBirth},${sDocPay},${sDocDeath},${sDocPassport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask5" name="очікується візит громадянина для надання оригіналів документів" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
@@ -599,6 +600,7 @@
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+        <activiti:taskListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2_green" name="очікується відповідь з МВС" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
@@ -770,6 +772,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+        <activiti:taskListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask4" name="очікується візит громадянина для державної реєстрації зміни імені" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
@@ -938,6 +941,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+        <activiti:taskListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask15" name="Повідомлення громадянина про необхідніть сплати" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -1584,6 +1588,7 @@ execution.setVariable('sCountPayment', src)</script>
             <activiti:expression><![CDATA[${sDocChild1},${sDocChild2},${sDocChild3},${sDocChild4},${sDocChild5},${sDocMarriage},${sDocNoMarriage},${sDocPrevious},${sNumberPassport},${sDocBirth},${sDocPay},${sDocDeath},${sDocPassport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
