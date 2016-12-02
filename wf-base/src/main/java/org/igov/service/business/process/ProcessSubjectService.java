@@ -413,7 +413,7 @@ public class ProcessSubjectService {
             mParamDocument.put("sID_Attachment", sID_Attachment);
             mParamDocument.put("sContent", sContent);
             mParamDocument.put("sAutorResolution", sAutorResolution);
-            mParamDocument.put("sDateExecution", sDateExecution);
+            mParamDocument.put("sDateExecution", sTaskDateFormat);
             mParamDocument.put("sTextResolution", sTextResolution);
 
             if (aJsonRow != null) {
