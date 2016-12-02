@@ -68,6 +68,7 @@ public class DocumentStepService {
             commonStep.setnOrder(0L);//common step with name "_" has order 0
             commonStep.setsKey_Step("_");
             commonStep.setSnID_Process_Activiti(snID_Process_Activiti);
+            documentStepDao.saveOrUpdate(commonStep);
             resultSteps.add(commonStep);
         }
         //process all other steps
@@ -349,11 +350,14 @@ public class DocumentStepService {
 
         final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = oDocumentStep_Common
-                .getRights()
-                .stream()
-                .filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix())))
-                .collect(Collectors.toList());
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = new LinkedList();
+        if(oDocumentStep_Common!=null){
+            aDocumentStepSubjectRight_Common = oDocumentStep_Common
+                    .getRights()
+                    .stream()
+                    .filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix())))
+                    .collect(Collectors.toList());
+        }
         LOG.debug("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active
