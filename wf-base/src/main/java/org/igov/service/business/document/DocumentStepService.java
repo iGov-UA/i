@@ -536,6 +536,11 @@ public class DocumentStepService {
             if ("".equals(sKey_Step_Document)) {
                 sKey_Step_Document = null;
             }
+            
+            if (sKey_Step_Document == null) {
+                sKey_Step_Document = (String) runtimeService.getVariable(snID_Process_Activiti, "sKey_Step_Document");
+            }
+            
             LOG.debug("BEFORE:sKey_Step_Document={}", sKey_Step_Document);
 
             List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
