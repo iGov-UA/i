@@ -30,7 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -328,11 +327,11 @@ public class ProcessSubjectService {
      * Задать статус
      *
      * @param snID_Process_Activiti
-     * @param nID_ProcessSubjectStatus
+     * @param sID_ProcessSubjectStatus
      * @return
      */
-    public ProcessSubject setProcessSubjectStatus(String snID_Process_Activiti, Long nID_ProcessSubjectStatus) {
-        ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(nID_ProcessSubjectStatus);
+    public ProcessSubject setProcessSubjectStatus(String snID_Process_Activiti, String sID_ProcessSubjectStatus) {
+        ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByExpected("sID", sID_ProcessSubjectStatus);
         return processSubjectDao.setProcessSubjectStatus(snID_Process_Activiti, processSubjectStatus);
     }
 
