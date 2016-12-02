@@ -256,14 +256,15 @@ public class DocumentStepService {
             String sID_Group = new StringBuilder(sGroupPrefix).append(oDocumentStepSubjectRight.getsKey_GroupPostfix()).toString();
             List<User> aUser = oIdentityService.createUserQuery().memberOfGroup(sID_Group).list();
             LOG.info("sID_Group={}, aUser={}", sID_Group, aUser);
-            List<Map<String, Object>> a = new LinkedList();
+            List<Map<String, Object>> amUserProperty = new LinkedList();
             for (User oUser : aUser) {
                 Map<String, Object> mUser = new HashMap();
                 mUser.put("sLogin", oUser.getId());
                 mUser.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
-                a.add(mUser);
+                amUserProperty.add(mUser);
             }
-            mParamDocumentStepSubjectRight.put("aUser", aUser);
+            mParamDocumentStepSubjectRight.put("aUser", amUserProperty);
+            LOG.info("amUserProperty={}", amUserProperty);
             String sLogin = oDocumentStepSubjectRight.getsLogin();
             LOG.info("sLogin={}", sLogin);
             if (sLogin != null) {
