@@ -197,8 +197,8 @@ public class DocumentStepService {
         LOG.info("mProcessVariable={}", mProcessVariable);
         //Map<String, Object> mProcessVariable = new HashMap();
         String snID_Task = oTaskActive.getId();
-        List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();                    
-        for (FormProperty oProperty : a) {
+        List<FormProperty> aProperty = oFormService.getTaskFormData(snID_Task).getFormProperties();                    
+        for (FormProperty oProperty : aProperty) {
             mProcessVariable.put(oProperty.getId(), oProperty.getValue());
             //String sID = oProperty.getId();
         }
@@ -304,8 +304,8 @@ public class DocumentStepService {
         LOG.info("mProcessVariable={}", mProcessVariable);
         //Map<String, Object> mProcessVariable = new HashMap();
         String snID_Task = oTaskActive.getId();
-        List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();                    
-        for (FormProperty oProperty : a) {
+        List<FormProperty> aProperty = oFormService.getTaskFormData(snID_Task).getFormProperties();                    
+        for (FormProperty oProperty : aProperty) {
             mProcessVariable.put(oProperty.getId(), oProperty.getValue());
             //String sID = oProperty.getId();
         }
