@@ -356,6 +356,7 @@ public class ProcessSubjectService {
         try {
             
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
+            //DateFormat df = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
             ProcessSubject oProcessSubjectParent = null;
 
@@ -371,7 +372,7 @@ public class ProcessSubjectService {
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
             }
             
-            /*List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
+            List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
             
             ///Delete after testing--------
             if (aProcessSubjectChild != null){ 
@@ -390,7 +391,7 @@ public class ProcessSubjectService {
                 }
             }else{
                 LOG.info("ProcessSubjectTree list is null");
-            }///--------///*/
+            }///--------///
             
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
                     + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
@@ -434,13 +435,13 @@ public class ProcessSubjectService {
                     
                     boolean continueFlag = false;
                     
-                    /*for (ProcessSubjectTree child:  aProcessSubjectChild)    
+                    for (ProcessSubjectTree child:  aProcessSubjectChild)    
                     {
                         if (child.getProcessSubjectChild().getsLogin().equals(mParamTask.get("sLogin_isExecute").toString())){
                             continueFlag = true;
                             break;
                         }
-                    }*/
+                    }
                     
                     if (continueFlag == false)
                     {
@@ -460,9 +461,9 @@ public class ProcessSubjectService {
             } else {
                 LOG.info("JSONArray is null");
             }
-        } catch (java.text.ParseException | IOException | ParseException e) {
+        } 
+        catch (Exception e) {
             LOG.error("SetTasks listener throws an error: " + e.toString());
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package org.igov.model.subject;
 
+import com.google.common.base.Optional;
 import org.igov.model.core.EntityDao;
 
 import java.util.List;
@@ -12,4 +13,5 @@ import java.util.List;
 public interface SubjectContactDao extends EntityDao<Long, SubjectContact> {
 
     List<SubjectContact> findContacts(Subject subject);
+    List<SubjectContact> findoMail(SubjectContact oMail); 
 }
