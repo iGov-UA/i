@@ -356,10 +356,11 @@ public class ProcessSubjectService {
         try {
             
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
-            //DateFormat df = new SimpleDateFormat("d.M.yyyy");
+            DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+            String sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
             ProcessSubject oProcessSubjectParent = null;
-
+            LOG.info("DATATIMEVALUE: " + sTaskDateFormat);
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
                 oProcessSubjectParent = processSubjectDao
@@ -412,7 +413,7 @@ public class ProcessSubjectService {
             mParamDocument.put("sID_Attachment", sID_Attachment);
             mParamDocument.put("sContent", sContent);
             mParamDocument.put("sAutorResolution", sAutorResolution);
-            mParamDocument.put("sDateExecution", sDateExecution);
+            mParamDocument.put("sDateExecution", sTaskDateFormat);
             mParamDocument.put("sTextResolution", sTextResolution);
 
             if (aJsonRow != null) {
@@ -450,7 +451,7 @@ public class ProcessSubjectService {
                         if (oProcessInstanceChild != null) {
                             ProcessSubject oProcessSubjectChild = processSubjectDao
                                     .setProcessSubject(oProcessInstanceChild.getId(), (String) mParamTask.get("sLogin_isExecute"),
-                                            new DateTime(df.parse(sDateExecution)), new Long(i + 1), processSubjectStatus);
+                                            new DateTime(dfTask.parse(sTaskDateFormat)), new Long(i + 1), processSubjectStatus);
                             ProcessSubjectTree oProcessSubjectTreeParent = new ProcessSubjectTree();
                             oProcessSubjectTreeParent.setProcessSubjectParent(oProcessSubjectParent);
                             oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);

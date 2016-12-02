@@ -68,6 +68,7 @@ public class DocumentStepService {
             commonStep.setnOrder(0L);//common step with name "_" has order 0
             commonStep.setsKey_Step("_");
             commonStep.setSnID_Process_Activiti(snID_Process_Activiti);
+            documentStepDao.saveOrUpdate(commonStep);
             resultSteps.add(commonStep);
         }
         //process all other steps
@@ -194,6 +195,15 @@ public class DocumentStepService {
                 .active()
                 .singleResult();
         Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+        LOG.info("mProcessVariable={}", mProcessVariable);
+        //Map<String, Object> mProcessVariable = new HashMap();
+        String snID_Task = oTaskActive.getId();
+        List<FormProperty> aProperty = oFormService.getTaskFormData(snID_Task).getFormProperties();                    
+        for (FormProperty oProperty : aProperty) {
+            mProcessVariable.put(oProperty.getId(), oProperty.getValue());
+            //String sID = oProperty.getId();
+        }
+        LOG.info("mProcessVariable(added)={}", mProcessVariable);
 
         List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.debug("aDocumentStep={}", aDocumentStep);
@@ -273,7 +283,6 @@ public class DocumentStepService {
             throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
         }
         Task oTaskActive = aTaskActive.get(0);
-        String snID_Task = oTaskActive.getId();
         String sID_BP = oTaskActive.getProcessDefinitionId();
         LOG.info("sID_BP={}", sID_BP);
         if (sID_BP != null && sID_BP.contains(":")) {
@@ -293,16 +302,25 @@ public class DocumentStepService {
                 .active()
                 .singleResult();
         Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+        LOG.info("mProcessVariable={}", mProcessVariable);
+        //Map<String, Object> mProcessVariable = new HashMap();
+        String snID_Task = oTaskActive.getId();
+        List<FormProperty> aProperty = oFormService.getTaskFormData(snID_Task).getFormProperties();                    
+        for (FormProperty oProperty : aProperty) {
+            mProcessVariable.put(oProperty.getId(), oProperty.getValue());
+            //String sID = oProperty.getId();
+        }
+        LOG.info("mProcessVariable(added)={}", mProcessVariable);
 
         List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
-        LOG.debug("aDocumentStep={}", aDocumentStep);
+        LOG.info("aDocumentStep={}", aDocumentStep);
 
         DocumentStep oDocumentStep_Common = aDocumentStep
                 .stream()
                 .filter(o -> o.getsKey_Step().equals("_"))
                 .findAny()
                 .orElse(null);
-        LOG.debug("oDocumentStep_Common={}", oDocumentStep_Common);
+        LOG.info("oDocumentStep_Common={}", oDocumentStep_Common);
 
         String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document");
         if (StringUtils.isEmpty(sKey_Step_Document)) {
@@ -315,9 +333,9 @@ public class DocumentStepService {
                 .filter(o -> sKey_Step_Document == null ? o.getnOrder().equals(1) : o.getsKey_Step().equals(sKey_Step_Document))
                 .findAny()
                 .orElse(null);
-        LOG.debug("oDocumentStep_Active={}", oDocumentStep_Active);
+        LOG.info("oDocumentStep_Active={}", oDocumentStep_Active);
         if (oDocumentStep_Active == null) {
-            throw new IllegalStateException("There is no active Document Sep, process variable sKey_Step_Document="
+            throw new IllegalStateException("There is no active Document Step, process variable sKey_Step_Document="
                     + sKey_Step_Document);
         }
 
@@ -327,16 +345,19 @@ public class DocumentStepService {
         if (aGroup != null) {
             aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
         }
-        LOG.debug("sLogin={}, asID_Group={}", sLogin, asID_Group);
+        LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
         //Lets collect DocumentStepSubjectRight by according users groups
 
         final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = oDocumentStep_Common
-                .getRights()
-                .stream()
-                .filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix())))
-                .collect(Collectors.toList());
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = new LinkedList();
+        if(oDocumentStep_Common!=null){
+            aDocumentStepSubjectRight_Common = oDocumentStep_Common
+                    .getRights()
+                    .stream()
+                    .filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix())))
+                    .collect(Collectors.toList());
+        }
         LOG.debug("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active
@@ -502,6 +523,12 @@ public class DocumentStepService {
                 .singleResult();
         if (oProcessInstance != null) {
             Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+            //Map<String, Object> mProcessVariable = new HashMap();
+            /*List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();                    
+            for (FormProperty oProperty : a) {
+                mProcessVariable.put(oProperty.getId(), oProperty.getValue());
+                //String sID = oProperty.getId();
+            }*/
 
             String sKey_Step_Document = mProcessVariable.containsKey("sKey_Step_Document") ? (String) mProcessVariable.get("sKey_Step_Document") : null;
             if ("".equals(sKey_Step_Document)) {
@@ -536,6 +563,18 @@ public class DocumentStepService {
 
             LOG.debug("AFTER:sKey_Step_Document={}", sKey_Step_Document);
             runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
+            //oProcessInstance.setProcessVariables();
+            //runtimeService.set
+            /*
+            ProcessInstance oProcessInstance = runtimeService
+                .createProcessInstanceQuery()
+                .processInstanceId(snID_Process_Activiti)
+                .active()
+                .singleResult();
+            Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+            */
+            
+            
         } else {
             throw new Exception("oProcessInstance is null snID_Process_Activiti = " + snID_Process_Activiti);
         }
