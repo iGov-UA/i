@@ -172,7 +172,7 @@ public class DfsService {
                                         , sFileContentType
                                                 );
                             } catch (Exception ex) {
-                                LOG.error("ToJournal sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
+                                LOG.error("ToJournal sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document+":"+ex.getMessage());
                                 java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         } else {
