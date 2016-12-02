@@ -359,7 +359,7 @@ public class ProcessSubjectService {
             DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
             ProcessSubject oProcessSubjectParent = null;
-
+            LOG.info("DATATIMEVALUE:" + (new DateTime(dfTask.parse(sDateExecution)).toString()));
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
                 oProcessSubjectParent = processSubjectDao
@@ -445,13 +445,12 @@ public class ProcessSubjectService {
                     
                     if (continueFlag == false)
                     {
-                        LOG.info("DATATIMEVALUE:" + (new DateTime(dfTask.parse(sDateExecution)).toString()));
                         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
                         LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                         if (oProcessInstanceChild != null) {
                             ProcessSubject oProcessSubjectChild = processSubjectDao
                                     .setProcessSubject(oProcessInstanceChild.getId(), (String) mParamTask.get("sLogin_isExecute"),
-                                            new DateTime(dfTask.parse(sDateExecution)), new Long(i + 1), processSubjectStatus);
+                                            new DateTime(df.parse(sDateExecution)), new Long(i + 1), processSubjectStatus);
                             ProcessSubjectTree oProcessSubjectTreeParent = new ProcessSubjectTree();
                             oProcessSubjectTreeParent.setProcessSubjectParent(oProcessSubjectParent);
                             oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
