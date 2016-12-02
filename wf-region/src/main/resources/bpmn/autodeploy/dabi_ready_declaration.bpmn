@@ -4,7 +4,7 @@
     <startEvent id="startevent_step1" name="2. Реєстрація вхідного документу, внесення інформації до облікової системи, сканування документу">
       <extensionElements>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_DateASKOD" name="Дата руєстрації вхідного документу" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sID_DateASKOD" name="Дата реєстрації вхідного документу" type="string" required="true"></activiti:formProperty>        
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" required="true">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
           <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
@@ -20,7 +20,7 @@
         <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Номер телефону" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string"></activiti:formProperty>
         <activiti:formProperty id="asObjectType" name="Реєстрація декларації щодо" type="enum" required="true">
           <activiti:value id="sEnumObjPassport" name="об’єктів, будівництво яких здійснено на підставі будівельного паспорта"></activiti:value>
           <activiti:value id="sEnumObjCategory" name="об’єктів, які належать до I­III категорії складності"></activiti:value>
@@ -37,8 +37,8 @@
     </startEvent>
     <userTask id="usertask_step3" name="3. Ознайомлення директором ДАБК та визначення відповідального" activiti:candidateGroups="kyiv_dabi_boss">
       <extensionElements>
-        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_DateASKOD" name="Дата руєстрації вхідного документу" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_DateASKOD" name="Дата реєстрації вхідного документу" type="string" writable="false"></activiti:formProperty>        
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
           <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
@@ -74,8 +74,8 @@
     </userTask>
     <userTask id="usertask_step4" name="4. Ознайомлення заступником директора ДАБК" activiti:candidateGroups="kyiv_dabi_deputy_boss">
       <extensionElements>
-        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_DateASKOD" name="Дата руєстрації вхідного документу" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_DateASKOD" name="Дата реєстрації вхідного документу" type="string" writable="false"></activiti:formProperty>        
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
           <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
@@ -110,8 +110,8 @@
     <sequenceFlow id="flow16" sourceRef="usertask_step3" targetRef="parallelgateway3"></sequenceFlow>
     <userTask id="usertask_step5" name="5. Ознайомлення керівником Управління дозвільних процедур та визначення відповідального">
       <extensionElements>
-        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_DateASKOD" name="Дата руєстрації вхідного документу" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_DateASKOD" name="Дата реєстрації вхідного документу" type="string" writable="false"></activiti:formProperty>        
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
           <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
@@ -157,8 +157,8 @@
     <sequenceFlow id="flow20" sourceRef="parallelgateway2" targetRef="usertask_UserGroup"></sequenceFlow>
     <userTask id="usertask_step6" name="6. Ознайомлення керівником відділу дозвільних документів" activiti:candidateGroups="kyiv_dabi_permit_doc_boss">
       <extensionElements>
-        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_DateASKOD" name="Дата руєстрації вхідного документу" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_DateASKOD" name="Дата реєстрації вхідного документу" type="string" writable="false"></activiti:formProperty>        
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
           <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
@@ -195,8 +195,8 @@
     <sequenceFlow id="flow21" sourceRef="parallelgateway2" targetRef="usertask_step7"></sequenceFlow>
     <userTask id="usertask_step7" name="7. Перевірка повноти даних та приняття рішення">
       <extensionElements>
-        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_DateASKOD" name="Дата руєстрації вхідного документу" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_DateASKOD" name="Дата реєстрації вхідного документу" type="string" writable="false"></activiti:formProperty>        
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
           <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
@@ -341,7 +341,11 @@
             {&quot;id&quot;:&quot;sObjectIndividLivingArea&quot;,&quot;name&quot;:&quot;Житлова площа, кВ.м&quot;,&quot;type&quot;:&quot;string&quot;}, 
             {&quot;id&quot;:&quot;sObjectIndividNonLivingArea&quot;,&quot;name&quot;:&quot;Нежитлова площа,кВ.м&quot;,&quot;type&quot;:&quot;string&quot;}]}">
         </activiti:formProperty>
-        <activiti:formProperty id="tKeyIndicators" name="Основні показники" type="table" default="${markerService.loadFromFile('KMDA/DABI_tables/tKeyIndicators.json')}"></activiti:formProperty>
+        <activiti:formProperty id="tKeyIndicators" name="Основні показники" type="table" default="{&quot;aField&quot;:[ 
+            {&quot;id&quot;:&quot;sKeyIndicatorName&quot;,&quot;name&quot;:&quot;Найменування показника&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}, 
+            {&quot;id&quot;:&quot;sKeyIndicatorUnit&quot;,&quot;name&quot;:&quot;Одиниця вимірювання&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},
+            {&quot;id&quot;:&quot;sKeyIndicatorTotal&quot;,&quot;name&quot;:&quot;загальний&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}, 
+            {&quot;id&quot;:&quot;sKeyIndicatorQueue&quot;,&quot;name&quot;:&quot;У т.ч. пускового комплексу або черги&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseIntegratedTotalArea" name="Загальна площа вбудовано-прибудованих приміщень, кв.м" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectIndicatorsBearing" name="Несучі конструкції" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObjectIndicatorsFence" name="Огороджувальні конструкції" type="string"></activiti:formProperty>
@@ -445,8 +449,8 @@
     <sequenceFlow id="flow7" sourceRef="usertask_step7" targetRef="usertask_step19"></sequenceFlow>
     <userTask id="usertask_step19" name="19. Підтверждження передачі документа до ЦНАП" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
-        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_DateASKOD" name="Дата руєстрації вхідного документу" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_DateASKOD" name="Дата реєстрації вхідного документу" type="string" writable="false"></activiti:formProperty>        
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
           <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
@@ -614,11 +618,13 @@
     </boundaryEvent>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow48" sourceRef="exclusivegateway2" targetRef="usertask_step6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult == 'false'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult == 'False'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow49" sourceRef="usertask_step6" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow50" sourceRef="exclusivegateway2" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow50" sourceRef="exclusivegateway2" targetRef="exclusivegateway3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult == 'True'}]]></conditionExpression>
+    </sequenceFlow>
     <parallelGateway id="parallelgateway4" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow51" sourceRef="servicetask_step19.1" targetRef="parallelgateway4"></sequenceFlow>
     <sequenceFlow id="flow52" sourceRef="exclusivegateway3" targetRef="parallelgateway4"></sequenceFlow>
