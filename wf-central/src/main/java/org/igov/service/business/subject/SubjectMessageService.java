@@ -316,17 +316,9 @@ public class SubjectMessageService {
                 subjectMessage.setsSubjectInfo(sAuthorFIO);
                 if (sMail != null) {
                     subjectMessage.setMail(sMail);
-                    if (subjectMessage.getoMail() != subjectContactDao.findoMail(subjectMessage.getoMail())) { // if (!sMail.equals(subjectMessage.getoMail().getsValue()))
-                        LOG.info("subjectMessage.getoMail() != subjectContactDao.findoMail(subjectMessage.getoMail()");
-                        LOG.info("1subjectMessage.getMail()" + subjectMessage.getMail());
-                        LOG.info("2subjectMessage.getMail()" + subjectMessage.getoMail().getsValue());
-                    } else {
-                        subjectContactDao.saveOrUpdate(subjectMessage.getoMail());
-                        LOG.info("3subjectMessage.getMail()" + subjectMessage.getMail());
-                        LOG.info("4subjectMessage.getMail()" + subjectMessage.getoMail().getsValue());
-                    }
-                    
-                }
+                    LOG.info("sMail= " + subjectMessage.getMail());
+                    LOG.info("oMail= " + subjectMessage.getoMail().getsValue());
+                   }
                 if (nID_Subject != null) {
                     subjectMessage.setId_subject(nID_Subject);
                 }
