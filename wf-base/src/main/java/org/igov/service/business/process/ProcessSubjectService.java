@@ -391,6 +391,11 @@ public class ProcessSubjectService {
             ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 1L, null);
             List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
 
+            for (ProcessSubject ps: aProcessSubject)
+            {
+                LOG.info("Login by service" +  ps.getsLogin());
+            }  
+            
             List<String> aLoginToKeep = new ArrayList<String>();
             List<String> aLoginToDelete = new ArrayList<String>();
 
@@ -456,6 +461,16 @@ public class ProcessSubjectService {
                             processSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
                         }
                     }
+                }
+                
+                for (String login : aLoginToDelete)
+                {
+                    LOG.info("ALL LOGIN" + login);
+                }
+                
+                for (String login : aLoginToKeep)
+                {
+                    LOG.info("LOGIN TO KEEP: " + login);
                 }
                 
                 aLoginToDelete.removeAll(aLoginToKeep);
