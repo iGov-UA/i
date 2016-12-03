@@ -49,11 +49,11 @@
         <activiti:formProperty id="sAreabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" default="Україна" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEddrNum" name="Номер запису в Єдиному державному демографічному реєстрі (ЄДДР);Для осіб, яким оформлено ID-паспорт громадянина України чи паспорт громадянина України для виїзду за кордон засобами Єдиного державного демографічного реєстру" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sLabelFoundEDDR" name=" " type="label" default="Якщо у Вас є оформлений паспорт громадянина України (у вигляді ID-картки) або паспорт громадянина України для виїзду за кордон, то як визначити номер запису в Єдиному державному демографічному реєстрі (ЄДДР) дивіться &lt;a href=&quot;https://goo.gl/6hYJVf&quot; target=&quot;_blank&quot;&gt; тут &lt;/a&gt; &lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabelFoundEDDR" name=" " type="label" default="Якщо у Особи є оформлений паспорт громадянина України (у вигляді ID-картки) або паспорт громадянина України для виїзду за кордон, то вкажіть номер запису в Єдиному державному демографічному реєстрі (ЄДДР) (як його знайти дивіться &lt;a href=&quot;https://goo.gl/6hYJVf&quot; target=&quot;_blank&quot;&gt; тут &lt;/a&gt; &lt;/b&gt;)"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNum" name="Номер запису в Єдиному державному демографічному реєстрі (ЄДДР)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання довідки?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_ReeCard" name="Картка реєстрації особи або будинкова книга" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sCommentOsoba" name="Коментарі щодо наданих документів або отримання довідки (в разі необхідності)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCommentOsoba" name="Коментарі щодо наданих документів або отримання довідки (в разі необхідності)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Other" name="Копії інших документів (в разі необхідності); завантажте одним файлом формату PDF" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
@@ -198,7 +198,7 @@
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер запису в Єдиному державному демографічному реєстрі (ЄДДР); ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCommentOsoba" name="Коментарі щодо наданих документів або отримання довідки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCommentOsoba" name="Коментарі щодо наданих документів або отримання довідки; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
@@ -210,8 +210,8 @@
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік додатків файлів-додатков" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sStringInZayava" name="Формування строки в заяві" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/1zajava_regFr.html]" type="invisible" default="Заява про видачу довідки"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dms/1zajava_regFr.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0024_Zayava_na_Dovidku.html]" type="invisible" default="Заява про видачу довідки"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/skv/rada_0024_Zayava_na_Dovidku.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -444,7 +444,7 @@
         <activiti:formProperty id="sNationality" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер запису в Єдиному державному демографічному реєстрі (ЄДДР); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCommentOsoba" name="Коментарі щодо наданих документів або отримання довідки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCommentOsoba" name="Коментарі щодо наданих документів або отримання довідки; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат зустрічі" type="enum" required="true">
           <activiti:value id="sReestr" name="Громадянин зареєстрований"></activiti:value>
           <activiti:value id="sNejav" name="Громадянин не з'явився"></activiti:value>
@@ -453,10 +453,7 @@
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік додатків файлів-додатков" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sStringInZayava" name="Формування строки в заяві" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/1zajava_regFr.html]" type="invisible" default="Заява для реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_regBk.html]" type="invisible" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_10" name="[pattern/print/dms/1zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_11" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0024_Zayava_na_Dovidku.html]" type="invisible" default="Заява для реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
