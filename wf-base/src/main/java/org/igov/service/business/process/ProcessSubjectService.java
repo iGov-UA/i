@@ -393,7 +393,7 @@ public class ProcessSubjectService {
 
             for (ProcessSubject ps: aProcessSubject)
             {
-                LOG.info("Login by service" +  ps.getsLogin());
+                LOG.info("Loginbyservice" +  ps.getsLogin());
             }  
             
             List<String> aLoginToKeep = new ArrayList<String>();
@@ -465,19 +465,19 @@ public class ProcessSubjectService {
                 
                 for (String login : aLoginToDelete)
                 {
-                    LOG.info("ALL LOGIN" + login);
+                    LOG.info("ALLLOGIN" + login);
                 }
                 
                 for (String login : aLoginToKeep)
                 {
-                    LOG.info("LOGIN TO KEEP: " + login);
+                    LOG.info("LOGINTOKEEP: " + login);
                 }
                 
                 aLoginToDelete.removeAll(aLoginToKeep);
                 
                 for (String login : aLoginToDelete)
                 {
-                    LOG.info("LOGIN TO DELETE: " + login);
+                    LOG.info("LOGINTODELETE: " + login);
                 }
                 
             } else {
