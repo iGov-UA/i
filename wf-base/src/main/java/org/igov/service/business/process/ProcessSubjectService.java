@@ -388,7 +388,7 @@ public class ProcessSubjectService {
             JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
             LOG.info("JSON String: " + oJSONObject.toJSONString());
             
-            ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 0L, null);
+            ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 1L, null);
             List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
             
             for(ProcessSubject ps : aProcessSubject)
