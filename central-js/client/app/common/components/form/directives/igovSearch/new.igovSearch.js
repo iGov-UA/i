@@ -116,22 +116,17 @@ angular.module('app')
             var sID_SubjectOwner = !!statesRepository.isDFS() ? 'SFS' : null;
 
             return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID, $rootScope.mainFilterCatalog, sID_SubjectOwner).then(function (result) {
-              console.log('========== debagger ==========');
 
-              console.log("Start set full catalog logic;");
               if (!$state.is('index')
                 && !$state.is('index.catalog') && !$state.is("index.oldbusiness") && !$state.is("index.subcategory")) {
-                console.log('var 1');
                 fullCatalog = result[0];
               } else if ($state.is("index.oldbusiness") && result.length === 1 && result[0].aSubcategory.length > 0) {
-                console.log('var 2');
                 fullCatalog = result[0];
               } else {
                 console.log('var 3');
                 fullCatalog = result;
               }
 
-              console.log('Start updating catalog') ;
               if ($scope.bShowExtSearch || $scope.getOrgan) {
                 console.log('var 1');
                 $scope.filterByExtSearch();
@@ -145,11 +140,8 @@ angular.module('app')
               }
 
               if (result.length === 0) {
-                console.log('result.length == 0');
                 $rootScope.wasSearched = true;
               }
-              console.log('========== debagger ==========');
-              debugger;
 
               $rootScope.resultsAreLoading = false;
               getCounts(fullCatalog);

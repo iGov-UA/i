@@ -1,0 +1,41 @@
+{
+  "motion": 
+    {
+    "RequiredFieldsOnCondition_Obj2": 
+      {"aField_ID":  ["sObjectTimeConstruction","sSupervisorName","sSupervisionNumberID","sSupervisionCertificate"], 
+       "asID_Field": {"sCond1":"asObjectType"},
+       "sCondition": "[sCond1] == 'sEnumObjCategory'||[sCond1]=='об’єктів, які належать до I­III категорії складності'"
+      },      
+    "RequiredFieldsOnCondition_Obj2-3": 
+      {"aField_ID":  
+          ["sObjectDateStartConstruction","sObjectDateEndConstruction","sObjectCategory","sChiefPib","sChiefPassport",
+           "sChiefAddress","sChiefInn","sChiefPhone","nObjectTotalArea","nObjectHouseFloor","sObjectHouseWall",
+           "sObjectHouseIntegratedTotalArea","sObjectIndicatorsBearing","sObjectIndicatorsFence",
+           "sObjectIndicatorsFacade","bEquipmentColdWater","bEquipmentHotWater","bEquipmentDrainage",
+           "bEquipmentElevator","bEquipmentGarbage","bEquipmentCentralHeating","bEquipmentStoveHeating","sObjectEstimatedCost",
+           "sObjectEstimatedConstruction","sObjectFixedAssetsCost","sObjectFixedAssetsConstruction","sObjectFixedAssetsEquipment",
+           "sObjectShareDate","sObjectShareOrgan","sObjectSharePayment"], 
+       "asID_Field": {"sCond1":"asObjectType"},
+       "sCondition": "[sCond1] != 'sEnumObjPassport'&&[sCond1]!='об’єктів, будівництво яких здійснено на підставі будівельного паспорта'"
+      },
+    "RequiredFieldsOnCondition_DesignerPerson2": 
+      {"aField_ID":  ["sProjectPib","sProjectPassport","sProjectAddress","sProjectInn"], 
+       "asID_Field": {"sCond1":"asObjectType","sCond3":"asProject"},
+       "sCondition": "([sCond1] == 'sEnumObjCategory'||[sCond1]=='об’єктів, які належать до I­III категорії складності') && [sCond3] == 'sEnumProjectPerson'"
+      },
+    "RequiredFieldsOnCondition_DesignerCompany2": 
+      {"aField_ID":  ["sProjectOrganizationForm","sProjectOrganizationName","sProjectOrganizationAddress","sProjectOrganizationInn","sProjectOrganizationPhone","sRespPersProject"],
+       "asID_Field": {"sCond1":"asObjectType","sCond3":"asProject"},
+       "sCondition": "([sCond1] == 'sEnumObjCategory'||[sCond1]=='об’єктів, які належать до I­III категорії складності') && [sCond3] == 'sEnumProjectLegal'"
+      },
+    "RequiredFieldsOnCondition_Obj3": 
+      {"aField_ID":  
+          ["sTechReportName","sTechReportNumber","sTechExpertName","sTechEngineerLastName","sTechEngineerFirstName",
+           "sTechEngineerMiddleName","sTechEngineerSertificate","sTechEngineerPhone","sLocationComplianceOrgan",
+           "sLocationComplianceDoc"], 
+       "asID_Field": {"sCond1":"asObjectType"},
+       "sCondition": "[sCond1] == 'sEnumObjUnlicensed'||[sCond1]=='самочинно збудованого об’єкта, на яке визнано право власності за рішенням суду'"
+      }
+
+    }
+}

@@ -102,11 +102,11 @@ public class ProcessSubjectController {
     @RequestMapping(value = "/setProcessSubjectStatus", method = RequestMethod.GET)
     @ResponseBody
     public ProcessSubject setProcessSubjectStatus(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
-            @ApiParam(value = "nID_ProcessSubjectStatus", required = false) @RequestParam(value = "nID_ProcessSubjectStatus", required = false) Long nID_ProcessSubjectStatus)
+            @ApiParam(value = "nID_ProcessSubjectStatus", required = false) @RequestParam(value = "sID_ProcessSubjectStatus", required = false) String sID_ProcessSubjectStatus)
             throws Exception {
         ProcessSubject processSubjectResult = null;
         try {
-            processSubjectResult = processSubjectService.setProcessSubjectStatus(snID_Process_Activiti, nID_ProcessSubjectStatus);
+            processSubjectResult = processSubjectService.setProcessSubjectStatus(snID_Process_Activiti, sID_ProcessSubjectStatus);
 
         } catch (Exception e) {
             LOG.error("FAIL: ", e);
