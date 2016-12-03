@@ -441,13 +441,13 @@ public class ProcessSubjectService {
                         }
                     }
                     
-                    for (ProcessSubject ps: aProcessSubject)
+                    /*for (ProcessSubject ps: aProcessSubject)
                     {
                         if (ps.getsLogin().equals(mParamTask.get("sLogin_isExecute").toString()));
                         {
                             aLoginToKeep.add(ps.getsLogin());
                         }
-                    }  
+                    }  */
                     
                     if (continueFlag == false)
                     {
@@ -469,7 +469,7 @@ public class ProcessSubjectService {
                     aLoginToKeep.removeAll(aLoginToDelete);
                 }
                 
-                for (String login : aLoginToDelete)
+                for (String login : aLoginToKeep)
                 {
                     LOG.info("KEEPLOGIN" + login);
                 }
