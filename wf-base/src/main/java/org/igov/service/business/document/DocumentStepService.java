@@ -366,21 +366,21 @@ public class DocumentStepService {
             aDocumentStepSubjectRight_Common = oDocumentStep_Common
                     .getRights()
                     .stream()
-                    .filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix())))
+                    .filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix()).toString()))
                     .collect(Collectors.toList());
         }
-        LOG.debug("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
+        LOG.info("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active
                 .getRights()
                 .stream()
-                .filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix())))
+                .filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix()).toString()))
                 .collect(Collectors.toList());
-        LOG.debug("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
+        LOG.info("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new LinkedList(aDocumentStepSubjectRight_Common);
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
-        LOG.debug("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
+        LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
 
         Map<String, Object> mReturn = new HashMap();
 
@@ -402,8 +402,12 @@ public class DocumentStepService {
             List<String> asID_Field_Read_Temp = new LinkedList();
             List<String> asID_Field_Write_Temp = new LinkedList();
             //Boolean bInclude=null;
+            LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix()={}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
+            
             for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
                 String sMask = oDocumentStepSubjectRightField.getsMask_FieldID();
+                LOG.info("sMask={}", sMask);
+                
                 if (sMask != null) {
                     Boolean bNot = false;
                     if (sMask.startsWith("!")) {
@@ -423,6 +427,7 @@ public class DocumentStepService {
                             sMask = sMask.substring(0, sMask.length() - 1);
                         }
                     }
+                    LOG.info("bEndsWith={},bStartWith={},bAll={},bNot={}", bEndsWith, bStartWith, bAll, bNot);
                     for (FormProperty oProperty : a) {
                         String sID = oProperty.getId();
                         Boolean bFound = false;
@@ -433,6 +438,7 @@ public class DocumentStepService {
                         } else if (bEndsWith) {
                             bFound = sID.endsWith(sMask);
                         }
+                        LOG.info("sID={},bFound={},bAll={}", sID, bFound, bAll);
                         if (bAll || bFound) {
                             Boolean bWriteField = oDocumentStepSubjectRightField.getbWrite();
                             if (bNot) {
@@ -446,15 +452,17 @@ public class DocumentStepService {
                             } else {
                                 asID_Field_Read_Temp.add(sID);
                             }
+                            LOG.info("bWriteField={}", bWriteField);
                         }
                     }
-
                 }
             }
             asID_Field_Read.addAll(asID_Field_Read_Temp);
             asID_Field_Write.addAll(asID_Field_Write_Temp);
         }
 
+        mReturn.put("asID_Field_Write(0)", asID_Field_Write);
+        mReturn.put("asID_Field_Read(0)", asID_Field_Read);
         for (String sID_Field_Write : asID_Field_Write) {
             asID_Field_Read.remove(sID_Field_Write);
         }
