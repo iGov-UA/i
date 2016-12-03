@@ -354,7 +354,6 @@ public class ProcessSubjectService {
             String sDateExecution, String snProcess_ID) {
 
         try {
-            
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
             DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
@@ -363,6 +362,7 @@ public class ProcessSubjectService {
             ProcessSubject oProcessSubjectParent = null;
             
             LOG.info("DATATIMEVALUE: " + sTaskDateFormat);
+            
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
                 oProcessSubjectParent = processSubjectDao
@@ -390,16 +390,19 @@ public class ProcessSubjectService {
             
             ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 1L, null);
             List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
-            
-            for(ProcessSubject ps : aProcessSubject)
+
+            for (ProcessSubject ps: aProcessSubject)
             {
-                LOG.info("JSON Login: " + ps.getsLogin());
-            }
+                LOG.info("Login by service" +  ps.getsLogin());
+            }  
             
+            List<String> aLoginToKeep = new ArrayList<String>();
+            List<String> aLoginToDelete = new ArrayList<String>();
 
             //LOG.info("JSON aRow is: " + oJSONObject.get("aRow").getClass());
 
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
+
             Map<String, Object> mParamDocument = new HashMap<>();
             mParamDocument.put("sTaskProcessDefinition", sTaskProcessDefinition);
             mParamDocument.put("sID_Attachment", sID_Attachment);
@@ -407,7 +410,7 @@ public class ProcessSubjectService {
             mParamDocument.put("sAutorResolution", sAutorResolution);
             mParamDocument.put("sDateExecution", sTaskDateFormat);
             mParamDocument.put("sTextResolution", sTextResolution);
-
+            
             if (aJsonRow != null) {
                 for (int i = 0; i < aJsonRow.size(); i++) {
 
@@ -425,7 +428,7 @@ public class ProcessSubjectService {
                         mParamTask.put(id, value);
                     }
                     LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
-                    
+                    aLoginToDelete.add(mParamTask.get("sLogin_isExecute").toString());
                     boolean continueFlag = false;
                     
                     for (ProcessSubjectTree child:  aProcessSubjectChild)    
@@ -435,6 +438,14 @@ public class ProcessSubjectService {
                             break;
                         }
                     }
+                    
+                    for (ProcessSubject ps: aProcessSubject)
+                    {
+                        if (ps.getsLogin().equals(mParamTask.get("sLogin_isExecute").toString()));
+                        {
+                            aLoginToKeep.add(ps.getsLogin());
+                        }
+                    }  
                     
                     if (continueFlag == false)
                     {
@@ -451,6 +462,24 @@ public class ProcessSubjectService {
                         }
                     }
                 }
+                
+                for (String login : aLoginToDelete)
+                {
+                    LOG.info("ALL LOGIN" + login);
+                }
+                
+                for (String login : aLoginToKeep)
+                {
+                    LOG.info("LOGIN TO KEEP: " + login);
+                }
+                
+                aLoginToDelete.removeAll(aLoginToKeep);
+                
+                for (String login : aLoginToDelete)
+                {
+                    LOG.info("LOGIN TO DELETE: " + login);
+                }
+                
             } else {
                 LOG.info("JSONArray is null");
             }
