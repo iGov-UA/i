@@ -392,16 +392,7 @@ public class ProcessSubjectService {
             List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
             
             List<String> aLoginToKeep = new ArrayList<String>();
-            
-            for (ProcessSubject ps: aProcessSubject)
-            {
-                LOG.info("Loginbyservice" +  ps.getsLogin());
-                aLoginToKeep.add(ps.getsLogin());
-            }  
-            
             List<String> aLoginToDelete = new ArrayList<String>();
-
-            //LOG.info("JSON aRow is: " + oJSONObject.get("aRow").getClass());
 
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
 
@@ -441,14 +432,6 @@ public class ProcessSubjectService {
                         }
                     }
                     
-                    /*for (ProcessSubject ps: aProcessSubject)
-                    {
-                        if (ps.getsLogin().equals(mParamTask.get("sLogin_isExecute").toString()));
-                        {
-                            aLoginToKeep.add(ps.getsLogin());
-                        }
-                    }  */
-                    
                     if (continueFlag == false)
                     {
                         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
@@ -465,13 +448,23 @@ public class ProcessSubjectService {
                     }
                 }
                 
-                if (aLoginToKeep.size() != 0){
+                List<ProcessSubject> aProcessSubjectToRemove = new ArrayList<ProcessSubject>();
+                
+                if (!aLoginToKeep.isEmpty()){
                     aLoginToKeep.removeAll(aLoginToDelete);
+                    for (ProcessSubject pSubject : aProcessSubject)
+                    {
+                        for(String sLogin : aLoginToKeep){
+                            if(pSubject.getsLogin().equals(sLogin)){
+                                aProcessSubjectToRemove.add(pSubject);
+                            }
+                        }
+                    }
                 }
                 
-                for (String login : aLoginToKeep)
+                for (ProcessSubject loginToDelete : aProcessSubjectToRemove)
                 {
-                    LOG.info("KEEPLOGIN" + login);
+                    LOG.info("KEEPLOGIN" + loginToDelete.getsLogin());
                 }
                 
             } else {
