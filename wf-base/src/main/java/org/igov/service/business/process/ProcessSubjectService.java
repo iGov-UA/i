@@ -359,7 +359,9 @@ public class ProcessSubjectService {
             DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
             String sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
+            
             ProcessSubject oProcessSubjectParent = null;
+            
             LOG.info("DATATIMEVALUE: " + sTaskDateFormat);
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
@@ -375,25 +377,6 @@ public class ProcessSubjectService {
             
             List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
             
-            ///Delete after testing--------
-            if (aProcessSubjectChild != null){ 
-                
-                if (aProcessSubjectChild.isEmpty())
-                {
-                    LOG.info("aProcessSubjectChild is Empry");
-                }
-                
-                int testCounter = 0;
-                for (ProcessSubjectTree testChild : aProcessSubjectChild)
-                {
-                    testCounter++;
-                    LOG.info("test child login number " + testCounter + " :" + testChild.getProcessSubjectChild().getsLogin() +
-                             "test child ID: number " + testCounter + " :" + testChild.getProcessSubjectChild().getSnID_Process_Activiti());
-                }
-            }else{
-                LOG.info("ProcessSubjectTree list is null");
-            }///--------///
-            
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
                     + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
                     + sContent + " sAutorResolution: " + sAutorResolution + " sTextResolution: "
@@ -404,8 +387,17 @@ public class ProcessSubjectService {
             JSONParser parser = new JSONParser();
             JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
             LOG.info("JSON String: " + oJSONObject.toJSONString());
+            
+            ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 0L, null);
+            List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
+            
+            for(ProcessSubject ps : aProcessSubject)
+            {
+                LOG.info("JSON Login: " + ps.getsLogin());
+            }
+            
 
-            LOG.info("JSON aRow is: " + oJSONObject.get("aRow").getClass());
+            //LOG.info("JSON aRow is: " + oJSONObject.get("aRow").getClass());
 
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
             Map<String, Object> mParamDocument = new HashMap<>();
