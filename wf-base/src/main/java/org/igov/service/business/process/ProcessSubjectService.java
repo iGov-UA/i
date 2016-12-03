@@ -390,13 +390,15 @@ public class ProcessSubjectService {
             
             ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 1L, null);
             List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
-
+            
+            List<String> aLoginToKeep = new ArrayList<String>();
+            
             for (ProcessSubject ps: aProcessSubject)
             {
                 LOG.info("Loginbyservice" +  ps.getsLogin());
+                aLoginToKeep.add(ps.getsLogin());
             }  
             
-            List<String> aLoginToKeep = new ArrayList<String>();
             List<String> aLoginToDelete = new ArrayList<String>();
 
             //LOG.info("JSON aRow is: " + oJSONObject.get("aRow").getClass());
@@ -463,21 +465,13 @@ public class ProcessSubjectService {
                     }
                 }
                 
-                for (String login : aLoginToDelete)
-                {
-                    LOG.info("ALLLOGIN" + login);
+                if (aLoginToKeep.size() != 0){
+                    aLoginToKeep.removeAll(aLoginToDelete);
                 }
-                
-                for (String login : aLoginToKeep)
-                {
-                    LOG.info("LOGINTOKEEP: " + login);
-                }
-                
-                aLoginToDelete.removeAll(aLoginToKeep);
                 
                 for (String login : aLoginToDelete)
                 {
-                    LOG.info("LOGINTODELETE: " + login);
+                    LOG.info("KEEPLOGIN" + login);
                 }
                 
             } else {
