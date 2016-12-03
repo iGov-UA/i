@@ -23,11 +23,15 @@
         <activiti:formProperty id="markers1" name="Якщо електроний документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asEnumEdocs&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategoryIncoming&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumEdocs'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо службові листи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;asEnumOfficialLetters&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategoryIncoming&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOfficialLetters'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
     <userTask id="usertask1" name="реєстрація ініціативного листа" activiti:candidateGroups="justice_common">
       <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asCategoryIncoming" name="Категорія вхідного документу" type="enum" writable="false">
           <activiti:value id="sEnumCentralGov" name="документ центральних органів влади"></activiti:value>
           <activiti:value id="sEnumActsRevision" name="акт ревізії"></activiti:value>
@@ -59,9 +63,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа" type="file"></activiti:formProperty>
        
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sFirstName_Executor&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_Executor&quot;,&quot;name&quot;:&quot;Логин&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;bVisible&quot;:&quot;false&quot;},{&quot;id&quot;:&quot;sEmail_Executor&quot;,&quot;name&quot;:&quot;Email&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="sID_Group_Activiti" type="invisible" default="MJU_Dnipro_Top1"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="nDeepLevel" type="invisible" default="3"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecute&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFirstName_isExecute&quot;,&quot;name&quot;:&quot;First Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLastName_isExecute&quot;,&quot;name&quot;:&quot;Last Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_isExecute&quot;,&quot;name&quot;:&quot;Login&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_Top1"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="3"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="ФИО" type="invisible"></activiti:formProperty>
@@ -71,12 +75,33 @@
           <activiti:value id="sEnumCreateOutcomingLetter" name="сформувати"></activiti:value>
           <activiti:value id="sEnumNotCreateOutcomingLetter" name="не треба формувати поки що"></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[]]></activiti:expression>
+            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+          <activiti:field name="sTaskProcessDefinition">
+            <activiti:string><![CDATA[system_task]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sID_Attachment">
+            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sContent">
+            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sAutorResolution">
+            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sTextResolution">
+            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sDateExecution">
+            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <userTask id="usertask2_yellow" name="формування вихідного листа" activiti:candidateGroups="justice_common">
@@ -106,16 +131,19 @@
         <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asUrgently" name="Якщо терміновий документ - поставте галочку; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" required="true">
+         <activiti:formProperty id="asUrgently" name="Якщо терміновий документ - поставте галочку; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
           <activiti:value id="sEnumUrgentDoc" name="з ЕЦП"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
+       
+       
         <activiti:formProperty id="sDateResolution" name="Дата резолюції" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="ФИО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sText" name="Поля для вихідного документа" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -136,6 +164,9 @@ var days = 30;
 updatedDate.setDate(new Date().getDate() + days);
 var sNewDate = (updatedDate.getDate() + "." + (updatedDate.getMonth() + 1) + "." + updatedDate.getFullYear());
 execution.setVariable('sDateExecution', sNewDate)
+
+var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId)
 </script>
     </scriptTask>
     <sequenceFlow id="flow13" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
