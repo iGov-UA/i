@@ -392,6 +392,7 @@ public class DocumentStepService {
             bWrite = bWrite || oDocumentStepSubjectRight.getbWrite();
         }
         mReturn.put("bWrite", bWrite);
+        LOG.info("bWrite={}", bWrite);
 
         List<String> asID_Field_Read = new LinkedList();
         List<String> asID_Field_Write = new LinkedList();
@@ -461,15 +462,19 @@ public class DocumentStepService {
             asID_Field_Write.addAll(asID_Field_Write_Temp);
         }
 
-        mReturn.put("asID_Field_Write(0)", asID_Field_Write);
-        mReturn.put("asID_Field_Read(0)", asID_Field_Read);
+        //mReturn.put("asID_Field_Write(0)", asID_Field_Write);
+        //mReturn.put("asID_Field_Read(0)", asID_Field_Read);
+        LOG.info("asID_Field_Write(before)={}", asID_Field_Write);
+        LOG.info("asID_Field_Read(before)={}", asID_Field_Read);
         for (String sID_Field_Write : asID_Field_Write) {
             asID_Field_Read.remove(sID_Field_Write);
         }
 
         mReturn.put("asID_Field_Write", asID_Field_Write);
         mReturn.put("asID_Field_Read", asID_Field_Read);
-
+        LOG.info("asID_Field_Write(after)={}", asID_Field_Write);
+        LOG.info("asID_Field_Read(after)={}", asID_Field_Read);
+        //LOG.info("mReturn={}", mReturn);
         return mReturn;
     }
 
