@@ -7,11 +7,11 @@
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
-      'lunaService', 'TableService', 'autocompletesDataFactory',
+      'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
-                lunaService, TableService, autocompletesDataFactory) {
+                lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -19,6 +19,11 @@
             $scope.taskForm.isInProcess = false;
           }
         };
+
+        if(documentRights) {
+          $scope.documentRights = documentRights;
+          if(documentLogins) $scope.documentLogins = documentLogins;
+        }
 
         activate();
 
@@ -455,7 +460,18 @@
             $scope.taskForm.isSubmitted = true;
 
             var unpopulatedFields = $scope.unpopulatedFields();
-            if (unpopulatedFields.length > 0) {
+              if(documentRights) {
+                angular.forEach($scope.taskForm, function (item, key, obj) {
+                  if(item.type === 'date') {
+                    obj[key].value = $filter('checkDate')(item.value);
+                  }
+                });
+                var documentUnpopulatedFields = unpopulatedFields.filter(function (field) {
+                  return field.id.indexOf(documentRights.asID_Field_Write) === -1
+                })
+              }
+            if ((!documentUnpopulatedFields && unpopulatedFields.length > 0)
+                || (documentUnpopulatedFields && documentUnpopulatedFields.length > 0)) {
               // var errorMessage = 'Будь ласка, заповніть поля: ';
 
               // if (unpopulatedFields.length == 1) {
@@ -616,6 +632,11 @@
           return user.firstName + ' ' + user.lastName;
         };
 
+        $scope.getCurrentUserLogin = function () {
+          var user = Auth.getCurrentUser();
+          return user.id;
+        };
+
         $scope.isCommentAfterReject = function (item) {
           if (item.id != "comment") return false;
 
@@ -751,6 +772,10 @@
           item.sFieldNotes = sFieldNotes;
         }
 
+        /*
+         * работа с таблицами
+         */
+
         var fixFieldsForTable = function (table) {
             var tableRow;
             fixName(table);
@@ -831,7 +856,47 @@
         $scope.isVisible = function (field) {
           return TableService.isVisible(field);
         };
-      }
+        /*
+         * работа с таблицами
+         */
 
+        // проверка, есть ли поле в списке редактируемых (в документе).
+        $scope.isDocumentWritable = function (field) {
+          if(documentRights) {
+            return documentRights.asID_Field_Write.indexOf(field.id)!== -1;
+          } else {
+            return true;
+          }
+        };
+
+        // проверка, есть ли поле в списке для чтения (в документе).
+        $scope.isDocumentReadable = function (field) {
+          if(documentRights) {
+            return documentRights.asID_Field_Read.indexOf(field.id)!== -1;
+          } else {
+            return true;
+          }
+        };
+
+        // показывать поля только для чтения.
+        $scope.showReadableField = function (field) {
+          if($scope.isFormPropertyDisabled(field) && $scope.isDocumentReadable(field)) return true;
+          else if(!$scope.isDocumentWritable(field) && $scope.isDocumentReadable(field)) return true;
+          else if($scope.inUnassigned() && $scope.isFormPropertyDisabled(field) && $scope.isDocumentWritable(field)) return true;
+        };
+
+        // отображать поле в зависимости от доступности к чтению/записи документа.
+        $scope.showField = function (field) {
+          if(documentRights) {
+            if($scope.inUnassigned() && ($scope.isDocumentReadable(field) || $scope.isDocumentWritable(field))) return true;
+            else if(!$scope.isDocumentReadable(field) && !$scope.isDocumentWritable(field)) return false;
+            else if(!$scope.inUnassigned() && $scope.isFormPropertyDisabled(field) && $scope.isDocumentWritable(field) && !$scope.isDocumentReadable(field)) return false;
+            else if(!$scope.isFormPropertyDisabled(field) && ($scope.isDocumentWritable(field) || $scope.isDocumentReadable(field))) return true;
+          } else {
+            return true
+          }
+        };
+
+      }
     ])
 })();
