@@ -348,6 +348,13 @@ public class ProcessSubjectService {
         DateTime dtDatePlan = formatter.parseDateTime(sDatePlan);
         return processSubjectDao.setProcessSubjectDatePlan(snID_Process_Activiti, dtDatePlan);
     }
+    
+    public void removeProcessSubject(ProcessSubject processSubject){
+        runtimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
+        ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubjectChild", processSubject);
+        processSubjectTreeDao.delete(processSubjectTreeToDelete);
+        processSubjectDao.delete(processSubject);
+    }
 
     public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
             String sContent, String sAutorResolution, String sTextResolution, 
@@ -462,9 +469,14 @@ public class ProcessSubjectService {
                     }
                 }
                 
+                for (String login : aLoginToKeep)
+                {
+                    LOG.info("KEEPLOGIN_aLoginToKeep" + login);
+                }
+                
                 for (ProcessSubject loginToDelete : aProcessSubjectToRemove)
                 {
-                    LOG.info("KEEPLOGIN" + loginToDelete.getsLogin());
+                    LOG.info("KEEPLOGIN_loginToDelete" + loginToDelete.getsLogin());
                 }
                 
             } else {
