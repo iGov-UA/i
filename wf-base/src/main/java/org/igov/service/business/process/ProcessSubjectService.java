@@ -481,7 +481,7 @@ public class ProcessSubjectService {
                         for(String sLogin : aLoginToKeep){
                             if(pSubject.getsLogin().equals(sLogin)){
                                 aProcessSubjectToRemove.add(pSubject);
-                                removeProcessSubjectDeep(pSubject);
+                                //removeProcessSubjectDeep(pSubject);
                             }
                         }
                     }
