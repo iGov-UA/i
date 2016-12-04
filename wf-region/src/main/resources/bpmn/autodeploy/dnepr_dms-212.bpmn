@@ -192,6 +192,11 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsIs=pattern/print/dms/zajava_znBk.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nSvidChild},${nFile_scan_passport}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         
       </extensionElements>
