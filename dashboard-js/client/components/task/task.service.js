@@ -219,6 +219,9 @@ angular.module('dashboardJsApp')
 
           simpleHttpPromise(req).then(function (result) {
             deferred.resolve(result);
+          },
+            function(result) {
+              deferred.resolve(result);
           });
         });
 
@@ -244,6 +247,48 @@ angular.module('dashboardJsApp')
         return deferred.promise;
       },
 
+      saveChangesTaskForm: function(taskId, formProperties, task) {
+        var self = this;
+        var createProperties = function(formProperties) {
+          var properties = new Array();
+          for (var i = 0; i < formProperties.length; i++) {
+            var formProperty = formProperties[i];
+            if (formProperty && formProperty.writable) {
+              properties.push({
+                id: formProperty.id,
+                value: formProperty.value
+              });
+            }
+          }
+          return properties;
+        };
+
+        var deferred = $q.defer();
+
+        // upload files before form submitting
+        this.uploadTaskFiles(formProperties, task, taskId).then(function()
+        {
+          var submitTaskFormData = {
+            'taskId': taskId,
+            'properties': createProperties(formProperties)
+          };
+
+          var req = {
+            method: 'POST',
+            url: '/api/tasks/action/task/saveForm',
+            data: submitTaskFormData
+          };
+          simpleHttpPromise(req).then(
+            function(result) {
+            deferred.resolve(result);
+          },
+            function(result) {
+              deferred.resolve(result);
+          });
+        });
+
+        return deferred.promise;
+      },
       upload: function(files, taskId) {
         var deferred = $q.defer();
 

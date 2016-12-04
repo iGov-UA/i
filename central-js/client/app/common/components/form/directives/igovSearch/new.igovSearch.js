@@ -123,15 +123,19 @@ angular.module('app')
               } else if ($state.is("index.oldbusiness") && result.length === 1 && result[0].aSubcategory.length > 0) {
                 fullCatalog = result[0];
               } else {
+                console.log('var 3');
                 fullCatalog = result;
               }
 
               if ($scope.bShowExtSearch || $scope.getOrgan) {
+                console.log('var 1');
                 $scope.filterByExtSearch();
               } else if ($scope.check) {
                 updateCatalog(angular.copy(fullCatalog));
+                console.log('var 2');
                 $scope.check = false;
               } else {
+                console.log('var 3');
                 updateCatalog(angular.copy(fullCatalog));
               }
 

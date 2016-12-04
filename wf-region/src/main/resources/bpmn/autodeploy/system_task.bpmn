@@ -3,11 +3,11 @@
   <process id="system_task" name="system_task" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Attachment" name="sTable2 - таблица с исполнителями" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Attachment" name="sTable2 - таблица с исполнителями" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="sContent - Короткий зміст документа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="sAutorResolution - Автор резолюції" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="sTextResolution - Текст резолюції" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="sDateExecution - Термін виконання" type="date"></activiti:formProperty> 
+        <activiti:formProperty id="sDateExecution" name="sDateExecution - Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="sName_isExecute" name="sName_isExecute" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="string"></activiti:formProperty>
@@ -15,21 +15,27 @@
     </startEvent>
     <userTask id="usertask1" name="Задача" activiti:candidateGroups="${sLogin_isExecute}">
       <extensionElements>
-        <activiti:formProperty id="sID_Attachment" name="sTable2 - таблица с исполнителями" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sContent" name="sContent - Короткий зміст документа" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="sAutorResolution - Автор резолюції" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTextResolution" name="sTextResolution - Текст резолюції" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="sDateExecution - Термін виконання" type="date"></activiti:formProperty> 
-        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecute&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFirstName_isExecute&quot;,&quot;name&quot;:&quot;First Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLastName_isExecute&quot;,&quot;name&quot;:&quot;Last Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_isExecute&quot;,&quot;name&quot;:&quot;Login&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_Top1"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="3"></activiti:formProperty>
-        <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum">
-          <activiti:value id="done" name="Виконано"></activiti:value>
-          <activiti:value id="notDone" name="Невиконано"></activiti:value>
-          <activiti:value id="notActual" name="Неактуально"></activiti:value>
+        <activiti:formProperty id="sID_Attachment" name="sTable2 - таблица с исполнителями" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_Top1"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="3"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="sContent - Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="sAutorResolution - Автор резолюції" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTextResolution" name="sTextResolution - Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateExecution" name="sDateExecution - Термін виконання" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asOtherExecutor" name="Поставьте галочку, якщо треба обрати іншого виконавця по завданню; ;sID_CheckboxTrue=sEnumOther" type="enum" default="sEnumNotOther">
+          <activiti:value id="sEnumOther" name="інший виконавець"></activiti:value>
+          <activiti:value id="sEnumNotOther" name="це моє завдання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Якщо інший виконавець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sTable2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asOtherExecutor&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOther'||[sClient] == 'інший виконавець'&quot;}}}"></activiti:formProperty>
+       
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecute&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;},{&quot;id&quot;:&quot;sFirstName_isExecute&quot;,&quot;name&quot;:&quot;First Name&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sLastName_isExecute&quot;,&quot;name&quot;:&quot;Last Name&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sLogin_isExecute&quot;,&quot;name&quot;:&quot;Login&quot;,&quot;type&quot;:&quot;string&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum">
+          <activiti:value id="executed" name="Виконано"></activiti:value>
+          <activiti:value id="notExecuted" name="Невиконано"></activiti:value>
+          <activiti:value id="unactual" name="Неактуально"></activiti:value>
+        </activiti:formProperty>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
             <activiti:string><![CDATA[system_task]]></activiti:string>
