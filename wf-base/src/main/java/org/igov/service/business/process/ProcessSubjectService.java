@@ -409,13 +409,13 @@ public class ProcessSubjectService {
             ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 1L, null);
             List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
             
-            List<String> aLoginToKeep = new ArrayList<String>();
+            /*List<String> aLoginToKeep = new ArrayList<String>();
             
             for (ProcessSubject oProcessSubject : aProcessSubject){
                 aLoginToKeep.add(oProcessSubject.getsLogin());
             }
             
-            List<String> aLoginToDelete = new ArrayList<String>();
+            */List<String> aLoginToDelete = new ArrayList<String>();
 
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
 
@@ -471,7 +471,7 @@ public class ProcessSubjectService {
                     }
                 }
                 
-                List<ProcessSubject> aProcessSubjectToRemove = new ArrayList<ProcessSubject>();
+                /*List<ProcessSubject> aProcessSubjectToRemove = new ArrayList<ProcessSubject>();
                 
                 if (!aLoginToKeep.isEmpty()){
                     aLoginToKeep.removeAll(aLoginToDelete);
@@ -491,7 +491,7 @@ public class ProcessSubjectService {
                 {
                     LOG.info("KEEPLOGIN_loginToDelete" + loginToDelete.getsLogin());
                     removeProcessSubjectDeep(loginToDelete);
-                }
+                } */
                 
             } else {
                 LOG.info("JSONArray is null");
