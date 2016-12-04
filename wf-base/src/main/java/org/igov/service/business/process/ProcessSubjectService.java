@@ -490,7 +490,7 @@ public class ProcessSubjectService {
                 for (ProcessSubject loginToDelete : aProcessSubjectToRemove)
                 {
                     LOG.info("KEEPLOGIN_loginToDelete" + loginToDelete.getsLogin());
-                    removeProcessSubjectDeep(ProcessSubject);
+                    removeProcessSubjectDeep(loginToDelete);
                 }
                 
             } else {
