@@ -481,11 +481,18 @@ public class ProcessSubjectService {
                         for(String sLogin : aLoginToKeep){
                             if(pSubject.getsLogin().equals(sLogin)){
                                 aProcessSubjectToRemove.add(pSubject);
-                                //removeProcessSubjectDeep(pSubject);
                             }
                         }
                     }
                 }
+                
+                
+                for (ProcessSubject loginToDelete : aProcessSubjectToRemove)
+                {
+                    LOG.info("KEEPLOGIN_loginToDelete" + loginToDelete.getsLogin());
+                    removeProcessSubjectDeep(ProcessSubject);
+                }
+                
             } else {
                 LOG.info("JSONArray is null");
             }
