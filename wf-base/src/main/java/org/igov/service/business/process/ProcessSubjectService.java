@@ -455,8 +455,8 @@ public class ProcessSubjectService {
                         }
                     }
                     
-                    if (continueFlag == false)
-                    {
+                   // if (continueFlag == false)
+                   // {
                         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
                         LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                         if (oProcessInstanceChild != null) {
@@ -468,7 +468,7 @@ public class ProcessSubjectService {
                             oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
                             processSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
                         }
-                    }
+                    //}
                 }
                 
                 /*List<ProcessSubject> aProcessSubjectToRemove = new ArrayList<ProcessSubject>();
