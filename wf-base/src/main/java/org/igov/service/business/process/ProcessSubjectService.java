@@ -379,21 +379,15 @@ public class ProcessSubjectService {
             
             ProcessSubject oProcessSubjectParent = null;
             
-            LOG.info("DATATIMEVALUE: " + sTaskDateFormat);
-            
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
                 oProcessSubjectParent = processSubjectDao
                         .setProcessSubject(snProcess_ID, sAutorResolution,
                                 new DateTime(df.parse(sDateExecution)), 0L, processSubjectStatus);
             
-                LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
-            }else{
+           }else{
                 oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
-                LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
             }
-            
-            List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
             
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
                     + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
@@ -406,16 +400,19 @@ public class ProcessSubjectService {
             JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
             LOG.info("JSON String: " + oJSONObject.toJSONString());
             
+            /*
+            List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
+                        
             ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 1L, null);
             List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
             
-            /*List<String> aLoginToKeep = new ArrayList<String>();
+            List<String> aLoginToKeep = new ArrayList<String>();
             
             for (ProcessSubject oProcessSubject : aProcessSubject){
                 aLoginToKeep.add(oProcessSubject.getsLogin());
             }
             
-            */List<String> aLoginToDelete = new ArrayList<String>();
+            List<String> aLoginToDelete = new ArrayList<String>();*/
 
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
 
@@ -444,7 +441,8 @@ public class ProcessSubjectService {
                         mParamTask.put(id, value);
                     }
                     LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
-                    aLoginToDelete.add(mParamTask.get("sLogin_isExecute").toString());
+                    
+                    /*aLoginToDelete.add(mParamTask.get("sLogin_isExecute").toString());
                     boolean continueFlag = false;
                     
                     for (ProcessSubjectTree child:  aProcessSubjectChild)    
@@ -455,8 +453,8 @@ public class ProcessSubjectService {
                         }
                     }
                     
-                   // if (continueFlag == false)
-                   // {
+                    if (continueFlag == false)
+                    { */
                         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
                         LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                         if (oProcessInstanceChild != null) {
