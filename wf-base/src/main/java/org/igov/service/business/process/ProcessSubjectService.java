@@ -357,17 +357,15 @@ public class ProcessSubjectService {
     }
     
     public void removeProcessSubjectDeep(ProcessSubject processSubject){
-         ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
-         List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
-         List<ProcessSubject> aReverseProcessSubject = Lists.reverse(aProcessSubject);
+        ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
+        List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
+        List<ProcessSubject> aReverseProcessSubject = Lists.reverse(aProcessSubject);
          
-         for (ProcessSubject oProcessSubject : aReverseProcessSubject){
-             removeProcessSubject(oProcessSubject);
-         }
+        for (ProcessSubject oProcessSubject : aReverseProcessSubject){
+            removeProcessSubject(oProcessSubject);
+        }
          
-        ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubjectChild", processSubject);
-        processSubjectTreeDao.delete(processSubjectTreeToDelete);
-        processSubjectDao.delete(processSubject);
+        removeProcessSubject(processSubject);
     }
     public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
             String sContent, String sAutorResolution, String sTextResolution, 
@@ -483,22 +481,11 @@ public class ProcessSubjectService {
                         for(String sLogin : aLoginToKeep){
                             if(pSubject.getsLogin().equals(sLogin)){
                                 aProcessSubjectToRemove.add(pSubject);
+                                removeProcessSubjectDeep(pSubject);
                             }
                         }
                     }
                 }
-                
-                for (String login : aLoginToKeep)
-                {
-                    LOG.info("KEEPLOGIN_aLoginToKeep" + login);
-                }
-                
-                for (ProcessSubject loginToDelete : aProcessSubjectToRemove)
-                {
-                    LOG.info("KEEPLOGIN_loginToDelete" + loginToDelete.getsLogin());
-                    //removeProcessSubjectDeep(ProcessSubject);
-                }
-                
             } else {
                 LOG.info("JSONArray is null");
             }
