@@ -375,7 +375,7 @@ public class ProcessSubjectService {
 
         try {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
-            DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
+            //DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
             
             
@@ -385,15 +385,15 @@ public class ProcessSubjectService {
             + sTextResolution + " sDateExecution: " + sDateExecution);
 
             
-            String sTaskDateFormat = "";
-            ProcessSubject oProcessSubjectParent = null;
+            String sTaskDateFormat;
+            ProcessSubject oProcessSubjectParent;
             
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
                 oProcessSubjectParent = processSubjectDao
                         .setProcessSubject(snProcess_ID, sAutorResolution,
                                 new DateTime(df.parse(sDateExecution)), 0L, processSubjectStatus);
-                sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
+                //sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
             
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
             }else{
@@ -429,7 +429,7 @@ public class ProcessSubjectService {
             mParamDocument.put("sID_Attachment", sID_Attachment);
             mParamDocument.put("sContent", sContent);
             mParamDocument.put("sAutorResolution", sAutorResolution);
-            mParamDocument.put("sDateExecution", sTaskDateFormat);
+            //mParamDocument.put("sDateExecution", sTaskDateFormat);
             mParamDocument.put("sTextResolution", sTextResolution);
             
             if (aJsonRow != null) {
@@ -466,11 +466,11 @@ public class ProcessSubjectService {
                         LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                         if (oProcessInstanceChild != null) {
                             
-                            LOG.info("TSKDATE: " + sTaskDateFormat);
+                            //LOG.info("TSKDATE: " + sTaskDateFormat);
                             
                             ProcessSubject oProcessSubjectChild = processSubjectDao
                                     .setProcessSubject(oProcessInstanceChild.getId(), (String) mParamTask.get("sLogin_isExecute"),
-                                            new DateTime(dfTask.parse(sTaskDateFormat)), new Long(i + 1), processSubjectStatus);
+                                            new DateTime(df.parse(sDateExecution)), new Long(i + 1), processSubjectStatus);
                             ProcessSubjectTree oProcessSubjectTreeParent = new ProcessSubjectTree();
                             oProcessSubjectTreeParent.setProcessSubjectParent(oProcessSubjectParent);
                             oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
