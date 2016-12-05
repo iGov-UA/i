@@ -8,10 +8,12 @@
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
+      'processSubject',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
-                lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter) {
+                lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
+                processSubject) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -144,6 +146,10 @@
         if(documentRights) {
           $scope.documentRights = documentRights;
           if(documentLogins) $scope.documentLogins = documentLogins;
+        }
+
+        if(processSubject) {
+          $scope.aProcessSubject = processSubject.aProcessSubject;
         }
 
         activate();
