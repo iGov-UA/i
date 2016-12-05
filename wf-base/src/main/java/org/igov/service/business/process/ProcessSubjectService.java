@@ -377,15 +377,14 @@ public class ProcessSubjectService {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
             //DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            
+            DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+            String sDateExecution_StartProcess = df_StartProcess.format(df.parse(sDateExecution));
             
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
             + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
             + sContent + " sAutorResolution: " + sAutorResolution + " sTextResolution: "
             + sTextResolution + " sDateExecution: " + sDateExecution);
 
-            
-            String sTaskDateFormat;
             ProcessSubject oProcessSubjectParent;
             
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
@@ -399,7 +398,7 @@ public class ProcessSubjectService {
             }else{
                 oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
-                sTaskDateFormat = sDateExecution;
+                //sTaskDateFormat = sDateExecution;
             }
             
             List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
@@ -413,23 +412,24 @@ public class ProcessSubjectService {
             ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 1L, null);
             List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
             
-            List<String> aLoginToKeep = new ArrayList<String>();
+            List<String> aLoginToKeep = new ArrayList<>();
             
             for (ProcessSubject oProcessSubject : aProcessSubject){
                 aLoginToKeep.add(oProcessSubject.getsLogin());
                 LOG.info("login from service: " + oProcessSubject.getsLogin());
             }
             
-            List<String> aLoginToDelete = new ArrayList<String>();
+            List<String> aLoginToDelete = new ArrayList<>();
 
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
 
             Map<String, Object> mParamDocument = new HashMap<>();
+            
             mParamDocument.put("sTaskProcessDefinition", sTaskProcessDefinition);
             mParamDocument.put("sID_Attachment", sID_Attachment);
             mParamDocument.put("sContent", sContent);
             mParamDocument.put("sAutorResolution", sAutorResolution);
-            //mParamDocument.put("sDateExecution", sTaskDateFormat);
+            mParamDocument.put("sDateExecution", sDateExecution_StartProcess);
             mParamDocument.put("sTextResolution", sTextResolution);
             
             if (aJsonRow != null) {
