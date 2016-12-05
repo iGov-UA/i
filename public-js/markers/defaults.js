@@ -126,6 +126,42 @@ angular.module('iGovMarkers')
     },
     attributes: {
       Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true}, 
+    
+      Style_ExtendLabel: {
+    	  aElement_ID: ['textUa', 'vin_code'], 
+    	  aSelectors: ["col-sm-4"], 
+    	  // Загальний стиль для селекторів 
+    	  oCommonStyle: { "font-style" : "italic", "display" : "block" },
+    	  // Стиль для Central-js | = oCommonStyle   
+    	  oCentralStyle: { "font-style": "bold", "display": "block" }, 
+    	  // Стиль для Region  
+    	  oRegionStyle: { "font-style": "bold", "font-color": "#FF0000", "display": "block" }, 
+      }, 
+
+      Style_ExtendForm: {
+    	  aElement_ID: ['form'],  	  
+    	  aSelectors: ["test-form"], 
+    	  //sCondition : "",
+    	  // Загальний стиль для селекторів 
+    	  oCommonStyle: { "font-style": "italic", "display": "block" },
+    	  // Стиль для Central-js | = oCommonStyle   
+    	  oCentralStyle: { "font-style": "bold", "display": "block" }, 
+    	  // Стиль для Region  
+    	  oRegionStyle: { "font-style": "bold", "font-color": "#FF0000", "display": "block" },
+      }, 
+
+      PrintForm_Table12: { 
+    	  aTable_ID: ["tbl1", "tbl2"],
+    	  sPatternPath: "/print/kiev/kiev_mda_273_print.html", 
+    	  sName: "Звіт за суб'єктом", 
+      }, 
+
+      PrintForm_Table3: { 
+    	  aTable_ID: ["tbl3"],
+    	  sPatternPath: "/print/kiev/kiev_mda_273_print.html", 
+    	  sName: "Звіт за сектором",
+      }
+
     },
     motion: {
       ReplaceTextSymbols_1: {
