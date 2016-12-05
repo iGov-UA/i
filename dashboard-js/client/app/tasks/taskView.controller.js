@@ -1108,6 +1108,8 @@
             });
         };
 
+        TableService.init($scope.taskForm);
+
         var idMatch = function () {
           angular.forEach($scope.taskForm, function (item, key, obj) {
             angular.forEach($scope.taskData.aAttachment, function (attachment) {
@@ -1123,8 +1125,6 @@
           });
         };
         idMatch();
-
-        TableService.init($scope.taskForm);
 
         $scope.addRow = function (form, id, index) {
           ValidationService.validateByMarkers(form, null, true, null, true);
@@ -1157,7 +1157,7 @@
             $scope.model.printTemplate = $scope.printTemplateList[0];
           }
           return true;
-        }
+        };
 
         $scope.tableIsLoaded = function (item) {
           return typeof item.aRow[0] !== 'number';
@@ -1206,7 +1206,7 @@
             return true
           }
         };
-console.log($scope)
+
       }
     ])
 })();
