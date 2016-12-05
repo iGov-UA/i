@@ -1,6 +1,5 @@
 package org.igov.model.process;
 
-import com.google.common.base.Optional;
 import java.util.Date;
 import org.hibernate.HibernateException;
 import org.igov.model.core.GenericEntityDao;
@@ -86,6 +85,7 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
         ProcessSubject processSubject = findByProcessActiviti(snID_Process_Activiti);
         if (processSubject != null) {
             processSubject.setProcessSubjectStatus(processSubjectStatus);
+            processSubject.setsDateEdit(new DateTime(new Date()));
             processSubject = saveOrUpdate(processSubject);
             LOG.info(String.format("ProcessSubjectStatus=%s to entity with snID_Process_Activiti=%s was added",
                     processSubjectStatus.getId(), snID_Process_Activiti));
