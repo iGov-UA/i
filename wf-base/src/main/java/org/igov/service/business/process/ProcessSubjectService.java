@@ -363,29 +363,12 @@ public class ProcessSubjectService {
         List<ProcessSubject> aReverseProcessSubject = Lists.reverse(aProcessSubject);
          
         for (ProcessSubject oProcessSubject : aReverseProcessSubject){
-            LOG.info("We delete:" + oProcessSubject.getsLogin());
             removeProcessSubject(oProcessSubject);
         }
          
         removeProcessSubject(processSubject);
     }
-    
-    public boolean isThisDateValid(String inDate, String dateFormat){
-        
-        if (inDate == null){
-            return false;
-        }
-        
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-        sdf.setLenient(false);
-        try{
-            Date date = sdf.parse(inDate);
-        }catch(Exception e){
-            return false;
-        }
-        return true;
-    }
-    
+ 
     public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
             String sContent, String sAutorResolution, String sTextResolution, 
             String sDateExecution, String snProcess_ID) {
@@ -397,15 +380,7 @@ public class ProcessSubjectService {
             
             String sTaskDateFormat = "";
             
-            /*if (isThisDateValid(sDateExecution, "EEE MMM dd HH:mm:ss zzz yyyy")){
-                
-            }else{
-                
-            }*/
-            
             ProcessSubject oProcessSubjectParent = null;
-            
-            LOG.info("DATATIMEVALUE: " + sTaskDateFormat);
             
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
@@ -413,27 +388,18 @@ public class ProcessSubjectService {
                         .setProcessSubject(snProcess_ID, sAutorResolution,
                                 new DateTime(df.parse(sDateExecution)), 0L, processSubjectStatus);
                 sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
-            
-                LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
             }else{
                 oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
-                LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
                 sTaskDateFormat = sDateExecution;
             }
             
             List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
             
-            LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
-                    + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
-                    + sContent + " sAutorResolution: " + sAutorResolution + " sTextResolution: "
-                    + sTextResolution + " sDateExecution: " + sDateExecution);
-
             InputStream attachmentContent = taskService.getAttachmentContent(sID_Attachment);
 
             JSONParser parser = new JSONParser();
             JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
-            LOG.info("JSON String: " + oJSONObject.toJSONString());
-            
+           
             ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 1L, null);
             List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
             
@@ -499,8 +465,6 @@ public class ProcessSubjectService {
                     }
                 }
                 
-                List<ProcessSubject> aProcessSubjectToRemove = new ArrayList<ProcessSubject>();
-                
                 if (!aLoginToKeep.isEmpty()){
                     aLoginToKeep.removeAll(aLoginToDelete);
                     
@@ -508,19 +472,11 @@ public class ProcessSubjectService {
                     {
                         for(String sLogin : aLoginToKeep){
                             if(pSubject.getsLogin().equals(sLogin)){
-                                aProcessSubjectToRemove.add(pSubject);
+                             removeProcessSubjectDeep(pSubject);
                             }
                         }
                     }
                 }
-                
-                
-                for (ProcessSubject loginToDelete : aProcessSubjectToRemove)
-                {
-                    LOG.info("KEEPLOGIN_loginToDelete" + loginToDelete.getsLogin());
-                    removeProcessSubjectDeep(loginToDelete);
-                }
-                
             } else {
                 LOG.info("JSONArray is null");
             }
