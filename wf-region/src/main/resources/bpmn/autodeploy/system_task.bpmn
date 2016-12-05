@@ -79,6 +79,9 @@
     <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusTask == null}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusTask != null}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_system_task">
     <bpmndi:BPMNPlane bpmnElement="system_task" id="BPMNPlane_system_task">
@@ -107,6 +110,10 @@
         <omgdi:waypoint x="319.0" y="2.0"></omgdi:waypoint>
         <omgdi:waypoint x="212.0" y="2.0"></omgdi:waypoint>
         <omgdi:waypoint x="212.0" y="40.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="340.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="67.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
