@@ -3,7 +3,7 @@
     top:100%;
   }
 </style>
-<div ng-if="['table'].indexOf(item.type) > -1" class="row field-table">
+<div ng-if="(['table'].indexOf(item.type) > -1) && showField(item)" class="row field-table">
   <div class="col-sm-12" ng-if="tableIsLoaded(item)" style="margin-top: 3%; margin-bottom: 3%">
 
     <table ng-init="tableName = item.id">
@@ -36,7 +36,7 @@
                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                    ng-required="field.required"
                    ng-model="field.default"
-                   ng-disabled="!isFieldWritable(field.writable)"
+                   ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                    type="text">
             <input class="inputs-in-table"
                    ng-if='field.hasOwnProperty("value")'
@@ -44,7 +44,7 @@
                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                    ng-required="field.required"
                    ng-model="field.value"
-                   ng-disabled="!isFieldWritable(field.writable)"
+                   ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                    type="text">
           </div>
 
@@ -54,7 +54,7 @@
                     ng-model="field.value"
                     ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                     ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in field.a"
-                    ng-disabled="!isFieldWritable(field.writable)"
+                    ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                     class="inputs-in-table">
             </select>
           </div>
@@ -66,7 +66,7 @@
                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                    ng-model="field.default"
                    class="inputs-in-table"
-                   ng-disabled="!isFieldWritable(field.writable)"
+                   ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                    type="number">
             <input name="{{field.id + rowIndex}}"
                    ng-if="field.hasOwnProperty('value')"
@@ -74,7 +74,7 @@
                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                    ng-model="field.value"
                    class="inputs-in-table"
-                   ng-disabled="!isFieldWritable(field.writable)"
+                   ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                    type="number">
           </div>
 
@@ -83,7 +83,7 @@
                  class="form-control date-picker"
                  ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                  name="{{field.id + rowIndex}}"
-                 ng-disabled="!isFieldWritable(field.writable)"
+                 ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                  ng-required="field.required"
                  ng-model="field.props.value"
                  format="DD/MM/YYYY"/>
@@ -109,7 +109,7 @@
                          autocomplete-data="field.autocompleteData"
                          autocomplete-name="field.autocompleteName"
                          reach-infinity="requestMoreItems($select.items)"
-                         ng-disabled="!isFieldWritable(field.writable)"
+                         ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                          on-select="onSelectDataList($item, tableName, rowIndex, field)">
 
                 <ui-select-match>
@@ -134,7 +134,7 @@
                          autocomplete-data="item.autocompleteData"
                          autocomplete-name="item.autocompleteName"
                          reach-infinity="requestMoreItems($select.items)"
-                         ng-disabled="!isFieldWritable(field.writable)"
+                         ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                          on-select="onSelectDataList($item, tableName, rowIndex, field)">
 
                 <ui-select-match>
@@ -193,7 +193,11 @@
     </table>
 
     <div style="text-align: left; margin-top: 3px">
-      <input type="button" ng-hide="rowLengthCheckLimit(item) && !item.aRow" class="add-row-button" ng-click="addRow(form[tableName], item.id, tableName)" value="Додати рядок">
+      <input type="button"
+             ng-hide="rowLengthCheckLimit(item) && !item.aRow || (!isDocumentWritable(item) && isDocumentReadable(item))"
+             class="add-row-button"
+             ng-click="addRow(form[tableName], item.id, tableName)"
+             value="Додати рядок">
     </div>
 
   </div>

@@ -1,4 +1,4 @@
-<div ng-if="['select'].indexOf(item.type) > -1" class="col-sm-12 form-field">
+<div ng-if="(['select'].indexOf(item.type) > -1) && showField(item)" class="col-sm-12 form-field">
   <div class="col-sm-6 task-form-title">
     <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && !inUnassigned() && item.writable" style="color: red">*</span></label>
   </div>
@@ -14,7 +14,7 @@
     <!--ng-disabled="!isFieldWritable(field.writable)"-->
     <!--name="field.id"></dropdown-organ>-->
 
-    <div ng-if="!isFormPropertyDisabled(item)">
+    <div ng-if="!isFormPropertyDisabled(item) && isDocumentWritable(item)">
 
         <div ng-if="item.autocompleteName === 'SubjectRole'">
           <ui-select dropdown-autocomplete ng-if="item.selectType=='autocomplete'"
@@ -27,8 +27,8 @@
                      reach-infinity="requestMoreItems($select.items)"
                      on-select="onSelectDataList($item)">
 
-          <ui-select-match title="{{$select.selected}}">
-            {{$select.selected[autocompleteData.titleProperty]}}
+          <ui-select-match>
+            {{$select.selected[autocompleteData.titleProperty] || item.value}}
           </ui-select-match>
           <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search, item.name)"
                              refresh-delay="50"
@@ -53,7 +53,7 @@
                      on-select="onSelectDataList($item)">
 
           <ui-select-match title="{{$select.selected}}">
-            {{$select.selected[autocompleteData.titleProperty]}}
+            {{$select.selected[autocompleteData.titleProperty] || item.value}}
           </ui-select-match>
           <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search, item.name)"
                              refresh-delay="50"
@@ -68,11 +68,9 @@
     </div>
 
     <span class="task-form-written-right-sight"
-          ng-if="isFormPropertyDisabled(item)"
+          ng-if="showReadableField(item)"
           style="white-space: pre-line"
-          name="{{item.id}}"
-          ng-readonly="isFormPropertyDisabled(item)"
-          ng-required="isRequired(item)">{{item.value}}
+          name="{{item.id}}">{{item.value}}
       </span>
   </div>
   <span class="validation-message" ng-messages="isFormInvalid && isRequired(item) && form[item.id].$error">

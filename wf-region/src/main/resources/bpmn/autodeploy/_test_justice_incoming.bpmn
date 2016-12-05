@@ -25,7 +25,6 @@
           <activiti:value id="sEnumCreateOutcomingLetter" name="сформувати"></activiti:value>
           <activiti:value id="sEnumNotCreateOutcomingLetter" name="не треба формувати поки що"></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
@@ -57,6 +56,7 @@
     <userTask id="usertask2_yellow" name="крок 2" activiti:candidateGroups="justice_common">
       <extensionElements>
         <activiti:formProperty id="email" name="email" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="sID_Group_Activiti" type="string" default="MJU_Dnipro_Top1"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="nDeepLevel" type="string" default="3"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
@@ -90,7 +90,7 @@ execution.setVariable('sDateExecution', sNewDate);</script>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask2" name="получение ИД процесса" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var processInstanceId = execution.getProcessInstanceId();
-var result = documentStepService.setDocumentStep(processInstanceId, null);</script>
+execution.setVariable('processInstanceId', processInstanceId)</script>
     </scriptTask>
     <sequenceFlow id="flow22" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
   </process>

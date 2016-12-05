@@ -1,10 +1,10 @@
-<div ng-if="['date'].indexOf(item.type) > -1" class="col-sm-12 form-field">
+<div ng-if="['date'].indexOf(item.type) > -1 && showField(item)" class="col-sm-12 form-field">
             <span class="col-sm-6 task-form-title">
               <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && item.writable"
                                                       style="color: red">*</span></label>
             </span>
   <div class="col-sm-6">
-    <div class="input-group" ng-if="!isFormPropertyDisabled(item)">
+    <div class="input-group" ng-if="!isFormPropertyDisabled(item) && isDocumentWritable(item)">
       <input datetimepicker
              format='DD/MM/YYYY'
              separator='/'
@@ -14,19 +14,12 @@
              ng-required="isRequired(item)"
              ng-model="item.value"
              ng-class="{submitted:isRequired(item) && isTaskSubmitted()}"/>
-
-        <span class="input-group-addon"
-              ng-if="isFormPropertyDisabled(item)"
-              clip-copy="item.value">
-                  <i class="glyphicon glyphicon-copy"></i>
-                </span>
     </div>
-    <div ng-if="isFormPropertyDisabled(item) && item.value">
-              <span class="task-form-written-right-sight"
-                    name="{{item.id}}"
-                    ng-model="item.value">
-                {{item.value}}
-              </span>
+    <div ng-if="showReadableField(item)">
+        <span class="task-form-written-right-sight"
+              name="{{item.id | date:'yyyy.MM.dd'}}">
+              {{item.value | checkDate}}
+        </span>
     </div>
   </div>
 </div>

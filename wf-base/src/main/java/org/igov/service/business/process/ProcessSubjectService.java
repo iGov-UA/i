@@ -348,18 +348,39 @@ public class ProcessSubjectService {
         DateTime dtDatePlan = formatter.parseDateTime(sDatePlan);
         return processSubjectDao.setProcessSubjectDatePlan(snID_Process_Activiti, dtDatePlan);
     }
-
+    
+    public void removeProcessSubject(ProcessSubject processSubject){
+        runtimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
+        ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubjectChild", processSubject);
+        processSubjectTreeDao.delete(processSubjectTreeToDelete);
+        processSubjectDao.delete(processSubject);
+    }
+    
+    public void removeProcessSubjectDeep(ProcessSubject processSubject){
+        ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
+        List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
+        List<ProcessSubject> aReverseProcessSubject = Lists.reverse(aProcessSubject);
+         
+        for (ProcessSubject oProcessSubject : aReverseProcessSubject){
+            removeProcessSubject(oProcessSubject);
+        }
+         
+        removeProcessSubject(processSubject);
+    }
     public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
             String sContent, String sAutorResolution, String sTextResolution, 
             String sDateExecution, String snProcess_ID) {
 
         try {
-            
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
-            //DateFormat df = new SimpleDateFormat("d.M.yyyy");
+            DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+            String sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
+            
             ProcessSubject oProcessSubjectParent = null;
-
+            
+            LOG.info("DATATIMEVALUE: " + sTaskDateFormat);
+            
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
                 oProcessSubjectParent = processSubjectDao
@@ -374,25 +395,6 @@ public class ProcessSubjectService {
             
             List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
             
-            ///Delete after testing--------
-            if (aProcessSubjectChild != null){ 
-                
-                if (aProcessSubjectChild.isEmpty())
-                {
-                    LOG.info("aProcessSubjectChild is Empry");
-                }
-                
-                int testCounter = 0;
-                for (ProcessSubjectTree testChild : aProcessSubjectChild)
-                {
-                    testCounter++;
-                    LOG.info("test child login number " + testCounter + " :" + testChild.getProcessSubjectChild().getsLogin() +
-                             "test child ID: number " + testCounter + " :" + testChild.getProcessSubjectChild().getSnID_Process_Activiti());
-                }
-            }else{
-                LOG.info("ProcessSubjectTree list is null");
-            }///--------///
-            
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
                     + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
                     + sContent + " sAutorResolution: " + sAutorResolution + " sTextResolution: "
@@ -403,18 +405,28 @@ public class ProcessSubjectService {
             JSONParser parser = new JSONParser();
             JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
             LOG.info("JSON String: " + oJSONObject.toJSONString());
-
-            LOG.info("JSON aRow is: " + oJSONObject.get("aRow").getClass());
+            
+            ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 1L, null);
+            List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
+            
+            List<String> aLoginToKeep = new ArrayList<String>();
+            
+            for (ProcessSubject oProcessSubject : aProcessSubject){
+                aLoginToKeep.add(oProcessSubject.getsLogin());
+            }
+            
+            List<String> aLoginToDelete = new ArrayList<String>();
 
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
+
             Map<String, Object> mParamDocument = new HashMap<>();
             mParamDocument.put("sTaskProcessDefinition", sTaskProcessDefinition);
             mParamDocument.put("sID_Attachment", sID_Attachment);
             mParamDocument.put("sContent", sContent);
             mParamDocument.put("sAutorResolution", sAutorResolution);
-            mParamDocument.put("sDateExecution", sDateExecution);
+            mParamDocument.put("sDateExecution", sTaskDateFormat);
             mParamDocument.put("sTextResolution", sTextResolution);
-
+            
             if (aJsonRow != null) {
                 for (int i = 0; i < aJsonRow.size(); i++) {
 
@@ -432,7 +444,7 @@ public class ProcessSubjectService {
                         mParamTask.put(id, value);
                     }
                     LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
-                    
+                    aLoginToDelete.add(mParamTask.get("sLogin_isExecute").toString());
                     boolean continueFlag = false;
                     
                     for (ProcessSubjectTree child:  aProcessSubjectChild)    
@@ -443,14 +455,14 @@ public class ProcessSubjectService {
                         }
                     }
                     
-                    if (continueFlag == false)
-                    {
+                   if (continueFlag == false)
+                   {
                         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
                         LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                         if (oProcessInstanceChild != null) {
                             ProcessSubject oProcessSubjectChild = processSubjectDao
                                     .setProcessSubject(oProcessInstanceChild.getId(), (String) mParamTask.get("sLogin_isExecute"),
-                                            new DateTime(df.parse(sDateExecution)), new Long(i + 1), processSubjectStatus);
+                                            new DateTime(dfTask.parse(sTaskDateFormat)), new Long(i + 1), processSubjectStatus);
                             ProcessSubjectTree oProcessSubjectTreeParent = new ProcessSubjectTree();
                             oProcessSubjectTreeParent.setProcessSubjectParent(oProcessSubjectParent);
                             oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
@@ -458,6 +470,29 @@ public class ProcessSubjectService {
                         }
                     }
                 }
+                
+                List<ProcessSubject> aProcessSubjectToRemove = new ArrayList<ProcessSubject>();
+                
+                if (!aLoginToKeep.isEmpty()){
+                    aLoginToKeep.removeAll(aLoginToDelete);
+                    
+                    for (ProcessSubject pSubject : aProcessSubject)
+                    {
+                        for(String sLogin : aLoginToKeep){
+                            if(pSubject.getsLogin().equals(sLogin)){
+                                aProcessSubjectToRemove.add(pSubject);
+                            }
+                        }
+                    }
+                }
+                
+                
+                for (ProcessSubject loginToDelete : aProcessSubjectToRemove)
+                {
+                    LOG.info("KEEPLOGIN_loginToDelete" + loginToDelete.getsLogin());
+                    removeProcessSubjectDeep(loginToDelete);
+                }
+                
             } else {
                 LOG.info("JSONArray is null");
             }
