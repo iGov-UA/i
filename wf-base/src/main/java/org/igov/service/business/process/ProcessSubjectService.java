@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -362,11 +363,29 @@ public class ProcessSubjectService {
         List<ProcessSubject> aReverseProcessSubject = Lists.reverse(aProcessSubject);
          
         for (ProcessSubject oProcessSubject : aReverseProcessSubject){
+            LOG.info("We delete:" + oProcessSubject.getsLogin());
             removeProcessSubject(oProcessSubject);
         }
          
         removeProcessSubject(processSubject);
     }
+    
+    public boolean isThisDateValid(String inDate, String dateFormat){
+        
+        if (inDate == null){
+            return false;
+        }
+        
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        sdf.setLenient(false);
+        try{
+            Date date = sdf.parse(inDate);
+        }catch(Exception e){
+            return false;
+        }
+        return true;
+    }
+    
     public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
             String sContent, String sAutorResolution, String sTextResolution, 
             String sDateExecution, String snProcess_ID) {
@@ -375,7 +394,14 @@ public class ProcessSubjectService {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
             DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            String sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
+            
+            String sTaskDateFormat = "";
+            
+            /*if (isThisDateValid(sDateExecution, "EEE MMM dd HH:mm:ss zzz yyyy")){
+                
+            }else{
+                
+            }*/
             
             ProcessSubject oProcessSubjectParent = null;
             
@@ -386,11 +412,13 @@ public class ProcessSubjectService {
                 oProcessSubjectParent = processSubjectDao
                         .setProcessSubject(snProcess_ID, sAutorResolution,
                                 new DateTime(df.parse(sDateExecution)), 0L, processSubjectStatus);
+                sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
             
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
             }else{
                 oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
+                sTaskDateFormat = sDateExecution;
             }
             
             List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
@@ -498,7 +526,7 @@ public class ProcessSubjectService {
             }
         } 
         catch (Exception e) {
-            LOG.error("SetTasks listener throws an error: " + e.toString());
+            LOG.error("SetTasks listener throws an error: ", e);
         }
     }
 }
