@@ -371,7 +371,7 @@ public class ProcessSubjectService {
  
     public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
             String sContent, String sAutorResolution, String sTextResolution, 
-            String sDateExecution, String snProcess_ID) {
+            String sDateExecution, String snProcess_ID) throws Exception{
 
         try {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
@@ -511,6 +511,7 @@ public class ProcessSubjectService {
         } 
         catch (Exception e) {
             LOG.error("SetTasks listener throws an error: ", e);
+            throw e;
         }
     }
 }
