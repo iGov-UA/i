@@ -447,7 +447,7 @@ public class ProcessSubjectService {
                         mParamTask.put(id, value);
                     }
                     LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
-                    aLoginToDelete.add(mParamTask.get("sLogin_isExecute").toString());
+                    
                     boolean continueFlag = false;
                     
                     for (ProcessSubjectTree child:  aProcessSubjectChild)    
@@ -471,7 +471,9 @@ public class ProcessSubjectService {
                             oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
                             processSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
                         }
-                    }
+                    }else{
+                       aLoginToDelete.add(mParamTask.get("sLogin_isExecute").toString());
+                   }
                 }
                 
                 List<ProcessSubject> aProcessSubjectToRemove = new ArrayList<ProcessSubject>();
