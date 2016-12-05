@@ -119,6 +119,26 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
+      getDocumentStepRights: function (nID_Process) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getDocumentStepRights',
+          params: {
+            nID_Process: nID_Process
+          }
+        })
+      },
+
+      getDocumentStepLogins: function (nID_Process) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getDocumentStepLogins',
+          params: {
+            nID_Process: nID_Process
+          }
+        })
+      },
+
       getTableAttachment: function (taskId, attachId) {
         return simpleHttpPromise({
           method: 'GET',
@@ -168,11 +188,11 @@ angular.module('dashboardJsApp')
                 var matchTableId = attachment.description.match(/(\[id=(\w+)\])/);
                 if(attachment.description.indexOf('[table]') !== -1 && matchTableId !== null){
                   var name = matchTableId[2];
-	              if(name.toLowerCase() === table.id.toLowerCase()) {
-	                var description = attachment.description.split('[')[0];
-	                promises.push(self.uploadTable(table, taskId, attachment.id, description));
-	              }
-              	}
+                  if(name.toLowerCase() === table.id.toLowerCase()) {
+                    var description = attachment.description.split('[')[0];
+                    promises.push(self.uploadTable(table, taskId, attachment.id, description));
+                  }
+                }
               });
             } else {
               var name = table.name.split(';')[0];

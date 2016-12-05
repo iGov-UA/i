@@ -17,6 +17,19 @@
   .open-full-info a:hover {
     text-decoration: none;
   }
+  .documentUsers {
+    margin-top: 20px;
+  }
+  .thisIsCurrentUser {
+    font-weight: bold;
+  }
+  .documentRole {
+    font-size: 15px;
+  }
+  .documentDate {
+    float: right;
+    /*margin-left: 10px;*/
+  }
 </style>
 
 <div class="tasks-form-view">
@@ -236,6 +249,38 @@
         </div>
       </div>
 
+      <div class="documentUsers">
+        <div ng-if="documentLogins" ng-repeat="users in documentLogins">
+          <div ng-if="users.aUser.length !== 0">
+
+            <div ng-if="users.bWrite">
+              <span class="documentRole">{{users.sName}}:</span>
+              <span ng-repeat="user in users.aUser">
+                <span title="{{user.sLogin}}">
+                  <span ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}">
+                    {{ user.sFIO }}{{$last ? '' : ', '}}
+                  </span>
+                </span>
+              </span>
+              <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису/Немає ознайомлення'}}</span>
+            </div>
+
+            <div ng-if="!users.bWrite">
+              <span class="documentRole">{{users.sName}}:</span>
+              <span ng-repeat="user in users.aUser">
+                <span title="{{user.sLogin}}">
+                  <span ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}">
+                    {{ user.sFIO }}{{$last ? '' : ', '}}
+                  </span>
+                </span>
+              </span>
+              <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису/Немає ознайомлення'}}</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
       <div class="control-form-fields" style="position:fixed; bottom: 0; background: white; width: 100%;">
 
         <div class="main-form-controls" ng-init="checkForEmpty()">
@@ -253,7 +298,7 @@
           </div>
 
           <div ng-if="!clarify && !inUnassigned()" class="fixed-bottom-menu-buttons">
-            <div ng-hide="selectedTask.assignee == null || sSelectedTask == 'all'">
+            <div ng-hide="selectedTask.assignee == null || sSelectedTask == 'all' || documentRights">
               <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
                       ng-click="submitTaskQuestion(form)"
                       class="btn btn-info"
@@ -268,6 +313,19 @@
               </button>
               <label ng-show="isTaskInProcess()&& !isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Зачекайте...</label>
               <label ng-show="isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Опрацьовано.</label>
+            </div>
+
+            <div ng-hide="selectedTask.assignee == null || sSelectedTask == 'all' || !documentRights">
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
+                      ng-click="submitTask(form)"
+                      class="btn btn-info"
+                      style="background-color: #337ACF; outline: none; border: none"
+                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">
+                <span ng-if="documentRights.bWrite">Пiдписати</span>
+                <span ng-if="!documentRights.bWrite">Ознайомлений</span>
+              </button>
+              <label ng-show="isTaskInProcess()&& !isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Зачекайте...</label>
+              <label ng-show="isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Задачу опрацьовано.</label>
             </div>
           </div>
 

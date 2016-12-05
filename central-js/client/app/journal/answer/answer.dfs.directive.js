@@ -46,7 +46,7 @@
         && vm.options.mode === 'MANUAL')
         ||(!!getFileMetadata().fileId
         && vm.options.mode === 'AUTO'
-        && vm.fileName === queryData.fileName);
+        && vm.options.id === (+queryData.nID));
 
       $scope.$on('event.logout', function () {
         vm.isLoggedIn = false;

@@ -46,14 +46,14 @@
           var arrFiles = [];
 
           arrFiles.push(content);
-          upload(arrFiles, {nID_Server:nID_Server});
+          upload(arrFiles, {nID_Server:nID_Server}, vm.options.id);
         }else {
           ErrorsFactory.push({type:"danger", text: "Виникла помилка при отриманні файлу"});
         }
       });
     }
 
-    function upload (files, oServiceData) {
+    function upload (files, oServiceData, id) {
       uiUploader.removeAll();
       uiUploader.addFiles(files);
 
@@ -103,18 +103,23 @@
           }
 
           if(!vm.file.error){
-            decrypt(vm.file);
+            decrypt({file: vm.file, id: id});
           }
         }
       });
     }
 
-    function decrypt(result){
-      $window.location.href = $location.protocol() + '://' +
+    function decrypt(params){
+      var hostUrl = $location.protocol() + '://' +
         $location.host() + ':' +
-        $location.port() + '/api/sign-content/decrypt?formID=' +
-        result.value.id + '&nID_Server=' +
-        nID_Server + '&sName=' + vm.file.fileName + '&restoreUrl=' + $location.absUrl();
+        $location.port();
+      var sID_Order = $location.search().sID_Order;
+      var path = $location.path();
+      var restoreUrl = hostUrl + path + (sID_Order ? '?sID_Order=' + sID_Order : '');
+
+      $window.location.href = hostUrl + '/api/sign-content/decrypt?formID=' +
+        params.file.value.id + '&nID_Server=' +
+        nID_Server + '&sName=' + params.file.fileName + '&nID=' + params.id + '&restoreUrl=' + restoreUrl;
     }
   }
 })();
