@@ -34,7 +34,9 @@
           <activiti:value id="executed" name="Виконано"></activiti:value>
           <activiti:value id="notExecuted" name="Невиконано"></activiti:value>
           <activiti:value id="unactual" name="Неактуально"></activiti:value>
+          <activiti:value id="delegate" name="Делегування іншому виконавцю"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markers2" name="зробити заповнення таблицы обов'язковою" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sTable2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegate'||[sClient] == 'Делегування іншому виконавцю'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
             <activiti:string><![CDATA[system_task]]></activiti:string>
@@ -62,49 +64,21 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <endEvent id="endevent1" name="End"></endEvent>
+    <endEvent id="endevent1" name="End">
+      <extensionElements>
+        <activiti:executionListener event="complete" delegateExpression="${UpdateStatusTask}">
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:string><![CDATA[closed]]></activiti:string>
+          </activiti:field>
+        </activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusTask == null}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusTask != null}]]></conditionExpression>
-    </sequenceFlow>
-    <userTask id="usertask2" name="закриття задачі" activiti:candidateGroups="${sLogin_isExecute}">
-      <extensionElements>
-        <activiti:formProperty id="sID_Attachment" name="sTable2 - таблица с исполнителями" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_Top1"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="3"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sContent" name="sContent - Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="sAutorResolution - Автор резолюції" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTextResolution" name="sTextResolution - Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="sDateExecution - Термін виконання" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asOtherExecutor" name="Поставьте галочку, якщо треба обрати іншого виконавця по завданню; ;sID_CheckboxTrue=sEnumOther" type="enum" default="sEnumNotOther" required="true">
-          <activiti:value id="sEnumOther" name="інший виконавець"></activiti:value>
-          <activiti:value id="sEnumNotOther" name="це моє завдання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо інший виконавець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sTable2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asOtherExecutor&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOther'||[sClient] == 'інший виконавець'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecute&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;},{&quot;id&quot;:&quot;sFirstName_isExecute&quot;,&quot;name&quot;:&quot;First Name&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sLastName_isExecute&quot;,&quot;name&quot;:&quot;Last Name&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sLogin_isExecute&quot;,&quot;name&quot;:&quot;Login&quot;,&quot;type&quot;:&quot;string&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" default="closed">
-          <activiti:value id="closed" name="Закрита"></activiti:value>
-        </activiti:formProperty>
-        <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
-          <activiti:field name="sID_ProcessSubjectStatus">
-            <activiti:expression><![CDATA[${saStatusTask}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
-      <timerEventDefinition>
-        <timeDuration>PT5S</timeDuration>
-      </timerEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow6" sourceRef="boundarytimer1" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_system_task">
     <bpmndi:BPMNPlane bpmnElement="system_task" id="BPMNPlane_system_task">
@@ -115,16 +89,10 @@
         <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="510.0" y="50.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="370.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="300.0" y="47.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="369.0" y="40.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="459.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="105.0" y="67.0"></omgdi:waypoint>
@@ -139,14 +107,6 @@
         <omgdi:waypoint x="319.0" y="2.0"></omgdi:waypoint>
         <omgdi:waypoint x="212.0" y="2.0"></omgdi:waypoint>
         <omgdi:waypoint x="212.0" y="40.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="340.0" y="67.0"></omgdi:waypoint>
-        <omgdi:waypoint x="369.0" y="67.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="489.0" y="85.0"></omgdi:waypoint>
-        <omgdi:waypoint x="510.0" y="67.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
