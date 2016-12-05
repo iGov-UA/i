@@ -409,15 +409,6 @@ public class ProcessSubjectService {
             JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
             LOG.info("JSON String: " + oJSONObject.toJSONString());
             
-            ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 1L, null);
-            List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
-            
-            List<String> aLoginToKeep = new ArrayList<String>();
-            
-            for (ProcessSubject oProcessSubject : aProcessSubject){
-                aLoginToKeep.add(oProcessSubject.getsLogin());
-            }
-            
             List<String> aLoginToDelete = new ArrayList<String>();
 
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
@@ -474,6 +465,15 @@ public class ProcessSubjectService {
                     }
                 }
                 
+                ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 1L, null);
+                List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
+            
+                List<String> aLoginToKeep = new ArrayList<String>();
+            
+                for (ProcessSubject oProcessSubject : aProcessSubject){
+                    aLoginToKeep.add(oProcessSubject.getsLogin());
+                }
+                
                 List<ProcessSubject> aProcessSubjectToRemove = new ArrayList<ProcessSubject>();
                 
                 if (!aLoginToKeep.isEmpty()){
@@ -488,7 +488,6 @@ public class ProcessSubjectService {
                         }
                     }
                 }
-                
                 
                 for (ProcessSubject loginToDelete : aProcessSubjectToRemove)
                 {
