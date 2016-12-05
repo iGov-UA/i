@@ -33,12 +33,12 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
       // test to check forms ids of 1438  
       for(var i = 0; i < form.length; i++) { 
 
-    	  console.log( " #1438 form.id=" + form.id + " form.type=" + form.type + " form.value=" + form.value );
+    	  console.log( " #1438 form.id=" + form[i].id + " form.type=" + form[i].type + " form.value=" + form[i].value );
 
     	  var prints = FieldAttributesService.getPrintForms();
  
     	  for (var j = 0; j < prints.length; j++) { 
-    		  console.log( " #1438 prints=" + prints[j].sName + " containsId=" + FieldAttributesService.FieldMentioned.inPrintForm( form.id, prints[j].aTable_ID ) );
+    		  console.log( " #1438 prints=" + prints[j].sName + " containsId=" + FieldAttributesService.FieldMentioned.inPrintForm( form[i].id, prints[j].aTable_ID ) );
     	  }
       }
 
