@@ -381,7 +381,6 @@ public class ProcessSubjectService {
             String sTaskDateFormat = "";
             ProcessSubject oProcessSubjectParent = null;
             
-            
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
                 oProcessSubjectParent = processSubjectDao
@@ -416,6 +415,7 @@ public class ProcessSubjectService {
             
             for (ProcessSubject oProcessSubject : aProcessSubject){
                 aLoginToKeep.add(oProcessSubject.getsLogin());
+                LOG.info("login from service: " + oProcessSubject.getsLogin());
             }
             
             List<String> aLoginToDelete = new ArrayList<String>();
@@ -477,6 +477,10 @@ public class ProcessSubjectService {
                 }
                 
                 List<ProcessSubject> aProcessSubjectToRemove = new ArrayList<ProcessSubject>();
+                
+                for(String aLogin : aLoginToDelete){
+                    LOG.info("aLoginToDelete: " + aLogin);
+                }
                 
                 if (!aLoginToKeep.isEmpty()){
                     aLoginToKeep.removeAll(aLoginToDelete);
