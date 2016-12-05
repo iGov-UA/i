@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -367,6 +368,23 @@ public class ProcessSubjectService {
          
         removeProcessSubject(processSubject);
     }
+    
+    public boolean isThisDateValid(String inDate, String dateFormat){
+        
+        if (inDate == null){
+            return false;
+        }
+        
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        sdf.setLenient(false);
+        try{
+            Date date = sdf.parse(inDate);
+        }catch(Exception e){
+            return false;
+        }
+        return true;
+    }
+    
     public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
             String sContent, String sAutorResolution, String sTextResolution, 
             String sDateExecution, String snProcess_ID) {
@@ -375,7 +393,14 @@ public class ProcessSubjectService {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
             DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            String sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
+            
+            String sTaskDateFormat = "";
+            
+            if (isThisDateValid(sDateExecution, "EEE MMM dd HH:mm:ss zzz yyyy")){
+                sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
+            }else{
+                sTaskDateFormat = sDateExecution;
+            }
             
             ProcessSubject oProcessSubjectParent = null;
             
@@ -498,7 +523,7 @@ public class ProcessSubjectService {
             }
         } 
         catch (Exception e) {
-            LOG.error("SetTasks listener throws an error: " + e.toString());
+            LOG.error("SetTasks listener throws an error: ", e);
         }
     }
 }
