@@ -379,7 +379,6 @@ public class ProcessSubjectService {
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
             
             String sTaskDateFormat = "";
-            
             ProcessSubject oProcessSubjectParent = null;
             
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
