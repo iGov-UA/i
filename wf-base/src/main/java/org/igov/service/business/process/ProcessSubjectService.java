@@ -363,6 +363,7 @@ public class ProcessSubjectService {
         List<ProcessSubject> aReverseProcessSubject = Lists.reverse(aProcessSubject);
          
         for (ProcessSubject oProcessSubject : aReverseProcessSubject){
+            LOG.info("We delete:" + oProcessSubject.getsLogin());
             removeProcessSubject(oProcessSubject);
         }
          
@@ -396,11 +397,11 @@ public class ProcessSubjectService {
             
             String sTaskDateFormat = "";
             
-            if (isThisDateValid(sDateExecution, "EEE MMM dd HH:mm:ss zzz yyyy")){
-                sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
+            /*if (isThisDateValid(sDateExecution, "EEE MMM dd HH:mm:ss zzz yyyy")){
+                
             }else{
-                sTaskDateFormat = sDateExecution;
-            }
+                
+            }*/
             
             ProcessSubject oProcessSubjectParent = null;
             
@@ -411,11 +412,13 @@ public class ProcessSubjectService {
                 oProcessSubjectParent = processSubjectDao
                         .setProcessSubject(snProcess_ID, sAutorResolution,
                                 new DateTime(df.parse(sDateExecution)), 0L, processSubjectStatus);
+                sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
             
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
             }else{
                 oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
+                sTaskDateFormat = sDateExecution;
             }
             
             List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
