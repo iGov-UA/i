@@ -286,7 +286,8 @@
         <h4>Виконавцi:</h4>
         <div ng-repeat="subject in aProcessSubject">
           <span ng-repeat="user in subject.aUser" ng-if="subject.sLogin === user.sLogin">
-            {{user.sFirstName}} {{user.sLastName}} (планова дата виконання: {{subject.sDatePlan | removeHoursFromDate}}; статус: {{subject.oProcessSubjectStatus.sName}})
+            {{user.sFirstName}} {{user.sLastName}} {{user.sLogin}}
+            <p>(планова дата виконання: {{subject.sDatePlan | removeHoursFromDate}}; статус: {{subject.oProcessSubjectStatus.sName}})</p>
           </span>
         </div>
       </div>
