@@ -378,6 +378,13 @@ public class ProcessSubjectService {
             DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
             
+            
+            LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
+            + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
+            + sContent + " sAutorResolution: " + sAutorResolution + " sTextResolution: "
+            + sTextResolution + " sDateExecution: " + sDateExecution);
+
+            
             String sTaskDateFormat = "";
             ProcessSubject oProcessSubjectParent = null;
             
@@ -396,11 +403,6 @@ public class ProcessSubjectService {
             }
             
             List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
-            
-            LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
-                    + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
-                    + sContent + " sAutorResolution: " + sAutorResolution + " sTextResolution: "
-                    + sTextResolution + " sDateExecution: " + sDateExecution);
 
             InputStream attachmentContent = taskService.getAttachmentContent(sID_Attachment);
 
