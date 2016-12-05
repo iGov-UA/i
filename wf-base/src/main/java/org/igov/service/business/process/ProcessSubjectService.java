@@ -463,6 +463,9 @@ public class ProcessSubjectService {
                         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
                         LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                         if (oProcessInstanceChild != null) {
+                            
+                            LOG.info("TSKDATE: " + sTaskDateFormat);
+                            
                             ProcessSubject oProcessSubjectChild = processSubjectDao
                                     .setProcessSubject(oProcessInstanceChild.getId(), (String) mParamTask.get("sLogin_isExecute"),
                                             new DateTime(dfTask.parse(sTaskDateFormat)), new Long(i + 1), processSubjectStatus);
@@ -472,6 +475,7 @@ public class ProcessSubjectService {
                             processSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
                         }
                     }else{
+                       
                        aLoginToDelete.add(mParamTask.get("sLogin_isExecute").toString());
                    }
                 }
@@ -507,6 +511,7 @@ public class ProcessSubjectService {
         } 
         catch (Exception e) {
             LOG.error("SetTasks listener throws an error: ", e);
+           // throw e;
         }
     }
 }
