@@ -1,7 +1,7 @@
 'use strict';
 
 //angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'PrintTemplateProcessor', '$q', '$templateRequest', '$lunaService', function(tasks, PrintTemplateProcessor, $q, $templateRequest, lunaService) {
-angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','FieldMotionService', 'PrintTemplateProcessor', '$q', '$templateRequest', function(tasks, FieldMotionService, PrintTemplateProcessor, $q, $templateRequest) {
+angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','FieldAttributesService','FieldMotionService', 'PrintTemplateProcessor', '$q', '$templateRequest', function(tasks, FieldAttributesService, FieldMotionService, PrintTemplateProcessor, $q, $templateRequest) {
   // TODO: move code from PrintTemplateProcessor here
   // helper function to get path to a print template based on it's ID
   function findPrintTemplate (form, sCustomFieldID) {
@@ -28,6 +28,18 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
           markerExists = true;
           break;
         }
+      } // FieldMotionService.FieldMentioned.inShow(item.id)
+
+      // test to check forms ids of 1438  
+      for(var i = 0; i < form.length; i++) { 
+
+    	  console.log( " #1438 form.id=" + form.id + " form.type=" + form.type + " form.value=" + form.value );
+
+    	  var prints = FieldAttributesService.getPrintForms();
+ 
+    	  for (var j = 0; j < prints.length; j++) { 
+    		  console.log( " #1438 prints=" + prints[j].sName + " containsId=" + FieldAttributesService.FieldMentioned.inPrintForm( form.id, prints[j].aTable_ID ) );
+    	  }
       }
 
       if (markerExists){
