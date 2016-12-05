@@ -316,6 +316,9 @@ public class SubjectMessageService {
                 subjectMessage.setsSubjectInfo(sAuthorFIO);
                 if (sMail != null) {
                     subjectMessage.setMail(sMail);
+//                    createSubjectContact(sMail, subjectMessage.getoSubject());
+                    LOG.info("1TEST_sMail: " + sMail);
+                    subjectContactDao.saveOrUpdate(createSubjectContact(sMail, subjectMessage.getoSubject()));
                     LOG.info("1sMail: " + subjectMessage.getMail());
                     LOG.info("2oMail: " + subjectMessage.getoMail().getsValue());
                 }

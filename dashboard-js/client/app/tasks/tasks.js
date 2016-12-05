@@ -128,18 +128,9 @@
             'tasks',
             'documentRights',
             'taskForm',
-            function (oTask, tasks, documentRights, taskForm) {
+            function (oTask, tasks, documentRights) {
               // if(documentRights) {
-                var nDeepLevel;
-                for(var i =0; i<taskForm.length; i++) {
-                  if(taskForm[i].id === 'nDeepLevel') {
-                    nDeepLevel = taskForm[i].value;
-                    break;
-                  }
-                }
-                if(nDeepLevel){
-                  return tasks.getProcessSubject(oTask.processInstanceId, nDeepLevel);
-                }
+                return tasks.getProcessSubject(oTask.processInstanceId);
               // }
             }
           ]
