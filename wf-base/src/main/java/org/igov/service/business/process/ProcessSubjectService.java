@@ -511,7 +511,7 @@ public class ProcessSubjectService {
         } 
         catch (Exception e) {
             LOG.error("SetTasks listener throws an error: ", e);
-           // throw e;
+            throw new RuntimeException(e);
         }
     }
 }
