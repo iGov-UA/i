@@ -1206,7 +1206,7 @@
             return true
           }
         };
-
+console.log($scope)
       }
     ])
 })();
