@@ -33,22 +33,26 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
       // test to check forms ids of 1438  
       for(var i = 0; i < form.length; i++) { 
 
-    	  console.log( " #1438 form.id=" + form[i].id + " form.type=" + form[i].type + " form.value=" + form[i].value );
+    	  console.log( " #1438 form.id=" + form[i].id + " form.type=" + form[i].type + " form.value=" + form[i].value + " form.displayTemplate=" + form[i].displayTemplate );
 
-    	  var prints = FieldAttributesService.getPrintForms();
+    	  var prints = FieldMotionService.getPrintForms();
  
     	  for (var j = 0; j < prints.length; j++) { 
-    		  console.log( " #1438 prints=" + prints[j].sName + " containsId=" + FieldAttributesService.FieldMentioned.inPrintForm( form[i].id, prints[j].aTable_ID ) );
+    		  console.log( " #1438 prints=" + prints[j].sName + " containsId=" + FieldMotionService.FieldMentioned.inPrintForm( form[i].id ) );
     	  }
       }
 
       if (markerExists){
-        var templates = form.filter(function (item) {
+        
+    	  var topItems = [];
+    	  var templates = form.filter(function (item) {
           var result = false;
+
           if (item.id && item.id.includes('sBody')
             && (!FieldMotionService.FieldMentioned.inShow(item.id)
                 || (FieldMotionService.FieldMentioned.inShow(item.id)
-                    && FieldMotionService.isFieldVisible(item.id, form)))) {
+                    && FieldMotionService.isFieldVisible(item.id, form)) )
+                    ) {
               result = true;
               // На дашборде при вытягивани для формы печати пути к патерну, из значения поля -
               // брать название для каждого элемента комбобокса #792
@@ -58,7 +62,36 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
               } else {
                 item.displayTemplate = item.name;
               }
-            }
+          }
+          // add check of PrintForm field testing 
+          else if (item.id && FieldMotionService.FieldMentioned.inPrintForm(item.id, form)) { 
+        	  result = false;
+
+        	  var prints = FieldMotionService.getPrintForms(); 
+
+        	  angular.forEach(prints, function(printForm) {
+
+        		  if( printForm.sName ) {  
+	        		  angular.forEach(form.taskData.aTable, function (table) {
+	        			  angular.forEach(table.content, function(row) {
+
+	        				  if( row.aField[0].value ) {
+
+	        					  var item = { 
+	       							  displayTemplate: printForm.sName + " (" + row.aField[0].value + ")",
+	        					  }; 
+
+	        					  topItems.push( item );
+
+	        				  } 
+
+	        			  }); 
+	       			  });
+        		  }
+        	  });
+
+        	  //item.displayTemplate = FieldMotionService.getPrintForms();
+          }
           return result;
         });
       } else {
@@ -78,6 +111,8 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
           return result;
         });
       }
+
+      templates.unshift(topItems);
 
       return templates;
     },
