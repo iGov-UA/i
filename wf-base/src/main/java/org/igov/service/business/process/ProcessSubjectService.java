@@ -438,21 +438,53 @@ public class ProcessSubjectService {
 
                     Map<String, Object> mParamTask = new HashMap<>();
 
-                    LOG.info("json array element" + i + " is " + aJsonRow.get(i).toString());
-
                     JSONObject sJsonField = (JSONObject) aJsonRow.get(i);
-                    JSONArray aJsonField = (JSONArray) sJsonField.get("aField");
-                    mParamTask.putAll(mParamDocument);
-                    for (int j = 0; j < aJsonField.size(); j++) {
-                        JSONObject sJsonElem = (JSONObject) aJsonField.get(j);
-                        String id = sJsonElem.get("id").toString();
-                        String value = sJsonElem.get("value").toString();
-                        mParamTask.put(id, value);
+                    
+                    if(sJsonField != null){
+                    
+                        JSONArray aJsonField = (JSONArray) sJsonField.get("aField");
+                        
+                        if(aJsonField != null){
+                        
+                            mParamTask.putAll(mParamDocument);
+                            
+                            for (int j = 0; j < aJsonField.size(); j++) {
+                            
+                                JSONObject sJsonElem = (JSONObject) aJsonField.get(j);
+                                
+                                if(aJsonField != null)
+                                {
+                                    String id = null;
+                                    String value = null;
+                                    
+                                    id  = sJsonElem.get("id").toString();
+                                    
+                                    if (sJsonElem.get("value") != null){
+                                    
+                                        value = sJsonElem.get("value").toString();
+                                        mParamTask.put(id, value);
+                                    
+                                    }else{
+                                        mParamTask.put(id, null);
+                                    }
+                                }
+                            }
+                            
+                            LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
+                        
+                        }else{
+                            continue;
+                        }
+                        
+                    }else{
+                        continue;
                     }
-                    LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
-
+                    
                     boolean continueFlag = false;
-
+                    
+                    if (mParamTask.get("sLogin_isExecute") == null){
+                        continue;
+                    }
                     for (ProcessSubjectTree child : aProcessSubjectChild) {
                         if (child.getProcessSubjectChild().getsLogin().equals(mParamTask.get("sLogin_isExecute").toString())) {
                             continueFlag = true;
@@ -475,7 +507,6 @@ public class ProcessSubjectService {
                             processSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
                         }
                     } else {
-
                         aLoginToDelete.add(mParamTask.get("sLogin_isExecute").toString());
                     }
                 }
@@ -503,7 +534,7 @@ public class ProcessSubjectService {
                     removeProcessSubjectDeep(loginToDelete);
                 }
 
-            } else {
+            }else {
                 LOG.info("JSONArray is null");
             }
         } catch (Exception e) {
