@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_39_dnepr_mvk" name="Копії рішень міської (селищної) ради про надання дозволу на розроблення проекту відведення земельної ділянки" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 10.11.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 01.12.2016</documentation>
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Ваш документ, що посвідчує особу; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Ваш документ, що посвідчує особу; Тип, серія та номер документу, дата і орган, що його видав" type="textArea" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер (ІПН)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -16,15 +16,13 @@
           <activiti:value id="sDocTypeCreateProject" name="надання дозволу на розроблення проекту відведення земельної ділянки"></activiti:value>
           <activiti:value id="sDocTypeUse" name="надання земельних ділянок державної комунальної власності у користування"></activiti:value>
           <activiti:value id="sDocTypeRent" name="передачу в оренду земельних ділянок, що перебувають у державній або комунальній власності"></activiti:value>
+          <activiti:value id="sDocTypeGolova" name="розпорядження міського голови"></activiti:value>
           <activiti:value id="sDocTypeOther" name="інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської ради" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjAdress" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDavName" name="Зазначте у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string"></activiti:formProperty>
-        <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRukov" name="П.І.Б. керівника юридичної особи / фізичної особи – підприємця" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sOrgAdress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця; Індекс, Область, Місто, Вулиця, Будинок, Квартира або Офіс" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocDate" name="Дата прийняття документа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocNumber" name="Номер документа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocName" name="Назва документа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sGoal10" name="Мета отримання документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asResultType" name="Оберіть варіант отримання результату" type="enum" required="true">
           <activiti:value id="sMyself" name="особисто"></activiti:value>
           <activiti:value id="sPost" name="поштовим відправленням (послуга сплачується онлайн)"></activiti:value>
@@ -40,7 +38,8 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i75116857714"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="16.09"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума платежу" type="invisible" default="16.09"></activiti:formProperty>
+        <activiti:formProperty id="sSumScreen" name="Вартість послуги Укрпошти" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
@@ -51,13 +50,17 @@
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumRoom_293" name="номер комнати" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="docTyp" name="Тип очіківаного документу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSumNote" name="Розшифрока суми сплати для Email" type="invisible" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="[Етап I] Перевірка і виготовлення копії рішення (1-й крок)" activiti:candidateGroups="mvk_copy_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер (ІПН); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника; ;writable=false" type="string"></activiti:formProperty>
@@ -65,9 +68,14 @@
           <activiti:value id="sDocTypeCreateProject" name="надання дозволу на розроблення проекту відведення земельної ділянки"></activiti:value>
           <activiti:value id="sDocTypeUse" name="надання земельних ділянок державної комунальної власності у користування"></activiti:value>
           <activiti:value id="sDocTypeRent" name="передачу в оренду земельних ділянок, що перебувають у державній або комунальній власності"></activiti:value>
+          <activiti:value id="sDocTypeGolova" name="розпорядження міського голови"></activiti:value>
           <activiti:value id="sDocTypeOther" name="інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської ради; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDocDate" name="Дата прийняття документа; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDocNumber" name="Номер документа; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDocName" name="Назва документа; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGoal10" name="Мета отримання документа; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської ради; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sObjAdress" name="Місцезнаходження (адреса) об’єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDavName" name="Зазначте у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; ;writable=false" type="string"></activiti:formProperty>
@@ -79,6 +87,7 @@
           <activiti:value id="sPost" name="поштовим відправленням (послуга сплачується онлайн)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="Номер транзакції платежу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSumScreen" name="Вартість послуги Укрпошти" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPostAddress" name="Адреса, на яку надіслати листа; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeMail" name="Оберіть тип поштового відправлення" type="enum" writable="false">
           <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
@@ -93,15 +102,18 @@
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації зверення у форматі ДД.ММ.РРРР" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали співробітника, що опрацював звернення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="ShowFields" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_39_dnepr_mvk_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk_MVK" name="Пошта для службових повідомлень МіськРада" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта для службових повідомлень ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumRoom_293" name="номер комнати" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="docTyp" name="Тип очіківаного документу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_39_dnepr_mvk_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="ShowFields" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_39_dnepr_mvk_2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -109,7 +121,7 @@
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер (ІПН); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника; ;writable=false" type="string"></activiti:formProperty>
@@ -117,9 +129,14 @@
           <activiti:value id="sDocTypeCreateProject" name="надання дозволу на розроблення проекту відведення земельної ділянки"></activiti:value>
           <activiti:value id="sDocTypeUse" name="надання земельних ділянок державної комунальної власності у користування"></activiti:value>
           <activiti:value id="sDocTypeRent" name="передачу в оренду земельних ділянок, що перебувають у державній або комунальній власності"></activiti:value>
+          <activiti:value id="sDocTypeGolova" name="розпорядження міського голови"></activiti:value>
           <activiti:value id="sDocTypeOther" name="інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської ради; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDocDate" name="Дата прийняття документа; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDocNumber" name="Номер документа; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDocName" name="Назва документа; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGoal10" name="Мета отримання документа; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської ради; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sObjAdress" name="Місцезнаходження (адреса) об’єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDavName" name="Зазначте у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; ;writable=false" type="string"></activiti:formProperty>
@@ -131,6 +148,7 @@
           <activiti:value id="sPost" name="поштовим відправленням (послуга сплачується онлайн)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="Номер транзакції платежу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSumScreen" name="Вартість послуги Укрпошти" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPostAddress" name="Адреса, на яку надіслати листа; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeMail" name="Оберіть тип поштового відправлення" type="enum" writable="false">
           <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
@@ -161,6 +179,10 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumRoom_293" name="номер комнати" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="docTyp" name="Тип очіківаного документу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_39_dnepr_mvk_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -381,12 +403,15 @@
       <script>
 var typeMail = execution.getVariable('asTypeMail');
 var sum = 16.09;
+var sumToScreen = "15.80";
 var sumNote = "Загальна сума сплати становить 16.09 грн (до вартості послуги 15.80 грн. буде додано комісію 1,8%)";
 if (typeMail === 'sRekPrior') {
 	sum =  36.45;
+	sumToScreen = "35.80";
 	sumNote = "Загальна сума сплати становить 36.45 грн (до вартості послуги 35.80 грн. буде додано комісію 1,8%)";
 }
 execution.setVariable('sSum', sum);
+execution.setVariable('sSumScreen', sumToScreen);
 execution.setVariable('sSumNote', sumNote);
 
 var delta='1';
@@ -403,8 +428,25 @@ var new_year = new_src.getFullYear();
 var new_hour = new_src.getHours();
 var new_minutes = new_src.getMinutes();
 var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
-timer = 'PT5M';
+
 execution.setVariable('sNotification_day', timer)
+timer = 'PT5M';
+
+var per1 = ' '
+var per2 = ' '
+if (execution.getVariable('sNumRoom_293') != null &amp;&amp; execution.getVariable('sNumRoom_293') != ' ')
+{
+	per1 = execution.getVariable('sAddress') + ', ' + execution.getVariable('sNumRoom_293')
+	execution.setVariable('sAddress', per1)
+}
+		
+if (execution.getVariable('asDocType') == 'sDocTypeGolova')
+	per2= 'копію розпорядження міського голови'
+else
+	per2= 'копію рішення міської ради'
+
+execution.setVariable('docTyp', per2)
+		
 </script>
     </scriptTask>
     <scriptTask id="scripttask2" name="Script Task (groovy)" scriptFormat="groovy" activiti:autoStoreVariables="true">
