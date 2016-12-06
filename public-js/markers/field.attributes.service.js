@@ -9,24 +9,6 @@ function FieldAttributesService(MarkersFactory) {
     NOT_SET: 3
   };
   
-  this.FieldMentioned = {
-
-		  inPrintForm: function ( tableId, tablesCollection ) {
-
-			  var result = false; 
-
-			  if( tablesCollection && tablesCollection.length > 0 ) { 
-				 result = _.contains( tablesCollection, tableId ); 
-			  }
-			  else {
-				  result = grepByPrefix( "PrintForm_" ).some(function (entry) { 
-					  return _.contains ( entry.aTable_ID, tableId ); 
-				  }); 
-			  }
-		  }   
-
-  };
-  
   // enables styles from the iGovMarkersDefaults -> attributes 
   this.enableStyles = function () { 
 	  var selectors = grepByPrefix("Style_"); 
@@ -135,14 +117,7 @@ function FieldAttributesService(MarkersFactory) {
 		  }
 		  
 	  }	  
-  }
-  
-  this.getPrintForms = function() {
-	  
-	  var printForms = grepByPrefix("PrintForms_");
-	  
-	  return printForms; 
-  }
+  }; 
 
   this.editableStatusFor = function(fieldId) {
     var result = self.EditableStatus.NOT_SET;

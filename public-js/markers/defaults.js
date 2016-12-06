@@ -150,18 +150,6 @@ angular.module('iGovMarkers')
     	  oRegionStyle: { "font-style": "bold", "font-color": "#FF0000", "display": "block" },
       }, 
 
-      PrintForm_Table12: { 
-    	  aTable_ID: ["tbl1", "tbl2"],
-    	  sPatternPath: "/print/kiev/kiev_mda_273_print.html", 
-    	  sName: "Звіт за суб'єктом", 
-      }, 
-
-      PrintForm_Table3: { 
-    	  aTable_ID: ["tbl3"],
-    	  sPatternPath: "/print/kiev/kiev_mda_273_print.html", 
-    	  sName: "Звіт за сектором",
-      }
-
     },
     motion: {
       ReplaceTextSymbols_1: {
@@ -169,6 +157,26 @@ angular.module('iGovMarkers')
         nSymbols: 2,
         sValueNew: "ого",
         sID_Element_sValue: "registration-service"
-      }
+      }, 
+      
+      PrintForm_Table12: { 
+    	  aField_ID: ["tbl1", "oPrescription1"],
+    	  sPatternPath: "/print/kiev/kiev_mda_273_print.html", 
+    	  sName: "Звіт за суб'єктом", 
+      }, 
+
+      PrintForm_Table3: { 
+    	  aField_ID: ["oPrescription2"],
+    	  //sTemplateNameField_ID: "sPrescriptionName", 
+    	  sPatternPath: "/print/kiev/kiev_mda_273_print.html", 
+    	  sName: "Звіт за сектором",
+      }, 
+      
+      PrintForm_Table4: {
+    	  aField_ID: ["oPrescription2"],
+    	  sPatternPath: "/print/kiev/kiev_mda_273_print.html", 
+    	  sName: "Звіт за блоком"
+      }, 
+      
     }
 });
