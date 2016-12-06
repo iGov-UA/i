@@ -634,10 +634,8 @@ public class ObjectFileCommonController {
                     taskService.deleteAttachment(oAttachment.getId());
                     LOG.info("Attachment was deleted. nID_Attach {} ", oAttachment.getId());
                 }
-            }
+            }  
         
-        
-
         String sFilename = sFileName;
         LOG.debug("sFilename={}", sFileName);
         sFilename = sTextTranslit(sFilename);
