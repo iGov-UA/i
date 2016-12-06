@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -182,7 +183,7 @@ public class ProcessSubjectService {
         } else {
             processSubjectResult.setaProcessSubject(aChildResult);
         }
-        for(ProcessSubject processSubject : processSubjectResult.getaProcessSubject()){
+        for (ProcessSubject processSubject : processSubjectResult.getaProcessSubject()) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
         }
         return processSubjectResult;
@@ -348,85 +349,90 @@ public class ProcessSubjectService {
         DateTime dtDatePlan = formatter.parseDateTime(sDatePlan);
         return processSubjectDao.setProcessSubjectDatePlan(snID_Process_Activiti, dtDatePlan);
     }
-    
-    public void removeProcessSubject(ProcessSubject processSubject){
+
+    public void removeProcessSubject(ProcessSubject processSubject) {
         runtimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
         ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubjectChild", processSubject);
         processSubjectTreeDao.delete(processSubjectTreeToDelete);
         processSubjectDao.delete(processSubject);
     }
-    
-    public void removeProcessSubjectDeep(ProcessSubject processSubject){
+
+    public void removeProcessSubjectDeep(ProcessSubject processSubject) {
         ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
         List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
         List<ProcessSubject> aReverseProcessSubject = Lists.reverse(aProcessSubject);
-         
-        for (ProcessSubject oProcessSubject : aReverseProcessSubject){
+
+        for (ProcessSubject oProcessSubject : aReverseProcessSubject) {
             removeProcessSubject(oProcessSubject);
         }
-         
+
         removeProcessSubject(processSubject);
     }
+
     public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
-            String sContent, String sAutorResolution, String sTextResolution, 
+            String sContent, String sAutorResolution, String sTextResolution,
             String sDateExecution, String snProcess_ID) {
 
         try {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
-            DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
-            DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            String sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
-            
-            ProcessSubject oProcessSubjectParent = null;
-            
-            LOG.info("DATATIMEVALUE: " + sTaskDateFormat);
-            
-            //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
-            if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
-                oProcessSubjectParent = processSubjectDao
-                        .setProcessSubject(snProcess_ID, sAutorResolution,
-                                new DateTime(df.parse(sDateExecution)), 0L, processSubjectStatus);
-            
-                LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
-            }else{
-                oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
-                LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
-            }
-            
-            List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
-            
+            //DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
+            //DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+            DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+            Date oDateExecution = parseDate(sDateExecution);
+            //String sDateExecution_StartProcess = df_StartProcess.format(df.parse(sDateExecution));
+
             LOG.info("SetTasks listener data: sTaskProcessDefinition_Value: "
                     + sTaskProcessDefinition + " sID_Attachment_Value: " + sID_Attachment + " sContent: "
                     + sContent + " sAutorResolution: " + sAutorResolution + " sTextResolution: "
                     + sTextResolution + " sDateExecution: " + sDateExecution);
+
+            ProcessSubject oProcessSubjectParent;
+
+            //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
+            if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null) {
+                oProcessSubjectParent = processSubjectDao
+                        .setProcessSubject(snProcess_ID, sAutorResolution,
+                                new DateTime(oDateExecution), 0L, processSubjectStatus);
+                //sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
+
+                LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
+            } else {
+                oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
+                LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
+                //sTaskDateFormat = sDateExecution;
+            }
+
+            List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
 
             InputStream attachmentContent = taskService.getAttachmentContent(sID_Attachment);
 
             JSONParser parser = new JSONParser();
             JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
             LOG.info("JSON String: " + oJSONObject.toJSONString());
-            
+
             ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snProcess_ID, 1L, null);
             List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
-            
-            List<String> aLoginToKeep = new ArrayList<String>();
-            
-            for (ProcessSubject oProcessSubject : aProcessSubject){
+
+            List<String> aLoginToKeep = new ArrayList<>();
+
+            for (ProcessSubject oProcessSubject : aProcessSubject) {
                 aLoginToKeep.add(oProcessSubject.getsLogin());
+                LOG.info("login from service: " + oProcessSubject.getsLogin());
             }
-            
-            List<String> aLoginToDelete = new ArrayList<String>();
+
+            List<String> aLoginToDelete = new ArrayList<>();
 
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
 
             Map<String, Object> mParamDocument = new HashMap<>();
+
             mParamDocument.put("sTaskProcessDefinition", sTaskProcessDefinition);
             mParamDocument.put("sID_Attachment", sID_Attachment);
             mParamDocument.put("sContent", sContent);
             mParamDocument.put("sAutorResolution", sAutorResolution);
-            mParamDocument.put("sDateExecution", sTaskDateFormat);
+            mParamDocument.put("sDateExecution", df_StartProcess.format(oDateExecution));
             mParamDocument.put("sTextResolution", sTextResolution);
-            
+
             if (aJsonRow != null) {
                 for (int i = 0; i < aJsonRow.size(); i++) {
 
@@ -444,61 +450,93 @@ public class ProcessSubjectService {
                         mParamTask.put(id, value);
                     }
                     LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
-                    aLoginToDelete.add(mParamTask.get("sLogin_isExecute").toString());
+
                     boolean continueFlag = false;
-                    
-                    for (ProcessSubjectTree child:  aProcessSubjectChild)    
-                    {
-                        if (child.getProcessSubjectChild().getsLogin().equals(mParamTask.get("sLogin_isExecute").toString())){
+
+                    for (ProcessSubjectTree child : aProcessSubjectChild) {
+                        if (child.getProcessSubjectChild().getsLogin().equals(mParamTask.get("sLogin_isExecute").toString())) {
                             continueFlag = true;
                             break;
                         }
                     }
-                    
-                   if (continueFlag == false)
-                   {
+
+                    if (continueFlag == false) {
                         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
                         LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                         if (oProcessInstanceChild != null) {
+
+                            //LOG.info("TSKDATE: " + sTaskDateFormat);
                             ProcessSubject oProcessSubjectChild = processSubjectDao
                                     .setProcessSubject(oProcessInstanceChild.getId(), (String) mParamTask.get("sLogin_isExecute"),
-                                            new DateTime(dfTask.parse(sTaskDateFormat)), new Long(i + 1), processSubjectStatus);
+                                            new DateTime(oDateExecution), new Long(i + 1), processSubjectStatus);
                             ProcessSubjectTree oProcessSubjectTreeParent = new ProcessSubjectTree();
                             oProcessSubjectTreeParent.setProcessSubjectParent(oProcessSubjectParent);
                             oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
                             processSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
                         }
+                    } else {
+
+                        aLoginToDelete.add(mParamTask.get("sLogin_isExecute").toString());
                     }
                 }
-                
+
                 List<ProcessSubject> aProcessSubjectToRemove = new ArrayList<ProcessSubject>();
-                
-                if (!aLoginToKeep.isEmpty()){
+
+                for (String aLogin : aLoginToDelete) {
+                    LOG.info("aLoginToDelete: " + aLogin);
+                }
+
+                if (!aLoginToKeep.isEmpty()) {
                     aLoginToKeep.removeAll(aLoginToDelete);
-                    
-                    for (ProcessSubject pSubject : aProcessSubject)
-                    {
-                        for(String sLogin : aLoginToKeep){
-                            if(pSubject.getsLogin().equals(sLogin)){
+
+                    for (ProcessSubject pSubject : aProcessSubject) {
+                        for (String sLogin : aLoginToKeep) {
+                            if (pSubject.getsLogin().equals(sLogin)) {
                                 aProcessSubjectToRemove.add(pSubject);
                             }
                         }
                     }
                 }
-                
-                
-                for (ProcessSubject loginToDelete : aProcessSubjectToRemove)
-                {
+
+                for (ProcessSubject loginToDelete : aProcessSubjectToRemove) {
                     LOG.info("KEEPLOGIN_loginToDelete" + loginToDelete.getsLogin());
                     removeProcessSubjectDeep(loginToDelete);
                 }
-                
+
             } else {
                 LOG.info("JSONArray is null");
             }
-        } 
-        catch (Exception e) {
-            LOG.error("SetTasks listener throws an error: " + e.toString());
+        } catch (Exception e) {
+            LOG.error("SetTasks listener throws an error: ", e);
+            throw new RuntimeException(e);
         }
+    }
+
+    private Date parseDate(String sDate) throws java.text.ParseException {
+        DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+        Date oDateReturn;
+        try {
+            oDateReturn = df.parse(sDate);
+        } catch (java.text.ParseException ex) {
+            oDateReturn = df_StartProcess.parse(sDate);
+        }
+        return oDateReturn;
+    }
+
+    public boolean isThisDateValid(String inDate, String dateFormat) {
+
+        if (inDate == null) {
+            return false;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        sdf.setLenient(false);
+        try {
+            Date date = sdf.parse(inDate);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

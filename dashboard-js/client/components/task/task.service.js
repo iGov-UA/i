@@ -145,7 +145,7 @@ angular.module('dashboardJsApp')
           url: '/api/documents/getProcessSubject',
           params: {
             snID_Process_Activiti: id,
-            nDeepLevel: level
+            nDeepLevel: 1
           }
         })
       },
@@ -300,7 +300,7 @@ angular.module('dashboardJsApp')
 
         return deferred.promise;
       },
-      upload: function(files, taskId) {
+      upload: function(files, taskId, sID_Field) {
         var deferred = $q.defer();
 
         var self = this;
@@ -308,7 +308,7 @@ angular.module('dashboardJsApp')
         uiUploader.removeAll();
         uiUploader.addFiles(files);
         uiUploader.startUpload({
-          url: '/api/tasks/' + taskId + '/attachments',
+          url: '/api/tasks/' + taskId + '/attachments/' + sID_Field + '/upload',
           concurrency: 1,
           onProgress: function (file) {
             scope.$apply(function () {
@@ -334,7 +334,13 @@ angular.module('dashboardJsApp')
               try{
                 oCheckSignReq = angular.fromJson(response);
               } catch (errParse){
-                self.value.signInfo = null;
+                if(self.value){
+                  self.value.signInfo = null;
+                } else {
+                  self.value = {
+                    signInfo : null
+                  }
+                }
               }
               if(oCheckSignReq.taskId && oCheckSignReq.id){
                 self.value = {id : oCheckSignReq.id, signInfo: null, fromDocuments: false};
@@ -356,7 +362,13 @@ angular.module('dashboardJsApp')
                     });
                   }
                 }, function (err) {
-                  self.value.signInfo = null;
+                  if(self.value){
+                    self.value.signInfo = null;
+                  } else {
+                    self.value = {
+                      signInfo : null
+                    }
+                  }
                 })
               }
             });
@@ -450,6 +462,7 @@ angular.module('dashboardJsApp')
              * parse name string property to get file names sPrintFormFileAsPDF and sPrintFormFileAsIs
              */
             var fileName = null;
+            var sFileFieldID = null;
 
             if (typeof templateResult.fileField.name === 'string') {
               fileName = templateResult.fileField.name.split(/;/).reduce(function (prev, current) {
@@ -463,6 +476,8 @@ angular.module('dashboardJsApp')
               if(fileName === 'sPrintFormFileAsIs'){
                 fileName = fileName + '.html';
               }
+
+              sFileFieldID = templateResult.fileField.id;
             }
 
             $timeout(function () {
@@ -470,6 +485,7 @@ angular.module('dashboardJsApp')
               var data = {
                 sDescription: 'User form',
                 sFileName: fileName || 'User form.html',
+                sID_Field: sFileFieldID,
                 sContent: html
               };
 

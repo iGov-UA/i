@@ -88,7 +88,7 @@
           <activiti:expression><![CDATA[Нова заявка на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -105,16 +105,18 @@
           <activiti:expression><![CDATA[Видача ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    					<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-								<p>
-            						Ваша заявка на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом успішно зареєстрована на порталі №[sID_Order].<br>
-									Спеціалісти Державної служби України з безпеки на транспорті повинні дати відповідь найближчим часом.
-                                </p>
-                                [pattern/mail/_common_signature_start.html]
-								Державна служба України з безпеки на транспорті,<br>
-								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+       			Ваша заявка на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, 
+       			морським транспортом успішно зареєстрована на порталі №[sID_Order].<br>
+				Спеціалісти Державної служби України з безпеки на транспорті повинні дати відповідь найближчим часом.
+            </p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			Державна служба України з безпеки на транспорті,<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -184,19 +186,22 @@
           <activiti:string><![CDATA[Видача ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 			<p>
 				На жаль, ми змушені відмовити Вам у наданні послуги за заявкою №[sID_Order].
 			</p>
 			<p>
-			Коментар державного службовця:<br>
-			${comment}
+				Коментар державного службовця:<br>
+				${comment}
 			</p>
 			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
-			[pattern/mail/_common_signature_start.html]
-			Державна служба України з безпеки на транспорті.</p>
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			Державна служба України з безпеки на транспорті,<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -226,28 +231,32 @@
           <activiti:string><![CDATA[Видача ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>Ваша заявка №[sID_Order] на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом перевірена.<br>
-			   У документах помилок не виявлено.<br>
-			   ${comment}
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			
+			<p>
+				Ваша заявка №[sID_Order] на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом перевірена.<br>
+				У документах помилок не виявлено.<br>
+				${comment}
 			</p> 
 			<p>
-			Для того щоб закінчити процедуру видачі сліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом необхідно:<br>
-			<ul>
-			<li>Відвідати Державну службу України з безпеки на транспорті за адресою: м. Київ, пр. Перемоги, 14</li>
-			<li>Роздрукувати та підписати заяву з файлу, що додається.</li>
-			<li>Привезти заяву та оригінали документів та передати Державну службу України з безпеки на транспорті до засідання комісії.</li>
-			</ul>
+				Для того щоб закінчити процедуру видачі сліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом необхідно:<br>
+				<ul>
+					<li>Відвідати Державну службу України з безпеки на транспорті за адресою: м. Київ, пр. Перемоги, 14</li>
+					<li>Роздрукувати та підписати заяву з файлу, що додається.</li>
+					<li>Привезти заяву та оригінали документів та передати Державну службу України з безпеки на транспорті до засідання комісії.</li>
+				</ul>
 			</p> 
 			<p>
-			Дата засідання найближчої комісії: value{[sDate]}<br>
-			У разі позитивного рішення комісії Ви отримаєте ліцензію поштою на адресу: ${sManAdress}${sCompAdress}
+				Дата засідання найближчої комісії: value{[sDate]}<br>
+				У разі позитивного рішення комісії Ви отримаєте ліцензію поштою на адресу: ${sManAdress}${sCompAdress}
 			</p> 
-			[pattern/mail/_common_signature_start.html]
+			
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
 			Державна служба України з безпеки на транспорті,<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
@@ -305,8 +314,8 @@
           <activiti:string><![CDATA[Видача ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 			<p>Ваша заявка №[sID_Order] на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом пройшла розляд комісії.<br>
 			   enum{[asLicense]}.<br>
 			   Копію рішення комісії Ви знайдете у файлах, що додаються<br>
@@ -317,11 +326,12 @@
 			Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
             Дякуємо.
 			</p> 
-			[pattern/mail/_common_signature_start.html]
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_feedback.html]   	
+			[pattern/mail/new_design/_common_signature_start.html]
 			Державна служба України з безпеки на транспорті,<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>			
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${nKomis}, ${nBill}]]></activiti:expression>
