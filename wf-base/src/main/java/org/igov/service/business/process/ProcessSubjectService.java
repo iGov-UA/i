@@ -445,9 +445,16 @@ public class ProcessSubjectService {
                     mParamTask.putAll(mParamDocument);
                     for (int j = 0; j < aJsonField.size(); j++) {
                         JSONObject sJsonElem = (JSONObject) aJsonField.get(j);
-                        String id = sJsonElem.get("id").toString();
-                        String value = sJsonElem.get("value").toString();
-                        mParamTask.put(id, value);
+                        String id = null;
+                        String value = null;
+                        try{
+                            id  = sJsonElem.get("id").toString();
+                            value = sJsonElem.get("value").toString();
+                            mParamTask.put(id, value);
+                        }catch(Exception ex){
+                            continue;
+                            //throw new RuntimeException(ex);
+                        }
                     }
                     LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
 
