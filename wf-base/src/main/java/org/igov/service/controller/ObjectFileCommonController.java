@@ -81,6 +81,9 @@ public class ObjectFileCommonController {
     private IdentityService identityService;
 
     @Autowired
+    private RuntimeService oRuntimeService;
+    
+    @Autowired
     private GeneralConfig generalConfig;
     //@Autowired
     //private BankIDConfig bankIDConfig;
@@ -545,7 +548,8 @@ public class ObjectFileCommonController {
     AttachmentEntityI putAttachmentsToExecution(//ResponseEntity
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
             @ApiParam(value = "файл html. в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
-            @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "description") String description)
+            @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "description") String description,
+            @ApiParam(value = "ИД поля формы, к которому загружается файл", required = false) @RequestParam(value = "sID_Field") String sID_Field)
             throws IOException {
 
         String processInstanceId = null;
@@ -574,6 +578,10 @@ public class ObjectFileCommonController {
         Attachment oAttachment = taskService.createAttachment(file.getContentType() + ";" + oActionTaskService.getFileExtention(file), taskId,
                 processInstanceId, sFilename,// file.getOriginalFilename()
                 description, file.getInputStream());
+        if(oAttachment != null && sID_Field != null && !"".equals(sID_Field.trim())){
+            oRuntimeService.setVariable(processInstanceId, sID_Field, oAttachment.getId());
+            LOG.debug("setVariable: processInstanceId = {}, sID_Field = {}, attachmentId = {}", processInstanceId, sID_Field, oAttachment.getId());
+        }
 
         AttachmentCover oAttachmentCover = new AttachmentCover();
         return oAttachmentCover.apply(oAttachment);
@@ -608,7 +616,8 @@ public class ObjectFileCommonController {
             @ApiParam(value = "строка-Логин пользователя", required = true) @RequestParam(value = "nTaskId") String taskId,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "sDescription") String description,
-            @RequestParam(value = "sFileName") String sFileName,            
+            @RequestParam(value = "sFileName") String sFileName,
+            @RequestParam(value = "sID_Field", required = false) String sID_Field,
             @RequestBody String sData) {
 
         String processInstanceId = null;
@@ -647,7 +656,10 @@ public class ObjectFileCommonController {
                 + oActionTaskService.getFileExtention(sFileName), taskId, processInstanceId,
                 sFilename, description,
                 new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
-
+        if(attachment != null && sID_Field != null && !"".equals(sID_Field.trim())){
+            oRuntimeService.setVariable(processInstanceId, sID_Field, attachment.getId());
+            LOG.debug("setVariable: processInstanceId = {}, sID_Field = {}, attachmentId = {}", processInstanceId, sID_Field, attachment.getId());
+        }
         AttachmentCover oAttachmentCover = new AttachmentCover();
 
         return oAttachmentCover.apply(attachment);
