@@ -1,0 +1,47 @@
+{"motion" : {
+  "ShowFieldsOnCondition_1" : {"sNote":["право на будівництво передано іншому замовникові"],
+    "aField_ID":["sPIBprevious"],
+    "asID_Field":{"sCond":"saReasonChange1"},
+    "sCondition":"[sCond] == 'yes' || [sCond] == 'так'"
+  },
+  "ShowFieldsOnCondition_2" : {"sNote":["виправлення технічної помилки і будівельні"],
+    "aField_ID":["sSupervisionPib","sSupervisionCertificate","sSupervisionPhone","tProjectPersons","sProjectDocExpertName",
+      "sProjectDocExpertInn","sProjectDocExpertPib","sProjectDocExpertCertificate","sArchitectPib","sNumberConditions",
+      "sNameOrganConditions","sDateConditions","sObjectTotalArea","sObjectHouseFloor","tKeyIndicators","tAppartments",
+      "sObjectHouseIntegratedTotalArea","sObjectHouseNonLiveArea","tNonLivingArea"],
+    "asID_Field":{"sCond":"saReasonChange5","sCond1":"asTypeChange"},
+    "sCondition":"([sCond]=='yes'||[sCond]=='так') && ([sCond1]=='sEnumBuild'||[sCond1]=='будівельні роботи')"
+  },
+  "ShowFieldsOnCondition_3" : {"sNote":["виправлення технічної помилки"],
+    "aField_ID":["sProjectOrganizationName","sProjectOrganizationInn","asProjectApprove","asLandUsed","landNumb","sDocDeclaration","sDocZayava"],
+    "asID_Field":{"sCond":"saReasonChange5"},
+    "sCondition":"([sCond]=='yes'||[sCond]=='так')"
+  },
+  "ShowFieldsOnCondition_4" : {"sNote":["виправлення технічної помилки і фіз.особа"],
+    "aField_ID":["sProjectPibApprove","sProjectPositionApprove","sProjectDocDate"],
+    "asID_Field":{"sCond":"saReasonChange5","sCond1":"asProjectApprove"},
+    "sCondition":"([sCond]=='yes'||[sCond]=='так')&&([sCond1]=='sEnumIndividual'||[sCond1]=='Фізична особа')"
+  },
+  "ShowFieldsOnCondition_5" : {"sNote":["виправлення технічної помилки і юр.особа"],
+    "aField_ID":["sProjectDocName","sProjectDocNumber","sProjectDocDate"],
+    "asID_Field":{"sCond":"saReasonChange5","sCond1":"asProjectApprove"},
+    "sCondition":"([sCond]=='yes'||[sCond]=='так')&&([sCond1]=='sEnumCompany'||[sCond1]=='Юридична особа')"
+  },
+  "ShowFieldsOnCondition_6" : {"sNote":["виправлення технічної помилки  або змінено підрядника"],
+    "aField_ID":["sContractor"],
+    "asID_Field":{"sCond":"saReasonChange5","sCond1":"saReasonChange4"},
+    "sCondition":"([sCond]=='yes'||[sCond]=='так')||([sCond1]=='yes'||[sCond1]=='так')"
+  },
+  "ShowFieldsOnCondition_7" : {"sNote":["ген.підрядник фіз.особа"],
+    "aField_ID":["sContractorPib","sContractorPassport","sContractorAddress","sContractorInn"],
+    "asID_Field":{"sCond":"sContractor"},
+    "sCondition":"([sCond]=='sEnumIndividual'||[sCond]=='Фізична особа')"
+  },
+  "ShowFieldsOnCondition_8" : {"sNote":["ген.підрядник юр.особа"],
+    "aField_ID":["sContractorOrganizationType","sContractorOrganizationName","sContractorOrganizationAddress",
+      "sContractorOrganizationInn","sContractorOrganizationPhone"],
+    "asID_Field":{"sCond":"sContractor"},
+    "sCondition":"([sCond]=='sEnumCompany'||[sCond]=='Юридична особа')"
+  }
+}           
+}
