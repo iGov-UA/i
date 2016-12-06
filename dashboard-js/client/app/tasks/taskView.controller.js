@@ -798,7 +798,7 @@
             $scope.taskForm.isInProcess = true;
 
             rollbackReadonlyEnumFields();
-            tasks.saveChangesTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask)
+            tasks.saveChangesTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask,  $scope.taskData.aAttachment)
               .then(function (result) {
                 $scope.taskForm.isInProcess = false;
                 if(result.status == 500 || result.status == 403){

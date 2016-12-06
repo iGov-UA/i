@@ -258,9 +258,10 @@ angular.module('dashboardJsApp')
         return deferred.promise;
       },
 
-      saveChangesTaskForm: function(taskId, formProperties, task) {
+      saveChangesTaskForm: function (taskId, formProperties, task, attachments) {
         var self = this;
-        var createProperties = function(formProperties) {
+        var promises = [];
+        var createProperties = function (formProperties) {
           var properties = new Array();
           for (var i = 0; i < formProperties.length; i++) {
             var formProperty = formProperties[i];
@@ -274,11 +275,35 @@ angular.module('dashboardJsApp')
           return properties;
         };
 
+        var tableFields = $filter('filter')(formProperties, function(prop){
+          return prop.type == 'table';
+        });
+
+        if(tableFields.length > 0) {
+          angular.forEach(tableFields, function (table) {
+            if(attachments.length > 0) {
+              angular.forEach(attachments, function (attachment) {
+                var matchTableId = attachment.description.match(/(\[id=(\w+)\])/);
+                if(attachment.description.indexOf('[table]') !== -1 && matchTableId !== null){
+                  var name = matchTableId[2];
+                  if(name.toLowerCase() === table.id.toLowerCase()) {
+                    var description = attachment.description.split('[')[0];
+                    promises.push(self.uploadTable(table, taskId, attachment.id, description));
+                  }
+                }
+              });
+            } else {
+              var name = table.name.split(';')[0];
+              promises.push(self.uploadTable(table, taskId, null, name));
+            }
+          })
+        }
         var deferred = $q.defer();
 
         // upload files before form submitting
-        this.uploadTaskFiles(formProperties, task, taskId).then(function()
-        {
+        promises.push(this.uploadTaskFiles(formProperties, task, taskId));
+
+        $q.all(promises).then(function () {
           var submitTaskFormData = {
             'taskId': taskId,
             'properties': createProperties(formProperties)
@@ -289,13 +314,13 @@ angular.module('dashboardJsApp')
             url: '/api/tasks/action/task/saveForm',
             data: submitTaskFormData
           };
-          simpleHttpPromise(req).then(
-            function(result) {
-            deferred.resolve(result);
-          },
+
+          simpleHttpPromise(req).then(function (result) {
+              deferred.resolve(result);
+            },
             function(result) {
               deferred.resolve(result);
-          });
+            });
         });
 
         return deferred.promise;
