@@ -43,7 +43,7 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sStatus" name="Назва та реквізити документу, що підтверджує статус суб’єкта індустрії програмної продукції" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sStatus" name="Назва та реквізити документу, що підтверджує статус суб’єкта індустрії програмної продукції" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="saQuestion5" name="направлений закордонним роботодавцем в Україну для виконання певного обсягу робіт (послуг) на підставі договорів (контрактів), укладених між вітчизняним та іноземним суб’єктом господарювання, за умови, що чисельність кваліфікованих іноземців, які залучаються в рамках таких договорів (контрактів), не перевищує половини загальної чисельності осіб, що працюватимуть на умовах таких договорів (контрактів);позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -60,7 +60,7 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRating" name="Назва ретингу, в якому присутній навчальний заклад" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRating" name="Назва ретингу, в якому присутній навчальний заклад" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Код виду економічної діяльності згідно з Національним класифікатором України “Класифікація видів економічної діяльності” ДК 009:2010" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Місцезнаходження підприємства, установи, організації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада керівника підприємства,установи, організації" type="string" required="true"></activiti:formProperty>
@@ -145,7 +145,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="phone" name="Контактний номер телефону заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIdPassport" name="Паспортні дані отримувача стипендії; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nInn" name="ІПН отримувача стипендії; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації отримувача стипендії; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Звернення подане" type="enum" writable="false">
@@ -154,9 +154,9 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="sDirFio" name="Прізвище та ініціали керівника підприємства" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asService" name="Тип послуги" type="enum" writable="false">
-          <activiti:value id="sEnumGet" name="Видача дозволу"></activiti:value>
-          <activiti:value id="sEnumLong" name="Продовження дії дозволу"></activiti:value>
-          <activiti:value id="sEnumDel" name="Анулювання дозволу"></activiti:value>
+          <activiti:value id="sEnumGet" name="видати дозвіл"></activiti:value>
+          <activiti:value id="sEnumLong" name="продовжити дію дозволу"></activiti:value>
+          <activiti:value id="sEnumDel" name="анулювати дозвіл"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sOrgName" name="Повне та скорочене найменування підприємства, установи, організації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEmployee" name="Прізвище, ім’я, по батькові кандидата на посаду; ;writable=false" type="string"></activiti:formProperty>
@@ -283,14 +283,14 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 			<p>Ваше звернення на тему: "Дозвіл на застосування праці іноземців та осіб без громадянства" - розглянуте.</p>
-			<p>Стипендію призначено.<br/>
+			<p>Дозвіл оформлено. Оригінал можете отримати в  УПСЗН:<br/>
 			</p>
 			${sPhoneOrgan}<br />
 			<br />
 			<br />
 			${sWorkTime}<br />
 			${sAddress}<br />
-			<br />
+			Коментар (за наявності): ${comment1}<br />
 			[pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]   	 
 [pattern/mail/new_design/_common_signature_start.html]
@@ -367,11 +367,12 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="kved" name="КВЕД; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Місцезнаходження підприємства, установи, організації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада керівника підприємства,установи, організації; ;writable=false" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="accept" name="Прийняти заяву"></activiti:value>
-          <activiti:value id="reject" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
+        <activiti:formProperty id="comment" name="Коментарі на першому етапі" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Рішення" type="enum" required="true">
+          <activiti:value id="accept1" name="Видати дозвіл"></activiti:value>
+          <activiti:value id="reject1" name="Відмова громадянину у видачі дозволу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment1" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/upszn_1001_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/upszn_1001_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -408,7 +409,7 @@ ${sNameOrgan}<br />
 [pattern/mail/new_design/_common_content_start.html]
 			<p> На жаль, Ваше звернення на тему: "Дозвіл на застосування праці іноземців та осіб без громадянства" було відхилено.<br/>
 			<p> Причина в наступному:<br/>
-			<p>${comment}</p>
+			<p>${comment1}</p>
 			<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
 			<br />
 			${sPhoneOrgan}<br />
@@ -422,8 +423,12 @@ ${sNameOrgan}<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow12" sourceRef="usertask2" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow13" sourceRef="exclusivegateway3" targetRef="servicetask5"></sequenceFlow>
-    <sequenceFlow id="flow14" sourceRef="exclusivegateway3" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow13" name="+" sourceRef="exclusivegateway3" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide1 == 'accept1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow14" name="-" sourceRef="exclusivegateway3" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide1 == 'reject1'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask7" name="Лист про успішну первинну обробку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
@@ -527,10 +532,16 @@ ${sNameOrgan}<br />
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="565.0" y="450.0"></omgdi:waypoint>
         <omgdi:waypoint x="565.0" y="474.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="565.0" y="450.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="545.0" y="430.0"></omgdi:waypoint>
         <omgdi:waypoint x="478.0" y="431.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="545.0" y="430.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="425.0" y="466.0"></omgdi:waypoint>
