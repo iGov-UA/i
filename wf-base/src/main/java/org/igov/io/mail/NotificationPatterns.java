@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
+import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
 //import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties_Notification;
 
 /**
@@ -30,7 +31,7 @@ public class NotificationPatterns {
     @Autowired
     private ApplicationContext context;
 
-    public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdFirstName, String bankIdLastName) throws EmailException {
+    /*public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdFirstName, String bankIdLastName) throws EmailException {
 
         try {
             String sHead;
@@ -53,6 +54,33 @@ public class NotificationPatterns {
             oMail._To(sMailTo)._Head(sHead)._Body(sBody)._ToName(makeStringAsName(bankIdFirstName),
                                                                  makeStringAsName(bankIdLastName));
 
+            oMail.send();
+            LOG.info("Send email with sID_Order={} to the sMailTo={}", sID_Order, sMailTo);
+        } catch (Exception oException) {
+            LOG.warn("Refused: {} (sMailTo={},sID_Order={})", oException.getMessage(), sMailTo, sID_Order);
+            LOG.error("FAIL:", oException);
+        }
+    }*/
+    
+    public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdFirstName, String bankIdLastName) throws EmailException {
+
+        try {
+            String sHead;
+            if(bankIdFirstName == null || bankIdFirstName.equalsIgnoreCase("null")) {
+                sHead = String.format("Вітаємо, Ваша заявка %s прийнята!", sID_Order);
+            } else {
+                bankIdFirstName = makeStringAsName(bankIdFirstName);
+                sHead = String.format("Вітаємо, %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
+            }
+
+            String sBody = Abstract_MailTaskCustom.populatePatternWithContent("[pattern/mail/auto_client_notify.html]");
+            sBody = sBody.replaceAll("[sID_Order]", sID_Order)
+                    .replaceAll("[sClientName]", bankIdFirstName)
+                    .replaceAll("[sClientSurname]", bankIdLastName);
+            
+            Mail oMail = context.getBean(Mail.class);
+            oMail._To(sMailTo)._Head(sHead)._Body(sBody)
+                    ._ToName(makeStringAsName(bankIdFirstName), makeStringAsName(bankIdLastName));
             oMail.send();
             LOG.info("Send email with sID_Order={} to the sMailTo={}", sID_Order, sMailTo);
         } catch (Exception oException) {
