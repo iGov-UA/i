@@ -73,7 +73,7 @@ public class NotificationPatterns {
                 sHead = String.format("Вітаємо, %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
             }
 
-            String sBody = Abstract_MailTaskCustom.populatePatternWithContent("[pattern/mail/auto_client_notify.html]");
+            String sBody = Abstract_MailTaskCustom.populatePatternWithContent("[patterns/mail/auto_client_notify.html]");
             sBody = sBody.replaceAll("[sID_Order]", sID_Order)
                     .replaceAll("[sClientName]", bankIdFirstName)
                     .replaceAll("[sClientSurname]", bankIdLastName);
