@@ -13,26 +13,46 @@
           <activiti:value id="sMan" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sVlasn" type="label" default="Дані щодо здобувача ліцензії"></activiti:formProperty>
+
+        <activiti:formProperty id="sCompForm" name="Організаційно-правова форма" type="string" required="true"></activiti:formProperty>
+
         <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sCompAdress" name="Поштовий індекс та адреса місцезнаходження юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA3" name="Прізвище керівника юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я керівника юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По батькові керівника юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCompForm" name="Організаційно-правова форма" type="string" required="true"></activiti:formProperty>
+
         <activiti:formProperty id="lastName_UA2" name="Прізвище здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sManPassport" name="№, серія паспорту здобувача ліцензії, ким і коли виданий" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sManAdress" name="Поштовий індекс та адреса здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sManInn" name="ІПН здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
+
+
+
         <activiti:formProperty id="privatePhone" name="Телефон здобувача ліцензії" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="E-mail здобувача ліцензії" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" default=" "></activiti:formProperty>
+
+
+        <activiti:formProperty id="slabelSize" name="Зверніть увагу" type="label" default="Розмір файлів та архівів не може перевищувати 5Мб"></activiti:formProperty>
+
+        <activiti:formProperty id="asPassSmalShip" name="Чи потрібна ліцензія на перевезення пасажирів малими/маломірними суднами" type="enum" default="sPassSmalShipNo" required="true">
+          <activiti:value id="sPassSmalShipOk" name="Так"></activiti:value>
+          <activiti:value id="sPassSmalShipNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nDocKvalif1" name="Копії свідоцтва на право управління малим/маломірним судном спеціалістів, які забезпечуватимуть надання відповідних послуг;Об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nShipTiket" name="Копія суднового білета" type="file" required="true"></activiti:formProperty>
+
         <activiti:formProperty id="asPassShip" name="Чи потрібна ліцензія на перевезення пасажирів річковим, морським транспортом" type="enum" default="sPassShipNo" required="true">
           <activiti:value id="sPassShipOk" name="Так"></activiti:value>
           <activiti:value id="sPassShipNo" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; Для пасажирських суден" type="file" required="true"></activiti:formProperty>
+
+
         <activiti:formProperty id="asScrapShip" name="Чи потрібна ліцензія на перевезення небезпечних вантажів річковим, морським транспортом" type="enum" default="sScrapShipNo" required="true">
           <activiti:value id="sScrapShipOk" name="Так"></activiti:value>
           <activiti:value id="sScrapShipNo" name="Ні"></activiti:value>
@@ -41,31 +61,35 @@
           <activiti:value id="sTrashShipOk" name="Так"></activiti:value>
           <activiti:value id="sTrashShipNo" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asPassSmalShip" name="Чи потрібна ліцензія на перевезення пасажирів малими/маломірними суднами" type="enum" default="sPassSmalShipNo" required="true">
-          <activiti:value id="sPassSmalShipOk" name="Так"></activiti:value>
-          <activiti:value id="sPassSmalShipNo" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="slabelSize" name="Зверніть увагу" type="label" default="Розмір файлів та архівів не може перевищувати 5Мб"></activiti:formProperty>
-        <activiti:formProperty id="nPassport" name="Копія паспорта керівника здобувача ліцензії (або довіреної особи);Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити та заповнити &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYVmFXN1NsYThxZ0E&quot;&gt;Відомості про наявність матеріально-технічної бази та спеціалістів, необхідних для провадження господарської діяльності&lt;/a&gt;."></activiti:formProperty>
-        <activiti:formProperty id="nDocVidom" name="Відомості про наявність матеріально-технічної бази та спеціалістів, необхідних для провадження господарської діяльності" type="file" required="true"></activiti:formProperty>
+
         <activiti:formProperty id="nDocKvalif" name="Копії кваліфікаційних документів членів екіпажу;Об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocSvid" name="Копія класифікаційного свідоцтва судна" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocKvalif1" name="Копії свідоцтва на право управління малим/маломірним судном спеціалістів, які забезпечуватимуть надання відповідних послуг;Об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nShipTiket" name="Копія суднового білета" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; Для пасажирських суден" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocSafety" name="Копія свідоцтва про управління безпекою;В разі наявності" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocSysSafety" name="Копія документа про відповідність системи управління безпекою;В разі наявності" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocCharter" name=" Копія договору бербоут-чартеру;В разі наявності" type="file"></activiti:formProperty>
+        
+
+        <activiti:formProperty id="nPassport" name="Копія паспорта керівника здобувача ліцензії (або довіреної особи);Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити та заповнити &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYVmFXN1NsYThxZ0E&quot;&gt;Відомості про наявність матеріально-технічної бази та спеціалістів, необхідних для провадження господарської діяльності&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="nDocVidom" name="Відомості про наявність матеріально-технічної бази та спеціалістів, необхідних для провадження господарської діяльності" type="file" required="true"></activiti:formProperty>
+
         <activiti:formProperty id="nDocBezpek" name="Копія акта огляду судна Укртрансбезпекою" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_license.json')}"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file"></activiti:formProperty>
+
+
+        <activiti:formProperty id="form_signed_all" name="Заява з ЕЦП" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/infr/sea_licenseECP.html"></activiti:formProperty>
+
+
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_license.json')}"></activiti:formProperty>
+
+
         <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sK1" name="Діяльність для якої потрібна ліцензія1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sK2" name="Діяльність для якої потрібна ліцензія2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sK3" name="Діяльність для якої потрібна ліцензія3" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sK4" name="Діяльність для якої потрібна ліцензія4" type="invisible"></activiti:formProperty>
+
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask6"></sequenceFlow>
@@ -164,7 +188,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nPassport},${nDocVidom},${nDocKvalif},${nDocBezpek},${nDocSvid},${nDocPass},${nDocSafety},${nDocSysSafety},${nDocCharter},${nDocKvalif1},${nShipTiket},${form_signed}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nPassport},${nDocVidom},${nDocKvalif},${nDocBezpek},${nDocSvid},${nDocPass},${nDocSafety},${nDocSysSafety},${nDocCharter},${nDocKvalif1},${nShipTiket}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
