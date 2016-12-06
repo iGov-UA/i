@@ -2412,7 +2412,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance_New}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1},${anID_Attach_UkrDoc}]]></activiti:expression>
           </activiti:field>
@@ -3665,7 +3665,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance_New}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1},${anID_Attach_UkrDoc}]]></activiti:expression>
           </activiti:field>
@@ -3798,7 +3798,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
     </scriptTask>
     <serviceTask id="servicetask10" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
     <sequenceFlow id="flow87" sourceRef="servicetask10" targetRef="scripttask5"></sequenceFlow>
-    <sequenceFlow id="flow88" sourceRef="scripttask5" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow88" sourceRef="scripttask5" targetRef="servicetask14"></sequenceFlow>
     <serviceTask id="servicetask11" name="Відповідь на email" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
@@ -3931,6 +3931,17 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='noSendEmail'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow107" sourceRef="servicetask12" targetRef="usertask3"></sequenceFlow>
+    <serviceTask id="servicetask14" name="Service Task (Corezoid)" activiti:delegateExpression="#{SendObject_Corezoid_New}">
+      <extensionElements>
+        <activiti:field name="sID_Conveyour">
+          <activiti:string><![CDATA[158300]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="soData">
+          <activiti:string><![CDATA[sBankIdlastName::value{[bankIdlastName]};;sBankIdfirstName::value{[bankIdfirstName]};;sBankIdmiddleName::value{[bankIdmiddleName]};;sSex::enum{[asSex]};;sPhone::value{[sPhone]};;sEmail::value{[email]};;sDistrict::enum{[asDistrict]};;sZipCode::value{[sZipCode]};;sCity::value{[sCity]};;sAdress::value{[sAdress]};;sAdressProbl::value{[sAdressProbl]};;sHowCategory::enum{[asHowCategory]};;sKindTr::enum{[asKindTr]};;sTypeTr::enum{[asTypeTr]};;sHowSocStatus::enum{[asHowSocStatus]};;sTopHead::enum{[asTopHead]};;sTop1::enum{[asTop1]};;sTop2::enum{[asTop2]};;sTop3::enum{[asTop3]};;sTop4::enum{[asTop4]};;sTop5::enum{[asTop5]};;sTop6::enum{[asTop6]};;sTop7::enum{[asTop7]};;sTop8::enum{[asTop8]};;sTop9::enum{[asTop9]};;sTop10::enum{[asTop10]};;sTop11::enum{[asTop11]};;sTop12::enum{[asTop12]};;sTop13::enum{[asTop13]};;sTop14::enum{[asTop14]};;sTop15::enum{[asTop15]};;sTop16::enum{[asTop16]};;sTop17::enum{[asTop17]};;sTop18::enum{[asTop18]};;sTop19::enum{[asTop19]};;sTop20::enum{[asTop20]};;sTop21::enum{[asTop21]};;sTop22::enum{[asTop22]};;sTop23::enum{[asTop23]};;sTop24::enum{[asTop24]};;sReason::value{[sReason]};;sAdditionalInformation::value{[sAdditionalInformation]};;sDateReglament::value{[sDateReglament]};;sChannelAppeals::enum{[asChannelAppeals]};;sAnswerChannel::enum{[asAnswerChannel]};;sRegistrationNumberRGA::value{[sRegistrationNumberRGA]};;sChannelAppealsRGA::enum{[asChannelAppealsRGA]};;sStatusRGA::enum{[asStatusRGA]};;sID_Order_GovPublic::value{[sID_Order_GovPublic]};;sDateAppeal::value{[sDateAppeal]};;sID_Order::[sID_Order];;test_param::value{[test_param]}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow108" sourceRef="servicetask14" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291_common" id="BPMNPlane_dnepr_mvk_291_common">
@@ -3938,10 +3949,10 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="836.0" y="69.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="174.0" x="970.0" y="587.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="174.0" x="969.0" y="674.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="57.0" width="169.0" x="768.0" y="764.0"></omgdc:Bounds>
+        <omgdc:Bounds height="57.0" width="169.0" x="767.0" y="851.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="1683.0" y="130.0"></omgdc:Bounds>
@@ -3962,10 +3973,10 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="2111.0" y="641.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="173.0" x="766.0" y="504.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="173.0" x="765.0" y="591.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="832.0" y="594.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="831.0" y="681.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
         <omgdc:Bounds height="35.0" width="35.0" x="1261.0" y="344.0"></omgdc:Bounds>
@@ -3977,10 +3988,10 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="1504.0" y="1200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="55.0" width="177.0" x="763.0" y="670.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="177.0" x="762.0" y="757.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="170.0" x="767.0" y="870.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="170.0" x="766.0" y="957.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask9" id="BPMNShape_usertask9">
         <omgdc:Bounds height="55.0" width="185.0" x="1800.0" y="237.0"></omgdc:Bounds>
@@ -4036,14 +4047,17 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway13" id="BPMNShape_exclusivegateway13">
         <omgdc:Bounds height="40.0" width="40.0" x="1851.0" y="860.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask14" id="BPMNShape_servicetask14">
+        <omgdc:Bounds height="55.0" width="169.0" x="766.0" y="504.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="853.0" y="104.0"></omgdi:waypoint>
         <omgdi:waypoint x="853.0" y="150.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="1057.0" y="642.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1056.0" y="697.0"></omgdi:waypoint>
-        <omgdi:waypoint x="940.0" y="697.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1056.0" y="729.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1056.0" y="784.0"></omgdi:waypoint>
+        <omgdi:waypoint x="939.0" y="784.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="1683.0" y="150.0"></omgdi:waypoint>
@@ -4085,20 +4099,20 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="1504.0" y="1220.0"></omgdi:waypoint>
         <omgdi:waypoint x="680.0" y="1219.0"></omgdi:waypoint>
-        <omgdi:waypoint x="680.0" y="698.0"></omgdi:waypoint>
-        <omgdi:waypoint x="763.0" y="697.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="784.0"></omgdi:waypoint>
+        <omgdi:waypoint x="762.0" y="784.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="955.0" y="1190.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="852.0" y="821.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="870.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="908.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="957.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="852.0" y="925.0"></omgdi:waypoint>
-        <omgdi:waypoint x="851.0" y="973.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1160.0" y="973.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="1012.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="1045.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1160.0" y="1045.0"></omgdi:waypoint>
         <omgdi:waypoint x="1160.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="1700.0" y="72.0"></omgdi:waypoint>
         <omgdi:waypoint x="1703.0" y="130.0"></omgdi:waypoint>
@@ -4124,8 +4138,8 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
-        <omgdi:waypoint x="852.0" y="559.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="594.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="646.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="681.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
         <omgdi:waypoint x="853.0" y="285.0"></omgdi:waypoint>
@@ -4198,23 +4212,23 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow88" id="BPMNEdge_flow88">
         <omgdi:waypoint x="852.0" y="469.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="504.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="504.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow96" id="BPMNEdge_flow96">
         <omgdi:waypoint x="2461.0" y="470.0"></omgdi:waypoint>
         <omgdi:waypoint x="2522.0" y="470.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow97" id="BPMNEdge_flow97">
-        <omgdi:waypoint x="851.0" y="725.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="764.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="812.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="851.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow98" id="BPMNEdge_flow98">
-        <omgdi:waypoint x="872.0" y="614.0"></omgdi:waypoint>
-        <omgdi:waypoint x="970.0" y="614.0"></omgdi:waypoint>
+        <omgdi:waypoint x="871.0" y="701.0"></omgdi:waypoint>
+        <omgdi:waypoint x="969.0" y="701.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow99" id="BPMNEdge_flow99">
-        <omgdi:waypoint x="852.0" y="634.0"></omgdi:waypoint>
-        <omgdi:waypoint x="851.0" y="670.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="721.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="757.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
         <omgdi:waypoint x="1524.0" y="1240.0"></omgdi:waypoint>
@@ -4252,6 +4266,10 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="1743.0" y="820.0"></omgdi:waypoint>
         <omgdi:waypoint x="1742.0" y="1122.0"></omgdi:waypoint>
         <omgdi:waypoint x="1620.0" y="1122.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow108" id="BPMNEdge_flow108">
+        <omgdi:waypoint x="850.0" y="559.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="591.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

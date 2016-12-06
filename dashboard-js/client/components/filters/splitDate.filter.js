@@ -8,12 +8,14 @@ angular.module('dashboardJsApp')
   // отображает дату формата d.m.yyyy как dd/mm/yyyy
   .filter('checkDate', function () {
     return function (value) {
-      var split = value.split('.');
-      if(split[0].length === 1 && split[1].length === 1) return 0 + split[0] + '/' + 0 + split[1] + '/' + split[2];
-      else if(split[0].length === 2 && split[1].length === 1) return split[0] + '/' + 0 + split[1] + '/' + split[2];
-      else if(split[0].length === 1 && split[1].length === 2) return 0 + split[0] + '/' + split[1] + '/' + split[2];
-      else if(split[0].length === 2 && split[1].length === 2) return value;
-      else if(split.length !== 3) return value;
+      if(value){
+        var split = value.split('.');
+        if(split[0].length === 1 && split[1].length === 1) return 0 + split[0] + '/' + 0 + split[1] + '/' + split[2];
+        else if(split[0].length === 2 && split[1].length === 1) return split[0] + '/' + 0 + split[1] + '/' + split[2];
+        else if(split[0].length === 1 && split[1].length === 2) return 0 + split[0] + '/' + split[1] + '/' + split[2];
+        else if(split[0].length === 2 && split[1].length === 2) return value;
+        else if(split.length !== 3) return value;
+      }
     }
   })
 
