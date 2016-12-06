@@ -608,8 +608,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "строка-Логин пользователя", required = true) @RequestParam(value = "nTaskId") String taskId,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "sDescription") String description,
-            @RequestParam(value = "sFileName") String sFileName,
-            @ApiParam(value = "id аттача Activiti", required = false) @RequestParam(value = "nID_Attach", required = false) String nID_Attach, //skuhtin
+            @RequestParam(value = "sFileName") String sFileName,            
             @RequestBody String sData) {
 
         String processInstanceId = null;
@@ -628,16 +627,16 @@ public class ObjectFileCommonController {
         }
 
         identityService.setAuthenticatedUserId(assignee);
-        //skuhtin
-        if (nID_Attach != null) {
-            List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
+        
+        List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
             for (Attachment oAttachment : attachments) {
-                if (nID_Attach.equals(oAttachment.getId())) {
-                    taskService.deleteAttachment(nID_Attach);
-                    LOG.info("Attachment was deleted. nID_Attach {} ", nID_Attach);
+                if (description.equals(oAttachment.getDescription())) {
+                    taskService.deleteAttachment(oAttachment.getId());
+                    LOG.info("Attachment was deleted. nID_Attach {} ", oAttachment.getId());
                 }
             }
-        }
+        
+        
 
         String sFilename = sFileName;
         LOG.debug("sFilename={}", sFileName);
