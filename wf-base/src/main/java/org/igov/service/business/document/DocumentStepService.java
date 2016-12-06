@@ -366,7 +366,8 @@ public class DocumentStepService {
             aDocumentStepSubjectRight_Common = oDocumentStep_Common
                     .getRights()
                     .stream()
-                    .filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix()).toString()))
+                    //.filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix()).toString()))
+                    .filter(o -> asID_Group.contains(o.getsKey_GroupPostfix()))
                     .collect(Collectors.toList());
         }
         LOG.info("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
@@ -374,7 +375,8 @@ public class DocumentStepService {
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active
                 .getRights()
                 .stream()
-                .filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix()).toString()))
+                //.filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix()).toString()))
+                    .filter(o -> asID_Group.contains(o.getsKey_GroupPostfix()))
                 .collect(Collectors.toList());
         LOG.info("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
 
