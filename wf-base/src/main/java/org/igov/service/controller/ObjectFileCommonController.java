@@ -609,6 +609,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "sDescription") String description,
             @RequestParam(value = "sFileName") String sFileName,
+            @ApiParam(value = "id аттача Activiti", required = false) @RequestParam(value = "nID_Attach", required = false) String nID_Attach, //skuhtin
             @RequestBody String sData) {
 
         String processInstanceId = null;
@@ -627,6 +628,16 @@ public class ObjectFileCommonController {
         }
 
         identityService.setAuthenticatedUserId(assignee);
+        //skuhtin
+        if (nID_Attach != null) {
+            List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
+            for (Attachment oAttachment : attachments) {
+                if (nID_Attach.equals(oAttachment.getId())) {
+                    taskService.deleteAttachment(nID_Attach);
+                    LOG.info("Attachment was deleted. nID_Attach {} ", nID_Attach);
+                }
+            }
+        }
 
         String sFilename = sFileName;
         LOG.debug("sFilename={}", sFileName);
