@@ -649,7 +649,7 @@ public class ObjectFileCommonController {
             List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
             for (Attachment oAttachment : attachments) {
                 if (sId_Attach.equals(oAttachment.getId())) {
-                    taskService.deleteAttachment(sID_Field);
+                    taskService.deleteAttachment(sId_Attach);
                     LOG.info("Attachment was deleted. nID_Attach {} ", sID_Field);
                 }
             }
