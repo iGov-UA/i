@@ -20,7 +20,7 @@ angular.module('app')
           $scope.localityList = new LocalityListFactory();
           $scope.operators = [];
           $scope.check = false;
-          $scope.isColumnStyleView = !!statesRepository.isDFS();
+          $rootScope.isOldStyleView = !!statesRepository.isDFS();
           $scope.mainSearchView = false;
           $scope.catalogCounts = {};
 
@@ -68,7 +68,7 @@ angular.module('app')
             $scope.catalog = ctlg;
             if ($scope.operator == -1) {
               // временно для старого бизнеса, после реализации тегов - удалить.
-              if ($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
+              if ($state.is("index.oldbusiness") || $state.is("index.subcategory") || $rootScope.isOldStyleView) {
                 $scope.operators = CatalogService.getOperatorsOld(ctlg);
               } else {
                 $scope.operators = CatalogService.getOperators(ctlg);
@@ -80,7 +80,7 @@ angular.module('app')
           // получаем к-во услуг готовых/скоро/в работе
           function getCounts(category) {
             var countCategory = category && category.aService || category && category[0].aService ? category : 'business';
-            if (countCategory === 'business') {
+            if (countCategory === 'business' || $rootScope.isOldStyleView) {
               CatalogService.getModeSpecificServices(null, "", false, countCategory).then(function (res) {
                 $scope.catalogCounts = CatalogService.getCatalogCounts(res)
               })
@@ -118,24 +118,20 @@ angular.module('app')
             return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID, $rootScope.mainFilterCatalog, sID_SubjectOwner).then(function (result) {
 
               if (!$state.is('index')
-                && !$state.is('index.catalog') && !$state.is("index.oldbusiness") && !$state.is("index.subcategory")) {
+                && !$state.is('index.catalog') && !($state.is("index.oldbusiness") || $rootScope.isOldStyleView) && !$state.is("index.subcategory")) {
                 fullCatalog = result[0];
-              } else if ($state.is("index.oldbusiness") && result.length === 1 && result[0].aSubcategory.length > 0) {
+              } else if (($state.is("index.oldbusiness") || $rootScope.isOldStyleView) && result.length === 1 && result[0].aSubcategory.length > 0) {
                 fullCatalog = result[0];
               } else {
-                console.log('var 3');
                 fullCatalog = result;
               }
 
               if ($scope.bShowExtSearch || $scope.getOrgan) {
-                console.log('var 1');
                 $scope.filterByExtSearch();
               } else if ($scope.check) {
                 updateCatalog(angular.copy(fullCatalog));
-                console.log('var 2');
                 $scope.check = false;
               } else {
-                console.log('var 3');
                 updateCatalog(angular.copy(fullCatalog));
               }
 
@@ -150,8 +146,7 @@ angular.module('app')
 
           $scope.searching = function () {
             // проверка на минимальне к-во символов в поисковике (искать должно от 3 символов)
-            if ($scope.sSearch.length >= 3 && $state.is("index.oldbusiness")) {
-              // после реализации тегов в бизнесе - удалить.
+            if ($scope.sSearch.length >= 3 && ($state.is("index.oldbusiness") || $rootScope.isOldStyleView)) {
               $rootScope.busSpinner = true;
               $scope.overallSearch();
               $rootScope.mainSearchView = true;
@@ -218,7 +213,7 @@ angular.module('app')
 
             // сейчас джава выдает другие номера статусов, поэтому меняю для работоспособности. убрать когда теги в бизнесе будут готовы.
             // убрать когда теги в бизнесе будут готовы.
-            if ($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
+            if ($state.is("index.oldbusiness") || $state.is("index.subcategory") || $rootScope.isOldStyleView) {
               var selectedStatus;
               if ($scope.selectedStatus == 0) {
                 selectedStatus = 1;
