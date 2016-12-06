@@ -636,24 +636,14 @@ public class ObjectFileCommonController {
         }
 
         identityService.setAuthenticatedUserId(assignee);
-        /*
+        
         List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
             for (Attachment oAttachment : attachments) {
                 if (description.equals(oAttachment.getDescription())) {
                     taskService.deleteAttachment(oAttachment.getId());
                     LOG.info("Attachment was deleted. nID_Attach {} ", oAttachment.getId());
                 }
-            }  */
-        if (sID_Field != null && !"".equals(sID_Field.trim())) {
-            String sId_Attach = (String)oRuntimeService.getVariable(processInstanceId, sID_Field);
-            List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
-            for (Attachment oAttachment : attachments) {
-                if (sId_Attach.equals(oAttachment.getId())) {
-                    taskService.deleteAttachment(sId_Attach);
-                    LOG.info("Attachment was deleted. nID_Attach {} ", sID_Field);
-                }
-            }
-        }
+            }  
         
         String sFilename = sFileName;
         LOG.debug("sFilename={}", sFileName);
