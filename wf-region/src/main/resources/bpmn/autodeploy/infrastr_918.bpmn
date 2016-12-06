@@ -37,7 +37,7 @@
         <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" default=" "></activiti:formProperty>
 
 
-        <activiti:formProperty id="slabelSize" name="Зверніть увагу" type="label" default="Розмір файлів та архівів не може перевищувати 5Мб"></activiti:formProperty>
+        <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія" type="invisible"></activiti:formProperty>
 
         <activiti:formProperty id="asPassSmalShip" name="Чи потрібна ліцензія на перевезення пасажирів малими/маломірними суднами" type="enum" default="sPassSmalShipNo" required="true">
           <activiti:value id="sPassSmalShipOk" name="Так"></activiti:value>
@@ -77,14 +77,13 @@
         <activiti:formProperty id="nDocBezpek" name="Копія акта огляду судна Укртрансбезпекою" type="file"></activiti:formProperty>
 
 
-        <activiti:formProperty id="form_signed_all" name="Заява з ЕЦП" type="file"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/infr/sea_licenseECP.html"></activiti:formProperty>
 
 
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_license.json')}"></activiti:formProperty>
 
 
-        <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sK1" name="Діяльність для якої потрібна ліцензія1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sK2" name="Діяльність для якої потрібна ліцензія2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sK3" name="Діяльність для якої потрібна ліцензія3" type="invisible"></activiti:formProperty>
@@ -149,7 +148,7 @@
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${form_signed}]]></activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
