@@ -8,10 +8,12 @@
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
+      'processSubject',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
-                lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter) {
+                lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
+                processSubject) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -144,6 +146,10 @@
         if(documentRights) {
           $scope.documentRights = documentRights;
           if(documentLogins) $scope.documentLogins = documentLogins;
+        }
+
+        if(processSubject) {
+          $scope.aProcessSubject = processSubject.aProcessSubject;
         }
 
         activate();
@@ -1102,6 +1108,8 @@
             });
         };
 
+        TableService.init($scope.taskForm);
+
         var idMatch = function () {
           angular.forEach($scope.taskForm, function (item, key, obj) {
             angular.forEach($scope.taskData.aAttachment, function (attachment) {
@@ -1117,8 +1125,6 @@
           });
         };
         idMatch();
-
-        TableService.init($scope.taskForm);
 
         $scope.addRow = function (form, id, index) {
           ValidationService.validateByMarkers(form, null, true, null, true);
@@ -1151,7 +1157,7 @@
             $scope.model.printTemplate = $scope.printTemplateList[0];
           }
           return true;
-        }
+        };
 
         $scope.tableIsLoaded = function (item) {
           return typeof item.aRow[0] !== 'number';
@@ -1200,7 +1206,7 @@
             return true
           }
         };
-
+console.log($scope)
       }
     ])
 })();

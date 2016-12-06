@@ -40,10 +40,14 @@ public class ProcessSubject extends AbstractEntity {
     @JsonProperty(value = "sLogin")
     @Column
     private String sLogin;
-    
+
     @JsonProperty(value = "aUser")
     @Transient
     private List<ProcessUser> aUser;
+
+    @JsonProperty(value = "sDateFact")
+    @Transient
+    private DateTime sDateFact;
 
     @JsonProperty(value = "sDateEdit")
     @JsonSerialize(using = JsonDateTimeSerializer.class)
@@ -113,6 +117,18 @@ public class ProcessSubject extends AbstractEntity {
 
     public void setaUser(List<ProcessUser> aUser) {
         this.aUser = aUser;
+    }
+
+    public DateTime getsDateFact() {
+        return sDateFact;
+    }
+
+    public DateTime getsDateFact(DateTime sDateFact) {
+        if (getProcessSubjectStatus().getsID().equalsIgnoreCase("closed")) {
+            return getsDateEdit();
+        } else {
+            return null;
+        }
     }
 
     @Override

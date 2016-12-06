@@ -1,10 +1,11 @@
-<style>
-  .ui-select-choices-content {
-    top:100%;
-  }
-</style>
-<div ng-if="(['table'].indexOf(item.type) > -1) && showField(item)" class="row field-table">
-  <div class="col-sm-12" ng-if="tableIsLoaded(item)" style="margin-top: 3%; margin-bottom: 3%">
+<div ng-if="item.type === 'table' && showField(item)" class="row field-table">
+  <style>
+    .ui-select-choices-content {
+      top:100%;
+    }
+  </style>
+
+  <div class="col-sm-12" style="margin-top: 3%; margin-bottom: 3%">
 
     <table ng-init="tableName = item.id">
 
@@ -192,7 +193,7 @@
       </tbody>
     </table>
 
-    <div style="text-align: left; margin-top: 3px">
+    <div style="text-align: left; margin-top: 3px" ng-if="tableIsLoaded(item)">
       <input type="button"
              ng-hide="rowLengthCheckLimit(item) && !item.aRow || (!isDocumentWritable(item) && isDocumentReadable(item))"
              class="add-row-button"

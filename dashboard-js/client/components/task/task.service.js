@@ -139,6 +139,17 @@ angular.module('dashboardJsApp')
         })
       },
 
+      getProcessSubject: function (id, level) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getProcessSubject',
+          params: {
+            snID_Process_Activiti: id,
+            nDeepLevel: 1
+          }
+        })
+      },
+
       getTableAttachment: function (taskId, attachId) {
         return simpleHttpPromise({
           method: 'GET',

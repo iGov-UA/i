@@ -26,3 +26,13 @@ exports.getDocumentStepLogins = function (req, res) {
     res.send(result);
   })
 };
+
+exports.getProcessSubject = function (req, res) {
+  activiti.get({
+    path: '/subject/process/getProcessSubject',
+    query: req.query
+  }, function (error, statusCode, result) {
+    res.statusCode = statusCode;
+    res.send(result);
+  })
+};

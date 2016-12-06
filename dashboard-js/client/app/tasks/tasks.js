@@ -118,9 +118,20 @@
             'tasks',
             'documentRights',
             function (oTask, tasks, documentRights) {
-              if(documentRights){
+              if(documentRights) {
                 return tasks.getDocumentStepLogins(oTask.processInstanceId);
               }
+            }
+          ],
+          processSubject: [
+            'oTask',
+            'tasks',
+            'documentRights',
+            'taskForm',
+            function (oTask, tasks, documentRights) {
+              // if(documentRights) {
+                return tasks.getProcessSubject(oTask.processInstanceId);
+              // }
             }
           ]
         }

@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -367,6 +368,7 @@ public class ProcessSubjectService {
          
         removeProcessSubject(processSubject);
     }
+ 
     public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
             String sContent, String sAutorResolution, String sTextResolution, 
             String sDateExecution, String snProcess_ID) {
@@ -375,22 +377,22 @@ public class ProcessSubjectService {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
             DateFormat dfTask = new SimpleDateFormat("d.M.yyyy");
             DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-            String sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
             
+            String sTaskDateFormat = "";
             ProcessSubject oProcessSubjectParent = null;
-            
-            LOG.info("DATATIMEVALUE: " + sTaskDateFormat);
             
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (processSubjectDao.findByProcessActivitiId(snProcess_ID) == null){
                 oProcessSubjectParent = processSubjectDao
                         .setProcessSubject(snProcess_ID, sAutorResolution,
                                 new DateTime(df.parse(sDateExecution)), 0L, processSubjectStatus);
+                sTaskDateFormat = dfTask.format(df.parse(sDateExecution));
             
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
             }else{
                 oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
                 LOG.info("SnID_Process_Activiti TEST:" + oProcessSubjectParent.getSnID_Process_Activiti());
+                sTaskDateFormat = sDateExecution;
             }
             
             List<ProcessSubjectTree> aProcessSubjectChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
@@ -413,6 +415,7 @@ public class ProcessSubjectService {
             
             for (ProcessSubject oProcessSubject : aProcessSubject){
                 aLoginToKeep.add(oProcessSubject.getsLogin());
+                LOG.info("login from service: " + oProcessSubject.getsLogin());
             }
             
             List<String> aLoginToDelete = new ArrayList<String>();
@@ -444,7 +447,7 @@ public class ProcessSubjectService {
                         mParamTask.put(id, value);
                     }
                     LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
-                    aLoginToDelete.add(mParamTask.get("sLogin_isExecute").toString());
+                    
                     boolean continueFlag = false;
                     
                     for (ProcessSubjectTree child:  aProcessSubjectChild)    
@@ -460,6 +463,9 @@ public class ProcessSubjectService {
                         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
                         LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                         if (oProcessInstanceChild != null) {
+                            
+                            LOG.info("TSKDATE: " + sTaskDateFormat);
+                            
                             ProcessSubject oProcessSubjectChild = processSubjectDao
                                     .setProcessSubject(oProcessInstanceChild.getId(), (String) mParamTask.get("sLogin_isExecute"),
                                             new DateTime(dfTask.parse(sTaskDateFormat)), new Long(i + 1), processSubjectStatus);
@@ -468,10 +474,17 @@ public class ProcessSubjectService {
                             oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
                             processSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
                         }
-                    }
+                    }else{
+                       
+                       aLoginToDelete.add(mParamTask.get("sLogin_isExecute").toString());
+                   }
                 }
                 
                 List<ProcessSubject> aProcessSubjectToRemove = new ArrayList<ProcessSubject>();
+                
+                for(String aLogin : aLoginToDelete){
+                    LOG.info("aLoginToDelete: " + aLogin);
+                }
                 
                 if (!aLoginToKeep.isEmpty()){
                     aLoginToKeep.removeAll(aLoginToDelete);
@@ -486,7 +499,6 @@ public class ProcessSubjectService {
                     }
                 }
                 
-                
                 for (ProcessSubject loginToDelete : aProcessSubjectToRemove)
                 {
                     LOG.info("KEEPLOGIN_loginToDelete" + loginToDelete.getsLogin());
@@ -498,7 +510,8 @@ public class ProcessSubjectService {
             }
         } 
         catch (Exception e) {
-            LOG.error("SetTasks listener throws an error: " + e.toString());
+            LOG.error("SetTasks listener throws an error: ", e);
+           // throw e;
         }
     }
 }
