@@ -533,7 +533,10 @@ public class ProcessSubjectService {
            
                     LOG.info("sID status:" + loginToDelete.getProcessSubjectStatus().getsID());
                     
-                    if(!loginToDelete.getProcessSubjectStatus().getsID().equals("executed"))
+                    String sDeleteStatus = loginToDelete.getProcessSubjectStatus().getsID();
+                    
+                    if(!(sDeleteStatus.equals("executed")|| sDeleteStatus.equals("notExecuted")||
+                       sDeleteStatus.equals("unactual")||sDeleteStatus.equals("closed")))        
                     {
                         removeProcessSubjectDeep(loginToDelete);
                     }
