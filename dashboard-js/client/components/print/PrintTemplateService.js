@@ -43,7 +43,7 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
       }
 
       if (markerExists){
-        
+
     	  var topItems = [];
     	  var templates = form.filter(function (item) {
           var result = false;
@@ -65,43 +65,7 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
                 item.displayTemplate = item.name;
               }
           }
-          // add check of PrintForm field testing 
-          else if (item.id && FieldMotionService.FieldMentioned.inPrintForm(item.id)) { 
-        	  result = false;
-
-        	  var prints = FieldMotionService.getPrintFormsById( item.id ); 
-
-        	  console.log( " PrintForms.length=" + prints.length );
-
-        	  angular.forEach(prints, function(printForm) {
-
-        		  if( printForm.sName ) {  
-        			  
-        			  console.log(" sName " + printForm.sName );
-        			  
-	        		  angular.forEach(form.taskData.aTable, function (table) {
-	        			  angular.forEach(table.content, function(row) {
-
-	        				  if( row.aField[0].value ) {
-
-	        					  console.log( " aField = " + row.aField[0].value ); 
-
-	        					  var item = { 
-	       							 id: item.id, 
-	        						 displayTemplate: printForm.sName + " (" + row.aField[0].value + ")",
-	        					  }; 
-
-	        					  topItems.push( item );
-
-	        				  } 
-
-	        			  }); 
-	       			  });
-        		  }
-        	  });
-
-        	  //item.displayTemplate = FieldMotionService.getPrintForms();
-          }
+          
           return result;
         });
       } else {
@@ -117,12 +81,48 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
             } else {
               item.displayTemplate = item.name;
             }
-          }
+          }   
+
           return result;
         });
       }
+      
+      // add PrintForm for tables 
+	  console.log(" sName " + printForm.sName );
 
-      templates.unshift(topItems);
+	  angular.forEach(form.taskData.aTable, function (table) {
+
+		  console.log( " Table.id=" + table.id );
+		  
+		  if( table.id && FieldMotionService.FieldMentioned.inPrintForm( table.id )) { 
+
+			  var prints = FieldMotionService.getPrintFormsById( table.id );
+			  
+			  angular.forEach(prints, function(printForm) {
+			  
+    			  angular.forEach(table.content, function(row) {
+
+    				  if( row.aField[0].value ) {
+
+    					  console.log( " aField = " + row.aField[0].value ); 
+
+    					  var item = { 
+   							 id: table.id, 
+    						 displayTemplate: printForm.sName + " (" + row.aField[0].value + ")",
+    					  }; 
+
+    					  topItems.push( item );
+
+    				  } 
+
+    			  });
+			  }); 
+		  }
+	  });
+
+	  if( topItems.length > 0 ) {
+	      templates.unshift(topItems);
+	  }
 
       return templates;
     },
