@@ -504,11 +504,11 @@ angular.module('dashboardJsApp')
 
               sFileFieldID = templateResult.fileField.id;
             }
-
+            var description = templateResult.fileField.name.split(";")[0];
             $timeout(function () {
               var html = '<html><head><meta charset="utf-8"></head><body>' + compiled.find('.print-modal-content').html() + '</body></html>';
               var data = {
-                sDescription: 'User form',
+                sDescription: description, //'User form',
                 sFileName: fileName || 'User form.html',
                 sID_Field: sFileFieldID,
                 sContent: html
