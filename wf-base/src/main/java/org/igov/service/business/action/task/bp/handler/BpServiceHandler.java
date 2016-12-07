@@ -168,12 +168,9 @@ public class BpServiceHandler {
             HistoricProcessInstance oHistoricProcessInstance
             = historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
     LOG.info("oHistoricProcessInstanceeeeeee  ",oHistoricProcessInstance.getProcessVariables().get("bankIdlastName"));
-    String sProcessName = oProcessDefinition.getName() != null ? oProcessDefinition.getName() : "";
-    LOG.info("sProcessNameeeeeeeeeeeee  ", sProcessName);
-    variables.put("processName", sProcessName);
             if (details != null && details.get(0).getProcessVariables() != null) {
-           // variables.put("processName", details.get(0).getProcessDefinitionId());
-            
+            variables.put("processName", details.get(0).getProcessDefinitionId());
+            	 LOG.info("sProcessNameeeeeeeeeeeee  ", details.get(0).getProcessDefinitionId());
             Map<String, Object> processVariables = details.get(0).getProcessVariables();
             variables.put("nID_Proccess_Feedback", snID_Process);
             LOG.info("nID_Proccess_Feedbackkkkkkk ", snID_Process);
