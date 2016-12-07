@@ -135,6 +135,8 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
       catch(e) {
     	  console.log("Mistake in PrintForm - " + e);
       }
+      
+      templates.unshift({ id: "test", displayTemplate: "Testing" });
 
       return templates;
     },
