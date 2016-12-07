@@ -750,7 +750,7 @@
             <activiti:expression><![CDATA[sResult]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-      </extensionElements>        
+      </extensionElements>
     </userTask>
     <boundaryEvent id="boundarytimer6" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <timerEventDefinition>
@@ -778,8 +778,12 @@
     <sequenceFlow id="flow73" sourceRef="parallelgateway5" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow74" sourceRef="exclusivegateway3" targetRef="exclusivegateway4"></sequenceFlow>
-    <sequenceFlow id="flow75" sourceRef="exclusivegateway3" targetRef="servicetask_step13.1"></sequenceFlow>
+    <sequenceFlow id="flow74" sourceRef="exclusivegateway3" targetRef="exclusivegateway4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${email == null}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow75" sourceRef="exclusivegateway3" targetRef="servicetask_step13.1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${email  != null}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow76" sourceRef="exclusivegateway4" targetRef="usertask_step14"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Управління дозвільних процедур</text>
@@ -833,7 +837,7 @@
         <omgdc:Bounds height="55.0" width="133.0" x="518.0" y="324.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask_step13.1" id="BPMNShape_servicetask_step13.1">
-        <omgdc:Bounds height="75.0" width="159.0" x="736.0" y="430.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="159.0" x="728.0" y="430.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask_upload" id="BPMNShape_usertask_upload">
         <omgdc:Bounds height="55.0" width="105.0" x="3.0" y="80.0"></omgdc:Bounds>
@@ -875,7 +879,7 @@
         <omgdc:Bounds height="61.0" width="110.0" x="753.0" y="283.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask_step14" id="BPMNShape_usertask_step14">
-        <omgdc:Bounds height="71.0" width="156.0" x="758.0" y="530.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="156.0" x="729.0" y="530.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="125.0" x="327.0" y="245.0"></omgdc:Bounds>
@@ -973,11 +977,11 @@
         <omgdi:waypoint x="807.0" y="370.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="895.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="887.0" y="467.0"></omgdi:waypoint>
         <omgdi:waypoint x="930.0" y="467.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="758.0" y="565.0"></omgdi:waypoint>
+        <omgdi:waypoint x="729.0" y="565.0"></omgdi:waypoint>
         <omgdi:waypoint x="604.0" y="565.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
@@ -1047,12 +1051,12 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow75" id="BPMNEdge_flow75">
         <omgdi:waypoint x="807.0" y="410.0"></omgdi:waypoint>
-        <omgdi:waypoint x="815.0" y="430.0"></omgdi:waypoint>
+        <omgdi:waypoint x="807.0" y="430.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
         <omgdi:waypoint x="950.0" y="487.0"></omgdi:waypoint>
         <omgdi:waypoint x="949.0" y="566.0"></omgdi:waypoint>
-        <omgdi:waypoint x="914.0" y="565.0"></omgdi:waypoint>
+        <omgdi:waypoint x="885.0" y="565.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
         <omgdi:waypoint x="687.0" y="241.0"></omgdi:waypoint>
