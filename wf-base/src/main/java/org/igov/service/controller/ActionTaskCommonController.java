@@ -68,6 +68,7 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.igov.model.document.DocumentStepSubjectRight;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
@@ -2651,6 +2652,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     HttpStatus.FORBIDDEN);
         }
 
+    }    
+        
+    @RequestMapping(value = "/getTestBPs", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @Transactional
+    public @ResponseBody
+    String getTestBPs(
+            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
+            throws IOException {
+        List <ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().involvedUser(sLogin).list();
+        Set <String> processesList = new HashSet<>();
+        for (ProcessInstance instance : processInstances) {
+            processesList.add(instance.getProcessDefinitionId());
+        }
+        
+        String jsonRes = JSONValue.toJSONString(processesList);
+        LOG.info("Result: {}", jsonRes);
+        return jsonRes;
     }
     
 }
