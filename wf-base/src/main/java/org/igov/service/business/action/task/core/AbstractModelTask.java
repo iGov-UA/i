@@ -10,10 +10,8 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.task.Attachment;
 import org.apache.commons.codec.binary.Base64;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
-import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.task.core.entity.ListKeyable;
-import org.igov.model.flow.FlowSlot;
 import org.igov.model.flow.FlowSlotDao;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
@@ -29,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
+import org.activiti.engine.TaskService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.Log;
 import org.igov.service.business.action.task.form.TableFormType;
@@ -46,10 +45,12 @@ public abstract class AbstractModelTask {
     protected FlowSlotTicketDao oFlowSlotTicketDao;
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
+    @Autowired
+    public TaskService taskService;
 
     @Autowired
-    GeneralConfig generalConfig;    
-    
+    GeneralConfig generalConfig;
+
     /**
      * Возвращает сложгый ключ переменной бизнес-процесса
      *
@@ -117,25 +118,24 @@ public abstract class AbstractModelTask {
         return getVariableValues(execution.getEngineServices().getRuntimeService(), execution.getProcessInstanceId(),
                 formFieldIds);
     }
-    
+
     public static FormProperty getField(FormData oFormData, String sID) {
         List<FormProperty> aFormProperty = oFormData.getFormProperties();
         if (!aFormProperty.isEmpty()) {
             for (FormProperty oFormProperty : aFormProperty) {
-                if(sID.equals(oFormProperty.getId())){
+                if (sID.equals(oFormProperty.getId())) {
                     return oFormProperty;
                 }
             }
         }
         return null;
     }
-    
-    
+
     public static String getVariableValue(DelegateExecution execution, String sID) {
         RuntimeService runtimeService = execution.getEngineServices().getRuntimeService();
-        if(runtimeService!=null){
+        if (runtimeService != null) {
             Map<String, Object> variables = runtimeService.getVariables(execution.getProcessInstanceId());
-            if(variables!=null){
+            if (variables != null) {
                 if (variables.containsKey(sID)) {
                     return String.valueOf(variables.get(sID));
                 }
@@ -144,7 +144,6 @@ public abstract class AbstractModelTask {
         return null;
     }
 
-    
     public static List<String> getVariableValues(RuntimeService runtimeService, String processInstanceId,
             List<String> formFieldIds) {
         List<String> listValueKeys = new ArrayList<String>();
@@ -325,20 +324,20 @@ public abstract class AbstractModelTask {
         LOG.info("SCAN:file");
         List<String> asFieldID = getListFieldCastomTypeFile(oFormData);
         LOG.info("[addAttachmentsToTask]");
-        LOG.info("(asFieldID={})", asFieldID.toString());
+        LOG.info("(asFieldID={})", asFieldID);
         List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
-        LOG.info("(asFieldValue={})", asFieldValue.toString());
+        LOG.info("(asFieldValue={})", asFieldValue);
         List<String> asFieldName = getListCastomFieldName(oFormData);
-        LOG.info("(asFieldName={})", asFieldName.toString());
+        LOG.info("(asFieldName={})", asFieldName);
         //List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
 
         if (!asFieldValue.isEmpty()) {
             int n = 0;
-            for (String sKeyRedis : asFieldValue) {
-                LOG.info("(sKeyRedis={})", sKeyRedis);
-                if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null"
-                        .equals(sKeyRedis.trim())) {
-                    
+            for (String sFieldValue : asFieldValue) {
+                LOG.info("(sFieldValue={})", sFieldValue);
+                if (sFieldValue != null && !sFieldValue.isEmpty() && !"".equals(sFieldValue.trim()) && !"null"
+                        .equals(sFieldValue.trim())) {
+
                     if (!asFieldName.isEmpty() && n < asFieldName.size()) {
 
                         String sID_Field = asFieldID.get(n);
@@ -346,28 +345,27 @@ public abstract class AbstractModelTask {
 
                         //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
                         String sDescription = asFieldName.get(n);
-                        if(sDescription!=null&&sDescription.contains(";")){
+                        if (sDescription != null && sDescription.contains(";")) {
                             //LOG.info("BEFORE:(sDescription={})", sDescription);
-                            sDescription=sDescription.split(";")[0];
+                            sDescription = sDescription.split(";")[0];
                         }
-                        if(sDescription==null){
-                            sDescription="";
+                        if (sDescription == null) {
+                            sDescription = "";
                         }
-                        if(getField(oFormData, sID_Field).getType() instanceof TableFormType){
+                        if (getField(oFormData, sID_Field).getType() instanceof TableFormType) {
                             //sDescription = sDescription+"[table]";
-                            sDescription = sDescription+"[table][id="+sID_Field+"]";
-                            
+                            sDescription = sDescription + "[table][id=" + sID_Field + "]";
+
                         }
                         LOG.info("(sDescription={})", sDescription);
-                    
-                    
-                        if (sKeyRedis.length() > 15) {
-                            
+
+                        if (sFieldValue.length() > 15) { //ид редиса. грузим со стартаски
+
                             //получение контента файла из временного хранилища
                             byte[] aByteFile;
                             ByteArrayMultipartFile oByteArrayMultipartFile = null;
                             try {
-                                aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
+                                aByteFile = oBytesDataInmemoryStorage.getBytes(sFieldValue);
                                 oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
                             } catch (Exception oException) {
                                 LOG.error("sID_Field: " + sID_Field, oException); //TODO: Need remove becouse of new Log(
@@ -379,17 +377,18 @@ public abstract class AbstractModelTask {
                                         //._Exception(oException)
                                         ._Param("n", n)
                                         ._Param("sID_Field", sID_Field)
-                                        ._Param("sKeyRedis", sKeyRedis)
+                                        ._Param("sKeyRedis", sFieldValue)
                                         ._Param("sDescription", sDescription)
                                         ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
                                         //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
                                         ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
                                         ._Param("oTask.getId()", oTask.getId())
                                         ._Param("oTask.getName()", oTask.getName())
-                                        .save()
-                                        ;
+                                        .save();
                                 throw new ActivitiException(oException.getMessage(), oException);
                             }
+
+                            //------------------------------------------------------------------------------------------------
                             Attachment oAttachment = createAttachment(oByteArrayMultipartFile, oTask, sDescription);
                             if (oAttachment != null) {
                                 LOG.info("Added attachment with ID {} to the task:process {}:{}",
@@ -412,42 +411,40 @@ public abstract class AbstractModelTask {
                                         //._Exception(oException)
                                         ._Param("n", n)
                                         ._Param("sID_Field", sID_Field)
-                                        ._Param("sKeyRedis", sKeyRedis)
+                                        ._Param("sKeyRedis", sFieldValue)
                                         ._Param("sDescription", sDescription)
                                         ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
                                         //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
                                         ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
                                         ._Param("oTask.getId()", oTask.getId())
                                         ._Param("oTask.getName()", oTask.getName())
-                                        .save()
-                                        ;
+                                        .save();
                             }
 
                         } else {
-                                try {
-                                    LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sKeyRedis);
-                                    Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sKeyRedis);
-                                    aAttachment.add(oAttachment);
-                                } catch (Exception oException){
-                                    LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
-                                    new Log(oException, LOG)//this.getClass()
-                                            ._Case("Activiti_AttachRedisKeyFail")
-                                            ._Status(Log.LogStatus.ERROR)
-                                            ._Head("Invalid Redis Key of Attachment")
-                                            ._Body(oException.getMessage())
-                                            //._Exception(oException)
-                                            ._Param("n", n)
-                                            ._Param("sID_Field", sID_Field)
-                                            ._Param("sKeyRedis", sKeyRedis)
-                                            ._Param("sDescription", sDescription)
-                                            ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
-                                            //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
-                                            ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
-                                            ._Param("oTask.getId()", oTask.getId())
-                                            ._Param("oTask.getName()", oTask.getName())
-                                            .save()
-                                            ;
-                                }
+                            try {
+                                LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sFieldValue);
+                                Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sFieldValue);
+                                aAttachment.add(oAttachment);
+                            } catch (Exception oException) {
+                                LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sFieldValue);
+                                new Log(oException, LOG)//this.getClass()
+                                        ._Case("Activiti_AttachRedisKeyFail")
+                                        ._Status(Log.LogStatus.ERROR)
+                                        ._Head("Invalid Redis Key of Attachment")
+                                        ._Body(oException.getMessage())
+                                        //._Exception(oException)
+                                        ._Param("n", n)
+                                        ._Param("sID_Field", sID_Field)
+                                        ._Param("sKeyRedis", sFieldValue)
+                                        ._Param("sDescription", sDescription)
+                                        ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
+                                        //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
+                                        ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
+                                        ._Param("oTask.getId()", oTask.getId())
+                                        ._Param("oTask.getName()", oTask.getName())
+                                        .save();
+                            }
 
                         }
                     } else {
@@ -503,30 +500,30 @@ public abstract class AbstractModelTask {
             String sValue = asFieldValue.get(0);
             String sID = asFieldID.get(0);
             LOG.info("(sValue={})", sValue);
-            if(sValue!=null && !"".equals(sValue.trim()) && !"null".equals(sValue.trim())){
+            if (sValue != null && !"".equals(sValue.trim()) && !"null".equals(sValue.trim())) {
                 LOG.info("sValue is present, so queue is filled");
                 long nID_FlowSlotTicket = 0;
                 Map<String, Object> m = QueueDataFormType.parseQueueData(sValue);
-                
+
                 String sDate = (String) m.get(QueueDataFormType.sDate);
                 LOG.info("(sDate={})", sDate);
                 String sID_Type = QueueDataFormType.get_sID_Type(m);
                 LOG.info("(sID_Type={})", sID_Type);
-                
-                if("DMS".equals(sID_Type)){//Нет ни какой обработки т.к. это внешняя ЭО
-                    String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate")+"";
+
+                if ("DMS".equals(sID_Type)) {//Нет ни какой обработки т.к. это внешняя ЭО
+                    String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate") + "";
                     LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);
                     String sTicket_Number = (String) m.get("ticket_number");
                     LOG.info("(sTicket_Number={})", sTicket_Number);
                     String sTicket_Code = (String) m.get("ticket_code");
                     LOG.info("(sTicket_Code={})", sTicket_Code);
-                //}else if("iGov".equals(sID_Type)){
-                }else{
+                    //}else if("iGov".equals(sID_Type)){
+                } else {
                     nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
                     LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
                     //int nSlots = QueueDataFormType.get_nSlots(m);
-                    String snSlots = getVariableValue(oExecution, "nSlots_"+sID);
-                    int nSlots = snSlots!=null?Integer.valueOf(snSlots):1;
+                    String snSlots = getVariableValue(oExecution, "nSlots_" + sID);
+                    int nSlots = snSlots != null ? Integer.valueOf(snSlots) : 1;
                     try {
 
                         long nID_Task_Activiti = 1; //TODO set real ID!!!
@@ -558,8 +555,8 @@ public abstract class AbstractModelTask {
                                 throw new Exception(sError);
                             }
                         } else {
-                            LOG.info("(nID_FlowSlot={})", !oFlowSlotTicket.getaFlowSlot().isEmpty() ?
-                                    oFlowSlotTicket.getaFlowSlot().get(0).getId() : null);
+                            LOG.info("(nID_FlowSlot={})", !oFlowSlotTicket.getaFlowSlot().isEmpty()
+                                    ? oFlowSlotTicket.getaFlowSlot().get(0).getId() : null);
                             long nID_Subject = oFlowSlotTicket.getnID_Subject();
                             LOG.info("(nID_Subject={})", nID_Subject);
 
@@ -573,12 +570,44 @@ public abstract class AbstractModelTask {
                     } catch (Exception oException) {
                         LOG.error("Error scanExecutionOnQueueTickets: {}", oException.getMessage());
                         LOG.debug("FAIL:", oException);
-                    }                    
+                    }
                 }
 
             }
         }
 
+    }
+
+    public List<Attachment> findAttachments(String sAttachments, String processInstanceId) {
+        sAttachments = sAttachments == null ? "" : sAttachments;
+        LOG.info("(sAttachmentsForSend={})", sAttachments);
+        List<Attachment> aAttachment = new ArrayList<>();
+        String[] asID_Attachment = sAttachments.split(",");
+        List<String> aAttachmentNotFound = new ArrayList<>();
+        for (String sID_Attachment : asID_Attachment) {
+            //log.info("sID_Attachment=" + sID_Attachment);
+            if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
+                String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
+                LOG.info("(sID_AttachmentTrimmed={})", sID_AttachmentTrimmed);
+                Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
+                if (oAttachment != null) {
+                    aAttachment.add(oAttachment);
+                } else {
+                    aAttachmentNotFound.add(sID_AttachmentTrimmed);
+                }
+            } else {
+                LOG.warn("(sID_Attachment={})", sID_Attachment);
+            }
+        }
+        if (!aAttachmentNotFound.isEmpty()) {
+            List<Attachment> aAttachmentByProcess = taskService.getProcessInstanceAttachments(processInstanceId);
+            for (Attachment attachment : aAttachmentByProcess) {
+                if (aAttachmentNotFound.contains(attachment.getId())) {
+                    aAttachment.add(attachment);
+                }
+            }
+        }
+        return aAttachment;
     }
 
 }

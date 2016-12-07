@@ -44,7 +44,7 @@ public class MongoCreateAttachmentCmd extends CreateAttachmentCmd {
 	    attachment.setUrl(url);
 	    attachment.setUserId(Authentication.getAuthenticatedUserId());
 	    attachment.setTime(commandContext.getProcessEngineConfiguration().getClock().getCurrentTime());
-	    
+	    //attachment.setUserId("kermit");
 	    DbSqlSession dbSqlSession = commandContext.getDbSqlSession();
 	    dbSqlSession.insert(attachment);
 	    

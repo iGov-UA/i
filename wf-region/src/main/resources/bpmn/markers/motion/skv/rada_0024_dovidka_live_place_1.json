@@ -1,0 +1,95 @@
+{
+	"motion":
+	{
+		"ShowFieldsOnCondition_0":
+		{
+			"sNote":		["For Hide Invisible"],
+			"aField_ID":	["nID_Department_visitDay", "sCancelInfo","bankIdPassport", "sNameOrgan","sOrganType","sPhoneOrgan","sAddress",
+							 "sArea","sRegistrationOrgan","sKab89","date_today","sFlag","sIsCancellCustomeVizite","markers1","sAdd_SpisokDocs"],
+			"asID_Field":	{"sClient":"asForMySelf"},
+			"sCondition":	"[sClient] == 'Not_Correct'"
+		},
+		"ValuesFieldsOnCondition_1":
+		{
+			"aField_ID":	["sBankIdPassport"],
+			"asID_Field_sValue":	["[bankIdPassport]"],
+			"asID_Field":	{"sReason": "sID_Public_SubjectOrganJoin"},
+			"sCondition": 	"[sReason] == '0'"
+		},
+		"ShowFieldsOnCondition_2":
+		{
+			"aField_ID":	["lable1","lastName_UA1","firstName_UA1","middleName_UA1","sDocPredstavnika","nFile_DocPredstavnika",
+							 "asEnumTypeDocument1","sBankIdPassport1"],
+			"asID_Field":	{"sReason":"asForMySelf"},
+			"sCondition":	"[sReason]=='sNo'"
+		},
+		"RequiredFieldsOnCondition_2": 
+		{
+			"aField_ID":	["lastName_UA1","firstName_UA1","middleName_UA1","sDocPredstavnika","nFile_DocPredstavnika",
+							 "asEnumTypeDocument1","sBankIdPassport1"],
+			"asID_Field":	{"sReason":"asForMySelf"},
+			"sCondition":	"[sReason]=='sNo'"
+		},
+		"ShowFieldsOnCondition_3":
+		{
+			"aField_ID":	["sNameOtherDocument"],
+			"asID_Field":	{"sClient":"asEnumTypeDocument"},
+			"sCondition":	"[sClient] == 'sEnumElement_Other'"
+		},
+		"RequiredFieldsOnCondition_3": 
+		{
+			"aField_ID":	["sNameOtherDocument"],
+			"asID_Field":	{"sClient":"asEnumTypeDocument"},
+			"sCondition":	"[sClient] == 'sEnumElement_Other'"
+		},
+		"ShowFieldsOnCondition_4":
+		{
+			"aField_ID":	["sNameOtherDocument1"],
+			"asID_Field":	{"sClient":"asEnumTypeDocument1"},
+			"sCondition":	"[sClient] == 'sEnumElement_Other'"
+		},
+		"RequiredFieldsOnCondition_4": 
+		{
+			"aField_ID":	["sNameOtherDocument1"],
+			"asID_Field":	{"sClient":"asEnumTypeDocument1"},
+			"sCondition":	"[sClient] == 'sEnumElement_Other'"
+		},
+		"ShowFieldsOnCondition_5":
+		{
+			"aField_ID":	["sNameAnotheReason_GetDovidka"],
+			"asID_Field":	{"sClient":"asTargetGetDovidka"},
+			"sCondition":	"[sClient] == 'sEnum_AnotheReason'"
+		},
+		"RequiredFieldsOnCondition_5": 
+		{
+			"aField_ID":	["sNameAnotheReason_GetDovidka"],
+			"asID_Field":	{"sClient":"asTargetGetDovidka"},
+			"sCondition":	"[sClient] == 'sEnum_AnotheReason'"
+
+		},
+		"ShowFieldsOnCondition_6":
+		{
+			"aField_ID":	["nFile_SvidoztvoNarodzennya"],
+			"asID_Field":	{"sClient":"asTargetGetDovidka","sTerm2":"asEnumTypeDocument1"},
+			"sCondition":	"([sClient] == 'sEnum_GetPassport_First' || [sTerm2] == 'sEnumElement_SvidoztvoNarodz')"
+		},
+		"RequiredFieldsOnCondition_6": 
+		{
+			"aField_ID":	["nFile_SvidoztvoNarodzennya"],
+			"asID_Field":	{"sClient":"asTargetGetDovidka","sTerm2":"asEnumTypeDocument1"},
+			"sCondition":	"([sClient] == 'sEnum_GetPassport_First' || [sTerm2] == 'sEnumElement_SvidoztvoNarodz')"
+		},
+		"ShowFieldsOnCondition_7":
+		{
+			"aField_ID":	["nFile_CopyPassport"],
+			"asID_Field":	{"sTerm2":"asEnumTypeDocument1"},
+			"sCondition":	"([sTerm2] == 'sEnumElement_Passport' || [sTerm2] == 'sEnumElement_ID_Passport' || [sTerm2] == 'sEnumElement_Other')"
+		},
+		"RequiredFieldsOnCondition_7": 
+		{
+			"aField_ID":	["nFile_CopyPassport"],
+			"asID_Field":	{"sTerm2":"asEnumTypeDocument1"},
+			"sCondition":	"([sTerm2] == 'sEnumElement_Passport' || [sTerm2] == 'sEnumElement_ID_Passport' || [sTerm2] == 'sEnumElement_Other')"
+		}
+	}
+}

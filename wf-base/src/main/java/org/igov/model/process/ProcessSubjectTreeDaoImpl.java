@@ -3,7 +3,7 @@ package org.igov.model.process;
 import org.igov.model.core.GenericEntityDao;
 import org.springframework.stereotype.Repository;
 
-
+import java.util.List;
 /**
  *
  * @author Kovilin
@@ -14,5 +14,10 @@ public class ProcessSubjectTreeDaoImpl extends GenericEntityDao<Long, ProcessSub
     
     public ProcessSubjectTreeDaoImpl() {
         super(ProcessSubjectTree.class);
+    }
+    
+    @Override
+    public List<ProcessSubjectTree> findChildren(String snID_Process_Activiti){
+        return findAllBy("processSubjectParent.snID_Process_Activiti", snID_Process_Activiti);
     }
 }

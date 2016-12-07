@@ -16,6 +16,12 @@
         
         <activiti:formProperty id="form_signed_all" name=" " type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocZvitSZ" name="Звіт по пільгам" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocDBF" name="ДБФ або текстовий файл" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sDocKat1" name="Пільговики 1 категорії" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocKat2" name="Пільговики 2 категорії" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocKat3" name="Пільговики 3 категорії" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocKat4" name="Пільговики 4 категорії" type="file"></activiti:formProperty>
         
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
@@ -104,7 +110,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDocZvitSZ},${sTable1}</activiti:expression>
+            <activiti:expression>${sDocZvitSZ},${sTable1},${sDocDBF},${sDocKat1},${sDocKat2},${sDocKat3},${sDocKat4}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>

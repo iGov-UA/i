@@ -20,7 +20,8 @@ module.exports.decryptContent = function (req, res) {
     , type = req.session.type || req.query.action
     , userService = authProviderRegistry.getUserService(type)
     , fileName = req.query.sName
-    , restoreUrl = req.query.restoreUrl;
+    , restoreUrl = req.query.restoreUrl
+    , id = req.query.nID;
 
 
   /**
@@ -74,7 +75,7 @@ module.exports.decryptContent = function (req, res) {
         req.session.access.accessToken,
         url.resolve(
           originalURL(req, {}),
-          '/api/sign-content/decrypt/callback?nID_Server=' + req.query.nID_Server + '&restoreUrl=' + restoreUrl + '&fileName=' + fileName
+          '/api/sign-content/decrypt/callback?nID_Server=' + req.query.nID_Server  + '&fileName=' + fileName + '&nID=' + id + '&restoreUrl=' + restoreUrl
         ),
         objectsToSign,
         function (error, signResult) {
@@ -144,7 +145,8 @@ module.exports.callback = function (req, res) {
     , type = req.session.type
     , userService = authProviderRegistry.getUserService(type)
     , restoreUrl = req.query.restoreUrl
-    , fileName = req.query.fileName;
+    , fileName = req.query.fileName
+    , id = req.query.nID;
 
   if (!codeValue) {
     codeValue = req.query['amp;code'];
@@ -200,7 +202,8 @@ module.exports.callback = function (req, res) {
     if (err) {
       res.redirect(restoreUrl+ '&error=' + JSON.stringify(err));
     } else {
-      res.redirect(restoreUrl + '?signedFileID=' + result.signedFileID + '&fileName=' + fileName);
+      var sign = restoreUrl.search(/\?/mg) >= 0 ? '&' : '?';
+      res.redirect(restoreUrl + sign +'signedFileID=' + result.signedFileID + '&fileName=' + fileName + '&nID='+id);
     }
   }
 

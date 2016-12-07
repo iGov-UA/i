@@ -3,27 +3,86 @@
   <process id="system_task" name="system_task" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Attachment" name="sTable2 - таблица с исполнителями" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Attachment" name="sTable3 - таблица с исполнителями" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="sContent - Короткий зміст документа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="sAutorResolution - Автор резолюції" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="sTextResolution - Текст резолюції" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="sDateExecution - Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="sName_isExecute" name="sName_isExecute" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="Задача" activiti:assignee="${sLogin_isExecute}">
+    <userTask id="usertask1" name="Задача" activiti:candidateGroups="${sLogin_isExecute}">
       <extensionElements>
-        <activiti:formProperty id="sID_Attachment" name="sTable2 - таблица с исполнителями" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sContent" name="sContent - Короткий зміст документа" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="sAutorResolution - Автор резолюції" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Attachment" name="sTable3 - таблица с исполнителями" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_Top1"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="3"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="sContent - Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="sAutorResolution - Автор резолюції" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="sTextResolution - Текст резолюції" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="sDateExecution - Термін виконання" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum">
+          <activiti:value id="executed" name="Виконано"></activiti:value>
+          <activiti:value id="notExecuted" name="Невиконано"></activiti:value>
+          <activiti:value id="unactual" name="Неактуально"></activiti:value>
+          <activiti:value id="delegated" name="Делегування іншому виконавцю"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Оберіть виконавця, якому буде делеговано завдання" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot; }]}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Якщо інший виконавець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sTable3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегування іншому виконавцю'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="зробити заповнення таблиці обов'язковою" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sTable3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегування іншому виконавцю'&quot;}}}"></activiti:formProperty>
+        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+          <activiti:field name="sTaskProcessDefinition">
+            <activiti:string><![CDATA[system_task]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sID_Attachment">
+            <activiti:expression><![CDATA[${sTable3}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sContent">
+            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sAutorResolution">
+            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sTextResolution">
+            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sDateExecution">
+            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:expression><![CDATA[${saStatusTask}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${sTable3}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <endEvent id="endevent1" name="End"></endEvent>
+    <endEvent id="endevent1" name="End">
+      <extensionElements>
+        <activiti:executionListener event="complete" delegateExpression="${UpdateStatusTask}">
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:string><![CDATA[closed]]></activiti:string>
+          </activiti:field>
+        </activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="usertask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusTask == 'delegated'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusTask != 'delegated'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_system_task">
     <bpmndi:BPMNPlane bpmnElement="system_task" id="BPMNPlane_system_task">
@@ -34,15 +93,28 @@
         <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="320.0" y="50.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="370.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="300.0" y="47.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="105.0" y="67.0"></omgdi:waypoint>
         <omgdi:waypoint x="160.0" y="67.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="265.0" y="67.0"></omgdi:waypoint>
-        <omgdi:waypoint x="320.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="320.0" y="47.0"></omgdi:waypoint>
+        <omgdi:waypoint x="319.0" y="2.0"></omgdi:waypoint>
+        <omgdi:waypoint x="212.0" y="2.0"></omgdi:waypoint>
+        <omgdi:waypoint x="212.0" y="40.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="340.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="67.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

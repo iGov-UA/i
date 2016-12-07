@@ -14,7 +14,7 @@
           <activiti:value id="online" name="сплатити онлайн"></activiti:value>
           <activiti:value id="offline" name="отримати реквізити для сплати"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита; якщо ім'я змінюєте вперше - 5,1 грн, повторна зміна - 51 грн" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита; якщо ім'я змінюєте вперше - 5,1 грн, повторна зміна - 51 грн" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sText88" name=" " type="label" default="Після замовлення послуги Ви отримаєте лист з кнопкою для сплати"></activiti:formProperty>
         <activiti:formProperty id="sDocPay" name="Копія квитанції про сплату державного мита" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrganPrevious" name="Назва адміністративного органу, який здійснив попередні зміни в імені, прізвищі або по батькові" type="string" required="true"></activiti:formProperty>
@@ -216,7 +216,7 @@
         <activiti:formProperty id="markers36" name="якщо змінюється прізвище та ім'я" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_36&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'namesurname'||[sClient] == 'прізвище та імя'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers37" name="якщо змінюється ПІБ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;,&quot;infoSecondname&quot;,&quot;sNewSecondname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pib'||[sClient] == 'прізвище, імя та по батькові'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers38" name="якщо онлайн" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_38&quot;:{&quot;aField_ID&quot;:[&quot;sText88&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'online'||[sClient] == 'сплатити онлайн'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers39" name="якщо офлайн" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_39&quot;:{&quot;aField_ID&quot;:[&quot;sBankDetails2&quot;,&quot;sDocPay&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'offline'||[sClient] == 'отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers39" name="якщо офлайн" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_39&quot;:{&quot;aField_ID&quot;:[&quot;sBankDetails1&quot;,&quot;sDocPay&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'offline'||[sClient] == 'отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
@@ -397,12 +397,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDateVisit1" name="Вкажіть дату і час - коли прийти громадянину для надання оригіналів документів" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення - внесіть, будь ласка, причину" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers47" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_47&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers48" name="якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_48&quot;:{&quot;aField_ID&quot;:[&quot;sDateVisit1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'Заповнені дані вірні, запросити заявника для надання оригіналів'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-      
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNowName" name="частина імені у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -422,6 +421,7 @@
             <activiti:expression><![CDATA[${sDocChild1},${sDocChild2},${sDocChild3},${sDocChild4},${sDocChild5},${sDocMarriage},${sDocNoMarriage},${sDocPrevious},${sNumberPassport},${sDocBirth},${sDocPay},${sDocDeath},${sDocPassport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask5" name="очікується візит громадянина для надання оригіналів документів" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
@@ -584,9 +584,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення - внесіть, будь ласка, коментар" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-       
         <activiti:formProperty id="sNowName" name="частина імені у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -601,6 +600,7 @@
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+        <activiti:taskListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2_green" name="очікується відповідь з МВС" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
@@ -756,7 +756,7 @@
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" writable="false"></activiti:formProperty>
-       <activiti:formProperty id="PrintformDate" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintformDate" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="наданно дозвіл на зміну імені"></activiti:value>
           <activiti:value id="reject" name="відмовлено у зміні імені"></activiti:value>
@@ -765,7 +765,6 @@
         <activiti:formProperty id="sDocDecision" name="Завантажте лист-висновок про надання дозволу на зміну імені" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-       
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNowName" name="частина імені у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -773,6 +772,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+        <activiti:taskListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask4" name="очікується візит громадянина для державної реєстрації зміни імені" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
@@ -928,13 +928,12 @@
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" writable="false"></activiti:formProperty>
-     	<activiti:formProperty id="PrintformDate" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintformDate" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_3" name="Заявник отримав свідоцтво про зміну імені, складено відповідний актовий запис" type="enum" required="true">
           <activiti:value id="accept" name="так"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-      
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNowName" name="частина імені у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -942,6 +941,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+        <activiti:taskListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask15" name="Повідомлення громадянина про необхідніть сплати" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -1343,10 +1343,6 @@ var new_minutes = new_src.getMinutes();
 var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
 execution.setVariable('sNotification_day', timer)</script>
     </scriptTask>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <sequenceFlow id="flow46" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow50" sourceRef="usertask3_yellow" targetRef="exclusivegateway2"></sequenceFlow>
@@ -1366,7 +1362,11 @@ execution.setVariable('sNotification_day', timer)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow95" sourceRef="servicetask12" targetRef="usertask4"></sequenceFlow>
-    <endEvent id="endevent3" name="End"></endEvent>
+    <endEvent id="endevent3" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
         <timeDate>${sNotification_day}</timeDate>
@@ -1384,9 +1384,12 @@ execution.setVariable('sNotification_day', timer)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_4=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow109" sourceRef="servicetask8" targetRef="usertask5"></sequenceFlow>
-    <sequenceFlow id="flow113" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <endEvent id="endevent4" name="End"></endEvent>
+    <endEvent id="endevent4" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <sequenceFlow id="flow126" name="немає оплати" sourceRef="exclusivegateway5" targetRef="servicetask16">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""&& sCountPayment =='48'}]]></conditionExpression>
     </sequenceFlow>
@@ -1400,13 +1403,15 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow133" sourceRef="exclusivegateway6" targetRef="servicetask15">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asPaymentMethod =='online'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent5" name="End"></endEvent>
+    <endEvent id="endevent5" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <sequenceFlow id="flow134" sourceRef="servicetask16" targetRef="endevent5"></sequenceFlow>
     <sequenceFlow id="flow135" sourceRef="exclusivegateway6" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asPaymentMethod =='offline'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent6" name="End"></endEvent>
-    <sequenceFlow id="flow136" sourceRef="boundaryerror1" targetRef="endevent6"></sequenceFlow>
     <scriptTask id="scripttask3" name="лічільник таймера" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('sCountPayment')
 src=(+src + +1)
@@ -1561,7 +1566,7 @@ execution.setVariable('sCountPayment', src)</script>
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
@@ -1583,6 +1588,7 @@ execution.setVariable('sCountPayment', src)</script>
             <activiti:expression><![CDATA[${sDocChild1},${sDocChild2},${sDocChild3},${sDocChild4},${sDocChild5},${sDocMarriage},${sDocNoMarriage},${sDocPrevious},${sNumberPassport},${sDocBirth},${sDocPay},${sDocDeath},${sDocPassport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
@@ -1601,7 +1607,7 @@ execution.setVariable('sCountPayment', src)</script>
     </sequenceFlow>
     <sequenceFlow id="flow153" sourceRef="timerintermediatecatchevent2" targetRef="scripttask3"></sequenceFlow>
     <sequenceFlow id="flow155" sourceRef="scripttask3" targetRef="exclusivegateway5"></sequenceFlow>
-    <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask6" cancelActivity="true">
+    <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask6" cancelActivity="false">
       <timerEventDefinition>
         <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
@@ -1631,13 +1637,13 @@ execution.setVariable('sSumPr', sumPr)
 execution.setVariable('sComPr', comPr)
 execution.setVariable('sDescription', des)</script>
     </scriptTask>
-    <sequenceFlow id="flow160" sourceRef="servicetask1" targetRef="scripttask4"></sequenceFlow>
     <sequenceFlow id="flow161" sourceRef="scripttask4" targetRef="usertask6"></sequenceFlow>
+    <sequenceFlow id="flow162" sourceRef="startevent1" targetRef="scripttask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_change_name">
     <bpmndi:BPMNPlane bpmnElement="common_zags_change_name" id="BPMNPlane_common_zags_change_name">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="17.0" y="56.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="17.0" y="77.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3_yellow" id="BPMNShape_usertask3_yellow">
         <omgdc:Bounds height="71.0" width="121.0" x="916.0" y="277.0"></omgdc:Bounds>
@@ -1684,12 +1690,6 @@ execution.setVariable('sDescription', des)</script>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="62.0" width="113.0" x="17.0" y="371.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="115.0" x="80.0" y="37.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="82.0" y="104.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="722.0" y="292.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -1717,9 +1717,6 @@ execution.setVariable('sDescription', des)</script>
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
         <omgdc:Bounds height="35.0" width="35.0" x="1082.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
-        <omgdc:Bounds height="35.0" width="35.0" x="77.0" y="147.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
         <omgdc:Bounds height="71.0" width="119.0" x="656.0" y="37.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -1733,7 +1730,7 @@ execution.setVariable('sDescription', des)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="580.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="162.0" y="137.0"></omgdc:Bounds>
+        <omgdc:Bounds height="72.0" width="105.0" x="92.0" y="37.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
         <omgdi:waypoint x="882.0" y="171.0"></omgdi:waypoint>
@@ -1820,10 +1817,6 @@ execution.setVariable('sDescription', des)</script>
         <omgdi:waypoint x="740.0" y="422.0"></omgdi:waypoint>
         <omgdi:waypoint x="740.0" y="445.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow113" id="BPMNEdge_flow113">
-        <omgdi:waypoint x="52.0" y="73.0"></omgdi:waypoint>
-        <omgdi:waypoint x="80.0" y="72.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow126" id="BPMNEdge_flow126">
         <omgdi:waypoint x="841.0" y="72.0"></omgdi:waypoint>
         <omgdi:waypoint x="917.0" y="73.0"></omgdi:waypoint>
@@ -1865,10 +1858,6 @@ execution.setVariable('sDescription', des)</script>
         <omgdi:waypoint x="393.0" y="171.0"></omgdi:waypoint>
         <omgdi:waypoint x="761.0" y="171.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow136" id="BPMNEdge_flow136">
-        <omgdi:waypoint x="97.0" y="134.0"></omgdi:waypoint>
-        <omgdi:waypoint x="94.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow142" id="BPMNEdge_flow142">
         <omgdi:waypoint x="164.0" y="349.0"></omgdi:waypoint>
         <omgdi:waypoint x="134.0" y="313.0"></omgdi:waypoint>
@@ -1899,13 +1888,13 @@ execution.setVariable('sDescription', des)</script>
         <omgdi:waypoint x="559.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="580.0" y="73.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow160" id="BPMNEdge_flow160">
-        <omgdi:waypoint x="137.0" y="108.0"></omgdi:waypoint>
-        <omgdi:waypoint x="214.0" y="137.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow161" id="BPMNEdge_flow161">
-        <omgdi:waypoint x="214.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="280.0" y="108.0"></omgdi:waypoint>
+        <omgdi:waypoint x="197.0" y="73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="72.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow162" id="BPMNEdge_flow162">
+        <omgdi:waypoint x="52.0" y="73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="92.0" y="73.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

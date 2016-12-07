@@ -213,7 +213,8 @@ exports.uploadFile = function (req, res) {
       path: 'object/file/upload_file_as_attachment',
       query: {
         taskId: req.params.taskId,
-        description: req.query.description
+        description: req.query.description,
+        sID_Field: req.params.field
       }
     })
   };
@@ -233,6 +234,22 @@ exports.getAttachments = function (req, res) {
       res.status(statusCode).json(result);
     }
   });
+};
+exports.saveChangesTask = function (req, res) {
+  var options = {
+    path: '/action/task/saveForm',
+    query: {
+      sParams: req.body
+    }
+  };
+
+  activiti.post(options, function (error, statusCode, result) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.status(statusCode).json(result);
+    }
+  }, req.body);
 };
 
 exports.getOrderMessages = function (req, res) {
@@ -494,7 +511,8 @@ exports.upload_content_as_attachment = function (req, res) {
             nTaskId: req.params.taskId,
             sContentType: data.contentType,
             sDescription: req.body.sDescription,
-            sFileName: req.body.sFileName
+            sFileName: req.body.sFileName,
+            sID_Field: req.body.sID_Field
           },
           headers: {
             'Content-Type': data.contentType + ';charset=utf-8'
@@ -510,6 +528,7 @@ exports.upload_content_as_attachment = function (req, res) {
           taskId: req.params.taskId,
           stream: data.content,
           description: req.body.sDescription,
+          sID_Field: req.body.sID_Field,
           headers: {
             'Content-Type': data.contentType + ';charset=utf-8'
           }

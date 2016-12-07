@@ -218,7 +218,24 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (isSaveTask(oRequest, sResponseBody)) {
                 sType = "Save";
                 LOG.info("saveNewTaskInfo block started");
-                saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
+                if (oResponse.getStatus() < 200 || oResponse.getStatus() >= 300) {
+                    try {
+                        new Log(this.getClass(), LOG)//this.getClass()
+                                ._Case("Activiti_FailStartTask")
+                                ._Status(Log.LogStatus.ERROR)
+                                ._Head("Error hapened while start process!")
+                                ._Body(oResponse.toString())
+                                ._Param("sRequestBody", sRequestBody)
+                                ._Param("sResponseBody", sResponseBody)
+                                ._Param("mRequestParam", mRequestParam)
+                                .save();
+                    } catch (Exception ex) {
+                        LOG.error("Can't save error to MSG", ex);
+                    }
+                    return;
+                } else {
+                    saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
+                }
                 LOG.info("saveNewTaskInfo block finished");
             } else if (isCloseTask(oRequest, sResponseBody)) {
                 sType = "Close";
@@ -547,7 +564,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
                             Long countClaim = Long.valueOf(sResponse);
                             LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
-                            if (countClaim.compareTo(50L) < 0) {
+                            if (countClaim.compareTo(50L) > 0) {
                                 String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Task);
 
                                 /* String snID_Proccess_Feedback = bpHandler

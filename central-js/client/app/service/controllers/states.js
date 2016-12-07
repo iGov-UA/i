@@ -18,7 +18,7 @@ angular.module('app')
 
   var sServiceName = $scope.service.sName;
   var data = CatalogService.getServiceTags(sServiceName).then(function (res) {
-    if (res.length !== 0) {
+    if (res.length !== 0 && !$rootScope.isOldStyleView) {
       var tag = res[0].oServiceTag_Root.sName_UA;
       var situation = res[0].aServiceTag_Child[0].sName_UA;
       TitleChangeService.setTitle(sServiceName + ' / ' + situation + ' / ' + tag);
@@ -27,9 +27,17 @@ angular.module('app')
       CatalogService.getServiceBusiness(sServiceName).then(function (res) {
         if(res.length !==0 && res[0].aSubcategory) {
           var scat = res[0].aSubcategory[0].sName;
-          TitleChangeService.setTitle(sServiceName + ' / ' + scat + ' / Бізнес');
+          if ($rootScope.isOldStyleView) {
+            TitleChangeService.setTitle(sServiceName + ' / ' + scat);
+          } else {
+            TitleChangeService.setTitle(sServiceName + ' / ' + scat + ' / Бізнес');
+          }
         } else {
-          TitleChangeService.setTitle(sServiceName + ' / Бізнес');
+          if ($rootScope.isOldStyleView) {
+            TitleChangeService.setTitle(sServiceName);
+          } else {
+            TitleChangeService.setTitle(sServiceName + ' / Бізнес');
+          }
         }
         $scope.spinner = false;
       })

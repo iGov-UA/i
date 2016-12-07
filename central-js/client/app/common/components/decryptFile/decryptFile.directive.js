@@ -8,6 +8,7 @@
     return {
       restrict: 'EA',
       scope: {
+        options: '=',
         oServiceData: '=',
         onFileUploadSuccess: '&'
       },
@@ -20,12 +21,13 @@
   }
 
   /* @ngInject */
-  function DecryptFileController($scope, $q, $location, $window, ErrorsFactory, uiUploader, ActivitiService){
+  function DecryptFileController($scope, $q, $location, $window, ErrorsFactory, uiUploader, ActivitiService, MessagesService){
     var vm = this;
     var nID_Server = -1;
 
     vm.file = {};
     vm.onSelect = onSelect;
+    vm.onDownload = onDownload;
 
     activate();
 
@@ -37,11 +39,25 @@
       upload($files, {nID_Server:nID_Server});
     }
 
-    function upload (files, oServiceData) {
+    function onDownload(){
+      MessagesService.getMessageFile(vm.options.id).then(function (res) {
+        if(!res.err){
+          var content = new Blob([res], {type: 'application/octet-stream'});
+          var arrFiles = [];
+
+          arrFiles.push(content);
+          upload(arrFiles, {nID_Server:nID_Server}, vm.options.id);
+        }else {
+          ErrorsFactory.push({type:"danger", text: "Виникла помилка при отриманні файлу"});
+        }
+      });
+    }
+
+    function upload (files, oServiceData, id) {
       uiUploader.removeAll();
       uiUploader.addFiles(files);
 
-      vm.file.fileName = files[0].name;
+      vm.file.fileName = files[0].name || vm.options.fileName;
 
       uiUploader.startUpload({
         url: ActivitiService.getUploadFileURL(oServiceData),
@@ -87,18 +103,23 @@
           }
 
           if(!vm.file.error){
-            decrypt(vm.file);
+            decrypt({file: vm.file, id: id});
           }
         }
       });
     }
 
-    function decrypt(result){
-      $window.location.href = $location.protocol() + '://' +
+    function decrypt(params){
+      var hostUrl = $location.protocol() + '://' +
         $location.host() + ':' +
-        $location.port() + '/api/sign-content/decrypt?formID=' +
-        result.value.id + '&nID_Server=' +
-        nID_Server + '&sName=' + vm.file.fileName + '&restoreUrl=' + $location.absUrl();
+        $location.port();
+      var sID_Order = $location.search().sID_Order;
+      var path = $location.path();
+      var restoreUrl = hostUrl + path + (sID_Order ? '?sID_Order=' + sID_Order : '');
+
+      $window.location.href = hostUrl + '/api/sign-content/decrypt?formID=' +
+        params.file.value.id + '&nID_Server=' +
+        nID_Server + '&sName=' + params.file.fileName + '&nID=' + params.id + '&restoreUrl=' + restoreUrl;
     }
   }
 })();

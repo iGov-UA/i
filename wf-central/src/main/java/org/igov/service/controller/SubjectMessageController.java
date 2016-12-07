@@ -624,6 +624,7 @@ public class SubjectMessageController {
                 SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
                         sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nID,
                         nID_Subject, sID_Order);
+                LOG.info("sMail: " + sMail + " oSubjectMessageFeedback: " + oSubjectMessageFeedback + " nID_Rate: " + nID_Rate + " sAuthorFIO: " + sAuthorFIO );
                 if (nID!=null && (sID_Token==null || sID_Token.equals(oSubjectMessageFeedback.getsID_Token()))) {
                     throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "sID_Token not equal or absant! sID_Token="+sID_Token+", nID="+nID, HttpStatus.NOT_FOUND);
@@ -640,8 +641,7 @@ public class SubjectMessageController {
                 }*/
                 LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {}, sID_Order: {}",
                         sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token(), oSubjectMessageFeedback.getsID_Order());
-
-                responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
+               responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
                         generalConfig.getSelfHost(), nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
 
                 if(bSelf){

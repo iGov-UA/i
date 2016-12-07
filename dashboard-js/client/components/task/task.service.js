@@ -119,6 +119,37 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
+      getDocumentStepRights: function (nID_Process) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getDocumentStepRights',
+          params: {
+            nID_Process: nID_Process
+          }
+        })
+      },
+
+      getDocumentStepLogins: function (nID_Process) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getDocumentStepLogins',
+          params: {
+            nID_Process: nID_Process
+          }
+        })
+      },
+
+      getProcessSubject: function (id, level) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getProcessSubject',
+          params: {
+            snID_Process_Activiti: id,
+            nDeepLevel: 1
+          }
+        })
+      },
+
       getTableAttachment: function (taskId, attachId) {
         return simpleHttpPromise({
           method: 'GET',
@@ -165,10 +196,13 @@ angular.module('dashboardJsApp')
           angular.forEach(tableFields, function (table) {
             if(attachments.length > 0) {
               angular.forEach(attachments, function (attachment) {
-                var name = attachment.description.match(/(\[id=(\w+)\])/)[2];
-                if(name.toLowerCase() === table.id.toLowerCase()) {
-                  var description = attachment.description.split('[')[0];
-                  promises.push(self.uploadTable(table, taskId, attachment.id, description));
+                var matchTableId = attachment.description.match(/(\[id=(\w+)\])/);
+                if(attachment.description.indexOf('[table]') !== -1 && matchTableId !== null){
+                  var name = matchTableId[2];
+                  if(name.toLowerCase() === table.id.toLowerCase()) {
+                    var description = attachment.description.split('[')[0];
+                    promises.push(self.uploadTable(table, taskId, attachment.id, description));
+                  }
                 }
               });
             } else {
@@ -196,6 +230,9 @@ angular.module('dashboardJsApp')
 
           simpleHttpPromise(req).then(function (result) {
             deferred.resolve(result);
+          },
+            function(result) {
+              deferred.resolve(result);
           });
         });
 
@@ -221,7 +258,49 @@ angular.module('dashboardJsApp')
         return deferred.promise;
       },
 
-      upload: function(files, taskId) {
+      saveChangesTaskForm: function(taskId, formProperties, task) {
+        var self = this;
+        var createProperties = function(formProperties) {
+          var properties = new Array();
+          for (var i = 0; i < formProperties.length; i++) {
+            var formProperty = formProperties[i];
+            if (formProperty && formProperty.writable) {
+              properties.push({
+                id: formProperty.id,
+                value: formProperty.value
+              });
+            }
+          }
+          return properties;
+        };
+
+        var deferred = $q.defer();
+
+        // upload files before form submitting
+        this.uploadTaskFiles(formProperties, task, taskId).then(function()
+        {
+          var submitTaskFormData = {
+            'taskId': taskId,
+            'properties': createProperties(formProperties)
+          };
+
+          var req = {
+            method: 'POST',
+            url: '/api/tasks/action/task/saveForm',
+            data: submitTaskFormData
+          };
+          simpleHttpPromise(req).then(
+            function(result) {
+            deferred.resolve(result);
+          },
+            function(result) {
+              deferred.resolve(result);
+          });
+        });
+
+        return deferred.promise;
+      },
+      upload: function(files, taskId, sID_Field) {
         var deferred = $q.defer();
 
         var self = this;
@@ -229,7 +308,7 @@ angular.module('dashboardJsApp')
         uiUploader.removeAll();
         uiUploader.addFiles(files);
         uiUploader.startUpload({
-          url: '/api/tasks/' + taskId + '/attachments',
+          url: '/api/tasks/' + taskId + '/attachments/' + sID_Field + '/upload',
           concurrency: 1,
           onProgress: function (file) {
             scope.$apply(function () {
@@ -255,7 +334,13 @@ angular.module('dashboardJsApp')
               try{
                 oCheckSignReq = angular.fromJson(response);
               } catch (errParse){
-                self.value.signInfo = null;
+                if(self.value){
+                  self.value.signInfo = null;
+                } else {
+                  self.value = {
+                    signInfo : null
+                  }
+                }
               }
               if(oCheckSignReq.taskId && oCheckSignReq.id){
                 self.value = {id : oCheckSignReq.id, signInfo: null, fromDocuments: false};
@@ -277,7 +362,13 @@ angular.module('dashboardJsApp')
                     });
                   }
                 }, function (err) {
-                  self.value.signInfo = null;
+                  if(self.value){
+                    self.value.signInfo = null;
+                  } else {
+                    self.value = {
+                      signInfo : null
+                    }
+                  }
                 })
               }
             });
@@ -371,6 +462,7 @@ angular.module('dashboardJsApp')
              * parse name string property to get file names sPrintFormFileAsPDF and sPrintFormFileAsIs
              */
             var fileName = null;
+            var sFileFieldID = null;
 
             if (typeof templateResult.fileField.name === 'string') {
               fileName = templateResult.fileField.name.split(/;/).reduce(function (prev, current) {
@@ -384,6 +476,8 @@ angular.module('dashboardJsApp')
               if(fileName === 'sPrintFormFileAsIs'){
                 fileName = fileName + '.html';
               }
+
+              sFileFieldID = templateResult.fileField.id;
             }
 
             $timeout(function () {
@@ -391,6 +485,7 @@ angular.module('dashboardJsApp')
               var data = {
                 sDescription: 'User form',
                 sFileName: fileName || 'User form.html',
+                sID_Field: sFileFieldID,
                 sContent: html
               };
 
