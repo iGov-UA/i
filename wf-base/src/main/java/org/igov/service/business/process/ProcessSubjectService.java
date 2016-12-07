@@ -530,8 +530,18 @@ public class ProcessSubjectService {
                 }
 
                 for (ProcessSubject loginToDelete : aProcessSubjectToRemove) {
-                    LOG.info("KEEPLOGIN_loginToDelete" + loginToDelete.getsLogin());
-                    removeProcessSubjectDeep(loginToDelete);
+           
+                    LOG.info("sID status:" + loginToDelete.getProcessSubjectStatus().getsID());
+                    
+                    String sDeleteStatus = loginToDelete.getProcessSubjectStatus().getsID();
+                    
+                    if(!(sDeleteStatus.equals("executed")|| sDeleteStatus.equals("notExecuted")||
+                       sDeleteStatus.equals("unactual")||sDeleteStatus.equals("closed")))        
+                    {
+                        removeProcessSubjectDeep(loginToDelete);
+                    }
+
+                    //LOG.info("KEEPLOGIN_loginToDelete" + loginToDelete.getsLogin());
                 }
 
             }else {
