@@ -91,6 +91,12 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
 	        });
 	      }
 	      
+	      try { 
+	    	  console.log(" taskData = " + form.taskData + " taskData.aTable=" + form.taskData.aTable );
+	      } catch(e) {
+	    	  console.log( "Mistake " + e );
+	      }
+
 		  angular.forEach(form.taskData.aTable, function (table) {
 	
 			  console.log( " Table.id=" + table.id );
