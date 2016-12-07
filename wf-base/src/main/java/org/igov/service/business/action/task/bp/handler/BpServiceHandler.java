@@ -15,8 +15,10 @@ import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
@@ -85,6 +87,8 @@ public class BpServiceHandler {
         BpServiceHandler.feedBackCount = feedBackCount;
     }
 
+    /* String snID_Proccess_Feedback = bpHandler
+                                  .startFeedbackProcess(snID_Task, snID_Process, sProcessName);*/
     public String startFeedbackProcess(String sID_task, String snID_Process, String processName) throws Exception {
         Map<String, Object> variables = new HashMap<>();
         variables.put("processName", processName);
@@ -161,19 +165,26 @@ public class BpServiceHandler {
                     .list();
             String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(details.get(0).getProcessInstanceId()));
             
+            List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
+            LOG.info("aTaskkkkkkkkkkk  ", aTask.get(0).getProcessVariables());
+            
             if (details != null && details.get(0).getProcessVariables() != null) {
             variables.put("processName", details.get(0).getProcessDefinitionId());
-            
+            	 LOG.info("sProcessNameeeeeeeeeeeee  ", details.get(0).getProcessDefinitionId());
             Map<String, Object> processVariables = details.get(0).getProcessVariables();
-            
+            variables.put("nID_Proccess_Feedback", snID_Process);
+            LOG.info("nID_Proccess_Feedbackkkkkkk ", snID_Process);
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(details.get(0).getProcessInstanceId())));
             variables.put("clfio", processVariables.get("bankIdlastName") + " "+processVariables.get("bankIdfirstName")+ " "+processVariables.get("bankIdmiddleName"));
+            LOG.info("bankIdlastNameeeeeeeeeeee ", processVariables.get("bankIdlastName"));
+            LOG.info("bankIdfirstNameeeeeeeeeeeeeee ", processVariables.get("bankIdfirstName"));
+            LOG.info("bankIdmiddleNameeeeeeeeeeeeeeee ", processVariables.get("bankIdmiddleName"));
             variables.put("phone", "" + processVariables.get("phone") != null ? String.valueOf(processVariables.get("phone")) : null);
             variables.put("email", processVariables.get("email") != null ? String.valueOf(processVariables.get("email")) : null);
             variables.put("Place", placeService.getPlaceByProcess(details.get(0).getProcessInstanceId()));
             variables.put("region", processVariables.get("region")); 
             variables.put("info", processVariables.get("info"));
-            variables.put("nasPunkt", processVariables.get("nasPunkt"));
+            variables.put("nasPunkt", placeService.getPlaceByProcess(details.get(0).getProcessInstanceId()));
             variables.put("sBody", processVariables.get("sBody"));
             variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
             variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly")); 
@@ -198,7 +209,8 @@ public class BpServiceHandler {
                 LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonHistoryEvent);
                 JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
                 variables.put("nID_Rate", historyEvent.get("nRate"));
-                variables.put("sDate_BP", historyEvent.get("sDate"));
+                //variables.put("sDate_BP", historyEvent.get("sDate"));
+                variables.put("sDate_BP", details.get(0).getStartTime());
                 nID_Server = historyEvent.getInt("nID_Server");
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
@@ -209,7 +221,7 @@ public class BpServiceHandler {
             try {
                 String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
                 feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
-                variables.put("nID_Proccess_Feedback", feedbackProcessId);
+              //  variables.put("nID_Proccess_Feedback", feedbackProcessId);
             } catch (Exception oException) {
                 LOG.error("error during starting feedback process!: {}", oException.getMessage());
                 LOG.debug("FAIL:", oException);
