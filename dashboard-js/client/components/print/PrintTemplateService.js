@@ -32,11 +32,11 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
 
       try {
 	      // test to check forms ids of 1438  
-	      /*for(var i = 0; i < form.length; i++) { 
+	      for(var i = 0; i < form.length; i++) { 
 	
-	    	  console.log( " #1438 form.id=" + form[i].id + " form.type=" + form[i].type + " form.value=" + form[i].value + " form.displayTemplate=" + form[i].displayTemplate );
+	    	  console.log( " #1438 form.id=" + form[i].id + " form.type=" + form[i].type + " form.value=" + form[i].value + " i=" + i + " form.length=" + form.length  );
 	
-	    	  try {
+	    	  /*try {
 		    	  var prints = FieldMotionService.getPrintForms();
 		 
 		    	  for (var j = 0; j < prints.length; j++) { 
@@ -45,8 +45,8 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
 	    	  }
 	    	  catch(e) {
 	    		  console.log( "mistake - " + e ); 
-	    	  }
-	      }*/
+	    	  }*/
+	      }
 
 	      if (markerExists){
 	
