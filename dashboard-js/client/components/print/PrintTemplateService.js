@@ -47,6 +47,8 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
     	  var topItems = [];
     	  var templates = form.filter(function (item) {
           var result = false;
+          
+          console.log( " Marker exists for itemId=" + item.id + " - " + FieldMotionService.FieldMentioned.inPrintForm(item.id) );
 
           if (item.id && item.id.includes('sBody')
             && (!FieldMotionService.FieldMentioned.inShow(item.id)
@@ -64,10 +66,12 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
               }
           }
           // add check of PrintForm field testing 
-          else if (item.id && FieldMotionService.FieldMentioned.inPrintForm(item.id, form)) { 
+          else if (item.id && FieldMotionService.FieldMentioned.inPrintForm(item.id)) { 
         	  result = false;
 
         	  var prints = FieldMotionService.getPrintFormsById( item.id ); 
+
+        	  console.log( " PrintForms.length=" + prints.length );
 
         	  angular.forEach(prints, function(printForm) {
 
@@ -83,7 +87,8 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
 	        					  console.log( " aField = " + row.aField[0].value ); 
 
 	        					  var item = { 
-	       							  displayTemplate: printForm.sName + " (" + row.aField[0].value + ")",
+	       							 id: item.id, 
+	        						 displayTemplate: printForm.sName + " (" + row.aField[0].value + ")",
 	        					  }; 
 
 	        					  topItems.push( item );
