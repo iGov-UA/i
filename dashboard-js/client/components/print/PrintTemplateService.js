@@ -67,15 +67,20 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
           else if (item.id && FieldMotionService.FieldMentioned.inPrintForm(item.id, form)) { 
         	  result = false;
 
-        	  var prints = FieldMotionService.getPrintForms(); 
+        	  var prints = FieldMotionService.getPrintFormsById( item.id ); 
 
         	  angular.forEach(prints, function(printForm) {
 
         		  if( printForm.sName ) {  
+        			  
+        			  console.log(" sName " + printForm.sName );
+        			  
 	        		  angular.forEach(form.taskData.aTable, function (table) {
 	        			  angular.forEach(table.content, function(row) {
 
 	        				  if( row.aField[0].value ) {
+
+	        					  console.log( " aField = " + row.aField[0].value ); 
 
 	        					  var item = { 
 	       							  displayTemplate: printForm.sName + " (" + row.aField[0].value + ")",
