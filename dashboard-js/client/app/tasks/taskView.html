@@ -215,7 +215,7 @@
           <hr class="hr-divider side-left"><span>Додатки</span><hr class="hr-divider side-right">
         </div>
 
-        <div>
+        <div ng-if="sSelectedTask !== 'unassigned'">
           <div class="dropup" ng-repeat="item in taskData.aAttachment" style="display: inline-block; position:relative;">
             <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
               <p>{{item.description | tableButtonFilter}}</p>
@@ -246,6 +246,9 @@
               {{item.description | cut : true : 25 | tableButtonFilter}}
             </button>
           </div>
+        </div>
+        <div ng-if="sSelectedTask === 'unassigned'">
+          <span>Для отримання доступу до прикріпленних додатків, необхідно прийняти заявку в роботу</span>
         </div>
       </div>
 
@@ -334,6 +337,12 @@
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">
                 <span ng-if="documentRights.bWrite">Пiдписати</span>
                 <span ng-if="!documentRights.bWrite">Ознайомлений</span>
+              </button>
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
+                      ng-click="saveChangesTask(form)"
+                      class="btn btn-info"
+                      style="background-color: #337ACF; outline: none; border: none"
+                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти
               </button>
               <label ng-show="isTaskInProcess()&& !isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Зачекайте...</label>
               <label ng-show="isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Задачу опрацьовано.</label>
