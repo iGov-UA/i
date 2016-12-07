@@ -30,6 +30,7 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
         }
       } // FieldMotionService.FieldMentioned.inShow(item.id)
 
+      try {
       // test to check forms ids of 1438  
       for(var i = 0; i < form.length; i++) { 
 
@@ -47,8 +48,6 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
     	  var topItems = [];
     	  var templates = form.filter(function (item) {
           var result = false;
-          
-          console.log( " Marker exists for itemId=" + item.id + " - " + FieldMotionService.FieldMentioned.inPrintForm(item.id) );
 
           if (item.id && item.id.includes('sBody')
             && (!FieldMotionService.FieldMentioned.inShow(item.id)
@@ -123,6 +122,11 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
 	  if( topItems.length > 0 ) {
 	      templates.unshift(topItems);
 	  }
+	  
+      }
+      catch(e) {
+    	  console.log("Mistake in PrintForm - " + e);
+      }
 
       return templates;
     },
