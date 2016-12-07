@@ -32,7 +32,7 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
 
       try {
 	      // test to check forms ids of 1438  
-	      for(var i = 0; i < form.length; i++) { 
+	      /*for(var i = 0; i < form.length; i++) { 
 	
 	    	  console.log( " #1438 form.id=" + form[i].id + " form.type=" + form[i].type + " form.value=" + form[i].value + " form.displayTemplate=" + form[i].displayTemplate );
 	
@@ -46,7 +46,7 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
 	    	  catch(e) {
 	    		  console.log( "mistake - " + e ); 
 	    	  }
-	      }
+	      }*/
 
 	      if (markerExists){
 	
