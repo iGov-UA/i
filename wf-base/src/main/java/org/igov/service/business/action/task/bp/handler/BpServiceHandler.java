@@ -167,8 +167,6 @@ public class BpServiceHandler {
             
             HistoricProcessInstance oHistoricProcessInstance
             = historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
-    ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
-            .processDefinitionId(oHistoricProcessInstance.getProcessDefinitionId()).singleResult();
     LOG.info("oHistoricProcessInstanceeeeeee  ",oHistoricProcessInstance.getProcessVariables().get("bankIdlastName"));
     String sProcessName = oProcessDefinition.getName() != null ? oProcessDefinition.getName() : "";
     LOG.info("sProcessNameeeeeeeeeeeee  ", sProcessName);
