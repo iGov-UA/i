@@ -93,7 +93,8 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
 	      }
 	      
 	      try { 
-	    	  console.log(" taskData = " + form.taskData + " taskData.aTable=" + form.taskData.aTable );
+	    	  if(form.taskData)
+	    	  console.log(" taskData = " + form.taskData + " taskData.aTable=" + form.taskData.aRow );
 	      } catch(e) {
 	    	  console.log( "Mistake " + e );
 	      }
