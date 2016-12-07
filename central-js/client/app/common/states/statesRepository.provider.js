@@ -161,7 +161,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
           controller: 'IndexController'
         },
         'main@': {
-          templateUrl: 'app/service/index/new.services.html',
+          templateUrl: this.isDFS() ? 'app/service/index/services.html' : 'app/service/index/new.services.html',
           controller: 'ServiceController'
         },
         footer: {

@@ -769,7 +769,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         return null;
     }
 
-    protected String populatePatternWithContent(String inputText)
+    public static String populatePatternWithContent(String inputText)
             throws IOException, URISyntaxException {
         StringBuffer outputTextBuffer = new StringBuffer();
         Matcher matcher = TAG_sPATTERN_CONTENT_COMPILED.matcher(inputText);
@@ -779,6 +779,19 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         }
         matcher.appendTail(outputTextBuffer);
         return outputTextBuffer.toString();
+    }
+    
+    /*
+	 * Access modifier changed from private to default to enhance testability
+     */
+    private  static String getPatternContentReplacement(Matcher matcher) throws IOException,
+            URISyntaxException {
+        String sPath = matcher.group(1);
+        LOG.info("Found content group! (sPath={})", sPath);
+        byte[] bytes = getFileData_Pattern(sPath);
+        String sData = Tool.sData(bytes);
+        LOG.debug("Loaded content from file:" + sData);
+        return sData;
     }
 
     public Mail Mail_BaseFromTask(DelegateExecution oExecution)
@@ -803,19 +816,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 ._SSL(bSSL)._TLS(bTLS);
 
         return oMail;
-    }
-
-    /*
-	 * Access modifier changed from private to default to enhance testability
-     */
-    String getPatternContentReplacement(Matcher matcher) throws IOException,
-            URISyntaxException {
-        String sPath = matcher.group(1);
-        LOG.info("Found content group! (sPath={})", sPath);
-        byte[] bytes = getFileData_Pattern(sPath);
-        String sData = Tool.sData(bytes);
-        LOG.debug("Loaded content from file:" + sData);
-        return sData;
     }
 
     private String getFormattedDate(Date date) {
