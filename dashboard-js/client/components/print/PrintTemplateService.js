@@ -31,97 +31,99 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
       } // FieldMotionService.FieldMentioned.inShow(item.id)
 
       try {
-      // test to check forms ids of 1438  
-      for(var i = 0; i < form.length; i++) { 
+	      // test to check forms ids of 1438  
+	      for(var i = 0; i < form.length; i++) { 
+	
+	    	  console.log( " #1438 form.id=" + form[i].id + " form.type=" + form[i].type + " form.value=" + form[i].value + " form.displayTemplate=" + form[i].displayTemplate );
+	
+	    	  try {
+		    	  var prints = FieldMotionService.getPrintForms();
+		 
+		    	  for (var j = 0; j < prints.length; j++) { 
+		    		  console.log( " #1438 prints=" + prints[j].sName + " containsId=" + FieldMotionService.FieldMentioned.inPrintForm( form[i].id ) );
+		    	  }
+	    	  }
+	    	  catch(e) {
+	    		  console.log( "mistake - " + e ); 
+	    	  }
+	      }
 
-    	  console.log( " #1438 form.id=" + form[i].id + " form.type=" + form[i].type + " form.value=" + form[i].value + " form.displayTemplate=" + form[i].displayTemplate );
-
-    	  var prints = FieldMotionService.getPrintForms();
- 
-    	  for (var j = 0; j < prints.length; j++) { 
-    		  console.log( " #1438 prints=" + prints[j].sName + " containsId=" + FieldMotionService.FieldMentioned.inPrintForm( form[i].id ) );
-    	  }
-      }
-
-      if (markerExists){
-
-    	  var topItems = [];
-    	  var templates = form.filter(function (item) {
-          var result = false;
-
-          if (item.id && item.id.includes('sBody')
-            && (!FieldMotionService.FieldMentioned.inShow(item.id)
-                || (FieldMotionService.FieldMentioned.inShow(item.id)
-                    && FieldMotionService.isFieldVisible(item.id, form)) )
-                    ) {
-              result = true;
-              // На дашборде при вытягивани для формы печати пути к патерну, из значения поля -
-              // брать название для каждого элемента комбобокса #792
-              // https://github.com/e-government-ua/i/issues/792
-              if (item.value && item.value.trim().length > 0 && item.value.length <= 100){
-                item.displayTemplate = item.value;
-              } else {
-                item.displayTemplate = item.name;
-              }
-          }
-          
-          return result;
-        });
-      } else {
-        var templates = form.filter(function (item) {
-          var result = false;
-          if (item.id && item.id.indexOf('sBody') >= 0) {
-            result = true;
-            // На дашборде при вытягивани для формы печати пути к патерну, из значения поля -
-            // брать название для каждого элемента комбобокса #792
-            // https://github.com/e-government-ua/i/issues/792
-            if (item.value && item.value.trim().length > 0 && item.value.length <= 100){
-              item.displayTemplate = item.value;
-            } else {
-              item.displayTemplate = item.name;
-            }
-          }   
-
-          return result;
-        });
-      }
-      
-      // add PrintForm for tables 
-	  console.log(" sName " + printForm.sName );
-
-	  angular.forEach(form.taskData.aTable, function (table) {
-
-		  console.log( " Table.id=" + table.id );
-		  
-		  if( table.id && FieldMotionService.FieldMentioned.inPrintForm( table.id )) { 
-
-			  var prints = FieldMotionService.getPrintFormsById( table.id );
+	      if (markerExists){
+	
+	    	  var topItems = [];
+	    	  var templates = form.filter(function (item) {
+	          var result = false;
+	
+	          if (item.id && item.id.includes('sBody')
+	            && (!FieldMotionService.FieldMentioned.inShow(item.id)
+	                || (FieldMotionService.FieldMentioned.inShow(item.id)
+	                    && FieldMotionService.isFieldVisible(item.id, form)) )
+	                    ) {
+	              result = true;
+	              // На дашборде при вытягивани для формы печати пути к патерну, из значения поля -
+	              // брать название для каждого элемента комбобокса #792
+	              // https://github.com/e-government-ua/i/issues/792
+	              if (item.value && item.value.trim().length > 0 && item.value.length <= 100){
+	                item.displayTemplate = item.value;
+	              } else {
+	                item.displayTemplate = item.name;
+	              }
+	          }
+	          
+	          return result;
+	        });
+	      } else {
+	        var templates = form.filter(function (item) {
+	          var result = false;
+	          if (item.id && item.id.indexOf('sBody') >= 0) {
+	            result = true;
+	            // На дашборде при вытягивани для формы печати пути к патерну, из значения поля -
+	            // брать название для каждого элемента комбобокса #792
+	            // https://github.com/e-government-ua/i/issues/792
+	            if (item.value && item.value.trim().length > 0 && item.value.length <= 100){
+	              item.displayTemplate = item.value;
+	            } else {
+	              item.displayTemplate = item.name;
+	            }
+	          }   
+	
+	          return result;
+	        });
+	      }
+	      
+		  angular.forEach(form.taskData.aTable, function (table) {
+	
+			  console.log( " Table.id=" + table.id );
 			  
-			  angular.forEach(prints, function(printForm) {
-			  
-    			  angular.forEach(table.content, function(row) {
-
-    				  if( row.aField[0].value ) {
-
-    					  console.log( " aField = " + row.aField[0].value ); 
-
-    					  var item = { 
-   							 id: table.id, 
-    						 displayTemplate: printForm.sName + " (" + row.aField[0].value + ")",
-    					  }; 
-
-    					  topItems.push( item );
-
-    				  } 
-
-    			  });
-			  }); 
+			  if( table.id && FieldMotionService.FieldMentioned.inPrintForm( table.id )) { 
+	
+				  var prints = FieldMotionService.getPrintFormsById( table.id );
+				  
+				  angular.forEach(prints, function(printForm) {
+				  
+	    			  angular.forEach(table.content, function(row) {
+	
+	    				  if( row.aField[0].value ) {
+	
+	    					  console.log( " aField = " + row.aField[0].value ); 
+	
+	    					  var item = { 
+	   							 id: table.id, 
+	    						 displayTemplate: printForm.sName + " (" + row.aField[0].value + ")",
+	    					  }; 
+	
+	    					  topItems.push( item );
+	
+	    				  } 
+	
+	    			  });
+				  }); 
+			  }
+		  });
+	
+		  if( topItems.length > 0 ) {
+		      templates.unshift(topItems);
 		  }
-	  });
-
-	  if( topItems.length > 0 ) {
-	      templates.unshift(topItems);
-	  }
 	  
       }
       catch(e) {
