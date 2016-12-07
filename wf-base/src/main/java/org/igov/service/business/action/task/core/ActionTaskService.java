@@ -609,8 +609,7 @@ public class ActionTaskService {
         List<IdentityLink> identityLinks = oRepositoryService.getIdentityLinksForProcessDefinition(processDef.getId());
         LOG.info(String.format("Found %d identity links for the process %s", identityLinks.size(), processDef.getKey()));
         for (IdentityLink identity : identityLinks) {
-           // if (IdentityLinkType.CANDIDATE.equals(identity.getType())) {
-            if (IdentityLinkType.ASSIGNEE.equals(identity.getType())) {
+            if (IdentityLinkType.CANDIDATE.equals(identity.getType())) {
                 String groupId = identity.getGroupId();
                 candidateCroupsToCheck.add(groupId);
                 LOG.info("Added candidate starter (group={})", groupId);
