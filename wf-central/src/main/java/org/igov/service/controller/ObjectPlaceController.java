@@ -979,7 +979,7 @@ public class ObjectPlaceController {
                 }
                 
                 LOG.info("FIND LOG");
-                if (result != null){
+                /*if (result != null){
                     PlaceTree oPlaceTree = placeTreeDao.findByExpected("placeId", result.getId());
                     PlaceTree oTestPlaceTree = placeTreeDao.findByExpected("placeId", result.getsID_UA());
                     if (oPlaceTree != null){
@@ -993,7 +993,7 @@ public class ObjectPlaceController {
                     }else{
                         LOG.info("oTestPlaceTree is null");
                     }
-                }
+                }*/
                 
             } catch (RuntimeException e) {
                 LOG.warn("Error: {}", e.getMessage());
