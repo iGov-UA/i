@@ -59,7 +59,7 @@
 
             <p style="padding-bottom: 20px" ng-bind-html="oOrderMessage.sMessage || oOrderMessage.sBody" class="hide-table"></p>
             <div ng-repeat="oFile in oOrderMessage.osData.aFile">
-              <span>Прикріплено файл: "{{::oFile.sFileName}}"</span>
+              <span ng-if="oFile.sFileName && oFile.sFileName.trim()">Прикріплено файл: "{{::oFile.sFileName}}"</span>
               <div ng-if="oOrderMessage.oSubjectMessageType &&
                       oOrderMessage.oSubjectMessageType.nID === 12 &&
                       oOrderMessage.osData &&
