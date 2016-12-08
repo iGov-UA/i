@@ -980,18 +980,22 @@ public class ObjectPlaceController {
                 
                 LOG.info("FIND LOG");
                 if (result != null){
-                    PlaceTree oPlaceTree = placeTreeDao.findByExpected("placeId", result.getId());
-                    PlaceTree oTestPlaceTree = placeTreeDao.findByExpected("placeId", result.getsID_UA());
-                    if (oPlaceTree != null){
-                        LOG.info("oPlaceTree: " + oPlaceTree.getParentId());
-                    }else
-                    {
-                        LOG.info("oPlaceTree is null");
-                    }
-                    if(oTestPlaceTree != null){
-                        LOG.info("oTestPlaceTree: " + oTestPlaceTree.getParentId());
-                    }else{
-                        LOG.info("oTestPlaceTree is null");
+                    try{
+                        //PlaceTree oPlaceTree = placeTreeDao.findByExpected("placeId", result.getId());
+                        PlaceTree oTestPlaceTree = placeTreeDao.findByExpected("placeId", result.getsID_UA());
+                        /*if (oPlaceTree != null){
+                            LOG.info("oPlaceTree: " + oPlaceTree.getParentId());
+                        }else
+                        {
+                            LOG.info("oPlaceTree is null");
+                        }*/
+                        if(oTestPlaceTree != null){
+                            LOG.info("oTestPlaceTree: " + oTestPlaceTree.getParentId());
+                        }else{
+                            LOG.info("oTestPlaceTree is null");
+                        }
+                    }catch (Exception e){
+                        LOG.info("Erro finding place subject: ", e);
                     }
                 }
                 
