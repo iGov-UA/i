@@ -132,17 +132,6 @@
           });
         }
 
-
-        //hidden IdGroupNext
-        hiddenObjById(getIdFromActivityProperty("sSourceFieldID_sID_Group"));
-
-        function hiddenObjById(id) {
-          var itemWith_sID = getObjFromTaskFormById(id);
-          if (itemWith_sID !== null && itemWith_sID.readable) {
-            itemWith_sID.readable = false;
-          }
-        }
-
         if(documentRights) {
           $scope.documentRights = documentRights;
           if(documentLogins) $scope.documentLogins = documentLogins;
