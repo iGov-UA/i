@@ -978,7 +978,7 @@ public class ObjectPlaceController {
                 	result = place.get();
                 }
                 
-                LOG.info("FIND LOG");
+                LOG.info("FIND LOG")
                 
                 PlaceTree oPlaceTree = placeTreeDao.findByExpected("placeId", result.getId());
                 PlaceTree oTestPlaceTree = placeTreeDao.findByExpected("placeId", result.getsID_UA());
