@@ -97,14 +97,17 @@ public class ProcessController {
         LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         List<Process> result = new ArrayList();
         try {
-            //if ("1".equalsIgnoreCase(sID_.trim())) {
-            //   result.add(creatStub());
-            //} else {
-            LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sID_: " + sID_.trim());
-            List<Process> processes = processDao.findAllBy("sID_", sID_.trim());
-            LOG.info("processes: " + processes.size());
-            result.addAll(processes);
-            //}
+            if ("1".equalsIgnoreCase(sID_.trim())) {
+                LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! All sID_: " + sID_.trim());
+                List<Process> allResult = processDao.findAll();
+                LOG.info("processes: " + allResult.size());
+                result.addAll(allResult);
+            } else {
+                LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sID_: " + sID_.trim());
+                List<Process> processes = processDao.findAllBy("sID_", sID_.trim());
+                LOG.info("processes: " + processes.size());
+                result.addAll(processes);
+            }
         } catch (Exception ex) {
             LOG.error("ex: ", ex);
             Process process = creatStub();

@@ -2568,16 +2568,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     Map<String,Object> getDocumentStepRights(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin, //String
             @ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {
-        /*Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
-        LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
-        String asID_Attach_Dfs = "";
-        if (task != null) {
-            asID_Attach_Dfs = dfsService_new.getAnswer(task.getId(), sID_Process, INN);
-            if (asID_Attach_Dfs != null && asID_Attach_Dfs.length() > 0) {
-                taskService.complete(task.getId());
-            }
-        }
-        return asID_Attach_Dfs;*/
         return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
     }
 
@@ -2585,17 +2575,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getDocumentStepLogins", method = RequestMethod.GET)
     public @ResponseBody
     //Map<String,Object> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
-    List<Map<String,Object>> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
-        /*Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
-        LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
-        String asID_Attach_Dfs = "";
-        if (task != null) {
-            asID_Attach_Dfs = dfsService_new.getAnswer(task.getId(), sID_Process, INN);
-            if (asID_Attach_Dfs != null && asID_Attach_Dfs.length() > 0) {
-                taskService.complete(task.getId());
-            }
-        }
-        return asID_Attach_Dfs;*/
+    List<Map<String,Object>> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true)
+    @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
         return oDocumentStepService.getDocumentStepLogins(nID_Process+"");
     }
     
