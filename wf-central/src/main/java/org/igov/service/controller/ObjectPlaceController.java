@@ -978,20 +978,21 @@ public class ObjectPlaceController {
                 	result = place.get();
                 }
                 
-                LOG.info("FIND LOG")
-                
-                PlaceTree oPlaceTree = placeTreeDao.findByExpected("placeId", result.getId());
-                PlaceTree oTestPlaceTree = placeTreeDao.findByExpected("placeId", result.getsID_UA());
-                if (oPlaceTree != null){
-                    LOG.info("oPlaceTree: " + oPlaceTree.getParentId());
-                }else
-                {
-                    LOG.info("oPlaceTree is null");
-                }
-                if(oTestPlaceTree != null){
-                    LOG.info("oTestPlaceTree: " + oTestPlaceTree.getParentId());
-                }else{
-                    LOG.info("oTestPlaceTree is null");
+                LOG.info("FIND LOG");
+                if (result != null){
+                    PlaceTree oPlaceTree = placeTreeDao.findByExpected("placeId", result.getId());
+                    PlaceTree oTestPlaceTree = placeTreeDao.findByExpected("placeId", result.getsID_UA());
+                    if (oPlaceTree != null){
+                        LOG.info("oPlaceTree: " + oPlaceTree.getParentId());
+                    }else
+                    {
+                        LOG.info("oPlaceTree is null");
+                    }
+                    if(oTestPlaceTree != null){
+                        LOG.info("oTestPlaceTree: " + oTestPlaceTree.getParentId());
+                    }else{
+                        LOG.info("oTestPlaceTree is null");
+                    }
                 }
                 
             } catch (RuntimeException e) {
