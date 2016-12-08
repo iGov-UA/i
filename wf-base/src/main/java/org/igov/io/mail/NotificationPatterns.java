@@ -74,6 +74,7 @@ public class NotificationPatterns {
             }
 
             String sBody = Abstract_MailTaskCustom.populatePatternWithContent("[patterns/mail/auto_client_notify.html]");
+            LOG.info("!!!sBody: " + sBody);
             sBody = sBody.replaceAll("[sID_Order]", sID_Order)
                     .replaceAll("[sClientName]", bankIdFirstName)
                     .replaceAll("[sClientSurname]", bankIdLastName);
