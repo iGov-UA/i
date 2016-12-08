@@ -978,27 +978,23 @@ public class ObjectPlaceController {
                 	result = place.get();
                 }
                 
-                LOG.info("FIND LOG");
-                /*if (result != null){
-                    try{
-                        PlaceTree oPlaceTree = placeTreeDao.findByExpected("placeId", result.getId());
-                        PlaceTree oTestPlaceTree = placeTreeDao.findByExpected("placeId", Long.parseLong(result.getsID_UA()));
-                        
-                        if (oPlaceTree != null){
-                            LOG.info("oPlaceTree: " + oPlaceTree.getParentId());
-                        }else
-                        {
-                            LOG.info("oPlaceTree is null");
+                if (result != null){
+                    Long placeId = Long.parseLong(result.getsID_UA());
+                    Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("placeId", placeId);
+                    if (oPlaceTree.isPresent()){
+                        PlaceTree oPlaceTreeResult = oPlaceTree.get();
+                        Long parentId = oPlaceTreeResult.getParentId();
+                        if(parentId != null){
+                            if(parentId != placeId){
+                                Optional<Place> oParentPlace = placeDao.findBy("sID_UA", parentId);
+                                if(oParentPlace.isPresent()){
+                                    LOG.info("oParentPlaceID: " + oParentPlace.get().getPlaceTypeId());
+                                    LOG.info("resultPlaceID: " + result.getPlaceTypeId());
+                                }
+                            }
                         }
-                        if(oTestPlaceTree != null){
-                            LOG.info("oTestPlaceTree: " + oTestPlaceTree.getParentId());
-                        }else{
-                            LOG.info("oTestPlaceTree is null");
-                        }
-                    }catch (Exception e){
-                        LOG.info("Erro finding place subject: ", e);
                     }
-                }*/
+                }
                 
             } catch (RuntimeException e) {
                 LOG.warn("Error: {}", e.getMessage());
