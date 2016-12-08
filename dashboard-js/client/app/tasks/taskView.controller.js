@@ -623,9 +623,13 @@
             pushResultFormula(sResultName, null);
             return;
           }
+          String.prototype.replaceAll = function(search, replacement) {
+            var target = this;
+            return target.replace(new RegExp(search, 'g'), replacement);
+          };
 
           for(var i=0; i < asVariablesName.length; i++) {
-              sFormula = sFormula.replace(asVariablesName[i], "getVal(" + i + ")");
+              sFormula = sFormula.replaceAll(asVariablesName[i], "getVal(" + i + ")");
           }
           pushResultFormula(sResultName, eval(sFormula));
         }
