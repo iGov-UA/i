@@ -7,7 +7,7 @@
 */
 //angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $http, $timeout) {
 //angular.module("app").factory("ErrorsFactory", function() {
-angular.module("iGovErrors").factory("SimpleErrorsFactory", function() {
+angular.module("app").factory("SimpleErrorsFactory", function() {
   /* existing error types */
   var errorTypes = ["warning", "danger", "success", "info"],
       errors = []; /*errors container for objects like {type: "...", text: "..."}*/
@@ -19,8 +19,8 @@ angular.module("iGovErrors").factory("SimpleErrorsFactory", function() {
 
 
   return {
-
-
+ 
+      
     /*
       returns all existing errors
     */
@@ -42,7 +42,7 @@ angular.module("iGovErrors").factory("SimpleErrorsFactory", function() {
         if(oMessage.oData && oMessage.oData.sType){
             oMessage.sType = oMessage.oData.sType;
         }
-
+        
         oMessage.sType = errorTypes.indexOf(oMessage.sType) >= 0 ? oMessage.sType : "danger";
         oMessage.sHead = oMessage.sType === "danger" ? "Помилка" : "";
         if(oMessage.text){
@@ -50,7 +50,7 @@ angular.module("iGovErrors").factory("SimpleErrorsFactory", function() {
             oMessage.text=null;
         }
         oMessage.sDate = new Date();
-        /*
+        /*      
         <div class="modal-body">
           <p class="text-{{error.type}}">
             {{error.text}}
@@ -94,7 +94,7 @@ angular.module("iGovErrors").factory("SimpleErrorsFactory", function() {
                     message.sFunc = oData.sFunc;
                 }else if(oData.sHead){
                     message.sHead = oData.sHead;
-                }else if(oData.sFunc){
+                }else if(oData.sFunc){                    
                 }*/
             });
             //aText
@@ -107,7 +107,7 @@ angular.module("iGovErrors").factory("SimpleErrorsFactory", function() {
         //ErrorsFactory.push({type: "danger", text: s});
         //this.send(oMessage);
 ///        LogSend.send(oMessage);
-
+        
     }
   };
 

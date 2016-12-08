@@ -20,7 +20,6 @@ angular.module('appBoilerPlate', ['ngCookies',
   'iGovMarkers',
   'autocompleteService',
   'datepickerService',
-  'iGovErrors',
   'iGovTable']);
 
 angular.module('documents', ['appBoilerPlate']);
