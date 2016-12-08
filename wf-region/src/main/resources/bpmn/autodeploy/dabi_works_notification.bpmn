@@ -28,6 +28,7 @@
         <activiti:formProperty id="marker1_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker1_required" name="Required_marker" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_req.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker1_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_valid.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker1_lines" name="lines" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_lines.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <parallelGateway id="parallelgateway1" name="Exclusive Gateway"></parallelGateway>
@@ -294,8 +295,8 @@
         <activiti:formProperty id="sID_NumberDABI" name="Реєстраційний номер з реєстру ДАБІ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_NumberOutputDoc" name="Реєстраційний номер вихідного документу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_DateOutputDoc" name="Дата реєстрації вихідного документу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberOutputDoc" name="Реєстраційний номер вихідного документу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_DateOutputDoc" name="Дата реєстрації вихідного документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
