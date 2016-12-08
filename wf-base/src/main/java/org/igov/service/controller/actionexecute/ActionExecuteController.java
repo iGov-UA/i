@@ -55,6 +55,7 @@ public class ActionExecuteController {
     ResponseEntity getActionExecuteStatuses() {
 
         List<ActionExecuteStatus> actionExecuteList = actionExecuteStatusDAO.findAll();
+        LOG.info(actionExecuteList.toString());
         return JsonRestUtils.toJsonResponse(actionExecuteList);
     }
 

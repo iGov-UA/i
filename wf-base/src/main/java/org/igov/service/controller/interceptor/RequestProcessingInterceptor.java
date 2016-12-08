@@ -19,13 +19,16 @@ import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.service.business.action.execute.ActionExecuteService;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.escalation.EscalationHistoryService;
 import org.igov.service.business.feedback.FeedBackService;
 import org.igov.service.exception.TaskAlreadyUnboundException;
+import org.joda.time.DateTime;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +86,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private EscalationHistoryService escalationHistoryService;
     @Autowired
     private FeedBackService feedBackService;
+    @Autowired
+    private ActionExecuteService actionExecuteService;
 
     private JSONParser oJSONParser = new JSONParser();
 
@@ -264,7 +269,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         ._LogTrace()
                         .save();
             } catch (Exception e) {
-                LOG.error("Cann't send an error message to service MSG\n", e);
+                LOG.error("Can't send an error message to service MSG\n", e);
             }
 
         }
@@ -634,8 +639,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         try {
                             saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance);
                         } catch (Exception oException) {
-                            new Log(oException, LOG)._Case("IC_SaveCommentVolonter")._Status(Log.LogStatus.ERROR)
-                                    ._Head("Can't save volonter's comment")._Param("nID_Process", nID_Process).save();
+                            new Log(oException, LOG)._Case("IC_SaveCommentVolunteer")._Status(Log.LogStatus.ERROR)
+                                    ._Head("Can't save volunteer's comment")._Param("nID_Process", nID_Process).save();
                         }
                     }
                 }
@@ -740,8 +745,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.info("Found {} escalation processes", escalationProceses.size());
 
             Map<String, String> mParam = new HashMap<>();
-            mParam.put("nID_Proccess_Escalation", "-1");
-            LOG.info(" >>Clearing nID_Proccess_Escalation field for the process . (sID_Process={})", sID_Process);
+            mParam.put("nID_Process_Escalation", "-1");
+            LOG.info(" >>Clearing nID_Process_Escalation field for the process . (sID_Process={})", sID_Process);
             try {
                 LOG.info(" updateHistoryEvent: " + sID_Process + " mParam: " + mParam);
                 historyEventService.updateHistoryEvent(generalConfig.getOrderId_ByProcess(Long.valueOf(sID_Process)), null, false, HistoryEvent_Service_StatusType.UNKNOWN, mParam);
@@ -765,4 +770,24 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG.info(" not found escalations for process {}", sID_Process);
     }
 
+
+    private void saveActionExecute(String sRequestBody) {
+        LOG.info("Started saveActionExecute method");
+        try{
+            JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+            Long nID_ActionExecuteStatus = (Long) omRequestBody.get("nID_ActionExecuteStatus");
+            DateTime oDateMake = (DateTime) omRequestBody.get("oDateMake");
+            DateTime oDateEdit = (DateTime) omRequestBody.get("oDateEdit");
+            String sObject = (String) omRequestBody.get("sObject");
+            String sMethod = (String) omRequestBody.get("sMethod");
+            String smParam = (String) omRequestBody.get("smParam");
+            String sReturn = (String) omRequestBody.get("sReturn");
+            Integer nTry = (Integer) omRequestBody.get("nTry");
+            byte[] soRequest = (byte[]) omRequestBody.get("soRequest");
+            actionExecuteService.setActionExecute(nID_ActionExecuteStatus,oDateMake,oDateEdit,nTry,sObject,sMethod,soRequest,smParam,sReturn);
+        }
+        catch(ParseException oParseException) {
+
+        }
+    }
 }
