@@ -1,8 +1,10 @@
 'use strict';
 
-angular.module('app')
+angular.module('iGovErrors')
   .controller('ErrorsModelController', function ($scope, $modalInstance, error) {
     $scope.error = error;
+    $scope.error.isNoSuccessType = $scope.error.sType !== 'success';
+
     //$scope.$filter = $filter;
     //, $filter
 

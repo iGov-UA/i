@@ -7,14 +7,14 @@
 */
 //angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $http, $timeout) {
 //angular.module("app").factory("ErrorsFactory", function() {
-angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$http) {
+angular.module("iGovErrors").factory("ErrorsFactory", function(SimpleErrorsFactory,$http) {
   /* existing error types */
-    
+
   var oDataInfos = {}; //console only
   var oDataWarns = {};
   var oDataErrors = {};
   var oDataDefaultCommon = {};
-    
+
   return {
 
     merge: function(oDataOld, oDataNew){
@@ -50,7 +50,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         //oDataDefaultCommon = $.extend(oDataDefaultCommon,oDataNew);
         oDataErrors = {};
         oDataWarns = {};
-        oDataInfos = {};        
+        oDataInfos = {};
     },
     reset: function(){
         this.init(oDataDefaultCommon);
@@ -116,11 +116,11 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         }
         this.init(oDataDefaultCommon);
         return bSuccess;
-    },        
+    },
     log: function(oDataDefault, bSend, bHide){
         this.bSuccess(oDataDefault,bSend, bHide);
     },
-    
+
     logInfoSend: function(oDataNew, oDataDefault){
         this.addInfo(oDataNew, oDataDefault);
         this.log(null, true);
@@ -224,7 +224,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
             return false;
         }
         return true;
-    },     
+    },
 
     send: function(oMessage){//oDataMessage
 /*
@@ -286,7 +286,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                 var oBody={oResponse:oMessage.oData.oResponse,asParam:oMessage.oData.asParam,sDate:oMessage.sDate};
                 var oBodyData={oParams:oParams, oBody:oBody};
                 //oMessage.sHead
-                /*    
+                /*
                 oParams = _.extend(oParams, req.body.oParams);
                 var apiReq = activiti.buildRequest(req, '/action/event/setEventSystem', oParams);
                 apiReq.body = req.body.oBody;
@@ -306,7 +306,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                     oMessage.nID=nID;
                     oMessage.bSending=bSending;
                 });
-            };  
+            };
             //oDataMessage
             sendData(oMessage);
             /*angular.forEach(Object.keys(scope.formData.params), function (key) {
@@ -314,12 +314,12 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                 if (scope.ngModel !== null && scope.ngModel !== '0' && scope.ngModel.length > 0 && !bSent)
                   sendData(key);
               })
-            });*/            
+            });*/
         }catch(sError){
             console.log("[send]:sError="+sError);
         }
     },
-    
+
     /*
       returns all existing errors
     */
@@ -343,8 +343,8 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
             this.send(oMessage);
         }
     }
-    
-    
+
+
   };
 
 });
