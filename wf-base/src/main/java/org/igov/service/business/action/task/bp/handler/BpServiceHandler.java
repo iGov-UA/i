@@ -165,9 +165,6 @@ public class BpServiceHandler {
                     .list();
             String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(details.get(0).getProcessInstanceId()));
             
-            List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
-            LOG.info("aTaskkkkkkkkkkk  ", aTask.get(0).getProcessVariables());
-            
             if (details != null && details.get(0).getProcessVariables() != null) {
             variables.put("processName", details.get(0).getProcessDefinitionId());
             	 LOG.info("sProcessNameeeeeeeeeeeee  ", details.get(0).getProcessDefinitionId());
