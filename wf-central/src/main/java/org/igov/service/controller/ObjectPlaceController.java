@@ -49,8 +49,8 @@ public class ObjectPlaceController {
     @Autowired
     private PlaceTypeDao placeTypeDao;
     
-    @Autowired
-    private PlaceTreeDao placeTreeDao;
+    /*@Autowired
+    private PlaceTreeDao placeTreeDao;*/
 
     @Autowired
     private ObjectPlace_UADao objectPlace_UADao;
