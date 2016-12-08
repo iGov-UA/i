@@ -101,7 +101,8 @@ public class ProcessController {
             //   result.add(creatStub());
             //} else {
             LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sID_: " + sID_.trim());
-            List<Process> processes = processDao.findAllBy("sID_", sID_.trim());
+//            List<Process> processes = processDao.findAllBy("sID_", sID_.trim());
+            List<Process> processes = processDao.findAll();
             LOG.info("processes: " + processes.size());
             result.addAll(processes);
             //}
