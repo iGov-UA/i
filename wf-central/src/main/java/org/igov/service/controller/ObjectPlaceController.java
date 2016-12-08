@@ -982,7 +982,7 @@ public class ObjectPlaceController {
                 if (result != null){
                     try{
                         //PlaceTree oPlaceTree = placeTreeDao.findByExpected("placeId", result.getId());
-                        PlaceTree oTestPlaceTree = placeTreeDao.findByExpected("placeId", result.getsID_UA());
+                        PlaceTree oTestPlaceTree = placeTreeDao.findByExpected("placeId", Long.parseLong(result.getsID_UA()));
                         /*if (oPlaceTree != null){
                             LOG.info("oPlaceTree: " + oPlaceTree.getParentId());
                         }else
