@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.igov.model.core.NamedEntity;
 
 import javax.persistence.Column;
+import javax.persistence.Transient;
 
 /**
  * @author dgroup
@@ -24,7 +25,10 @@ public class Place extends NamedEntity {
     @Column(name = "sNameOriginal")
     @JsonProperty("sNameOriginal")
     private String originalName;
-
+    
+    @Transient
+    private String fullName;
+    
     public Place() {
         // no actions required
     }
@@ -59,6 +63,14 @@ public class Place extends NamedEntity {
 
     public void setOriginalName(String originalName) {
         this.originalName = originalName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     @JsonIgnore
