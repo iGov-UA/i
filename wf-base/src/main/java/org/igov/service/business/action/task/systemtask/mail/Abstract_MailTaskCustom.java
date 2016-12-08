@@ -40,7 +40,6 @@ import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.fs.FileSystemDictonary;
 import org.igov.io.mail.Mail;
 import org.igov.io.sms.ManagerSMS;
-import org.igov.io.sms.ManagerSMS_New;
 import org.igov.io.web.HttpRequester;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -57,7 +56,6 @@ import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.igov.util.Tool;
 import org.igov.util.ToolWeb;
 import org.igov.util.JSON.JsonDateTimeSerializer;
-import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -101,9 +99,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     private static final String PATTERN_CURRENCY_ID = "sID_Currency%s";
     private static final String PATTERN_DESCRIPTION = "sDescription%s";
     private static final String PATTERN_SUBJECT_ID = "nID_Subject%s";
-
-    @Autowired
-    public TaskService taskService;
 
     @Autowired
     public HistoryService historyService;
