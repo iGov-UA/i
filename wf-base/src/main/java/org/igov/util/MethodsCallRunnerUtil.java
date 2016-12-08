@@ -162,9 +162,9 @@ public class MethodsCallRunnerUtil {
 	public Object runMethod(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID) throws CommonServiceException{
 		try{
 			Object ret = null;
-			List<ActionExecute> actionExecuteLsit = actionExecuteService.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
-			LOG.info("actionExecuteLsit size -{}",actionExecuteLsit.size());
-			for(ActionExecute actionExecute:actionExecuteLsit){
+			List<ActionExecute> actionExecuteList = actionExecuteService.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
+			LOG.info("actionExecuteList size -{}",actionExecuteList.size());
+			for(ActionExecute actionExecute:actionExecuteList){
 				Class<?> c = Class.forName(actionExecute.getsObject());
 				Object o = springContext.getBean(c);
 				
@@ -175,10 +175,10 @@ public class MethodsCallRunnerUtil {
 				LOG.info("object - {}", o);				
 
 				Object[] parammeters = actionExecute.getSmParam()!=null?(Object[]) fromByteArray(actionExecute.getSoRequest()):null;
-				LOG.info("parammeters - {}", parammeters);
+				LOG.info("parameters - {}", parammeters);
 				
 				if (parammeters!= null)					
-					LOG.info("parammeters size - {}", parammeters.length);
+					LOG.info("parameters size - {}", parammeters.length);
 				
 				Class<?>[] param_types = new Class<?>[parammeters!=null?parammeters.length:0];
 				if (parammeters!=null && parammeters.length>0)
@@ -205,14 +205,13 @@ public class MethodsCallRunnerUtil {
 					else 
 						ret = method.invoke(o);
 					LOG.info("return is {}",ret!=null?ret:null);
-					actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(2l));
+					actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(2L));
 					actionExecuteService.moveActionExecute(actionExecute);
-				}catch(InvocationTargetException e){
-					actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(4l));
+				}catch(InvocationTargetException e) {
+					actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(4L));
 					actionExecute.setnTry(actionExecute.getnTry()+1);
 					actionExecuteDAO.saveOrUpdate(actionExecute);
 					LOG.info("error during invoke method {}",e);
-
 				}
 			}
 			return ret;
