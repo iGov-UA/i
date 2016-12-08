@@ -215,7 +215,7 @@
           <hr class="hr-divider side-left"><span>Додатки</span><hr class="hr-divider side-right">
         </div>
 
-        <div>
+        <div ng-if="sSelectedTask !== 'unassigned'">
           <div class="dropup" ng-repeat="item in taskData.aAttachment" style="display: inline-block; position:relative;">
             <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
               <p>{{item.description | tableButtonFilter}}</p>
@@ -246,6 +246,9 @@
               {{item.description | cut : true : 25 | tableButtonFilter}}
             </button>
           </div>
+        </div>
+        <div ng-if="sSelectedTask === 'unassigned'">
+          <span>Для отримання доступу до прикріпленних додатків, необхідно прийняти заявку в роботу</span>
         </div>
       </div>
 

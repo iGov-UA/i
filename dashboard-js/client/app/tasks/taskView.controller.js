@@ -36,7 +36,7 @@
         function getObjFromTaskFormById(id) {
           if(id == null) return null;
           for (var i = 0; i < taskForm.length; i++) {
-            if (taskForm[i].id.includes(id)) {
+            if (taskForm[i].id && taskForm[i].id.includes(id)) {
               return taskForm[i];
             }
           }
@@ -79,7 +79,7 @@
                 }
               }
             }
-          }
+          };
 
         fillingUsers();
 
@@ -196,7 +196,7 @@
                 index;
 
             if(Array.isArray(indexes)){
-              index = isNaN(+indexes[0]) || +indexes[0];;
+              index = isNaN(+indexes[0]) || +indexes[0];
             }
 
             result[finalArray[0].trim()] = index !== undefined
@@ -251,33 +251,7 @@
                   if (match[2])
                     item.autocompleteName += match[2];
                   item.autocompleteData = autocompletesDataFactory[match[1]];
-                } else if (!match && isExecutorSelect) {
-                  item.type = 'select';
-                  item.selectType = 'autocomplete';
-                  item.autocompleteName = 'SubjectRole';
-                  item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
-                }
-              }
-            }
-          })
-        }
-        searchSelectSubject();
-
-        function searchSelectSubject() {
-          angular.forEach(taskForm, function (item) {
-            var isExecutorSelect = item.name.split(';')[2];
-            if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
-              var match;
-              if (((match = item.id ? item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/) : false))
-                ||(item.type == 'select' && (match = item.id ? item.id.match(/^s(Country)(_(\d+))?/) : false)) || isExecutorSelect) {
-                if (match && autocompletesDataFactory[match[1]] && !isExecutorSelect) {
-                  item.type = 'select';
-                  item.selectType = 'autocomplete';
-                  item.autocompleteName = match[1];
-                  if (match[2])
-                    item.autocompleteName += match[2];
-                  item.autocompleteData = autocompletesDataFactory[match[1]];
-                } else if (!match && isExecutorSelect) {
+                } else if (!match && isExecutorSelect.indexOf('SubjectRole') > -1) {
                   item.type = 'select';
                   item.selectType = 'autocomplete';
                   item.autocompleteName = 'SubjectRole';
@@ -948,14 +922,12 @@
           $scope.originalTaskForm = jQuery.extend(true, {}, $scope.taskForm);
           for (var i = 0; i < taskForm.length; i++) {
             if ($scope.originalTaskForm[i].type === "enum" && isItemFormPropertyDisabled($scope.originalTaskForm[i])) {
-              $scope.taskForm[i].type = "string";
               for (var j = 0; j < $scope.originalTaskForm[i].enumValues.length; j++) {
                 if ($scope.originalTaskForm[i].value === $scope.originalTaskForm[i].enumValues[j].id) {
                   $scope.taskForm[i].value = $scope.originalTaskForm[i].enumValues[j].name;
                 }
               }
               try {
-                $scope.taskForm.taskData.aField[i].sType = "string";
                 var keyCandidate = $scope.originalTaskForm.taskData.aField[i].sValue;
                 var objCandidate = $scope.originalTaskForm.taskData.aField[i].mEnum;
                 $scope.taskForm.taskData.aField[i].sValue = objCandidate[keyCandidate];
@@ -968,10 +940,8 @@
         function rollbackReadonlyEnumFields() {
           for (var i = 0; i < taskForm.length; i++) {
             if ($scope.originalTaskForm[i].type === "enum" && isItemFormPropertyDisabled($scope.originalTaskForm[i])) {
-              $scope.taskForm[i].type = "enum";
               $scope.taskForm[i].value = $scope.originalTaskForm[i].value;
               try {
-                $scope.taskForm.taskData.aField[i].sType = "string";
                 $scope.taskForm.taskData.aField[i].sType = $scope.originalTaskForm.taskData.aField[i].sType;
                 $scope.taskForm.taskData.aField[i].sValue = $scope.originalTaskForm.taskData.aField[i].sValue;
               } catch (e) {

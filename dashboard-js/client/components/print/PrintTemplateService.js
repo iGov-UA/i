@@ -24,7 +24,7 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
       var markerExists = false;
 
       for(var i = 0; i < form.length; i++) {
-        if (form[i].id.includes('marker') && form[i].value.includes('ShowFieldsOn')){
+        if (form[i].id && form[i].value && form[i].id.includes('marker') && form[i].value.includes('ShowFieldsOn')){
           markerExists = true;
           break;
         }
