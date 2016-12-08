@@ -33,12 +33,4 @@ public class AttributeName extends NamedEntity{
 	public void setsID(String sID) {
 		this.sID = sID;
 	}
-        
-         public Long getnOrder() {
-		return nOrder;
-	}
-
-	public void setnOrder(Long nOrder) {
-		this.nOrder = nOrder;
-	}
 }
