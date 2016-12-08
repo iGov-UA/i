@@ -22,6 +22,8 @@
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocChild" name="Документи у регіоні" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTicketNumber" name="Номер талону" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsZagran.json')}"></activiti:formProperty>
       </extensionElements>
@@ -69,7 +71,7 @@ execution.setVariable('sTicketCode', tickCode)
 									</p>
 									<p>
 										<b>Деталі зустрічі:</b><br>
-										Дата та час візиту: ${date_of_visit}
+										Номер талону - ${sTicketNumber}, орієнтовна дата та час візиту - ${sNotification_day}.
 									</p>
 									<p>
 										Реквізити для сплати адмінсбору доступні за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a>
