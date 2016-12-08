@@ -981,6 +981,7 @@ public class ObjectPlaceController {
                 if (result != null){
                     Long placeId = Long.parseLong(result.getsID_UA());
                     Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("placeId", placeId);
+                    
                     if (oPlaceTree.isPresent()){
                         PlaceTree oPlaceTreeResult = oPlaceTree.get();
                         Long parentId = oPlaceTreeResult.getParentId();
@@ -991,10 +992,10 @@ public class ObjectPlaceController {
                                     LOG.info("oParentPlaceID: " + oParentPlace.get().getPlaceTypeId());
                                     LOG.info("resultPlaceID: " + result.getPlaceTypeId());
                                 }
-                            }
-                        }
-                    }
-                }
+                            }else{LOG.info("placeId is null");}
+                        }else{LOG.info("parentId is null");}
+                    }else{LOG.info("oPlaceTree is null");}
+                }else{LOG.info("result is null");}
                 
             } catch (RuntimeException e) {
                 LOG.warn("Error: {}", e.getMessage());
