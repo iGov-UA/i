@@ -980,7 +980,7 @@ public class ObjectPlaceController {
                 
                 if (result != null){
                     Long placeId = Long.parseLong(result.getsID_UA());
-                    Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("placeId", placeId);
+                    Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("placeId", result.getId());
                     
                     if (oPlaceTree.isPresent()){
                         PlaceTree oPlaceTreeResult = oPlaceTree.get();
