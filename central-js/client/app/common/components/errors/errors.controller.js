@@ -2,7 +2,7 @@
   ErrorsController displays error messages to user
   ErrorsFactory is required
 */
-angular.module("iGovErrors").controller("ErrorsController", function($scope, ErrorsFactory) {
+angular.module("app").controller("ErrorsController", function($scope, ErrorsFactory) {
   /* get error messages to display */
   $scope.errors = ErrorsFactory.getErrors();
   /* removes an error from array*/
