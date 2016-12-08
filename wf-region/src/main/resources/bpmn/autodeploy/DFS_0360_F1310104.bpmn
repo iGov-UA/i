@@ -3,38 +3,52 @@
   <process id="DFS_0360_F1310104" name="Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище;Прізвище заявника;writable=true,sID_Field_SWinEd=HLNAME" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я;Ім'я заявника;writable=true,sID_Field_SWinEd=HPNAME" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові;По батькові заявника;writable=true,sID_Field_SWinEd=HFNAME" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Податковий номер;реєстраційний номер облікової картки платника податків;writable=true,sID_Field_SWinEd=HTIN" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCode" name="Код  територіального органу ДФС; ;writable=true,sID_Field_SWinEd=HKSTI" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Назва територіального органу ДФС; ;writable=true,sID_Field_SWinEd=HSTI" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна адреса; ;writable=true,sID_Field_SWinEd=HEMAIL" type="string" default="olga.kuzminova87@gmail.com"></activiti:formProperty>
+          
+        <activiti:formProperty id="C_DOC" name="C_DOC;system;writable=true,sID_Field_SWinEd=C_DOC" type="string" default="F13"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_SUB" name="C_DOC_SUB;system;writable=true,sID_Field_SWinEd=C_DOC_SUB" type="string" default="101"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_VER" name="C_DOC_VER;system;writable=true,sID_Field_SWinEd=C_DOC_VER" type="string" default="4"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_TYPE" name="C_DOC_TYPE;system;writable=true,sID_Field_SWinEd=C_DOC_TYPE" type="string" default="00"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_CNT" name="C_DOC_CNT;system;writable=true,sID_Field_SWinEd=C_DOC_CNT" type="string" default="0000001"></activiti:formProperty> 
+        <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG" type="string"></activiti:formProperty>
+        <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ" type="string"></activiti:formProperty>  
+        <activiti:formProperty id="PERIOD_MONTH" name="PERIOD_MONTH;system;writable=true,sID_Field_SWinEd=PERIOD_MONTH" type="string" default="12"></activiti:formProperty>  
+        <activiti:formProperty id="PERIOD_TYPE" name="PERIOD_TYPE;system;writable=true,sID_Field_SWinEd=PERIOD_TYPE" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field_SWinEd=PERIOD_YEAR" type="string" default="2015"></activiti:formProperty>
+        <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG" type="string"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_STAN" name="C_DOC_STAN;system;writable=true,sID_Field_SWinEd=C_DOC_STAN" type="string" default="1"></activiti:formProperty>
+        
+        <activiti:formProperty id="HR" name="HR;system;writable=true,sID_Field_SWinEd=HR" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="HPT" name="HPT;system;writable=true,sID_Field_SWinEd=HPT" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="HPR" name="HPR;system;writable=true,sID_Field_SWinEd=HPR" type="string" default="0"></activiti:formProperty>
+           
+        <activiti:formProperty id="H01G1S" name="H01G1S;system;writable=true,sID_Field_SWinEd=H01G1S" type="string"></activiti:formProperty>   
+             
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Назва територіального органу ДФС; ;writable=true,sID_Field_SWinEd=HSTI" type="select" required="true"></activiti:formProperty>      
+        
+        <activiti:formProperty id="bankIdPassport" name="Номер та серія паспорта; ;writable=true,sID_Field_SWinEd=DGPass" type="string"></activiti:formProperty>
+        <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field_SWinEd=TIN" type="string" default="АА111111ББ"></activiti:formProperty>
+        <activiti:formProperty id="HNAME" name="Прізвище, ім'я та по батькові;;writable=true,sID_Field_SWinEd=HNAME" type="string" default="Продан Юлия Георгиевна"></activiti:formProperty>
+                
+        <activiti:formProperty id="HZIP" name="Поштовий індекс; ;writable=true,sID_Field_SWinEd=HCOUNTRY" type="string" default="49052"></activiti:formProperty>        
         <activiti:formProperty id="sNameCountry" name="Назва країни ; ;writable=true,sID_Field_SWinEd=HCOUNTRY" type="string" default="Україна"></activiti:formProperty>
         <activiti:formProperty id="sNameCity" name="Назва населеного пункту; ;writable=true,sID_Field_SWinEd=HCITY" type="string" default="Дніпро"></activiti:formProperty>
         <activiti:formProperty id="sNameStreet" name="Назва вулиці ; ;writable=true,sID_Field_SWinEd=HSTREET" type="string" default="Красний камінь"></activiti:formProperty>
         <activiti:formProperty id="sNumberBuild" name="Номер будинку; ;writable=true,sID_Field_SWinEd=HBUILD" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sStartPeriod" name="Квартал;початок періоду;writable=true,sID_Field_SWinEd=R01G01" type="string" default="4"></activiti:formProperty>
-        <activiti:formProperty id="sStartYear" name="Рік;початок періоду;writable=true,sID_Field_SWinEd=R01G02" type="string" default="2015"></activiti:formProperty>
-        <activiti:formProperty id="sEndPeriod" name="Квартал;кінець періоду;writable=true,sID_Field_SWinEd=R02G01" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="sEndYear" name="Рік;кінець періоду;writable=true,sID_Field_SWinEd=R02G02" type="string" default="2016"></activiti:formProperty>
-        <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG" type="string"></activiti:formProperty>
-        <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field_SWinEd=TIN" type="string"></activiti:formProperty>
-        <activiti:formProperty id="C_DOC" name="C_DOC;system;writable=true,sID_Field_SWinEd=C_DOC" type="string" default="F13"></activiti:formProperty>
-        <activiti:formProperty id="C_DOC_SUB" name="C_DOC_SUB;system;writable=true,sID_Field_SWinEd=C_DOC_SUB" type="string" default="018"></activiti:formProperty>
-        <activiti:formProperty id="C_DOC_VER" name="C_DOC_VER;system;writable=true,sID_Field_SWinEd=C_DOC_VER" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="C_DOC_STAN" name="C_DOC_STAN;system;writable=true,sID_Field_SWinEd=C_DOC_STAN" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="C_DOC_TYPE" name="C_DOC_TYPE;system;writable=true,sID_Field_SWinEd=C_DOC_TYPE" type="string" default="00"></activiti:formProperty>
-        <activiti:formProperty id="C_DOC_CNT" name="C_DOC_CNT;system;writable=true,sID_Field_SWinEd=C_DOC_CNT" type="string" default="0000001"></activiti:formProperty>
-        <activiti:formProperty id="PERIOD_TYPE" name="PERIOD_TYPE;system;writable=true,sID_Field_SWinEd=PERIOD_TYPE" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="PERIOD_MONTH" name="PERIOD_MONTH;system;writable=true,sID_Field_SWinEd=PERIOD_MONTH" type="string" default="12"></activiti:formProperty>
-        <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field_SWinEd=PERIOD_YEAR" type="string" default="2015"></activiti:formProperty>
-        <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG" type="string"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="F1301801"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Writable" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sShotBuild" name="Додаток до номеру будинку;;writable=true,sID_Field_SWinEd=HSHOT" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameCorp" name="Корпус;;writable=true,sID_Field_SWinEd=HCORP" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberFlat" name="Номер квартири;;writable=true,sID_Field_SWinEd=HAPT" type="string"></activiti:formProperty>
+        
+         <activiti:formProperty id="phonetel" name="Телефон;;writable=true,sID_Field_SWinEd=HTEL" type="string" default="0965907773"></activiti:formProperty>
+        
+        <activiti:formProperty id="HBOS" name="Керівник (ініціали та прізвище) ; ;writable=true,sID_Field_SWinEd=HBOS" type="string" default="Пупкин В. В."></activiti:formProperty>
+        
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" default="olga.kuzminova87@gmail.com"></activiti:formProperty>        
+        
+        
+        <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="F1310104"></activiti:formProperty>
+        
         <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="F1401801" writable="false"></activiti:formProperty>
+        
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Обробка звернення " activiti:candidateGroups="sales">

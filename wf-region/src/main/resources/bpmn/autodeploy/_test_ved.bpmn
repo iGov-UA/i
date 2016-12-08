@@ -4,6 +4,14 @@
     <documentation>https://github.com/e-government-ua/i/issues/1353</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+          <activiti:formProperty id="sBirthDate1" name="Дата народження" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSomeNumber1" name="Лонг" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFact1" name="Місце проживання (textArea)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDouble1" name="Double" type="double" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Sex" name="Ваша стать" type="enum" required="true">
+          <activiti:value id="man" name="Чоловіча"></activiti:value>
+          <activiti:value id="woman" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="saQuestion2" name="показати таблицю-галочка;sID_CheckboxTrue=yes" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -15,6 +23,14 @@
     </startEvent>
     <userTask id="usertask1" name="крок 1" activiti:candidateGroups="sales">
       <extensionElements>
+        <activiti:formProperty id="sBirthDate1" name="Дата народження; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sSomeNumber1" name="Лонг; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFact1" name="Місце проживання (textArea); ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDouble1" name="Double; ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="Sex" name="Ваша стать; ;writable=false" type="enum">
+          <activiti:value id="man" name="Чоловіча"></activiti:value>
+          <activiti:value id="woman" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNazvanie" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
@@ -32,6 +48,14 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNazvanie" name="Таблиця з файлом; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="валідатор поля sBankMfoUah та sBankMfoCurrency" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_14&quot;:{&quot;aField_ID&quot;:[&quot;sBankMfoUah&quot;,&quot;sBankMfoCurrency&quot;],&quot;sFormat&quot;:&quot;######&quot;,&quot;sMessage&quot;:&quot;Невірний формат. МФО має складатися з 6 цифр&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBirthDate1" name="Дата народження; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sSomeNumber1" name="Лонг; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFact1" name="Місце проживання; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDouble1" name="Double; ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="Sex" name="Ваша стать; ;writable=false" type="enum" required="true">
+          <activiti:value id="man" name="Чоловіча"></activiti:value>
+          <activiti:value id="woman" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">

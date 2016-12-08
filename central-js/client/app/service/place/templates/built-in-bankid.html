@@ -514,6 +514,15 @@
                        class="form-control"
                        value="">
 
+                <input ng-switch-when="double"
+                       type="{{!!property.sFieldType?property.sFieldType : 'text'}}"
+                       name="{{property.id}}"
+                       ng-model="data.formData.params[property.id].value"
+                       ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
+                       class="form-control"
+                       value="">
+
                 <input ng-switch-when="tel"
                        type="text"
                        name="{{property.id}}"
@@ -750,7 +759,7 @@
                 </div>
                 <div ng-message="string">{{ form[property.id].lastErrorMessage }}</div>
                 <div ng-message="long">{{ form[property.id].lastErrorMessage }}</div>
-                <div ng-message="double">{{ form[property.id].lastErrorMessage }}</div>               
+                <div ng-message="double">{{ form[property.id].lastErrorMessage }}</div>
                 <div ng-message="numberbetween">{{ form[property.id].lastErrorMessage }}</div>
                 <div ng-message="numberfractionalbetween">{{ form[property.id].lastErrorMessage }}</div>
                 <div ng-message="numbersaccounts">{{ form[property.id].lastErrorMessage }}</div>

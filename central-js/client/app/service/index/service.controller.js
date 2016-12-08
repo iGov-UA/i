@@ -2,6 +2,8 @@ angular.module('app')
   .controller('ServiceController',
   ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location', '$stateParams', '$state', '$anchorScroll', 'TitleChangeService',
   function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location, $stateParams, $state, $anchorScroll, TitleChangeService) {
+    $rootScope.isOldStyleView = !!statesRepository.isDFS();
+    if ($rootScope.isOldStyleView) $scope.spinner = true;
     $rootScope.catalogTab = 1;
     $scope.catalog = [];
     // $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
@@ -29,9 +31,13 @@ angular.module('app')
     var subscriptions = [];
     var subscriberId = messageBusService.subscribe('catalog:update', function(data) {
       $scope.mainSpinner = false;
-      $scope.fullCatalog = data;
+      $rootScope.fullCatalog = data;
       $scope.catalog = data;
-      $rootScope.rand = (Math.random()*10).toFixed(2);
+      if ($rootScope.isOldStyleView) {
+        $rootScope.busSpinner = false;
+        $scope.spinner = false;
+      }
+      $rootScope.rand = (Math.random() * 10).toFixed(2);
     }, false);
     subscriptions.push(subscriberId);
 
@@ -110,6 +116,9 @@ angular.module('app')
       if (toState.resolve) {
         $scope.spinner = false;
       }
+    });
+    $rootScope.$watch('catalog', function () {
+      if ($scope.catalog.length !== 0) $scope.spinner = false;
     });
     $anchorScroll();
   }]);
