@@ -1,10 +1,14 @@
 package org.igov.io.mail;
 
+import com.google.common.io.Files;
+import java.io.File;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
+import org.igov.io.fs.FileSystemData;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
 import org.slf4j.Logger;
@@ -72,8 +76,11 @@ public class NotificationPatterns {
                 bankIdFirstName = makeStringAsName(bankIdFirstName);
                 sHead = String.format("Вітаємо, %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
             }
-
-            String sBody = Abstract_MailTaskCustom.populatePatternWithContent("[patterns/mail/auto_client_notify.html]");
+     
+            //"patterns/mail/auto_client_notify.html"
+            File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_PATTERN_EMAIL, "auto_client_notify.html");
+            String sBody = Files.toString(oFile, Charset.defaultCharset());
+            LOG.info("!!!sBody: " + sBody);
             sBody = sBody.replaceAll("[sID_Order]", sID_Order)
                     .replaceAll("[sClientName]", bankIdFirstName)
                     .replaceAll("[sClientSurname]", bankIdLastName);

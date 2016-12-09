@@ -48,6 +48,9 @@ public class ObjectPlaceController {
 
     @Autowired
     private PlaceTypeDao placeTypeDao;
+    
+    @Autowired
+    private PlaceTreeDao placeTreeDao;
 
     @Autowired
     private ObjectPlace_UADao objectPlace_UADao;
@@ -974,6 +977,26 @@ public class ObjectPlaceController {
                 	LOG.info("Found place {} for process by ID_UA {}", place.get().getName(), oHistoryEvent_Service.getsID_UA());
                 	result = place.get();
                 }
+                
+                if (result != null){
+                    Long placeId = Long.parseLong(result.getsID_UA());
+                    Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("placeId", result.getId());
+                    
+                    if (oPlaceTree.isPresent()){
+                        PlaceTree oPlaceTreeResult = oPlaceTree.get();
+                        Long parentId = oPlaceTreeResult.getParentId();
+                        if(parentId != null){
+                            if(parentId != placeId){
+                                Optional<Place> oParentPlace = placeDao.findBy("sID_UA", parentId);
+                                if(oParentPlace.isPresent()){
+                                    LOG.info("oParentPlaceID: " + oParentPlace.get().getPlaceTypeId());
+                                    LOG.info("resultPlaceID: " + result.getPlaceTypeId());
+                                }
+                            }else{LOG.info("placeId is null");}
+                        }else{LOG.info("parentId is null");}
+                    }else{LOG.info("oPlaceTree is null");}
+                }else{LOG.info("result is null");}
+                
             } catch (RuntimeException e) {
                 LOG.warn("Error: {}", e.getMessage());
                 LOG.trace("FAIL:",  e);

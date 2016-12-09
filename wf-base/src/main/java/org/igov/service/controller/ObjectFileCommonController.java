@@ -82,7 +82,7 @@ public class ObjectFileCommonController {
 
     @Autowired
     private RuntimeService oRuntimeService;
-    
+
     @Autowired
     private GeneralConfig generalConfig;
     //@Autowired
@@ -90,7 +90,7 @@ public class ObjectFileCommonController {
 
     @Autowired
     HttpRequester httpRequester;
-    
+
     @Autowired
     private ActionTaskService oActionTaskService;
 
@@ -578,7 +578,7 @@ public class ObjectFileCommonController {
         Attachment oAttachment = taskService.createAttachment(file.getContentType() + ";" + oActionTaskService.getFileExtention(file), taskId,
                 processInstanceId, sFilename,// file.getOriginalFilename()
                 description, file.getInputStream());
-        if(oAttachment != null && sID_Field != null && !"".equals(sID_Field.trim())){
+        if (oAttachment != null && sID_Field != null && !"".equals(sID_Field.trim())) {
             oRuntimeService.setVariable(processInstanceId, sID_Field, oAttachment.getId());
             LOG.debug("setVariable: processInstanceId = {}, sID_Field = {}, attachmentId = {}", processInstanceId, sID_Field, oAttachment.getId());
         }
@@ -656,7 +656,7 @@ public class ObjectFileCommonController {
                 + oActionTaskService.getFileExtention(sFileName), taskId, processInstanceId,
                 sFilename, description,
                 new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
-        if(attachment != null && sID_Field != null && !"".equals(sID_Field.trim())){
+        if (attachment != null && sID_Field != null && !"".equals(sID_Field.trim())) {
             oRuntimeService.setVariable(processInstanceId, sID_Field, attachment.getId());
             LOG.debug("setVariable: processInstanceId = {}, sID_Field = {}, attachmentId = {}", processInstanceId, sID_Field, attachment.getId());
         }
@@ -730,45 +730,45 @@ public class ObjectFileCommonController {
             + "Пример запроса: https://alpha.test.region.igov.org.ua/wf/service/object/file/dfs/getPatternFilled?sID_Pattern=F1301801"
             + "в теле запроса передавать JSON-обьект в виде строки, например:<br>"
             + "{<br>"
-            + "{\n" +
-"	\"HLNAME\":\"БІЛЯВЦЕВ\"\n" +
-"	,\"HPNAME\":\"ВОЛОДИМИР\"\n" +
-"	,\"HFNAME\":\"ВОЛОДИМИРОВИЧ\"\n" +
-"	,\"HTIN\":\"2943209693\"\n" +
-"	,\"HKSTI\":\"2301\"\n" +
-"	,\"HSTI\":\"2650 ДПІ У ГОЛОСІЇВСЬКОМУ Р-НІ ГУ МІНДОХОДІВ У М.КИЄВІ\"\n" +
-"	,\"HEMAIL\":\"olga.kuzminova87@gmail.com\"\n" +
-"	,\"HCOUNTRY\":\"Украіна\"\n" +
-"	,\"HCITY\":\"Дніпро\"\n" +
-"	,\"HSTREET\":\"Красный камень\"\n" +
-"	,\"HBUILD\":\"5\"\n" +
-"	,\"R01G01\":\"22\"\n" +
-"	,\"R01G01\":\"22\"\n" +
-"	,\"R01G02\":\"22\"\n" +
-"	,\"R02G01\":\"22\"\n" +
-"	,\"R02G02\":\"22\"\n" +
-"	,\"C_REG\":\"23\"\n" +
-"	,\"C_RAJ\":\"01\"\n" +
-"	,\"TIN\":\"3578965412\"\n" +
-"	,\"C_DOC\":\"F13\"\n" +
-"	,\"C_DOC_SUB\":\"018\"\n" +
-"	,\"C_DOC_VER\":\"01\"\n" +
-"	,\"C_DOC_STAN\":\"1\"\n" +
-"	,\"C_DOC_TYPE\":\"00\"\n" +
-"	,\"C_DOC_CNT\":\"0000001\"\n" +
-"	,\"PERIOD_TYPE\":\"1\"\n" +
-"	,\"PERIOD_MONTH\":\"12\"\n" +
-"	,\"PERIOD_YEAR\":\"2015\"\n" +
-"	,\"C_STI_ORIG\":\"2301\"\n" +
-"\n" +
-")<br>"
+            + "{\n"
+            + "	\"HLNAME\":\"БІЛЯВЦЕВ\"\n"
+            + "	,\"HPNAME\":\"ВОЛОДИМИР\"\n"
+            + "	,\"HFNAME\":\"ВОЛОДИМИРОВИЧ\"\n"
+            + "	,\"HTIN\":\"2943209693\"\n"
+            + "	,\"HKSTI\":\"2301\"\n"
+            + "	,\"HSTI\":\"2650 ДПІ У ГОЛОСІЇВСЬКОМУ Р-НІ ГУ МІНДОХОДІВ У М.КИЄВІ\"\n"
+            + "	,\"HEMAIL\":\"olga.kuzminova87@gmail.com\"\n"
+            + "	,\"HCOUNTRY\":\"Украіна\"\n"
+            + "	,\"HCITY\":\"Дніпро\"\n"
+            + "	,\"HSTREET\":\"Красный камень\"\n"
+            + "	,\"HBUILD\":\"5\"\n"
+            + "	,\"R01G01\":\"22\"\n"
+            + "	,\"R01G01\":\"22\"\n"
+            + "	,\"R01G02\":\"22\"\n"
+            + "	,\"R02G01\":\"22\"\n"
+            + "	,\"R02G02\":\"22\"\n"
+            + "	,\"C_REG\":\"23\"\n"
+            + "	,\"C_RAJ\":\"01\"\n"
+            + "	,\"TIN\":\"3578965412\"\n"
+            + "	,\"C_DOC\":\"F13\"\n"
+            + "	,\"C_DOC_SUB\":\"018\"\n"
+            + "	,\"C_DOC_VER\":\"01\"\n"
+            + "	,\"C_DOC_STAN\":\"1\"\n"
+            + "	,\"C_DOC_TYPE\":\"00\"\n"
+            + "	,\"C_DOC_CNT\":\"0000001\"\n"
+            + "	,\"PERIOD_TYPE\":\"1\"\n"
+            + "	,\"PERIOD_MONTH\":\"12\"\n"
+            + "	,\"PERIOD_YEAR\":\"2015\"\n"
+            + "	,\"C_STI_ORIG\":\"2301\"\n"
+            + "\n"
+            + ")<br>"
             + "<br>"
             + "В ответ получим заполненный шаблон. например:"
             + "<br>"
-            + "{\n" +
-"  \"soPatternFilled\": \"<?xml version=\\\"1.0\\\" encoding=\\\"windows-1251\\\"?><DECLAR xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\" xsi:noNamespaceSchemaLocation=\\\"F1301801.xsd\\\"><DECLARHEAD><TIN>3578965412</TIN><C_DOC>F13</C_DOC><C_DOC_SUB>018</C_DOC_SUB><C_DOC_VER>01</C_DOC_VER><C_DOC_TYPE>00</C_DOC_TYPE><C_DOC_CNT>0000001</C_DOC_CNT><C_REG>23</C_REG><C_RAJ>01</C_RAJ><PERIOD_MONTH>12</PERIOD_MONTH><PERIOD_TYPE>1</PERIOD_TYPE><PERIOD_YEAR>2015</PERIOD_YEAR><C_STI_ORIG>2301</C_STI_ORIG><C_DOC_STAN>1</C_DOC_STAN><D_FILL>24102016</D_FILL><SOFTWARE xsi:nil=\\\"true\\\"></SOFTWARE></DECLARHEAD><DECLARBODY><HLNAME>БІЛЯВЦЕВ</HLNAME><HPNAME>ВОЛОДИМИР</HPNAME><HFNAME>ВОЛОДИМИРОВИЧ</HFNAME><HTIN>2943209693</HTIN><HKSTI>2301</HKSTI><HSTI>2650 ДПІ У ГОЛОСІЇВСЬКОМУ Р-НІ ГУ МІНДОХОДІВ У М.КИЄВІ</HSTI><HEMAIL>olga.kuzminova87@gmail.com</HEMAIL><HCOUNTRY>Украіна</HCOUNTRY><HREG xsi:nil=\\\"true\\\"></HREG><HRAJ xsi:nil=\\\"true\\\"></HRAJ><HCITY>Дніпро</HCITY><HSTREET>Красный камень</HSTREET><HBUILD>5</HBUILD><HSHOT xsi:nil=\\\"true\\\"></HSHOT><HCORP xsi:nil=\\\"true\\\"></HCORP><HAPT xsi:nil=\\\"true\\\"></HAPT><HPASS xsi:nil=\\\"true\\\"></HPASS><HPASSDATE xsi:nil=\\\"true\\\"></HPASSDATE><HPASSISS xsi:nil=\\\"true\\\"></HPASSISS><R01G01>22</R01G01><R01G02>22</R01G02><R02G01>22</R02G01><R02G02>22</R02G02><HFILL>24102016</HFILL></DECLARBODY></DECLAR>\",\n" +
-"  \"sFileName\": \"23013578965412F1301801100000000111220152301.xml\"\n" +
-"}")
+            + "{\n"
+            + "  \"soPatternFilled\": \"<?xml version=\\\"1.0\\\" encoding=\\\"windows-1251\\\"?><DECLAR xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\" xsi:noNamespaceSchemaLocation=\\\"F1301801.xsd\\\"><DECLARHEAD><TIN>3578965412</TIN><C_DOC>F13</C_DOC><C_DOC_SUB>018</C_DOC_SUB><C_DOC_VER>01</C_DOC_VER><C_DOC_TYPE>00</C_DOC_TYPE><C_DOC_CNT>0000001</C_DOC_CNT><C_REG>23</C_REG><C_RAJ>01</C_RAJ><PERIOD_MONTH>12</PERIOD_MONTH><PERIOD_TYPE>1</PERIOD_TYPE><PERIOD_YEAR>2015</PERIOD_YEAR><C_STI_ORIG>2301</C_STI_ORIG><C_DOC_STAN>1</C_DOC_STAN><D_FILL>24102016</D_FILL><SOFTWARE xsi:nil=\\\"true\\\"></SOFTWARE></DECLARHEAD><DECLARBODY><HLNAME>БІЛЯВЦЕВ</HLNAME><HPNAME>ВОЛОДИМИР</HPNAME><HFNAME>ВОЛОДИМИРОВИЧ</HFNAME><HTIN>2943209693</HTIN><HKSTI>2301</HKSTI><HSTI>2650 ДПІ У ГОЛОСІЇВСЬКОМУ Р-НІ ГУ МІНДОХОДІВ У М.КИЄВІ</HSTI><HEMAIL>olga.kuzminova87@gmail.com</HEMAIL><HCOUNTRY>Украіна</HCOUNTRY><HREG xsi:nil=\\\"true\\\"></HREG><HRAJ xsi:nil=\\\"true\\\"></HRAJ><HCITY>Дніпро</HCITY><HSTREET>Красный камень</HSTREET><HBUILD>5</HBUILD><HSHOT xsi:nil=\\\"true\\\"></HSHOT><HCORP xsi:nil=\\\"true\\\"></HCORP><HAPT xsi:nil=\\\"true\\\"></HAPT><HPASS xsi:nil=\\\"true\\\"></HPASS><HPASSDATE xsi:nil=\\\"true\\\"></HPASSDATE><HPASSISS xsi:nil=\\\"true\\\"></HPASSISS><R01G01>22</R01G01><R01G02>22</R01G02><R02G01>22</R02G01><R02G02>22</R02G02><HFILL>24102016</HFILL></DECLARBODY></DECLAR>\",\n"
+            + "  \"sFileName\": \"23013578965412F1301801100000000111220152301.xml\"\n"
+            + "}")
     @RequestMapping(value = {"/dfs/getPatternFilled"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
     public @ResponseBody
     Map<String, String> getPatternFilled(
@@ -777,20 +777,20 @@ public class ObjectFileCommonController {
             HttpServletResponse httpResponse) throws Exception {
 
         Map<String, String> mReturn = new HashMap<>();
-        
+
         //mField.get("C_DOC_CNT").trim()
-        Integer nCountYear = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, "AlienBP_"+sID_Pattern, null);//Long.valueOf(snID_Service)
-        String snCountYear = nCountYear+"";
-        LOG.info("snCountYear(before)=",snCountYear);
-        if(nCountYear!=null&&nCountYear>0){
-            Integer nDigits=7;
-            if(snCountYear.length()<nDigits){
-                snCountYear="0000000".substring(0,nDigits-snCountYear.length())+snCountYear;
-                LOG.info("snCountYear(after)=",snCountYear);
+        Integer nCountYear = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, "AlienBP_" + sID_Pattern, null);//Long.valueOf(snID_Service)
+        String snCountYear = nCountYear + "";
+        LOG.info("snCountYear(before)=", snCountYear);
+        if (nCountYear != null && nCountYear > 0) {
+            Integer nDigits = 7;
+            if (snCountYear.length() < nDigits) {
+                snCountYear = "0000000".substring(0, nDigits - snCountYear.length()) + snCountYear;
+                LOG.info("snCountYear(after)=", snCountYear);
             }
             mField.put("C_DOC_CNT", snCountYear);
         }
-        
+
         LOG.info("mField: " + mField);
         File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, sID_Pattern + ".xml");
         String sContentReturn = Files.toString(oFile, Charset.defaultCharset());
@@ -798,9 +798,11 @@ public class ObjectFileCommonController {
         String sRegex, sReplacement;
         for (Map.Entry<String, String> oField : mField.entrySet()) {
             sRegex = "<" + oField.getKey().trim().toUpperCase() + ">";
-            sReplacement = sRegex + oField.getValue().replaceAll(">", "&gt;").replaceAll("<", "&lt;")
-                    .replaceAll("\"", "&quot;").replaceAll("'", "&apos;").replaceAll("&", "&amp;");
-            sContentReturn = sContentReturn.replaceAll(sRegex, sReplacement);
+            if (oField.getValue() != null) {
+                sReplacement = sRegex + oField.getValue().replaceAll(">", "&gt;").replaceAll("<", "&lt;")
+                        .replaceAll("\"", "&quot;").replaceAll("'", "&apos;").replaceAll("&", "&amp;");
+                sContentReturn = sContentReturn.replaceAll(sRegex, sReplacement);
+            }
         }
         sContentReturn = fillDateToday(sContentReturn);
         LOG.info("sContentReturn: " + sContentReturn);
@@ -816,22 +818,22 @@ public class ObjectFileCommonController {
     private String buildFileName(Map<String, String> mField) {
         //2301 3194700944 F1301801 1 00 0000001 1 12 2015 2301.xml
         String C_DOC_VER = mField.get("C_DOC_VER").trim();
-        if(C_DOC_VER.length() == 1){
+        if (C_DOC_VER.length() == 1) {
             C_DOC_VER = "0" + C_DOC_VER;
         }
         String result = new StringBuilder(mField.get("C_REG").trim())
-                    .append(mField.get("C_RAJ").trim())
-                    .append(mField.get("TIN").trim())
-                    .append(mField.get("C_DOC").trim())
-                    .append(mField.get("C_DOC_SUB").trim())
-                    .append(C_DOC_VER)
-                    .append(mField.get("C_DOC_STAN").trim())
-                    .append(mField.get("C_DOC_TYPE").trim())
-                    .append(mField.get("C_DOC_CNT").trim())
-                    .append(mField.get("PERIOD_TYPE").trim())
-                    .append(mField.get("PERIOD_MONTH").trim())
-                    .append(mField.get("PERIOD_YEAR").trim())
-                    .append(mField.get("C_STI_ORIG").trim()).append(".xml").toString();
+                .append(mField.get("C_RAJ").trim())
+                .append(mField.get("TIN").trim())
+                .append(mField.get("C_DOC").trim())
+                .append(mField.get("C_DOC_SUB").trim())
+                .append(C_DOC_VER)
+                .append(mField.get("C_DOC_STAN").trim())
+                .append(mField.get("C_DOC_TYPE").trim())
+                .append(mField.get("C_DOC_CNT").trim())
+                .append(mField.get("PERIOD_TYPE").trim())
+                .append(mField.get("PERIOD_MONTH").trim())
+                .append(mField.get("PERIOD_YEAR").trim())
+                .append(mField.get("C_STI_ORIG").trim()).append(".xml").toString();
         LOG.info("buildFileName result: " + result);
         return result;
     }
@@ -849,7 +851,7 @@ public class ObjectFileCommonController {
         return declarContent;
         //D_FILL=HFILL=01012016
     }
-    
+
     @ApiOperation(value = "setTaskAttachment", notes
             = "#####  Set/update файла-атачмента к таске Activiti")
     @RequestMapping(value = "/setTaskAttachment", method = RequestMethod.POST, produces = "application/json")
