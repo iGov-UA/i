@@ -141,8 +141,8 @@
           <activiti:value id="accept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
           <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment1" name="Вкажіть причину відмови або додаткові дані для отримання свідоцтва у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nBill" name="Рахунок для сплати" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Вкажіть причину відмови або додаткові дані для отримання свідоцтва у цьому полі" type="textArea" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nBill" name="Рахунок для сплати" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/min_equip.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_841_user1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -339,9 +339,8 @@
           <activiti:value id="online" name="В єлектронній формі через мережу інтернет"></activiti:value>
           <activiti:value id="offline" name="У паперовій формі особисто забрати"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFileDecision" name="Рахунок для сплати" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileDecision" name="Готове рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/min_equip.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nDocAnketa},${nDocTO},${nDocFlag},${nDocVlasn},${nDocPass},${form_signed}]]></activiti:expression>
@@ -367,8 +366,9 @@
 				Ваша заявка №[sID_Order] на видачу свідоцтва про мінімальний склад екіпажу судна була оброблена (в додатках до листа ви знайдете свідоцтво).
 			</p> 			
 			<p>
-				Якщо у Вас не задовільняє отриманий результат чи є якісь уточнюючі питання, зверніться особисто відвідати Державну службу України з безпеки на транспорті за адресою: <br>
-						м. Київ, пр. Повітрофлотський 76В, 4 поверх з оригіналами документів, які Ви додавали та отримати посвідчення.
+				Якщо у Вас не задовільняє отриманий результат чи є якісь уточнюючі питання, 
+				зверніться особисто відвідати Державну службу України з безпеки на транспорті за адресою: <br>
+				м. Київ, пр. Повітрофлотський 76В, 4 поверх з оригіналами документів, які Ви додавали та отримати посвідчення.
 			</p> 
 			<p>
 				Приймальні дні управління надання адміністративних послуг на водному транспорті Департаменту надання адміністративних послуг Укртрансбезпеки:<br>
