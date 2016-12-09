@@ -31,7 +31,7 @@
     </startEvent>
     <userTask id="usertask1" name="Канцелярія - реєстрація документа: ${sUsertask1_name} ${sUsertask1_name2}" activiti:candidateGroups="justice_common">
       <extensionElements>
-        <activiti:formProperty id="sNameForm" name="вхідна кореспонденція" type="label"></activiti:formProperty>
+        <activiti:formProperty id="sNameForm" name="вхідна кореспонденція" type="label" default="вхідна кореспонденція"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asCategoryIncoming" name="Категорія вхідного документу" type="enum" writable="false">
@@ -74,6 +74,7 @@
             <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="Керівник - накладення резолюції. Документ: ${sUsertask1_name} ${sUsertask1_name2} ${sID_Order_GovPublic}" activiti:candidateGroups="${sName_SubjectRole}">
@@ -265,9 +266,10 @@ sUsertask1_name2="внутрішній"
 }
 
 execution.setVariable('sUsertask1_name2', sUsertask1_name2)
+
+
 </script>
     </scriptTask>
-    <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
@@ -326,6 +328,7 @@ execution.setVariable('sUsertask1_name2', sUsertask1_name2)
     </userTask>
     <sequenceFlow id="flow27" sourceRef="usertask2" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="usertask3" targetRef="usertask2_yellow"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_justice_incoming">
     <bpmndi:BPMNPlane bpmnElement="justice_incoming" id="BPMNPlane_justice_incoming">
@@ -357,10 +360,6 @@ execution.setVariable('sUsertask1_name2', sUsertask1_name2)
         <omgdi:waypoint x="800.0" y="170.0"></omgdi:waypoint>
         <omgdi:waypoint x="800.0" y="122.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="326.0" y="94.0"></omgdi:waypoint>
-        <omgdi:waypoint x="352.0" y="95.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="66.0" y="94.0"></omgdi:waypoint>
         <omgdi:waypoint x="90.0" y="94.0"></omgdi:waypoint>
@@ -380,6 +379,10 @@ execution.setVariable('sUsertask1_name2', sUsertask1_name2)
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="700.0" y="217.0"></omgdi:waypoint>
         <omgdi:waypoint x="740.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="326.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="352.0" y="95.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
