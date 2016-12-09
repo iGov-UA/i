@@ -595,8 +595,12 @@ public abstract class AbstractModelTask {
                 LOG.info("(sID_AttachmentTrimmed={})", sID_AttachmentTrimmed);
                 Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
                 if (oAttachment != null) {
+                    LOG.info("if (oAttachment != null)");
+                    LOG.info("oAttachment info={}, oAttachment.getId()={}",oAttachment.getDescription(), oAttachment.getId());
                     aAttachment.add(oAttachment);
                 } else {
+                    LOG.info("Inside aAttachmentNotFound");
+                    LOG.info("oAttachment info={}, oAttachment.getId()={}",oAttachment.getDescription(), oAttachment.getId());
                     aAttachmentNotFound.add(sID_AttachmentTrimmed);
                 }
             } else {
@@ -604,8 +608,10 @@ public abstract class AbstractModelTask {
             }
         }
         if (!aAttachmentNotFound.isEmpty()) {
+            LOG.info("if (!aAttachmentNotFound.isEmpty())");
             List<Attachment> aAttachmentByProcess = taskService.getProcessInstanceAttachments(processInstanceId);
             for (Attachment attachment : aAttachmentByProcess) {
+                LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
                 if (aAttachmentNotFound.contains(attachment.getId())) {
                     aAttachment.add(attachment);
                 }
