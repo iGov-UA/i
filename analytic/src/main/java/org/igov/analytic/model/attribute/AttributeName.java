@@ -18,19 +18,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @javax.persistence.Entity
 public class AttributeName extends NamedEntity{ 
     
-	@JsonProperty(value = "sID")
+    @JsonProperty(value = "sID")
     @Column
     private String sID;
         
-         @JsonProperty(value = "nOrder")
+    @JsonProperty(value = "nOrder")
     @Column
     private Long nOrder;
+    
+    public Long getnOrder(){
+        return nOrder;
+    }
 
-	public String getsID() {
-		return sID;
-	}
+    public void setnOrder(Long nOrder){
+        this.nOrder = nOrder;
+    }
+    
+    public String getsID() {
+        return sID;
+    }
 
-	public void setsID(String sID) {
-		this.sID = sID;
-	}
+    public void setsID(String sID) {
+        this.sID = sID;
+    }
 }
