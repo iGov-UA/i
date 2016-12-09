@@ -88,15 +88,9 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
         //TaskService taskService = task.getExecution().getEngineServices()
         //       .getTaskService();
         int n = 0;
-        List<Attachment> currentAttachments = taskService.getTaskAttachments(task.getId());
-        for(Attachment attachment: currentAttachments) {
-            LOG.info("Inside currentAttachments");
-            LOG.info(attachment.toString());
-        }
-        attachmentsToAdd.removeAll(currentAttachments);
         for (Attachment attachment : attachmentsToAdd) {
-            LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getDescription()={})"
-                    ,n++, task.getId(), task.getExecution().getProcessInstanceId(),attachment.getName(),attachment.getDescription());
+            LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getDescription()={},attachment.getId()={})"
+                    ,n++, task.getId(), task.getExecution().getProcessInstanceId(),attachment.getName(),attachment.getDescription(), attachment.getId());
             Attachment newAttachment = taskService.createAttachment(
                     attachment.getType(), task.getId(),
                     task.getExecution().getProcessInstanceId(), attachment.getName(),
