@@ -20,7 +20,7 @@
         <activiti:formProperty id="sDateStart" name="Від" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateEnd" name="До" type="date" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_1" name="Список тварин та інших об'єктів тваринного світу, яких необхідно вилучити" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sFaunaQuantity&quot;],&quot;sValue&quot;:&quot;Список тварин та інших об'єктів тваринного світу, яких необхідно вилучити&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Список тварин та інших об'єктів тваринного світу, яких необхідно вилучити" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sFaunaQuantity&quot;],&quot;sValue&quot;:&quot;Список тварин та інших об'єктів тваринного світу, яких необхідно вилучити&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nFaunaQuantity" name="Види тварин чи рослин; Чисельність" type="table" default="${markerService.loadFromFile('table/eco/eco_0598_useAnimals_table.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="sSpecialConditions" name="Особливі умови використання диких тварин та інших об'єктів тваринного світу" type="textArea" required="true"></activiti:formProperty>
@@ -37,8 +37,8 @@
           <activiti:value id="sEnumPost" name="надіслати поштою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdressDelivery" name="Адреса, за якою надіслати оригінал документу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="requiredFields1" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="requiredFields1" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sListDocument" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListPogodgennya" name="Список документів" type="invisible"></activiti:formProperty>
       </extensionElements>
@@ -123,8 +123,8 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0598_useAnimals_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sListDocument" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListPogodgennya" name="Список документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="requiredFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="requiredFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_4.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -279,8 +279,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFilePermit" name="Скан-копія дозволу" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFileReject" name="Скан-копія листа з відмовою" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="requiredFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="requiredFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_4.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask3" targetRef="usertask2_yellow"></sequenceFlow>
