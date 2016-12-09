@@ -1,27 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="doc_justice_171" name="Мінюст - вихідна кореспонденція" isExecutable="true">
+  <process id="doc_justice_171" name="Мінюст - Cлужбовий ініциативний лист" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="asCategoryIncoming" name="Оберіть категорію вхідного документу" type="enum" default="sEnumOfficialLetters" required="true">
-          <activiti:value id="sEnumCentralGov" name="документ центральних органів влади"></activiti:value>
-          <activiti:value id="sEnumActsRevision" name="акт ревізії"></activiti:value>
-          <activiti:value id="sEnumLogisticalSupport" name="заявка на матеріально-технічне  забезпечення"></activiti:value>
-          <activiti:value id="sEnumFaksohramy" name="факсограма"></activiti:value>
-          <activiti:value id="sEnumEdocs" name="електронний документ"></activiti:value>
-          <activiti:value id="sEnumOfficialLetters" name="службовий лист"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumEdocs" name="Якщо електроний документ з ЕЦП - поставте галочку; ;sID_CheckboxTrue=sEnumWithESP" type="enum" required="true">
-          <activiti:value id="sEnumWithESP" name="з ЕЦП"></activiti:value>
-          <activiti:value id="sEnumWithoutESP" name="без ЕЦП"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumOfficialLetters" name="Оберіть категорію службового листа" type="enum" default="sEnumInitiativeLetter" required="true">
-          <activiti:value id="sEnumInitiativeLetter" name="ініциативний"></activiti:value>
-          <activiti:value id="sEnumResponseLetter" name="лист-відповідь"></activiti:value>
-          <activiti:value id="sEnumInsideLetter" name="внутрішній"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо електроний документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asEnumEdocs&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategoryIncoming&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumEdocs'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Якщо службові листи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;asEnumOfficialLetters&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategoryIncoming&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOfficialLetters'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -29,25 +11,11 @@
     </startEvent>
     <userTask id="usertask1" name="реєстрація ініціативного листа" activiti:candidateGroups="justice_common">
       <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+       
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asCategoryIncoming" name="Категорія вхідного документу" type="enum" writable="false">
-          <activiti:value id="sEnumCentralGov" name="документ центральних органів влади"></activiti:value>
-          <activiti:value id="sEnumActsRevision" name="акт ревізії"></activiti:value>
-          <activiti:value id="sEnumLogisticalSupport" name="заявка на матеріально-технічне  забезпечення"></activiti:value>
-          <activiti:value id="sEnumFaksohramy" name="факсограма"></activiti:value>
-          <activiti:value id="sEnumEdocs" name="електронний документ"></activiti:value>
-          <activiti:value id="sEnumOfficialLetters" name="службовий лист"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumEdocs" name="Якщо електроний документ з ЕЦП - поставте галочку; ;sID_CheckboxTrue=sEnumWithESP" type="enum" writable="false">
-          <activiti:value id="sEnumWithESP" name="з ЕЦП"></activiti:value>
-          <activiti:value id="sEnumWithoutESP" name="без ЕЦП"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumOfficialLetters" name="Категорія службового листа" type="enum" writable="false">
-          <activiti:value id="sEnumInitiativeLetter" name="ініциативний"></activiti:value>
-          <activiti:value id="sEnumResponseLetter" name="лист-відповідь"></activiti:value>
-          <activiti:value id="sEnumInsideLetter" name="внутрішній"></activiti:value>
-        </activiti:formProperty>
+       
         <activiti:formProperty id="sID_Order_GovPublic" name="Вхідний номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата документа" type="date" required="true"></activiti:formProperty>
