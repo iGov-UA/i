@@ -581,9 +581,13 @@ public abstract class AbstractModelTask {
     public List<Attachment> findAttachments(String sAttachments, String processInstanceId) {
         sAttachments = sAttachments == null ? "" : sAttachments;
         LOG.info("(sAttachmentsForSend={})", sAttachments);
+
         List<Attachment> aAttachment = new ArrayList<>();
+
         String[] asID_Attachment = sAttachments.split(",");
+
         List<String> aAttachmentNotFound = new ArrayList<>();
+
         for (String sID_Attachment : asID_Attachment) {
             //log.info("sID_Attachment=" + sID_Attachment);
             if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
@@ -610,7 +614,7 @@ public abstract class AbstractModelTask {
         LOG.info("In findAttachments(sInheritedAttachmentsIds, oExecution.getId())");
 
         for(Attachment attachment: aAttachment) {
-            LOG.info("Attachment info: " + attachment.getDescription());
+            LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
         }
 
         return aAttachment;
