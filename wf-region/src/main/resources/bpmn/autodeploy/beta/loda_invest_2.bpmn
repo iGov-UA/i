@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="loda_invest_2" name="Надання пропозиції інвестиційного проекту" isExecutable="true">
+    <startEvent id="startevent2" name="Start">
+        <extensionElements>  
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="position" name="Посада" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+         
+        <activiti:formProperty id="sLabel1"  name="Приклад заповненної заяви" type="label" default="дивіться &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16GPjQyaEVEdxBC14CU3RYpatSxejRSQ_KmYWTxYazhw/edit#gid=839637706/&quot; target=&quot;_blank&quot;&gt;за посиланням&lt;/a&gt;"></activiti:formProperty>       
+        <activiti:formProperty id="sObject" name="Назва проекту" type="string" required="true"></activiti:formProperty>   
+        <activiti:formProperty id="sSector" name="Галузь" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceObject" name="Рекомендоване розташування, площа проекту;вказати населений пункт де планується проект. Якщо відома точна адреса, то вкажіть її" type="textArea" required="true"></activiti:formProperty>    
+        <activiti:formProperty id="sTargetProject" name="Цілі проекту; Опишіть комерційні/соціальні цілі проекту" type="textArea" required="true"></activiti:formProperty>          
+        <activiti:formProperty id="sTerrain" name="Територія, на яку проект матиме вплив" type="string" required="true"></activiti:formProperty>           
+        <activiti:formProperty id="sSpecificationProject" name="Стислий опис проекту" type="textArea" required="true"></activiti:formProperty>                
+        <activiti:formProperty id="sExpectationProject" name="Очікувані результати" type="textArea" required="true"></activiti:formProperty>  
+        <activiti:formProperty id="sPeriodProject" name="Період здійснення; вказати, за який перод планується реалізація проекту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Орієнтовна вартість проекту, тис. грн." type="table" default="${markerService.loadFromFile('table/loda/loda_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodPayback" name="Очікувана окупність (років)" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="asSourcesOfFfunding" name="Джерела фінансування" type="enum" required="true">
+            <activiti:value id="sSourcesOfFfunding_1" name="державний бюджет"></activiti:value>
+            <activiti:value id="sSourcesOfFfunding_2" name=" районний бюджет"></activiti:value>
+            <activiti:value id="sSourcesOfFfunding_3" name="місцевий бюджет"></activiti:value>
+            <activiti:value id="sSourcesOfFfunding_4" name=" кредитні кошти"></activiti:value>
+            <activiti:value id="sSourcesOfFfunding_5" name="гранти"></activiti:value>
+            <activiti:value id="sSourcesOfFfunding_6" name=" інвестиції спонсорів"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sKeyParticipant" name="Ключові потенційні учасники реалізації проекту; (хто, на Вашу думку, має брати участь в реалізації даного проекту" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Comments" name="Коментарі" type="textArea"></activiti:formProperty>
+        
+        <activiti:formProperty id="file" name="Ви можете завантажити свій проект; якщо документ має декілька сторінок, об'єднайте у pdf-файл або zip архів" type="file" ></activiti:formProperty>
+        
+        <activiti:formProperty id="date_today" name="Дата подання заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_loda" name="Пошта співробітника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
+        </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent2" targetRef="scripttask1"></sequenceFlow>
+    
+    <scriptTask id="scripttask1" name="Отримання дати подання" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
+    </scriptTask>
+    
+    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Сповіщення співробітника" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+        <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${sMailClerk_loda}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. Надання пропозиції інвестиційного проекту]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    
+    <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Сповіщення громадянина" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+        
+         <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[ Надання пропозиції інвестиційного проекту]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[
+[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p> Ваш запит "Надання пропозиції інвестиційного проекту" було зареєстровано у системі.<br>
+Повідомлення про результат послуги буде спрямовано на Ваш e-mail.</p>
+${sPhoneOrgan}<br>
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${privatePhone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements> 
+    </serviceTask>
+    
+     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
+    
+    <userTask id="usertask1" name="Прийтяння рішення по проекту" activiti:candidateGroups="loda_invest">
+       <extensionElements>  
+        <activiti:formProperty id="date_today" name="Дата подання заяви" writable="false"></activiti:formProperty>   
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="position" name="Посада" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+         
+        
+        <activiti:formProperty id="sObject" name="Назва проекту" type="string" writable="false"></activiti:formProperty>   
+        <activiti:formProperty id="sSector" name="Галузь" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceObject" name="Рекомендоване розташування, площа проекту" type="textArea" writable="false"></activiti:formProperty>    
+        <activiti:formProperty id="sTargetProject" name="Цілі проекту" type="textArea" writable="false"></activiti:formProperty>          
+        <activiti:formProperty id="sTerrain" name="Територія, на яку проект матиме вплив" type="string" writable="false"></activiti:formProperty>           
+        <activiti:formProperty id="sSpecificationProject" name="Стислий опис проекту" type="textArea" writable="false"></activiti:formProperty>                
+        <activiti:formProperty id="sExpectationProject" name="Очікувані результати" type="textArea" writable="false"></activiti:formProperty>  
+        <activiti:formProperty id="sPeriodProject" name="Період здійснення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Орієнтовна вартість проекту, тис. грн." type="table" default="${markerService.loadFromFile('table/loda/loda_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodPayback" name="Очікувана окупність (років)" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="asSourcesOfFfunding" name="Джерела фінансування" type="enum" writable="false">
+            <activiti:value id="sSourcesOfFfunding_1" name="державний бюджет"></activiti:value>
+            <activiti:value id="sSourcesOfFfunding_2" name=" районний бюджет"></activiti:value>
+            <activiti:value id="sSourcesOfFfunding_3" name="місцевий бюджет"></activiti:value>
+            <activiti:value id="sSourcesOfFfunding_4" name=" кредитні кошти"></activiti:value>
+            <activiti:value id="sSourcesOfFfunding_5" name="гранти"></activiti:value>
+            <activiti:value id="sSourcesOfFfunding_6" name=" інвестиції спонсорів"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sKeyParticipant" name="Ключові потенційні учасники реалізації проекту" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Comments" name="Коментарі" type="textArea" writable="false"></activiti:formProperty>
+        
+         <activiti:formProperty id="decide" name="Рішення держслужбовця" type="enum" required="true">
+          <activiti:value id="accept" name="Прийняти проект до розгляду інвесторів"></activiti:value>
+          <activiti:value id="reject" name="Відмовити за недостатньої кількості документів або даних"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="scomment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
+        
+          <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${file},${sTable1}</activiti:expression>
+          </activiti:field>
+       </activiti:taskListener>
+        
+        
+        
+        </extensionElements> 
+        
+    </userTask>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask2">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask2" name="Лист-привятання з реєстрацією проекту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+        <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Надання пропозиції інвестиційного проекту]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt; Ваше звернення було розглянуто. Відповідь позитивна&lt;br&gt;
+${sPhoneOrgan}&lt;br&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${privatePhone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+      <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask3">
+          <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+      </sequenceFlow>
+    <serviceTask id="servicetask3" name="Лист-відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+         <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Подача greenfields та brownfields]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;На жаль, Ваше звернення було відхилено. &lt;br&gt;
+&lt;p&gt;Причина в наступному:&lt;br&gt;
+${scomment}&lt;/p&gt;
+&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+${sPhoneOrgan}&lt;br&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${privatePhone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements> 
+    </serviceTask>
+      <sequenceFlow id="flow8" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+    
+    <endEvent id="endevent1" name="End"></endEvent>
+  
+    
+   
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_loda_invest_2">
+    <bpmndi:BPMNPlane bpmnElement="loda_invest_2" id="BPMNPlane_loda_invest_2">
+      <bpmndi:BPMNShape bpmnElement="startevent2" id="BPMNShape_startevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="93.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="61.0" width="105.0" x="180.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="61.0" width="105.0" x="350.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="61.0" width="105.0" x="650.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="682.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="767.0" y="213.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="530.0" y="213.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="685.0" y="330.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="61.0" width="105.0" x="500.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="105.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="180.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="285.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="702.0" y="141.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="174.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="722.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="767.0" y="240.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="682.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="240.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="582.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="330.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="819.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="330.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="455.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="605.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
