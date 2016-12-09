@@ -1175,7 +1175,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
 //      'saFieldSummary': '' // поля для агрегатов
-         LOG.info("я ищу dohody.dat");
         if ("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)) {
             sID_State_BP = null;
         }
