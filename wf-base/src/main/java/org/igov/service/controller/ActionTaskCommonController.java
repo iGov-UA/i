@@ -68,7 +68,6 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.igov.model.document.DocumentStepSubjectRight;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
@@ -1176,6 +1175,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
 //      'saFieldSummary': '' // поля для агрегатов
+        LOG.info("ПОИСК DOHODY.dat");
         if ("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)) {
             sID_State_BP = null;
         }
@@ -2633,23 +2633,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     HttpStatus.FORBIDDEN);
         }
 
-    }    
-        
-    @RequestMapping(value = "/getTestBPs", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    @Transactional
-    public @ResponseBody
-    String getTestBPs(
-            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
-            throws IOException {
-        List <ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().involvedUser(sLogin).list();
-        Set <String> processesList = new HashSet<>();
-        for (ProcessInstance instance : processInstances) {
-            processesList.add(instance.getProcessDefinitionId());
-        }
-        
-        String jsonRes = JSONValue.toJSONString(processesList);
-        LOG.info("Result: {}", jsonRes);
-        return jsonRes;
     }
     
 }

@@ -635,16 +635,8 @@ public class ObjectFileCommonController {
 
         }
 
-        identityService.setAuthenticatedUserId(assignee);
-        
-        List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
-            for (Attachment oAttachment : attachments) {
-                if (description.equals(oAttachment.getDescription())) {
-                    taskService.deleteAttachment(oAttachment.getId());
-                    LOG.info("Attachment was deleted. nID_Attach {} ", oAttachment.getId());
-                }
-            }  
-        
+        identityService.setAuthenticatedUserId(assignee);        
+                
         String sFilename = sFileName;
         LOG.debug("sFilename={}", sFileName);
         sFilename = sTextTranslit(sFilename);
