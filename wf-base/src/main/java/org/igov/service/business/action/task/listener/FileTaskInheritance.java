@@ -88,11 +88,9 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
         //TaskService taskService = task.getExecution().getEngineServices()
         //       .getTaskService();
         int n = 0;
-        List<Attachment> currentAttachments = taskService.getTaskAttachments(task.getId());
-        attachmentsToAdd.removeAll(currentAttachments);
         for (Attachment attachment : attachmentsToAdd) {
-            LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getDescription()={})"
-                    ,n++, task.getId(), task.getExecution().getProcessInstanceId(),attachment.getName(),attachment.getDescription());
+            LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getDescription()={},attachment.getId()={})"
+                    ,n++, task.getId(), task.getExecution().getProcessInstanceId(),attachment.getName(),attachment.getDescription(), attachment.getId());
             Attachment newAttachment = taskService.createAttachment(
                     attachment.getType(), task.getId(),
                     task.getExecution().getProcessInstanceId(), attachment.getName(),
@@ -104,19 +102,6 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
                             attachment.getId()));
         }
 
-        for(Attachment attachment: currentAttachments) {
-            LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getDescription()={})"
-                    ,n++, task.getId(), task.getExecution().getProcessInstanceId(),attachment.getName(),attachment.getDescription());
-            Attachment newAttachment = taskService.createAttachment(
-                    attachment.getType(), task.getId(),
-                    task.getExecution().getProcessInstanceId(), attachment.getName(),
-                    attachment.getDescription(),
-                    taskService.getAttachmentContent(attachment.getId()));
-            LOG.info(MessageFormat
-                    .format("Created new attachment for the task {0} with ID {1} from the attachment with ID {2}",
-                            task.getId(), newAttachment.getId(),
-                            attachment.getId()));
-        }
         LOG.trace("Exiting method '{}'", METHOD_NAME);
     }
 
