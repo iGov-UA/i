@@ -607,6 +607,12 @@ public abstract class AbstractModelTask {
                 }
             }
         }
+        LOG.info("In findAttachments(sInheritedAttachmentsIds, oExecution.getId())");
+
+        for(Attachment attachment: aAttachment) {
+            LOG.info("Attachment info: " + attachment.getDescription());
+        }
+
         return aAttachment;
     }
 
