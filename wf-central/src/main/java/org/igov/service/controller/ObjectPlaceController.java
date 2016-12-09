@@ -985,11 +985,14 @@ public class ObjectPlaceController {
                     LOG.info("placeId: " + placeId);
                     LOG.info("resultId: " + resultId);
                     
-                    Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("rootId", resultId);
+                    //Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("placeId", placeId);
                     
+                    Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("rootId", resultId);        
+                            
                     if (oPlaceTree.isPresent()){
                         PlaceTree oPlaceTreeResult = oPlaceTree.get();
                         Long parentId = oPlaceTreeResult.getParentId();
+                        LOG.info("parentId");
                         if(parentId != null){
                             if(parentId != placeId){
                                 Optional<Place> oParentPlace = placeDao.findBy("sID_UA", parentId);
