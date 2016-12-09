@@ -994,8 +994,9 @@ public class ObjectPlaceController {
                         Long parentId = oPlaceTreeResult.getParentId();
                         LOG.info("parentId: " + parentId);
                         if(parentId != null){
-                            if(parentId != placeId){
-                                Optional<Place> oParentPlace = placeDao.findBy("sID_UA", parentId);
+                            if(parentId != resultId){
+                                LOG.info("PlaceId: " + oPlaceTreeResult.getPlaceId());
+                                Optional<Place> oParentPlace = placeDao.findBy("sID_UA", oPlaceTreeResult.getPlaceId());
                                 if(oParentPlace.isPresent()){
                                     LOG.info("oParentPlaceID: " + oParentPlace.get().getPlaceTypeId());
                                     LOG.info("resultPlaceID: " + result.getPlaceTypeId());
