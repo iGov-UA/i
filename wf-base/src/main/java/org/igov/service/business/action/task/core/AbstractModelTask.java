@@ -368,7 +368,7 @@ public abstract class AbstractModelTask {
                                 aByteFile = oBytesDataInmemoryStorage.getBytes(sFieldValue);
                                 oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
                             } catch (Exception oException) {
-                                LOG.error("sID_Field: " + sID_Field, oException); //TODO: Need remove becouse of new Log(
+                                LOG.error("sID_Field: " + sID_Field, oException); //TODO: Need remove because of new Log(
                                 new Log(oException, LOG)//this.getClass()
                                         ._Case("Activiti_AttachRedisFail")
                                         ._Status(Log.LogStatus.ERROR)
@@ -402,7 +402,7 @@ public abstract class AbstractModelTask {
                                 LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
                                         sID_Field);
                             } else {
-                                LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId()); //TODO: Need remove becouse of new Log(
+                                LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId()); //TODO: Need remove because of new Log(
                                 new Log(this.getClass(), LOG)//this.getClass()
                                         ._Case("Activiti_AttachRedisFail")
                                         ._Status(Log.LogStatus.ERROR)
@@ -607,6 +607,12 @@ public abstract class AbstractModelTask {
                 }
             }
         }
+        LOG.info("In findAttachments(sInheritedAttachmentsIds, oExecution.getId())");
+
+        for(Attachment attachment: aAttachment) {
+            LOG.info("Attachment info: " + attachment.getDescription());
+        }
+
         return aAttachment;
     }
 

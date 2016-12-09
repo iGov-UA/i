@@ -291,6 +291,7 @@
         $scope.bHasEmail = false;
         $scope.isClarifySending = false;
         $scope.tableIsInvalid = false;
+        $scope.taskData.aTable = [];
 
         $scope.validateForm = function(form) {
           var bValid = true;
@@ -1026,6 +1027,7 @@
           });
 
           $scope.tableContentShow = !$scope.tableContentShow;
+          console.log($scope)
         };
 
         // проверяем имя поля на наличие заметок
@@ -1136,6 +1138,21 @@
         $scope.isVisible = function (field) {
           return TableService.isVisible(field);
         };
+
+        $scope.searchingTablesForPrint = function () {
+          angular.forEach($scope.taskData.aAttachment, function (attachment) {
+            var tableID = attachment.description.match(/(\[id=(\w+)\])/);
+            if(tableID !== null && tableID.length === 3) {
+              tasks.getTableAttachment(attachment.taskId, attachment.id).then(function (res) {
+                var table = JSON.parse(res);
+                fixFieldsForTable(table);
+                $scope.taskData.aTable.push(table);
+              })
+            }
+          });
+        };
+        $scope.searchingTablesForPrint();
+
         /*
          * работа с таблицами
          */
