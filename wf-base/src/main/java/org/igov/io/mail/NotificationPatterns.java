@@ -21,9 +21,7 @@ import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCu
 //import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties_Notification;
 
 /**
- * User: goodg_000
- * Date: 25.08.2015
- * Time: 22:54
+ * User: goodg_000 Date: 25.08.2015 Time: 22:54
  */
 public class NotificationPatterns {
 
@@ -65,26 +63,34 @@ public class NotificationPatterns {
             LOG.error("FAIL:", oException);
         }
     }*/
-    
     public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdFirstName, String bankIdLastName) throws EmailException {
 
         try {
             String sHead;
-            if(bankIdFirstName == null || bankIdFirstName.equalsIgnoreCase("null")) {
+            if (bankIdFirstName == null || bankIdFirstName.equalsIgnoreCase("null")) {
                 sHead = String.format("Вітаємо, Ваша заявка %s прийнята!", sID_Order);
             } else {
                 bankIdFirstName = makeStringAsName(bankIdFirstName);
                 sHead = String.format("Вітаємо, %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
             }
-     
+
             //"patterns/mail/auto_client_notify.html"
             File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_PATTERN_EMAIL, "auto_client_notify.html");
             String sBody = Files.toString(oFile, Charset.defaultCharset());
-            LOG.info("!!!sBody: " + sBody);
-            sBody = sBody.replaceAll("[sID_Order]", sID_Order)
-                    .replaceAll("[sClientName]", bankIdFirstName)
-                    .replaceAll("[sClientSurname]", bankIdLastName);
-            
+
+            if (sID_Order != null) {
+                sBody = sBody.replaceAll("[sID_Order]", sID_Order);
+                LOG.info("!!!after sID_Order replace sBody: " + sBody);
+            }
+            if (bankIdFirstName != null) {
+                sBody = sBody.replaceAll("[sClientName]", bankIdFirstName);
+                LOG.info("!!!after bankIdFirstName replace sBody: " + sBody);
+            }
+            if (bankIdLastName != null) {
+                sBody = sBody.replaceAll("[sClientSurname]", bankIdLastName);
+                LOG.info("!!!after bankIdLastName replace sBody: " + sBody);
+            }
+
             Mail oMail = context.getBean(Mail.class);
             oMail._To(sMailTo)._Head(sHead)._Body(sBody)
                     ._ToName(makeStringAsName(bankIdFirstName), makeStringAsName(bankIdLastName));
@@ -95,8 +101,6 @@ public class NotificationPatterns {
             LOG.error("FAIL:", oException);
         }
     }
-
-
 
     private String makeStringAsName(String name) {
         name.toLowerCase();
@@ -124,7 +128,7 @@ public class NotificationPatterns {
 
     }
 
-public void sendTaskEmployeeQuestionEmail(String sHead, String sCommentary, String sMailTo, String sToken,
+    public void sendTaskEmployeeQuestionEmail(String sHead, String sCommentary, String sMailTo, String sToken,
             Long nID_Process, String saField, String soParams)
             throws EmailException, Exception {
         try {
@@ -158,7 +162,7 @@ public void sendTaskEmployeeQuestionEmail(String sHead, String sCommentary, Stri
                     + (sEmployerFIO != null ? "(" + sEmployerFIO + ")" : "") + " потребує уточнення деяких даних.";
 
             StringBuilder osBody = new StringBuilder(sText);
-            List<Map<String,String>> amReturn = amFieldMessageQuestion(saField, false);
+            List<Map<String, String>> amReturn = amFieldMessageQuestion(saField, false);
             osBody.append("<br>").append("<br>").append(createTable_TaskProperties(amReturn, false, true));//saField
             osBody.append("<br>").append("Примітка:").append("<br>");
             osBody.append(sCommentary).append("<br>");
@@ -178,7 +182,7 @@ public void sendTaskEmployeeQuestionEmail(String sHead, String sCommentary, Stri
             throw oException;
         }
     }
-    
+
     public void sendTaskEmployeeMessageEmail(String sHead, String sBody, String sMailTo, String sID_Order, String soParams)
             throws EmailException {
         try {
@@ -202,10 +206,9 @@ public void sendTaskEmployeeQuestionEmail(String sHead, String sCommentary, Stri
             if (sClientFIO == null) {
                 sClientFIO = "громадянин";
             }
-            
+
             String sURL = (new StringBuilder(generalConfig.getSelfHostCentral()).append("/order/search?sID_Order=")
-                    .append(sID_Order)
-                    //.append("&sToken=").append(sToken)
+                    .append(sID_Order) //.append("&sToken=").append(sToken)
                     ).toString();
 
             String sText = "<b>Шановний (-а) " + sClientFIO + "!</b><br><br>"
@@ -218,8 +221,8 @@ public void sendTaskEmployeeQuestionEmail(String sHead, String sCommentary, Stri
             osBody.append(sBody).append("<br>");
             osBody.append("<br/>").append("Щоб відповісти, Вам потрібно <a href=\"" + sURL
                     + "\"> перейти в розділ \"Мій журнал\" порталу iGov</a> "
-                    //+ "і внести інформацію у відповідні поля."
-                ).append("<br/>");
+            //+ "і внести інформацію у відповідні поля."
+            ).append("<br/>");
             osBody.append("<br/>").append("Дякуємо за увагу").append("<br/>");
             //osBody.append("Для уточнення - перейдіть по цьому посіланню: ").append(sURL).append("<br/>");
 
@@ -232,6 +235,6 @@ public void sendTaskEmployeeQuestionEmail(String sHead, String sCommentary, Stri
                     sID_Order);
             throw oException;
         }
-    }   
+    }
 
 }
