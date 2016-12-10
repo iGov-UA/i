@@ -599,9 +599,9 @@ public abstract class AbstractModelTask {
                     LOG.info("oAttachment info={}, oAttachment.getId()={}",oAttachment.getDescription(), oAttachment.getId());
                     aAttachment.add(oAttachment);
                 } else {
-                    LOG.info("Inside aAttachmentNotFound");
-                    LOG.info("oAttachment info={}, oAttachment.getId()={}",oAttachment.getDescription(), oAttachment.getId());
-                    aAttachmentNotFound.add(sID_AttachmentTrimmed);
+//                    LOG.info("Inside aAttachmentNotFound");
+//                    LOG.info("oAttachment info={}, oAttachment.getId()={}", oAttachment.getDescription(), oAttachment.getId());
+//                    aAttachmentNotFound.add(sID_AttachmentTrimmed);
                 }
             } else {
                 LOG.warn("(sID_Attachment={})", sID_Attachment);
