@@ -132,6 +132,16 @@ angular.module('iGovMarkers')
                             },
                             required: ["sID_Field", "sSpliter", "sID_Element_sValue1", "sID_Element_sValue2"],
                             additionalProperties: false
+                        },
+                        "^PrintForm_": {
+                        	type: "object", 
+                        	properties: { 
+                        		aField_ID: {"$ref": "#/definitions/stringArray"},
+                        		sPatternPath: {type: "string"}, 
+                        		sName: {type: "string"}
+                        	}, 
+                        	required: ["aField_ID", "sName"], 
+                        	additionalProperties: false 
                         }
                     },
                     additionalProperties: false
@@ -156,7 +166,20 @@ angular.module('iGovMarkers')
                             },
                             required: ["aElement_ID"],
                             additionalProperties: false
-                        }
+                        },
+                        "^Style_": {
+                        	type: "object",
+                        	properties: {
+                        		aElement_ID: {"$ref": "#/definitions/stringArray"},
+                        		aSelectors: {"$ref": "#/definitions/stringArray"},
+                        		oCommonStyle: { type: "object", patternProperties: {"^[A-Za-z]": {type : "string"}}},
+                        		oCentralStyle: { type: "object", patternProperties: {"^[A-Za-z]": {type : "string"}} },
+                        		oRegionStyle: { type: "object", patternProperties: {"^[A-Za-z]": {type : "string"}} },
+                        	}, 
+                        	required: ["aElement_ID"],
+                        	additionalProperties: false
+                        },
+
                     },
                     additionalProperties: false
                 },
@@ -261,6 +284,42 @@ angular.module('iGovMarkers')
                             required: ["aField_ID"],
                             additionalProperties: false
                         },
+                        "^StringRange": { 
+                        	type: "object",
+                        	properties: {
+                        		aField_ID: {"$ref": "#/definitions/stringArray"},
+                        		aField_Type: {"$ref": "#/definitions/stringArray"}, 
+                        		nMin: {type: "integer"},
+                        		nMax: {type: "integer"}, 
+                        		sMessage: {type: "string"}
+                        	},
+                        	required: ["aField_ID"],
+                        	additionalProperties: false
+                        },
+                        "^LongNumber": {
+                        	type: "object",
+                        	properties: {
+                        		aField_ID: {"$ref": "#/definitions/stringArray"},
+                        		aField_Type: {"$ref": "#/definitions/stringArray"}, 
+                        		nMin: {type: "integer"},
+                        		nMax: {type: "integer"},
+                        		sMessage: {type: "string"}
+                        	},
+                        	required: ["aField_ID"],
+                        	additionalProperties: false
+                        },
+                        "^DoubleNumber": { 
+                        	type: "object", 
+                        	properties: {
+                        		aField_ID: {"$ref": "#/definitions/stringArray"},
+                        		aField_Type: {"$ref": "#/definitions/stringArray"}, 
+                        		nMin: {type: "integer"}, 
+                        		nMax: {type: "integer"},
+                        		sMessage: {type: "string"}                     		
+                        	}, 
+                        	required: ["aField_ID"], 
+                        	additionalProperties: false
+                        }, 
                         "^NumberBetween": {
                             type: "object",
                             properties: {

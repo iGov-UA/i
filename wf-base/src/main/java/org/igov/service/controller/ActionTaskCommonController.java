@@ -1009,6 +1009,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
                 "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
+        LOG.info("111sdfFileName: " + sdfFileName);
         String fileName = "!" + sID_BP_Name + "_"
                 + sdfFileName.format(Calendar.getInstance().getTime()) + ".xlsx";
         LOG.debug("File name for statistics : {%s}", fileName);
@@ -1175,6 +1176,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
 //      'saFieldSummary': '' // поля для агрегатов
+        LOG.info("ПОИСК DOHODY.dat");
         if ("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)) {
             sID_State_BP = null;
         }
@@ -1195,6 +1197,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Date dBeginDate = oActionTaskService.getBeginDate(dateAt);
         Date dEndDate = oActionTaskService.getEndDate(dateTo);
         String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
+        LOG.info("4444separator " + separator);
         Charset charset = oActionTaskService.getCharset(sID_Codepage);
 
         // 2. query
@@ -1245,6 +1248,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         // 3. response
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
                 "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
+        LOG.info("222sdfFileName: " + sdfFileName);
         String sTaskDataFileName = fileName != null ? fileName : "data_BP-"
                 + sID_BP + "_"
                 + sdfFileName.format(Calendar.getInstance().getTime()) + ".txt";
@@ -2333,12 +2337,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      */
     @RequestMapping(value = "/getListBP", method = RequestMethod.GET)
     @ResponseBody
-    public List<ProcDefinitionI> getListBP(@ApiParam(value = "строка-ИД БП //опциональный фильтр, иначе все", required = false)
-            @RequestParam(value = "sID_BP", required = false) String sID_BP,
-            @ApiParam(value = "строка-типа поля //опциональный фильтр, иначе все", required = false)
-            @RequestParam(value = "sFieldType", required = false) String sFieldType,
-            @ApiParam(value = "строка-ИД поля //опциональный фильтр, иначе все", required = false)
-            @RequestParam(value = "sID_Field", required = false) String sID_Field) {
+    public List<ProcDefinitionI> getListBP(
+            @ApiParam(value = "строка-ИД БП //опциональный фильтр, иначе все", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
+            @ApiParam(value = "строка-типа поля //опциональный фильтр, иначе все", required = false) @RequestParam(value = "sFieldType", required = false) String sFieldType,
+            @ApiParam(value = "строка-ИД поля //опциональный фильтр, иначе все", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field
+    ) {
         List<ProcessDefinition> processDefinitions = repositoryService
                 .createProcessDefinitionQuery().processDefinitionId(sID_BP).list();
 

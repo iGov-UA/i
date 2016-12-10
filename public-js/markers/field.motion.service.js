@@ -16,7 +16,10 @@ function FieldMotionService(MarkersFactory) {
     },
     inWritable: function(fieldId) {
       return this.in(fieldId , "WritableFieldsOnCondition_");
-    }
+    },
+    inPrintForm: function(fieldId) { 
+      return this.in(fieldId, "PrintForm_"); 
+    }, 
   };
 
   this.getCalcFieldsIds = function() {
@@ -35,6 +38,23 @@ function FieldMotionService(MarkersFactory) {
         }
       })
       .reduce(function(prev, curr) { return prev.concat(curr); }, []);
+  };
+  
+  this.getPrintForms = function(fieldId) { 
+
+	  var printForms = grepByPrefix("PrintForms_");
+
+	  if( fieldId ) {
+		  printForms = printForms.some(function(entry) {
+			  return _.contains(entry.aField_ID, fieldId);
+		  	 });
+	  }
+
+	  return printForms; 
+  }; 
+  
+  this.getPrintFormsById = function(fieldId) {
+	  return getPrintForms(fieldId); 
   };
 
   this.isFieldWritable = function(fieldId, formData) {

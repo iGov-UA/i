@@ -1,7 +1,7 @@
 'use strict';
 
 //angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'PrintTemplateProcessor', '$q', '$templateRequest', '$lunaService', function(tasks, PrintTemplateProcessor, $q, $templateRequest, lunaService) {
-angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','FieldMotionService', 'PrintTemplateProcessor', '$q', '$templateRequest', function(tasks, FieldMotionService, PrintTemplateProcessor, $q, $templateRequest) {
+angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'PrintTemplateProcessor', '$q', '$templateRequest', function(tasks, PrintTemplateProcessor, $q, $templateRequest) {
   // TODO: move code from PrintTemplateProcessor here
   // helper function to get path to a print template based on it's ID
   function findPrintTemplate (form, sCustomFieldID) {
@@ -20,53 +20,21 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks','Field
       if (!form) {
         return [];
       }
-
-      var markerExists = false;
-
-      for(var i = 0; i < form.length; i++) {
-        if (form[i].id && form[i].value && form[i].id.includes('marker') && form[i].value.includes('ShowFieldsOn')){
-          markerExists = true;
-          break;
-        }
-      }
-
-      if (markerExists){
-        var templates = form.filter(function (item) {
-          var result = false;
-          if (item.id && item.id.includes('sBody')
-            && (!FieldMotionService.FieldMentioned.inShow(item.id)
-                || (FieldMotionService.FieldMentioned.inShow(item.id)
-                    && FieldMotionService.isFieldVisible(item.id, form)))) {
-              result = true;
-              // На дашборде при вытягивани для формы печати пути к патерну, из значения поля -
-              // брать название для каждого элемента комбобокса #792
-              // https://github.com/e-government-ua/i/issues/792
-              if (item.value && item.value.trim().length > 0 && item.value.length <= 100){
-                item.displayTemplate = item.value;
-              } else {
-                item.displayTemplate = item.name;
-              }
-            }
-          return result;
-        });
-      } else {
-        var templates = form.filter(function (item) {
-          var result = false;
-          if (item.id && item.id.indexOf('sBody') >= 0) {
-            result = true;
-            // На дашборде при вытягивани для формы печати пути к патерну, из значения поля -
-            // брать название для каждого элемента комбобокса #792
-            // https://github.com/e-government-ua/i/issues/792
-            if (item.value && item.value.trim().length > 0 && item.value.length <= 100){
-              item.displayTemplate = item.value;
-            } else {
-              item.displayTemplate = item.name;
-            }
+      var templates = form.filter(function (item) {
+        var result = false;
+        if (item.id && item.id.indexOf('sBody') >= 0) {
+          result = true;
+          // На дашборде при вытягивани для формы печати пути к патерну, из значения поля -
+          // брать название для каждого элемента комбобокса #792
+          // https://github.com/e-government-ua/i/issues/792
+          if (item.value && item.value.trim().length > 0 && item.value.length <= 100){
+            item.displayTemplate = item.value;
+          } else {
+            item.displayTemplate = item.name;
           }
-          return result;
-        });
-      }
-
+        }
+        return result;
+      });
       return templates;
     },
     // method to get parsed template

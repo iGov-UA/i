@@ -243,7 +243,8 @@
         <activiti:formProperty id="sPersonViolationOfLaw" name="Особа, яка порушила законодавство" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPersonMadeAct" name="Особа, яка склала акт" type="string"></activiti:formProperty>
         <activiti:formProperty id="tPrescription" name="Приписи" type="table" default="${markerService.loadFromFile('KMDA/DABI_tables/tPrescription.json')}"></activiti:formProperty>
-        <activiti:formProperty id="tOffensesAdmin" name="Правопорушення" type="table" default="${markerService.loadFromFile('KMDA/DABI_tables/tOffenses.json')}"></activiti:formProperty>
+        <activiti:formProperty id="tOffensesAdmin" name="Правопорушення адміністративні" type="table" default="${markerService.loadFromFile('KMDA/DABI_tables/tOffenses.json')}"></activiti:formProperty>
+        <activiti:formProperty id="tOffensesUrban" name="Правопорушення в сфері містобудівної діяльності" type="table" default="${markerService.loadFromFile('KMDA/DABI_tables/tOffenses.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_RefusingAct" name="[pattern/print/kiev/DABI_insp_akt_pro_nedopushennya_do_perevirki_1.html]" type="invisible" default="Акт про недопущення до перевірки" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_CheckingAct" name="[pattern/print/kiev/DABI_insp_akt_perevirki.html]" type="invisible" default="Акт перевірки" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_pripisStop" name="[pattern/print/kiev/DABI_insp_pripis_pro_zupinennya_pidgotovchih_ta_budivelnih_robit_1.html]" type="invisible" default="Припис про зупинення підготовчих та будівельних робіт 1" writable="false"></activiti:formProperty>
@@ -251,8 +252,9 @@
         <activiti:formProperty id="sBody_protocolAdmin" name="[pattern/print/kiev/DABI_insp_protokol_admin_1.html]" type="invisible" default="Протокол про адміністративне правопорушення" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_protocolUrban" name="[pattern/print/kiev/DABI_insp_protokol_mistobud_1.html]" type="invisible" default="Протокол про порушення у сфері містобудівної діяльності" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_resolutionAdmin" name="[pattern/print/kiev/DABI_insp_postanova_admin.html]" type="invisible" default="Постанова по справі про адміністративне правопорушення" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_resolutionCloseAdmin" name="[pattern/print/kiev/DABI_insp_postanova_zakruta_admin.html]" type="invisible" default="Постанова про закриття справи по правопорушення" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_resolutionCloseAdmin" name="[pattern/print/kiev/DABI_insp_postanova_zakruta_admin.html]" type="invisible" default="Постанова про закриття справи про адміністративне правопорушення" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_resolutionFine" name="[pattern/print/kiev/DABI_insp_postanova_mistobud.html]" type="invisible" default="Постанова про накладання штрафу за правопорушення в сфері містобудівної діяльності" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_resolutionCloseUrban" name="[pattern/print/kiev/DABI_insp_postanova_zakruta_mistobud.html]" type="invisible" default="Постанова про про закриття справи про правопорушення в сфері містобудівної діяльності" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4_req" name="requiredFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_4_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="ShowFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_4.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
