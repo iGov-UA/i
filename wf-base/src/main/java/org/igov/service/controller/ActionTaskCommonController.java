@@ -1181,7 +1181,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("sID_State_BP: " + sID_State_BP);
         LOG.info("nASCI_Spliter: " + nASCI_Spliter);
         LOG.info("fileName: " + fileName);
-        LOG.info("fileNameNew: " + " justice_incoming.xls");
+        fileName = "justice_incoming.xls";
+        LOG.info("fileNameNew: " + fileName);
         LOG.info("nASCI_Spliter: " + nASCI_Spliter);
         
         if ("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)) {
