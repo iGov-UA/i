@@ -81,7 +81,7 @@ public class NotificationPatterns {
             LOG.info("sBody testing: " + sBody);
             
             if (sID_Order != null) {
-                //sBody = sBody.replaceAll("[sID_Order]", sID_Order);
+                sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
                 LOG.info("!!!after sID_Order replace sBody: " + sBody);
             }
             if (bankIdFirstName != null) {
