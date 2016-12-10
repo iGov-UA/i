@@ -1,0 +1,48 @@
+{"motion" : {
+  "ShowFieldsOnCondition_9" : {"sNote":["право власності"],
+    "aField_ID":["sObjectOwnerNumber"],
+    "asID_Field":{"sCond":"asLandUsed"},
+    "sCondition":"([sCond]=='sEnumObjectOwner'||[sCond]=='Документ, що посвідчує право власності чи користування земельною ділянкою')"
+  },   
+  "ShowFieldsOnCondition_10" : {"sNote":["договір суперфіція"],
+    "aField_ID":["sObjectOwnerSuperfic"],
+    "asID_Field":{"sCond":"asLandUsed"},
+    "sCondition":"([sCond]=='sEnumSuperfic'||[sCond]=='Договір суперфіцію')"
+  },   
+  "ShowFieldsOnCondition_11":{"sNote":["змінено підрядника"],
+    "aField_ID":["sDocLetter"],
+    "asID_Field":{"sCond1":"saReasonChange4"},
+    "sCondition":"([sCond1] == 'yes')"
+  },
+  "ShowFieldsOnCondition_12":{"sNote":["право іншому замовникові/ змінено осіб авторського або технічного нагляду"],
+    "aField_ID":["sDocChangeMessage"],
+    "asID_Field":{"sCond1":"saReasonChange1","sCond2":"saReasonChange2","sCond3":"saReasonChange3"},
+    "sCondition":"[sCond1]=='yes' || [sCond2]=='yes' || [sCond3]=='yes'"
+  },
+  "ShowFieldsOnCondition_13":{"sNote":["будівельні роботи"],
+    "aField_ID":["saReasonChange3","sDateRegistrationBuild","sDocDeclarationBuild"],
+    "asID_Field":{"sCond":"asTypeChange"},
+    "sCondition":"[sCond]=='sEnumBuild' || [sCond]=='будівельні роботи' "
+  },
+  "ShowFieldsOnCondition_14":{"sNote":["виправлення технічної помилки і підготовчі"],
+    "aField_ID":["sDocDeclarationPrepare"],
+    "asID_Field":{"sCond":"saReasonChange5","sCond1":"asTypeChange"},
+    "sCondition":"[sCond]=='yes' && [sCond1]=='sEnumPrepare'"
+  },
+  "ShowFieldsOnCondition_15":{"sNote":["підготовчі роботи"],
+    "aField_ID":["sDateRegistrationPrepare"],
+    "asID_Field":{"sCond":"asTypeChange"},
+    "sCondition":"[sCond]='sEnumPrepare' || [sCond]=='підготовчі роботи'"
+  },
+  "ShowFieldsOnCondition_16":{"sNote":["рішення негативне"],
+    "aField_ID":["sID_numberDABI"],
+    "asID_Field":{"sCond":"decide"},
+    "sCondition":"([sCond]=='accept' || [sCond]=='Надана повна інформація. Зареєструвати у реєстрі ДАБІ')"
+  },
+  "ShowFieldsOnCondition_17":{"sNote":["рішення позитивне"],
+    "aField_ID":["comment"],
+    "asID_Field":{"sCond":"decide"},
+    "sCondition":"([sCond]=='reject' || [sCond]=='Відправити на доопрацювання. Підготувати інформаційний лист.')"
+  } 
+}           
+}

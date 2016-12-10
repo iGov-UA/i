@@ -1208,13 +1208,13 @@ public class ActionTaskService {
     }
 
 
-    private boolean checkIncludeProcessDefinitionIntoGroupList(List<Group> groups, Set<String> candidateCroupsToCheck){
-        for (Group group : groups) {
-            for (String groupFromProcess : candidateCroupsToCheck) {
-                if (groupFromProcess.contains("${")) {
-                    groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
+    private boolean checkIncludeProcessDefinitionIntoGroupList(List<Group> aGroup, Set<String> asProcessGroupMask){
+        for (Group oGroup : aGroup) {
+            for (String sProcessGroupMask : asProcessGroupMask) {
+                if (sProcessGroupMask.contains("${")) {
+                    sProcessGroupMask = sProcessGroupMask.replaceAll("\\$\\{?.*}", "(.*)");
                 }
-                if (group.getId().matches(groupFromProcess)) {
+                if (oGroup.getId().matches(sProcessGroupMask)) {
                     return true;
                 }
             }

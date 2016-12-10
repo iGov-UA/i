@@ -14,13 +14,36 @@
        "asID_Field": {"sCondit":"asApplicantType"},
        "sCondition": "[sCondit] == 'sEnumAppLegal'||[sCondit] == 'юридична особа'"
       },
+    "ShowFieldsOnCondition_ProjectDev": 
+      {"aField_ID":
+        ["sDesignerName","sResponsiblePerson","sApprovalPerson","sApprovalDate",
+         "sAdminDoc","sAdminDocDate","sKeyIndicators","sTotalNonResidentialArea"], 
+       "asID_Field": {"sCondit":"asIsProjectDeveloped"},
+       "sCondition": "[sCondit] == 'sEnumDeveloped'||[sCondit] == 'Так'"
+      },
+                
+    "ShowFieldsOnCondition_TechSupervision": 
+      {"aField_ID": 	["sTechSupervisorName","sTechSupervisorPhone","sTechSupervisorSertif"], 
+       "asID_Field": 	{"sCondit":"asIsTechSupervision"},
+       "sCondition": 	"[sCondit] == 'sEnumTechYes'||[sCondit] == 'Так'"
+      },
+    "ShowFieldsOnCondition_OwnershipDoc": 
+      {"aField_ID": 	["sOwnershipDoc"], 
+       "asID_Field": 	{"sCondit":"asConstructionOnBasis"},
+       "sCondition": 	"[sCondit] == 'sEnumOwnership'||[sCondit] == 'Документ, що посвідчує право власності чи користування земельною ділянкою'"
+      },
+    "ShowFieldsOnCondition_SuperficiesDoc": 
+      {"aField_ID": 	["sSuperficiesDoc"], 
+       "asID_Field": 	{"sCondit":"asConstructionOnBasis"},
+       "sCondition": 	"[sCondit] == 'sEnumSuperficies'||[sCondit] == 'Договір суперфіцію'"
+      },
     "ShowFieldsOnCondition_ContrPers": 
-      {"aField_ID": 	["sGenPersonName"], 
+      {"aField_ID": 	["sGenPersonName","sGenPersonPassport","sGenPersonAddress","sGenPersonINN"], 
        "asID_Field": 	{"sCondit":"asGeneralContractor"},
        "sCondition": 	"[sCondit] == 'sEnumGenPerson'||[sCondit] == 'Фізична особа'"
       },
     "ShowFieldsOnCondition_ContrLegal": 
-      {"aField_ID": 	["sGenLegalForm","sGenLegalName","sGenLegalINN"], 
+      {"aField_ID": 	["sGenLegalForm","sGenLegalName","sGenLegalAddress","sGenLegalINN","sGenPhone"], 
        "asID_Field": 	{"sCondit":"asGeneralContractor"},
        "sCondition": 	"[sCondit] == 'sEnumGenLegal'||[sCondit] == 'Юридична особа'"
       },
@@ -33,6 +56,6 @@
       {"aField_ID": 	["sRejectionReason"], 
        "asID_Field": 	{"sCondit":"asDecision"},
        "sCondition": 	"[sCondit] == 'sEnumDecisionReturn'||[sCondit] == 'Відправити на доопрацювання. Підготувати інформаційний лист'"
-      }             
+      }              
     }
 }
