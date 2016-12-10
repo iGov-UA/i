@@ -636,9 +636,14 @@
             var oMotion = JSON.parse(item.value)['motion']; // Generate obj from json(item.value)
             var asNameField = getAllNamesFields(oMotion); //Generate array fields name
 
-            for (var i = 0; i < asNameField.length; i++) {
-              if(asNameField[i].includes("PrintFormFormula")) {
-                executeFormula(oMotion[asNameField[i]]);
+            /*todo иногда oMotion возвращает undefined, что в итоге делает asNameField - null,
+             *в итоге ломаеться принтформа
+            */
+            if(asNameField){
+              for (var i = 0; i < asNameField.length; i++) {
+                if(asNameField[i].includes("PrintFormFormula")) {
+                  executeFormula(oMotion[asNameField[i]]);
+                }
               }
             }
           }
@@ -1193,7 +1198,7 @@
             return true
           }
         };
-
+console.log($scope)
       }
     ])
 })();
