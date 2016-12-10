@@ -1199,7 +1199,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
         LOG.info("4444separator " + separator);
         Charset charset = oActionTaskService.getCharset(sID_Codepage);
-
+        LOG.info("5555charset " + charset);
         // 2. query
         TaskQuery query = taskService.createTaskQuery()
                 .processDefinitionKey(sID_BP);
