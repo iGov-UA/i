@@ -1009,6 +1009,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
                 "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
+        LOG.info("111sdfFileName: " + sdfFileName);
         String fileName = "!" + sID_BP_Name + "_"
                 + sdfFileName.format(Calendar.getInstance().getTime()) + ".xlsx";
         LOG.debug("File name for statistics : {%s}", fileName);
@@ -1196,6 +1197,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Date dBeginDate = oActionTaskService.getBeginDate(dateAt);
         Date dEndDate = oActionTaskService.getEndDate(dateTo);
         String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
+        LOG.info("4444separator " + separator);
         Charset charset = oActionTaskService.getCharset(sID_Codepage);
 
         // 2. query
@@ -1246,6 +1248,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         // 3. response
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
                 "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
+        LOG.info("222sdfFileName: " + sdfFileName);
         String sTaskDataFileName = fileName != null ? fileName : "data_BP-"
                 + sID_BP + "_"
                 + sdfFileName.format(Calendar.getInstance().getTime()) + ".txt";
