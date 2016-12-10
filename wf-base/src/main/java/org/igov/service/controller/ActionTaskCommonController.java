@@ -1176,7 +1176,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
 //      'saFieldSummary': '' // поля для агрегатов
-        LOG.info("ПОИСК DOHODY.dat");
+        LOG.info("sDateCreateFormat: " + sDateCreateFormat);
+        LOG.info("sID_Codepage: " + sID_Codepage);
+        LOG.info("sID_State_BP: " + sID_State_BP);
+        LOG.info("nASCI_Spliter: " + nASCI_Spliter);
+        LOG.info("fileName: " + fileName);
+        LOG.info("fileNameNew: " + " justice_incoming.xls");
+        LOG.info("nASCI_Spliter: " + nASCI_Spliter);
+        
         if ("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)) {
             sID_State_BP = null;
         }
