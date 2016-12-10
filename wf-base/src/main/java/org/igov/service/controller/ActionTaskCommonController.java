@@ -1198,6 +1198,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Date dEndDate = oActionTaskService.getEndDate(dateTo);
         String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
         LOG.info("4444separator " + separator);
+        LOG.info("7777nASCI_Spliter " + nASCI_Spliter);
+        LOG.info("6666separator " + separator.chars());
         Charset charset = oActionTaskService.getCharset(sID_Codepage);
         LOG.info("5555charset " + charset);
         // 2. query
