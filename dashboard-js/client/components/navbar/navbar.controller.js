@@ -94,6 +94,15 @@
           tasks.getProcesses($scope.tasksSearch.value).then(function (res) {
             var response = JSON.parse(res);
             $scope.archive = response[0];
+            $scope.archive.aVisibleAttributes = [];
+            angular.forEach($scope.archive.aAttribute, function (oAttribute) {
+              if (oAttribute.oAttributeName.nOrder !== -1){
+                $scope.archive.aVisibleAttributes.push(oAttribute);
+              }
+            });
+            $scope.archive.aVisibleAttributes.sort(function (a, b) {
+              return a.oAttributeName.nOrder - b.oAttributeName.nOrder;
+            });
             $scope.switchArchive = true;
           })
         } else {

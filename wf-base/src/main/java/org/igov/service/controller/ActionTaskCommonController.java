@@ -2337,12 +2337,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      */
     @RequestMapping(value = "/getListBP", method = RequestMethod.GET)
     @ResponseBody
-    public List<ProcDefinitionI> getListBP(@ApiParam(value = "строка-ИД БП //опциональный фильтр, иначе все", required = false)
-            @RequestParam(value = "sID_BP", required = false) String sID_BP,
-            @ApiParam(value = "строка-типа поля //опциональный фильтр, иначе все", required = false)
-            @RequestParam(value = "sFieldType", required = false) String sFieldType,
-            @ApiParam(value = "строка-ИД поля //опциональный фильтр, иначе все", required = false)
-            @RequestParam(value = "sID_Field", required = false) String sID_Field) {
+    public List<ProcDefinitionI> getListBP(
+            @ApiParam(value = "строка-ИД БП //опциональный фильтр, иначе все", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
+            @ApiParam(value = "строка-типа поля //опциональный фильтр, иначе все", required = false) @RequestParam(value = "sFieldType", required = false) String sFieldType,
+            @ApiParam(value = "строка-ИД поля //опциональный фильтр, иначе все", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field
+    ) {
         List<ProcessDefinition> processDefinitions = repositoryService
                 .createProcessDefinitionQuery().processDefinitionId(sID_BP).list();
 
