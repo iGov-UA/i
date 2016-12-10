@@ -85,11 +85,11 @@ public class NotificationPatterns {
                 LOG.info("!!!after sID_Order replace sBody: " + sBody);
             }
             if (bankIdFirstName != null) {
-                //sBody = sBody.replaceAll("[sClientName]", bankIdFirstName);
+                sBody = sBody.replaceAll("\\[sClientName\\]", bankIdFirstName);
                 LOG.info("!!!after bankIdFirstName replace sBody: " + sBody);
             }
             if (bankIdLastName != null) {
-                //sBody = sBody.replaceAll("[sClientSurname]", bankIdLastName);
+                sBody = sBody.replaceAll("\\[sClientSurname\\]", bankIdLastName);
                 LOG.info("!!!after bankIdLastName replace sBody: " + sBody);
             }
 
