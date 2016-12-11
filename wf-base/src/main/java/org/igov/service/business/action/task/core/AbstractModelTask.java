@@ -613,9 +613,12 @@ public abstract class AbstractModelTask {
         if (!aAttachmentNotFound.isEmpty()) {
             LOG.info("if (!aAttachmentNotFound.isEmpty())");
             List<Attachment> aAttachmentByProcess = taskService.getProcessInstanceAttachments(processInstanceId);
+            LOG.info("aAttachmentByProcess size={}", aAttachmentByProcess.size());
+
+            aAttachmentByProcess.removeAll(aAttachment);
             for (Attachment attachment : aAttachmentByProcess) {
                 LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
-                if (!aAttachmentNotFound.contains(attachment.getId())) {
+                if (aAttachmentNotFound.contains(attachment.getId())) {
                     aAttachment.add(attachment);
                 }
             }
