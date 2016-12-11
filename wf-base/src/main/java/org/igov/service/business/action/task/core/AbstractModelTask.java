@@ -423,7 +423,7 @@ public abstract class AbstractModelTask {
 
                         } else {
                             try {
-                                LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sFieldValue);
+                                LOG.info("Checking whether attachment with ID {} has already been saved and this is attachment object ID", sFieldValue);
                                 Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sFieldValue);
                                 aAttachment.add(oAttachment);
                             } catch (Exception oException) {
@@ -455,6 +455,7 @@ public abstract class AbstractModelTask {
             }
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
+        //TODO need to check contents of aAttachment
         return aAttachment;
 
     }
@@ -614,8 +615,6 @@ public abstract class AbstractModelTask {
             LOG.info("if (!aAttachmentNotFound.isEmpty())");
             List<Attachment> aAttachmentByProcess = taskService.getProcessInstanceAttachments(processInstanceId);
             LOG.info("aAttachmentByProcess size={}", aAttachmentByProcess.size());
-
-            aAttachmentByProcess.removeAll(aAttachment);
             for (Attachment attachment : aAttachmentByProcess) {
                 LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
                 if (aAttachmentNotFound.contains(attachment.getId())) {
