@@ -36,24 +36,31 @@ HistoricTaskInstance historicTaskInstanceQuery = historyService.createHistoricTa
 String processInstanceId = historicTaskInstanceQuery.getProcessInstanceId()
 
 // Выбираем по процессу прикрепленные файлы
-Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, nFile, processInstanceId)
+//Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, nFile, processInstanceId)
 
 //Результат
+/*
 String sFileName = attachmentRequested.getName()
 String description = attachmentRequested.getDescription()
 String type = attachmentRequested.getType()
 String id = attachmentRequested.getId()
+*/
 
+execution.setVariable('Res_processInstanceId', processInstanceId)
+
+/*
 execution.setVariable('Res_sFileName', sFileName)
 execution.setVariable('Res_description', description)
 execution.setVariable('Res_type', type)
 execution.setVariable('Res_id', id)
+*/
    		]]> </script>
 	</scriptTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="User Task" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>        
+        <activiti:formProperty id="Res_processInstanceId" name="processInstanceId" type="string" writable="false"></activiti:formProperty>  
         <activiti:formProperty id="Res_sFileName" name="sFileName" type="string" writable="false"></activiti:formProperty>  
         <activiti:formProperty id="Res_description" name="description" type="string" writable="false"></activiti:formProperty>  
         <activiti:formProperty id="Res_type" name="type" type="string" writable="false"></activiti:formProperty>  
