@@ -579,17 +579,20 @@ public abstract class AbstractModelTask {
     }
 
     public List<Attachment> findAttachments(String sAttachments, String processInstanceId) {
+        LOG.info("Inside findAttachments(String sAttachments, String processInstanceId)");
         sAttachments = sAttachments == null ? "" : sAttachments;
         LOG.info("(sAttachmentsForSend={})", sAttachments);
 
         List<Attachment> aAttachment = new ArrayList<>();
 
         String[] asID_Attachment = sAttachments.split(",");
+        for (int i = 0; i < asID_Attachment.length; i++) {
+            LOG.info("Current asID_Attachment={}", asID_Attachment[i]);
+        }
 
         List<String> aAttachmentNotFound = new ArrayList<>();
 
         for (String sID_Attachment : asID_Attachment) {
-            //log.info("sID_Attachment=" + sID_Attachment);
             if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
                 String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
                 LOG.info("(sID_AttachmentTrimmed={})", sID_AttachmentTrimmed);
