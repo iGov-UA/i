@@ -47,11 +47,6 @@
           </activiti:formProperty>
           <activiti:formProperty id="sTable3" name="Оберіть виконавця, якому буде делеговано завдання" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot; }]}"></activiti:formProperty>
           <activiti:formProperty id="markers1" name="Якщо інший виконавець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sTable3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегування іншому виконавцю'&quot;}}}"></activiti:formProperty>
-          <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
-            <activiti:field name="sID_ProcessSubjectStatus">
-              <activiti:expression><![CDATA[${saStatusTask}]]></activiti:expression>
-            </activiti:field>
-          </activiti:taskListener>
           <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
             <activiti:field name="aFieldInheritedAttachmentID">
               <activiti:expression><![CDATA[${sTable3}]]></activiti:expression>
@@ -98,8 +93,12 @@ execution.setVariable('processInstanceId', processInstanceId)
     <sequenceFlow id="flow17" sourceRef="subprocess1" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow19" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="usertask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDoc != 'executed'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="endevent3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDoc == 'executed'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_subProcess">
     <bpmndi:BPMNPlane bpmnElement="_test_subProcess" id="BPMNPlane__test_subProcess">
