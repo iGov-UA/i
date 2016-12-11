@@ -393,7 +393,7 @@ public abstract class AbstractModelTask {
                             if (oAttachment != null) {
                                 LOG.info("Added attachment with ID {} to the task:process {}:{}",
                                         oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
-                                aAttachment.add(oAttachment);
+                                if(!aAttachment.contains(oAttachment)) aAttachment.add(oAttachment);
                                 String nID_Attachment = oAttachment.getId();
                                 LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
                                         sID_Field, nID_Attachment);
@@ -455,6 +455,11 @@ public abstract class AbstractModelTask {
             }
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
+
+
+        for(Attachment attachment: aAttachment) {
+            LOG.info("Inside addAttachmentToTask(); current attachmentInfo = {}; current attachmentID = {}", attachment.getDescription(), attachment.getId());
+        }
         return aAttachment;
 
     }
