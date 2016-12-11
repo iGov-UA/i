@@ -24,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired
 ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine()
 HistoryService historyService = processEngine.getHistoryService()
 
-@Autowired
-ActionTaskService oActionTaskService
+//@Autowired
+ActionTaskService oActionTaskService = new ActionTaskService()
 
 String taskId = execution.getVariable('taskId')
 String attachmentId = execution.getVariable('attachmentId')
@@ -36,24 +36,24 @@ HistoricTaskInstance historicTaskInstanceQuery = historyService.createHistoricTa
 String processInstanceId = historicTaskInstanceQuery.getProcessInstanceId()
 
 // Выбираем по процессу прикрепленные файлы
-//Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, nFile, processInstanceId)
+Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, nFile, processInstanceId)
 
 //Результат
-/*
+/* */
 String sFileName = attachmentRequested.getName()
 String description = attachmentRequested.getDescription()
 String type = attachmentRequested.getType()
 String id = attachmentRequested.getId()
-*/
+// */
 
 execution.setVariable('Res_processInstanceId', processInstanceId)
 
-/*
+/* */
 execution.setVariable('Res_sFileName', sFileName)
 execution.setVariable('Res_description', description)
 execution.setVariable('Res_type', type)
 execution.setVariable('Res_id', id)
-*/
+// */
    		]]> </script>
 	</scriptTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
