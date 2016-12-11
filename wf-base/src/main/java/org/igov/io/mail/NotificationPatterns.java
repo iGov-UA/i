@@ -77,17 +77,19 @@ public class NotificationPatterns {
             //"patterns/mail/auto_client_notify.html"
             File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_PATTERN_EMAIL, "auto_client_notify.html");
             String sBody = Files.toString(oFile, Charset.defaultCharset());
-
+            
+            LOG.info("sBody testing: " + sBody);
+            
             if (sID_Order != null) {
-                sBody = sBody.replaceAll("[sID_Order]", sID_Order);
+                sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
                 LOG.info("!!!after sID_Order replace sBody: " + sBody);
             }
             if (bankIdFirstName != null) {
-                sBody = sBody.replaceAll("[sClientName]", bankIdFirstName);
+                sBody = sBody.replaceAll("\\[sClientName\\]", bankIdFirstName);
                 LOG.info("!!!after bankIdFirstName replace sBody: " + sBody);
             }
             if (bankIdLastName != null) {
-                sBody = sBody.replaceAll("[sClientSurname]", bankIdLastName);
+                sBody = sBody.replaceAll("\\[sClientSurname\\]", bankIdLastName);
                 LOG.info("!!!after bankIdLastName replace sBody: " + sBody);
             }
 

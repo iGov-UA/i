@@ -635,8 +635,8 @@ public class ObjectFileCommonController {
 
         }
 
-        identityService.setAuthenticatedUserId(assignee);
-
+        identityService.setAuthenticatedUserId(assignee);        
+                
         String sFilename = sFileName;
         LOG.debug("sFilename={}", sFileName);
         sFilename = sTextTranslit(sFilename);

@@ -132,17 +132,6 @@
           });
         }
 
-
-        //hidden IdGroupNext
-        hiddenObjById(getIdFromActivityProperty("sSourceFieldID_sID_Group"));
-
-        function hiddenObjById(id) {
-          var itemWith_sID = getObjFromTaskFormById(id);
-          if (itemWith_sID !== null && itemWith_sID.readable) {
-            itemWith_sID.readable = false;
-          }
-        }
-
         if(documentRights) {
           $scope.documentRights = documentRights;
           if(documentLogins) $scope.documentLogins = documentLogins;
@@ -594,18 +583,30 @@
           if (asId == null) return null;
           var asVariablesValue = new Array(asId.length);
           for(var i = 0; i < asId.length; i++) {
-            var result = getValueById(asId[i]);
-            if (result == null) {
-              Modal.inform.error()('Обєкт з id: ' + asId[i] + ' не має значення. Формула не запрацює.<br> Зніться будь-ласка у технічну підтримку.');
-              console.warn('Виникла помилка. Обєкт з id: ' + asId[i] + ' має значення null. Зніться будь-ласка у технічну підтримку.');
-              throw 'Виникла помилка. Обєкт з id: ' + asId[i] + ' має значення null. Зніться будь-ласка у технічну підтримку.';
-            } else if (!isNaN(result)) {
-              asVariablesValue[i] = parseInt(result);
+            var item = getObjFromTaskFormById(asId[i]), value, message;
+            if(!item) {
+              message = 'Зверніться у технічну підтримку. Обєкт з id ' + asId[i] + ' відсутній. Формула не запрацює.';
+              Modal.inform.error()(message);
+              throw message;
+            }
+
+            if (!(value = item.value)) {
+              return undefined;
+              // message = 'Пусте поле ' + item.name + '. Прінт Формула не запрацює.';
+              // Modal.inform.error()(message);
+              // throw message;
+            } else if (!isNaN(value)) {
+              asVariablesValue[i] = parseInt(value);
             } else {
-              asVariablesValue[i] = result;
+              asVariablesValue[i] = value;
             }
           }
           return asVariablesValue;
+        }
+
+        function pushResultFormula(id, value) {
+          var item = getObjFromTaskFormById(id);
+          if (item != null) item.value = value;
         }
 
         function executeFormula(item) {
@@ -619,13 +620,19 @@
             return asVariablesValue[index];
           }
 
-          for(var i=0; i < asVariablesName.length; i++) {
-              sFormula = sFormula.replace(asVariablesName[i], "getVal(" + i + ")");
+          if (asVariablesValue === undefined) {
+            pushResultFormula(sResultName, null);
+            return;
           }
+          String.prototype.replaceAll = function(search, replacement) {
+            var target = this;
+            return target.replace(new RegExp(search, 'g'), replacement);
+          };
 
-          $scope[sResultName] = eval(sFormula);
-          console.log($scope[sResultName]);
-          console.log(eval(sFormula));
+          for(var i=0; i < asVariablesName.length; i++) {
+              sFormula = sFormula.replaceAll(asVariablesName[i], "getVal(" + i + ")");
+          }
+          pushResultFormula(sResultName, eval(sFormula));
         }
 
 
@@ -636,9 +643,14 @@
             var oMotion = JSON.parse(item.value)['motion']; // Generate obj from json(item.value)
             var asNameField = getAllNamesFields(oMotion); //Generate array fields name
 
-            for (var i = 0; i < asNameField.length; i++) {
-              if(asNameField[i].includes("PrintFormFormula")) {
-                executeFormula(oMotion[asNameField[i]]);
+            /*todo иногда oMotion возвращает undefined, что в итоге делает asNameField - null,
+             *в итоге ломаеться принтформа
+            */
+            if(asNameField){
+              for (var i = 0; i < asNameField.length; i++) {
+                if(asNameField[i].includes("PrintFormFormula")) {
+                  executeFormula(oMotion[asNameField[i]]);
+                }
               }
             }
           }
@@ -773,7 +785,7 @@
             $scope.taskForm.isInProcess = true;
 
             rollbackReadonlyEnumFields();
-            tasks.saveChangesTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask)
+            tasks.saveChangesTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask,  $scope.taskData.aAttachment)
               .then(function (result) {
                 $scope.taskForm.isInProcess = false;
                 if(result.status == 500 || result.status == 403){

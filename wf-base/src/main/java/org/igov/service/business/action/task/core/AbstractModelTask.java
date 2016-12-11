@@ -581,9 +581,13 @@ public abstract class AbstractModelTask {
     public List<Attachment> findAttachments(String sAttachments, String processInstanceId) {
         sAttachments = sAttachments == null ? "" : sAttachments;
         LOG.info("(sAttachmentsForSend={})", sAttachments);
+
         List<Attachment> aAttachment = new ArrayList<>();
+
         String[] asID_Attachment = sAttachments.split(",");
+
         List<String> aAttachmentNotFound = new ArrayList<>();
+
         for (String sID_Attachment : asID_Attachment) {
             //log.info("sID_Attachment=" + sID_Attachment);
             if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
@@ -591,17 +595,23 @@ public abstract class AbstractModelTask {
                 LOG.info("(sID_AttachmentTrimmed={})", sID_AttachmentTrimmed);
                 Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
                 if (oAttachment != null) {
+                    LOG.info("if (oAttachment != null)");
+                    LOG.info("oAttachment info={}, oAttachment.getId()={}",oAttachment.getDescription(), oAttachment.getId());
                     aAttachment.add(oAttachment);
                 } else {
-                    aAttachmentNotFound.add(sID_AttachmentTrimmed);
+//                    LOG.info("Inside aAttachmentNotFound");
+//                    LOG.info("oAttachment info={}, oAttachment.getId()={}", oAttachment.getDescription(), oAttachment.getId());
+//                    aAttachmentNotFound.add(sID_AttachmentTrimmed);
                 }
             } else {
                 LOG.warn("(sID_Attachment={})", sID_Attachment);
             }
         }
         if (!aAttachmentNotFound.isEmpty()) {
+            LOG.info("if (!aAttachmentNotFound.isEmpty())");
             List<Attachment> aAttachmentByProcess = taskService.getProcessInstanceAttachments(processInstanceId);
             for (Attachment attachment : aAttachmentByProcess) {
+                LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
                 if (aAttachmentNotFound.contains(attachment.getId())) {
                     aAttachment.add(attachment);
                 }
@@ -610,7 +620,7 @@ public abstract class AbstractModelTask {
         LOG.info("In findAttachments(sInheritedAttachmentsIds, oExecution.getId())");
 
         for(Attachment attachment: aAttachment) {
-            LOG.info("Attachment info: " + attachment.getDescription());
+            LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
         }
 
         return aAttachment;
