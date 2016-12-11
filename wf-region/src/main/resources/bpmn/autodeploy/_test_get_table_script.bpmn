@@ -5,7 +5,7 @@
       <extensionElements>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>        
         <activiti:formProperty id="taskId" name="taskId" type="string" default="24520049"></activiti:formProperty>        
-        <activiti:formProperty id="attachmentId" name="taskId" type="string" default="24520026"></activiti:formProperty>
+        <activiti:formProperty id="attachmentId" name="attachmentId" type="string" default="24520026"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
@@ -16,12 +16,14 @@ import org.activiti.engine.ActivitiObjectNotFoundException
 import org.activiti.engine.history.HistoricTaskInstance
 import org.activiti.engine.task.Attachment
 import org.activiti.engine.HistoryService
+import org.activiti.engine.ProcessEngine
+import org.activiti.engine.ProcessEngines
 import org.igov.service.business.action.task.core.ActionTaskService
 import org.springframework.beans.factory.annotation.Autowired
 
+ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine()
+HistoryService historyService = processEngine.getHistoryService()
 
-@Autowired
-HistoryService historyService
 @Autowired
 ActionTaskService oActionTaskService
 
