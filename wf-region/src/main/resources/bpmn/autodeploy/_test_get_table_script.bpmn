@@ -21,8 +21,6 @@ import org.activiti.engine.ProcessEngines
 import org.igov.service.business.action.task.core.ActionTaskService
 import org.springframework.beans.factory.annotation.Autowired
 
-import org.igov.service.business.action.task.TableNew
-
 ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine()
 HistoryService historyService = processEngine.getHistoryService()
 
@@ -33,19 +31,15 @@ String taskId = execution.getVariable('taskId')
 String attachmentId = execution.getVariable('attachmentId')
 Integer nFile = 1
 
-/*
 // Получаем по задаче ид процесса
 HistoricTaskInstance historicTaskInstanceQuery = historyService.createHistoricTaskInstanceQuery().taskId(taskId).singleResult()
 String processInstanceId = historicTaskInstanceQuery.getProcessInstanceId()
 
-// */
-
 // Выбираем по процессу прикрепленные файлы
-TableNew attachmentRequested = new TableNew() 
-attachmentRequested.getAttachment(taskId, attachmentId, nFile)
+//Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, nFile, processInstanceId)
 
 //Результат
-//*
+/*
 String sFileName = attachmentRequested.getName()
 String description = attachmentRequested.getDescription()
 String type = attachmentRequested.getType()
