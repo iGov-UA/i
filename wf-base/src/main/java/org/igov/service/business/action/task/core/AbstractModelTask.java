@@ -455,6 +455,9 @@ public abstract class AbstractModelTask {
             }
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
+        for (Attachment attachment: aAttachment) {
+            LOG.info("Inside addAttachmentsToTask: attachment.getID={}, attachment.getDescription()={}", attachment.getId(), attachment.getDescription());
+        }
         return aAttachment;
 
     }
