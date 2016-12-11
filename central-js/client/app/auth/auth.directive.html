@@ -13,9 +13,14 @@
     <li>
       <a ng-repeat="provider in bankidProvidersList"
          ng-href="{{::getBankIdAuthUrl(provider)}}"
-         ng-bind="::provider.name" target="_self"
+         target="_self"
          ng-if="(authMethods.indexOf('BankID') > -1 && provider.auth=='BankID')
-             || (authMethods.indexOf('BankID-NBU') > -1 && provider.auth=='BankID-NBU') || true"></a>
+             || (authMethods.indexOf('BankID-NBU') > -1 && provider.auth=='BankID-NBU') || true">
+        <span>
+          <img ng-src="{{'/assets/images/banks/'+provider.key+'.png'}}">
+        </span>
+        <span ng-bind="::provider.name"></span>
+      </a>
     </li>
   </ul>
 </span>

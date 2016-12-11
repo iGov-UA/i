@@ -579,17 +579,20 @@ public abstract class AbstractModelTask {
     }
 
     public List<Attachment> findAttachments(String sAttachments, String processInstanceId) {
+        LOG.info("Inside findAttachments(String sAttachments, String processInstanceId)");
         sAttachments = sAttachments == null ? "" : sAttachments;
         LOG.info("(sAttachmentsForSend={})", sAttachments);
 
         List<Attachment> aAttachment = new ArrayList<>();
 
         String[] asID_Attachment = sAttachments.split(",");
+        for (int i = 0; i < asID_Attachment.length; i++) {
+            LOG.info("Current asID_Attachment={}", asID_Attachment[i]);
+        }
 
         List<String> aAttachmentNotFound = new ArrayList<>();
 
         for (String sID_Attachment : asID_Attachment) {
-            //log.info("sID_Attachment=" + sID_Attachment);
             if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
                 String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
                 LOG.info("(sID_AttachmentTrimmed={})", sID_AttachmentTrimmed);
@@ -599,9 +602,9 @@ public abstract class AbstractModelTask {
                     LOG.info("oAttachment info={}, oAttachment.getId()={}",oAttachment.getDescription(), oAttachment.getId());
                     aAttachment.add(oAttachment);
                 } else {
-//                    LOG.info("Inside aAttachmentNotFound");
-//                    LOG.info("oAttachment info={}, oAttachment.getId()={}", oAttachment.getDescription(), oAttachment.getId());
-//                    aAttachmentNotFound.add(sID_AttachmentTrimmed);
+                    LOG.info("Inside aAttachmentNotFound");
+                    LOG.info("sID_AttachmentTrimmed={}", sID_AttachmentTrimmed);
+                    aAttachmentNotFound.add(sID_AttachmentTrimmed);
                 }
             } else {
                 LOG.warn("(sID_Attachment={})", sID_Attachment);
@@ -612,7 +615,7 @@ public abstract class AbstractModelTask {
             List<Attachment> aAttachmentByProcess = taskService.getProcessInstanceAttachments(processInstanceId);
             for (Attachment attachment : aAttachmentByProcess) {
                 LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
-                if (aAttachmentNotFound.contains(attachment.getId())) {
+                if (!aAttachmentNotFound.contains(attachment.getId())) {
                     aAttachment.add(attachment);
                 }
             }
