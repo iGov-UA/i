@@ -2,6 +2,7 @@ package org.igov.service.business.action.task.core;
 
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
@@ -9,6 +10,8 @@ import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.task.Attachment;
 import org.apache.commons.codec.binary.Base64;
+import org.igov.io.GeneralConfig;
+import org.igov.io.Log;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.task.core.entity.ListKeyable;
@@ -17,6 +20,7 @@ import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.task.form.FormFileType;
 import org.igov.service.business.action.task.form.QueueDataFormType;
+import org.igov.service.business.action.task.form.TableFormType;
 import org.igov.service.business.flow.slot.SaveFlowSlotTicketResponse;
 import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
@@ -27,10 +31,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
-import org.activiti.engine.TaskService;
-import org.igov.io.GeneralConfig;
-import org.igov.io.Log;
-import org.igov.service.business.action.task.form.TableFormType;
 
 public abstract class AbstractModelTask {
 
@@ -52,7 +52,7 @@ public abstract class AbstractModelTask {
     GeneralConfig generalConfig;
 
     /**
-     * Возвращает сложгый ключ переменной бизнес-процесса
+     * Возвращает сложный ключ переменной бизнес-процесса
      *
      * @param listKey
      * @param elementKey
@@ -368,7 +368,7 @@ public abstract class AbstractModelTask {
                                 aByteFile = oBytesDataInmemoryStorage.getBytes(sFieldValue);
                                 oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
                             } catch (Exception oException) {
-                                LOG.error("sID_Field: " + sID_Field, oException); //TODO: Need remove becouse of new Log(
+                                LOG.error("sID_Field: " + sID_Field, oException); //TODO: Need remove because of new Log(
                                 new Log(oException, LOG)//this.getClass()
                                         ._Case("Activiti_AttachRedisFail")
                                         ._Status(Log.LogStatus.ERROR)
@@ -402,7 +402,7 @@ public abstract class AbstractModelTask {
                                 LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
                                         sID_Field);
                             } else {
-                                LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId()); //TODO: Need remove becouse of new Log(
+                                LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId()); //TODO: Need remove because of new Log(
                                 new Log(this.getClass(), LOG)//this.getClass()
                                         ._Case("Activiti_AttachRedisFail")
                                         ._Status(Log.LogStatus.ERROR)
@@ -423,7 +423,7 @@ public abstract class AbstractModelTask {
 
                         } else {
                             try {
-                                LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sFieldValue);
+                                LOG.info("Checking whether attachment with ID {} has already been saved and this is attachment object ID", sFieldValue);
                                 Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sFieldValue);
                                 aAttachment.add(oAttachment);
                             } catch (Exception oException) {
@@ -455,6 +455,7 @@ public abstract class AbstractModelTask {
             }
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
+        //TODO need to check contents of aAttachment
         return aAttachment;
 
     }
@@ -579,20 +580,31 @@ public abstract class AbstractModelTask {
     }
 
     public List<Attachment> findAttachments(String sAttachments, String processInstanceId) {
+        LOG.info("Inside findAttachments(String sAttachments, String processInstanceId)");
         sAttachments = sAttachments == null ? "" : sAttachments;
         LOG.info("(sAttachmentsForSend={})", sAttachments);
+
         List<Attachment> aAttachment = new ArrayList<>();
+
         String[] asID_Attachment = sAttachments.split(",");
+        for (int i = 0; i < asID_Attachment.length; i++) {
+            LOG.info("Current asID_Attachment={}", asID_Attachment[i]);
+        }
+
         List<String> aAttachmentNotFound = new ArrayList<>();
+
         for (String sID_Attachment : asID_Attachment) {
-            //log.info("sID_Attachment=" + sID_Attachment);
             if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
                 String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
                 LOG.info("(sID_AttachmentTrimmed={})", sID_AttachmentTrimmed);
                 Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
                 if (oAttachment != null) {
+                    LOG.info("if (oAttachment != null)");
+                    LOG.info("oAttachment info={}, oAttachment.getId()={}",oAttachment.getDescription(), oAttachment.getId());
                     aAttachment.add(oAttachment);
                 } else {
+                    LOG.info("Inside aAttachmentNotFound");
+                    LOG.info("sID_AttachmentTrimmed={}", sID_AttachmentTrimmed);
                     aAttachmentNotFound.add(sID_AttachmentTrimmed);
                 }
             } else {
@@ -600,13 +612,22 @@ public abstract class AbstractModelTask {
             }
         }
         if (!aAttachmentNotFound.isEmpty()) {
+            LOG.info("if (!aAttachmentNotFound.isEmpty())");
             List<Attachment> aAttachmentByProcess = taskService.getProcessInstanceAttachments(processInstanceId);
+            LOG.info("aAttachmentByProcess size={}", aAttachmentByProcess.size());
             for (Attachment attachment : aAttachmentByProcess) {
-                if (aAttachmentNotFound.contains(attachment.getId())) {
+                LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
+                if (!aAttachmentNotFound.contains(attachment.getId())) {
                     aAttachment.add(attachment);
                 }
             }
         }
+        LOG.info("In findAttachments(sInheritedAttachmentsIds, oExecution.getId())");
+
+        for(Attachment attachment: aAttachment) {
+            LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
+        }
+
         return aAttachment;
     }
 

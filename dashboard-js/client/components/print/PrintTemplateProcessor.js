@@ -100,7 +100,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       // когда ид маркера принтформы совпало с ид таблицы - заменяем теги на поля таблицы. проверяем к-во строк таблицы
       // если больше одной - клонируем до нужного к-ва, после наполняем таблицей.
       angular.forEach(idArray, function(id) {
-        angular.forEach(form, function(item) {
+        angular.forEach(form.taskData.aTable, function(item) {
           if(item.id === id[0]) {
             angular.forEach(templates, function (template) {
               var commentedField = template.match(/<!--.*?-->/)[0];

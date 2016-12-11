@@ -5,8 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.mail.Mail;
-import org.igov.model.action.execute.item.ActionExecuteDAO;
-import org.igov.model.action.execute.item.ActionExecuteOldDAO;
 import org.igov.model.action.execute.item.ActionExecuteStatus;
 import org.igov.model.action.execute.item.ActionExecuteStatusDAO;
 import org.igov.service.business.action.execute.ActionExecuteService;
@@ -34,14 +32,13 @@ import java.util.List;
 public class ActionExecuteController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionExecuteController.class);
+
     @Autowired
     private Mail mail;
-	@Autowired
+
+    @Autowired
 	private ActionExecuteStatusDAO actionExecuteStatusDAO;
-	@Autowired
-	private ActionExecuteDAO actionExecuteDAO;
-	@Autowired
-	private ActionExecuteOldDAO actionExecuteOldDAO;
+
 	@Autowired
     private MethodsCallRunnerUtil methodCallRunner;
 
@@ -58,6 +55,7 @@ public class ActionExecuteController {
     ResponseEntity getActionExecuteStatuses() {
 
         List<ActionExecuteStatus> actionExecuteList = actionExecuteStatusDAO.findAll();
+        LOG.info(actionExecuteList.toString());
         return JsonRestUtils.toJsonResponse(actionExecuteList);
     }
 

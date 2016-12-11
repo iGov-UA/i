@@ -51,8 +51,6 @@ public class SetTasks implements TaskListener {
         String sDateExecution_Value
                 = getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution());
         
-        LOG.info("Incoming date: " + sDateExecution_Value);
-        
         processSubjectService.setProcessSubjects(sTaskProcessDefinition_Value, sID_Attachment_Value, sContent_Value, 
                 sAutorResolution_Value, sTextResolution_Value, sDateExecution_Value, delegateTask.getExecution().getId());
         

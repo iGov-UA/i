@@ -4,7 +4,9 @@ var url = require('url')
   , authProviderRegistry = require('../../auth/auth.provider.registry')
   , activiti = require('../../components/activiti')
   , uploadFileService = require('../uploadfile/uploadfile.service')
-  , errors = require('../../components/errors');
+  , errors = require('../../components/errors')
+  , logger = require('../../components/logger').createLogger(module)
+  , config = require('../../config/environment');
 
 
 /**
@@ -22,6 +24,9 @@ module.exports.decryptContent = function (req, res) {
     , fileName = req.query.sName
     , restoreUrl = req.query.restoreUrl
     , id = req.query.nID;
+
+  var serverId = req.query.nID_Server || req.body.nID_Server;
+  var nID_Server = (!serverId || serverId < 0) && serverId !== 0 ? config.activiti.nID_Server : serverId;
 
 
   /**
@@ -75,7 +80,7 @@ module.exports.decryptContent = function (req, res) {
         req.session.access.accessToken,
         url.resolve(
           originalURL(req, {}),
-          '/api/sign-content/decrypt/callback?nID_Server=' + req.query.nID_Server  + '&fileName=' + fileName + '&nID=' + id + '&restoreUrl=' + restoreUrl
+          '/api/sign-content/decrypt/callback?nID_Server=' + nID_Server  + '&fileName=' + fileName + '&nID=' + id + '&restoreUrl=' + restoreUrl
         ),
         objectsToSign,
         function (error, signResult) {
@@ -116,14 +121,8 @@ module.exports.decryptContent = function (req, res) {
   ], function (error, result) {
     if (error) {
       req.session = null;
-
-      if (error === 'invalid_token') {
-        res.redirect(restoreUrl);
-      } else {
-        res.redirect(restoreUrl
-          + '?formID=' + formID
-          + '&error=' + JSON.stringify(error));
-      }
+      logger.error(error);
+      res.redirect(restoreUrl);
     } else {
       res.redirect(result.signResult.desc);
     }

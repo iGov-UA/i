@@ -63,7 +63,7 @@
   <!--форма заявки-->
   <div ng-if="tabHistoryAppeal === 'appeal' && !clarify">
     <form name="form" novalidate style="padding-bottom: 70px">
-      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item) && item.readable">
+      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item)">
 
         <!--поле типа simple-field-->
         <div ng-if="item.value && isFormPropertyDisabled(item)">
@@ -247,8 +247,8 @@
             </button>
           </div>
         </div>
-        <div ng-if="sSelectedTask === 'unassigned'">
-          <span>Для отримання доступу до прикріпленних додатків, необхідно прийняти заявку в роботу</span>
+        <div ng-if="sSelectedTask === 'unassigned'" style="font-weight: bold; text-align: center">
+          <span>Щоб переглянути додатки необхідно взяти звернення в роботу</span>
         </div>
       </div>
 
