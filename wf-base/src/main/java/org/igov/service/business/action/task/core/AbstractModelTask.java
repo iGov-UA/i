@@ -603,9 +603,9 @@ public abstract class AbstractModelTask {
                     LOG.info("oAttachment info={}, oAttachment.getId()={}",oAttachment.getDescription(), oAttachment.getId());
                     aAttachment.add(oAttachment);
                 } else {
-//                    LOG.info("Inside aAttachmentNotFound");
-//                    LOG.info("sID_AttachmentTrimmed={}", sID_AttachmentTrimmed);
-//                    aAttachmentNotFound.add(sID_AttachmentTrimmed);
+                    LOG.info("Inside aAttachmentNotFound");
+                    LOG.info("sID_AttachmentTrimmed={}", sID_AttachmentTrimmed);
+                    aAttachmentNotFound.add(sID_AttachmentTrimmed);
                 }
             } else {
                 LOG.warn("(sID_Attachment={})", sID_Attachment);
@@ -617,7 +617,7 @@ public abstract class AbstractModelTask {
             LOG.info("aAttachmentByProcess size={}", aAttachmentByProcess.size());
             for (Attachment attachment : aAttachmentByProcess) {
                 LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
-                if (aAttachmentNotFound.contains(attachment.getId())) {
+                if (!aAttachmentNotFound.contains(attachment.getId())) {
                     aAttachment.add(attachment);
                 }
             }
