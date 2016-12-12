@@ -31,6 +31,9 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
     @Autowired
     GeneralConfig generalConfig;
+
+    @Autowired
+    FileTaskUploadListener fileTaskUploadListener;
     
     @Override
     public void notify(DelegateTask oTask) {
@@ -55,8 +58,12 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
                     sInheritedAttachmentsIds);
             addAttachmentsToCurrentTask(asID_Attachment_ToAdd, oTask);*/
 
+            List<Attachment> currentAttachments = fileTaskUploadListener.getaAttachmentList();
+            LOG.info("Inside fileTaskInheritance: Current attachments size = {}", currentAttachments.size());
+
             //Issue #1441: next 2 lines should be commented out or logic of addAttachmentsToCurrentTask() should be rewritten;
             List<Attachment> attachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
+            currentAttachments.removeAll(attachments);
             addAttachmentsToCurrentTask(attachments, oTask);
         } catch (Exception oException) {
             LOG.error("FAIL: {}", oException.getMessage());
