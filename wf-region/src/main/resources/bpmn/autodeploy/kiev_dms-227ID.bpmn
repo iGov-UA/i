@@ -47,11 +47,8 @@
 		execution.setVariable('sTicketNumber', tickNum)
 		execution.setVariable('sTicketCode', tickCode)
 		
-		var src1= String(execution.getVariable('date_of_visit'))
-		execution.setVariable('sTestTest', src1)
-		
-		
-	/*	
+		var src1= execution.getVariable('date_of_visit')
+			
 		var year=src1.substr(0,4)
 		var month=src1.substr(5,2)
 		var day=src1.substr(8,2)
@@ -83,7 +80,6 @@
 		     }
 		var timerEnd=year+'-'+month+'-'+day+'T'+'19'+':'+'00'+':'+seconds
 		execution.setVariable('sEndDay', timerEnd)
-*/
       ]]></script>
     </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask2" targetRef="servicetask3"></sequenceFlow>
@@ -153,8 +149,6 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="Заявка прийнята ДМС" activiti:candidateGroups="id_card_kiev">
       <extensionElements>
-        <activiti:formProperty id="sTestTest" name="sTestTest" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
