@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,8 +53,10 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             asID_Attachment_ToAdd = getInheritedAttachmentIdsFromTask(attachments,
                     sInheritedAttachmentsIds);
             addAttachmentsToCurrentTask(asID_Attachment_ToAdd, oTask);*/
-            List<Attachment> attachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
-            addAttachmentsToCurrentTask(attachments, oTask);
+
+            //Issue #1441: next 2 lines should be commented out or logic of addAttachmentsToCurrentTask() should be rewritten;
+//            List<Attachment> attachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
+//            addAttachmentsToCurrentTask(attachments, oTask);
         } catch (Exception oException) {
             LOG.error("FAIL: {}", oException.getMessage());
             LOG.trace("FAIL:", oException);
@@ -80,7 +81,9 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
     }
 
-    private void addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd,
+
+    //#1441 fix:
+    /*private void addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd,
             DelegateTask task) {
         final String METHOD_NAME = "addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd, DelegateExecution execution)";
         LOG.trace("Entering method '{}'", METHOD_NAME);
@@ -110,7 +113,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
         LOG.trace("Exiting method '{}'", METHOD_NAME);
     }
-
+*/
 
     
     @Deprecated

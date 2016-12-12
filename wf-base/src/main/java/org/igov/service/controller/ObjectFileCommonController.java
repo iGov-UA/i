@@ -649,7 +649,7 @@ public class ObjectFileCommonController {
                 sFilename, description,
                 new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
         if (attachment != null && sID_Field != null && !"".equals(sID_Field.trim())) {
-            oRuntimeService.setVariable(processInstanceId, sID_Field, attachment.getId());
+            //oRuntimeService.setVariable(processInstanceId, sID_Field, attachment.getId());
             LOG.debug("setVariable: processInstanceId = {}, sID_Field = {}, attachmentId = {}", processInstanceId, sID_Field, attachment.getId());
         }
         AttachmentCover oAttachmentCover = new AttachmentCover();
