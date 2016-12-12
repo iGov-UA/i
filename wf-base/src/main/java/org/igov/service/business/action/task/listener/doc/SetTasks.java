@@ -54,10 +54,15 @@ public class SetTasks implements TaskListener {
                 = getStringFromFieldExpression(this.sTypeDoc, delegateTask.getExecution());
         String sID_Order_GovPublic_Value
                 = getStringFromFieldExpression(this.sID_Order_GovPublic, delegateTask.getExecution());
+        
         String sDateRegistration_Value
                 = getStringFromFieldExpression(this.sDateRegistration, delegateTask.getExecution());
+        LOG.info("sDateRegistration_Value " + sDateRegistration_Value);
+        
         String sDateDoc_Value
                 = getStringFromFieldExpression(this.sDateDoc, delegateTask.getExecution());
+        LOG.info("sDateDoc_Value " + sDateDoc_Value);
+        
         String sApplicant_Value
                 = getStringFromFieldExpression(this.sApplicant, delegateTask.getExecution());
         String snCountAttach_Value
@@ -74,8 +79,10 @@ public class SetTasks implements TaskListener {
                 = getStringFromFieldExpression(this.asTypeResolution, delegateTask.getExecution());
         String sTextResolution_Value
                 = getStringFromFieldExpression(this.sTextResolution, delegateTask.getExecution());
+        
         String sDateExecution_Value
                 = getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution());
+        LOG.info("sDateExecution_Value " + sDateExecution_Value);
         
         Map<String, String> mParam = new HashMap<>();
         
@@ -91,7 +98,7 @@ public class SetTasks implements TaskListener {
         mParam.put("sNote", sNote_Value);
         mParam.put("asUrgently", sAsUrgently_Value);
         mParam.put("sAutorResolution", sAutorResolution_Value);
-        mParam.put("asTypeResolution_Value", sAsTypeResolution_Value);
+        mParam.put("asTypeResolution", sAsTypeResolution_Value);
         mParam.put("sTextResolution", sTextResolution_Value);
         mParam.put("sDateExecution", sDateExecution_Value);
         

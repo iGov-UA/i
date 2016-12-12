@@ -381,8 +381,25 @@ public class ProcessSubjectService {
         try {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
             DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
-            Date oDateExecution = parseDate(mParam.get("sDateExecution"));
-
+            
+            String sFormatDateExecution = "";
+            String sFormatDateRegistration = "";
+            String sFormatDateDoc = "";
+            Date oDateExecution = null;
+            
+            if((mParam.get("sDateExecution") != null)&&(!mParam.get("sDateExecution").equals(""))){
+                oDateExecution = parseDate(mParam.get("sDateExecution"));
+                sFormatDateExecution = df_StartProcess.format(oDateExecution);
+            }
+            if((mParam.get("sDateRegistration") != null)&&(!mParam.get("sDateRegistration").equals(""))){
+                Date oDateRegistration = parseDate(mParam.get("sDateRegistration"));
+                sFormatDateRegistration = df_StartProcess.format(oDateRegistration);
+            }
+            if((mParam.get("sDateDoc") != null)&&(!mParam.get("sDateDoc").equals(""))){
+                Date oDateDoc = parseDate(mParam.get("sDateDoc"));
+                sFormatDateDoc = df_StartProcess.format(oDateDoc);
+            }
+            
             ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
 
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
@@ -408,16 +425,16 @@ public class ProcessSubjectService {
             mParamDocument.put("sID_Attachment", mParam.get("sID_Attachment"));
             mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
             mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
-            mParamDocument.put("sDateRegistration", mParam.get("sDateRegistration"));
-            mParamDocument.put("sDateDoc", mParam.get("sDateDoc"));
+            mParamDocument.put("sDateRegistration", sFormatDateRegistration);
+            mParamDocument.put("sDateDoc", sFormatDateDoc);
             mParamDocument.put("sApplicant", mParam.get("sApplicant"));
             mParamDocument.put("snCountAttach", mParam.get("snCountAttach"));
             mParamDocument.put("sContent", mParam.get("sContent"));
             mParamDocument.put("sNote", mParam.get("sNote"));
             mParamDocument.put("asUrgently", mParam.get("asUrgently"));
             mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
-            mParamDocument.put("asTypeResolution_Value", mParam.get("asTypeResolution_Value"));
-            mParamDocument.put("sDateExecution", df_StartProcess.format(oDateExecution));
+            mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
+            mParamDocument.put("sDateExecution", sFormatDateExecution);
             mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
             
             JSONParser parser = new JSONParser();
@@ -439,14 +456,11 @@ public class ProcessSubjectService {
                         if(aJsonField != null){
                             mParamTask.putAll(mParamDocument);
                             for (int j = 0; j < aJsonField.size(); j++) {
-                            
                                 JSONObject oJsonMap = (JSONObject) aJsonField.get(j);
-                                
                                 if(oJsonMap != null)
                                 {
                                     Object oId = oJsonMap.get("id");
                                     Object oValue = oJsonMap.get("value");
-                                    
                                     if (oValue != null){
                                         mParamTask.put((String)oId, (String)oValue);
                                     
@@ -456,7 +470,6 @@ public class ProcessSubjectService {
                                 }
                             }
                             LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
-                        
                         }else{ 
                             continue;
                         }
