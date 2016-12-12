@@ -185,7 +185,7 @@ angular.module('app').controller('FooterController', function ($scope) {
      ,{
       url: 'https://www.mastercard.ua/uk-ua.html',
       alt: 'mastercard.ua',
-      image: 'assets/images/ads/mastercard.jpg',
+      image: 'assets/images/ads/mastercard.png',
       height: 50
     }
 
