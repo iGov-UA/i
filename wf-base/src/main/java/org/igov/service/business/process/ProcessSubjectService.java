@@ -373,26 +373,27 @@ public class ProcessSubjectService {
         removeProcessSubject(processSubject);
     }
 
-    public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
+    /*public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
             String sContent, String sAutorResolution, String sTextResolution,
-            String sDateExecution, String snProcess_ID) {
-
+            String sDateExecution, String snProcess_ID) {*/
+    public void setProcessSubjects(Map<String, String> mParam, String snProcess_ID){
+        
         try {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
             DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
-            Date oDateExecution = parseDate(sDateExecution);
+            Date oDateExecution = parseDate(mParam.get("sDateExecution"));
 
             ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
 
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             if (oProcessSubjectParent == null) {
                 oProcessSubjectParent = processSubjectDao
-                        .setProcessSubject(snProcess_ID, sAutorResolution,
+                        .setProcessSubject(snProcess_ID, mParam.get("sAutorResolution"),
                                 new DateTime(oDateExecution), 0L, processSubjectStatus);
             }
             
             List<ProcessSubjectTree> aProcessSubjectTreeChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
-            InputStream attachmentContent = taskService.getAttachmentContent(sID_Attachment);
+            InputStream attachmentContent = taskService.getAttachmentContent(mParam.get("sID_Attachment"));
 
             List<ProcessSubject> aProcessSubjectChild = getCatalogProcessSubject(snProcess_ID, 1L, null).getaProcessSubject();
             List<String> aProcessSubjectLoginToDelete = new ArrayList<>();
@@ -403,13 +404,22 @@ public class ProcessSubjectService {
 
             Map<String, Object> mParamDocument = new HashMap<>();
 
-            mParamDocument.put("sTaskProcessDefinition", sTaskProcessDefinition);
-            mParamDocument.put("sID_Attachment", sID_Attachment);
-            mParamDocument.put("sContent", sContent);
-            mParamDocument.put("sAutorResolution", sAutorResolution);
+            mParamDocument.put("sTaskProcessDefinition", mParam.get("sTaskProcessDefinition"));
+            mParamDocument.put("sID_Attachment", mParam.get("sID_Attachment"));
+            mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
+            mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
+            mParamDocument.put("sDateRegistration", mParam.get("sDateRegistration"));
+            mParamDocument.put("sDateDoc", mParam.get("sDateDoc"));
+            mParamDocument.put("sApplicant", mParam.get("sApplicant"));
+            mParamDocument.put("snCountAttach", mParam.get("snCountAttach"));
+            mParamDocument.put("sContent", mParam.get("sContent"));
+            mParamDocument.put("sNote", mParam.get("sNote"));
+            mParamDocument.put("asUrgently", mParam.get("asUrgently"));
+            mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
+            mParamDocument.put("asTypeResolution_Value", mParam.get("asTypeResolution_Value"));
             mParamDocument.put("sDateExecution", df_StartProcess.format(oDateExecution));
-            mParamDocument.put("sTextResolution", sTextResolution);
-
+            mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
+            
             JSONParser parser = new JSONParser();
             JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
             LOG.info("JSON String: " + oJSONObject.toJSONString());
