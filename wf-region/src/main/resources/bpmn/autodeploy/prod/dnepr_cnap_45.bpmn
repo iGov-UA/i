@@ -4,6 +4,7 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/54</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган у якому Ви збираєтесь отримувати відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (в розмірі  п'яти  неоподатковуваних  мінімумів  доходів громадян), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати. Ви можте завантажити єлектронну квітанцію, сформовану в інтернет-банку." type="label" default="Детальні реквізити для оплати знаходяться за &lt;a href=&quot;https://docs.google.com/document/d/13Nj2t2sR_yaKRgwysOIAEXzTb6j4YjElRfZPYdVK7Xw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -11,10 +12,6 @@
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="cnap" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал документу" type="enum" required="true">
-          <activiti:value id="prav" name="ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="posluga" name="Оберіть послугу" type="enum" required="true">
           <activiti:value id="pereoform" name="переоформлення ліцензії"></activiti:value>
           <activiti:value id="kopia" name="видача копії або дубліката ліцензії"></activiti:value>
@@ -72,11 +69,11 @@
           <activiti:string><![CDATA[UTF-8]]></activiti:string>
         </activiti:field>
         <activiti:field name="html">
-          <activiti:expression><![CDATA[<!DOCTYPE html>
-<html>
-<head lang="ru">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style type="text/css">
+          <activiti:expression>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head lang="ru"&gt;
+    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
+    &lt;style type="text/css"&gt;
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';}
         #mailer-body div,
@@ -92,7 +89,7 @@
         #mailer-body a {color: #2F70AF; text-decoration: none;}
         #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
         #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p > label {width: 40px;}
+        #mailer-body p &gt; label {width: 40px;}
         #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
         #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
         #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
@@ -100,55 +97,55 @@
         #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
         #mailer-body textarea:focus {outline: 0;}
         #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    </style>
-</head>
-<body>
-<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body">
-    <tbody>
-    <tr>
-        <td align="center">
-            <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-                <!--header line statrs-->
-                <tr>
-                    <td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"><b style="font-size: 24px;">iGov</b><br />портал державних послуг</td>
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+        &lt;td align="center"&gt;
+            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
+                &lt;!--header line statrs--&gt;
+                &lt;tr&gt;
+                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
 
-                </tr>
-                <!--header line end-->
-                <!--content statrs-->
-                <tr>
-                    <td align="center">
-                        <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-                            <tr>
-                                <td style="padding: 35px 120px;">
-                                    <h3>Шановний колего!</h3>
-                                    <p>
-У Вас в черзі на обробку зареєстровано нове звернення щодо переоформлення, видачі копії або дубліката ліцензії на надання освітніх послуг.<br />
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-Відпрацюйте це звернення на <a href="https://region.igov.org.ua:6948/" target="_blank">порталі</a>
-                                    </p>
-                                    <hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" />
-                                    <p>
-                                     З повагою,<br />
-					  Команда Порталу державних послуг <a href="https://igov.org.ua/" target="_blank">iGov</a>
-                                        </p>
-                                    </p>
-                                </td>
-                            </tr>
+                &lt;/tr&gt;
+                &lt;!--header line end--&gt;
+                &lt;!--content statrs--&gt;
+                &lt;tr&gt;
+                    &lt;td align="center"&gt;
+                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
+                            &lt;tr&gt;
+                                &lt;td style="padding: 35px 120px;"&gt;
+                                    &lt;h3&gt;Шановний колего!&lt;/h3&gt;
+                                    &lt;p&gt;
+У Вас в черзі на обробку зареєстровано нове звернення щодо переоформлення, видачі копії або дубліката ліцензії на надання освітніх послуг.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua:6948/" target="_blank"&gt;порталі&lt;/a&gt;
+                                    &lt;/p&gt;
+                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                    &lt;p&gt;
+                                     З повагою,&lt;br /&gt;
+					  Команда Порталу державних послуг &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov&lt;/a&gt;
+                                        &lt;/p&gt;
+                                    &lt;/p&gt;
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
                            
                           
 
-                        </table>
+                        &lt;/table&gt;
                      
-                    </td>
-                </tr>
-                <!--content end-->
-            </table>
-        </td>
-    </tr>
-    </tbody>
-</table>
-</body>
-</html>]]></activiti:expression>
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;!--content end--&gt;
+            &lt;/table&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -193,7 +190,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_lic}, ${file_oplata}]]></activiti:expression>
+            <activiti:expression>${file_lic}, ${file_oplata}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -226,7 +223,7 @@
     <serviceTask id="mailtask6" name="повідомлення громадянина про відхилення звернення" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -238,11 +235,11 @@
           <activiti:string><![CDATA[UTF-8]]></activiti:string>
         </activiti:field>
         <activiti:field name="html">
-          <activiti:expression><![CDATA[<!DOCTYPE html>
-<html>
-<head lang="ru">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style type="text/css">
+          <activiti:expression>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head lang="ru"&gt;
+    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
+    &lt;style type="text/css"&gt;
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';}
         #mailer-body div,
@@ -258,7 +255,7 @@
         #mailer-body a {color: #2F70AF; text-decoration: none;}
         #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
         #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p > label {width: 40px;}
+        #mailer-body p &gt; label {width: 40px;}
         #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
         #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
         #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
@@ -266,54 +263,54 @@
         #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
         #mailer-body textarea:focus {outline: 0;}
         #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    </style>
-</head>
-<body>
-<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body">
-    <tbody>
-    <tr>
-        <td align="center">
-            <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-                <!--header line statrs-->
-                <tr>
-                    <td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"><b style="font-size: 24px;">iGov</b><br />портал державних послуг</td>
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+        &lt;td align="center"&gt;
+            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
+                &lt;!--header line statrs--&gt;
+                &lt;tr&gt;
+                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
 
-                </tr>
-                <!--header line end-->
-                <!--content statrs-->
-                <tr>
-                    <td align="center">
-                        <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-                            <tr>
-                                <td style="padding: 35px 120px;">
-           <p>
-Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}<br />
-Ваш запит щодо переоформлення, видачі копії або дубліката ліцензії на надання освітніх послуг відхилено.<br />
-<br />
+                &lt;/tr&gt;
+                &lt;!--header line end--&gt;
+                &lt;!--content statrs--&gt;
+                &lt;tr&gt;
+                    &lt;td align="center"&gt;
+                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
+                            &lt;tr&gt;
+                                &lt;td style="padding: 35px 120px;"&gt;
+           &lt;p&gt;
+Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+Ваш запит щодо переоформлення, видачі копії або дубліката ліцензії на надання освітніх послуг відхилено.&lt;br /&gt;
+&lt;br /&gt;
 Підстава: ${comment_1}    
-    </pя>
-                                    </p>
-                                    <hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" />
-	З повагою,<br />
-									Центр надання адміністративних послуг<br />
-									Дніпропетровської міської ради<br />	                                   
-								   </td>
-                            </tr>
+    &lt;/pя&gt;
+                                    &lt;/p&gt;
+                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+	З повагою,&lt;br /&gt;
+									Центр надання адміністративних послуг&lt;br /&gt;
+									Дніпропетровської міської ради&lt;br /&gt;	                                   
+								   &lt;/td&gt;
+                            &lt;/tr&gt;
                            
                           
 
-                        </table>
+                        &lt;/table&gt;
                      
-                    </td>
-                </tr>
-                <!--content end-->
-            </table>
-        </td>
-    </tr>
-    </tbody>
-</table>
-</body>
-</html>]]></activiti:expression>
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;!--content end--&gt;
+            &lt;/table&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -326,20 +323,20 @@
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: переоформлення, видача копії або дубліката ліцензії на надання освітніх послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${opis}"]]></activiti:expression>
+          <activiti:expression>"${opis}"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<!DOCTYPE html>
-<html>
-<head lang="ru">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style type="text/css">
+          <activiti:expression>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head lang="ru"&gt;
+    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
+    &lt;style type="text/css"&gt;
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';}
         #mailer-body div,
@@ -355,7 +352,7 @@
         #mailer-body a {color: #2F70AF; text-decoration: none;}
         #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
         #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p > label {width: 40px;}
+        #mailer-body p &gt; label {width: 40px;}
         #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
         #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
         #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
@@ -363,64 +360,64 @@
         #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
         #mailer-body textarea:focus {outline: 0;}
         #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    </style>
-</head>
-<body>
-<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body">
-    <tbody>
-    <tr>
-        <td align="center">
-            <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-                <!--header line statrs-->
-                <tr>
-                    <td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"><b style="font-size: 24px;">iGov</b><br />портал державних послуг</td>
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+        &lt;td align="center"&gt;
+            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
+                &lt;!--header line statrs--&gt;
+                &lt;tr&gt;
+                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
 
-                </tr>
-                <!--header line end-->
-                <!--content statrs-->
-                <tr>
-                    <td align="center">
-                        <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-                            <tr>
-                                <td style="padding: 35px 120px;">
-           <p>
-Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}<br />
-Ваше звернення щодо переоформлення, видачі копії або дубліката ліцензії на надання освітніх послуг у сфері загальної середньої, дошкільної, позашкільної освіти спрямоване до департаменту освіти і науки Дніпропетровської ОДА.</h3></p>
-</p>
-Звернення буде опрацьовано протягом десяти робочих днів з дати надходження звернення та документів, що додаються до нього.</p>
-</p>
-Реєстраційний номер заяви: ${reestr_numb};<br />
-Дата реєстрації ${date_reestr}.<br />
-До листа додається опис наданих Вами документів.<br />
-<br />
-Ви отримаєте додаткове повідомлення за результатами розгляду запиту.<br />
-    </p>
-                                    </p>
-                                    <hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" />
-                                  <p>
-                                        З повагою,<br />
-                                        Команда Порталу державних послуг <a href="https://igov.org.ua/" target="_blank">iGov</a><br />	
-										<br />	
-										Центр надання адміністративних послуг<br />
-										Дніпропетровської міської ради<br />	
-                                        </p>
-                                </td>
-                            </tr>
+                &lt;/tr&gt;
+                &lt;!--header line end--&gt;
+                &lt;!--content statrs--&gt;
+                &lt;tr&gt;
+                    &lt;td align="center"&gt;
+                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
+                            &lt;tr&gt;
+                                &lt;td style="padding: 35px 120px;"&gt;
+           &lt;p&gt;
+Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+Ваше звернення щодо переоформлення, видачі копії або дубліката ліцензії на надання освітніх послуг у сфері загальної середньої, дошкільної, позашкільної освіти спрямоване до департаменту освіти і науки Дніпропетровської ОДА.&lt;/h3&gt;&lt;/p&gt;
+&lt;/p&gt;
+Звернення буде опрацьовано протягом десяти робочих днів з дати надходження звернення та документів, що додаються до нього.&lt;/p&gt;
+&lt;/p&gt;
+Реєстраційний номер заяви: ${reestr_numb};&lt;br /&gt;
+Дата реєстрації ${date_reestr}.&lt;br /&gt;
+До листа додається опис наданих Вами документів.&lt;br /&gt;
+&lt;br /&gt;
+Ви отримаєте додаткове повідомлення за результатами розгляду запиту.&lt;br /&gt;
+    &lt;/p&gt;
+                                    &lt;/p&gt;
+                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                  &lt;p&gt;
+                                        З повагою,&lt;br /&gt;
+                                        Команда Порталу державних послуг &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov&lt;/a&gt;&lt;br /&gt;	
+										&lt;br /&gt;	
+										Центр надання адміністративних послуг&lt;br /&gt;
+										Дніпропетровської міської ради&lt;br /&gt;	
+                                        &lt;/p&gt;
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
                            
                           
 
-                        </table>
+                        &lt;/table&gt;
                      
-                    </td>
-                </tr>
-                <!--content end-->
-            </table>
-        </td>
-    </tr>
-    </tbody>
-</table>
-</body>
-</html>]]></activiti:expression>
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;!--content end--&gt;
+            &lt;/table&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -442,47 +439,47 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: переоформлення, видача копії або дубліката ліцензії на надання освітніх послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${rishen}"]]></activiti:expression>
+          <activiti:expression>"${rishen}"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     
-Ви отримали схвалення щодо свого запиту - переоформлення, видача копії або дубліката ліцензії на надання освітніх послуг.<br />
-<br />
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати дозвіл собисто під підпис у ЦНАПі.<br />
-<br />
-При собі треба мати:<br />
-1. Документ, що посвідчує особу.<br />
-2. Для уповоноваженої особи - довіренність.<br />
-3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.<br />
-<a href="https://drive.google.com/open?id=0B6mOkUg9oq1zeVFlWmNXRXgtNXc">(шаблон заяви)</a><br />
-<br />
-4. Документ, що засвідчує внесення плати за переоформлення або видачу дубліката ліцензії.<br />
-5. Оригінал ліцензії (у разі пошкодження ліцензії її пошкоджений оригінал).<br />
-<br />
-Адреса центру надання адміністративних послуг "Правобережний" - пр.К.Маркса 75 (1 поверх)<br /><br />
-Телефон для довідок (056)742-84-08<br /><br />
-Графік роботи (крім святкових днів):<br />
-пн. ср. 9-18<br />
-вт. чт. 9-20<br />
-пт. 9-16:45<br />
-сб. 9-16<br />
-<br />
-Копія ліцензії знаходиться у додатку до листа.<br />
-<br />
+Ви отримали схвалення щодо свого запиту - переоформлення, видача копії або дубліката ліцензії на надання освітніх послуг.&lt;br /&gt;
+&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати дозвіл собисто під підпис у ЦНАПі.&lt;br /&gt;
+&lt;br /&gt;
+При собі треба мати:&lt;br /&gt;
+1. Документ, що посвідчує особу.&lt;br /&gt;
+2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
+3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
+&lt;a href="https://drive.google.com/open?id=0B6mOkUg9oq1zeVFlWmNXRXgtNXc"&gt;(шаблон заяви)&lt;/a&gt;&lt;br /&gt;
+&lt;br /&gt;
+4. Документ, що засвідчує внесення плати за переоформлення або видачу дубліката ліцензії.&lt;br /&gt;
+5. Оригінал ліцензії (у разі пошкодження ліцензії її пошкоджений оригінал).&lt;br /&gt;
+&lt;br /&gt;
+Адреса центру надання адміністративних послуг "Правобережний" - пр.К.Маркса 75 (1 поверх)&lt;br /&gt;&lt;br /&gt;
+Телефон для довідок (056)742-84-08&lt;br /&gt;&lt;br /&gt;
+Графік роботи (крім святкових днів):&lt;br /&gt;
+пн. ср. 9-18&lt;br /&gt;
+вт. чт. 9-20&lt;br /&gt;
+пт. 9-16:45&lt;br /&gt;
+сб. 9-16&lt;br /&gt;
+&lt;br /&gt;
+Копія ліцензії знаходиться у додатку до листа.&lt;br /&gt;
+&lt;br /&gt;
                                      [pattern/mail/_common_signature_start.html]
-										Центр надання адміністративних послуг<br/> 
-										Дніпропетровської міської ради,<br/>
+										Центр надання адміністративних послуг&lt;br/&gt; 
+										Дніпропетровської міської ради,&lt;br/&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -492,46 +489,46 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: переоформлення, видача копії або дубліката ліцензії на надання освітніх послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${rishen}"]]></activiti:expression>
+          <activiti:expression>"${rishen}"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     
-Ви отримали схвалення щодо свого запиту - переоформлення, видача копії або дубліката ліцензії на надання освітніх послуг.<br />
-<br />
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати дозвіл собисто під підпис у ЦНАПі.<br />
-<br />
-При собі треба мати:<br />
-1. Документ, що посвідчує особу.<br />
-2. Для уповоноваженої особи - довіренність.<br />
-3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.<br />
-<a href="https://drive.google.com/open?id=0B6mOkUg9oq1zeVFlWmNXRXgtNXc">(шаблон заяви)</a><br />
-<br />
-4. Документ, що засвідчує внесення плати за переоформлення або видачу дубліката ліцензії.<br />
-5. Оригінал ліцензії (у разі пошкодження ліцензії її пошкоджений оригінал).<br />
-<br />
-Адреса центру надання адміністративних послуг "Лівобережний" - пр.ім. Газети "Правда" 42 (5 поверх)<br /><br />
-Телефон для довідок (056)742-84-08<br /><br />
-Графік роботи (крім святкових днів):<br />
-пн. вт. ср. чт. 9-18<br />
-пт. 9-16:45<br />
-<br />
-Копія ліцензії знаходиться у додатку до листа.<br />
-                                    <hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" />
-                                     <p>
+Ви отримали схвалення щодо свого запиту - переоформлення, видача копії або дубліката ліцензії на надання освітніх послуг.&lt;br /&gt;
+&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати дозвіл собисто під підпис у ЦНАПі.&lt;br /&gt;
+&lt;br /&gt;
+При собі треба мати:&lt;br /&gt;
+1. Документ, що посвідчує особу.&lt;br /&gt;
+2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
+3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
+&lt;a href="https://drive.google.com/open?id=0B6mOkUg9oq1zeVFlWmNXRXgtNXc"&gt;(шаблон заяви)&lt;/a&gt;&lt;br /&gt;
+&lt;br /&gt;
+4. Документ, що засвідчує внесення плати за переоформлення або видачу дубліката ліцензії.&lt;br /&gt;
+5. Оригінал ліцензії (у разі пошкодження ліцензії її пошкоджений оригінал).&lt;br /&gt;
+&lt;br /&gt;
+Адреса центру надання адміністративних послуг "Лівобережний" - пр.ім. Газети "Правда" 42 (5 поверх)&lt;br /&gt;&lt;br /&gt;
+Телефон для довідок (056)742-84-08&lt;br /&gt;&lt;br /&gt;
+Графік роботи (крім святкових днів):&lt;br /&gt;
+пн. вт. ср. чт. 9-18&lt;br /&gt;
+пт. 9-16:45&lt;br /&gt;
+&lt;br /&gt;
+Копія ліцензії знаходиться у додатку до листа.&lt;br /&gt;
+                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                     &lt;p&gt;
                                         [pattern/mail/_common_signature_start.html]
-										Центр надання адміністративних послуг<br/> 
-										Дніпропетровської міської ради,<br/>
+										Центр надання адміністративних послуг&lt;br/&gt; 
+										Дніпропетровської міської ради,&lt;br/&gt;
 										[pattern/mail/_common_signature_end.html]   
 										[pattern/mail/_common_feedback.html]
-										[pattern/mail/_common_footer.html]]]></activiti:expression>
+										[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -541,43 +538,43 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: переоформлення, видача копії або дубліката ліцензії на надання освітніх послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${rishen}"]]></activiti:expression>
+          <activiti:expression>"${rishen}"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />
-Вам відмовлено у переоформленні, видачі копії або дубліката ліцензії на надання освітніх послуг.<br />
-Підстава: ${comment_2}<br />
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.<br />
-<br />
-При собі треба мати:<br />
-1. Документ, що посвідчує особу.<br />
-2. Для уповоноваженої особи - довіренність.<br />
-3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.<br />
-<a href="https://drive.google.com/open?id=0B6mOkUg9oq1zeVFlWmNXRXgtNXc">(шаблон заяви)</a><br />
-<br />
-4. Документ, що засвідчує внесення плати за переоформлення або видачу дубліката ліцензії.<br />
-5. Оригінал ліцензії (у разі пошкодження ліцензії її пошкоджений оригінал).<br />
-<br />
-Адреса центру надання адміністративних послуг "Лівобережний" - пр.ім. Газети "Правда" 42 (5 поверх)<br /><br />
-Телефон для довідок (056)742-84-08<br /><br />
-Графік роботи (крім святкових днів):<br />
-пн. вт. ср. чт. 9-18<br />
-пт. 9-16:45<br />
-<br />
-Копія рішення знаходиться у додатку до листа.<br />
-                                    </p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
+Вам відмовлено у переоформленні, видачі копії або дубліката ліцензії на надання освітніх послуг.&lt;br /&gt;
+Підстава: ${comment_2}&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
+&lt;br /&gt;
+При собі треба мати:&lt;br /&gt;
+1. Документ, що посвідчує особу.&lt;br /&gt;
+2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
+3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
+&lt;a href="https://drive.google.com/open?id=0B6mOkUg9oq1zeVFlWmNXRXgtNXc"&gt;(шаблон заяви)&lt;/a&gt;&lt;br /&gt;
+&lt;br /&gt;
+4. Документ, що засвідчує внесення плати за переоформлення або видачу дубліката ліцензії.&lt;br /&gt;
+5. Оригінал ліцензії (у разі пошкодження ліцензії її пошкоджений оригінал).&lt;br /&gt;
+&lt;br /&gt;
+Адреса центру надання адміністративних послуг "Лівобережний" - пр.ім. Газети "Правда" 42 (5 поверх)&lt;br /&gt;&lt;br /&gt;
+Телефон для довідок (056)742-84-08&lt;br /&gt;&lt;br /&gt;
+Графік роботи (крім святкових днів):&lt;br /&gt;
+пн. вт. ср. чт. 9-18&lt;br /&gt;
+пт. 9-16:45&lt;br /&gt;
+&lt;br /&gt;
+Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
+                                    &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-										Центр надання адміністративних послуг<br/> 
-										Дніпропетровської міської ради,<br/>
+										Центр надання адміністративних послуг&lt;br/&gt; 
+										Дніпропетровської міської ради,&lt;br/&gt;
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -587,45 +584,45 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: переоформлення, видача копії або дубліката ліцензії на надання освітніх послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${rishen}"]]></activiti:expression>
+          <activiti:expression>"${rishen}"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />
-Вам відмовлено у переоформленні, видачі копії або дубліката ліцензії на надання освітніх послуг.<br />
-Підстава: ${comment_2}<br />
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.<br />
-<br />
-При собі треба мати:<br />
-1. Документ, що посвідчує особу.<br />
-2. Для уповоноваженої особи - довіренність.<br />
-3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.<br />
-<a href="https://drive.google.com/open?id=0B6mOkUg9oq1zeVFlWmNXRXgtNXc">(шаблон заяви)</a><br />
-<br />
-4. Документ, що засвідчує внесення плати за переоформлення або видачу дубліката ліцензії.<br />
-5. Оригінал ліцензії (у разі пошкодження ліцензії її пошкоджений оригінал).<br />
-<br />
-Адреса центру надання адміністративних послуг "Правобережний" - пр.К.Маркса 75 (1 поверх).<br /><br />
-Телефон для довідок (056)742-84-08<br /><br />
-Графік роботи (крім святкових днів):<br />
-пн. ср. 9-18<br />
-вт. чт. 9-20<br />
-пт. 9-16:45<br />
-сб. 9-16<br />
-<br />
-Копія рішення знаходиться у додатку до листа.<br />
-                                    </p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
+Вам відмовлено у переоформленні, видачі копії або дубліката ліцензії на надання освітніх послуг.&lt;br /&gt;
+Підстава: ${comment_2}&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
+&lt;br /&gt;
+При собі треба мати:&lt;br /&gt;
+1. Документ, що посвідчує особу.&lt;br /&gt;
+2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
+3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
+&lt;a href="https://drive.google.com/open?id=0B6mOkUg9oq1zeVFlWmNXRXgtNXc"&gt;(шаблон заяви)&lt;/a&gt;&lt;br /&gt;
+&lt;br /&gt;
+4. Документ, що засвідчує внесення плати за переоформлення або видачу дубліката ліцензії.&lt;br /&gt;
+5. Оригінал ліцензії (у разі пошкодження ліцензії її пошкоджений оригінал).&lt;br /&gt;
+&lt;br /&gt;
+Адреса центру надання адміністративних послуг "Правобережний" - пр.К.Маркса 75 (1 поверх).&lt;br /&gt;&lt;br /&gt;
+Телефон для довідок (056)742-84-08&lt;br /&gt;&lt;br /&gt;
+Графік роботи (крім святкових днів):&lt;br /&gt;
+пн. ср. 9-18&lt;br /&gt;
+вт. чт. 9-20&lt;br /&gt;
+пт. 9-16:45&lt;br /&gt;
+сб. 9-16&lt;br /&gt;
+&lt;br /&gt;
+Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
+                                    &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-										Центр надання адміністративних послуг<br/> 
-										Дніпропетровської міської ради,<br/>
+										Центр надання адміністративних послуг&lt;br/&gt; 
+										Дніпропетровської міської ради,&lt;br/&gt;
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -644,11 +641,11 @@
           <activiti:string><![CDATA[UTF-8]]></activiti:string>
         </activiti:field>
         <activiti:field name="html">
-          <activiti:expression><![CDATA[<!DOCTYPE html>
-<html>
-<head lang="ru">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style type="text/css">
+          <activiti:expression>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head lang="ru"&gt;
+    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
+    &lt;style type="text/css"&gt;
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';}
         #mailer-body div,
@@ -664,7 +661,7 @@
         #mailer-body a {color: #2F70AF; text-decoration: none;}
         #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
         #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p > label {width: 40px;}
+        #mailer-body p &gt; label {width: 40px;}
         #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
         #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
         #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
@@ -672,61 +669,61 @@
         #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
         #mailer-body textarea:focus {outline: 0;}
         #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    </style>
-</head>
-<body>
-<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body">
-    <tbody>
-    <tr>
-        <td align="center">
-            <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-                <!--header line statrs-->
-                <tr>
-                    <td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"><b style="font-size: 24px;">iGov</b><br />портал державних послуг</td>
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+        &lt;td align="center"&gt;
+            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
+                &lt;!--header line statrs--&gt;
+                &lt;tr&gt;
+                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
 
-                </tr>
-                <!--header line end-->
-                <!--content statrs-->
-                <tr>
-                    <td align="center">
-                        <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-                            <tr>
-                                <td style="padding: 35px 120px;">
-                                    <h3>Шановний колего!</h3>
-                                    <p>
-У Вас в черзі на обробку зареєстровано нове звернення щодо переоформлення, видачі копії або дубліката ліцензії на надання освітніх послуг.<br />
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-Відпрацюйте це звернення на <a href="https://region.igov.org.ua:6948/" target="_blank">порталі</a>
-                                    </p>
-                                    <hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" />
-                                    <p>
-                                     З повагою,<br />
-					  Команда Порталу державних послуг <a href="https://igov.org.ua/" target="_blank">iGov</a>
-                                        </p>
-                                    </p>
-                                </td>
-                            </tr>
+                &lt;/tr&gt;
+                &lt;!--header line end--&gt;
+                &lt;!--content statrs--&gt;
+                &lt;tr&gt;
+                    &lt;td align="center"&gt;
+                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
+                            &lt;tr&gt;
+                                &lt;td style="padding: 35px 120px;"&gt;
+                                    &lt;h3&gt;Шановний колего!&lt;/h3&gt;
+                                    &lt;p&gt;
+У Вас в черзі на обробку зареєстровано нове звернення щодо переоформлення, видачі копії або дубліката ліцензії на надання освітніх послуг.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua:6948/" target="_blank"&gt;порталі&lt;/a&gt;
+                                    &lt;/p&gt;
+                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                    &lt;p&gt;
+                                     З повагою,&lt;br /&gt;
+					  Команда Порталу державних послуг &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov&lt;/a&gt;
+                                        &lt;/p&gt;
+                                    &lt;/p&gt;
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
                            
                           
 
-                        </table>
+                        &lt;/table&gt;
                      
-                    </td>
-                </tr>
-                <!--content end-->
-            </table>
-        </td>
-    </tr>
-    </tbody>
-</table>
-</body>
-</html>]]></activiti:expression>
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;!--content end--&gt;
+            &lt;/table&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow30" name="З ЦНАП" sourceRef="exclusivegateway4" targetRef="exclusivegateway3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cnap != 'lev' && cnap != 'prav'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin != 'lev' && sID_Public_SubjectOrganJoin != 'prav'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway3" targetRef="mailtask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cnap=='prav'}]]></conditionExpression>
@@ -761,7 +758,7 @@ execution.setVariable('sSum', sum);     </script>
     <sequenceFlow id="flow42" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow43" name="ПРЯМО В ОРГАН" sourceRef="exclusivegateway4" targetRef="exclusivegateway5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cnap == 'lev' || cnap == 'prav'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin == 'lev' || sID_Public_SubjectOrganJoin == 'prav'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="Технічна таска" activiti:candidateGroups="DGK_texnik_task">
       <extensionElements>
@@ -797,7 +794,7 @@ execution.setVariable('sSum', sum);     </script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_lic}, ${file_oplata}]]></activiti:expression>
+            <activiti:expression>${file_lic}, ${file_oplata}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -813,35 +810,35 @@ execution.setVariable('sSum', sum);     </script>
     <serviceTask id="servicetask7" name="Оплата пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+          <activiti:expression>noreply@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Оплата листа. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Оплата листа. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header_with_payment.html]
-							    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-							    <p>
-							    Ваш запит №[sID_Order] був успішно зареєстрований у нашій системі.<br>
-								Для того щоб закінчити процедуру необхідно протягом доби сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)<br>
+          <activiti:expression>[pattern/mail/_common_header_with_payment.html]
+							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+							    &lt;p&gt;
+							    Ваш запит №[sID_Order] був успішно зареєстрований у нашій системі.&lt;br&gt;
+								Для того щоб закінчити процедуру необхідно протягом доби сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)&lt;br&gt;
 								[paymentButton_LiqPay]
-								</p>
+								&lt;/p&gt;
 								[pattern/mail/_common_signature_start.html]
-								${sNameOrgan}&<br /&><br>
+								${sNameOrgan}&amp;&lt;br /&amp;&gt;&lt;br&gt;
  								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer_with_payment.html]]]></activiti:expression>
+								[pattern/mail/_common_footer_with_payment.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -870,22 +867,22 @@ execution.setVariable('sCountPayment', src)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нема оплати. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Нема оплати. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо ${sPosluga_nameZV} не прийнято в роботу. <br />
-Заявка закрита через відсутність оплати.</p>
-<br />
-${sPhoneOrgan}.<br />
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt; Ваше звернення щодо ${sPosluga_nameZV} не прийнято в роботу. &lt;br /&gt;
+Заявка закрита через відсутність оплати.&lt;/p&gt;
+&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
+${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -898,32 +895,32 @@ ${sNameOrgan}.<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему: ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Звернення на тему: ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
-			Оплата проведена успішно.<br />
-			Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.<br/>
-			Ви отримаєте відповідь протягом трьох робочих днів.<br/>
-			</p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;
+			Оплата проведена успішно.&lt;br /&gt;
+			Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.&lt;br/&gt;
+			Ви отримаєте відповідь протягом трьох робочих днів.&lt;br/&gt;
+			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}<br />
+			${sNameOrgan}&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Oplata uspishna, reyestratsiyu [sID_Order] pidtverdzheno]]></activiti:expression>
+          <activiti:expression>Oplata uspishna, reyestratsiyu [sID_Order] pidtverdzheno</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -936,31 +933,31 @@ ${sNameOrgan}.<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему: ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Звернення на тему: ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
-			Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.<br />
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;
+			Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.&lt;br /&gt;
 			Ви отримаєте відповідь протягом трьох робочих днів.
-			</p>
+			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}<br />
+			${sNameOrgan}&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -973,13 +970,13 @@ ${sNameOrgan}.<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}.]]></activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1025,7 +1022,7 @@ ${sNameOrgan}.<br />
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_lic}, ${file_oplata}]]></activiti:expression>
+            <activiti:expression>${file_lic}, ${file_oplata}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1043,34 +1040,34 @@ ${sNameOrgan}.<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Відмова. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Відмова. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>На жаль, виконати ваш запит не можливо. </p>
-			<p>Причина: ${comment}</p>
-			Відповідь з відмовою передана до ЦНАП. Якщо Ви замовили відповідь поштою, то буде надіслано лист.<br /><br />
-			За необхідності Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
-			<p>Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}<br />
-${sAddress}<br />
-${sWorkTime}<br />
-${sPhoneOrgan}</p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;На жаль, виконати ваш запит не можливо. &lt;/p&gt;
+			&lt;p&gt;Причина: ${comment}&lt;/p&gt;
+			Відповідь з відмовою передана до ЦНАП. Якщо Ви замовили відповідь поштою, то буде надіслано лист.&lt;br /&gt;&lt;br /&gt;
+			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1107,33 +1104,33 @@ ${sPhoneOrgan}</p>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Позитивна відповідь. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Позитивна відповідь. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>Заяву оброблено. Ваше звернення зодоволено.</p>
-Відповідь передано до ЦНАПу. ЦНАП повідомить вас як і коли можна отримати відповідь.<br />
-${sAddress}<br />
-${sWorkTime}<br />
-${sPhoneOrgan}<br />
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;Заяву оброблено. Ваше звернення зодоволено.&lt;/p&gt;
+Відповідь передано до ЦНАПу. ЦНАП повідомить вас як і коли можна отримати відповідь.&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br />
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1144,13 +1141,13 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[ДГК обробив заяву. Для видачі Вам надіслано відповідь. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>ДГК обробив заяву. Для видачі Вам надіслано відповідь. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1190,32 +1187,32 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Запрошення в ЦНАП. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Запрошення в ЦНАП. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>Документи по вашому зверненню №[sID_Order] надійшли в ЦНАП. Ви можете прийти і забрати відповідь.</p>
-${sAddress}<br />
-${sWorkTime}<br />
-${sPhoneOrgan}<br />
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;Документи по вашому зверненню №[sID_Order] надійшли в ЦНАП. Ви можете прийти і забрати відповідь.&lt;/p&gt;
+${sAddress}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br />
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Otrymayte vidpovid' u TsNAPi [sID_Order]. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Otrymayte vidpovid' u TsNAPi [sID_Order]. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1228,34 +1225,34 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Позитивна відповідь. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Позитивна відповідь. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>Заяву оброблено. Ваше звернення задоволено.</p>
-<p>Документи по вашому зверненню №[sID_Order] надійшли в ЦНАП. Відповідь буде надіслано вам поштою.</p>
-Якщо є питання то звертайтесь до ЦНАПу.<br />
-${sAddress}<br />
-${sWorkTime}<br />
-${sPhoneOrgan}<br />
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;Заяву оброблено. Ваше звернення задоволено.&lt;/p&gt;
+&lt;p&gt;Документи по вашому зверненню №[sID_Order] надійшли в ЦНАП. Відповідь буде надіслано вам поштою.&lt;/p&gt;
+Якщо є питання то звертайтесь до ЦНАПу.&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br />
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vidpovid' nadislano lystom [sID_Order]. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vidpovid' nadislano lystom [sID_Order]. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
