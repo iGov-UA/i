@@ -22,6 +22,9 @@
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocChild" name="Документи у регіоні" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTicketCode" name="Код талону" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTicketNumber" name="Номер талону" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsZagran.json')}"></activiti:formProperty>
       </extensionElements>
@@ -42,7 +45,38 @@ var tickCode=src.substr(119,9)
 execution.setVariable('sNotification_day', date_of_visit)
 execution.setVariable('sTicketNumber', tickNum)
 execution.setVariable('sTicketCode', tickCode)
-</script>
+var src=execution.getVariable('date_of_visit')
+var year=src.substr(0,4)
+var month=src.substr(5,2)
+var day=src.substr(8,2)
+var hour=src.substr(11,2)
+var minutes=src.substr(14,2)
+var seconds='00'
+var delta=1
+var day1=day
+var month1=month
+if (day!='01')
+    {
+        day1=+day-delta
+    }
+else
+    {
+        if ((month!='01')&amp;&amp;(month!='03'))
+          {
+              month1=+month-1
+              day1=30
+          }
+        else
+          {
+            if (month=='03')
+            {
+              month1='02'
+              day1='28'
+            }            
+          }
+     }
+var timerEnd=year+'-'+month+'-'+day+'T'+'19'+':'+'00'+':'+seconds
+execution.setVariable('sEndDay', timerEnd)</script>
     </scriptTask>
     <sequenceFlow id="flow28" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -68,11 +102,10 @@ execution.setVariable('sTicketCode', tickCode)
 										</ul>
 									</p>
 									<p>
-										<b>Деталі зустрічі:</b><br>
-										Дата та час візиту: ${date_of_visit}
+																			<b>Деталі зустрічі:</b><br>
+									Номер талону - ${sTicketNumber}, орієнтовна дата та час візиту - ${sNotification_day}. 
 									</p>
-									<p>
-										Реквізити для сплати адмінсбору доступні за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a>
+									
 										<b>Зверніть увагу:</b> 
 										<ul>
 											<li>Оплата здійснюється від імені одного з батьків, чиї дані потрібно внести при формуванні квитанції;</li>
@@ -105,7 +138,8 @@ execution.setVariable('sTicketCode', tickCode)
 										</ul>
 									</p>
 									<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>
-									<p>[cancelTask]</p>                
+									<p>Якщо Вам потрібно скасувати заявку,  зверніться,  будь ласка, за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
+								При цьому потрібно буде вказати код талону = ${sTicketCode}.        
 									[pattern/mail/_common_signature_start.html]
 									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
@@ -143,62 +177,48 @@ execution.setVariable('sTicketCode', tickCode)
     </boundaryEvent>
     <sequenceFlow id="flow42" sourceRef="escalationTimer" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var delta='10';
-var unixdate= Math.round((new Date()).getTime());
-var unixdate=unixdate+86400*1000*delta;
-var new_src = new Date(unixdate);
-var d = new_src.getDate();
-if (d &lt; 10) d = "0"+d;
-var m = new_src.getMonth();
-var m = (+m + +1);
-if (m &lt; 10) m = "0"+m;
-
-var new_year = new_src.getFullYear();
-var new_hour = new_src.getHours();
-var new_minutes = new_src.getMinutes();
-var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
-execution.setVariable('sNotification_day', timer)
-</script>
+      <script>var src=execution.getVariable('visitDay')
+var date_of_visit=src.substr(27,16)
+var tickNum=src.substr(99,3)
+var tickCode=src.substr(119,9)
+execution.setVariable('sNotification_day', date_of_visit)
+execution.setVariable('sTicketNumber', tickNum)
+execution.setVariable('sTicketCode', tickCode)
+var src=execution.getVariable('date_of_visit')
+var year=src.substr(0,4)
+var month=src.substr(5,2)
+var day=src.substr(8,2)
+var hour=src.substr(11,2)
+var minutes=src.substr(14,2)
+var seconds='00'
+var delta=1
+var day1=day
+var month1=month
+if (day!='01')
+    {
+        day1=+day-delta
+    }
+else
+    {
+        if ((month!='01')&amp;&amp;(month!='03'))
+          {
+              month1=+month-1
+              day1=30
+          }
+        else
+          {
+            if (month=='03')
+            {
+              month1='02'
+              day1='28'
+            }            
+          }
+     }
+var timerEnd=year+'-'+month+'-'+day+'T'+'19'+':'+'00'+':'+seconds
+execution.setVariable('sEndDay', timerEnd)</script>
     </scriptTask>
-    <sequenceFlow id="flow37" sourceRef="scripttask2" targetRef="exclusivegateway5"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow39" sourceRef="exclusivegateway5" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo == 'Заявка актуальна'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow41" sourceRef="exclusivegateway5" targetRef="endevent2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask5" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон для дитини]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    <p>
-                              		Ви отримали послугу "Отримання паспорта громадянина України для виїзду за кордон для дитини".
-                              		</p>
-                              		<p>
-                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
-                              		Дякуємо.
-									</p>
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan}, <br>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow43" sourceRef="scripttask2" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_dms-288">
     <bpmndi:BPMNPlane bpmnElement="kiev_dms-288" id="BPMNPlane_kiev_dms-288">
@@ -229,12 +249,6 @@ execution.setVariable('sNotification_day', timer)
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="55.0" width="105.0" x="575.0" y="81.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="711.0" y="90.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="679.0" y="200.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="800.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -263,23 +277,10 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="571.0" y="46.0"></omgdi:waypoint>
         <omgdi:waypoint x="627.0" y="81.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="680.0" y="108.0"></omgdi:waypoint>
-        <omgdi:waypoint x="711.0" y="110.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="731.0" y="130.0"></omgdi:waypoint>
-        <omgdi:waypoint x="731.0" y="200.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="751.0" y="110.0"></omgdi:waypoint>
-        <omgdi:waypoint x="817.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="817.0" y="108.0"></omgdi:waypoint>
         <omgdi:waypoint x="817.0" y="150.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="784.0" y="227.0"></omgdi:waypoint>
-        <omgdi:waypoint x="817.0" y="227.0"></omgdi:waypoint>
-        <omgdi:waypoint x="817.0" y="185.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
