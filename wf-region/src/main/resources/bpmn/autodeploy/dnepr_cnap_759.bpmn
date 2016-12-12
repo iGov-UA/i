@@ -33,6 +33,7 @@
         <activiti:formProperty id="asSelectRole_01" name="Оберіть Ваш статус" type="enum" required="true">
           <activiti:value id="tf_001_01" name="Керівник"></activiti:value>
           <activiti:value id="tf_001_02" name="Особа, яка має право вчиняти юридичні дії від імені юридичної особи (без довіреності)"></activiti:value>
+          <activiti:value id="tf_001_04" name="Особа, яка має право подавати документи для державної реєстрації (без довіреності)"></activiti:value>
           <activiti:value id="tf_001_03" name="Уповноважена особа (за довіреністю)"></activiti:value>
 		</activiti:formProperty>
 
@@ -42,15 +43,26 @@
         <activiti:formProperty id="sRole_Plus_01" name="+ роль 01" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRole_Plus_02" name="+ роль 02" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRole_Plus_03" name="+ роль 03" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sRole_Plus_04" name="+ роль 04" type="string" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="asSelectPidstava_01" name="Оберіть документ на підставі якого діє юридична особа" type="enum" required="true">
-          <activiti:value id="tf_002_01" name="- установчі документи, затверджені засновниками (учасниками)"></activiti:value>
-          <activiti:value id="tf_002_02" name="- модельний статут, затверджений постановою Кабінету Міністрів України"></activiti:value>
+        <activiti:formProperty id="asSelectGetDoc" name="Бажаєте отримати виписку з Єдиного державного реєстру юридичних осіб, фізичних осіб - підприємців та громадських формувань в паперовій формі" type="enum" required="true">
+          <activiti:value id="tf_01" name="Так"></activiti:value>
+          <activiti:value id="tf_02" name="Ні"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="sVarPidstava_01_Plus_01" name="собственный документ +" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sVarPidstava_01_Plus_02" name="модельный документ +" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVarGetDoc_01_Plus_01" name="отримати паперовий документ +" type="string" default=" "></activiti:formProperty>
 
+        <activiti:formProperty id="asSelectPlaceGetDoc" name="надіслати документ на" type="enum" required="true">
+          <activiti:value id="tf_01" name="На адресу, що співпадає з місцезнаходженням"></activiti:value>
+          <activiti:value id="tf_02" name="На іншу поштову адресу"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sVarGetDoc_01_Plus_02" name="отримати поштовим відправленням +" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVarGetDoc_01_Plus_03" name="отримати на іншу пошту +" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVarGetDoc_01_Plus_04" name="отримати на вказану раніше +" type="string" default=" "></activiti:formProperty>
+		
+        <activiti:formProperty id="sVarPlaceGetDoc_001_01" name="Поштова адреса; повна поштова адреса" type="string" default=" " required="true"></activiti:formProperty>
+		
         <activiti:formProperty id="sVarINN_001_01" name="Ідентифікаційний код юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         
         <activiti:formProperty id="asSelectOPF" name="Оберіть організаційно-правову форму юридичної особи; УВАГА - якщо в запропонованому переліку Ви не знайшли Ваш варіант - для отримання послуги зверніться, будь ласка, персонально до реєстратора." type="enum" required="true">
@@ -77,23 +89,19 @@
         <activiti:formProperty id="sVarCourtCaseDateStart" name="Дата набрання чинності судовим рішенням" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="fDoc_00" name="Копія рішення" type="file" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="sIzm_Plus_01" name="+ Изменения 01" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_02" name="+ Изменения 02" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_03" name="+ Изменения 03" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_06" name="+ Изменения 06" type="string" default=" "></activiti:formProperty>
-
-<!--        <activiti:formProperty id="sIzm_Plus_07" name="+ Изменения 07" type="string" default=" "></activiti:formProperty> -->
-        <activiti:formProperty id="sIzm_Plus_08" name="+ Изменения 08" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_10" name="+ Изменения 10" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_11" name="+ Изменения 11" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_13" name="+ Изменения 13" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_14" name="+ Изменения 14" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_15" name="+ Изменения 15" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_16" name="+ Изменения 16" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_17" name="+ Изменения 17" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_18" name="+ Изменения 18" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_19" name="+ Изменения 19" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_20" name="+ Изменения 20" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_00" name="+ Изменения 01" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_01" name="+ Изменения 01-01" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_02" name="+ Изменения 01-02" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_03" name="+ Изменения 02" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_11" name="+ Изменения 03" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_15" name="+ Изменения 04" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_10" name="+ Изменения 11" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_16" name="+ Изменения 12" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_19" name="+ Изменения 13" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_13" name="+ Изменения 14" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_14" name="+ Изменения 15" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_08" name="+ Изменения 16" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_06" name="+ Изменения 17" type="string" default=" "></activiti:formProperty>
 
 <!--        <activiti:formProperty id="Info_00_01" name="======================================" type="label" default="======================================"></activiti:formProperty> -->
         <activiti:formProperty id="Info_00_02" name="Ви бажаєте внести зміни до" type="label" default=" "></activiti:formProperty>
@@ -219,6 +227,11 @@
         <activiti:formProperty id="sVarTerr_010_04" name="Територія, в межах якої діє структурне утворення політичної партії" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarDate_010_05" name="Дата прийняття рішення керівного органу політичної партії" type="date" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarNum_010_06" name="Номер прийняття рішення керівного органу політичної партії" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVarPlus_010_07" name="Структурне утворення політичної партії зі статусом юридичної особи +" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVarPlus_010_08" name="Підрозділ громадського формування, що має статус юридичної особи +" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVar_010_09" name="Вид установчого документа; на підставі якого діє громадське формування" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVar_010_10" name="Ідентифікаційний код; юридичної особи (політичної партії)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVar_010_11" name="Найменування; юридичної особи (політичної партії)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fDoc_10" name="Копія документу для зміни відомостей" type="file" default=" "></activiti:formProperty>
 		
         <activiti:formProperty id="Info_11_00" name="======================================" type="label" default="======================================"></activiti:formProperty>
@@ -543,22 +556,19 @@
         <activiti:formProperty id="sVarPidstava_01_Plus_01" name="собственный документ +" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarPidstava_01_Plus_02" name="модельный документ +" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sIzm_Plus_01" name="+ Изменения 01" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_02" name="+ Изменения 02" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_03" name="+ Изменения 03" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_06" name="+ Изменения 06" type="string"></activiti:formProperty>
-<!--        <activiti:formProperty id="sIzm_Plus_07" name="+ Изменения 07" type="string"></activiti:formProperty> -->
-        <activiti:formProperty id="sIzm_Plus_08" name="+ Изменения 08" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_10" name="+ Изменения 10" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_11" name="+ Изменения 11" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_13" name="+ Изменения 13" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_14" name="+ Изменения 14" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_15" name="+ Изменения 15" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_16" name="+ Изменения 16" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_17" name="+ Изменения 17" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_18" name="+ Изменения 18" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_19" name="+ Изменения 19" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_20" name="+ Изменения 20" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_00" name="+ Изменения 01" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_01" name="+ Изменения 01-01" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_02" name="+ Изменения 01-02" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_03" name="+ Изменения 02" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_11" name="+ Изменения 03" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_15" name="+ Изменения 04" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_10" name="+ Изменения 11" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_16" name="+ Изменения 12" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_19" name="+ Изменения 13" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_13" name="+ Изменения 14" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_14" name="+ Изменения 15" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_08" name="+ Изменения 16" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_06" name="+ Изменения 17" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sVarOblPlus02_ADR01" name="область +" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarRajObl301Plus02_ADR01" name="Район області +" type="string"></activiti:formProperty>
@@ -601,10 +611,6 @@
 
 <!-- ВСТАВКА -->
 
-        <activiti:formProperty id="asChoiceCNAP" name="ВИКОНУВАЧ ПОСЛУГИ (важливо обирати свій район, оскільки саме на його рахунок буде надходити оплата за послугу)" type="enum" default="vasil" required="true">
-          <activiti:value id="vasil" name="Васильковський ЦНАП"></activiti:value>
-          <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (Васильковка)" type="invisible" default="i5516072613"></activiti:formProperty>
@@ -810,10 +816,6 @@
       <extensionElements>
         <activiti:formProperty id="group_found" name="Найденная группа по префиксу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asChoiceCNAP" name="Виконувач послуги" type="enum" writable="false">
-          <activiti:value id="vasil" name="Васильковський ЦНАП"></activiti:value>
-          <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ID платежу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>
@@ -852,10 +854,6 @@
       <extensionElements>
         <activiti:formProperty id="group_found" name="Найденная группа по префиксу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asChoiceCNAP" name="Виконувач послуги" type="enum" default="vasil" writable="false" required="true">
-          <activiti:value id="vasil" name="Васильковський ЦНАП"></activiti:value>
-          <activiti:value id="charichanka" name="Царичанский ЦНАП"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible" required="true"></activiti:formProperty>
