@@ -1191,13 +1191,13 @@
         $scope.showReadableField = function (field) {
           if($scope.isFormPropertyDisabled(field) && $scope.isDocumentReadable(field)) return true;
           else if(!$scope.isDocumentWritable(field) && $scope.isDocumentReadable(field)) return true;
-          else if($scope.inUnassigned() && $scope.isFormPropertyDisabled(field) && $scope.isDocumentWritable(field)) return true;
+          else if($scope.isFormPropertyDisabled(field) && $scope.isDocumentWritable(field)) return true;
         };
 
         // отображать поле в зависимости от доступности к чтению/записи документа.
         $scope.showField = function (field) {
           if(documentRights) {
-            if($scope.inUnassigned() && ($scope.isDocumentReadable(field) || $scope.isDocumentWritable(field))) return true;
+            if($scope.isDocumentReadable(field) || $scope.isDocumentWritable(field)) return true;
             else if(!$scope.isDocumentReadable(field) && !$scope.isDocumentWritable(field)) return false;
             else if(!$scope.inUnassigned() && $scope.isFormPropertyDisabled(field) && $scope.isDocumentWritable(field) && !$scope.isDocumentReadable(field)) return false;
             else if(!$scope.isFormPropertyDisabled(field) && ($scope.isDocumentWritable(field) || $scope.isDocumentReadable(field))) return true;
