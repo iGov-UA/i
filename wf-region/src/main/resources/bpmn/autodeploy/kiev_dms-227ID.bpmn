@@ -38,45 +38,53 @@
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow34" sourceRef="servicetask1" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('visitDay')
-var date_of_visit=src.substr(27,16)
-var tickNum=src.substr(99,3)
-var tickCode=src.substr(119,9)
-execution.setVariable('sNotification_day', date_of_visit)
-execution.setVariable('sTicketNumber', tickNum)
-execution.setVariable('sTicketCode', tickCode)
-var src=execution.getVariable('date_of_visit')
-var year=src.substr(0,4)
-var month=src.substr(5,2)
-var day=src.substr(8,2)
-var hour=src.substr(11,2)
-var minutes=src.substr(14,2)
-var seconds='00'
-var delta=1
-var day1=day
-var month1=month
-if (day!='01')
-    {
-        day1=+day-delta
-    }
-else
-    {
-        if ((month!='01')&amp;&amp;(month!='03'))
-          {
-              month1=+month-1
-              day1=30
-          }
-        else
-          {
-            if (month=='03')
-            {
-              month1='02'
-              day1='28'
-            }            
-          }
-     }
-var timerEnd=year+'-'+month+'-'+day+'T'+'19'+':'+'00'+':'+seconds
-execution.setVariable('sEndDay', timerEnd)</script>
+      <script><![CDATA[
+		var src=execution.getVariable('visitDay')
+		var date_of_visit=src.substr(27,16)
+		var tickNum=src.substr(99,3)
+		var tickCode=src.substr(119,9)
+		execution.setVariable('sNotification_day', date_of_visit)
+		execution.setVariable('sTicketNumber', tickNum)
+		execution.setVariable('sTicketCode', tickCode)
+		
+		var src1=execution.getVariable('date_of_visit')
+		execution.setVariable('sTestTest', src1)
+		
+		
+	/*	
+		var year=src1.substr(0,4)
+		var month=src1.substr(5,2)
+		var day=src1.substr(8,2)
+		var hour=src1.substr(11,2)
+		var minutes=src1.substr(14,2)
+		var seconds='00'
+		var delta=1
+		var day1=day
+		var month1=month
+		if (day!='01')
+		    {
+		        day1=+day-delta
+		    }
+		else
+		    {
+		        if ((month!='01')&&(month!='03'))
+		          {
+		              month1=+month-1
+		              day1=30
+		          }
+		        else
+		          {
+		            if (month=='03')
+		            {
+		              month1='02'
+		              day1='28'
+		            }            
+		          }
+		     }
+		var timerEnd=year+'-'+month+'-'+day+'T'+'19'+':'+'00'+':'+seconds
+		execution.setVariable('sEndDay', timerEnd)
+*/
+      ]]></script>
     </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask2" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -145,6 +153,8 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="Заявка прийнята ДМС" activiti:candidateGroups="id_card_kiev">
       <extensionElements>
+        <activiti:formProperty id="sTestTest" name="sTestTest" type="string"></activiti:formProperty>
+
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -203,7 +213,7 @@ execution.setVariable('sNotification_day', timer)
         <omgdc:Bounds height="30.0" width="30.0" x="139.0" y="76.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="90.0" y="50.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="136.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="55.0" width="105.0" x="185.0" y="85.0"></omgdc:Bounds>
@@ -229,7 +239,7 @@ execution.setVariable('sNotification_day', timer)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="139.0" y="91.0"></omgdi:waypoint>
-        <omgdi:waypoint x="125.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="153.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="168.0" y="112.0"></omgdi:waypoint>
