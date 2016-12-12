@@ -382,6 +382,7 @@ public class ProcessSubjectService {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
             DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
             Date oDateExecution = parseDate(mParam.get("sDateExecution"));
+            Date oDateRegistration = parseDate(mParam.get("sDateRegistration"));
 
             ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
 
@@ -408,7 +409,7 @@ public class ProcessSubjectService {
             mParamDocument.put("sID_Attachment", mParam.get("sID_Attachment"));
             mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
             mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
-            mParamDocument.put("sDateRegistration", mParam.get("sDateRegistration"));
+            mParamDocument.put("sDateRegistration", df_StartProcess.format(oDateRegistration));
             mParamDocument.put("sDateDoc", mParam.get("sDateDoc"));
             mParamDocument.put("sApplicant", mParam.get("sApplicant"));
             mParamDocument.put("snCountAttach", mParam.get("snCountAttach"));
@@ -416,7 +417,7 @@ public class ProcessSubjectService {
             mParamDocument.put("sNote", mParam.get("sNote"));
             mParamDocument.put("asUrgently", mParam.get("asUrgently"));
             mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
-            mParamDocument.put("asTypeResolution_Value", mParam.get("asTypeResolution_Value"));
+            mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
             mParamDocument.put("sDateExecution", df_StartProcess.format(oDateExecution));
             mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
             
