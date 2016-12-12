@@ -28,6 +28,8 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
     //@Autowired
     //private TaskService taskService;
 
+    private List<Attachment> aAttachmentList;
+
     @Override
     public void notify(DelegateTask oTask) {
     	List<Attachment> attachments = taskService.getProcessInstanceAttachments(oTask.getProcessInstanceId());
@@ -57,7 +59,11 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
                     .getStartFormData(oExecution.getProcessDefinitionId());
             LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
                     oExecution.getProcessDefinitionId());
-            addAttachmentsToTask(oStartFormData, oTask);
+            aAttachmentList = addAttachmentsToTask(oStartFormData, oTask);
         }
+    }
+
+    public List<Attachment> getaAttachmentList() {
+        return aAttachmentList;
     }
 }
