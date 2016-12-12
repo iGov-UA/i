@@ -1974,7 +1974,7 @@ public class ActionTaskService {
             for (Attachment attachment : attachments){
                 attachmetIDs.add(attachment.getId());
             }
-            LOG.info("Task attachmets: " + attachmetIDs.toString());
+            LOG.info("Task attachments: " + attachmetIDs.toString());
         }
         return attachments;
     }
