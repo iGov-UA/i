@@ -590,7 +590,9 @@ public abstract class AbstractModelTask {
         for (String sID_Attachment : asID_Attachment) {
             if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
                 String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
+
                 Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
+
                 if (oAttachment != null) {
                     aAttachment.add(oAttachment);
                 } else {
@@ -603,6 +605,7 @@ public abstract class AbstractModelTask {
         if (!aAttachmentNotFound.isEmpty()) {
             //the next line returns no collection hence no items from aAttachmentNotFound are added to aAttachment; consider replacing
             List<Attachment> aAttachmentByProcess = taskService.getProcessInstanceAttachments(processInstanceId);
+
             for (Attachment attachment : aAttachmentByProcess) {
                 LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
                 if (!aAttachmentNotFound.contains(attachment.getId())) {

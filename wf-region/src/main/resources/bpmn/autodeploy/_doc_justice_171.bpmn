@@ -43,7 +43,6 @@
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="3"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
-       
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
@@ -57,7 +56,7 @@
           <activiti:value id="sEnumUrgentDoc" name="з ЕЦП"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot;, &quot;required&quot; : &quot;true&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;type&quot; : &quot;string&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;required&quot; : &quot;true&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;type&quot; : &quot;string&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;required&quot; : &quot;true&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot;, &quot;required&quot; : &quot;true&quot; }]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" required="true">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
@@ -85,16 +84,15 @@
           <activiti:field name="sContent">
             <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
           </activiti:field>
-           <activiti:field name="sAutorResolution">
+          <activiti:field name="sAutorResolution">
             <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
           </activiti:field>
-           <activiti:field name="sTextResolution">
+          <activiti:field name="sTextResolution">
             <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateExecution">
             <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
           </activiti:field>
-          
           <activiti:field name="sTypeDoc">
             <activiti:expression><![CDATA[${sTypeDoc}]]></activiti:expression>
           </activiti:field>
@@ -113,19 +111,15 @@
           <activiti:field name="nCountAttach">
             <activiti:expression><![CDATA[${nCountAttach}]]></activiti:expression>
           </activiti:field>
-          
           <activiti:field name="sNote">
             <activiti:expression><![CDATA[${sNote}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="asUrgently">
             <activiti:expression><![CDATA[${asUrgently}]]></activiti:expression>
           </activiti:field>
-         
           <activiti:field name="asTypeResolution">
             <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
           </activiti:field>
-         
-         
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
