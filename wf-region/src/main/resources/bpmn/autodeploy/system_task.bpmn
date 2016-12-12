@@ -70,8 +70,21 @@
             <activiti:string><![CDATA[system_task]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable3}]]></activiti:expression>
+            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
+          <activiti:field name="sContent">
+            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
+          </activiti:field>
+           <activiti:field name="sAutorResolution">
+            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
+          </activiti:field>
+           <activiti:field name="sTextResolution">
+            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sDateExecution">
+            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
+          </activiti:field>
+          
           <activiti:field name="sTypeDoc">
             <activiti:expression><![CDATA[${sTypeDoc}]]></activiti:expression>
           </activiti:field>
@@ -90,24 +103,18 @@
           <activiti:field name="nCountAttach">
             <activiti:expression><![CDATA[${nCountAttach}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="sContent">
-            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
-          </activiti:field>
+          
           <activiti:field name="sNote">
             <activiti:expression><![CDATA[${sNote}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="asUrgently">
             <activiti:expression><![CDATA[${asUrgently}]]></activiti:expression>
           </activiti:field>
+         
           <activiti:field name="asTypeResolution">
             <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="sTextResolution">
-            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sDateExecution">
-            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
-          </activiti:field>
+         
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
