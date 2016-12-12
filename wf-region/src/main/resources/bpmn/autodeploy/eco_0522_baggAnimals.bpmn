@@ -257,6 +257,9 @@
         <activiti:formProperty id="sMethod" name="Передбачений спосіб добування тварин, занесених до Червоної книги України" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameResponsible" name="Прізвище, ім'я, по-батькові відповідальної особи, на яку необхідно видати дозвіл" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOffers" name="Пропозиції про місце та спосіб зберігання зібраного наукового та колекційного матеріалу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="відомості про чисельність видів тварин" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;nFaunaQuantity&quot;],&quot;sValue&quot;:&quot;Відомості про чисельність видів тварин чи рослин&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFaunaQuantity" name="Види тварин чи рослин; Чисельність" type="table" default="${markerService.loadFromFile('table/eco/eco_0522_baggAnimals_table.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="asDecidePermit" name="Обробка заяви. Видача дозволу, або лист з відмовою" type="enum" required="true">
           <activiti:value id="sEnumOffice" name="Відправити повідомлення про необхідність забрати дозвіл"></activiti:value>
           <activiti:value id="sEnumPost" name="Відправити повідомлення про відправку дозволу поштою"></activiti:value>
@@ -266,6 +269,11 @@
         <activiti:formProperty id="nFileReject" name="Скан-копія листа з відмовою" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0522_baggAnimals_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="requiredFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0522_baggAnimals_4.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1},${nFaunaQuantity}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask3" targetRef="usertask2_yellow"></sequenceFlow>
