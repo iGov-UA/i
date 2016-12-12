@@ -323,17 +323,23 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (sID_UA != null) {
                 mParam.put("sID_UA", sID_UA);
             }
+            
+            LOG.info("RequestProcessingInterceptor sID_UA: " + sID_UA);
 
             //TODO: need remove in future
             String snID_Region = mParamRequest.get("nID_Region");
             if (snID_Region != null) {
                 mParam.put("nID_Region", snID_Region);
             }
-
+            
+            LOG.info("RequestProcessingInterceptor snID_Region: " + snID_Region);
+            
             String snID_ServiceData = mParamRequest.get("nID_ServiceData");
             if (snID_ServiceData != null) {
                 mParam.put("nID_ServiceData", snID_ServiceData);
             }
+            
+            LOG.info("RequestProcessingInterceptor snID_ServiceData: " + snID_ServiceData);
 
             HistoricProcessInstance oHistoricProcessInstance
                     = historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
