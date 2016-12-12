@@ -372,6 +372,11 @@ public class ProcessSubjectService {
 
         removeProcessSubject(processSubject);
     }
+    
+    public void editProcessSubject(ProcessSubject processSubject, Map<String, String> mParamDocument){
+        
+        ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
+    }
 
     /*public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
             String sContent, String sAutorResolution, String sTextResolution,
@@ -387,15 +392,19 @@ public class ProcessSubjectService {
             String sFormatDateDoc = "";
             Date oDateExecution = null;
             
-            oDateExecution = parseDate(mParam.get("sDateExecution"));
-            sFormatDateExecution = df_StartProcess.format(oDateExecution);
+            if (mParam.get("sDateExecution") != null){
+                oDateExecution = parseDate(mParam.get("sDateExecution"));
+                sFormatDateExecution = df_StartProcess.format(oDateExecution);
+            }
+            if(mParam.get("sDateRegistration") != null ){
+                Date oDateRegistration = parseDate(mParam.get("sDateRegistration"));
+                sFormatDateRegistration = df_StartProcess.format(oDateRegistration);
+            }
             
-            Date oDateRegistration = parseDate(mParam.get("sDateRegistration"));
-            sFormatDateRegistration = df_StartProcess.format(oDateRegistration);
-            
-            Date oDateDoc = parseDate(mParam.get("sDateDoc"));
-            sFormatDateDoc = df_StartProcess.format(oDateDoc);
-            
+            if(mParam.get("sDateDoc") != null){
+                Date oDateDoc = parseDate(mParam.get("sDateDoc"));
+                sFormatDateDoc = df_StartProcess.format(oDateDoc);
+            }
             /*if((mParam.get("sDateExecution") != null)&&(!mParam.get("sDateExecution").equals(""))){
                 oDateExecution = parseDate(mParam.get("sDateExecution"));
                 sFormatDateExecution = df_StartProcess.format(oDateExecution);
@@ -410,24 +419,7 @@ public class ProcessSubjectService {
             }*/
             
             ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
-
-            //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
-            if (oProcessSubjectParent == null) {
-                oProcessSubjectParent = processSubjectDao
-                        .setProcessSubject(snProcess_ID, mParam.get("sAutorResolution"),
-                                new DateTime(oDateExecution), 0L, processSubjectStatus);
-            }
             
-            List<ProcessSubjectTree> aProcessSubjectTreeChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
-            InputStream attachmentContent = taskService.getAttachmentContent(mParam.get("sID_Attachment"));
-
-            List<ProcessSubject> aProcessSubjectChild = getCatalogProcessSubject(snProcess_ID, 1L, null).getaProcessSubject();
-            List<String> aProcessSubjectLoginToDelete = new ArrayList<>();
-            
-            for (ProcessSubject oProcessSubject : aProcessSubjectChild) {
-                aProcessSubjectLoginToDelete.add(oProcessSubject.getsLogin());
-            }
-
             Map<String, Object> mParamDocument = new HashMap<>();
 
             mParamDocument.put("sTaskProcessDefinition", mParam.get("sTaskProcessDefinition"));
@@ -445,7 +437,28 @@ public class ProcessSubjectService {
             mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
             mParamDocument.put("sDateExecution", sFormatDateExecution);
             mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
+
+
+            //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
+            //иначе проверяем на необходимость редактирования
+            if (oProcessSubjectParent == null) {
+                oProcessSubjectParent = processSubjectDao
+                        .setProcessSubject(snProcess_ID, mParam.get("sAutorResolution"),
+                                new DateTime(oDateExecution), 0L, processSubjectStatus);
+            }else{
+                
+            }
             
+            List<ProcessSubjectTree> aProcessSubjectTreeChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
+            InputStream attachmentContent = taskService.getAttachmentContent(mParam.get("sID_Attachment"));
+
+            List<ProcessSubject> aProcessSubjectChild = getCatalogProcessSubject(snProcess_ID, 1L, null).getaProcessSubject();
+            List<String> aProcessSubjectLoginToDelete = new ArrayList<>();
+            
+            for (ProcessSubject oProcessSubject : aProcessSubjectChild) {
+                aProcessSubjectLoginToDelete.add(oProcessSubject.getsLogin());
+            }
+
             JSONParser parser = new JSONParser();
             JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
             LOG.info("JSON String: " + oJSONObject.toJSONString());
