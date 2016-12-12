@@ -1181,6 +1181,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("sID_State_BP: " + sID_State_BP);
         LOG.info("nASCI_Spliter: " + nASCI_Spliter);
         LOG.info("fileName: " + fileName);
+        nASCI_Spliter = Integer.toString(59);
         fileName = "justice_incoming.xls";
         LOG.info("fileNameNew: " + fileName);
         LOG.info("nASCI_Spliter: " + nASCI_Spliter);
@@ -2646,5 +2647,75 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
     }
+
+    
+    
+    /**
+     * Returns business processes which belong to a specified user
+     *
+     * @param sLogin - login of user in user activity
+     */
+    @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=userId\n\n"
+            + "Метод возвращает json со списком бизнес процессов, к которым у пользователя есть доступ, в формате:\n"
+            + "\n```json\n"
+            + "[\n"
+            + "  {\n"
+            + "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
+            + "  }\n"
+            + "]\n"
+            + "\n```\n"
+            + "Принадлежность пользователя к процессу проверяется по вхождению в группы, которые могут запускать usertask-и внутри процесса, или по вхождению в группу, которая может стартовать процесс\n\n"
+            + "Пример:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=kermit\n"
+            + "Пример результата\n"
+            + "\n```json\n"
+            + "[\n"
+            + "{\n"
+            + "    \"sID\": \"dnepr_spravka_o_doxodax\",\n"
+            + "    \"sName\": \"Дніпропетровськ - Отримання довідки про доходи фіз. осіб\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"dnepr_subsidies2\",\n"
+            + "    \"sName\": \"Отримання субсидії на оплату житлово-комунальних послуг2\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"khmelnitskij_mvk_2\",\n"
+            + "    \"sName\": \"Хмельницький - Надання інформації, що підтверджує відсутність (наявність) земельної ділянки\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"khmelnitskij_zemlya\",\n"
+            + "    \"sName\": \"Заява про наявність земельної ділянки\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"kiev_spravka_o_doxodax\",\n"
+            + "    \"sName\": \"Київ - Отримання довідки про доходи фіз. осіб\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"kuznetsovsk_mvk_5\",\n"
+            + "    \"sName\": \"Кузнецовськ МВК - Узгодження графіка роботи підприємства торгівлі\\/обслуговування\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"post_spravka_o_doxodax_pens\",\n"
+            + "    \"sName\": \"Отримання довідки про доходи (пенсійний фонд)\"\n"
+            + "  }\n"
+            + "]\n"
+            + "\n```\n")
+    @RequestMapping(value = "/getBPs", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @Transactional
+    public @ResponseBody
+    List<Map<String, String>> getBusinessProcesses(
+            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
+            throws IOException {
+
+        //String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
+        //LOG.info("Result: {}", jsonRes);
+        return oActionTaskService.getBusinessProcessesForUser(sLogin);
+    }    
+    
+    
     
 }

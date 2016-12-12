@@ -54,6 +54,8 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             asID_Attachment_ToAdd = getInheritedAttachmentIdsFromTask(attachments,
                     sInheritedAttachmentsIds);
             addAttachmentsToCurrentTask(asID_Attachment_ToAdd, oTask);*/
+
+            //Issue #1441: next 2 lines should be commented out or logic of addAttachmentsToCurrentTask() should be rewritten;
             List<Attachment> attachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
             addAttachmentsToCurrentTask(attachments, oTask);
         } catch (Exception oException) {
@@ -80,6 +82,8 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
     }
 
+
+    //#1441 fix:
     private void addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd,
             DelegateTask task) {
         final String METHOD_NAME = "addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd, DelegateExecution execution)";
@@ -88,10 +92,16 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
         //TaskService taskService = task.getExecution().getEngineServices()
         //       .getTaskService();
         int n = 0;
-
         for (Attachment attachment : attachmentsToAdd) {
             LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getDescription()={},attachment.getId()={})"
                     ,n++, task.getId(), task.getExecution().getProcessInstanceId(),attachment.getName(),attachment.getDescription(), attachment.getId());
+
+            List<Attachment> attachmentList = taskService.getTaskAttachments(task.getId());
+            LOG.info("Inside addAttachmentsToCurrentTask; size of attachmentList = {}", attachmentList.size());
+            for (Attachment attachment1 : attachmentList) {
+                LOG.info("Inside loop; description = {}, id = {}", attachment1.getDescription(), attachment1.getId());
+            }
+
             Attachment newAttachment = taskService.createAttachment(
                     attachment.getType(), task.getId(),
                     task.getExecution().getProcessInstanceId(), attachment.getName(),

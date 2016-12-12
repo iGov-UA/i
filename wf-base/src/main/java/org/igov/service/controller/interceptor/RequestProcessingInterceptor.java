@@ -50,7 +50,7 @@ import static org.igov.util.Tool.sCut;
  */
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
-    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|justice_incoming";
+    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|justice_incoming|_doc_justice_171";
     private static final String asID_BP_SkipSendMail = "dnepr_mvk_291_common";
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
@@ -323,17 +323,23 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (sID_UA != null) {
                 mParam.put("sID_UA", sID_UA);
             }
+            
+            LOG.info("RequestProcessingInterceptor sID_UA: " + sID_UA);
 
             //TODO: need remove in future
             String snID_Region = mParamRequest.get("nID_Region");
             if (snID_Region != null) {
                 mParam.put("nID_Region", snID_Region);
             }
-
+            
+            LOG.info("RequestProcessingInterceptor snID_Region: " + snID_Region);
+            
             String snID_ServiceData = mParamRequest.get("nID_ServiceData");
             if (snID_ServiceData != null) {
                 mParam.put("nID_ServiceData", snID_ServiceData);
             }
+            
+            LOG.info("RequestProcessingInterceptor snID_ServiceData: " + snID_ServiceData);
 
             HistoricProcessInstance oHistoricProcessInstance
                     = historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
