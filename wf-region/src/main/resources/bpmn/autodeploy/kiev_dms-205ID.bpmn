@@ -45,7 +45,38 @@ var tickCode=src.substr(119,9)
 execution.setVariable('sNotification_day', date_of_visit)
 execution.setVariable('sTicketNumber', tickNum)
 execution.setVariable('sTicketCode', tickCode)
-</script>
+var src=date_of_visit
+var year=src.substr(0,4)
+var month=src.substr(5,2)
+var day=src.substr(8,2)
+var hour=src.substr(11,2)
+var minutes=src.substr(14,2)
+var seconds='00'
+var delta=1
+var day1=day
+var month1=month
+if (day!='01')
+    {
+        day1=+day-delta
+    }
+else
+    {
+        if ((month!='01')&amp;&amp;(month!='03'))
+          {
+              month1=+month-1
+              day1=30
+          }
+        else
+          {
+            if (month=='03')
+            {
+              month1='02'
+              day1='28'
+            }            
+          }
+     }
+var timerEnd=year+'-'+month+'-'+day+'T'+'19'+':'+'00'+':'+seconds
+execution.setVariable('sEndDay', timerEnd)</script>
     </scriptTask>
     <sequenceFlow id="flow28" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="ID картка" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
