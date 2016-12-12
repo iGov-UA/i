@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -80,36 +79,36 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
     }
 
-    private void addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd,
-            DelegateTask task) {
-        final String METHOD_NAME = "addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd, DelegateExecution execution)";
-        LOG.trace("Entering method '{}'", METHOD_NAME);
-
-        //TaskService taskService = task.getExecution().getEngineServices()
-        //       .getTaskService();
-        int n = 0;
-        LOG.info("Task id: {}", task.getId());
-        List<Attachment> attachmentList = taskService.getTaskAttachments(task.getId());
-        LOG.info("After getting attachments list; size = {}", attachmentList.size());
-        for(Attachment attachment: attachmentList) {
-            LOG.info("Attachment description: {} attachment ID {}", attachment.getDescription(), attachment.getId());
-        }
-        for (Attachment attachment : attachmentsToAdd) {
-            LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getDescription()={},attachment.getId()={})"
-                    ,n++, task.getId(), task.getExecution().getProcessInstanceId(),attachment.getName(),attachment.getDescription(), attachment.getId());
-            Attachment newAttachment = taskService.createAttachment(
-                    attachment.getType(), task.getId(),
-                    task.getExecution().getProcessInstanceId(), attachment.getName(),
-                    attachment.getDescription(),
-                    taskService.getAttachmentContent(attachment.getId()));
-            LOG.info(MessageFormat
-                    .format("Created new attachment for the task {0} with ID {1} from the attachment with ID {2}",
-                            task.getId(), newAttachment.getId(),
-                            attachment.getId()));
-        }
-
-        LOG.trace("Exiting method '{}'", METHOD_NAME);
-    }
+//    private void addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd,
+//            DelegateTask task) {
+//        final String METHOD_NAME = "addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd, DelegateExecution execution)";
+//        LOG.trace("Entering method '{}'", METHOD_NAME);
+//
+//        //TaskService taskService = task.getExecution().getEngineServices()
+//        //       .getTaskService();
+//        int n = 0;
+//        LOG.info("Task id: {}", task.getId());
+//        List<Attachment> attachmentList = taskService.getTaskAttachments(task.getId());
+//        LOG.info("After getting attachments list; size = {}", attachmentList.size());
+//        for(Attachment attachment: attachmentList) {
+//            LOG.info("Attachment description: {} attachment ID {}", attachment.getDescription(), attachment.getId());
+//        }
+//        for (Attachment attachment : attachmentsToAdd) {
+//            LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getDescription()={},attachment.getId()={})"
+//                    ,n++, task.getId(), task.getExecution().getProcessInstanceId(),attachment.getName(),attachment.getDescription(), attachment.getId());
+//            Attachment newAttachment = taskService.createAttachment(
+//                    attachment.getType(), task.getId(),
+//                    task.getExecution().getProcessInstanceId(), attachment.getName(),
+//                    attachment.getDescription(),
+//                    taskService.getAttachmentContent(attachment.getId()));
+//            LOG.info(MessageFormat
+//                    .format("Created new attachment for the task {0} with ID {1} from the attachment with ID {2}",
+//                            task.getId(), newAttachment.getId(),
+//                            attachment.getId()));
+//        }
+//
+//        LOG.trace("Exiting method '{}'", METHOD_NAME);
+//    }
 
 
     
