@@ -54,8 +54,8 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             asID_Attachment_ToAdd = getInheritedAttachmentIdsFromTask(attachments,
                     sInheritedAttachmentsIds);
             addAttachmentsToCurrentTask(asID_Attachment_ToAdd, oTask);*/
-            List<Attachment> attachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
-            addAttachmentsToCurrentTask(attachments, oTask);
+//            List<Attachment> attachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
+//            addAttachmentsToCurrentTask(attachments, oTask);
         } catch (Exception oException) {
             LOG.error("FAIL: {}", oException.getMessage());
             LOG.trace("FAIL:", oException);
