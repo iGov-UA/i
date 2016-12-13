@@ -1423,6 +1423,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\n```\n")
     @RequestMapping(value = "/getLoginBPs", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
+    @Deprecated //новый: getBPs 
     public @ResponseBody
     String getBusinessProcessesForUser(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
@@ -2704,7 +2705,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         //String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         //LOG.info("Result: {}", jsonRes);
-        return oActionTaskService.getBusinessProcessesForUser(sLogin);
+        return oActionTaskService.getBusinessProcessesOfLogin(sLogin);
     }    
     
     

@@ -10,9 +10,8 @@
   </button>
 
   <ul class="dropdown-menu">
-    <li>
-      <a ng-repeat="provider in bankidProvidersList"
-         ng-href="{{::getBankIdAuthUrl(provider)}}"
+    <li ng-repeat="provider in bankidProvidersList">
+      <a ng-href="{{::getBankIdAuthUrl(provider)}}"
          target="_self"
          ng-if="(authMethods.indexOf('BankID') > -1 && provider.auth=='BankID')
              || (authMethods.indexOf('BankID-NBU') > -1 && provider.auth=='BankID-NBU') || true">
