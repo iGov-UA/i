@@ -123,7 +123,6 @@
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/lebedyn/lebedyn_mvk_1193.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideShowElements1" type="markers" default="${markerService.loadFromFile('lebedyn/lebedyn_mvk_1193_print.json')}"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -203,7 +202,14 @@
           <activiti:value id="sEnum1" name="за власний рахунок"></activiti:value>
           <activiti:value id="sEnum2" name="за рахунок КП «Комбінат благоустрою»"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFileResolution" name="Відсканована копія рішення виконкому про видалення зелених насаджень" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asProcessing" name="Обробка після рішення виконкому" type="enum" required="true">
+          <activiti:value id="sEnum1" name="Відправити громадянину рішення для оплати"></activiti:value>
+          <activiti:value id="sEnum2" name="Оплата не передбачена. Відправити громадянину ордер"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFileOrderFree" name="Відсканована копія ордеру на видалення зелених насаджень" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileResolution" name="Відсканована копія рішення виконкому про видалення зелених насаджень" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('lebedyn/lebedyn_mvk_1193_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="requiredFields1" type="markers" default="${markerService.loadFromFile('lebedyn/lebedyn_mvk_1193_2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -298,7 +304,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="exclusivegateway3"></sequenceFlow>
     <userTask id="usertask3" name="3. Очикування оплати відновної вартості ЗН" activiti:candidateGroups="cnap_lebedyn">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -331,7 +337,6 @@
         <activiti:formProperty id="nFileOrder" name="Відсканована копія ордеру на видалення зелених насаджень" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('lebedyn/lebedyn_mvk_1193_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="requiredFields1" type="markers" default="${markerService.loadFromFile('lebedyn/lebedyn_mvk_1193_2.json')}"></activiti:formProperty>
-      
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -433,6 +438,60 @@
     </sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow16" sourceRef="exclusivegateway3" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asProcessing=='sEnum1'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask8" name="Повідомлення заявнику про необхідність забрати ордер" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${nFileOrderFree}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача дозволу на видалення зелених насаджень.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<p> Ваше звернення №[sID_Order] щодо видачи дозволу на видалення зелених насаджень опрацьоване.<br>
+Копія ордеру на видалення зелених насаджень у прикріпленому файлі.<br>
+Оригінал Ви можете отримати за адресою:<br>
+м.Лебедин, вул.Пушкіна, 11<br>
+Режим роботи ЦНАПу:<br>
+Понеділок - четвер з 8.00 до 17.15<br>
+П'ятниця з 8.00 до 16.00<br>
+Перерва на обід з 12.00 до 13.00<br>
+</p>
+<br>
+<p>При собі треба мати оригінал паспорту.</p>
+<br>
+Телефон для довідок: (05445) 2-19-26<br>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+ЦНАП виконавчого комітету Лебединської міської ради,<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow17" sourceRef="exclusivegateway3" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asProcessing=='sEnum2'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent4" name="End"></endEvent>
+    <sequenceFlow id="flow18" sourceRef="servicetask8" targetRef="endevent4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_lebedyn_mvk_1193">
     <bpmndi:BPMNPlane bpmnElement="lebedyn_mvk_1193" id="BPMNPlane_lebedyn_mvk_1193">
@@ -464,25 +523,34 @@
         <omgdc:Bounds height="71.0" width="191.0" x="580.0" y="390.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="65.0" width="191.0" x="360.0" y="500.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="191.0" x="360.0" y="660.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="65.0" width="192.0" x="140.0" y="500.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="192.0" x="140.0" y="660.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="215.0" y="610.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="215.0" y="770.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="65.0" width="191.0" x="360.0" y="596.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="191.0" x="360.0" y="756.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="596.0" y="611.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="595.0" y="771.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="61.0" width="192.0" x="140.0" y="690.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="192.0" x="140.0" y="850.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="377.0" y="703.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="377.0" y="863.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="655.0" y="600.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="67.0" width="191.0" x="800.0" y="659.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="1036.0" y="675.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="95.0" y="217.0"></omgdi:waypoint>
@@ -517,32 +585,46 @@
         <omgdi:waypoint x="675.0" y="500.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="580.0" y="532.0"></omgdi:waypoint>
-        <omgdi:waypoint x="551.0" y="532.0"></omgdi:waypoint>
+        <omgdi:waypoint x="675.0" y="565.0"></omgdi:waypoint>
+        <omgdi:waypoint x="675.0" y="600.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="360.0" y="532.0"></omgdi:waypoint>
-        <omgdi:waypoint x="332.0" y="532.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="692.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="692.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="236.0" y="565.0"></omgdi:waypoint>
-        <omgdi:waypoint x="235.0" y="610.0"></omgdi:waypoint>
+        <omgdi:waypoint x="236.0" y="725.0"></omgdi:waypoint>
+        <omgdi:waypoint x="235.0" y="770.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="255.0" y="630.0"></omgdi:waypoint>
-        <omgdi:waypoint x="360.0" y="628.0"></omgdi:waypoint>
+        <omgdi:waypoint x="255.0" y="790.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="788.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="551.0" y="628.0"></omgdi:waypoint>
-        <omgdi:waypoint x="596.0" y="628.0"></omgdi:waypoint>
+        <omgdi:waypoint x="551.0" y="788.0"></omgdi:waypoint>
+        <omgdi:waypoint x="595.0" y="788.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="235.0" y="650.0"></omgdi:waypoint>
-        <omgdi:waypoint x="236.0" y="690.0"></omgdi:waypoint>
+        <omgdi:waypoint x="235.0" y="810.0"></omgdi:waypoint>
+        <omgdi:waypoint x="236.0" y="850.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="332.0" y="720.0"></omgdi:waypoint>
-        <omgdi:waypoint x="377.0" y="720.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="880.0"></omgdi:waypoint>
+        <omgdi:waypoint x="377.0" y="880.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="675.0" y="640.0"></omgdi:waypoint>
+        <omgdi:waypoint x="674.0" y="692.0"></omgdi:waypoint>
+        <omgdi:waypoint x="551.0" y="692.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="675.0" y="640.0"></omgdi:waypoint>
+        <omgdi:waypoint x="675.0" y="692.0"></omgdi:waypoint>
+        <omgdi:waypoint x="800.0" y="692.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="991.0" y="692.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1036.0" y="692.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
