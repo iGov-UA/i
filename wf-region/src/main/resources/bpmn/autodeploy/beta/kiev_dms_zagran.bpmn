@@ -47,7 +47,38 @@ var tickCode=src.substr(119,9)
 execution.setVariable('sNotification_day', date_of_visit)
 execution.setVariable('sTicketNumber', tickNum)
 execution.setVariable('sTicketCode', tickCode)
-</script>
+var src=date_of_visit
+var year=src.substr(0,4)
+var month=src.substr(5,2)
+var day=src.substr(8,2)
+var hour=src.substr(11,2)
+var minutes=src.substr(14,2)
+var seconds='00'
+var delta=1
+var day1=day
+var month1=month
+if (day!='01')
+    {
+        day1=+day-delta
+    }
+else
+    {
+        if ((month!='01')&amp;&amp;(month!='03'))
+          {
+              month1=+month-1
+              day1=30
+          }
+        else
+          {
+            if (month=='03')
+            {
+              month1='02'
+              day1='28'
+            }            
+          }
+     }
+var timerEnd=year+'-'+month+'-'+day+'T'+'19'+':'+'00'+':'+seconds
+execution.setVariable('sEndDay', timerEnd)</script>
     </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask2" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -80,8 +111,7 @@ execution.setVariable('sTicketCode', tickCode)
 									Номер талону - ${sTicketNumber}, орієнтовна дата та час візиту - ${sNotification_day}. 
 								</p>
 								<p>
-									У зв'язку з очікуванням зміни системи сплати за оформлення закордонного паспорту, ми не можемо надати реквізити.<br>
-									Для отримання реквізитів для сплати Вам потрібно з'явитись у підрозділ ДМС за 20-30 хвилин до обраного часу та сплатити за послугу.<br>
+									Реквізити для сплати адмінсбору доступні за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a>
 									<b>Зверніть увагу:</b> В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу). В іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.
 								</p>
 								<p>
@@ -133,44 +163,7 @@ execution.setVariable('sTicketCode', tickCode)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finish=='attr1_ok'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="endevent2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finish=='attr2_missed'}]]></conditionExpression>
-    </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <serviceTask id="servicetask5" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    <p>
-                              		Ви отримали послугу "Отримання паспорта громадянина України для виїзду за кордон".
-                              		</p>
-                              		<p>
-                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
-                              		Дякуємо.
-									</p>
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow39" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <scriptTask id="scripttask3" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var delta='10';
 var unixdate= Math.round((new Date()).getTime());
@@ -190,12 +183,12 @@ execution.setVariable('sNotification_day', timer)
 </script>
     </scriptTask>
     <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask2" cancelActivity="true">
-     <timerEventDefinition>
+      <timerEventDefinition>
         <timeDate>${sEndDay}</timeDate>
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow41" sourceRef="escalationTimer" targetRef="scripttask3"></sequenceFlow>
-    <sequenceFlow id="flow42" sourceRef="scripttask3" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="scripttask3" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_dms_zagran">
     <bpmndi:BPMNPlane bpmnElement="kiev_dms_zagran" id="BPMNPlane_kiev_dms_zagran">
@@ -223,14 +216,8 @@ execution.setVariable('sNotification_day', timer)
       <bpmndi:BPMNShape bpmnElement="escalationTimer" id="BPMNShape_escalationTimer">
         <omgdc:Bounds height="30.0" width="30.0" x="515.0" y="76.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="688.0" y="92.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="835.0" y="150.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="729.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
         <omgdc:Bounds height="55.0" width="105.0" x="562.0" y="85.0"></omgdc:Bounds>
@@ -255,28 +242,14 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="415.0" y="112.0"></omgdi:waypoint>
         <omgdi:waypoint x="440.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="708.0" y="132.0"></omgdi:waypoint>
-        <omgdi:waypoint x="708.0" y="215.0"></omgdi:waypoint>
-        <omgdi:waypoint x="729.0" y="217.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="728.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="150.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="834.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="218.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="185.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="545.0" y="91.0"></omgdi:waypoint>
         <omgdi:waypoint x="562.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
         <omgdi:waypoint x="667.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="688.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="852.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="852.0" y="150.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

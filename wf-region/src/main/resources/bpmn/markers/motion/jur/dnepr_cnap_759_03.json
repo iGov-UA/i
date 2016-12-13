@@ -1,81 +1,67 @@
 {"motion":
 {
-"ValuesFieldsOnCondition_Role_Plus_01":
+"ValuesFieldsOnCondition_SelectGetDoc_01":
 	{
-		"sNote":["Выбрано sRole_Plus_01"],
+		"sNote":["Выбрано отримати паперовий документ"],
 		"aField_ID":[
-			"sRole_Plus_01",
-			"sRole_Plus_02",
-			"sRole_Plus_03"
+			"sVarGetDoc_01_Plus_01"
 		],
 		"asID_Field_sValue":[
-			"+",
-			" ",
-			" "
-		],
-		"asID_Field":{"sClient":"asSelectRole_01"},
-		"sCondition":"[sClient] == 'tf_001_01'"
-	},
-"ValuesFieldsOnCondition_Role_Plus_02":
-	{
-		"sNote":["Выбрано sRole_Plus_02"],
-		"aField_ID":[
-			"sRole_Plus_01",
-			"sRole_Plus_02",
-			"sRole_Plus_03"
-		],
-		"asID_Field_sValue":[
-			" ",
-			"+",
-			" "
-		],
-		"asID_Field":{"sClient":"asSelectRole_01"},
-		"sCondition":"[sClient] == 'tf_001_02'"
-	},
-"ValuesFieldsOnCondition_Role_Plus_03":
-	{
-		"sNote":["Выбрано sRole_Plus_03"],
-		"aField_ID":[
-			"sRole_Plus_01",
-			"sRole_Plus_02",
-			"sRole_Plus_03"
-		],
-		"asID_Field_sValue":[
-			" ",
-			" ",
 			"+"
 		],
-		"asID_Field":{"sClient":"asSelectRole_01"},
-		"sCondition":"[sClient] == 'tf_001_03'"
+		"asID_Field":{"sClient":"asSelectGetDoc"},
+		"sCondition":"[sClient] == 'tf_01'"
 	},
-"ValuesFieldsOnCondition_VarPidstava_01_Plus_01":
+"ValuesFieldsOnCondition_SelectGetDoc_02":
 	{
-		"sNote":["Выбрано - собственный документ"],
+		"sNote":["Выбрано не отримати паперовий документ"],
 		"aField_ID":[
-			"sVarPidstava_01_Plus_01",
-			"sVarPidstava_01_Plus_02"
+			"sVarGetDoc_01_Plus_01"
 		],
 		"asID_Field_sValue":[
-			"+",
 			" "
 		],
-		"asID_Field":{"sClient":"asSelectPidstava_01"},
-		"sCondition":"[sClient] == 'tf_002_01'"
+		"asID_Field":{"sClient":"asSelectGetDoc"},
+		"sCondition":"[sClient] == 'tf_02'"
 	},
-"ValuesFieldsOnCondition_VarPidstava_01_Plus_02":
+"ValuesFieldsOnCondition_SelectPlaceGetDoc_01":
 	{
-		"sNote":["Выбрано - собственный документ"],
+		"sNote":["Выбрано На адресу, що співпадає з місцезнаходженням"],
 		"aField_ID":[
-			"sVarPidstava_01_Plus_01",
-			"sVarPidstava_01_Plus_02"
+			"sVarGetDoc_01_Plus_03",
+			"sVarGetDoc_01_Plus_04"
 		],
 		"asID_Field_sValue":[
 			" ",
 			"+"
 		],
-		"asID_Field":{"sClient":"asSelectPidstava_01"},
-		"sCondition":"[sClient] == 'tf_002_02'"
+		"asID_Field":{"sClient":"asSelectPlaceGetDoc"},
+		"sCondition":"[sClient] == 'tf_01'"
 	},
+"ValuesFieldsOnCondition_SelectPlaceGetDoc_02_01":
+	{
+		"sNote":["Выбрано на іншу пошту"],
+		"aField_ID":[
+			"sVarGetDoc_01_Plus_03",
+			"sVarGetDoc_01_Plus_04"
+		],
+		"asID_Field_sValue":[
+			"+",
+			" "
+		],
+		"asID_Field":{"sClient":"asSelectPlaceGetDoc"},
+		"sCondition":"[sClient] == 'tf_02'"
+	},
+"ShowFieldsOnCondition_SelectPlaceGetDoc_02_02": 
+	{
+		"sNote":["показать если другая почта"],
+		"aField_ID":[
+			"sVarPlaceGetDoc_001_01"
+		],
+		"asID_Field":{"sClient":"asSelectPlaceGetDoc"},
+		"sCondition":"[sClient] == 'tf_02'"
+	},
+	
 
 "ShowFieldsOnCondition_CourtIzm_01": 
 	{
@@ -91,6 +77,16 @@
 		"sCondition":"[sClient] == 'tf_01'"
 	},
 	
+"ShowFieldsOnCondition_SelectIzm_00": 
+	{
+		"sNote":["показать строки если есть изменения №1+2"],
+		"aField_ID":[
+			"asSelectIzm_01",
+			"asSelectIzm_02"
+		],
+		"asID_Field":{"sClient":"asSelectIzm_00"},
+		"sCondition":"[sClient] == 'tf_01'"
+	},
 "ShowFieldsOnCondition_SelectIzm_01": 
 	{
 		"sNote":["показать строки если есть изменения №1"],
@@ -134,32 +130,6 @@
 		],
 		"asID_Field":{"sClient":"asSelectIzm_03"},
 		"sCondition":"[sClient] == 'tf_01'"
-	},
-"ValuesFieldsOnCondition_VarOblNam_0002_ADR01_1":
-	{	"sNote":["очистить + для изменения "],
-		"aField_ID":[
-			"sVarOblPlus02_ADR01",
-			"sVarOblNam_0002_ADR01"
-		],
-		"asID_Field_sValue":[
-			"+",
-			"[asSelectOblNam_0002_ADR01]"
-		],
-		"asID_Field":{"sClient":"asSelectOblNam_0002_ADR01"},
-		"sCondition":"[sClient] != 'tf_0002_100'"
-	},
-"ValuesFieldsOnCondition_VarOblNam_0002_ADR01_2":
-	{	"sNote":["очистить + для изменения "],
-		"aField_ID":[
-			"sVarOblPlus02_ADR01",
-			"sVarOblNam_0002_ADR01"
-		],
-		"asID_Field_sValue":[
-			" ",
-			" "
-		],
-		"asID_Field":{"sClient":"asSelectOblNam_0002_ADR01"},
-		"sCondition":"[sClient] == 'tf_0002_100'"
-	}	
+	}
 }
 }
