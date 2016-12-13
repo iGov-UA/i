@@ -9,7 +9,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       'use strict';
 
       var currentState = $state.$current;
-
+      var isStyled = false;
+      
       $scope.paramsBackup = null;
 
       $scope.oServiceData = oServiceData;
@@ -622,6 +623,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       };
 
       $scope.showFormField = function (property) {
+
+      	if( isStyled == false ) { 
+
+      	  FieldAttributesService.enableStyles();
+
+      	  isStyled = true;
+      	}
+    	  
         var p = getFieldProps(property);
         if ($scope.data.formData.params.bReferent.value && property.id.startsWith('bankId')) {
           return true;
@@ -946,4 +955,4 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
         $scope.fillSelfPrevious();
       }
-    });
+});
