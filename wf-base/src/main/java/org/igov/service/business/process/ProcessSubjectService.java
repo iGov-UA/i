@@ -430,7 +430,7 @@ public class ProcessSubjectService {
                     oProcessSubject.setsDatePlan(new DateTime(parseDate((String)mParamDocument.get("sDateExecution"))));
                     processSubjectDao.saveOrUpdate(oProcessSubject);
                 }
-                
+                 
                 //runtimeService.setProcessInstanceName("названиеПоля", "значениеПоляНовое");
             }
         }
