@@ -46,7 +46,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
         List<Attachment> asID_Attachment_ToAdd = null;
         try {
-            LOG.info("Inside fileTaskInheritance; this.aFieldInheritedAttachmentID = []", this.aFieldInheritedAttachmentID);
+            LOG.info("Inside fileTaskInheritance; this.aFieldInheritedAttachmentID={}", this.aFieldInheritedAttachmentID);
             String sInheritedAttachmentsIds = getStringFromFieldExpression(this.aFieldInheritedAttachmentID, oExecution);
             LOG.info("(task.getId()={},sInheritedAttachmentsIds(1)={})", oTask.getId(), sInheritedAttachmentsIds);
 
