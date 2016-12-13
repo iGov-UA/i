@@ -37,7 +37,8 @@ public class SetTasks implements TaskListener {
     private Expression asTypeResolution;
     private Expression sTextResolution;
     private Expression sDateExecution;
-
+    private Expression sTextReport;
+    
     @Autowired
     private ProcessSubjectService processSubjectService;
 
@@ -81,6 +82,8 @@ public class SetTasks implements TaskListener {
                 = getStringFromFieldExpression(this.asUrgently, delegateTask.getExecution());
         String sAsTypeResolution_Value
                 = getStringFromFieldExpression(this.asTypeResolution, delegateTask.getExecution());
+        String sTextReport_Value
+                = getStringFromFieldExpression(this.sTextReport, delegateTask.getExecution());
         
         LOG.info("sDateExecution_Value " + sDateExecution_Value);
         
@@ -101,6 +104,7 @@ public class SetTasks implements TaskListener {
         mParam.put("sNote", sNote_Value);
         mParam.put("asUrgently", sAsUrgently_Value);
         mParam.put("asTypeResolution", sAsTypeResolution_Value);
+        mParam.put("sTextReport", sTextReport_Value);
         
         /*processSubjectService.setProcessSubjects(sTaskProcessDefinition_Value, sID_Attachment_Value, sContent_Value, 
                 sAutorResolution_Value, sTextResolution_Value, sDateExecution_Value, delegateTask.getExecution().getId());*/
