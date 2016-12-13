@@ -370,83 +370,16 @@ exports.getTasksByText = function (req, res) {
   });
 };
 
-/*
- exports.getProcesses = function (req, res) {
- var user = JSON.parse(req.cookies.user);
- var roles = JSON.stringify(user.roles);
- //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
- var options = {
- path: 'analytic/process/getProcesses',
- query: {
- 'sID_': req.query.sID,
- 'asID_Group': roles
- }
- };
- activiti.get(options, function (error, statusCode, result) {
- error ? res.send(error) : res.status(statusCode).json(result);
- //error ? res.send(error) : res.status(statusCode).json("[\"4585243\"]");
- });
- };
- */
 exports.getProcesses = function (req, res) {
-  var currentUser = JSON.parse(req.cookies.user);
-  var userRoles = authService.getCashedUserGroups(currentUser);
-  if (userRoles) {
-    currentUser.roles = userRoles;
-    var options = {
-      path: 'analytic/process/getProcesses',
-      query: {
-        'sID_': req.query.sID,
-        'asID_Group': currentUser.roles
-      }
-    };
-    activiti.get(options, function (error, statusCode, result) {
-      error ? res.send(error) : res.status(statusCode).json(result);
-    });
-  } else {
-    async.waterfall([
-      function (callback) {
-        activiti.get({
-          path: 'action/identity/getGroups',
-          query: {
-            sLogin: currentUser.id
-          },
-          json: true
-        }, function (error, statusCode, result) {
-          if (error) {
-            callback(error, null);
-          } else {
-            var resultGroups;
-            if ((typeof result == "object") && (result instanceof Array)) {
-              currentUser['roles'] = result.map(function (group) {
-                return group.id;
-              });
-            } else {
-              currentUser['roles'] = [];
-            }
-            callback(null, {
-              currentUser: currentUser
-            });
-          }
-        });
-      },
-      function (user, callback) {
-        var options = {
-          path: 'analytic/process/getProcesses',
-          query: {
-            'sID_': req.query.sID,
-            'asID_Group': currentUser.roles
-          }
-        };
-        activiti.get(options, function (error, statusCode, result) {
-          callback(error, result);
-        });
-      }
-    ], function (error, result) {
-      authService.setCashedUserGroups(currentUser, currentUser.roles);
-      error ? res.send(error) : res.json(result);
-    });
-  }
+  var options = {
+    path: 'analytic/process/getProcesses',
+    query: {
+      'sID_': req.query.sID
+    }
+  };
+  activiti.get(options, function (error, statusCode, result) {
+    error ? res.send(error) : res.status(statusCode).json(result);
+  });
 };
 
 exports.getFile = function (req, res) {
