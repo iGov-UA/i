@@ -46,7 +46,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
         List<Attachment> asID_Attachment_ToAdd = null;
         try {
-
+            LOG.info("Inside fileTaskInheritance; this.aFieldInheritedAttachmentID = []", this.aFieldInheritedAttachmentID);
             String sInheritedAttachmentsIds = getStringFromFieldExpression(this.aFieldInheritedAttachmentID, oExecution);
             LOG.info("(task.getId()={},sInheritedAttachmentsIds(1)={})", oTask.getId(), sInheritedAttachmentsIds);
 
@@ -62,7 +62,17 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
             //Issue #1441: we need to keep list of attachments to current task in order to properly
             List<Attachment> currentAttachments = fileTaskUploadListener.getaAttachmentList();
+            LOG.info("Current attachments size: {}", currentAttachments.size());
+
+            for(Attachment attachment: currentAttachments) {
+                LOG.info("Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+            }
+
             List<Attachment> attachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
+            for(Attachment attachment: attachments) {
+                LOG.info("Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+            }
+
 
             for(Attachment attachment: currentAttachments) {
                 if(attachments.contains(attachment))
