@@ -21,6 +21,7 @@ angular.module('journal').controller('JournalSearchController', function (
 ) {
 
   $scope.getOrderStatusString = JournalHelperService.getOrderStatusString;
+  $scope.getDocumentLink = ServiceService.getAttachmentLink;
 
   $scope.aOrderMessages = [];
   $scope.sServerReturnOnAnswer = '';

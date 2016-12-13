@@ -125,6 +125,10 @@ angular.module('app').service('ServiceService', function ($http, $q, FeedbackSer
       + operatorId + '/' + typeId + '/' + smsPass;
   };
 
+  this.getAttachmentLink = function (docnID) {
+    return '/api/documents/downloadDocumentByID/' + docnID;
+  };
+
   this.shareLink = function (nID_Subject, nID_Document, sFIO, sTelephone, sMail, nMS) {
     var data = {
       'nID_Subject': nID_Subject,
