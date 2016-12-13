@@ -65,19 +65,26 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             LOG.info("Current attachments size: {}", currentAttachments.size());
 
             for(Attachment attachment: currentAttachments) {
-                LOG.info("Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+                LOG.info("CurrentAttachment: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
             }
 
             List<Attachment> attachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
             for(Attachment attachment: attachments) {
-                LOG.info("Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+                LOG.info("Attachments: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
             }
 
 
             for(Attachment attachment: currentAttachments) {
-                if(attachments.contains(attachment))
-                    attachments.remove(attachment);
+                if(attachments.contains(attachment)){
+                    boolean deleted = attachments.remove(attachment);
+                    if(deleted) {
+                        LOG.info("Duplicate is successfully deleted");
+                    }
+                }
+
             }
+
+            LOG.info("Attachments: attachments size={}", attachments.size());
 
             addAttachmentsToCurrentTask(attachments, oTask);
         } catch (Exception oException) {
