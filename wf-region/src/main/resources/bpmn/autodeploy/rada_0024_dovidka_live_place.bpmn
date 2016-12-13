@@ -164,7 +164,6 @@
           <activiti:value id="sEnumElement_Other" name="Інший документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameOtherDocument" name="Назва іншого документу, що посвідчує заявника; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Реєстраційний номер облікової картки платника податків; ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -191,22 +190,23 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameOtherDocument1" name="Назва іншого документу, що посвідчує особу; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport1" name="Документ, що посвідчує особу; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_birth" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAreabirth" name="Місце народження; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNationality" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер запису в Єдиному державному демографічному реєстрі (ЄДДР); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentOsoba" name="Коментарі щодо наданих документів або отримання довідки; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAreabirth" name="Місце народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFioClerk_SignDovidka" name="посада та П.І.Б. посадової особи, яка підписує довідку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_BegRegistration" name="З якої дати зареєстровано місце проживання/перебування особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_EndRegistration" name="По яку дату зареєстровано місце проживання/перебування особи" type="string" default="по теперішній час" required="true">></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFioClerk_SignDovidka" name="посада та П.І.Б. посадової особи, яка підписує довідку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Орган надання послуги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік додатків файлів-додатков" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sStringInZayava" name="Формування строки в заяві" type="invisible"></activiti:formProperty>
@@ -294,7 +294,7 @@
                                         Спеціалісти ${sOrganType} успішно опрацювали Вашу заяву [sID_Order].&lt;br&gt;
 										Для того щоб отримати довідку про реєстрацію місця проживання/перебування особи необхідно:&lt;br&gt;
 										&lt;ul&gt;
-										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}. ${sWorkTime}&lt;/li&gt;
+										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}. ${sWorkTime}.&lt;/li&gt;
 										&lt;li&gt;Підписати необхідні документи та отримати довідку про реєстрацію місця проживання або перебування особи.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
@@ -402,7 +402,6 @@
           <activiti:value id="sEnumElement_Other" name="Інший документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameOtherDocument" name="Назва іншого документу, що посвідчує заявника; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Реєстраційний номер облікової картки платника податків; ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -429,23 +428,24 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameOtherDocument1" name="Назва іншого документу, що посвідчує особу; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport1" name="Документ, що посвідчує особу; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_birth" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAreabirth" name="Місце народження; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNationality" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер запису в Єдиному державному демографічному реєстрі (ЄДДР); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentOsoba" name="Коментарі щодо наданих документів або отримання довідки; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAreabirth" name="Місце народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_BegRegistration" name="З якої дати зареєстровано місце проживання/перебування особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_EndRegistration" name="По яку дату зареєстровано місце проживання/перебування особи" type="string" required="true">></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFioClerk_SignDovidka" name="посада та П.І.Б. посадової особи, що підписує довідку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат опрацювання" type="enum" required="true">
           <activiti:value id="sReestr" name="Громадянину видана Довідка"></activiti:value>
           <activiti:value id="sNejav" name="Відхилено звернення або громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Step2" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік додатків файлів-додатков" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sStringInZayava" name="Формування строки в заяві" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста)" type="invisible"></activiti:formProperty>
