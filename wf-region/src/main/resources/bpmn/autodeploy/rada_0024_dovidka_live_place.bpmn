@@ -59,14 +59,16 @@
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган реєстрації" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKab89" name="Номер кабінету" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік додатків файлів-додатков" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sStringInZayava" name="Формування строки в заяві" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="Флаг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFioClerk_SignDovidka" name="Посада та П.І.Б. посадової особи, яка підписує довідку" type="invisible" default=" " ></activiti:formProperty>
         <activiti:formProperty id="sIsCancellCustomeVizite" name="Прапор скасованої заявки громадянином" type="invisible" default="False"></activiti:formProperty>
@@ -87,11 +89,11 @@
     <scriptTask id="scripttask2" name="Script Task (JavaScript)" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 
-    var src=execution.getVariable('sCancelInfo')
+    var src=execution.getVariable('sCancelInfo');
 	if (src != "Заявка актуальна") {
-		execution.setVariable('sIsCancellCustomeVizite', 'True')
+		execution.setVariable('sIsCancellCustomeVizite', 'True');
 	}
-
+	
 	  </script>
     </scriptTask>
     <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="scripttask3"></sequenceFlow>
@@ -198,6 +200,7 @@
         <activiti:formProperty id="sDate_EndRegistration" name="По яку дату зареєстровано місце проживання/перебування особи" type="string" default="по теперішній час" required="true">></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFioClerk_SignDovidka" name="посада та П.І.Б. посадової особи, яка підписує довідку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
@@ -211,7 +214,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0024_Zayava_na_Dovidku.html]" type="invisible" default="Заява про видачу довідки"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/skv/rada_0024_Dovidka_projivannya.html]" type="invisible" default="ДОВІДКА про реєстрацію місця проживання особи"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0024_Dovidka_perebuvannya.html]" type="invisible" default="ДОВІДКА про реєстрацію місця перебування особи"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/skv/rada_0024_Zayava_na_Dovidku.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0024_Zayava_na_Dovidku.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="tune print" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -241,7 +244,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-										На жаль, Вам відмовлено у надані послуги [sID_Order] або Ви скасували заявку.&lt;br&gt;
+										На жаль, Вам відмовлено у надані послуги [sID_Order].&lt;br&gt;
 										При необхідності реєстрації нового запиту щодо видачі довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt; 
 									&lt;p&gt;
@@ -289,9 +292,9 @@
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         Спеціалісти ${sOrganType} успішно опрацювали Вашу заяву [sID_Order].&lt;br&gt;
-										Для того щоб закінчити процедуру реєстрації необхідно:&lt;br&gt;
+										Для того щоб отримати довідку про реєстрацію місця проживання/перебування особи необхідно:&lt;br&gt;
 										&lt;ul&gt;
-										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.&lt;/li&gt;
+										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}. ${sWorkTime}&lt;/li&gt;
 										&lt;li&gt;Підписати необхідні документи та отримати довідку про реєстрацію місця проживання або перебування особи.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
@@ -346,16 +349,16 @@
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву [sID_Order].&lt;br&gt;
-										Для того щоб закінчити процедуру реєстрації необхідно:&lt;br&gt;
+										Для того щоб отримати довідку про реєстрацію місця проживання/перебування особи необхідно:&lt;br&gt;
 										&lt;ul&gt;
-										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.&lt;/li&gt;
+										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}. ${sWorkTime}. &lt;/li&gt;
 										&lt;li&gt;Підписати необхідні документи та отримати довідку про реєстрацію місця проживання або перебування особи.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} для отримання довідки про реєстрацію місця проживання або перебування особи:&lt;/b&gt;&lt;br&gt;
 										&lt;ul&gt;
-										&lt;li&gt;заяву про видачу довідки про реєстрацію місця проживання, що знаходиться у додатках до листа (розрукуйте на одному аркуші);&lt;/li&gt;
+										&lt;li&gt;заяву про видачу довідки про реєстрацію місця проживання/перебування особи, що знаходиться у додатках до листа (розрукуйте на одному аркуші);&lt;/li&gt;
 										&lt;li&gt;оригінал та копію паспорта громадянина України;&lt;/li&gt;
 										&lt;li&gt;оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;&lt;/li&gt;
 										&lt;li&gt;оригінал та копію картки реєстрації особи або будинкової книги;&lt;/li&gt;
@@ -432,6 +435,7 @@
         <activiti:formProperty id="sEddrNum" name="Номер запису в Єдиному державному демографічному реєстрі (ЄДДР); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentOsoba" name="Коментарі щодо наданих документів або отримання довідки; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_BegRegistration" name="З якої дати зареєстровано місце проживання/перебування особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_EndRegistration" name="По яку дату зареєстровано місце проживання/перебування особи" type="string" required="true">></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="textArea" required="true"></activiti:formProperty>
@@ -555,6 +559,16 @@ if (execution.getVariable('asTargetGetDovidka') == 'sEnum_AnotheReason') {
 }
 
 execution.setVariable('sStringInZayava', per3)
+
+var d1 = new Date();
+d1.setDate(d1.getDate() + 10);
+var dDay = d1.getDate();
+var dMonth = +d1.getMonth() + 1;
+var dYear = d1.getFullYear();
+if (dDay &lt; 10) dDay = "0" + dDay;
+if (dMonth &lt; 10) dMonth = "0" + dMonth;
+var dDateV = dDay + "." + dMonth + "." + dYear;
+execution.setVariable('sDateVizite', dDateV);
 
       </script>
     </scriptTask>
