@@ -41,7 +41,21 @@ angular.module('dashboardJsApp', [
       locale: 'uk',
       toolbarPlacement: 'bottom',
       showClear: true,
-      format: 'DD/MM/YYYY'
+      format: 'DD/MM/YYYY',
+      tooltips:{
+        clear: 'Очистити',
+        selectMonth: 'Обрати мiсяць',
+        prevMonth: 'Попереднiй мiсяць',
+        nextMonth: 'Наступний мiсяць',
+        selectYear: 'Обрати рiк',
+        prevYear: 'Попереднiй рiк',
+        nextYear: 'Наступний рiк',
+        selectDecade: 'Обрати десятиліття',
+        prevDecade: 'Попереднє десятиліття',
+        nextDecade: 'Наступне десятиліття',
+        prevCentury: 'Попереднє століття',
+        nextCentury: 'Наступне століття'
+      }
     });
   }
 ]);
