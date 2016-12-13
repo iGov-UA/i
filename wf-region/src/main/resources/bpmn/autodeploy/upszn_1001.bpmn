@@ -77,7 +77,7 @@
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nArea" name="Група користувачів iGov" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Вибір категорії" type="markers" default="${markerService.loadFromFile('soczah/upszn_0783.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Довіреність" type="markers" default="${markerService.loadFromFile('soczah/upszn_1001.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -200,7 +200,8 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="kved" name="КВЕД; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Місцезнаходження підприємства, установи, організації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада керівника підприємства,установи, організації; ;writable=false" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
+        <activiti:formProperty id="markers2" name="Принтформа" type="markers" default="${markerService.loadFromFile('soczah/upszn_1001_print.json')}"></activiti:formProperty>
+      	<activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Прийняти заяву"></activiti:value>
           <activiti:value id="reject" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
@@ -368,7 +369,9 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sAddressFactual" name="Місцезнаходження підприємства, установи, організації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада керівника підприємства,установи, організації; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментарі на першому етапі" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Рішення" type="enum" required="true">
+        <activiti:formProperty id="markers2" name="Принтформа" type="markers" default="${markerService.loadFromFile('soczah/upszn_1001_print.json')}"></activiti:formProperty>
+      	<activiti:formProperty id="markers3" name="Комент" type="markers" default="${markerService.loadFromFile('soczah/upszn_1001_2.json')}"></activiti:formProperty>
+      	<activiti:formProperty id="decide1" name="Рішення" type="enum" required="true">
           <activiti:value id="accept1" name="Видати дозвіл"></activiti:value>
           <activiti:value id="reject1" name="Відмова громадянину у видачі дозволу"></activiti:value>
         </activiti:formProperty>

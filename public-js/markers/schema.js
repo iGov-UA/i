@@ -137,6 +137,7 @@ angular.module('iGovMarkers')
                         	type: "object", 
                         	properties: { 
                         		aField_ID: {"$ref": "#/definitions/stringArray"},
+                        		sTitleField: {type: "string"}, 
                         		sPatternPath: {type: "string"}, 
                         		sName: {type: "string"}
                         	}, 

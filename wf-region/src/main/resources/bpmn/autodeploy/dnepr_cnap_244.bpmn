@@ -62,9 +62,8 @@
         <activiti:formProperty id="term" name="Строк виконання" type="invisible" default="двох місяців з дня реєстрації заяви"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nFlag" name="nFlag" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers_flag" name="Флаг по городам" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;nFlag&quot;],&quot;asID_Field_sValue&quot;:[&quot;1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'don_mariupolT'||[sClient] == 'hmel_hmelT'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_flag" name="Флаг по городам" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;nFlag&quot;],&quot;asID_Field_sValue&quot;:[&quot;1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'hmel_hmelT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Видача дозволу Дніпро" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;nFile_1&quot;,&quot;nFile_3&quot;,&quot;nFile_4&quot;,&quot;nFile_5&quot;,&quot;nFile_6&quot;,&quot;nFile_11&quot;,&quot;nFile_12&quot;,&quot;nFile_13&quot;,&quot;nFile_14&quot;,&quot;nFile_15&quot;,&quot;nFile_16&quot;,&quot;nFile_17&quot;,&quot;nFile_18&quot;,&quot;nFile_19&quot;,&quot;nFile_20&quot;,&quot;nFile_21&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;nFlag&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue' &amp;&amp;[sClient2] != '1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="Видача дозволу Маріуполь" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;nFile_1&quot;,&quot;nFile_22&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue'&amp;&amp; [sClient2]== 'don_mariupolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;nFile_2&quot;,&quot;nFile_7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;nFile_8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;nFile_9&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'cansel'&quot; }}}"></activiti:formProperty>
@@ -158,7 +157,7 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="document" name="Назва документу" type="invisible" default="дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка заяви" type="enum">
+        <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
@@ -169,7 +168,7 @@ execution.setVariable('term', per7)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_1},${nFile_2},${nFile_3},${nFile_4},${nFile_5},${nFile_6},${nFile_7},${nFile_8},${nFile_9},${nFile_11},${nFile_12},${nFile_13},${nFile_14},${nFile_15},${nFile_16},${nFile_17},${nFile_18},${nFile_19},${nFile_20},${nFile_21}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile_1},${nFile_2},${nFile_3},${nFile_4},${nFile_5},${nFile_6},${nFile_7},${nFile_8},${nFile_9},${nFile_11},${nFile_12},${nFile_13},${nFile_14},${nFile_15},${nFile_16},${nFile_17},${nFile_18},${nFile_19},${nFile_20},${nFile_21}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -214,12 +213,12 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="status2" name="Статус дозволу (санітарного паспорту)" type="enum">
+        <activiti:formProperty id="status2" name="Статус дозволу (санітарного паспорту)" type="enum" required="true">
           <activiti:value id="attr3_finish" name="Дозвіл (санітарний паспорт) або рішення про анулювання готове, запросити громадянина"></activiti:value>
           <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбой"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFile_10" name="Завантажте скановану копію дозволу (або рішення) держсанепідслужби" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_10" name="Завантажте скановану копію дозволу (або рішення) держсанепідслужби" type="file" default=" " required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Повідомлення адміністратора ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -228,169 +227,169 @@ execution.setVariable('term', per7)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>tanyazol@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask3" name="Повідомлення про доставку заяви до ЦНАПу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення №[sID_Order] щодо ${substance_3} дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення №[sID_Order] щодо ${substance_3} дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br />
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask4" name="Відправка e-mail в разі відмови" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному: 
-                                    &lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів було відхилено.</p>
+<p>Причина в наступному: 
+                                    </p>
+<p>${decisionComment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+<br />
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan},&lt;br /&gt;
+${sNameOrgan},<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask5" name="лист про успішне замовлення послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] peredano v SES.
-Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] peredano v SES.
+Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - відправлене в держсанепідслужбу.&lt;br /&gt;
-Спеціалісти повинні дати відповідь протягом ${term} .&lt;br /&gt; 
-&lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt;
-&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt; 
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - відправлене в держсанепідслужбу.<br />
+Спеціалісти повинні дати відповідь протягом ${term} .<br /> 
+<p>Номер Вашого замовлення: ${number_cnap}</p>
+</p>
+<br />
+${sPhoneOrgan}<br /> 
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan},&lt;br /&gt;
+${sNameOrgan},<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask6" name="Інформування заявника про необхідність отримання результату" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-${substance_2}.&lt;br /&gt;
-&lt;/p&gt;
-&lt;p&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис у ЦНАП.&lt;br/&gt; 
-При собі треба мати:&lt;br/&gt; 
-1. Документ, що посвідчує особу.&lt;br/&gt; 
-2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
-3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+${substance_2}.<br />
+</p>
+<p>
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис у ЦНАП.<br/> 
+При собі треба мати:<br/> 
+1. Документ, що посвідчує особу.<br/> 
+2. Для уповоноваженої особи - довіренність.<br/>
+3. Оригінали документів, що були завантажені при подачі заяви на сайті.<br/>
 4. Підписану та завірену печаткою заяву, яка знаходиться в прикріпленому файлі.
-&lt;/p&gt;
-${sPhoneOrgan},&lt;br /&gt;
-&lt;br /&gt;
-Графік роботи ЦНАП:&lt;br /&gt;
-${sWorkTime},&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-&lt;br /&gt;
+</p>
+${sPhoneOrgan},<br />
+<br />
+Графік роботи ЦНАП:<br />
+${sWorkTime},<br />
+${sAddress}<br />
+<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan},&lt;br /&gt;
+${sNameOrgan},<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_10},${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[${nFile_10},${PrintForm_1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

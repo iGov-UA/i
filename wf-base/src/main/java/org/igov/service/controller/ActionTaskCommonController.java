@@ -1176,15 +1176,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
 //      'saFieldSummary': '' // поля для агрегатов
-        LOG.info("sDateCreateFormat: " + sDateCreateFormat);
-        LOG.info("sID_Codepage: " + sID_Codepage);
-        LOG.info("sID_State_BP: " + sID_State_BP);
-        LOG.info("nASCI_Spliter: " + nASCI_Spliter);
-        LOG.info("fileName: " + fileName);
-        nASCI_Spliter = Integer.toString(59);
-        fileName = "justice_incoming.xls";
-        LOG.info("fileNameNew: " + fileName);
-        LOG.info("nASCI_Spliter: " + nASCI_Spliter);
         
         if ("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)) {
             sID_State_BP = null;
@@ -1206,11 +1197,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Date dBeginDate = oActionTaskService.getBeginDate(dateAt);
         Date dEndDate = oActionTaskService.getEndDate(dateTo);
         String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
-        LOG.info("4444separator " + separator);
-        LOG.info("7777nASCI_Spliter " + nASCI_Spliter);
-        LOG.info("6666separator " + separator.chars());
+        //LOG.info("4444separator " + separator);
+        //LOG.info("7777nASCI_Spliter " + nASCI_Spliter);
+        //LOG.info("6666separator " + separator.chars());
         Charset charset = oActionTaskService.getCharset(sID_Codepage);
-        LOG.info("5555charset " + charset);
+        //LOG.info("5555charset " + charset);
         // 2. query
         TaskQuery query = taskService.createTaskQuery()
                 .processDefinitionKey(sID_BP);
@@ -1432,6 +1423,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\n```\n")
     @RequestMapping(value = "/getLoginBPs", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
+    @Deprecated //новый: getBPs 
     public @ResponseBody
     String getBusinessProcessesForUser(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
@@ -2713,7 +2705,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         //String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         //LOG.info("Result: {}", jsonRes);
-        return oActionTaskService.getBusinessProcessesForUser(sLogin);
+        return oActionTaskService.getBusinessProcessesOfLogin(sLogin);
     }    
     
     

@@ -55,7 +55,23 @@
             <span class="u53"></span>
             <p>{{oOrderMessage.sHead}}</p>
             &nbsp;
-            <a ng-if="oOrderMessage.oSubjectMessageType && oOrderMessage.oSubjectMessageType.nID === 10" ng-click="openLetter(oOrderMessage.nID)"><span class="glyphicon glyphicon-envelope"></span> Переглянути лист, який Вам було відправлено</a>
+            <a ng-if="oOrderMessage.oSubjectMessageType && oOrderMessage.oSubjectMessageType.nID === 10"
+               ng-click="openLetter(oOrderMessage.nID)">
+              <span class="glyphicon glyphicon-envelope"></span> Переглянути лист, який Вам було відправлено
+            </a>
+            <!--<br>
+            <div ng-if="oOrderMessage.osData.aFile && oOrderMessage.oSubjectMessageType.nID === 10">
+              <div ng-if="oOrderMessage.osData.aFile.length == 1">
+                <a ng-href="{{getDocumentLink(oOrderMessage.osData.aFile[0].sKey)}}"
+                   target="_self">
+                        <span class="glyphicon glyphicon-download"
+                              title="Завантажити файл, що був Вам надісланий разом з листом"
+                              aria-hidden="true"></span></a>
+              </div>
+              <div ng-if="oOrderMessage.osData.aFile.length > 1">
+
+              </div>
+            </div>-->
 
             <p style="padding-bottom: 20px" ng-bind-html="oOrderMessage.sMessage || oOrderMessage.sBody" class="hide-table"></p>
             <div ng-repeat="oFile in oOrderMessage.osData.aFile">
