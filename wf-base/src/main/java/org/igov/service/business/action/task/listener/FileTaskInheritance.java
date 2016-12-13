@@ -32,6 +32,8 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
     @Autowired
     GeneralConfig generalConfig;
 
+
+    //Issue #1441
     @Autowired
     FileTaskUploadListener fileTaskUploadListener;
     
@@ -58,19 +60,15 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
                     sInheritedAttachmentsIds);
             addAttachmentsToCurrentTask(asID_Attachment_ToAdd, oTask);*/
 
+            //Issue #1441: we need to keep list of attachments to current task in order to properly
             List<Attachment> currentAttachments = fileTaskUploadListener.getaAttachmentList();
-            LOG.info("Inside fileTaskInheritance: Current attachments size = {}", currentAttachments.size());
-            for(Attachment attachment: currentAttachments) {
-                LOG.info("Attachments description is: {}\n; Attachment id:{}", attachment.getDescription(), attachment.getId());
-            }
-
-            //Issue #1441: next 2 lines should be commented out or logic of addAttachmentsToCurrentTask() should be rewritten;
             List<Attachment> attachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
 
             for(Attachment attachment: currentAttachments) {
                 if(attachments.contains(attachment))
                     attachments.remove(attachment);
             }
+
             addAttachmentsToCurrentTask(attachments, oTask);
         } catch (Exception oException) {
             LOG.error("FAIL: {}", oException.getMessage());
@@ -97,7 +95,6 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
     }
 
 
-    //#1441 fix:
     private void addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd,
             DelegateTask task) {
         final String METHOD_NAME = "addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd, DelegateExecution execution)";
@@ -109,13 +106,6 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
         for (Attachment attachment : attachmentsToAdd) {
             LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getDescription()={},attachment.getId()={})"
                     ,n++, task.getId(), task.getExecution().getProcessInstanceId(),attachment.getName(),attachment.getDescription(), attachment.getId());
-
-            List<Attachment> attachmentList = taskService.getTaskAttachments(task.getId());
-            LOG.info("Inside addAttachmentsToCurrentTask; size of attachmentList = {}", attachmentList.size());
-            for (Attachment attachment1 : attachmentList) {
-                LOG.info("Inside loop; description = {}, id = {}", attachment1.getDescription(), attachment1.getId());
-            }
-
             Attachment newAttachment = taskService.createAttachment(
                     attachment.getType(), task.getId(),
                     task.getExecution().getProcessInstanceId(), attachment.getName(),
