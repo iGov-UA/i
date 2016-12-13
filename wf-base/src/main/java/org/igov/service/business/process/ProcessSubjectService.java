@@ -373,9 +373,40 @@ public class ProcessSubjectService {
         removeProcessSubject(processSubject);
     }
     
-    public void editProcessSubject(ProcessSubject processSubject, Map<String, String> mParamDocument){
+    public void editProcessSubject(ProcessSubject processSubject, Map<String, Object> mParamDocument){
         
         ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
+        
+        if(processSubjectResult != null){
+            List<ProcessSubject> aProcessSubject_Child = processSubjectResult.getaProcessSubject();
+            
+            ProcessSubject oProcessSubject_Child = aProcessSubject_Child.get(0);
+            
+            ProcessInstance oProcessInstance = runtimeService
+                .createProcessInstanceQuery()
+                .processInstanceId(oProcessSubject_Child.getSnID_Process_Activiti())
+                .includeProcessVariables()
+                .active()
+                .singleResult();
+            
+            Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+            LOG.info("mProcessVariable: " + mProcessVariable);
+            
+            Map<String, Object> mParamDocumentNew = new HashMap<>();
+            
+            for(String mKey : mParamDocument.keySet()){
+                if(!(mParamDocument.get(mKey).equals(mProcessVariable.get(mKey)))){
+                    LOG.info("--------------------------");
+                    LOG.info("mParamDocument elem new: " + mParamDocument.get(mKey));
+                    LOG.info("mProcessVariable elem: " + mProcessVariable.get(mKey));
+                    LOG.info("--------------------------");
+                    
+                    mParamDocumentNew.put(mKey, mParamDocument.get(mKey));
+                }
+            }
+            
+            LOG.info("mParamDocumentNew: " + mParamDocumentNew);
+        }
     }
 
     /*public void setProcessSubjects(String sTaskProcessDefinition, String sID_Attachment,
@@ -438,7 +469,6 @@ public class ProcessSubjectService {
             mParamDocument.put("sDateExecution", sFormatDateExecution);
             mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
 
-
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             //иначе проверяем на необходимость редактирования
             if (oProcessSubjectParent == null) {
@@ -446,7 +476,7 @@ public class ProcessSubjectService {
                         .setProcessSubject(snProcess_ID, mParam.get("sAutorResolution"),
                                 new DateTime(oDateExecution), 0L, processSubjectStatus);
             }else{
-                
+            //    editProcessSubject(oProcessSubjectParent, mParamDocument);
             }
             
             List<ProcessSubjectTree> aProcessSubjectTreeChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
