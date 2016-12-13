@@ -40,9 +40,6 @@ public class SendDocument_SWinEd implements TaskListener {
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
 
-    @Autowired
-    private HttpRequester oHttpRequester;
-
     @Override
     public void notify(DelegateTask delegateTask) {
 
@@ -62,6 +59,10 @@ public class SendDocument_SWinEd implements TaskListener {
                 		" sEmailValue:" + sEmailValue + " endpoint:" + gate.getEndpoint() + " content:" + oByteArrayMultipartFile.getBytes());
                 ProcessResult result = gate.send(oByteArrayMultipartFile.getOriginalFilename(), sEmailValue, oByteArrayMultipartFile.getBytes());
                 LOG.info("!!!response:" + result.getValue());
+                if(!ProcessResult.GATE_OK.getValue().equalsIgnoreCase(result.getValue().trim())){
+                    throw new RuntimeException("Сервис ДФС вернул ошибку " + result.getValue() + " на запрос: " + oByteArrayMultipartFile.getOriginalFilename() 
+                            + " " + new String(oByteArrayMultipartFile.getBytes()));
+                }
                 resp = result.getValue();
             } else {
                 LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " oFile_XML_SWinEd is null!!!");
