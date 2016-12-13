@@ -2705,7 +2705,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         //String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         //LOG.info("Result: {}", jsonRes);
-        return oActionTaskService.getBusinessProcessesForUser(sLogin);
+        return oActionTaskService.getBusinessProcessesOfLogin(sLogin);
     }    
     
     
