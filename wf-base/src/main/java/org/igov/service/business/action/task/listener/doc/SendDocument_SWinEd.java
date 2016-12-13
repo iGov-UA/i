@@ -28,7 +28,7 @@ public class SendDocument_SWinEd implements TaskListener {
     
     //private final static String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
     //public final static String URL = "http://109.237.89.107:1220/gate.asmx"; //тестовый
-    public final static String URL = "http://217.76.198.151/Websrvgate/gate.asmx"; //боевой
+    //public final static String URL = "http://217.76.198.151/Websrvgate/gate.asmx"; //боевой
     
     private Expression sEmail;
     
@@ -54,7 +54,7 @@ public class SendDocument_SWinEd implements TaskListener {
             LOG.info("sEmailValue : " + sEmailValue 
                     + " oByteArrayMultipartFile.getOriginalFilename(): " + oByteArrayMultipartFile.getOriginalFilename());
             if (oFile_XML_SWinEd != null) {
-                GateSoapProxy gate = new GateSoapProxy(URL);
+                GateSoapProxy gate = new GateSoapProxy(generalConfig.getsURL_DFS());
                 LOG.info("!!! Before sending request to gate web service. sID_File_XML_SWinEdValue:" + oByteArrayMultipartFile.getOriginalFilename() + 
                 		" sEmailValue:" + sEmailValue + " endpoint:" + gate.getEndpoint() + " content:" + oByteArrayMultipartFile.getBytes());
                 ProcessResult result = gate.send(oByteArrayMultipartFile.getOriginalFilename(), sEmailValue, oByteArrayMultipartFile.getBytes());
