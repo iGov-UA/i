@@ -3,7 +3,6 @@
   <process id="dnepr_cnap_759" name="Державна реєстрація змін до відомостей про юридичну особу (з заповненням заяви онлайн)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-
 <!--         <activiti:formProperty id="markers_ext" name="КВЕДы" type="markers" default="${markerService.loadFromFile('dnepr_cnap_759.json')}"></activiti:formProperty>  -->
         <activiti:formProperty id="markers_ext_00" name="внешние маркеры 00" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_00.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_ext_01" name="внешние маркеры 01" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_01.json')}"></activiti:formProperty>
@@ -34,6 +33,7 @@
         <activiti:formProperty id="asSelectRole_01" name="Оберіть Ваш статус" type="enum" required="true">
           <activiti:value id="tf_001_01" name="Керівник"></activiti:value>
           <activiti:value id="tf_001_02" name="Особа, яка має право вчиняти юридичні дії від імені юридичної особи (без довіреності)"></activiti:value>
+          <activiti:value id="tf_001_04" name="Особа, яка має право подавати документи для державної реєстрації (без довіреності)"></activiti:value>
           <activiti:value id="tf_001_03" name="Уповноважена особа (за довіреністю)"></activiti:value>
 		</activiti:formProperty>
 
@@ -43,15 +43,26 @@
         <activiti:formProperty id="sRole_Plus_01" name="+ роль 01" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRole_Plus_02" name="+ роль 02" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRole_Plus_03" name="+ роль 03" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sRole_Plus_04" name="+ роль 04" type="string" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="asSelectPidstava_01" name="Оберіть документ на підставі якого діє юридична особа" type="enum" required="true">
-          <activiti:value id="tf_002_01" name="- установчі документи, затверджені засновниками (учасниками)"></activiti:value>
-          <activiti:value id="tf_002_02" name="- модельний статут, затверджений постановою Кабінету Міністрів України"></activiti:value>
+        <activiti:formProperty id="asSelectGetDoc" name="Бажаєте отримати виписку з Єдиного державного реєстру юридичних осіб, фізичних осіб - підприємців та громадських формувань в паперовій формі" type="enum" required="true">
+          <activiti:value id="tf_01" name="Так"></activiti:value>
+          <activiti:value id="tf_02" name="Ні"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="sVarPidstava_01_Plus_01" name="собственный документ +" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sVarPidstava_01_Plus_02" name="модельный документ +" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVarGetDoc_01_Plus_01" name="отримати паперовий документ +" type="string" default=" "></activiti:formProperty>
 
+        <activiti:formProperty id="asSelectPlaceGetDoc" name="надіслати документ на" type="enum" required="true">
+          <activiti:value id="tf_01" name="На адресу, що співпадає з місцезнаходженням"></activiti:value>
+          <activiti:value id="tf_02" name="На іншу поштову адресу"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sVarGetDoc_01_Plus_02" name="отримати поштовим відправленням +" type="string" default="+"></activiti:formProperty>
+        <activiti:formProperty id="sVarGetDoc_01_Plus_03" name="отримати на іншу пошту +" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVarGetDoc_01_Plus_04" name="отримати на вказану раніше +" type="string" default=" "></activiti:formProperty>
+		
+        <activiti:formProperty id="sVarPlaceGetDoc_001_01" name="Поштова адреса; повна поштова адреса" type="string" default=" " required="true"></activiti:formProperty>
+		
         <activiti:formProperty id="sVarINN_001_01" name="Ідентифікаційний код юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         
         <activiti:formProperty id="asSelectOPF" name="Оберіть організаційно-правову форму юридичної особи; УВАГА - якщо в запропонованому переліку Ви не знайшли Ваш варіант - для отримання послуги зверніться, будь ласка, персонально до реєстратора." type="enum" required="true">
@@ -78,29 +89,25 @@
         <activiti:formProperty id="sVarCourtCaseDateStart" name="Дата набрання чинності судовим рішенням" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="fDoc_00" name="Копія рішення" type="file" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="sIzm_Plus_01" name="+ Изменения 01" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_02" name="+ Изменения 02" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_03" name="+ Изменения 03" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_06" name="+ Изменения 06" type="string" default=" "></activiti:formProperty>
-
-<!--        <activiti:formProperty id="sIzm_Plus_07" name="+ Изменения 07" type="string" default=" "></activiti:formProperty> -->
-        <activiti:formProperty id="sIzm_Plus_08" name="+ Изменения 08" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_10" name="+ Изменения 10" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_11" name="+ Изменения 11" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_13" name="+ Изменения 13" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_14" name="+ Изменения 14" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_15" name="+ Изменения 15" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_16" name="+ Изменения 16" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_17" name="+ Изменения 17" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_18" name="+ Изменения 18" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_19" name="+ Изменения 19" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_20" name="+ Изменения 20" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_00" name="+ Изменения 01" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_01" name="+ Изменения 01-01" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_02" name="+ Изменения 01-02" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_03" name="+ Изменения 02" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_11" name="+ Изменения 03" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_15" name="+ Изменения 04" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_10" name="+ Изменения 11" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_16" name="+ Изменения 12" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_19" name="+ Изменения 13" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_13" name="+ Изменения 14" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_14" name="+ Изменения 15" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_08" name="+ Изменения 16" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_06" name="+ Изменения 17" type="string" default=" "></activiti:formProperty>
 
 <!--        <activiti:formProperty id="Info_00_01" name="======================================" type="label" default="======================================"></activiti:formProperty> -->
         <activiti:formProperty id="Info_00_02" name="Ви бажаєте внести зміни до" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_01_01" name="======================================" type="label" default="======================================"></activiti:formProperty>
 
-        <activiti:formProperty id="asSelectIzm_01" name="1. Найменування юридичної особи" type="enum" default="tf_02" required="true">
+        <activiti:formProperty id="asSelectIzm_01" name="Найменування юридичної особи" type="enum" default="tf_02" required="true">
           <activiti:value id="tf_01" name="Так"></activiti:value>
           <activiti:value id="tf_02" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -111,7 +118,7 @@
         <activiti:formProperty id="fDoc_01" name="Копія документу для зміни найменування" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_02_00" name="======================================" type="label" default="======================================"></activiti:formProperty>
 
-        <activiti:formProperty id="asSelectIzm_02" name="2. Скорочене найменування юридичної особи" type="enum" default="tf_02" required="true">
+        <activiti:formProperty id="asSelectIzm_02" name="Скорочене найменування юридичної особи" type="enum" default="tf_02" required="true">
           <activiti:value id="tf_01" name="Так"></activiti:value>
           <activiti:value id="tf_02" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -121,7 +128,7 @@
         <activiti:formProperty id="fDoc_02" name="Копія документу для зміни скороченого найменування" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_03_00" name="======================================" type="label" default="======================================"></activiti:formProperty>
 
-        <activiti:formProperty id="asSelectIzm_03" name="3. Місцезнаходження юридичної особи;(у разі зазначення його в установчих документах)" type="enum" default="tf_02" required="true">
+        <activiti:formProperty id="asSelectIzm_03" name="Місцезнаходження юридичної особи;(у разі зазначення його в установчих документах)" type="enum" default="tf_02" required="true">
           <activiti:value id="tf_01" name="Так"></activiti:value>
           <activiti:value id="tf_02" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -220,6 +227,11 @@
         <activiti:formProperty id="sVarTerr_010_04" name="Територія, в межах якої діє структурне утворення політичної партії" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarDate_010_05" name="Дата прийняття рішення керівного органу політичної партії" type="date" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarNum_010_06" name="Номер прийняття рішення керівного органу політичної партії" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVarPlus_010_07" name="Структурне утворення політичної партії зі статусом юридичної особи +" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVarPlus_010_08" name="Підрозділ громадського формування, що має статус юридичної особи +" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVar_010_09" name="Вид установчого документа; на підставі якого діє громадське формування" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVar_010_10" name="Ідентифікаційний код; юридичної особи (політичної партії)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVar_010_11" name="Найменування; юридичної особи (політичної партії)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fDoc_10" name="Копія документу для зміни відомостей" type="file" default=" "></activiti:formProperty>
 		
         <activiti:formProperty id="Info_11_00" name="======================================" type="label" default="======================================"></activiti:formProperty>
@@ -335,30 +347,6 @@
         <activiti:formProperty id="sVarMeta_016_01" name="Мета діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fDoc_16" name="Копія документу про зміни" type="file" default=" "></activiti:formProperty>
 		
-        <activiti:formProperty id="Info_17_00" name="======================================" type="label" default="======================================"></activiti:formProperty>
-
-        <activiti:formProperty id="asSelectIzm_17" name="17. Підтвердження всеукраїнського статусу громадського об’єднання" type="enum" default="tf_02" required="true">
-          <activiti:value id="tf_01" name="Так"></activiti:value>
-          <activiti:value id="tf_02" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="tVar_017_01" name="Відомості про відокремлені підрозділи у більшості адміністративно-територіальних одиниць" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="fDoc_17" name="Копія документу" type="file" default=" "></activiti:formProperty>
-		
-        <activiti:formProperty id="Info_18_00" name="======================================" type="label" default="======================================"></activiti:formProperty>
-
-        <activiti:formProperty id="asSelectIzm_18" name="18. Відмова від всеукраїнського статусу громадського об’єднання" type="enum" default="tf_00" required="true">
-          <activiti:value id="tf_00" name=" "></activiti:value>
-          <activiti:value id="tf_01" name="Так"></activiti:value>
-          <activiti:value id="tf_02" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSelect_18_01" name="Підстави відмови від всеукраїнського статусу громадського об’єднання" type="enum" default="tf_01">
-          <activiti:value id="tf_01" name="Власна ініціатива"></activiti:value>
-          <activiti:value id="tf_02" name="Відсутність відокремлених підрозділів у більшості адміністративно-територіальних одиниць"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sVarPlus_018_01" name="+ Власна ініціатива" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sVarPlus_018_02" name="+ Відсутність відокремлених підрозділів" type="string" default=" "></activiti:formProperty>
-
-		
         <activiti:formProperty id="Info_19_00" name="======================================" type="label" default="======================================"></activiti:formProperty>
 
         <activiti:formProperty id="asSelectIzm_19" name="19. Відомості щодо юридичної особи – правонаступника у разі виділу або відомості про юридичну особу, правонаступником якої є юридична особа у разі приєднання" type="enum" default="tf_02" required="true">
@@ -386,14 +374,6 @@
         <activiti:formProperty id="Lblminus_019_04" name="----------------------------------------------------" type="label" default="----------------------------------------------"></activiti:formProperty>
         <activiti:formProperty id="fDoc_19" name="Копія документу" type="file" default=" "></activiti:formProperty>
 		
-        <activiti:formProperty id="Info_20_00" name="======================================" type="label" default="======================================"></activiti:formProperty>
-
-        <activiti:formProperty id="asSelectIzm_20" name="20. Інші зміни до установчих документів, які не пов’язані з внесенням змін до відомостей про юридичну особу, що містяться в Єдиному державному реєстрі юридичних осіб, фізичних осіб - підприємців та громадських формувань" type="enum" default="tf_02" required="true">
-          <activiti:value id="tf_01" name="Так"></activiti:value>
-          <activiti:value id="tf_02" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="fDoc_20" name="Копія документу" type="file" default=" "></activiti:formProperty>
-
 <!-- ТЕКУЩАЯ РАБОТА СТАРТТАСКА -->
 
 		<!-- ЗАГЛУШКА ЗАГЛУШКА ЗАГЛУШКА -->
@@ -409,7 +389,7 @@
 
 <!-- НАЧАЛО ЮЗЕРТАСКА 1 -->
 
-    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_all_1499">
+    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_all_1499,jur_${sID_UA}_1499">
       <extensionElements>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -540,26 +520,21 @@
         <activiti:formProperty id="sRole_Plus_01" name="+ роль 01" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRole_Plus_02" name="+ роль 02" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRole_Plus_03" name="+ роль 03" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRole_Plus_04" name="+ роль 04" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sVarPidstava_01_Plus_01" name="собственный документ +" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarPidstava_01_Plus_02" name="модельный документ +" type="string"></activiti:formProperty>
-
-        <activiti:formProperty id="sIzm_Plus_01" name="+ Изменения 01" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_02" name="+ Изменения 02" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_03" name="+ Изменения 03" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_06" name="+ Изменения 06" type="string"></activiti:formProperty>
-<!--        <activiti:formProperty id="sIzm_Plus_07" name="+ Изменения 07" type="string"></activiti:formProperty> -->
-        <activiti:formProperty id="sIzm_Plus_08" name="+ Изменения 08" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_10" name="+ Изменения 10" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_11" name="+ Изменения 11" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_13" name="+ Изменения 13" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_14" name="+ Изменения 14" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_15" name="+ Изменения 15" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_16" name="+ Изменения 16" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_17" name="+ Изменения 17" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_18" name="+ Изменения 18" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_19" name="+ Изменения 19" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIzm_Plus_20" name="+ Изменения 20" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_00" name="+ Изменения 01" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_01" name="+ Изменения 01-01" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_02" name="+ Изменения 01-02" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_03" name="+ Изменения 02" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_11" name="+ Изменения 03" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_15" name="+ Изменения 04" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_10" name="+ Изменения 11" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_16" name="+ Изменения 12" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_19" name="+ Изменения 13" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_13" name="+ Изменения 14" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_14" name="+ Изменения 15" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_08" name="+ Изменения 16" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_Plus_06" name="+ Изменения 17" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sVarOblPlus02_ADR01" name="область +" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarRajObl301Plus02_ADR01" name="Район області +" type="string"></activiti:formProperty>
@@ -602,14 +577,10 @@
 
 <!-- ВСТАВКА -->
 
-        <activiti:formProperty id="asChoiceCNAP" name="ВИКОНУВАЧ ПОСЛУГИ (важливо обирати свій район, оскільки саме на його рахунок буде надходити оплата за послугу)" type="enum" default="vasil" required="true">
-          <activiti:value id="vasil" name="Васильковський ЦНАП"></activiti:value>
-          <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (Васильковка)" type="invisible" default="i5516072613"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="142.57"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="417.52"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="101;${bankIdinn};22010300 Адміністративний збір за держреєстрацію змін ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="asDecisionFirst_01" name="Результат аналізу звернення" type="enum" required="true">
@@ -625,30 +596,192 @@
         <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="string" default="jur_1499_"></activiti:formProperty>
         <activiti:taskListener event="complete" delegateExpression="${FindGroup}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+<!--        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${form_signed},${fDoc_20},${fDoc_19},${fDoc_17},${fDoc_16},${fDoc_15},${fDoc_14},${fDoc_11},${fDoc_10},${fDoc_08},${fDoc_03},${fDoc_02},${fDoc_01},${fDoc_00}</activiti:expression>
           </activiti:field>
-        </activiti:taskListener>
+        </activiti:taskListener> -->
       </extensionElements>
     </userTask>
 
     <scriptTask id="scripttask1" name="Отримувач сплати" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>          
-      	  var sVarCNAP=execution.getVariable('asChoiceCNAP')
-          if (sVarCNAP=='vasil'){execution.setVariable('sID_Merchant','i5516072613')}
-          if (sVarCNAP=='charichanka'){execution.setVariable('sID_Merchant','i76592566863')}
+      	  var sVarCNAP=execution.getVariable('group_found')
+          if (sVarCNAP=='jur_1499_vasil' || sVarCNAP=='many')
+          	{
+          		execution.setVariable('sID_Merchant','i5516072613')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')
+				execution.setVariable('sVarBankMFO','805012')
+				execution.setVariable('sVarPayCode','22010300')
+				execution.setVariable('sVarWhoPayGetCode','37870848')
+				execution.setVariable('sVarWhoPayGet','ВАСИЛЬКІВСЬКЕ УК (ВАСИЛЬКІВСЬКОГО РАЙОНУ)')
+				execution.setVariable('sVarPayGetSchet','31419501700049')
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+          if (sVarCNAP=='jur_1499_charichanka')
+          	{
+          		execution.setVariable('sID_Merchant','i76592566863')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')
+				execution.setVariable('sVarBankMFO','805012')
+				execution.setVariable('sVarPayCode','22010300')
+				execution.setVariable('sVarWhoPayGetCode','37901650')
+				execution.setVariable('sVarWhoPayGet','ЦАРИЧАНСЬКЕ УК (ЦАРИЧАНСЬКОГО РАЙОНУ)')
+				execution.setVariable('sVarPayGetSchet','31417501700353')
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+          if (sVarCNAP=='jur_1499_vilnogirskT')
+          	{
+          		execution.setVariable('sID_Merchant','i30965470376')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','37996805')          			
+				execution.setVariable('sVarWhoPayGet','УДКСУ у м.Вільногірську')          			
+				execution.setVariable('sVarPayGetSchet','31413501700012')          			
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+		  if (sVarCNAP=='jur_1499_tomak')
+          	{
+          		execution.setVariable('sID_Merchant','i24385779871')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','36729802')          			
+				execution.setVariable('sVarWhoPayGet','Томаківське УК (Томаківський р-н)')          			
+				execution.setVariable('sVarPayGetSchet','31118170700339')          			
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+          if (sVarCNAP=='jur_1499_krinichki')
+          	{
+          		execution.setVariable('sID_Merchant','i6466363679')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','38052097')          			
+				execution.setVariable('sVarWhoPayGet','УДКСУ у Криничанському районі(місцевий)')          			
+				execution.setVariable('sVarPayGetSchet','31114170700117')          			
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+          if (sVarCNAP=='jur_1499_ordzonikT')
+          	{
+          		execution.setVariable('sID_Merchant','i29422825028')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','37691430')          			
+				execution.setVariable('sVarWhoPayGet','УК у м.Орджонiкiдзе(м.Орджон)')          			
+				execution.setVariable('sVarPayGetSchet','31416501700031')          			
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+          if (sVarCNAP=='jur_1499_meziv')
+          	{
+          		execution.setVariable('sID_Merchant','i98768677701')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','37909010')          			
+				execution.setVariable('sVarWhoPayGet','УДКСУ у Межівському районі(місцевий)')          			
+				execution.setVariable('sVarPayGetSchet','31415501700162')          			
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+          if (sVarCNAP=='jur_1499_zhvodT')
+          	{
+          		execution.setVariable('sID_Merchant','i10871377634')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','36916755')          			
+				execution.setVariable('sVarWhoPayGet','УК у м.Жовтих Водах (місцевий бюджет м.Жовті Води)')          			
+				execution.setVariable('sVarPayGetSchet','31417501700018')          			
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+          if (sVarCNAP=='jur_1499_ternopil')
+          	{
+          		execution.setVariable('sID_Merchant','i13991491434')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ТЕРНОПІЛЬСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','38038156')          			
+				execution.setVariable('sVarWhoPayGet','УК у Терноп.р-ні(Тернопіл.р-н)')          			
+				execution.setVariable('sVarPayGetSchet','31417501700513')          			
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+          if (sVarCNAP=='jur_1499_petropavl')
+          	{
+          		execution.setVariable('sID_Merchant','i85416673717')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','36725512')          			
+				execution.setVariable('sVarWhoPayGet','Петропавлівське УК/Петро.р-н/')          			
+				execution.setVariable('sVarPayGetSchet','31416501700235')          			
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+          if (sVarCNAP=='jur_1499_nikopol')
+          	{
+          		execution.setVariable('sID_Merchant','i9597582078')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','38055606')          			
+				execution.setVariable('sVarWhoPayGet','Нікопольське УК/ Нікопольський р-н/')          			
+				execution.setVariable('sVarPayGetSchet','31414501700174')          			
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+          if (sVarCNAP=='jur_1499_nikopolT')
+          	{
+          		execution.setVariable('sID_Merchant','i65350712368')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','38033121')          			
+				execution.setVariable('sVarWhoPayGet','УК у м. Нікополі/ м. Нікополь/')          			
+				execution.setVariable('sVarPayGetSchet','31417501700029')          			
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+          if (sVarCNAP=='jur_1499_dndz')
+          	{
+          		execution.setVariable('sID_Merchant','i53978776110')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','38028588')          			
+				execution.setVariable('sVarWhoPayGet','УДКСУ у м. Дніпродзержинську')          			
+				execution.setVariable('sVarPayGetSchet','31412501700013')          			
+				execution.setVariable('sVarSumPay','410.00')
+          	}
+          if (sVarCNAP=='jur_1499_persotravT')
+          	{
+          		execution.setVariable('sID_Merchant','i24795480631')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','37804890')          			
+				execution.setVariable('sVarWhoPayGet','УК у м.Першотравенськ')          			
+				execution.setVariable('sVarPayGetSchet','31412501700013')          			
+				execution.setVariable('sVarSumPay','410.00')
+          	}
 		</script>
     </scriptTask>
 
-    <userTask id="usertask2" name="Надання платної послуги (2)" activiti:candidateGroups="jur_all_1499">
+    <userTask id="usertask2" name="Надання платної послуги (2)" activiti:candidateGroups="group_found">
       <extensionElements>
         <activiti:formProperty id="group_found" name="Найденная группа по префиксу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asChoiceCNAP" name="Виконувач послуги" type="enum" writable="false">
-          <activiti:value id="vasil" name="Васильковський ЦНАП"></activiti:value>
-          <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ID платежу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>
@@ -674,7 +807,7 @@
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_759_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
         <activiti:taskListener event="complete" delegateExpression="${FindGroup}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+<!--        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener> -->
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${form_signed},${fDoc_20},${fDoc_19},${fDoc_17},${fDoc_16},${fDoc_15},${fDoc_14},${fDoc_11},${fDoc_10},${fDoc_08},${fDoc_03},${fDoc_02},${fDoc_01},${fDoc_00}</activiti:expression>
@@ -683,14 +816,10 @@
       </extensionElements>
     </userTask>
     
-    <userTask id="usertask3" name="Надання безоплатної послуги (2)" activiti:candidateGroups="jur_all_1499">
+    <userTask id="usertask3" name="Надання безоплатної послуги (2)" activiti:candidateGroups="group_found">
       <extensionElements>
         <activiti:formProperty id="group_found" name="Найденная группа по префиксу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asChoiceCNAP" name="Виконувач послуги" type="enum" default="vasil" writable="false" required="true">
-          <activiti:value id="vasil" name="Васильковський ЦНАП"></activiti:value>
-          <activiti:value id="charichanka" name="Царичанский ЦНАП"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible" required="true"></activiti:formProperty>
@@ -715,7 +844,7 @@
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_759_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
         <activiti:taskListener event="complete" delegateExpression="${FindGroup}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+<!--        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener> -->
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${form_signed},${fDoc_20},${fDoc_19},${fDoc_17},${fDoc_16},${fDoc_15},${fDoc_14},${fDoc_11},${fDoc_10},${fDoc_08},${fDoc_03},${fDoc_02},${fDoc_01},${fDoc_00}</activiti:expression>

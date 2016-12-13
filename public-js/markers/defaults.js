@@ -128,26 +128,26 @@ angular.module('iGovMarkers')
       Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true}, 
     
       Style_ExtendLabel: {
-    	  aElement_ID: ['textUa', 'vin_code'], 
-    	  aSelectors: ["col-sm-4"], 
+    	  aElement_ID: [], 
+    	  aSelectors: [], 
     	  // Загальний стиль для селекторів 
-    	  oCommonStyle: { "font-style" : "italic", "display" : "block" },
+    	  oCommonStyle: {  },
     	  // Стиль для Central-js | = oCommonStyle   
-    	  oCentralStyle: { "font-style": "bold", "display": "block" }, 
+    	  oCentralStyle: {  }, 
     	  // Стиль для Region  
-    	  oRegionStyle: { "font-style": "bold", "font-color": "#FF0000", "display": "block" }, 
+    	  oRegionStyle: {  }, 
       }, 
 
       Style_ExtendForm: {
-    	  aElement_ID: ['form'],  	  
-    	  aSelectors: ["test-form"], 
+    	  aElement_ID: [], 
+    	  aSelectors: [], 
     	  //sCondition : "",
     	  // Загальний стиль для селекторів 
-    	  oCommonStyle: { "font-style": "italic", "display": "block" },
+    	  oCommonStyle: {  },
     	  // Стиль для Central-js | = oCommonStyle   
-    	  oCentralStyle: { "font-style": "bold", "display": "block" }, 
+    	  oCentralStyle: { }, 
     	  // Стиль для Region  
-    	  oRegionStyle: { "font-style": "bold", "font-color": "#FF0000", "display": "block" },
+    	  oRegionStyle: { },
       }, 
 
     },
@@ -167,7 +167,7 @@ angular.module('iGovMarkers')
 
       PrintForm_Table3: { 
     	  aField_ID: ["oPrescription2"],
-    	  //sTemplateNameField_ID: "sPrescriptionName", 
+    	  sTitleField: "sPrescriptionName",
     	  sPatternPath: "/print/kiev/kiev_mda_273_print.html", 
     	  sName: "Звіт за сектором",
       }, 

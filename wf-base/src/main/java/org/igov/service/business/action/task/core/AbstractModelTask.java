@@ -455,7 +455,6 @@ public abstract class AbstractModelTask {
             }
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
-        //TODO need to check contents of aAttachment
         return aAttachment;
 
     }
@@ -580,31 +579,23 @@ public abstract class AbstractModelTask {
     }
 
     public List<Attachment> findAttachments(String sAttachments, String processInstanceId) {
-        LOG.info("Inside findAttachments(String sAttachments, String processInstanceId)");
         sAttachments = sAttachments == null ? "" : sAttachments;
-        LOG.info("(sAttachmentsForSend={})", sAttachments);
 
         List<Attachment> aAttachment = new ArrayList<>();
 
         String[] asID_Attachment = sAttachments.split(",");
-        for (int i = 0; i < asID_Attachment.length; i++) {
-            LOG.info("Current asID_Attachment={}", asID_Attachment[i]);
-        }
 
         List<String> aAttachmentNotFound = new ArrayList<>();
 
         for (String sID_Attachment : asID_Attachment) {
             if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
                 String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
-                LOG.info("(sID_AttachmentTrimmed={})", sID_AttachmentTrimmed);
+
                 Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
+
                 if (oAttachment != null) {
-                    LOG.info("if (oAttachment != null)");
-                    LOG.info("oAttachment info={}, oAttachment.getId()={}",oAttachment.getDescription(), oAttachment.getId());
                     aAttachment.add(oAttachment);
                 } else {
-                    LOG.info("Inside aAttachmentNotFound");
-                    LOG.info("sID_AttachmentTrimmed={}", sID_AttachmentTrimmed);
                     aAttachmentNotFound.add(sID_AttachmentTrimmed);
                 }
             } else {
@@ -612,22 +603,16 @@ public abstract class AbstractModelTask {
             }
         }
         if (!aAttachmentNotFound.isEmpty()) {
-            LOG.info("if (!aAttachmentNotFound.isEmpty())");
+            //the next line returns no collection hence no items from aAttachmentNotFound are added to aAttachment; consider replacing
             List<Attachment> aAttachmentByProcess = taskService.getProcessInstanceAttachments(processInstanceId);
-            LOG.info("aAttachmentByProcess size={}", aAttachmentByProcess.size());
+
             for (Attachment attachment : aAttachmentByProcess) {
                 LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
-                if (aAttachmentNotFound.contains(attachment.getId())) {
+                if (!aAttachmentNotFound.contains(attachment.getId())) {
                     aAttachment.add(attachment);
                 }
             }
         }
-        LOG.info("In findAttachments(sInheritedAttachmentsIds, oExecution.getId())");
-
-        for(Attachment attachment: aAttachment) {
-            LOG.info("Attachment info={}, attachment.getId()={}", attachment.getDescription(), attachment.getId());
-        }
-
         return aAttachment;
     }
 

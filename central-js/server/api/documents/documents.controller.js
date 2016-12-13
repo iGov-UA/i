@@ -34,15 +34,15 @@ module.exports.getDocumentFile = function (req, res) {
 };
 
 module.exports.getDocumentAbstract = function (req, res) {
-  var r = request(buildGetRequest(req, '/document/getDocumentAbstract', {
-    'sID': req.params.sCode_DocumentAccess,
-    //'sID': req.params.nID,
-    //'sCode_DocumentAccess': req.params.sCode_DocumentAccess,
-    'nID_DocumentOperator_SubjectOrgan': req.params.nID_DocumentOperator_SubjectOrgan,
-    'nID_DocumentType': req.params.nID_DocumentType,
-    'sPass': req.params.sPass
-  }));
+  var oParams = {
+    'sID': req.params.sCode_DocumentAccess
+  };
+  if (req.params.nID_DocumentOperator_SubjectOrgan) oParams['nID_DocumentOperator_SubjectOrgan'] = req.params.nID_DocumentOperator_SubjectOrgan;
+  if (req.params.nID_DocumentType) oParams['nID_DocumentType'] = req.params.nID_DocumentType;
+  if (req.params.sPass) oParams['sPass'] = req.params.sPass;
 
+  var r = request(buildGetRequest(req, '/document/getDocumentAbstract', oParams));
+  
   req.pipe(r).on('response', function (response) {
     response.headers['content-type'] = 'application/octet-stream';
   }).pipe(res);
