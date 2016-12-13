@@ -423,7 +423,7 @@ public class ProcessSubjectService {
             String sFormatDateDoc = "";
             Date oDateExecution = null;
             
-            if (mParam.get("sDateExecution") != null){
+            /*if (mParam.get("sDateExecution") != null){
                 oDateExecution = parseDate(mParam.get("sDateExecution"));
                 sFormatDateExecution = df_StartProcess.format(oDateExecution);
             }
@@ -435,8 +435,9 @@ public class ProcessSubjectService {
             if(mParam.get("sDateDoc") != null){
                 Date oDateDoc = parseDate(mParam.get("sDateDoc"));
                 sFormatDateDoc = df_StartProcess.format(oDateDoc);
-            }
-            /*if((mParam.get("sDateExecution") != null)&&(!mParam.get("sDateExecution").equals(""))){
+            }*/
+            
+            if((mParam.get("sDateExecution") != null)&&(!mParam.get("sDateExecution").equals(""))){
                 oDateExecution = parseDate(mParam.get("sDateExecution"));
                 sFormatDateExecution = df_StartProcess.format(oDateExecution);
             }
@@ -447,7 +448,7 @@ public class ProcessSubjectService {
             if((mParam.get("sDateDoc") != null)&&(!mParam.get("sDateDoc").equals(""))){
                 Date oDateDoc = parseDate(mParam.get("sDateDoc"));
                 sFormatDateDoc = df_StartProcess.format(oDateDoc);
-            }*/
+            }
             
             ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
             
@@ -455,21 +456,20 @@ public class ProcessSubjectService {
 
             mParamDocument.put("sTaskProcessDefinition", mParam.get("sTaskProcessDefinition"));
             mParamDocument.put("sID_Attachment", mParam.get("sID_Attachment"));
+            mParamDocument.put("sContent", mParam.get("sContent"));
+            mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
+            mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
+            mParamDocument.put("sDateExecution", sFormatDateExecution);
             mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
             mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
             mParamDocument.put("sDateRegistration", sFormatDateRegistration);
             mParamDocument.put("sDateDoc", sFormatDateDoc);
             mParamDocument.put("sApplicant", mParam.get("sApplicant"));
-            mParamDocument.put("snCountAttach", mParam.get("snCountAttach"));
-            mParamDocument.put("sContent", mParam.get("sContent"));
+            mParamDocument.put("nCountAttach", mParam.get("nCountAttach"));
             mParamDocument.put("sNote", mParam.get("sNote"));
             mParamDocument.put("asUrgently", mParam.get("asUrgently"));
-            mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
             mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
-            mParamDocument.put("sDateExecution", sFormatDateExecution);
-            mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
-
-
+            
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             //иначе проверяем на необходимость редактирования
             if (oProcessSubjectParent == null) {
@@ -477,7 +477,7 @@ public class ProcessSubjectService {
                         .setProcessSubject(snProcess_ID, mParam.get("sAutorResolution"),
                                 new DateTime(oDateExecution), 0L, processSubjectStatus);
             }else{
-                editProcessSubject(oProcessSubjectParent, mParamDocument);
+            //    editProcessSubject(oProcessSubjectParent, mParamDocument);
             }
             
             List<ProcessSubjectTree> aProcessSubjectTreeChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
