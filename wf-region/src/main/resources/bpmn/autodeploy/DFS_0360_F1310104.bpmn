@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="DFS_0360_F1310104" name="Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків" isExecutable="true">
+  <process id="DFS_0360_F1310104" name="Отримання індивідуального податкового номеру (ІПН для дитини) " isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
           
@@ -25,10 +25,18 @@
              
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Назва територіального органу ДФС; ;writable=true,sID_Field_SWinEd=HSTI" type="select" required="true"></activiti:formProperty>      
         
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Податковий номер;реєстраційний номер облікової картки платника податків" type="string"></activiti:formProperty> 
+        
         <activiti:formProperty id="bankIdPassport" name="Номер та серія паспорта; ;writable=true,sID_Field_SWinEd=DGPass" type="string"></activiti:formProperty>
-        <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field_SWinEd=TIN" type="string" default="АА111111ББ"></activiti:formProperty>
+        <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field_SWinEd=TIN" type="string" default="3225017361"></activiti:formProperty>
         <activiti:formProperty id="HNAME" name="Прізвище, ім'я та по батькові;;writable=true,sID_Field_SWinEd=HNAME" type="string" default="Продан Юлия Георгиевна"></activiti:formProperty>
+        
                 
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яка буде отримувати індивідуальний податковий номер (ІПН)"></activiti:formProperty>
+                    
         <activiti:formProperty id="HZIP" name="Поштовий індекс; ;writable=true,sID_Field_SWinEd=HCOUNTRY" type="string" default="49052"></activiti:formProperty>        
         <activiti:formProperty id="sNameCountry" name="Назва країни ; ;writable=true,sID_Field_SWinEd=HCOUNTRY" type="string" default="Україна"></activiti:formProperty>
         <activiti:formProperty id="sNameCity" name="Назва населеного пункту; ;writable=true,sID_Field_SWinEd=HCITY" type="string" default="Дніпро"></activiti:formProperty>
@@ -38,7 +46,7 @@
         <activiti:formProperty id="sNameCorp" name="Корпус;;writable=true,sID_Field_SWinEd=HCORP" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberFlat" name="Номер квартири;;writable=true,sID_Field_SWinEd=HAPT" type="string"></activiti:formProperty>
         
-         <activiti:formProperty id="phonetel" name="Телефон;;writable=true,sID_Field_SWinEd=HTEL" type="string" default="0965907773"></activiti:formProperty>
+         <activiti:formProperty id="phone" name="Телефон;;writable=true,sID_Field_SWinEd=HTEL" type="string" default="0965907773"></activiti:formProperty>
         
         <activiti:formProperty id="HBOS" name="Керівник (ініціали та прізвище) ; ;writable=true,sID_Field_SWinEd=HBOS" type="string" default="Пупкин В. В."></activiti:formProperty>
         
@@ -48,6 +56,7 @@
         <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="F1310104"></activiti:formProperty>
         
         <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Inv" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2_3.json')}"></activiti:formProperty>
         
       </extensionElements>
     </startEvent>
@@ -79,12 +88,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему Запит</activiti:expression>
+          <activiti:expression>Отримання індивідуального податкового номеру (ІПН для дитини)</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення на тему Запит до ДФС. &lt;br /&gt;
+&lt;p&gt;Ви подавали звернення на тему: Отримання індивідуального податкового номеру (ІПН для дитини). &lt;br /&gt;
 
 Ви можете відкрити криптопакет відповіді ДФС з допомогою  &lt;a href="https://alpha.test.igov.org.ua/journal/answer/DFS"&gt;цього інструменту&lt;/a&gt; із використанням своєї ЕЦП, що ви використали під час подання запиту. &lt;br /&gt; &lt;br /&gt;
                         [pattern/mail/_common_signature_end.html]
@@ -107,7 +116,7 @@
         <activiti:formProperty id="anID_Attach_Dfs" name="Файл с ответом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}">
           <activiti:field name="sINN">
-            <activiti:expression>${TIN}</activiti:expression>
+            <activiti:expression>${bankIdinn}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
