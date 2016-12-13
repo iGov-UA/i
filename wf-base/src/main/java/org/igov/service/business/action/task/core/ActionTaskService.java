@@ -1137,10 +1137,10 @@ public class ActionTaskService {
      */
     public List<Map<String, String>> getBusinessProcessesForUser(String sLogin){
 
-        if (sLogin.isEmpty()) {
-            LOG.error("Unable to found business processes for user with empty login");
+        if (sLogin==null || sLogin.isEmpty()) {
+            LOG.error("Unable to found business processes for sLogin="+sLogin);
             throw new ActivitiObjectNotFoundException(
-                    "Unable to found business processes for user with empty login",
+                    "Unable to found business processes for sLogin="+sLogin,
                     ProcessDefinition.class);
         }
 
