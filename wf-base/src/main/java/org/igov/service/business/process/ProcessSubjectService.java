@@ -469,7 +469,6 @@ public class ProcessSubjectService {
             mParamDocument.put("sDateExecution", sFormatDateExecution);
             mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
 
-
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             //иначе проверяем на необходимость редактирования
             if (oProcessSubjectParent == null) {
@@ -477,7 +476,7 @@ public class ProcessSubjectService {
                         .setProcessSubject(snProcess_ID, mParam.get("sAutorResolution"),
                                 new DateTime(oDateExecution), 0L, processSubjectStatus);
             }else{
-                editProcessSubject(oProcessSubjectParent, mParamDocument);
+            //    editProcessSubject(oProcessSubjectParent, mParamDocument);
             }
             
             List<ProcessSubjectTree> aProcessSubjectTreeChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
