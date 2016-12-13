@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-89sd" name="Зняття з реєстрації особи у зв'язку зі смертю" isExecutable="true">
-    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 02.12.2016</documentation>
+    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 13.12.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -14,12 +14,12 @@
         <activiti:formProperty id="sAreabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" default="Україна" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яку потрібно зняти з реєстрації"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA2" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth" name="Дата народження;Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildPOB" name="Місце народження;Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildCitizenship" name="Громадянство" type="string" default="Україна" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище померлого" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я померлого" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По батькові померлого" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildBirth" name="Дата народження померлого;Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildPOB" name="Місце народження померлого;Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildCitizenship" name="Громадянство померлого" type="string" default="Україна" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChildDoc" name="Документ померлого; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації померлого;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить поточне місце реєстрації померлого" type="select" default="0" required="true"></activiti:formProperty>
@@ -154,13 +154,13 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sAreabirth" name="Місце народження; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="lable1" name=" " type="label" default="Дані особи, яку потрібно зняти з реєстрації"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA2" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA2" name="По батькові; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChildPOB" name="Місце народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По батькові померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChildBirth" name="Дата народження померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChildPOB" name="Місце народження померлого; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sChildDoc" name="Дані документу померлого; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChildCitizenship" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChildCitizenship" name="Громадянство померлого; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації померлого; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
@@ -390,15 +390,15 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sAreabirth" name="Місце народження; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="lable1" name=" " type="label" default="Дані особи, яку потрібно зняти з реєстрації"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA2" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA2" name="По батькові; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChildPOB" name="Місце народження; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChildDoc" name="Дані документу померлого; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChildCitizenship" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По батькові померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChildBirth" name="Дата народження померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChildPOB" name="Місце народження померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChildDoc" name="Дані документу померлого померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChildCitizenship" name="Громадянство померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Місто або район, до якого належить місце проживання померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації померлого; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWhenCome" name="Вкажіть дату зняття з реєстрації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює зняття з реєстрації" type="invisible" writable="false"></activiti:formProperty>
