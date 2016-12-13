@@ -97,7 +97,7 @@ public class SetTasks implements TaskListener {
         mParam.put("sDateRegistration", sDateRegistration_Value);
         mParam.put("sDateDoc", sDateDoc_Value);
         mParam.put("sApplicant", sApplicant_Value);
-        mParam.put("snCountAttach", snCountAttach_Value);
+        mParam.put("nCountAttach", snCountAttach_Value);
         mParam.put("sNote", sNote_Value);
         mParam.put("asUrgently", sAsUrgently_Value);
         mParam.put("asTypeResolution", sAsTypeResolution_Value);

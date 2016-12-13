@@ -455,20 +455,20 @@ public class ProcessSubjectService {
 
             mParamDocument.put("sTaskProcessDefinition", mParam.get("sTaskProcessDefinition"));
             mParamDocument.put("sID_Attachment", mParam.get("sID_Attachment"));
+            mParamDocument.put("sContent", mParam.get("sContent"));
+            mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
+            mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
+            mParamDocument.put("sDateExecution", sFormatDateExecution);
             mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
             mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
             mParamDocument.put("sDateRegistration", sFormatDateRegistration);
             mParamDocument.put("sDateDoc", sFormatDateDoc);
             mParamDocument.put("sApplicant", mParam.get("sApplicant"));
-            mParamDocument.put("snCountAttach", mParam.get("snCountAttach"));
-            mParamDocument.put("sContent", mParam.get("sContent"));
+            mParamDocument.put("nCountAttach", mParam.get("nCountAttach"));
             mParamDocument.put("sNote", mParam.get("sNote"));
             mParamDocument.put("asUrgently", mParam.get("asUrgently"));
-            mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
             mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
-            mParamDocument.put("sDateExecution", sFormatDateExecution);
-            mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
-
+            
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             //иначе проверяем на необходимость редактирования
             if (oProcessSubjectParent == null) {
