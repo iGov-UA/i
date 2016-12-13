@@ -60,7 +60,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="dvs_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Заявник:" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -107,14 +107,14 @@
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Надання послуги2">
+    <userTask id="usertask2" name="Надання послуги2" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Заявник:" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPostAddress" name="Поштова адреса" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asStatus" name="Статус запиту" type="enum" required="true">
+        <activiti:formProperty id="asStatus2" name="Статус запиту" type="enum" required="true">
           <activiti:value id="sEnumApprove" name="відкрити виконавче провадження"></activiti:value>
           <activiti:value id="sEnumDeny" name="відмовити заявнику у відкритті виконавчого провадження"></activiti:value>
         </activiti:formProperty>
@@ -129,8 +129,8 @@
     <sequenceFlow id="flow10" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="servicetask4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_test_file_listeners">
-    <bpmndi:BPMNPlane bpmnElement="test_file_listeners" id="BPMNPlane_test_file_listeners">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_file_listeners">
+    <bpmndi:BPMNPlane bpmnElement="_test_file_listeners" id="BPMNPlane__test_file_listeners">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
