@@ -13,12 +13,15 @@ import io.swagger.annotations.ApiParam;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 
 import org.igov.analytic.model.access.AccessGroup;
 import org.igov.analytic.model.access.AccessUser;
+import org.igov.model.action.task.core.entity.ProcDefinitionI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -89,35 +92,46 @@ public class ProcessController {
         LOG.info("/backup ok!!!");
     }
 
-    //http://localhost:8080/wf-region/service/analytic/process/getProcesses?sID_=1
+    //http://localhost:8080/wf-region/service/analytic/process/getProcesses?sID_=1&sType=streams
     @ApiOperation(value = "/getProcesses", notes = "##### Process - получение процесса #####\n\n")
     @RequestMapping(value = "/getProcesses", method = RequestMethod.GET, headers = { JSON_TYPE })
     public
     @ResponseBody
     List<Process> getProcesses(
             @ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_") String sID_,
+            @ApiParam(value = "способ поиска", required = false) @RequestParam(value = "sType", required = false) String sType,
             @ApiParam(value = "ид источника", required = false) @RequestParam(value = "nID_Source", required = false) Long nID_Source) {
         LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         List<Process> result = new ArrayList();
+        List<Process> processes = new ArrayList();
         try {
-            //            if ("1".equalsIgnoreCase(sID_.trim())) {
-            //                LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! All sID_: " + sID_.trim());
-            //                List<Process> allResult = processDao.findAll();
-            //                LOG.info("processes: " + allResult.size());
-            //                result.addAll(allResult);
-            //            } else {
-            LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sID_: " + sID_.trim());
-            List<String> sIDList = new ArrayList<>();
-            sID_ = sID_.trim();
-
-            sIDList.add(sID_);
-            sIDList.add(sID_.toLowerCase());
-            sIDList.add(sID_.toUpperCase());
-            //                            List<Process> processes = processDao.findAllBy("sID_", sID_.trim());
-            List<Process> processes = processDao.findAllByInValues("sID_", sIDList);
-            LOG.info("processes: " + processes.size());
-            result.addAll(processes);
-            //            }
+            if (!(sType == null)) {
+                if (sType.equals("streams")) {
+                    LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!streams sID_: " + sID_.trim());
+                    processes = processDao.findAll();
+                    final String filter = sID_.trim();
+                    processes = processes.stream()
+                            .filter(p -> StringUtils.containsIgnoreCase(p.getsID_(), filter))
+                            .collect(Collectors.toList());
+                    LOG.info("processes: " + processes.size());
+                    result.addAll(processes);
+                } else if (sType.equals("string")) {
+                    LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!string sID_: " + sID_.trim());
+                    List<String> sIDList = new ArrayList<>();
+                    sID_ = sID_.trim();
+                    sIDList.add(sID_);
+                    sIDList.add(sID_.toLowerCase());
+                    sIDList.add(sID_.toUpperCase());
+                    processes = processDao.findAllByInValues("sID_", sIDList);
+                    LOG.info("processes: " + processes.size());
+                    result.addAll(processes);
+                }
+            } else {
+                LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sID_: " + sID_.trim());
+                processes = processDao.findAllBy("sID_", sID_.trim());
+                LOG.info("processes: " + processes.size());
+                result.addAll(processes);
+            }
         } catch (Exception ex) {
             LOG.error("ex: ", ex);
             Process process = creatStub();

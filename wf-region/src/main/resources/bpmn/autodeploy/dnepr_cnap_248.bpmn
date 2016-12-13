@@ -165,7 +165,7 @@ execution.setVariable('term', per7)</script>
         <activiti:formProperty id="document" name="Назва документу" type="invisible" default="дозвіл (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка заяви" type="enum">
+        <activiti:formProperty id="status" name="Обробка заяви" type="enum"  required="true">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
@@ -221,12 +221,12 @@ execution.setVariable('term', per7)</script>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="status2" name="Статус дозволу (санітарного паспорту)" type="enum">
+        <activiti:formProperty id="status2" name="Статус дозволу (санітарного паспорту)" type="enum"  required="true">
           <activiti:value id="attr3_finish" name="Дозвіл (санітарний паспорт) або рішення про анулювання готове, запросити громадянина"></activiti:value>
           <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбой"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFile_10" name="Завантажте скановану копию дозволу (або рішення) держсанепідслужби" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_10" name="Завантажте скановану копию дозволу (або рішення) держсанепідслужби" type="file" default=" "  required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Повідомлення адміністратора ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">

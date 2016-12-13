@@ -1135,12 +1135,52 @@ public class ActionTaskService {
      * @param sLogin - Логин пользователя
      * @return
      */
+    public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin){
+
+        if (sLogin==null || sLogin.isEmpty()) {
+            LOG.error("Unable to found business processes for sLogin="+sLogin);
+            throw new ActivitiObjectNotFoundException(
+                    "Unable to found business processes for sLogin="+sLogin,
+                    ProcessDefinition.class);
+        }
+        LOG.info("Selecting business processes for the user with login: {}", sLogin);
+
+        List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
+        List<ProcessDefinition> aProcessDefinition = oRepositoryService
+                .createProcessDefinitionQuery().active().latestVersion().list();
+        if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
+            LOG.info("Found {} active process definitions", aProcessDefinition.size());
+            aProcessDefinition_Return = getAvailabilityProcessDefinitionByLogin(sLogin, aProcessDefinition);
+        } else {
+            LOG.info("Have not found active process definitions.");
+        }
+
+        List<Map<String, String>> amPropertyBP = new LinkedList<>();
+        for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return){
+            Map<String, String> mPropertyBP = new HashMap<>();
+            mPropertyBP.put("sID", oProcessDefinition.getKey());
+            mPropertyBP.put("sName", oProcessDefinition.getName());
+            LOG.info("Added record to response {}", mPropertyBP);
+            amPropertyBP.add(mPropertyBP);
+        }
+
+        return amPropertyBP;
+    }    
+    
+    
+    
+    /**
+     * Получение списка бизнес процессов к которым у пользователя есть доступ
+     * @param sLogin - Логин пользователя
+     * @return
+     */
+    @Deprecated //новый: getBusinessProcessesOfLogin 
     public List<Map<String, String>> getBusinessProcessesForUser(String sLogin){
 
-        if (sLogin.isEmpty()) {
-            LOG.error("Unable to found business processes for user with empty login");
+        if (sLogin==null || sLogin.isEmpty()) {
+            LOG.error("Unable to found business processes for sLogin="+sLogin);
             throw new ActivitiObjectNotFoundException(
-                    "Unable to found business processes for user with empty login",
+                    "Unable to found business processes for sLogin="+sLogin,
                     ProcessDefinition.class);
         }
 
