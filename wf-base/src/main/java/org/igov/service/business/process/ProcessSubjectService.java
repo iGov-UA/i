@@ -35,6 +35,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import java.io.InputStream;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.activiti.engine.RuntimeService;
@@ -373,7 +374,7 @@ public class ProcessSubjectService {
         removeProcessSubject(processSubject);
     }
     
-    public void editProcessSubject(ProcessSubject processSubject, Map<String, Object> mParamDocument){
+    public void editProcessSubject(ProcessSubject processSubject, Map<String, Object> mParamDocument) throws ParseException{
         
         ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
         
@@ -395,17 +396,43 @@ public class ProcessSubjectService {
             Map<String, Object> mParamDocumentNew = new HashMap<>();
             
             for(String mKey : mParamDocument.keySet()){
-                if(!(mParamDocument.get(mKey).equals(mProcessVariable.get(mKey)))){
-                    LOG.info("--------------------------");
-                    LOG.info("mParamDocument elem new: " + mParamDocument.get(mKey));
-                    LOG.info("mProcessVariable elem: " + mProcessVariable.get(mKey));
-                    LOG.info("--------------------------");
-                    
-                    mParamDocumentNew.put(mKey, mParamDocument.get(mKey));
+                
+                Object oParamDocument = mParamDocument.get(mKey);
+                Object oProcessVariable = mProcessVariable.get(mKey);
+                
+                if(oParamDocument != null){
+                    if(oProcessVariable != null){
+                        if(!(((String)oParamDocument).equals((String)oProcessVariable))){
+                            mParamDocumentNew.put(mKey, oParamDocument);
+                            LOG.info("--------------------------");
+                            LOG.info("mParamDocument elem new: " + oParamDocument);
+                            LOG.info("mProcessVariable elem: " + oProcessVariable);
+                            LOG.info("--------------------------");
+                         }
+                    }
+                    else{
+                         mParamDocumentNew.put(mKey, null);
+                    }
+                }else{
+                    if(oProcessVariable != null){
+                        mParamDocumentNew.put(mKey, oProcessVariable);
+                    }
                 }
             }
             
             LOG.info("mParamDocumentNew: " + mParamDocumentNew);
+            DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+            
+            if(!mParamDocumentNew.isEmpty()){
+                
+                for(ProcessSubject oProcessSubject : aProcessSubject_Child){
+                    oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.format(new Date())));
+                    oProcessSubject.setsDatePlan(new DateTime(parseDate((String)mParamDocument.get("sDateExecution"))));
+                    processSubjectDao.saveOrUpdate(oProcessSubject);
+                }
+                
+                //runtimeService.setProcessInstanceName("названиеПоля", "значениеПоляНовое");
+            }
         }
     }
 
@@ -548,7 +575,6 @@ public class ProcessSubjectService {
                         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
                         LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                         if (oProcessInstanceChild != null) {
-
                             ProcessSubject oProcessSubjectChild = processSubjectDao
                                     .setProcessSubject(oProcessInstanceChild.getId(), (String) mParamTask.get("sLogin_isExecute"),
                                             new DateTime(oDateExecution), new Long(i + 1), processSubjectStatus);
