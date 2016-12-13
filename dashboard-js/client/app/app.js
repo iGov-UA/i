@@ -19,7 +19,8 @@ angular.module('dashboardJsApp', [
   'ui.select',
   'iGovTable',
   'datepickerService',
-  'autocompleteService'
+  'autocompleteService',
+  'datetimepicker'
 ]).config(function($urlRouterProvider, $locationProvider) {
   $urlRouterProvider
     .otherwise('/');
@@ -33,4 +34,14 @@ angular.module('dashboardJsApp', [
     Modal.inform.error()(message || 'Виникла помилка. Зверніться будь ласка у технічну підтримку.');
     console.warn('Виникла помилка. Інформація для технічної підтримки: ', arguments);
   })
-});
+}).config([
+  'datetimepickerProvider',
+  function (datetimepickerProvider) {
+    datetimepickerProvider.setOptions({
+      locale: 'uk',
+      toolbarPlacement: 'bottom',
+      showClear: true,
+      format: 'DD/MM/YYYY'
+    });
+  }
+]);
