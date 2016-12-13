@@ -223,7 +223,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (isSaveTask(oRequest, sResponseBody)) {
                 sType = "Save";
                 LOG.info("saveNewTaskInfo block started");
-                if (oResponse.getStatus() < 200 || oResponse.getStatus() >= 300) {
+                if (oResponse.getStatus() < 200 || oResponse.getStatus() >= 300 
+                        || (sResponseBody != null && sResponseBody.contains("SYSTEM_ERR"))) { //SYSTEM_ERR
                     try {
                         new Log(this.getClass(), LOG)//this.getClass()
                                 ._Case("Activiti_FailStartTask")
