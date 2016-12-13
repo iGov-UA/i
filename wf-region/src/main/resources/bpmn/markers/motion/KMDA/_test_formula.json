@@ -1,0 +1,25 @@
+{
+  "motion": 
+    {
+    "PrintFormFormula_init": 
+        {"sID_Field_Target": "sInitials",
+         "asID_Field_Alias": {"s1":"bankIdlastName", "s2":"bankIdfirstName", "s3":"bankIdmiddleName"},
+         "sFormula": "s1 + s2.substr(0,3)+'.'+s3.substr(0,3)+'.'" 
+        },
+    "PrintFormFormula_sum": 
+        {"sID_Field_Target": "sSum",
+         "asID_Field_Alias": {"n1":"nFirstNumber", "n2":"nSecondNumber"},
+         "sFormula": "(n1 - n2)*(n1 + n2)" 
+        },
+    "ShowFieldsOnCondition_Report1": 
+      {"aField_ID": ["sBody_1"], 
+       "asID_Field": {"sCondit":"asReportCount"},
+       "sCondition": "[sCondit] == 'sEnumCount1'"
+      },
+    "ShowFieldsOnCondition_Report2": 
+      {"aField_ID": ["sBody_1", "sBody_2", "sText"], 
+       "asID_Field": {"sCondit":"asReportCount"},
+       "sCondition": "[sCondit] == 'sEnumCount2'"
+      }
+    }
+}

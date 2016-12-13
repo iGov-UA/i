@@ -68,9 +68,13 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.igov.model.document.DocumentStepSubjectRight;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import org.igov.service.business.document.DocumentStepService;
 import static org.igov.util.Tool.sO;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 //import com.google.common.base.Optional;
 
 /**
@@ -119,7 +123,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     
     @Autowired
     private DfsService_New dfsService_new;
-
+    
     @Autowired
     private ActionTaskService oActionTaskService;
 
@@ -135,6 +139,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Autowired
     private Mail oMail;
 
+    @Autowired
+    private DocumentStepService oDocumentStepService;
+    
     /**
      * Загрузка задач из Activiti:
      *
@@ -1002,6 +1009,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
                 "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
+        LOG.info("111sdfFileName: " + sdfFileName);
         String fileName = "!" + sID_BP_Name + "_"
                 + sdfFileName.format(Calendar.getInstance().getTime()) + ".xlsx";
         LOG.debug("File name for statistics : {%s}", fileName);
@@ -1168,6 +1176,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
 //      'saFieldSummary': '' // поля для агрегатов
+        
         if ("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)) {
             sID_State_BP = null;
         }
@@ -1188,8 +1197,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Date dBeginDate = oActionTaskService.getBeginDate(dateAt);
         Date dEndDate = oActionTaskService.getEndDate(dateTo);
         String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
+        //LOG.info("4444separator " + separator);
+        //LOG.info("7777nASCI_Spliter " + nASCI_Spliter);
+        //LOG.info("6666separator " + separator.chars());
         Charset charset = oActionTaskService.getCharset(sID_Codepage);
-
+        //LOG.info("5555charset " + charset);
         // 2. query
         TaskQuery query = taskService.createTaskQuery()
                 .processDefinitionKey(sID_BP);
@@ -1238,6 +1250,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         // 3. response
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
                 "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
+        LOG.info("222sdfFileName: " + sdfFileName);
         String sTaskDataFileName = fileName != null ? fileName : "data_BP-"
                 + sID_BP + "_"
                 + sdfFileName.format(Calendar.getInstance().getTime()) + ".txt";
@@ -1410,6 +1423,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\n```\n")
     @RequestMapping(value = "/getLoginBPs", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
+    @Deprecated //новый: getBPs 
     public @ResponseBody
     String getBusinessProcessesForUser(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
@@ -2326,12 +2340,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      */
     @RequestMapping(value = "/getListBP", method = RequestMethod.GET)
     @ResponseBody
-    public List<ProcDefinitionI> getListBP(@ApiParam(value = "строка-ИД БП //опциональный фильтр, иначе все", required = false)
-            @RequestParam(value = "sID_BP", required = false) String sID_BP,
-            @ApiParam(value = "строка-типа поля //опциональный фильтр, иначе все", required = false)
-            @RequestParam(value = "sFieldType", required = false) String sFieldType,
-            @ApiParam(value = "строка-ИД поля //опциональный фильтр, иначе все", required = false)
-            @RequestParam(value = "sID_Field", required = false) String sID_Field) {
+    public List<ProcDefinitionI> getListBP(
+            @ApiParam(value = "строка-ИД БП //опциональный фильтр, иначе все", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
+            @ApiParam(value = "строка-типа поля //опциональный фильтр, иначе все", required = false) @RequestParam(value = "sFieldType", required = false) String sFieldType,
+            @ApiParam(value = "строка-ИД поля //опциональный фильтр, иначе все", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field
+    ) {
         List<ProcessDefinition> processDefinitions = repositoryService
                 .createProcessDefinitionQuery().processDefinitionId(sID_BP).list();
 
@@ -2555,4 +2568,146 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return asID_Attach_Dfs;
     }
 
+    
+    @ApiOperation(value = "/getDocumentStepRights", notes = "##### Получение списка прав у логина по документу#####\n\n")
+    @RequestMapping(value = "/getDocumentStepRights", method = RequestMethod.GET)
+    public @ResponseBody
+    Map<String,Object> getDocumentStepRights(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin, //String
+            @ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {
+        return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
+    }
+
+    @ApiOperation(value = "/getDocumentStepLogins", notes = "##### Получение списка прав у логина по документу#####\n\n")
+    @RequestMapping(value = "/getDocumentStepLogins", method = RequestMethod.GET)
+    public @ResponseBody
+    //Map<String,Object> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
+    List<Map<String,Object>> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true)
+    @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
+        return oDocumentStepService.getDocumentStepLogins(nID_Process+"");
+    }
+    
+    //save curretn values to Form
+    @ApiOperation(value = "saveForm", notes = "saveForm")
+    @RequestMapping(value = "/saveForm", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public HttpServletRequest saveForm(
+            @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams, HttpServletRequest req)
+            throws ParseException, CommonServiceException, IOException {
+        StringBuilder osRequestBody = new StringBuilder();
+        BufferedReader oReader = req.getReader();
+        String line;
+        if (oReader != null) {
+            while ((line = oReader.readLine()) != null) {
+                osRequestBody.append(line);
+            }
+        }
+        try {
+            LOG.info("osRequestBody " + osRequestBody.toString());            
+            org.json.simple.JSONObject jsonObj = (org.json.simple.JSONObject) new JSONParser().parse(osRequestBody.toString());
+            LOG.info("Succ. parsing of input data passed");
+            String nID_Task = null;
+            if (jsonObj.containsKey("taskId")) {
+                nID_Task = jsonObj.get("taskId").toString();
+            } else {
+                LOG.error("Variable \"taskId\" not found");
+            }
+            LOG.info("taskId = " + nID_Task);
+            Map<String, String> values = new HashMap<>();            
+            org.json.simple.JSONArray dates = null;
+            if (jsonObj.containsKey("properties")) {                
+                dates = (org.json.simple.JSONArray) jsonObj.get("properties");
+            } else {
+                LOG.error("Variable \"properties\" not found");
+            }        
+            LOG.info("properties = " + dates.toJSONString());
+
+            org.json.simple.JSONObject result;
+            Iterator<org.json.simple.JSONObject> datesIterator = dates.iterator();
+            while (datesIterator.hasNext()) {
+                result = datesIterator.next();
+                values.put(result.get("id").toString(), (String) result.get("value"));
+            }
+            formService.saveFormData(nID_Task, values);
+            LOG.info("Process of update data finiched");
+            return req;
+        } catch (Exception e) {
+            String message = "The process of update variables fail.";
+            LOG.debug(message);
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    message,
+                    HttpStatus.FORBIDDEN);
+        }
+
+    }
+
+    
+    
+    /**
+     * Returns business processes which belong to a specified user
+     *
+     * @param sLogin - login of user in user activity
+     */
+    @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=userId\n\n"
+            + "Метод возвращает json со списком бизнес процессов, к которым у пользователя есть доступ, в формате:\n"
+            + "\n```json\n"
+            + "[\n"
+            + "  {\n"
+            + "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
+            + "  }\n"
+            + "]\n"
+            + "\n```\n"
+            + "Принадлежность пользователя к процессу проверяется по вхождению в группы, которые могут запускать usertask-и внутри процесса, или по вхождению в группу, которая может стартовать процесс\n\n"
+            + "Пример:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=kermit\n"
+            + "Пример результата\n"
+            + "\n```json\n"
+            + "[\n"
+            + "{\n"
+            + "    \"sID\": \"dnepr_spravka_o_doxodax\",\n"
+            + "    \"sName\": \"Дніпропетровськ - Отримання довідки про доходи фіз. осіб\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"dnepr_subsidies2\",\n"
+            + "    \"sName\": \"Отримання субсидії на оплату житлово-комунальних послуг2\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"khmelnitskij_mvk_2\",\n"
+            + "    \"sName\": \"Хмельницький - Надання інформації, що підтверджує відсутність (наявність) земельної ділянки\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"khmelnitskij_zemlya\",\n"
+            + "    \"sName\": \"Заява про наявність земельної ділянки\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"kiev_spravka_o_doxodax\",\n"
+            + "    \"sName\": \"Київ - Отримання довідки про доходи фіз. осіб\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"kuznetsovsk_mvk_5\",\n"
+            + "    \"sName\": \"Кузнецовськ МВК - Узгодження графіка роботи підприємства торгівлі\\/обслуговування\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"post_spravka_o_doxodax_pens\",\n"
+            + "    \"sName\": \"Отримання довідки про доходи (пенсійний фонд)\"\n"
+            + "  }\n"
+            + "]\n"
+            + "\n```\n")
+    @RequestMapping(value = "/getBPs", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @Transactional
+    public @ResponseBody
+    List<Map<String, String>> getBusinessProcesses(
+            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
+            throws IOException {
+
+        //String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
+        //LOG.info("Result: {}", jsonRes);
+        return oActionTaskService.getBusinessProcessesOfLogin(sLogin);
+    }    
+    
+    
+    
 }

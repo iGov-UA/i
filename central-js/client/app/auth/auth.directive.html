@@ -1,18 +1,29 @@
 <span ng-transclude></span>
 <button style="display: none;" class="btn btn-info"><i class="icon-door-lock"></i><span
   class="btn-text">igov.org.ua</span></button>
-<a class="btn btn-info" target="_self"
-   ng-href="{{$location.protocol()}}://{{$location.host()}}:{{$location.port()}}/auth/bankID?link={{redirectUri}}"
-   ng-if="!authMethods || authMethods.indexOf('BankID') > -1">
-  <i class="icon-bank-id"></i>
-  <span class="btn-text">BankID</span>
-</a>
-<a class="btn btn-info" target="_self"
-   ng-href="{{$location.protocol()}}://{{$location.host()}}:{{$location.port()}}/auth/bankid-nbu?link={{redirectUri}}"
-   ng-if="!authMethods || authMethods.indexOf('BankID-NBU') > -1">
-  <i class="icon-bank-id"></i>
-  <span class="btn-text">BankID-NBU</span>
-</a>
+
+<span class="dropdown bank-id-banks-dropdown" ng-class="{'open':showBankIdDropdown}">
+  <button class="btn btn-info"  ng-click="bankIdClick()"
+          ng-if="!authMethods || authMethods.indexOf('BankID') > -1 || authMethods.indexOf('BankID-NBU') > -1">
+    <i class="icon-bank-id"></i>
+    <span class="btn-text">BankID</span>
+  </button>
+
+  <ul class="dropdown-menu">
+    <li ng-repeat="provider in bankidProvidersList">
+      <a ng-href="{{::getBankIdAuthUrl(provider)}}"
+         target="_self"
+         ng-if="(authMethods.indexOf('BankID') > -1 && provider.auth=='BankID')
+             || (authMethods.indexOf('BankID-NBU') > -1 && provider.auth=='BankID-NBU') || true">
+        <span>
+          <img ng-src="{{provider.icon}}">
+        </span>
+        <span ng-bind="::provider.name"></span>
+      </a>
+    </li>
+  </ul>
+</span>
+
 <button style="display: none;" class="btn"><i class="icon-mobil-id"></i></button>
 <a class="btn btn-info_ btn-success i-btn-badge" target="_self"
    ng-href="{{$location.protocol()}}://{{$location.host()}}:{{$location.port()}}/auth/eds?link={{redirectUri}}"
