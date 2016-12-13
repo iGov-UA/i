@@ -64,7 +64,7 @@
           <activiti:value id="sEnumReportNo" name="коментарій до звіту не потрібен"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTextReport" name="Текст звіту про виконання" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Оберіть виконавця, якому буде делеговано завдання" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot; }]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot; }]}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо інший виконавець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sTable3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегування іншому виконавцю'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="додати текст звіту" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sTextReport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asReport&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRepotYes'||[sClient] == 'потрібно додати коментарій'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
@@ -116,13 +116,7 @@
           <activiti:field name="asTypeResolution">
             <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
           </activiti:field>
-         
-        </activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
-          <activiti:field name="sTaskProcessDefinition">
-            <activiti:string><![CDATA[_doc_justice_171]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sTextReport">
+               <activiti:field name="sTextReport">
             <activiti:expression><![CDATA[${sTextReport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
