@@ -614,8 +614,7 @@ public class ProcessSubjectService {
             if(!mParamDocumentNew.isEmpty()){
                 
                 for(ProcessSubject oProcessSubject : aProcessSubject_Child){
-                    LOG.info("LOGDATE: " + df_StartProcess.format(new Date()));
-                    //oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.format(new Date())));
+                    oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
                     oProcessSubject.setsDatePlan(new DateTime(parseDate((String)mParamDocument.get("sDateExecution"))));
                     processSubjectDao.saveOrUpdate(oProcessSubject);
                     
