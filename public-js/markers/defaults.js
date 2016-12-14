@@ -126,7 +126,11 @@ angular.module('iGovMarkers')
     },
     attributes: {
       Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true}, 
-    
+
+
+      /*
+       * Demo Style_ settings 
+       *  
       Style_ExtendLabel: {
     	  aElement_ID: [], 
     	  aSelectors: [], 
@@ -148,7 +152,8 @@ angular.module('iGovMarkers')
     	  oCentralStyle: { }, 
     	  // Стиль для Region  
     	  oRegionStyle: { },
-      }, 
+      },
+      */ 
 
     },
     motion: {
@@ -158,7 +163,7 @@ angular.module('iGovMarkers')
         sValueNew: "ого",
         sID_Element_sValue: "registration-service"
       }, 
-      
+
       PrintForm_Table12: { 
     	  aField_ID: ["tbl1", "oPrescription1"],
     	  sPatternPath: "/print/kiev/kiev_mda_273_print.html", 
@@ -171,7 +176,7 @@ angular.module('iGovMarkers')
     	  sPatternPath: "/print/kiev/kiev_mda_273_print.html", 
     	  sName: "Звіт за сектором",
       }, 
-      
+
       PrintForm_Table4: {
     	  aField_ID: ["oPrescription2"],
     	  sPatternPath: "/print/kiev/kiev_mda_273_print.html", 

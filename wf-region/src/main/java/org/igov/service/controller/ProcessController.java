@@ -92,7 +92,7 @@ public class ProcessController {
         LOG.info("/backup ok!!!");
     }
 
-    //http://localhost:8080/wf-region/service/analytic/process/getProcesses?sID_=1&sType=streams
+    //http://localhost:8080/wf-region/service/analytic/process/getProcesses?sID_=1
     @ApiOperation(value = "/getProcesses", notes = "##### Process - получение процесса #####\n\n")
     @RequestMapping(value = "/getProcesses", method = RequestMethod.GET, headers = { JSON_TYPE })
     public
