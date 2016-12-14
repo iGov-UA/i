@@ -15,7 +15,7 @@
         <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
-         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="Якщо терміновий документ - поставте галочку; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
           <activiti:value id="sEnumUrgentDoc" name="з ЕЦП"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
@@ -25,7 +25,7 @@
     <userTask id="usertask1" name="Задача" activiti:candidateGroups="${sLogin_isExecute}">
       <extensionElements>
         <activiti:formProperty id="sID_Attachment" name="sTable3 - таблица с исполнителями" type="invisible"></activiti:formProperty>
-         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_Top1"></activiti:formProperty>
@@ -69,6 +69,12 @@
         <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot; }]}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо інший виконавець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sTable3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегування іншому виконавцю'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="додати текст звіту" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sTextReport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asReport&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRepotYes'||[sClient] == 'потрібно додати коментарій'&quot;}}}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
             <activiti:string><![CDATA[system_task]]></activiti:string>
@@ -79,16 +85,15 @@
           <activiti:field name="sContent">
             <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
           </activiti:field>
-           <activiti:field name="sAutorResolution">
+          <activiti:field name="sAutorResolution">
             <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
           </activiti:field>
-           <activiti:field name="sTextResolution">
+          <activiti:field name="sTextResolution">
             <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateExecution">
             <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
           </activiti:field>
-          
           <activiti:field name="sTypeDoc">
             <activiti:expression><![CDATA[${sTypeDoc}]]></activiti:expression>
           </activiti:field>
@@ -107,18 +112,16 @@
           <activiti:field name="nCountAttach">
             <activiti:expression><![CDATA[${nCountAttach}]]></activiti:expression>
           </activiti:field>
-          
           <activiti:field name="sNote">
             <activiti:expression><![CDATA[${sNote}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="asUrgently">
             <activiti:expression><![CDATA[${asUrgently}]]></activiti:expression>
           </activiti:field>
-         
           <activiti:field name="asTypeResolution">
             <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
           </activiti:field>
-               <activiti:field name="sTextReport">
+          <activiti:field name="sTextReport">
             <activiti:expression><![CDATA[${sTextReport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>

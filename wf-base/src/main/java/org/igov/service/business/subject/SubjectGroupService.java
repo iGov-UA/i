@@ -115,15 +115,7 @@ public class SubjectGroupService {
 			// subjToNodeMapFiltr.put(groupFiltr, aChildResult);
 		}
 		
-		if (deepLevel == null || deepLevel.intValue() == 0) {
-			List<SubjectGroup> aChildResultAll = new ArrayList();
-			for(Long id : idParentList) {
-				aChildResultAll.addAll(subjToNodeMap.get(id));
-			}
-			return getResultHierarchySubjectGroup(sFind, aChildResultAll);
-		}else {
-			return getResultHierarchySubjectGroup(sFind, aChildResult);
-		}
+		return getResultHierarchySubjectGroup(sFind, aChildResult);
 		
 
 	}
