@@ -596,9 +596,11 @@ public class ProcessSubjectService {
                     oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.format(new Date())));
                     oProcessSubject.setsDatePlan(new DateTime(parseDate((String)mParamDocument.get("sDateExecution"))));
                     processSubjectDao.saveOrUpdate(oProcessSubject);
+                    
+                    for(String mKey : mParamDocumentNew.keySet()){
+                        runtimeService.setVariable(oProcessSubject.getSnID_Process_Activiti(), mKey, mParamDocumentNew.get(mKey));
+                    }
                 }
-                 
-                //runtimeService.setProcessInstanceName("названиеПоля", "значениеПоляНовое");
             }
         }
     }
