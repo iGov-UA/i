@@ -245,7 +245,7 @@ public class ProcessSubjectService {
         Long groupFiltr = mapGroupActiviti.get(snID_Process_Activiti);
         // детей его детей
         List<ProcessSubject> children = subjToNodeMap.get(groupFiltr);
-        Map<Long, List<ProcessSubject>> hierarchyProcessSubject = null;
+        Map<Long, List<ProcessSubject>> hierarchyProcessSubject = new HashMap<>();
         // children полный список первого уровня
         if (children != null && !children.isEmpty()) {
         	final List<Long> idChildren = Lists
