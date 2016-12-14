@@ -313,6 +313,7 @@ public class ProcessSubjectService {
         processSubjectResultTree.setaProcessSubject(aChildResult);
         for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
+            List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject.getId());
             if (aChildResultByKey != null && !aChildResultByKey.isEmpty()) {
 				processSubject.setsProcessSubj(aChildResultByKey);
 			}
