@@ -585,6 +585,10 @@ public abstract class AbstractModelTask {
 
         String[] asID_Attachment = sAttachments.split(",");
 
+        for (int i = 0; i < asID_Attachment.length; i++) {
+            asID_Attachment[i] = asID_Attachment[i].trim();
+        }
+
         List<String> aAttachmentNotFound = new ArrayList<>();
 
         for (String sID_Attachment : asID_Attachment) {

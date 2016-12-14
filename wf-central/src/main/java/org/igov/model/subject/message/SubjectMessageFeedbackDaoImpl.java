@@ -1,17 +1,17 @@
 package org.igov.model.subject.message;
 
 import com.google.common.base.Optional;
-import org.igov.model.core.GenericEntityDao;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.util.Assert;
+import org.igov.model.core.GenericEntityDao;
 import org.igov.service.controller.ActionEventController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
+import java.util.List;
 
 @Repository
 public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, SubjectMessageFeedback> implements SubjectMessageFeedbackDao {
@@ -61,7 +61,8 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
             oCriteria.add(Restrictions.lt("id", nID__LessThen_Filter));
         }
         
-        oCriteria.add(Restrictions.isNotNull("sBody"));
+//        oCriteria.add(Restrictions.isNotNull("sBody"));
+        oCriteria.createAlias("oSubjectMessage", "sm").add(Restrictions.isNotNull("sm.body"));
         oCriteria.add(Restrictions.isNotNull("sAuthorFIO"));
         oCriteria.addOrder(Order.desc("id"));
         
