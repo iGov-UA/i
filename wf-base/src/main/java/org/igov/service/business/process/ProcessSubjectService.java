@@ -569,63 +569,65 @@ public class ProcessSubjectService {
         if(processSubjectResult != null){
             List<ProcessSubject> aProcessSubject_Child = processSubjectResult.getaProcessSubject();
             
-            ProcessSubject oProcessSubject_Child = aProcessSubject_Child.get(0);
-            
-            ProcessInstance oProcessInstance = runtimeService
-                .createProcessInstanceQuery()
-                .processInstanceId(oProcessSubject_Child.getSnID_Process_Activiti())
-                .includeProcessVariables()
-                .active()
-                .singleResult();
-            
-            Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
-            LOG.info("mProcessVariable: " + mProcessVariable);
-            
-            Map<String, Object> mParamDocumentNew = new HashMap<>();
-            
-            for(String mKey : mParamDocument.keySet()){
-                
-                Object oParamDocument = mParamDocument.get(mKey);
-                Object oProcessVariable = mProcessVariable.get(mKey);
-                
-                if(oParamDocument != null){
-                    if(oProcessVariable != null){
-                        if(!(((String)oParamDocument).equals((String)oProcessVariable))){
-                            mParamDocumentNew.put(mKey, oParamDocument);
-                            LOG.info("--------------------------");
-                            LOG.info("mParamDocument elem new: " + oParamDocument);
-                            LOG.info("mProcessVariable elem: " + oProcessVariable);
-                            LOG.info("--------------------------");
-                         }
-                    }
-                    else{
-                         mParamDocumentNew.put(mKey, null);
-                    }
-                }else{
-                    if(oProcessVariable != null){
-                        mParamDocumentNew.put(mKey, oProcessVariable);
+            if(!aProcessSubject_Child.isEmpty()){
+                ProcessSubject oProcessSubject_Child = aProcessSubject_Child.get(0);
+
+                ProcessInstance oProcessInstance = runtimeService
+                    .createProcessInstanceQuery()
+                    .processInstanceId(oProcessSubject_Child.getSnID_Process_Activiti())
+                    .includeProcessVariables()
+                    .active()
+                    .singleResult();
+
+                Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+                LOG.info("mProcessVariable: " + mProcessVariable);
+
+                Map<String, Object> mParamDocumentNew = new HashMap<>();
+
+                for(String mKey : mParamDocument.keySet()){
+
+                    Object oParamDocument = mParamDocument.get(mKey);
+                    Object oProcessVariable = mProcessVariable.get(mKey);
+
+                    if(oParamDocument != null){
+                        if(oProcessVariable != null){
+                            if(!(((String)oParamDocument).equals((String)oProcessVariable))){
+                                mParamDocumentNew.put(mKey, oParamDocument);
+                                LOG.info("--------------------------");
+                                LOG.info("mParamDocument elem new: " + oParamDocument);
+                                LOG.info("mProcessVariable elem: " + oProcessVariable);
+                                LOG.info("--------------------------");
+                             }
+                        }
+                        else{
+                             mParamDocumentNew.put(mKey, null);
+                        }
+                    }else{
+                        if(oProcessVariable != null){
+                            mParamDocumentNew.put(mKey, oProcessVariable);
+                        }
                     }
                 }
-            }
-            
-            LOG.info("mParamDocumentNew: " + mParamDocumentNew);
-            DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
-            
-            if(!mParamDocumentNew.isEmpty()){
-                
-                for(ProcessSubject oProcessSubject : aProcessSubject_Child){
-                    oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
-                    
-                    DateTime datePlan = null;
-                    if (mParamDocument.get("sDateExecution") != null){
-                        datePlan = new DateTime(parseDate((String)mParamDocument.get("sDateExecution")));
-                    }
-                    
-                    oProcessSubject.setsDatePlan(datePlan);
-                    processSubjectDao.saveOrUpdate(oProcessSubject);
-                    
-                    for(String mKey : mParamDocumentNew.keySet()){
-                        runtimeService.setVariable(oProcessSubject.getSnID_Process_Activiti(), mKey, mParamDocumentNew.get(mKey));
+
+                LOG.info("mParamDocumentNew: " + mParamDocumentNew);
+                DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+
+                if(!mParamDocumentNew.isEmpty()){
+
+                    for(ProcessSubject oProcessSubject : aProcessSubject_Child){
+                        oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
+
+                        DateTime datePlan = null;
+                        if (mParamDocument.get("sDateExecution") != null){
+                            datePlan = new DateTime(parseDate((String)mParamDocument.get("sDateExecution")));
+                        }
+
+                        oProcessSubject.setsDatePlan(datePlan);
+                        processSubjectDao.saveOrUpdate(oProcessSubject);
+
+                        for(String mKey : mParamDocumentNew.keySet()){
+                            runtimeService.setVariable(oProcessSubject.getSnID_Process_Activiti(), mKey, mParamDocumentNew.get(mKey));
+                        }
                     }
                 }
             }
