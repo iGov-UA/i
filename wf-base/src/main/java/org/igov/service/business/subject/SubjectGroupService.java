@@ -108,7 +108,9 @@ public class SubjectGroupService {
 						}
 					}));
 			aChildResult.addAll(children);
-			getChildren(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
+			List<SubjectGroup> list = getChildren(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
+			
+			LOG.info("SubjectGrouppppppppp " + list);
 
 			// subjToNodeMapFiltr.put(groupFiltr, aChildResult);
 		}
@@ -162,7 +164,7 @@ public class SubjectGroupService {
 	 */
 	public Long checkDeepLevel(Long deepLevel) {
 		if (deepLevel == null || deepLevel.intValue() == 0) {
-			return 1000L;
+			return 10000L;
 		}
 		return deepLevel;
 	}
