@@ -203,7 +203,6 @@ public class ProcessSubjectService {
         List<ProcessSubjectTree> processSubjectRelations = new ArrayList<>(baseEntityDao.findAll(ProcessSubjectTree.class));
         List<ProcessSubjectParentNode> parentProcessSubjects = new ArrayList<>();
         Map<Long, List<ProcessSubject>> subjToNodeMap = new HashMap<>();
-        Map<ProcessSubject, List<ProcessSubject>> parentAndChild = new HashMap<>();
         Map<String, Long> mapGroupActiviti = new HashMap<>();
         ProcessSubjectParentNode parentProcessSubject = null;
         Set<Long> idParentList = new LinkedHashSet<>();
@@ -222,8 +221,6 @@ public class ProcessSubjectService {
                     parentProcessSubjects.add(parentProcessSubject);
                     // мапа парент_id -ребенок
                     subjToNodeMap.put(parent.getId(), parentProcessSubject.getChildren());
-                    // мапа парент_obj -ребенок
-                    parentAndChild.put(parent, parentProcessSubject.getChildren());
                     // мапа группа-ид парента
                     mapGroupActiviti.put(parent.getSnID_Process_Activiti(), parent.getId());
                 } else {
@@ -235,8 +232,6 @@ public class ProcessSubjectService {
                             processSubjectParentNode.getChildren().add(child);
                             // мапа парент_id -ребенок
                             subjToNodeMap.put(parent.getId(), processSubjectParentNode.getChildren());
-                            // мапа парент_obj -ребенок
-                            parentAndChild.put(parent, parentProcessSubject.getChildren());
                             // мапа группа-ид парента
                             mapGroupActiviti.put(parent.getSnID_Process_Activiti(), parent.getId());
                         }
@@ -261,15 +256,15 @@ public class ProcessSubjectService {
                         }
                     }));
             aChildResult.addAll(children);
+            hierarchyProcessSubject.put(groupFiltr, children);
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
            
            LOG.info("hierarchyProcessSubjecttttttttt " + hierarchyProcessSubject);
            LOG.info("aChildResulttttttttttttt " + aChildResult);
         }
 
-       // List<ProcessSubject> aChildResultByUser = new ArrayList<>();
-      //  Map<ProcessSubject, List<ProcessSubject>> hierarchyProcessSubjectRes = new HashMap();
-		/*if (aChildResult != null && !aChildResult.isEmpty()) {
+        List<ProcessSubject> aChildResultByUser = new ArrayList<>();
+		if (aChildResult != null && !aChildResult.isEmpty()) {
 			if (sFind != null && !sFind.isEmpty()) {
 					for (ProcessSubject processSubject : aChildResult) {
 						List<ProcessUser> aSubjectUser = getUsersByGroupSubject(
@@ -302,20 +297,20 @@ public class ProcessSubjectService {
 					}
 				}
 			}
-		}*/
+		}
 
         ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
-        /*if (sFind != null && !sFind.isEmpty()) {
+        if (sFind != null && !sFind.isEmpty()) {
         	processSubjectResultTree.setaProcessSubject(aChildResultByUser);
         } else {
         	processSubjectResultTree.setaProcessSubject(aChildResult);
-        }*/
-        processSubjectResultTree.setaProcessSubject(aChildResult);
+        }
         for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
+            //получаем по ключу лист детей и устанавливаем 
             List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject.getId());
             if (aChildResultByKey != null && !aChildResultByKey.isEmpty()) {
-				processSubject.setsProcessSubj(aChildResultByKey);
+				processSubject.setaProcessSubj(aChildResultByKey);
 			}
         }
         return processSubjectResultTree;
@@ -427,7 +422,6 @@ public class ProcessSubjectService {
     	Map<Long, List<ProcessSubject>> subjToNodeMapRes = new HashMap<>();
         List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
-        LOG.info("subjToNodeMapppppppppppp: " + subjToNodeMap);
         LOG.info("aChildLevel: " + aChildLevel.size() + " anID_ChildLevel: " + anID_ChildLevel);
         if (deepLevelFact < deepLevelRequested.intValue()) {
             for (Long nID_ChildLevel : anID_ChildLevel) {
