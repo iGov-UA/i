@@ -615,7 +615,13 @@ public class ProcessSubjectService {
                 
                 for(ProcessSubject oProcessSubject : aProcessSubject_Child){
                     oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
-                    oProcessSubject.setsDatePlan(new DateTime(parseDate((String)mParamDocument.get("sDateExecution"))));
+                    
+                    DateTime datePlan = null;
+                    if (mParamDocument.get("sDateExecution") != null){
+                        datePlan = new DateTime(parseDate((String)mParamDocument.get("sDateExecution")));
+                    }
+                    
+                    oProcessSubject.setsDatePlan(datePlan);
                     processSubjectDao.saveOrUpdate(oProcessSubject);
                     
                     for(String mKey : mParamDocumentNew.keySet()){
