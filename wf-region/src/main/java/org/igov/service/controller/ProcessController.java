@@ -105,13 +105,15 @@ public class ProcessController {
         List<Process> processes = new ArrayList();
         try {
             LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sID_: " + sID_.trim());
-            processes = processDao.findAllBy("sID_", sID_.trim());
-            if (processes.size() < 1){
-                processes = processDao.findAllBy("sID_", sID_.trim().toLowerCase());
-                if(processes.size() < 1){
-                    processes = processDao.findAllBy("sID_", sID_.trim().toUpperCase());
-                }
-            }
+            processes.addAll(processDao.findAllBy("sID_", sID_.trim()));
+            processes.addAll(processDao.findAllBy("sID_", sID_.trim().toLowerCase()));
+            processes.addAll(processDao.findAllBy("sID_", sID_.trim().toUpperCase()));
+//            if (processes.size() < 1){
+//                processes = processDao.findAllBy("sID_", sID_.trim().toLowerCase());
+//                if(processes.size() < 1){
+//                    processes = processDao.findAllBy("sID_", sID_.trim().toUpperCase());
+//                }
+//            }
             LOG.info("processes: " + processes.size());
             result.addAll(processes);
         } catch (Exception ex) {
