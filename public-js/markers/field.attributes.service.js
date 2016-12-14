@@ -174,7 +174,7 @@ function FieldAttributesService(MarkersFactory) {
 
 	  } else {  
 
-		  if( stylesCollection != null && stylesCollection.length > 0 && query.length > 0 ) { 
+		  if( stylesCollection != null && query.length > 0 ) { 
 
 			  var style = "";
 			  angular.forEach( stylesCollection, function (value, key, obj) { style = style + key + ":" + value + "; " });
