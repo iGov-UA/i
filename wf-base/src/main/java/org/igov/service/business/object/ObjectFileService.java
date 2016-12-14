@@ -13,12 +13,16 @@ import org.springframework.stereotype.Service;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
+import org.activiti.engine.ActivitiObjectNotFoundException;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.util.VariableMultipartFile;
 
 /**
  * @author Oleksii Khalikov
  * Created on 30.01.2016.
  */
-@Service
+@Service("objectFileService")
 public class ObjectFileService {
     private static final Logger LOG = LoggerFactory.getLogger(ObjectFileService.class);
 
@@ -27,6 +31,9 @@ public class ObjectFileService {
 
     @Autowired
     private TaskService oTaskService;
+
+    @Autowired
+    private ActionTaskService actionTaskService;
 
     /**
      * Перенос атачментов задач активити в mongo DB
@@ -100,5 +107,48 @@ public class ObjectFileService {
         }
 
         return "OK";
+    }
+    
+    public VariableMultipartFile download_file_from_db(String taskId, String attachmentId, Integer nFile) {
+        // Получаем по задаче ид процесса
+        HistoricTaskInstance historicTaskInstanceQuery = oHistoryService
+                .createHistoricTaskInstanceQuery().taskId(taskId)
+                .singleResult();
+        String processInstanceId = historicTaskInstanceQuery
+                .getProcessInstanceId();
+        if (processInstanceId == null) {
+            throw new ActivitiObjectNotFoundException(
+                    "ProcessInstanceId for taskId '" + taskId + "' not found.",
+                    Attachment.class);
+        }
+        LOG.info("attachmentId: " + attachmentId + " taskId: " + taskId + " nFile: " + nFile + " processInstanceId: " + processInstanceId);
+        // Выбираем по процессу прикрепленные файлы
+        Attachment attachmentRequested = actionTaskService.getAttachment(attachmentId, nFile, processInstanceId);
+        String sFileName = attachmentRequested.getName();
+        String description = attachmentRequested.getDescription();
+        String type = attachmentRequested.getType();
+
+        String id = attachmentRequested.getId();
+        InputStream attachmentStream = oTaskService
+                .getAttachmentContent(id);
+        if (attachmentStream == null) {
+            throw new ActivitiObjectNotFoundException("Attachment with ID '"
+                    + id + "' doesn't have content associated with it.",
+                    Attachment.class);
+        }
+
+        if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml")) {
+            int nTo = sFileName.lastIndexOf(".");
+            if (nTo >= 0) {
+                sFileName = "attach_" + id + "."
+                        + sFileName.substring(nTo + 1);
+            }
+        }
+
+        // Вычитывем из потока массив байтов контента и помещаем параметры
+        // контента в header
+        return new VariableMultipartFile(
+                attachmentStream, description,
+                sFileName, type);
     }
 }
