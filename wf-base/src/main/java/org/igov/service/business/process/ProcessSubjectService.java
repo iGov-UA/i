@@ -250,21 +250,14 @@ public class ProcessSubjectService {
         Long groupFiltr = mapGroupActiviti.get(snID_Process_Activiti);
         // детей его детей
         List<ProcessSubject> children = subjToNodeMap.get(groupFiltr);
-        Map<Long, List<ProcessSubject>> hierarchyProcessSubject = null;
+        Map<ProcessSubject, List<ProcessSubject>> hierarchyProcessSubject = null;
         // children полный список первого уровня
         if (children != null && !children.isEmpty()) {
-        	final List<Long> idChildren = Lists
-                    .newArrayList(Collections2.transform(children, new Function<ProcessSubject, Long>() {
-                        @Override
-                        public Long apply(ProcessSubject subjectGroup) {
-                            return subjectGroup.getId();
-                        }
-                    }));
+
             aChildResult.addAll(children);
-           hierarchyProcessSubject =  getChildrenTree(children, groupFiltr,idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
-           
-           LOG.info("hierarchyProcessSubjecttttttttt " + hierarchyProcessSubject);
-           LOG.info("aChildResulttttttttttttt " + aChildResult);
+           hierarchyProcessSubject =  getChildrenTree(children, subjToNodeMap,parentAndChild, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
+           LOG.info("hierarchyProcessSubjectttttt "+hierarchyProcessSubject);
+
         }
 
        // List<ProcessSubject> aChildResultByUser = new ArrayList<>();
@@ -313,7 +306,7 @@ public class ProcessSubjectService {
         processSubjectResultTree.setaProcessSubject(aChildResult);
         for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
-            /*List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject.getId());
+           /* List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject);
             processSubject.setsProcessSubj(aChildResultByKey);*/
         }
         return processSubjectResultTree;
@@ -419,36 +412,22 @@ public class ProcessSubjectService {
      * @param result
      * @return
      */
-    public Map<Long, List<ProcessSubject>> getChildrenTree(List<ProcessSubject> aChildLevel, Long groupFiltr,List<Long> anID_ChildLevel,
-            Map<Long, List<ProcessSubject>> subjToNodeMap, Set<Long> anID_PerentAll, Long deepLevelRequested,
+    public Map<ProcessSubject, List<ProcessSubject>> getChildrenTree(List<ProcessSubject> aChildLevel,
+            Map<Long, List<ProcessSubject>> subjToNodeMap,  Map<ProcessSubject, List<ProcessSubject>> subjProcParentAndChild,Set<Long> anID_PerentAll, Long deepLevelRequested,
             int deepLevelFact, List<ProcessSubject> result) {
-    	Map<Long, List<ProcessSubject>> subjToNodeMapRes = new HashMap<>();
-    	subjToNodeMapRes.put(groupFiltr, aChildLevel);
         List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
-        List<Long> anID_ChildLevel_Result = new ArrayList<>();
 
-        LOG.info("aChildLevel: " + aChildLevel.size() + " anID_ChildLevel: " + anID_ChildLevel);
         if (deepLevelFact < deepLevelRequested.intValue()) {
-            for (Long nID_ChildLevel : anID_ChildLevel) {
-                if (anID_PerentAll.contains(nID_ChildLevel)) {
+            for (ProcessSubject processSubject_Child : aChildLevel) {
+                if (anID_PerentAll.contains(processSubject_Child.getId())) {
                     // достаем детей детей
-                    aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);
+                    aChildLevel_Result = subjToNodeMap.get(processSubject_Child.getId());
                     if (aChildLevel_Result != null && !aChildLevel_Result.isEmpty()) {
-                        LOG.info("nID_ChildLevel: " + nID_ChildLevel + " aChildLevel_Result: "
+                        LOG.info("processSubject_Child.getId(): " + processSubject_Child.getId() + " aChildLevel_Result: "
                                 + aChildLevel_Result.size());
-                        // получаем только ид чилдренов
-                        anID_ChildLevel_Result = Lists.newArrayList(
-                                Collections2.transform(aChildLevel_Result, new Function<ProcessSubject, Long>() {
-                                    @Override
-                                    public Long apply(ProcessSubject subjectGroup) {
-                                        return subjectGroup.getId();
-                                    }
-                                }));
-                        LOG.info("nID_ChildLevel: " + nID_ChildLevel + " anID_ChildLevel_Result: "
-                                + anID_ChildLevel_Result.size());
                         // добавляем детей к общему списку детей
                         result.addAll(aChildLevel_Result);
-                        subjToNodeMapRes.put(nID_ChildLevel, aChildLevel_Result);
+                        subjProcParentAndChild.put(processSubject_Child, result);
                         LOG.info("result: " + result.size());
                     }
                 }
@@ -456,11 +435,11 @@ public class ProcessSubjectService {
             deepLevelFact++;
             LOG.info("deepLevelFact: " + deepLevelFact + " deepLevelRequested: " + deepLevelRequested);
             if (deepLevelFact < deepLevelRequested.intValue()) {
-                getChildren(aChildLevel_Result, anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
+            	getChildrenTree(aChildLevel_Result, subjToNodeMap, subjProcParentAndChild,anID_PerentAll,
                         checkDeepLevel(deepLevelRequested), deepLevelFact, result);
             }
         }
-        return subjToNodeMapRes;
+        return subjProcParentAndChild;
     }
 
     /**
