@@ -256,6 +256,7 @@ public class ProcessSubjectService {
 
             aChildResult.addAll(children);
            hierarchyProcessSubject =  getChildrenTree(children, subjToNodeMap,parentAndChild, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
+           LOG.info("hierarchyProcessSubjectttttt "+hierarchyProcessSubject);
 
         }
 
@@ -305,8 +306,8 @@ public class ProcessSubjectService {
         processSubjectResultTree.setaProcessSubject(aChildResult);
         for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
-            List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject);
-            processSubject.setsProcessSubj(aChildResultByKey);
+           /* List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject);
+            processSubject.setsProcessSubj(aChildResultByKey);*/
         }
         return processSubjectResultTree;
 
