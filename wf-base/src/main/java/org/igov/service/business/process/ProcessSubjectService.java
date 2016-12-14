@@ -695,7 +695,7 @@ try {
                 .setProcessSubject(snProcess_ID, mParam.get("sAutorResolution"),
                         new DateTime(oDateExecution), 0L, processSubjectStatus);
     }else{
-    //    editProcessSubject(oProcessSubjectParent, mParamDocument);
+        editProcessSubject(oProcessSubjectParent, mParamDocument);
     }
     
     List<ProcessSubjectTree> aProcessSubjectTreeChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
