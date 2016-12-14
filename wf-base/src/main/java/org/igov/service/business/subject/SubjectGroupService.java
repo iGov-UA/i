@@ -114,6 +114,22 @@ public class SubjectGroupService {
 
 			// subjToNodeMapFiltr.put(groupFiltr, aChildResult);
 		}
+		
+		if (deepLevel == null || deepLevel.intValue() == 0) {
+			List<SubjectGroup> aChildResultAll = new ArrayList();
+			for(Long id : idParentList) {
+				aChildResultAll.addAll(subjToNodeMap.get(id));
+			}
+			return getResultHierarchySubjectGroup(sFind, aChildResultAll);
+		}else {
+			return getResultHierarchySubjectGroup(sFind, aChildResult);
+		}
+		
+
+	}
+
+
+	public SubjectGroupAndUser getResultHierarchySubjectGroup(String sFind, List<SubjectGroup> aChildResult) {
 		// Получаем орг иерархию и людей
 		Map<SubjectGroup, List<SubjectUser>> subjUsers = new HashMap<>();
 		if (aChildResult != null && !aChildResult.isEmpty()) {
@@ -153,10 +169,9 @@ public class SubjectGroupService {
 		subjectGroupAndUser.setaSubjectUser(userByGroup);
 
 		return subjectGroupAndUser;
-
 	}
-
-
+	
+	
 	/**
 	 * проверяем входящий параметр deepLevel
 	 * @param deepLevel
@@ -164,7 +179,7 @@ public class SubjectGroupService {
 	 */
 	public Long checkDeepLevel(Long deepLevel) {
 		if (deepLevel == null || deepLevel.intValue() == 0) {
-			return 10000L;
+			return 1000L;
 		}
 		return deepLevel;
 	}

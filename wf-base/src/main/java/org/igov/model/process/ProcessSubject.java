@@ -62,8 +62,20 @@ public class ProcessSubject extends AbstractEntity {
     @Type(type = DATETIME_TYPE)
     @Column
     private DateTime sDatePlan;
+    
+    @JsonProperty(value = "sProcessSubject")
+    @Transient
+    private List<ProcessSubject> sProcessSubject;
 
-    public String getSnID_Process_Activiti() {
+    public List<ProcessSubject> getsProcessSubject() {
+		return sProcessSubject;
+	}
+
+	public void setsProcessSubject(List<ProcessSubject> sProcessSubject) {
+		this.sProcessSubject = sProcessSubject;
+	}
+
+	public String getSnID_Process_Activiti() {
         return snID_Process_Activiti;
     }
 
