@@ -1143,34 +1143,28 @@ public class ActionTaskService {
                     "Unable to found business processes for sLogin="+sLogin,
                     ProcessDefinition.class);
         }
+        LOG.info("Selecting business processes for the user with login: {}", sLogin);
 
-        List<Map<String, String>> result = new LinkedList<>();
-        List<ProcessDefinition> resultProcessDefinitionList = new LinkedList<>();
-
-        LOG.info(String.format(
-                "Selecting business processes for the user with login: %s",
-                sLogin));
-
-        List<ProcessDefinition> processDefinitionsList = oRepositoryService
+        List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
+        List<ProcessDefinition> aProcessDefinition = oRepositoryService
                 .createProcessDefinitionQuery().active().latestVersion().list();
-        if (CollectionUtils.isNotEmpty(processDefinitionsList)) {
-            LOG.info(String.format("Found %d active process definitions",
-                    processDefinitionsList.size()));
-
-            resultProcessDefinitionList = getAvailabilityProcessDefinitionByLogin(sLogin, processDefinitionsList);
+        if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
+            LOG.info("Found {} active process definitions", aProcessDefinition.size());
+            aProcessDefinition_Return = getAvailabilityProcessDefinitionByLogin(sLogin, aProcessDefinition);
         } else {
             LOG.info("Have not found active process definitions.");
         }
 
-        for (ProcessDefinition processDef : resultProcessDefinitionList){
-            Map<String, String> process = new HashMap<>();
-            process.put("sID", processDef.getKey());
-            process.put("sName", processDef.getName());
-            LOG.info(String.format("Added record to response %s", process.toString()));
-            result.add(process);
+        List<Map<String, String>> amPropertyBP = new LinkedList<>();
+        for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return){
+            Map<String, String> mPropertyBP = new HashMap<>();
+            mPropertyBP.put("sID", oProcessDefinition.getKey());
+            mPropertyBP.put("sName", oProcessDefinition.getName());
+            LOG.info("Added record to response {}", mPropertyBP);
+            amPropertyBP.add(mPropertyBP);
         }
 
-        return result;
+        return amPropertyBP;
     }    
     
     
