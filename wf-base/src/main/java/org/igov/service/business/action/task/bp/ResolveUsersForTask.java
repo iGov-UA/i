@@ -7,13 +7,15 @@ package org.igov.service.business.action.task.bp;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
  *
  * @author olga
  */
-@Service("resolveUsersForTask")
+@Component("resolveUsersForTask")
+@Service
 public class ResolveUsersForTask {
 
     public List<String> getUsers() {
