@@ -1,17 +1,18 @@
 package org.igov.io;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.igov.util.ToolLuna.getProtectedNumber;
 import javax.annotation.PostConstruct;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import org.springframework.context.annotation.Scope;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.igov.util.ToolLuna.getProtectedNumber;
 
 /**
  * @author bw
@@ -169,6 +170,9 @@ public class GeneralConfig {
     @Value("${general.Escalation.bTest}")
     private String sbTest_Escalation;
     
+    @Value("${general.DFS.sURL}")
+    private String sURL_DFS;
+    
     
     public boolean isSelfTest() {
         boolean b = true;
@@ -304,6 +308,10 @@ public class GeneralConfig {
 
     public String getLifePassword() {
         return lifePassword;
+    }
+    
+    public String getsURL_DFS() {
+        return sURL_DFS;
     }
     
     public Boolean isEnable_UniSender_Mail() {

@@ -13,5 +13,6 @@ router.get('/search/download/:nID/:sCode_DocumentAccess/:nID_DocumentOperator_Su
 router.get('/search/getDocumentTypes', documents.getDocumentTypes);
 router.get('/search/getDocumentOperators', documents.getDocumentOperators);
 router.post('/search/searchDocument', documents.searchDocument);
+router.get('/downloadDocumentByID/:sCode_DocumentAccess', documents.getDocumentAbstract);
 
 module.exports = router;

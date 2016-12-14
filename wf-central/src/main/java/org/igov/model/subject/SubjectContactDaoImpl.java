@@ -1,5 +1,6 @@
 package org.igov.model.subject;
 
+import com.google.common.base.Optional;
 import org.springframework.stereotype.Repository;
 import org.igov.model.core.GenericEntityDao;
 
@@ -20,5 +21,10 @@ public class SubjectContactDaoImpl extends GenericEntityDao<Long, SubjectContact
     @Override
     public List<SubjectContact> findContacts(Subject subject) {
         return findAllBy("subject", subject);
+    }
+
+    @Override
+    public List<SubjectContact> findoMail(SubjectContact oMail) {
+        return findAllBy("oMail", oMail);
     }
 }

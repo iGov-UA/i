@@ -6,7 +6,8 @@ var passport = require('passport')
 module.exports.authenticate = function (req, res, next) {
   logger.info('authenticate bankid request', { query : req.query });
   passport.authenticate('oauth2', {
-    callbackURL: '/auth/bankID/callback?link=' + req.query.link
+    callbackURL: '/auth/bankID/callback?link=' + req.query.link,
+    bank: req.query.bank
   })(req, res, next);
 };
 

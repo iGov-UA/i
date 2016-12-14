@@ -40,7 +40,6 @@ import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.fs.FileSystemDictonary;
 import org.igov.io.mail.Mail;
 import org.igov.io.sms.ManagerSMS;
-import org.igov.io.sms.ManagerSMS_New;
 import org.igov.io.web.HttpRequester;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -57,7 +56,6 @@ import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.igov.util.Tool;
 import org.igov.util.ToolWeb;
 import org.igov.util.JSON.JsonDateTimeSerializer;
-import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -101,9 +99,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     private static final String PATTERN_CURRENCY_ID = "sID_Currency%s";
     private static final String PATTERN_DESCRIPTION = "sDescription%s";
     private static final String PATTERN_SUBJECT_ID = "nID_Subject%s";
-
-    @Autowired
-    public TaskService taskService;
 
     @Autowired
     public HistoryService historyService;
@@ -769,7 +764,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         return null;
     }
 
-    protected String populatePatternWithContent(String inputText)
+    public static String populatePatternWithContent(String inputText)
             throws IOException, URISyntaxException {
         StringBuffer outputTextBuffer = new StringBuffer();
         Matcher matcher = TAG_sPATTERN_CONTENT_COMPILED.matcher(inputText);
@@ -779,6 +774,19 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         }
         matcher.appendTail(outputTextBuffer);
         return outputTextBuffer.toString();
+    }
+    
+    /*
+	 * Access modifier changed from private to default to enhance testability
+     */
+    private  static String getPatternContentReplacement(Matcher matcher) throws IOException,
+            URISyntaxException {
+        String sPath = matcher.group(1);
+        LOG.info("Found content group! (sPath={})", sPath);
+        byte[] bytes = getFileData_Pattern(sPath);
+        String sData = Tool.sData(bytes);
+        LOG.debug("Loaded content from file:" + sData);
+        return sData;
     }
 
     public Mail Mail_BaseFromTask(DelegateExecution oExecution)
@@ -790,9 +798,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String sBodySource = getStringFromFieldExpression(text, oExecution);
         String sBody = replaceTags(sBodySource, oExecution);
 
-        saveServiceMessage(sHead, saToMail, sBody,
-                generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution
-                        .getProcessInstanceId())));
+        saveServiceMessage_Mail(sHead, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), saToMail);
 
         Mail oMail = context.getBean(Mail.class);
 
@@ -805,19 +811,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 ._SSL(bSSL)._TLS(bTLS);
 
         return oMail;
-    }
-
-    /*
-	 * Access modifier changed from private to default to enhance testability
-     */
-    String getPatternContentReplacement(Matcher matcher) throws IOException,
-            URISyntaxException {
-        String sPath = matcher.group(1);
-        LOG.info("Found content group! (sPath={})", sPath);
-        byte[] bytes = getFileData_Pattern(sPath);
-        String sData = Tool.sData(bytes);
-        LOG.debug("Loaded content from file:" + sData);
-        return sData;
     }
 
     private String getFormattedDate(Date date) {
@@ -843,42 +836,44 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public void execute(DelegateExecution oExecution) throws Exception {
     }
 
-    protected void saveServiceMessage(String sHead, String sTo, String sBody,
-            String sID_Order) {
+    protected void saveServiceMessage_Mail(String sHead, String sBody, String sID_Order, String sMail) {
 
         if (sBody != null && sBody.contains("Шановний колего!")) {
             //Не сохраняем в истории заявки гражданина письмо чиновнику //Юлия
             return;
         }
 
-        final Map<String, String> params = new HashMap<>();
-        params.put("sID_Order", sID_Order);
-        params.put("sHead", "Відправлено листа");
-        params.put("sBody", sHead);
-        params.put("sMail", sTo);
-        params.put("nID_SubjectMessageType", "" + 10L);
-        params.put("nID_Subject", "0");
-        params.put("sContacts", "0");
-        params.put("sData", "0");
-        params.put("RequestMethod", RequestMethod.GET.name());
-        String key;
-        key = durableBytesDataStorage.saveData(sBody.getBytes(Charset
-                .forName("UTF-8")));
-        params.put("sID_DataLink", key);
+        final Map<String, String> mParam = new HashMap<>();
+        mParam.put("sHead", "Відправлено листа");//"Відправлено листа"
+        mParam.put("sBody", sHead);//sBody
+        mParam.put("sID_Order", sID_Order);
+        mParam.put("sMail", sMail);
+        //mParam.put("nID_Subject", "0");
+        //mParam.put("sContacts", "0");
+        //params.put("sData", "0");
+        
+        mParam.put("nID_SubjectMessageType", "" + 10L);
+        mParam.put("sID_DataLinkSource", "Region");
+        mParam.put("sID_DataLinkAuthor", "System");
+        String sID_DataLink;
+        sID_DataLink = durableBytesDataStorage.saveData(sBody.getBytes(Charset.forName("UTF-8")));
+        mParam.put("sID_DataLink", sID_DataLink);
 
-        ScheduledExecutorService executor = Executors
+        mParam.put("RequestMethod", RequestMethod.GET.name());
+        
+        ScheduledExecutorService oScheduledExecutorService = Executors
                 .newSingleThreadScheduledExecutor();
-        Runnable task = new Runnable() {
+        Runnable oRunnable = new Runnable() {
 
             @Override
             public void run() {
                 LOG.info(
                         "try to save service message with params with a delay: (params={})",
-                        params);
+                        mParam);
                 String jsonServiceMessage;
                 try {
                     jsonServiceMessage = historyEventService
-                            .addServiceMessage(params);
+                            .addServiceMessage(mParam);
                     LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
                 } catch (Exception e) {
                     LOG.error("( saveServiceMessage error={})", e.getMessage());
@@ -887,12 +882,12 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         };
         // run saving message in 10 seconds so history event will be in the
         // database already by that time
-        executor.schedule(task, 10, TimeUnit.SECONDS);
-        executor.shutdown();
+        oScheduledExecutorService.schedule(oRunnable, 10, TimeUnit.SECONDS);
+        oScheduledExecutorService.shutdown();
 
         LOG.info(
                 "Configured thread to run in 10 seconds with params: (params={})",
-                params);
+                mParam);
     }
 
 }

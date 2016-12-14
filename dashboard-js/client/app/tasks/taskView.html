@@ -17,6 +17,19 @@
   .open-full-info a:hover {
     text-decoration: none;
   }
+  .documentUsers {
+    margin-top: 20px;
+  }
+  .thisIsCurrentUser {
+    font-weight: bold;
+  }
+  .documentRole {
+    font-size: 15px;
+  }
+  .documentDate {
+    float: right;
+    /*margin-left: 10px;*/
+  }
 </style>
 
 <div class="tasks-form-view">
@@ -197,7 +210,7 @@
           <hr class="hr-divider side-left"><span>Додатки</span><hr class="hr-divider side-right">
         </div>
 
-        <div>
+        <div ng-if="sSelectedTask !== 'unassigned'">
           <div class="dropup" ng-repeat="item in taskData.aAttachment" style="display: inline-block; position:relative;">
             <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
               <p>{{item.description | tableButtonFilter}}</p>
@@ -223,15 +236,61 @@
                     class="btn btn-link attach-btn dropdown-toggle"
                     data-toggle="dropdown"
                     ng-model="some"
-                    title="{{item.description}}">
+                    title="{{item.description | tableButtonFilter}}">
                     <!--ng-click="openModalWindow($event)">-->
               {{item.description | cut : true : 25 | tableButtonFilter}}
             </button>
           </div>
         </div>
+        <div ng-if="sSelectedTask === 'unassigned'" style="font-weight: bold; text-align: center">
+          <span>Щоб переглянути додатки необхідно взяти звернення в роботу</span>
+        </div>
       </div>
 
-      <div class="control-form-fields" style="position:fixed; bottom: 0; background: white; width: 100%;">
+      <!--document users role-->
+      <div class="documentUsers">
+        <div ng-if="documentLogins" ng-repeat="users in documentLogins">
+          <div ng-if="users.aUser.length !== 0">
+
+            <div ng-if="users.bWrite">
+              <span class="documentRole">{{users.sName}}:</span>
+              <span ng-repeat="user in users.aUser">
+                <span title="{{user.sLogin}}">
+                  <span ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}">
+                    {{ user.sFIO }}{{$last ? '' : ', '}}
+                  </span>
+                </span>
+              </span>
+              <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису/Немає ознайомлення'}}</span>
+            </div>
+
+            <div ng-if="!users.bWrite">
+              <span class="documentRole">{{users.sName}}:</span>
+              <span ng-repeat="user in users.aUser">
+                <span title="{{user.sLogin}}">
+                  <span ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}">
+                    {{ user.sFIO }}{{$last ? '' : ', '}}
+                  </span>
+                </span>
+              </span>
+              <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису/Немає ознайомлення'}}</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div ng-if="aProcessSubject && aProcessSubject.length !== 0">
+        <h4>Виконавцi:</h4>
+        <div ng-repeat="subject in aProcessSubject">
+          <span ng-repeat="user in subject.aUser" ng-if="subject.sLogin === user.sLogin">
+            {{user.sFirstName}} {{user.sLastName}} {{user.sLogin}}
+            <p>(планова дата виконання: {{subject.sDatePlan | removeHoursFromDate}}; статус: {{subject.oProcessSubjectStatus.sName}})</p>
+          </span>
+        </div>
+      </div>
+
+      <div class="control-form-fields" style="position:fixed; bottom: 0; background: white; width: 100%;z-index: 5;">
 
         <div class="main-form-controls" ng-init="checkForEmpty()">
           <div ng-if="!clarify && inUnassigned()" class="fixed-bottom-menu-buttons">
@@ -248,12 +307,37 @@
           </div>
 
           <div ng-if="!clarify && !inUnassigned()" class="fixed-bottom-menu-buttons">
-            <div ng-hide="selectedTask.assignee == null || sSelectedTask == 'all'">
+            <div ng-hide="selectedTask.assignee == null || sSelectedTask == 'all' || documentRights">
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
+                      ng-click="submitTaskQuestion(form)"
+                      class="btn btn-info"
+                      style="background-color: #337ACF; outline: none; border: none"
+                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Опрацювати
+              </button>
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
+                      ng-click="saveChangesTask(form)"
+                      class="btn btn-info"
+                      style="background-color: #337ACF; outline: none; border: none"
+                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти
+              </button>
+              <label ng-show="isTaskInProcess()&& !isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Зачекайте...</label>
+              <label ng-show="isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Опрацьовано.</label>
+            </div>
+
+            <div ng-hide="selectedTask.assignee == null || sSelectedTask == 'all' || !documentRights">
               <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
                       ng-click="submitTask(form)"
                       class="btn btn-info"
                       style="background-color: #337ACF; outline: none; border: none"
-                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Опрацювати
+                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">
+                <span ng-if="documentRights.bWrite">Пiдписати</span>
+                <span ng-if="!documentRights.bWrite">Ознайомлений</span>
+              </button>
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
+                      ng-click="saveChangesTask(form)"
+                      class="btn btn-info"
+                      style="background-color: #337ACF; outline: none; border: none"
+                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти
               </button>
               <label ng-show="isTaskInProcess()&& !isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Зачекайте...</label>
               <label ng-show="isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Задачу опрацьовано.</label>
@@ -267,7 +351,7 @@
                class="fixed-bottom-menu-buttons"
                style="position:relative;">
               <div class="dropup" ng-if="!clarify && !inUnassigned()">
-                <div class="print-form-div dropdown-menu drop-up" role="menu">
+                <div class="print-form-div dropdown-menu drop-up" role="menu" ng-if="updateTemplateList()">
                   <div ng-repeat="item in printTemplateList">
                     <a href="#" ng-click="newPrint(form, item)">{{item.displayTemplate}}</a>
                   </div>

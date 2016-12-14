@@ -1,6 +1,5 @@
 package org.igov.service.business.action.task.listener;
 
-import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
@@ -10,7 +9,6 @@ import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.IdentityLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 
@@ -27,8 +25,10 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
 
     private static final long serialVersionUID = 1L;
     
-    @Autowired
-    private TaskService taskService;
+    //@Autowired
+    //private TaskService taskService;
+
+    private List<Attachment> aAttachmentList;
 
     @Override
     public void notify(DelegateTask oTask) {
@@ -48,7 +48,7 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
                 .list();
 
         LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
-        if (aUser == null || aUser.size() == 0 || aUser.get(0) == null || aUser.get(0).getId() == null) {
+        if (aUser == null || aUser.isEmpty() || aUser.get(0) == null || aUser.get(0).getId() == null) {
             //TODO  what to do if no user?
         } else {
             // setAuthenticatedUserId первого попавщегося
@@ -59,7 +59,11 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
                     .getStartFormData(oExecution.getProcessDefinitionId());
             LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
                     oExecution.getProcessDefinitionId());
-            addAttachmentsToTask(oStartFormData, oTask);
+            aAttachmentList = addAttachmentsToTask(oStartFormData, oTask);
         }
+    }
+
+    public List<Attachment> getaAttachmentList() {
+        return aAttachmentList;
     }
 }

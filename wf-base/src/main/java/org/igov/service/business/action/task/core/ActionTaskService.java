@@ -1135,12 +1135,58 @@ public class ActionTaskService {
      * @param sLogin - Логин пользователя
      * @return
      */
+    public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin){
+
+        if (sLogin==null || sLogin.isEmpty()) {
+            LOG.error("Unable to found business processes for sLogin="+sLogin);
+            throw new ActivitiObjectNotFoundException(
+                    "Unable to found business processes for sLogin="+sLogin,
+                    ProcessDefinition.class);
+        }
+
+        List<Map<String, String>> result = new LinkedList<>();
+        List<ProcessDefinition> resultProcessDefinitionList = new LinkedList<>();
+
+        LOG.info(String.format(
+                "Selecting business processes for the user with login: %s",
+                sLogin));
+
+        List<ProcessDefinition> processDefinitionsList = oRepositoryService
+                .createProcessDefinitionQuery().active().latestVersion().list();
+        if (CollectionUtils.isNotEmpty(processDefinitionsList)) {
+            LOG.info(String.format("Found %d active process definitions",
+                    processDefinitionsList.size()));
+
+            resultProcessDefinitionList = getAvailabilityProcessDefinitionByLogin(sLogin, processDefinitionsList);
+        } else {
+            LOG.info("Have not found active process definitions.");
+        }
+
+        for (ProcessDefinition processDef : resultProcessDefinitionList){
+            Map<String, String> process = new HashMap<>();
+            process.put("sID", processDef.getKey());
+            process.put("sName", processDef.getName());
+            LOG.info(String.format("Added record to response %s", process.toString()));
+            result.add(process);
+        }
+
+        return result;
+    }    
+    
+    
+    
+    /**
+     * Получение списка бизнес процессов к которым у пользователя есть доступ
+     * @param sLogin - Логин пользователя
+     * @return
+     */
+    @Deprecated //новый: getBusinessProcessesOfLogin 
     public List<Map<String, String>> getBusinessProcessesForUser(String sLogin){
 
-        if (sLogin.isEmpty()) {
-            LOG.error("Unable to found business processes for user with empty login");
+        if (sLogin==null || sLogin.isEmpty()) {
+            LOG.error("Unable to found business processes for sLogin="+sLogin);
             throw new ActivitiObjectNotFoundException(
-                    "Unable to found business processes for user with empty login",
+                    "Unable to found business processes for sLogin="+sLogin,
                     ProcessDefinition.class);
         }
 
@@ -1208,13 +1254,13 @@ public class ActionTaskService {
     }
 
 
-    private boolean checkIncludeProcessDefinitionIntoGroupList(List<Group> groups, Set<String> candidateCroupsToCheck){
-        for (Group group : groups) {
-            for (String groupFromProcess : candidateCroupsToCheck) {
-                if (groupFromProcess.contains("${")) {
-                    groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
+    private boolean checkIncludeProcessDefinitionIntoGroupList(List<Group> aGroup, Set<String> asProcessGroupMask){
+        for (Group oGroup : aGroup) {
+            for (String sProcessGroupMask : asProcessGroupMask) {
+                if (sProcessGroupMask.contains("${")) {
+                    sProcessGroupMask = sProcessGroupMask.replaceAll("\\$\\{?.*}", "(.*)");
                 }
-                if (group.getId().matches(groupFromProcess)) {
+                if (oGroup.getId().matches(sProcessGroupMask)) {
                     return true;
                 }
             }
@@ -1974,7 +2020,7 @@ public class ActionTaskService {
             for (Attachment attachment : attachments){
                 attachmetIDs.add(attachment.getId());
             }
-            LOG.info("Task attachmets: " + attachmetIDs.toString());
+            LOG.info("Task attachments: " + attachmetIDs.toString());
         }
         return attachments;
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_39_dnepr_mvk" name="Копії рішень міської (селищної) ради про надання дозволу на розроблення проекту відведення земельної ділянки" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 01.12.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 14.12.2016</documentation>
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
@@ -19,6 +19,7 @@
           <activiti:value id="sDocTypeGolova" name="розпорядження міського голови"></activiti:value>
           <activiti:value id="sDocTypeOther" name="інше"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="lable1" name=" " type="label" default="Зверніть увагу!!! Копії рішень та витягів доступні лише з 01.01.2008 року! Для отримання копій за період до 2008 року звертайтеся до архіву!"></activiti:formProperty>
         <activiti:formProperty id="sDocDate" name="Дата прийняття документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocNumber" name="Номер документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocName" name="Назва документа" type="string" required="true"></activiti:formProperty>
@@ -43,7 +44,6 @@
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk_MVK" name="Пошта для службових повідомлень МіськРада" type="string" default="smoktii.igov@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта для службових повідомлень ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible"></activiti:formProperty>
@@ -56,7 +56,7 @@
         <activiti:formProperty id="sSumNote" name="Розшифрока суми сплати для Email" type="invisible" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="[Етап I] Перевірка і виготовлення копії рішення (1-й крок)" activiti:candidateGroups="mvk_copy_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="[Етап I] Перевірка і виготовлення копії рішення (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -94,7 +94,7 @@
           <activiti:value id="sRekPrior" name="рекомендований лист з кур'єрською доставкою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат опрацювання" type="enum" required="true">
-          <activiti:value id="accept" name="Копія рішення виготовлена та передана до ЦНАП"></activiti:value>
+          <activiti:value id="accept" name="Копія рішення виготовлена"></activiti:value>
           <activiti:value id="reject" name="Відмовити у реєстрації звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення (обов'язково у разі відмови у реєстрації звернення); Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
@@ -104,7 +104,6 @@
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk_MVK" name="Пошта для службових повідомлень МіськРада" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта для службових повідомлень ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
@@ -325,7 +324,7 @@
     <sequenceFlow id="flow39" sourceRef="servicetask9" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow33" sourceRef="exclusivegateway2" targetRef="servicetask11">
+    <sequenceFlow id="flow33" sourceRef="exclusivegateway2" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult == 'accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="Копія рішення готова (надіслана поштою) + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -455,10 +454,10 @@ execution.setVariable('docTyp', per2)
       	</script>
     </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask10" name="Повідомлення про нове звернення Міську Раду" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask10" name="Повідомлення про нове звернення ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk_MVK}</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -489,7 +488,6 @@ execution.setVariable('docTyp', per2)
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow43" sourceRef="servicetask11" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <serviceTask id="servicetask12" name="Неможливо видати копію + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -639,7 +637,7 @@ execution.setVariable('docTyp', per2)
         <omgdc:Bounds height="71.0" width="136.0" x="375.0" y="143.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
-        <omgdc:Bounds height="71.0" width="125.0" x="380.0" y="400.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="125.0" x="260.0" y="381.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="422.0" y="580.0"></omgdc:Bounds>
@@ -699,7 +697,7 @@ execution.setVariable('docTyp', per2)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="442.0" y="380.0"></omgdi:waypoint>
-        <omgdi:waypoint x="442.0" y="400.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="490.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="240.0" y="711.0"></omgdi:waypoint>
@@ -722,10 +720,6 @@ execution.setVariable('docTyp', per2)
         <omgdi:waypoint x="651.0" y="360.0"></omgdi:waypoint>
         <omgdi:waypoint x="677.0" y="361.0"></omgdi:waypoint>
         <omgdi:waypoint x="677.0" y="213.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="442.0" y="471.0"></omgdi:waypoint>
-        <omgdi:waypoint x="442.0" y="490.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="442.0" y="555.0"></omgdi:waypoint>
