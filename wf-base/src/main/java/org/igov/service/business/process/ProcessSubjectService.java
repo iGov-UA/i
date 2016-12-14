@@ -425,7 +425,7 @@ public class ProcessSubjectService {
     	Map<Long, List<ProcessSubject>> subjToNodeMapRes = new HashMap<>();
         List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
-
+        LOG.info("subjToNodeMapppppppppppp: " + subjToNodeMap);
         LOG.info("aChildLevel: " + aChildLevel.size() + " anID_ChildLevel: " + anID_ChildLevel);
         if (deepLevelFact < deepLevelRequested.intValue()) {
             for (Long nID_ChildLevel : anID_ChildLevel) {
@@ -447,7 +447,7 @@ public class ProcessSubjectService {
                                 + anID_ChildLevel_Result.size());
                         // добавляем детей к общему списку детей
                         result.addAll(aChildLevel_Result);
-                        subjToNodeMapRes.put(nID_ChildLevel, result);
+                        subjToNodeMapRes.put(nID_ChildLevel, aChildLevel_Result);
                         LOG.info("result: " + result.size());
                     }
                 }
