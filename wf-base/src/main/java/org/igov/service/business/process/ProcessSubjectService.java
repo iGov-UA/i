@@ -5,7 +5,11 @@
  */
 package org.igov.service.business.process;
 
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -13,7 +17,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.activiti.engine.IdentityService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.BaseEntityDao;
@@ -22,13 +30,17 @@ import org.igov.model.process.ProcessSubjectDao;
 import org.igov.model.process.ProcessSubjectParentNode;
 import org.igov.model.process.ProcessSubjectResult;
 import org.igov.model.process.ProcessSubjectResultTree;
+import org.igov.model.process.ProcessSubjectStatus;
+import org.igov.model.process.ProcessSubjectStatusDao;
 import org.igov.model.process.ProcessSubjectTree;
+import org.igov.model.process.ProcessSubjectTreeDao;
 import org.igov.model.process.ProcessUser;
-import org.igov.model.subject.SubjectGroup;
-import org.igov.model.subject.SubjectUser;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,20 +48,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.apache.commons.io.IOUtils;
-import org.igov.model.process.ProcessSubjectStatus;
-import org.igov.model.process.ProcessSubjectStatusDao;
-import org.igov.model.process.ProcessSubjectTreeDao;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 /**
  *
@@ -308,7 +306,7 @@ public class ProcessSubjectService {
         for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
             List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject);
-            processSubject.setsProcessSubject(aChildResultByKey);
+            processSubject.setsProcessSubjects(aChildResultByKey);
         }
         return processSubjectResultTree;
 
