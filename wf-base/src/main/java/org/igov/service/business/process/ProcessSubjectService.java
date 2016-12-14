@@ -258,7 +258,7 @@ public class ProcessSubjectService {
             aChildResult.addAll(children);
             hierarchyProcessSubject.put(groupFiltr, children);
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
-           
+           LOG.info("subjToNodeMapppppppppppppp " + subjToNodeMap);
            LOG.info("hierarchyProcessSubjecttttttttt " + hierarchyProcessSubject);
            LOG.info("aChildResulttttttttttttt " + aChildResult);
         }
@@ -422,6 +422,7 @@ public class ProcessSubjectService {
     	Map<Long, List<ProcessSubject>> subjToNodeMapRes = new HashMap<>();
         List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
+        LOG.info("anID_PerentAll: " + anID_PerentAll);
         LOG.info("aChildLevel: " + aChildLevel.size() + " anID_ChildLevel: " + anID_ChildLevel);
         if (deepLevelFact < deepLevelRequested.intValue()) {
             for (Long nID_ChildLevel : anID_ChildLevel) {
@@ -430,7 +431,8 @@ public class ProcessSubjectService {
                     aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);
                     if (aChildLevel_Result != null && !aChildLevel_Result.isEmpty()) {
                         LOG.info("nID_ChildLevel: " + nID_ChildLevel + " aChildLevel_Result: "
-                                + aChildLevel_Result.size());
+                                + aChildLevel_Result.size()+ " aChildLevel_Result: "
+                                        + aChildLevel_Result);
                         // получаем только ид чилдренов
                         anID_ChildLevel_Result = Lists.newArrayList(
                                 Collections2.transform(aChildLevel_Result, new Function<ProcessSubject, Long>() {
@@ -439,7 +441,7 @@ public class ProcessSubjectService {
                                         return subjectGroup.getId();
                                     }
                                 }));
-                        LOG.info("nID_ChildLevel: " + nID_ChildLevel + " anID_ChildLevel_Result: "
+                        LOG.info("nID_ChildLevel: " + anID_ChildLevel_Result + " anID_ChildLevel_Result: "
                                 + anID_ChildLevel_Result.size());
                         // добавляем детей к общему списку детей
                         result.addAll(aChildLevel_Result);
