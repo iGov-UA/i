@@ -17,12 +17,14 @@ import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.util.VariableMultipartFile;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Oleksii Khalikov
  * Created on 30.01.2016.
  */
-@Service("objectFileService")
+@Component("objectFileService")
+@Service
 public class ObjectFileService {
     private static final Logger LOG = LoggerFactory.getLogger(ObjectFileService.class);
 
