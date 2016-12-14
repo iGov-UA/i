@@ -359,15 +359,23 @@ public class DocumentStepService {
         LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
         //Lets collect DocumentStepSubjectRight by according users groups
 
-        final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
+        //final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
 
+        
+        
+        
+        
+        
+        
+        
+        
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = new LinkedList();
         if(oDocumentStep_Common!=null){
             aDocumentStepSubjectRight_Common = oDocumentStep_Common
                     .getRights()
                     .stream()
                     //.filter(o -> asID_Group.contains(new StringBuilder(sGroupPrefix).append(o.getsKey_GroupPostfix()).toString()))
-                    .filter(o -> asID_Group.contains(o.getsKey_GroupPostfix()))
+                    .filter(oRight -> asID_Group.contains(oRight.getsKey_GroupPostfix()))
                     .collect(Collectors.toList());
         }
         LOG.info("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
