@@ -518,6 +518,18 @@ public class ProcessSubjectService {
     }
 
     /**
+     * Задать статус и отчет
+     *
+     * @param snID_Process_Activiti
+     * @param sID_ProcessSubjectStatus
+     * @return
+     */
+    public ProcessSubject setProcessSubjectStatusAndReport(String snID_Process_Activiti, String sID_ProcessSubjectStatus, String sReport) {
+        ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByExpected("sID", sID_ProcessSubjectStatus);
+        return processSubjectDao.setProcessSubjectStatusAndReport(snID_Process_Activiti, processSubjectStatus, sReport);
+    }
+
+    /**
      * Задать дату
      *
      * @param snID_Process_Activiti
@@ -573,54 +585,56 @@ public class ProcessSubjectService {
                     .active()
                     .singleResult();
 
-                Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
-                LOG.info("mProcessVariable: " + mProcessVariable);
+                if(oProcessInstance != null){
+                    Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+                    LOG.info("mProcessVariable: " + mProcessVariable);
 
-                Map<String, Object> mParamDocumentNew = new HashMap<>();
+                    Map<String, Object> mParamDocumentNew = new HashMap<>();
 
-                for(String mKey : mParamDocument.keySet()){
+                    for(String mKey : mParamDocument.keySet()){
 
-                    Object oParamDocument = mParamDocument.get(mKey);
-                    Object oProcessVariable = mProcessVariable.get(mKey);
+                        Object oParamDocument = mParamDocument.get(mKey);
+                        Object oProcessVariable = mProcessVariable.get(mKey);
 
-                    if(oParamDocument != null){
-                        if(oProcessVariable != null){
-                            if(!(((String)oParamDocument).equals((String)oProcessVariable))){
-                                mParamDocumentNew.put(mKey, oParamDocument);
-                                LOG.info("--------------------------");
-                                LOG.info("mParamDocument elem new: " + oParamDocument);
-                                LOG.info("mProcessVariable elem: " + oProcessVariable);
-                                LOG.info("--------------------------");
-                             }
-                        }
-                        else{
-                             mParamDocumentNew.put(mKey, null);
-                        }
-                    }else{
-                        if(oProcessVariable != null){
-                            mParamDocumentNew.put(mKey, oProcessVariable);
+                        if(oParamDocument != null){
+                            if(oProcessVariable != null){
+                                if(!(((String)oParamDocument).equals((String)oProcessVariable))){
+                                    mParamDocumentNew.put(mKey, oParamDocument);
+                                    LOG.info("--------------------------");
+                                    LOG.info("mParamDocument elem new: " + oParamDocument);
+                                    LOG.info("mProcessVariable elem: " + oProcessVariable);
+                                    LOG.info("--------------------------");
+                                 }
+                            }
+                            else{
+                                 mParamDocumentNew.put(mKey, null);
+                            }
+                        }else{
+                            if(oProcessVariable != null){
+                                mParamDocumentNew.put(mKey, oProcessVariable);
+                            }
                         }
                     }
-                }
 
-                LOG.info("mParamDocumentNew: " + mParamDocumentNew);
-                DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+                    LOG.info("mParamDocumentNew: " + mParamDocumentNew);
+                    DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
 
-                if(!mParamDocumentNew.isEmpty()){
+                    if(!mParamDocumentNew.isEmpty()){
 
-                    for(ProcessSubject oProcessSubject : aProcessSubject_Child){
-                        oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
+                        for(ProcessSubject oProcessSubject : aProcessSubject_Child){
+                            oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
 
-                        DateTime datePlan = null;
-                        if (mParamDocument.get("sDateExecution") != null){
-                            datePlan = new DateTime(parseDate((String)mParamDocument.get("sDateExecution")));
-                        }
+                            DateTime datePlan = null;
+                            if (mParamDocument.get("sDateExecution") != null){
+                                datePlan = new DateTime(parseDate((String)mParamDocument.get("sDateExecution")));
+                            }
 
-                        oProcessSubject.setsDatePlan(datePlan);
-                        processSubjectDao.saveOrUpdate(oProcessSubject);
+                            oProcessSubject.setsDatePlan(datePlan);
+                            processSubjectDao.saveOrUpdate(oProcessSubject);
 
-                        for(String mKey : mParamDocumentNew.keySet()){
-                            runtimeService.setVariable(oProcessSubject.getSnID_Process_Activiti(), mKey, mParamDocumentNew.get(mKey));
+                            for(String mKey : mParamDocumentNew.keySet()){
+                                runtimeService.setVariable(oProcessSubject.getSnID_Process_Activiti(), mKey, mParamDocumentNew.get(mKey));
+                            }
                         }
                     }
                 }
@@ -688,7 +702,7 @@ public class ProcessSubjectService {
         mParamDocument.put("sNote", mParam.get("sNote"));
         mParamDocument.put("asUrgently", mParam.get("asUrgently"));
         mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
-        mParamDocument.put("sTextReport", mParam.get("sTextReport"));
+       // mParamDocument.put("sTextReport", mParam.get("sTextReport"));
 
         //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
         //иначе проверяем на необходимость редактирования
