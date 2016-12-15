@@ -145,7 +145,7 @@ angular.module('dashboardJsApp')
           url: '/api/documents/getProcessSubject',
           params: {
             snID_Process_Activiti: id,
-            nDeepLevel: 1
+            nDeepLevel: level ? level : 1
           }
         })
       },
