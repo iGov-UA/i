@@ -678,10 +678,10 @@ public class ProcessSubjectService {
             Date oDateRegistration = parseDate(mParam.get("sDateRegistration"));
             sFormatDateRegistration = df_StartProcess.format(oDateRegistration);
         }
-        if((mParam.get("sDateDoc") != null)&&(!mParam.get("sDateDoc").equals(""))){
+        /*if((mParam.get("sDateDoc") != null)&&(!mParam.get("sDateDoc").equals(""))){
             Date oDateDoc = parseDate(mParam.get("sDateDoc"));
             sFormatDateDoc = df_StartProcess.format(oDateDoc);
-        }
+        }*/
 
         ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
 
@@ -690,12 +690,14 @@ public class ProcessSubjectService {
         mParamDocument.put("sTaskProcessDefinition", mParam.get("sTaskProcessDefinition"));
         mParamDocument.put("sID_Attachment", mParam.get("sID_Attachment"));
         mParamDocument.put("sContent", mParam.get("sContent"));
-        //mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
+        //
         //mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
-        //mParamDocument.put("sDateExecution", sFormatDateExecution);
+        //
         //mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
         //mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
         mParamDocument.put("sDateRegistration", sFormatDateRegistration);
+        mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
+        mParamDocument.put("sDateExecution", sFormatDateExecution);
         //mParamDocument.put("sDateDoc", sFormatDateDoc);
         //mParamDocument.put("sApplicant", mParam.get("sApplicant"));
         //mParamDocument.put("nCountAttach", mParam.get("nCountAttach"));
