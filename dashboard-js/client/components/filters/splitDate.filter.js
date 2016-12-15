@@ -15,6 +15,8 @@ angular.module('dashboardJsApp')
         else if(split[0].length === 1 && split[1].length === 2) return 0 + split[0] + '/' + split[1] + '/' + split[2];
         else if(split[0].length === 2 && split[1].length === 2) return value;
         else if(split.length !== 3) return value;
+      } else if (value === ""){
+        return value;
       }
     }
   })
