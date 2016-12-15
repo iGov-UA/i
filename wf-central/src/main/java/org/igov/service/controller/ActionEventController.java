@@ -1,24 +1,24 @@
 package org.igov.service.controller;
 
 import com.google.common.base.Optional;
-
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
 import org.igov.model.action.task.core.entity.ActionProcessCount;
 import org.igov.model.action.task.core.entity.ActionProcessCountDao;
-import org.igov.model.subject.Server;
-import org.igov.model.subject.ServerDao;
+import org.igov.model.subject.*;
+import org.igov.model.subject.message.SubjectMessageFeedback;
+import org.igov.model.subject.message.SubjectMessageFeedbackDao;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
@@ -34,19 +34,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.igov.model.subject.Subject;
-import org.igov.model.subject.SubjectDao;
-import org.igov.model.subject.SubjectHuman;
-import org.igov.model.subject.SubjectHumanDao;
-import org.igov.model.subject.message.SubjectMessageFeedback;
-import org.igov.model.subject.message.SubjectMessageFeedbackDao;
-import org.joda.time.format.DateTimeFormatter;
 
 @Controller
 @Api(tags = {"ActionEventController -- События по действиям и статистика"})
@@ -664,7 +656,7 @@ public class ActionEventController implements ControllerConstants {
                             && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
                         } else {
-                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
+                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) ? oSubjectMessageFeedback.getoSubjectMessage().getBody() + "." : "";
                         }
                         
                     // Кусок кода для теста. После тестирования будет убрано.
