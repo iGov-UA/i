@@ -256,7 +256,7 @@ public class ProcessSubjectService {
                         }
                     }));
             aChildResult.addAll(children);
-            hierarchyProcessSubject.put(groupFiltr, children);
+           // hierarchyProcessSubject.put(groupFiltr, children);
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
            LOG.info("subjToNodeMapppppppppppppp " + subjToNodeMap);
            LOG.info("hierarchyProcessSubjecttttttttt " + hierarchyProcessSubject);
@@ -416,10 +416,11 @@ public class ProcessSubjectService {
      * @param result
      * @return
      */
+    Map<Long, List<ProcessSubject>> subjToNodeMapRes = new HashMap<>();
     public Map<Long, List<ProcessSubject>> getChildrenTree(List<ProcessSubject> aChildLevel, List<Long> anID_ChildLevel,
             Map<Long, List<ProcessSubject>> subjToNodeMap, Set<Long> anID_PerentAll, Long deepLevelRequested,
             int deepLevelFact, List<ProcessSubject> result) {
-    	Map<Long, List<ProcessSubject>> subjToNodeMapRes = new HashMap<>();
+    	
         List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
         LOG.info("anID_PerentAll: " + anID_PerentAll);
