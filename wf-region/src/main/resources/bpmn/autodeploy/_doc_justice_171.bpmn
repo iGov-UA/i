@@ -42,7 +42,7 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="3"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTextReport" name="Текст звіту про виконання" type="textArea" writable="false"></activiti:formProperty>
+  
         
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
@@ -69,7 +69,7 @@
           <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="призначити дерево виконавців" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sID_Group_Activiti&quot;],&quot;asID_Field_sValue&quot;:[&quot;[sName_SubjectRole]&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sName_SubjectRole&quot;},&quot;sCondition&quot;:&quot;[sClient] != 'картошечка'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="призначити дерево виконавців" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sID_Group_Activiti&quot;],&quot;asID_Field_sValue&quot;:[&quot;sName_SubjectRole&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sTypeDoc&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Cлужбовий ініциативний лист'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -125,9 +125,7 @@
           <activiti:field name="asTypeResolution">
             <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="sTextReport">
-            <activiti:expression><![CDATA[${sTextReport}]]></activiti:expression>
-          </activiti:field>
+     
         </activiti:taskListener>
        
       </extensionElements>
@@ -153,7 +151,7 @@
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTextReport" name="Текст звіту про виконання" type="textArea"></activiti:formProperty>
+  
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -185,7 +183,7 @@
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTextReport" name="Текст основного виконавця про виконання завдання" type="textArea" writable="false"></activiti:formProperty>
+      
         <activiti:formProperty id="asDecision" name="Прийняття рішення про виконання завдання" type="enum" required="true">
           <activiti:value id="sEnumDecisionYes" name="Завдання виконано - сформувати вихідний документ"></activiti:value>
           <activiti:value id="sEnumDecisionNo" name="Повернути документ на доопрацювання"></activiti:value>
