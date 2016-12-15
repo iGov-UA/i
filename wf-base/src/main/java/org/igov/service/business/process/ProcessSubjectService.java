@@ -424,7 +424,7 @@ public class ProcessSubjectService {
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
         LOG.info("anID_PerentAll: " + anID_PerentAll);
         LOG.info("aChildLevel: " + aChildLevel.size() + " anID_ChildLevel: " + anID_ChildLevel);
-        if (deepLevelFact <= deepLevelRequested.intValue()) {
+        if (deepLevelFact < deepLevelRequested.intValue()) {
             for (Long nID_ChildLevel : anID_ChildLevel) {
                 if (anID_PerentAll.contains(nID_ChildLevel)) {
                 	 LOG.info("anID_PerentAll.contains(nID_ChildLevel): " + nID_ChildLevel);
@@ -436,13 +436,15 @@ public class ProcessSubjectService {
                                 + aChildLevel_Result.size()+ " aChildLevel_Result: "
                                         + aChildLevel_Result);
                         // получаем только ид чилдренов
-                        anID_ChildLevel_Result = Lists.newArrayList(
+                        List<Long> anID_Child = Lists.newArrayList(
                                 Collections2.transform(aChildLevel_Result, new Function<ProcessSubject, Long>() {
                                     @Override
                                     public Long apply(ProcessSubject subjectGroup) {
                                         return subjectGroup.getId();
                                     }
                                 }));
+                        //если anID_ChildLevel больше 1, то всех ид складываем в лист
+                        anID_ChildLevel_Result.addAll(anID_Child);
                         LOG.info("nID_ChildLevel2-получаем только ид чилдренов: " + anID_ChildLevel_Result + " anID_ChildLevel_Result: "
                                 + anID_ChildLevel_Result.size());
                         // добавляем детей к общему списку детей
@@ -455,7 +457,7 @@ public class ProcessSubjectService {
             }
             deepLevelFact++;
             LOG.info("deepLevelFactttt: " + deepLevelFact + " deepLevelRequestedddd: " + deepLevelRequested);
-            if (deepLevelFact <= deepLevelRequested.intValue()) {
+            if (deepLevelFact < deepLevelRequested.intValue()) {
             	  LOG.info("aChildLevel_Resultttttttt: " + aChildLevel_Result + " anID_ChildLevel_Result+t+t+: " + anID_ChildLevel_Result);
             	getChildrenTree(aChildLevel_Result,anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
                         checkDeepLevel(deepLevelRequested), deepLevelFact, result);
