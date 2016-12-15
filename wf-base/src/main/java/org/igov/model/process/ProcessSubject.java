@@ -41,10 +41,6 @@ public class ProcessSubject extends AbstractEntity {
     @Column
     private String sLogin;
 
-    @JsonProperty(value = "aUser")
-    @Transient
-    private List<ProcessUser> aUser;
-
     @JsonProperty(value = "sDateFact")
     @Transient
     private DateTime sDateFact;
@@ -62,8 +58,27 @@ public class ProcessSubject extends AbstractEntity {
     @Type(type = DATETIME_TYPE)
     @Column
     private DateTime sDatePlan;
+    
+    @JsonProperty(value = "aUser")
+    @Transient
+    private List<ProcessUser> aUser;
+    
+    @JsonProperty(value = "aProcessSubjects")
+    @Transient
+    private List<ProcessSubject> aProcessSubj;
+    
+   
 
-    public String getSnID_Process_Activiti() {
+
+	public List<ProcessSubject> getaProcessSubj() {
+		return aProcessSubj;
+	}
+
+	public void setaProcessSubj(List<ProcessSubject> aProcessSubj) {
+		this.aProcessSubj = aProcessSubj;
+	}
+
+	public String getSnID_Process_Activiti() {
         return snID_Process_Activiti;
     }
 

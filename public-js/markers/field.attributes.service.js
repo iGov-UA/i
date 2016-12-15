@@ -72,7 +72,7 @@ function FieldAttributesService(MarkersFactory) {
 
 		  if( styles.oRegionStyle != null || styles["oRegionStyle"] != null ) { 
 			  regionStyle = styles.oRegionStyle; 
-			  
+
 			  console.log("iGovMarkers.enableStyles -> oRegionStyle for '" + styles + "' is set");
 		  } 
 		  else { // Встановлюємо загальний стиль  
@@ -132,18 +132,8 @@ function FieldAttributesService(MarkersFactory) {
 
 				  var elem = window.angular.element(document).find(styles.aSelectors[j]);
 
-				  if( elem != null ) {
-
-					  elem.css(commonStyle);   
-
-					  console.log("iGovMarkers.enableStyles -> oCommonStyle for " + styles.aSelectors[j] + " applied");
-				  }
-				  else {
-					  console.log("iGovMarkers.enableStyles -> aSelector '"+ styles.aSelectors[j] +"' not found");
-				  }
-
 				  this.stylify( styles.aSelectors[j], commonStyle, elem );
-			  
+
 				  /*
 				  if( StatesRepositoryProvider.isCentral() ) { 
 					  elem.css(centralStyle);
@@ -169,7 +159,7 @@ function FieldAttributesService(MarkersFactory) {
    * @returns {Boolean} true on success, false if element not found or stylesCollection is empty 
    * @author Sysprog 
    * @see Styles 
-   */
+   */ 
   this.stylify = function ( query, stylesCollection, elem ) {
 
 	  var result = false; 
@@ -178,11 +168,13 @@ function FieldAttributesService(MarkersFactory) {
 
 		  elem.css( stylesCollection );
 		  
+		  console.log("Style for element " + elem.id + " applied"); 
+		  
 		  result = true; 
 
 	  } else {  
 
-		  if( stylesCollection != null && stylesCollection.length > 0 && query.length > 0 ) { 
+		  if( stylesCollection != null && query.length > 0 ) { 
 
 			  var style = "";
 			  angular.forEach( stylesCollection, function (value, key, obj) { style = style + key + ":" + value + "; " });
@@ -192,6 +184,9 @@ function FieldAttributesService(MarkersFactory) {
 			  console.log(" Applied "+ query + " {"+ style + "}");
 			  
 			  result = true; 
+		  }
+		  else {
+			  console.log( "stylesCollection empty for query '" + query + "'" );
 		  }
 	  } 
 
