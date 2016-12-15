@@ -99,36 +99,15 @@ public class ProcessController {
     @ResponseBody
     List<Process> getProcesses(
             @ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_") String sID_,
-            @ApiParam(value = "способ поиска", required = false) @RequestParam(value = "sType", required = false) String sType,
             @ApiParam(value = "ид источника", required = false) @RequestParam(value = "nID_Source", required = false) Long nID_Source) {
         LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         List<Process> result = new ArrayList();
-        List<Process> processes = new ArrayList();
         try {
-            if (!(sType == null)) {
-                if (sType.equals("streams")) {
-                    LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!streams sID_: " + sID_.trim());
-                    processes = processDao.findAll();
-                    final String filter = sID_.trim();
-                    processes = processes.stream()
-                            .filter(p -> StringUtils.containsIgnoreCase(p.getsID_(), filter))
-                            .collect(Collectors.toList());
-                    LOG.info("processes: " + processes.size());
-                    result.addAll(processes);
-                } else if (sType.equals("string")) {
-                    LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!string sID_: " + sID_.trim());
-                    List<String> sIDList = new ArrayList<>();
-                    sID_ = sID_.trim();
-                    sIDList.add(sID_);
-                    sIDList.add(sID_.toLowerCase());
-                    sIDList.add(sID_.toUpperCase());
-                    processes = processDao.findAllByInValues("sID_", sIDList);
-                    LOG.info("processes: " + processes.size());
-                    result.addAll(processes);
-                }
-            } else {
-                LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sID_: " + sID_.trim());
-                processes = processDao.findAllBy("sID_", sID_.trim());
+                List<String> sIDInValues = new ArrayList<>();
+                sIDInValues.add(sID_);
+                sIDInValues.add(sID_.toLowerCase());
+                sIDInValues.add(sID_.toUpperCase());
+                List<Process> processes = processDao.findAllByInValues("sID_", sIDInValues);
                 LOG.info("processes: " + processes.size());
                 result.addAll(processes);
             }
