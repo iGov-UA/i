@@ -33,7 +33,7 @@
         <activiti:formProperty id="text1" name=" " type="label" default="Ви також можете надати до свого звернення наступні документи"></activiti:formProperty>
         <activiti:formProperty id="sDocGrafDGK" name="Графічні та семантичні дані Державного земельного кадастру" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDocGrafMK" name="Графічні та семантичні дані Містобудівного кадастру" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sDocM_1_500" name="Актуальну геотопооснову масштабу 1:500 із позначенням бажаних меж запитуваної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocM_1_500" name="Актуальна геотопооснова масштабу 1:500 із позначенням бажаних меж запитуваної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocProekt_Zemleustr" name="Матеріали проекту землеустрою щодо відведення земельної ділянки" type="file"></activiti:formProperty>
         <activiti:formProperty id="sObject_Zem" name="Назва об'єкта що розташований на земельній ділянці" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSvidit_Object" name="Дата і номер Свідоцтва про права власності на нерухомість;(введіть у форматі ХХ.ХХ.ХХХХ №ХХХХХХ)" type="string" required="true"></activiti:formProperty>
@@ -136,6 +136,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerUr_Fiz" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zemlia/Prodaj_Ur_Fiz.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNazvaUr" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
@@ -150,6 +152,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBodyP11" name="[pattern/print/Zemelni_Poslugi/Privitiz_kom_zemla/Pid_zabudov.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -167,6 +170,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerUr_Fiz" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zemlia/Prodaj_Ur_Fiz.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNazvaUr" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
@@ -180,6 +185,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBodyP11" name="[pattern/print/Zemelni_Poslugi/Privitiz_kom_zemla/Na_auktion.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -317,6 +323,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerUr_Fiz" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zemlia/Prodaj_Ur_Fiz.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNazvaUr" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
@@ -325,6 +333,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="accept2" name="Документи надано."></activiti:value>
           <activiti:value id="reject2" name="Документи не надано. Закрити заявку, відправити лист нагадування."></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sBodyP11" name="[pattern/print/Zemelni_Poslugi/Privitiz_kom_zemla/Na_auktion.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -343,6 +353,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerUr_Fiz" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zemlia/Prodaj_Ur_Fiz.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNazvaUr" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
@@ -351,6 +363,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="accept2" name="Документи надано."></activiti:value>
           <activiti:value id="reject2" name="Документи не надано. Закрити заявку, відправити лист нагадування."></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sBodyP11" name="[pattern/print/Zemelni_Poslugi/Privitiz_kom_zemla/Pid_zabudov.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
