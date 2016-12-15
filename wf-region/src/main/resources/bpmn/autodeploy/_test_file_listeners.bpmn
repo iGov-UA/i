@@ -7,7 +7,6 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPostAddress" name="Поштова адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Файл 1" type="file" required="true"></activiti:formProperty>
@@ -68,13 +67,9 @@
         <activiti:formProperty id="clFio" name="Заявник:" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPostAddress" name="Поштова адреса" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asStatus" name="Статус запиту" type="enum" required="true">
-          <activiti:value id="sEnumApprove" name="відкрити виконавче провадження"></activiti:value>
-          <activiti:value id="sEnumDeny" name="відмовити заявнику у відкритті виконавчого провадження"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Файл 5" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Лист-результат" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -92,8 +87,8 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 			Ваше звернення щодо запиту на відкриття виконавчого провадження - розглянуте.</p>
-			<p>Прийнято рішення: enum{[asStatus]}</p>
-			<p>Коментар держслужбовця (за наявності):  ${sComment}</p>
+			<p>Прийнято рішення:
+			<p>Коментар держслужбовця (за наявності):  </p>
 			<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
 			<br />
 			${sPhoneOrgan}<br />
@@ -115,15 +110,9 @@
         <activiti:formProperty id="clFio" name="Заявник:" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPostAddress" name="Поштова адреса" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asStatus2" name="Статус запиту" type="enum" required="true">
-          <activiti:value id="sEnumApprove" name="відкрити виконавче провадження"></activiti:value>
-          <activiti:value id="sEnumDeny" name="відмовити заявнику у відкритті виконавчого провадження"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFile2}, ${nFile3},${nFile4}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
