@@ -103,6 +103,9 @@ public class ProcessController {
         LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         List<Process> result = new ArrayList();
         try {
+            LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!string sID_: " + sID_.trim());
+            sID_ = sID_.trim();
+            if (sID_.length() < 3) {
                 List<String> sIDInValues = new ArrayList<>();
                 sIDInValues.add(sID_);
                 sIDInValues.add(sID_.toLowerCase());
