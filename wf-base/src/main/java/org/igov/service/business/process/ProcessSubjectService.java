@@ -429,6 +429,7 @@ public class ProcessSubjectService {
                 if (anID_PerentAll.contains(nID_ChildLevel)) {
                     // достаем детей детей
                     aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);
+                    LOG.info("aChildLevel_ResultsubjToNodeMap: " + aChildLevel_Result + "nID_ChildLevelPar " +nID_ChildLevel);
                     if (aChildLevel_Result != null && !aChildLevel_Result.isEmpty()) {
                         LOG.info("nID_ChildLevel1: " + nID_ChildLevel + " aChildLevel_Result: "
                                 + aChildLevel_Result.size()+ " aChildLevel_Result: "
