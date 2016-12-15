@@ -41,7 +41,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
     @Autowired
     private TaskService taskService;
-    
+
     @Autowired
     private ProminSession_Singleton prominSession_Singleton;
 
@@ -51,7 +51,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
         String sID_Document = getStringFromFieldExpression(this.sID_Document, execution);
 
         LOG.info("Parameters of the task sID_Document:{}", sID_Document);
-        
+
         String sessionId = prominSession_Singleton.getSid_Auth_UkrDoc_SED();
 
         String[] documentIDs = sID_Document.split(":");
@@ -69,6 +69,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
             LOG.info("Ukrdoc response getDocument:" + resp);
             JSONObject respJson = new JSONObject(resp);
             Object content = respJson.get("content");
+            Object actors = respJson.get("actors");
 
             if (content != null) {
 
@@ -76,6 +77,15 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sHead_Document_UkrDoc", name);
                 String text = (String) ((JSONObject) content).get("text");
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sDocument_Body_UkrDoc", text);
+                String actor = (String) ((JSONObject) actors).get("id");
+                runtimeService.setVariable(execution.getProcessInstanceId(), "sDocument_Actor_UkrDoc", actor);
+                JSONArray ratifiers = (JSONArray) ((JSONObject) actors).get("ratifiers");
+                if (ratifiers != null && ratifiers.length() > 0) {
+                    JSONObject ratifier = (JSONObject) ratifiers.get(0);
+                    runtimeService.setVariable(execution.getProcessInstanceId(), "sDocument_Ratifier_UkrDoc", ratifier.get("id"));
+                } else {
+                    runtimeService.setVariable(execution.getProcessInstanceId(), "sDocument_Ratifier_UkrDoc", "None");
+                }
                 try {
                     LOG.info("class: " + ((JSONObject) ((JSONObject) content).get("extensions")).get("files").getClass());
                     JSONArray files = (JSONArray) ((JSONObject) ((JSONObject) content).get("extensions")).get("files");
@@ -91,18 +101,18 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             LOG.info("view_url:" + generalConfig.getURL_UkrDoc_SED() + view_url + " fileName: " + fileName);
                             ResponseEntity<byte[]> responseEntity = new RestRequest().getResponseEntity(generalConfig.getURL_UkrDoc_SED() + view_url, MediaType.APPLICATION_JSON,
                                     StandardCharsets.UTF_8, byte[].class, headers);
-                            LOG.info("Ukrdoc response getContentFile getBody: " + responseEntity.getBody() 
+                            LOG.info("Ukrdoc response getContentFile getBody: " + responseEntity.getBody()
                                     + " getHeaders: " + responseEntity.getHeaders().entrySet());
                             try {
                                 //ByteArrayMultipartFile oByteArrayMultipartFile
                                 //        = new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, "application/octet-stream");
                                 ByteArrayMultipartFile oByteArrayMultipartFile
                                         = new ByteArrayMultipartFile(responseEntity.getBody(), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
-                                
-                                Attachment attachment = taskService.createAttachment(oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(), 
-                                        delegateTask.getId(), execution.getProcessInstanceId(), 
+
+                                Attachment attachment = taskService.createAttachment(oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(),
+                                        delegateTask.getId(), execution.getProcessInstanceId(),
                                         fileNameOrigin, fileName, oByteArrayMultipartFile.getInputStream());
-                          
+
                                 if (attachment != null) {
                                     anID_Attach_UkrDoc.append(attachment.getId()).append(",");
                                     LOG.info("attachment: " + attachment.getId());

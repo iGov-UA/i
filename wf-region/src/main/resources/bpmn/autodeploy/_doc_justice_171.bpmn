@@ -69,57 +69,57 @@
         <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sTable2},${sDoc1}]]></activiti:expression>
+            <activiti:expression>${sTable2},${sDoc1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
             <activiti:string><![CDATA[system_task]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression>${sTable2}</activiti:expression>
           </activiti:field>
           <activiti:field name="sContent">
-            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
+            <activiti:expression>${sContent}</activiti:expression>
           </activiti:field>
           <activiti:field name="sAutorResolution">
-            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
+            <activiti:expression>${sAutorResolution}</activiti:expression>
           </activiti:field>
           <activiti:field name="sTextResolution">
-            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
+            <activiti:expression>${sTextResolution}</activiti:expression>
           </activiti:field>
           <activiti:field name="sDateExecution">
-            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
+            <activiti:expression>${sDateExecution}</activiti:expression>
           </activiti:field>
           <activiti:field name="sTypeDoc">
-            <activiti:expression><![CDATA[${sTypeDoc}]]></activiti:expression>
+            <activiti:expression>${sTypeDoc}</activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Order_GovPublic">
-            <activiti:expression><![CDATA[${sID_Order_GovPublic}]]></activiti:expression>
+            <activiti:expression>${sID_Order_GovPublic}</activiti:expression>
           </activiti:field>
           <activiti:field name="sDateRegistration">
-            <activiti:expression><![CDATA[${sDateRegistration}]]></activiti:expression>
+            <activiti:expression>${sDateRegistration}</activiti:expression>
           </activiti:field>
           <activiti:field name="sDateDoc">
-            <activiti:expression><![CDATA[${sDateDoc}]]></activiti:expression>
+            <activiti:expression>${sDateDoc}</activiti:expression>
           </activiti:field>
           <activiti:field name="sApplicant">
-            <activiti:expression><![CDATA[${sApplicant}]]></activiti:expression>
+            <activiti:expression>${sApplicant}</activiti:expression>
           </activiti:field>
           <activiti:field name="nCountAttach">
-            <activiti:expression><![CDATA[${nCountAttach}]]></activiti:expression>
+            <activiti:expression>${nCountAttach}</activiti:expression>
           </activiti:field>
           <activiti:field name="sNote">
-            <activiti:expression><![CDATA[${sNote}]]></activiti:expression>
+            <activiti:expression>${sNote}</activiti:expression>
           </activiti:field>
           <activiti:field name="asUrgently">
-            <activiti:expression><![CDATA[${asUrgently}]]></activiti:expression>
+            <activiti:expression>${asUrgently}</activiti:expression>
           </activiti:field>
           <activiti:field name="asTypeResolution">
-            <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
+            <activiti:expression>${asTypeResolution}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -150,7 +150,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
+            <activiti:expression>${sDoc1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -185,7 +185,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
+            <activiti:expression>${sDoc1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
