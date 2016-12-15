@@ -518,6 +518,18 @@ public class ProcessSubjectService {
     }
 
     /**
+     * Задать статус и отчет
+     *
+     * @param snID_Process_Activiti
+     * @param sID_ProcessSubjectStatus
+     * @return
+     */
+    public ProcessSubject setProcessSubjectStatusAndReport(String snID_Process_Activiti, String sID_ProcessSubjectStatus, String sReport) {
+        ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByExpected("sID", sID_ProcessSubjectStatus);
+        return processSubjectDao.setProcessSubjectStatusAndReport(snID_Process_Activiti, processSubjectStatus, sReport);
+    }
+
+    /**
      * Задать дату
      *
      * @param snID_Process_Activiti

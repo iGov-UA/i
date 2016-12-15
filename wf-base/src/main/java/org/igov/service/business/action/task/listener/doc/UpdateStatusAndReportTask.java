@@ -18,9 +18,11 @@ import org.springframework.stereotype.Component;
  * @author olga
  */
 @Component("UpdateStatusTask")
-public class UpdateStatusTask implements TaskListener {
+public class UpdateStatusAndReportTask implements TaskListener {
 
     private Expression sID_ProcessSubjectStatus;
+    
+    private Expression sReport; 
 
     @Autowired
     private ProcessSubjectService processSubjectService;
@@ -29,7 +31,10 @@ public class UpdateStatusTask implements TaskListener {
     public void notify(DelegateTask delegateTask) {
         String sID_ProcessSubjectStatus_Value
                 = getStringFromFieldExpression(this.sID_ProcessSubjectStatus, delegateTask.getExecution());
-        processSubjectService.setProcessSubjectStatus(delegateTask.getExecutionId(), sID_ProcessSubjectStatus_Value);
+        
+        String sReport_Value = getStringFromFieldExpression(this.sReport, delegateTask.getExecution());
+        
+        processSubjectService.setProcessSubjectStatusAndReport(delegateTask.getExecutionId(), sID_ProcessSubjectStatus_Value, sReport_Value);
     }
 
 }
