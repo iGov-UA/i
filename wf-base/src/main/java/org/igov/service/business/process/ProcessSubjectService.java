@@ -445,7 +445,7 @@ public class ProcessSubjectService {
                                 }));
                         //если anID_ChildLevel больше 1, то всех ид складываем в лист
                         anID_ChildLevel_Result.addAll(anID_Child);
-                        LOG.info("nID_ChildLevel2-получаем только ид чилдренов: " + anID_ChildLevel_Result + " anID_ChildLevel_Result: "
+                        LOG.info("nID_ChildLevel 2-получаем только ид чилдренов: " + anID_ChildLevel_Result + " anID_ChildLevel_Result: "
                                 + anID_ChildLevel_Result.size());
                         // добавляем детей к общему списку детей
                         result.addAll(aChildLevel_Result);
