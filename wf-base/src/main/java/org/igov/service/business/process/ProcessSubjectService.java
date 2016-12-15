@@ -430,7 +430,7 @@ public class ProcessSubjectService {
                     // достаем детей детей
                     aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);
                     if (aChildLevel_Result != null && !aChildLevel_Result.isEmpty()) {
-                        LOG.info("nID_ChildLevel: " + nID_ChildLevel + " aChildLevel_Result: "
+                        LOG.info("nID_ChildLevel1: " + nID_ChildLevel + " aChildLevel_Result: "
                                 + aChildLevel_Result.size()+ " aChildLevel_Result: "
                                         + aChildLevel_Result);
                         // получаем только ид чилдренов
@@ -441,18 +441,19 @@ public class ProcessSubjectService {
                                         return subjectGroup.getId();
                                     }
                                 }));
-                        LOG.info("nID_ChildLevel: " + anID_ChildLevel_Result + " anID_ChildLevel_Result: "
+                        LOG.info("nID_ChildLevel2: " + anID_ChildLevel_Result + " anID_ChildLevel_Result: "
                                 + anID_ChildLevel_Result.size());
                         // добавляем детей к общему списку детей
                         result.addAll(aChildLevel_Result);
                         subjToNodeMapRes.put(nID_ChildLevel, aChildLevel_Result);
-                        LOG.info("result: " + result.size());
+                        LOG.info("result.addAll: " + result.size());
                     }
                 }
             }
             deepLevelFact++;
             LOG.info("deepLevelFact: " + deepLevelFact + " deepLevelRequested: " + deepLevelRequested);
             if (deepLevelFact < deepLevelRequested.intValue()) {
+            	  LOG.info("aChildLevel_Result: " + aChildLevel_Result + " anID_ChildLevel_Result: " + anID_ChildLevel_Result);
             	getChildrenTree(aChildLevel_Result,anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
                         checkDeepLevel(deepLevelRequested), deepLevelFact, result);
             }
