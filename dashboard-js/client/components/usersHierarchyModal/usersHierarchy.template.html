@@ -1,0 +1,24 @@
+<div ng-show="usersHierarchyOpened" class="table-ng-modal">
+  <div class='users-hierarchy-modal-overlay' ng-click='usersHierarchyOpened=false'></div>
+  <div class='users-hierarchy-modal-dialog' ng-style='dialogStyle'>
+    <div class='users-hierarchy-modal-header'>
+      <div class='users-hierarchy-modal-close' ng-click='usersHierarchyOpened=false'><i class="glyphicon glyphicon-remove"></i></div>
+    </div>
+    <div class='col-md-12 users-hierarchy-modal-dialog-content-view' ng-style='dialogStyle'>
+      <div class='users-hierarchy-modal-dialog-content' ng-if="attachIsLoading">Завантаження користувачiв...</div>
+      <div class='users-hierarchy-modal-dialog-content' ng-if="!attachIsLoading">
+        <div ng-repeat="subject in documentFullHierarchy">
+          <ul>
+            <li ng-repeat="user in subject.aUser" ng-if="subject.sLogin === user.sLogin">
+              <h4>{{user.sFirstName}} {{user.sLastName}} ({{subject.oProcessSubjectStatus.sName}} {{subject.sDateEdit | removeHoursFromDate}})</h4>
+              <span compile-template
+                    data-ng-bind-html="trustAsHtml(subject.sReport)"
+                    style="display: block; margin: 0 5% 0 5%">
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
