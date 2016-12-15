@@ -688,7 +688,7 @@ public class ProcessSubjectService {
         mParamDocument.put("sNote", mParam.get("sNote"));
         mParamDocument.put("asUrgently", mParam.get("asUrgently"));
         mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
-        mParamDocument.put("sTextReport", mParam.get("sTextReport"));
+       // mParamDocument.put("sTextReport", mParam.get("sTextReport"));
 
         //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
         //иначе проверяем на необходимость редактирования
