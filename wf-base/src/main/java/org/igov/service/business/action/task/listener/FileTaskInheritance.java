@@ -42,8 +42,6 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
         DelegateExecution oExecution = oTask.getExecution();
 
-        LOG.info("notify");
-
         List<Attachment> asID_Attachment_ToAdd = null;
         try {
             LOG.info("Inside fileTaskInheritance; this.aFieldInheritedAttachmentID={}", this.aFieldInheritedAttachmentID);
