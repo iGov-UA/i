@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -224,9 +225,18 @@ public class SubjectMessageService {
         LOG.info("(createSubjectMessage: message subject Id{})", message.getId_subject());
         SubjectContact oSubjectContact = (subjectContact == null) ? null : subjectContact;
         message.setoMail(oSubjectContact);
-        //if(oSubjectContact==null){
-        message.setMail(sMail == null ? "" : sMail);
-        //}
+
+        List<SubjectMessage> subjectMessagesList = subjectMessageDao.findAll();
+        List<String> subjectMessagesMails = new LinkedList<>();
+        for (SubjectMessage subjectMessage:
+             subjectMessagesList) {
+            subjectMessagesMails.add(subjectMessage.getMail());
+        }
+
+        if(!subjectMessagesMails.contains(sMail))
+            message.setMail(sMail == null ? "" : sMail);
+
+
         message.setContacts((sContacts == null) ? "" : sContacts);
         message.setData((sData == null) ? "" : sData);
         message.setDate(new DateTime());
