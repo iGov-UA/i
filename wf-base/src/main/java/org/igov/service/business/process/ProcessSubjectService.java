@@ -424,12 +424,13 @@ public class ProcessSubjectService {
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
         LOG.info("anID_PerentAll: " + anID_PerentAll);
         LOG.info("aChildLevel: " + aChildLevel.size() + " anID_ChildLevel: " + anID_ChildLevel);
-        if (deepLevelFact < deepLevelRequested.intValue()) {
+        if (deepLevelFact <= deepLevelRequested.intValue()) {
             for (Long nID_ChildLevel : anID_ChildLevel) {
                 if (anID_PerentAll.contains(nID_ChildLevel)) {
+                	 LOG.info("anID_PerentAll.contains(nID_ChildLevel): " + nID_ChildLevel);
                     // достаем детей детей
                     aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);
-                    LOG.info("aChildLevel_ResultsubjToNodeMap: " + aChildLevel_Result + "nID_ChildLevelPar " +nID_ChildLevel);
+                    LOG.info("aChildLevel_ResultsubjToNodeMap достаем детей детей: " + aChildLevel_Result + "nID_ChildLevelPar " +nID_ChildLevel);
                     if (aChildLevel_Result != null && !aChildLevel_Result.isEmpty()) {
                         LOG.info("nID_ChildLevel1: " + nID_ChildLevel + " aChildLevel_Result: "
                                 + aChildLevel_Result.size()+ " aChildLevel_Result: "
@@ -442,19 +443,20 @@ public class ProcessSubjectService {
                                         return subjectGroup.getId();
                                     }
                                 }));
-                        LOG.info("nID_ChildLevel2: " + anID_ChildLevel_Result + " anID_ChildLevel_Result: "
+                        LOG.info("nID_ChildLevel2-получаем только ид чилдренов: " + anID_ChildLevel_Result + " anID_ChildLevel_Result: "
                                 + anID_ChildLevel_Result.size());
                         // добавляем детей к общему списку детей
                         result.addAll(aChildLevel_Result);
+                        LOG.info("result.addAll добавляем детей к общему списку детей: " + aChildLevel_Result);
                         subjToNodeMapRes.put(nID_ChildLevel, aChildLevel_Result);
-                        LOG.info("result.addAll: " + result.size());
+                        LOG.info("subjToNodeMapRes.put: " + nID_ChildLevel + "aChildLevel_Result " +aChildLevel_Result);
                     }
                 }
             }
             deepLevelFact++;
-            LOG.info("deepLevelFact: " + deepLevelFact + " deepLevelRequested: " + deepLevelRequested);
-            if (deepLevelFact < deepLevelRequested.intValue()) {
-            	  LOG.info("aChildLevel_Result: " + aChildLevel_Result + " anID_ChildLevel_Result: " + anID_ChildLevel_Result);
+            LOG.info("deepLevelFactttt: " + deepLevelFact + " deepLevelRequestedddd: " + deepLevelRequested);
+            if (deepLevelFact <= deepLevelRequested.intValue()) {
+            	  LOG.info("aChildLevel_Resultttttttt: " + aChildLevel_Result + " anID_ChildLevel_Result+t+t+: " + anID_ChildLevel_Result);
             	getChildrenTree(aChildLevel_Result,anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
                         checkDeepLevel(deepLevelRequested), deepLevelFact, result);
             }
