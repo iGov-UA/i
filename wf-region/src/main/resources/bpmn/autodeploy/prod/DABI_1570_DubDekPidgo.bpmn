@@ -242,7 +242,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk_dabi}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}.</activiti:expression>
@@ -361,8 +361,8 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/DABI/DABI_1570_DubDekPidgo.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="print_marker" name="print_marker" type="markers" default="${markerService.loadFromFile('AK/Print_ur_fiz.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -458,7 +458,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>ДАБІ обробила заяву. Для видачі Вам надіслано відповідь. ${sPosluga_name}</activiti:expression>

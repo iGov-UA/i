@@ -5,7 +5,7 @@
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган який надасть вам відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTextZaiInfo" name=" " type="label" default="Інформація про заявника"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище завника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я завника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові завника" type="string" required="true"></activiti:formProperty>
@@ -22,6 +22,17 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdresBud" name="Адреса бідівництва" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markerDubDek" name="DubDek" type="markers" default="${markerService.loadFromFile('DABI/DubDek.json')}"></activiti:formProperty>
+        <activiti:formProperty id="asPrichDub" name="Що трапилося з оригіналом документу?" type="enum" required="true">
+          <activiti:value id="sEnamVracheno" name="Документ втрачено"></activiti:value>
+          <activiti:value id="sEnamPoshkodjeno" name="Документ пошкоджено, що робить неможливим його використання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDocDekPoshkod" name="Фотодоказ пошкодженого оригіналу декларації" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocDekVtrat" name="Докази розміщення у ЗМІ повідомлення про втрату декларації" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDekDate" name="Дата видачі оригіналу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDekNumber" name="Номер оригіналу документу" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
@@ -88,9 +99,23 @@ execution.setVariable('sSum', sum);
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddressRegistr" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdresBud" name="Адреса бідівництва; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asPrichDub" name="Що трапилося з оригіналом документу?" type="enum" writable="false">
+          <activiti:value id="sEnamVracheno" name="Документ втрачено"></activiti:value>
+          <activiti:value id="sEnamPoshkodjeno" name="Документ пошкоджено, що робить неможливим його використання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDekDate" name="Дата видачі оригіналу; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDekNumber" name="Номер оригіналу документу; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${sDocDekVtrat},${sDocDekPoshkod}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow34" name="ПОШТА" sourceRef="exclusivegateway4" targetRef="usertask5">
@@ -313,9 +338,18 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddressRegistr" name="Домашня адреса; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="sAdresBud" name="Адреса бідівництва; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asPrichDub" name="Що трапилося з оригіналом документу?" type="enum" writable="false">
+          <activiti:value id="sEnamVracheno" name="Документ втрачено"></activiti:value>
+          <activiti:value id="sEnamPoshkodjeno" name="Документ пошкоджено, що робить неможливим його використання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDekDate" name="Дата видачі оригіналу; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDekNumber" name="Номер оригіналу документу; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="asVidpovid" name="Як заявник хочете отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
@@ -326,6 +360,15 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/DABI/DABI_1572_DubDoz4kat.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="print_marker" name="print_marker" type="markers" default="${markerService.loadFromFile('AK/Print_ur_fiz.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${sDocDekVtrat},${sDocDekPoshkod}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
@@ -418,7 +461,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>ДГК обробив заяву. Для видачі Вам надіслано відповідь. ${sPosluga_name}</activiti:expression>
+          <activiti:expression>ДАБІ обробила заяву. Для видачі Вам надіслано відповідь. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -441,7 +484,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddressRegistr" name="Домашня адреса; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
@@ -689,7 +732,7 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdi:waypoint x="392.0" y="97.0"></omgdi:waypoint>
         <omgdi:waypoint x="392.0" y="123.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="39.0" x="282.0" y="53.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="39.0" x="338.0" y="93.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
