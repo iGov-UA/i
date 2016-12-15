@@ -79,6 +79,9 @@ public class ProcessSubjectService {
 
     @Autowired
     private ProcessSubjectStatusDao processSubjectStatusDao;
+    
+  //Мапа для укладывания ид родителя и его детей в методе получения иерархии  getChildrenTree
+    Map<Long, List<ProcessSubject>> getChildrenTreeRes = new HashMap<>();
 
     public ProcessSubjectResult getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel, String sFind) {
 
@@ -198,7 +201,6 @@ public class ProcessSubjectService {
      * @return
      */
     public ProcessSubjectResultTree getCatalogProcessSubjectTree(String snID_Process_Activiti, Long deepLevel, String sFind) {
-
         List<ProcessSubject> aChildResult = new ArrayList();
         List<ProcessSubjectTree> processSubjectRelations = new ArrayList<>(baseEntityDao.findAll(ProcessSubjectTree.class));
         List<ProcessSubjectParentNode> parentProcessSubjects = new ArrayList<>();
@@ -256,11 +258,11 @@ public class ProcessSubjectService {
                         }
                     }));
             aChildResult.addAll(children);
-           // hierarchyProcessSubject.put(groupFiltr, children);
+            
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
-           LOG.info("subjToNodeMapppppppppppppp " + subjToNodeMap);
-           LOG.info("hierarchyProcessSubjecttttttttt " + hierarchyProcessSubject);
-           LOG.info("aChildResulttttttttttttt " + aChildResult);
+           LOG.info("subjToNodeMap " + subjToNodeMap);
+           LOG.info("hierarchyProcessSubject " + hierarchyProcessSubject);
+           LOG.info("aChildResult " + aChildResult);
         }
 
         List<ProcessSubject> aChildResultByUser = new ArrayList<>();
@@ -377,13 +379,14 @@ public class ProcessSubjectService {
                         LOG.info("nID_ChildLevel: " + nID_ChildLevel + " aChildLevel_Result: "
                                 + aChildLevel_Result.size());
                         // получаем только ид чилдренов
-                        anID_ChildLevel_Result = Lists.newArrayList(
+                        List<Long> anID_Child = Lists.newArrayList(
                                 Collections2.transform(aChildLevel_Result, new Function<ProcessSubject, Long>() {
                                     @Override
                                     public Long apply(ProcessSubject subjectGroup) {
                                         return subjectGroup.getId();
                                     }
                                 }));
+                        anID_ChildLevel_Result.addAll(anID_Child);
                         LOG.info("nID_ChildLevel: " + nID_ChildLevel + " anID_ChildLevel_Result: "
                                 + anID_ChildLevel_Result.size());
                         // добавляем детей к общему списку детей
@@ -416,26 +419,18 @@ public class ProcessSubjectService {
      * @param result
      * @return
      */
-    Map<Long, List<ProcessSubject>> subjToNodeMapRes = new HashMap<>();
+    
     public Map<Long, List<ProcessSubject>> getChildrenTree(List<ProcessSubject> aChildLevel, List<Long> anID_ChildLevel,
             Map<Long, List<ProcessSubject>> subjToNodeMap, Set<Long> anID_PerentAll, Long deepLevelRequested,
             int deepLevelFact, List<ProcessSubject> result) {
-    	
         List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
-        LOG.info("anID_PerentAll: " + anID_PerentAll);
-        LOG.info("aChildLevel: " + aChildLevel.size() + " anID_ChildLevel: " + anID_ChildLevel);
         if (deepLevelFact < deepLevelRequested.intValue()) {
             for (Long nID_ChildLevel : anID_ChildLevel) {
                 if (anID_PerentAll.contains(nID_ChildLevel)) {
-                	 LOG.info("anID_PerentAll.contains(nID_ChildLevel): " + nID_ChildLevel);
                     // достаем детей детей
                     aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);
-                    LOG.info("aChildLevel_ResultsubjToNodeMap достаем детей детей: " + aChildLevel_Result + "nID_ChildLevelPar " +nID_ChildLevel);
                     if (aChildLevel_Result != null && !aChildLevel_Result.isEmpty()) {
-                        LOG.info("nID_ChildLevel1: " + nID_ChildLevel + " aChildLevel_Result: "
-                                + aChildLevel_Result.size()+ " aChildLevel_Result: "
-                                        + aChildLevel_Result);
                         // получаем только ид чилдренов
                         List<Long> anID_Child = Lists.newArrayList(
                                 Collections2.transform(aChildLevel_Result, new Function<ProcessSubject, Long>() {
@@ -446,25 +441,19 @@ public class ProcessSubjectService {
                                 }));
                         //если anID_ChildLevel больше 1, то всех ид складываем в лист
                         anID_ChildLevel_Result.addAll(anID_Child);
-                        LOG.info("nID_ChildLevel 2-получаем только ид чилдренов: " + anID_ChildLevel_Result + " anID_ChildLevel_Result: "
-                                + anID_ChildLevel_Result.size());
                         // добавляем детей к общему списку детей
                         result.addAll(aChildLevel_Result);
-                        LOG.info("result.addAll добавляем детей к общему списку детей: " + aChildLevel_Result);
-                        subjToNodeMapRes.put(nID_ChildLevel, aChildLevel_Result);
-                        LOG.info("subjToNodeMapRes.put: " + nID_ChildLevel + "aChildLevel_Result " +aChildLevel_Result);
+                        getChildrenTreeRes.put(nID_ChildLevel, aChildLevel_Result);
                     }
                 }
             }
             deepLevelFact++;
-            LOG.info("deepLevelFactttt: " + deepLevelFact + " deepLevelRequestedddd: " + deepLevelRequested);
             if (deepLevelFact < deepLevelRequested.intValue()) {
-            	  LOG.info("aChildLevel_Resultttttttt: " + aChildLevel_Result + " anID_ChildLevel_Result+t+t+: " + anID_ChildLevel_Result);
             	getChildrenTree(aChildLevel_Result,anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
                         checkDeepLevel(deepLevelRequested), deepLevelFact, result);
             }
         }
-        return subjToNodeMapRes;
+        return getChildrenTreeRes;
     }
 
     /**
