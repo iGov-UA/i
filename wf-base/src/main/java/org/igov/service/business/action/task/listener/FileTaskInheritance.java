@@ -32,7 +32,6 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
     @Autowired
     GeneralConfig generalConfig;
 
-
     //Issue #1441
     @Autowired
     FileTaskUploadListener fileTaskUploadListener;
@@ -59,7 +58,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             addAttachmentsToCurrentTask(asID_Attachment_ToAdd, oTask);*/
 
             //Issue #1441: we need to keep list of attachments to current task in order to properly
-            List<Attachment> currentAttachments = fileTaskUploadListener.getaAttachmentList();
+            List<Attachment> currentAttachments = fileTaskUploadListener.getaAttachment();
             LOG.info("Current attachments size: {}", currentAttachments.size());
 
             for(Attachment attachment: currentAttachments) {
