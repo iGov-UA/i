@@ -778,7 +778,7 @@ public class ProcessSubjectService {
                 }
 
                 if (continueFlag == false) {
-                    ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(mParamDocument.get("sTaskProcessDefinition"), mParamTask);
+                    ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey((String)mParamDocument.get("sTaskProcessDefinition"), mParamTask);
                     LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                     if (oProcessInstanceChild != null) {
                         ProcessSubject oProcessSubjectChild = processSubjectDao
