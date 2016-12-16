@@ -190,7 +190,7 @@ public class DocumentStepService {
                     + sKey_Step_Document);
         }
         DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Source = oDocumentStep_Active.getRights();
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Source = new LinkedList(oDocumentStep_Active.getRights());
         for(DocumentStepSubjectRight oDocumentStepSubjectRight_Source : aDocumentStepSubjectRight_Source){
             if(sKey_GroupPostfix.equals(oDocumentStepSubjectRight_Source.getsKey_GroupPostfix())){
                 oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_GroupPostfix_New);
