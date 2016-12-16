@@ -134,7 +134,7 @@ public class DocumentStepService {
 //setDocumentStep(snID_Process_Activiti[, sKey_Step)]    
 //3.1) setDocumentStepSubjectRight(snID_Process_Activiti, sKey_GroupPostfix, bWrite) //Установить право записи, равное bWrite, для ветки к путем sKey_Step/sKey_GroupPostfix
 //3.2) cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New) //Клонировать ветку права записи с путем sKey_Step/sKey_GroupPostfix в ветку с путем 
-    public List<Map<String, Object>> cloneDocumentStepSubject(String snID_Process_Activiti, String sKey_GroupPostfix, String sKey_GroupPostfix_New) {//JSONObject //Map<String, Object>
+    public DocumentStepSubjectRight cloneDocumentStepSubject(String snID_Process_Activiti, String sKey_GroupPostfix, String sKey_GroupPostfix_New) {//JSONObject //Map<String, Object>
         LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sKey_GroupPostfix_New={}", sKey_GroupPostfix, snID_Process_Activiti, sKey_GroupPostfix_New);
         List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
         if (aTaskActive.size() < 1 || aTaskActive.get(0) == null) {
@@ -189,12 +189,10 @@ public class DocumentStepService {
             throw new IllegalStateException("There is no active Document Step, process variable sKey_Step_Document="
                     + sKey_Step_Document);
         }
-        
+        DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Source = oDocumentStep_Active.getRights();
         for(DocumentStepSubjectRight oDocumentStepSubjectRight_Source : aDocumentStepSubjectRight_Source){
             if(sKey_GroupPostfix.equals(oDocumentStepSubjectRight_Source.getsKey_GroupPostfix())){
-                
-                DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
                 oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_GroupPostfix_New);
                 oDocumentStepSubjectRight.setbWrite(oDocumentStepSubjectRight_Source.getbWrite());
                 Object sName = oDocumentStepSubjectRight_Source.getsName(); //oGroup.opt("sName");
@@ -223,9 +221,7 @@ public class DocumentStepService {
             }
             
         }
-        
-        
-        return null;
+        return oDocumentStepSubjectRight;
     }
 
     private List<DocumentStepSubjectRightField> mapToFields(JSONObject group, DocumentStepSubjectRight rightForGroup) {
