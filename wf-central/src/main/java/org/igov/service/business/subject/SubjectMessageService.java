@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -102,12 +101,19 @@ public class SubjectMessageService {
                 } catch (Exception e) {
                     LOG.warn("Error occured while syncing mail {}", e.getMessage());
                 }
-                if (subjectContact != null) {
+                if (subjectContact != null && subjectContact.getSubjectContactType().getsName_EN().equals("Email")) {
                     LOG.info("(syncMail with nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                             subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
                             subjectContact.getsDate(), subjectContact.getsValue());
                 } else {
-                    LOG.info("(syncMail with nID_Subject after calling method: SubjectContact null)");
+                    if(subjectContact != null) {
+                        subjectContact.setSubjectContactType(createEmailSubjectContactType());
+                    }
+                    else {
+                        LOG.info("(syncMail with nID_Subject after calling method: SubjectContact null)");
+                        saveNewSubjectContactInstance(sMail, subject, subjectContact);
+                        LOG.info("Now SubjectContact is not null");
+                    }
                 }
 
             }
@@ -169,6 +175,23 @@ public class SubjectMessageService {
         return message;
     }
 
+    private SubjectContactType createEmailSubjectContactType() {
+        SubjectContactType subjectContactType = new SubjectContactType();
+        subjectContactType.setsName_EN("Email");
+        subjectContactType.setsName_RU("Электнонный адрес");
+        subjectContactType.setsName_UA("Електрона адреса");
+        return subjectContactType;
+    }
+
+    private void saveNewSubjectContactInstance(String sMail, Subject subject, SubjectContact subjectContact) {
+        subjectContact = new SubjectContact();
+        subjectContact.setsValue(sMail);
+        subjectContact.setSubjectContactType(createEmailSubjectContactType());
+        subjectContact.setSubject(subject);
+        subjectContact.setsDate();
+        subjectContactDao.saveOrUpdate(subjectContact);
+    }
+
     /*issue1215 Перегружен ради добавлениия нового параметра (sSubjectInfo) в /setTaskQuestions, чтобы не рушить
     существующие сервисыБ которые используют этот метод  */
     public SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
@@ -226,15 +249,15 @@ public class SubjectMessageService {
         SubjectContact oSubjectContact = (subjectContact == null) ? null : subjectContact;
         message.setoMail(oSubjectContact);
 
-        List<SubjectMessage> subjectMessagesList = subjectMessageDao.findAll();
-        List<String> subjectMessagesMails = new LinkedList<>();
-        for (SubjectMessage subjectMessage:
-             subjectMessagesList) {
-            subjectMessagesMails.add(subjectMessage.getMail());
-        }
-
-        if(!subjectMessagesMails.contains(sMail))
-            message.setMail(sMail == null ? "" : sMail);
+//        List<SubjectMessage> subjectMessagesList = subjectMessageDao.findAll();
+//        List<String> subjectMessagesMails = new LinkedList<>();
+//        for (SubjectMessage subjectMessage:
+//             subjectMessagesList) {
+//            subjectMessagesMails.add(subjectMessage.getMail());
+//        }
+//
+//        if(!subjectMessagesMails.contains(sMail))
+//            message.setMail(sMail == null ? "" : sMail);
 
 
         message.setContacts((sContacts == null) ? "" : sContacts);
@@ -263,8 +286,8 @@ public class SubjectMessageService {
             messageFeedback.setsID_Source(sID_Source);
             messageFeedback.setsAuthorFIO(sAuthorFIO);
             messageFeedback.setsMail(sMail);
-            messageFeedback.getoSubjectMessage().setHead(sHead);
-            messageFeedback.getoSubjectMessage().setBody(sBody);
+            //messageFeedback.getoSubjectMessage().setHead(sHead);
+            //messageFeedback.getoSubjectMessage().setBody(sBody);
             messageFeedback.setsPlace(sPlace);
             messageFeedback.setsEmployeeFIO(sEmployeeFIO);
             messageFeedback.setnID_Rate(nID_Rate);
@@ -299,8 +322,8 @@ public class SubjectMessageService {
                 messageFeedback.setsID_Source(sID_Source);
                 messageFeedback.setsAuthorFIO(sAuthorFIO);
                 messageFeedback.setsMail(sMail);
-                messageFeedback.getoSubjectMessage().setHead(sHead);
-                messageFeedback.getoSubjectMessage().setBody(sBody);
+                //messageFeedback.getoSubjectMessage().setHead(sHead);
+                //messageFeedback.getoSubjectMessage().setBody(sBody);
                 messageFeedback.setsPlace(sPlace);
                 messageFeedback.setsEmployeeFIO(sEmployeeFIO);
                 messageFeedback.setnID_Rate(nID_Rate);

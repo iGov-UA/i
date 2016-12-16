@@ -2011,7 +2011,11 @@ public class ActionTaskService {
            LOG.info(String.format("No attachments in the Task [id = '%s']", nID_Task));
         } else {
             List<String> attachmetIDs = new ArrayList<>();
+            int index = 0;
             for (Attachment attachment : attachments){
+                    if(attachment.getDescription() == null || attachment.getDescription().equals("")){
+                        attachment.setDescription("Завантажений файл " + (++index));
+                    }
                 attachmetIDs.add(attachment.getId());
             }
             LOG.info("Task attachments: " + attachmetIDs.toString());

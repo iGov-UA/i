@@ -20,7 +20,6 @@
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
-      
         <activiti:formProperty id="asCreateOutcomingLetter" name="Поставьте галочку, якщо бажаєте перейти на інший крок процесу; ;sID_CheckboxTrue=sEnumCreateOutcomingLetter" type="enum" default="sEnumNotCreateOutcomingLetter">
           <activiti:value id="sEnumCreateOutcomingLetter" name="сформувати"></activiti:value>
           <activiti:value id="sEnumNotCreateOutcomingLetter" name="не треба формувати поки що"></activiti:value>
@@ -29,7 +28,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression>${sTable2}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -38,20 +37,21 @@
             <activiti:string><![CDATA[_doc_system_task_justice_incoming]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression>${sTable2}</activiti:expression>
           </activiti:field>
           <activiti:field name="sContent">
-            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
+            <activiti:expression>${sContent}</activiti:expression>
           </activiti:field>
           <activiti:field name="sDateRegistration">
-            <activiti:expression><![CDATA[${sDateRegistration}]]></activiti:expression>
+            <activiti:expression>${sDateRegistration}</activiti:expression>
           </activiti:field>
            <activiti:field name="sAutorResolution">
-            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
+            <activiti:expression>${sAutorResolution}</activiti:expression>
           </activiti:field>
          <activiti:field name="sDateExecution">
-            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
+            <activiti:expression>${sDateExecution}</activiti:expression>
           </activiti:field>
+          
         </activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -63,7 +63,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression>${sTable2}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>

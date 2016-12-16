@@ -54,8 +54,6 @@ public class SetTasks implements TaskListener {
         String sContent_Value
                 = getStringFromFieldExpression(this.sContent, delegateTask.getExecution());
         /*
-        String sTextResolution_Value
-                = getStringFromFieldExpression(this.sTextResolution, delegateTask.getExecution());
         
         String sTypeDoc_Value
                 = getStringFromFieldExpression(this.sTypeDoc, delegateTask.getExecution());
@@ -68,6 +66,9 @@ public class SetTasks implements TaskListener {
                 = getStringFromFieldExpression(this.sAutorResolution, delegateTask.getExecution());
         String sDateExecution_Value
                 = getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution());
+        String sTextResolution_Value
+                = getStringFromFieldExpression(this.sTextResolution, delegateTask.getExecution());
+        
         /*String sDateDoc_Value
                 = getStringFromFieldExpression(this.sDateDoc, delegateTask.getExecution());
         String sApplicant_Value
@@ -88,12 +89,13 @@ public class SetTasks implements TaskListener {
         mParam.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
         mParam.put("sID_Attachment", sID_Attachment_Value);
         mParam.put("sContent", sContent_Value);
-        //mParam.put("sTextResolution", sTextResolution_Value);
         //mParam.put("sTypeDoc", sTypeDoc_Value);
         //mParam.put("sID_Order_GovPublic", sID_Order_GovPublic_Value);
         mParam.put("sDateRegistration", sDateRegistration_Value);
         mParam.put("sAutorResolution", sAutorResolution_Value);
         mParam.put("sDateExecution", sDateExecution_Value);
+        mParam.put("sTextResolution", sTextResolution_Value);
+        
         //mParam.put("sDateDoc", sDateDoc_Value);
         //mParam.put("sApplicant", sApplicant_Value);
         //mParam.put("nCountAttach", snCountAttach_Value);
@@ -104,7 +106,7 @@ public class SetTasks implements TaskListener {
         
         /*processSubjectService.setProcessSubjects(sTaskProcessDefinition_Value, sID_Attachment_Value, sContent_Value, 
                 sAutorResolution_Value, sTextResolution_Value, sDateExecution_Value, delegateTask.getExecution().getId());*/
-        
+        LOG.info("SetTasks start with param..." + mParam);
         processSubjectService.setProcessSubjects(mParam, delegateTask.getExecution().getId());
                 
         LOG.info("SetTasks finished");
