@@ -21,6 +21,7 @@
           <activiti:value id="sEnumUrgentDoc" name="з ЕЦП"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Задача" activiti:candidateGroups="${sLogin_isExecute}">
@@ -54,7 +55,6 @@
           <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
           <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" required="true">
@@ -131,6 +131,9 @@
           </activiti:field>
           <activiti:field name="asTypeResolution">
             <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
+          </activiti:field>
+           <activiti:field name="sTextResolution">
+            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>

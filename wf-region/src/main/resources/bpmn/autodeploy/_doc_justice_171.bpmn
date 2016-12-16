@@ -73,7 +73,7 @@
         <activiti:formProperty id="cloneDocumentStepSubject" name="cloneDocumentStepSubject" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1}</activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -82,48 +82,51 @@
             <activiti:string><![CDATA[system_task]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression>${sTable2}</activiti:expression>
+            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sContent">
-            <activiti:expression>${sContent}</activiti:expression>
+            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sAutorResolution">
-            <activiti:expression>${sAutorResolution}</activiti:expression>
+            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sTextResolution">
-            <activiti:expression>${sTextResolution}</activiti:expression>
+            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateExecution">
-            <activiti:expression>${sDateExecution}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sTypeDoc">
-            <activiti:expression>${sTypeDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${sTypeDoc}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Order_GovPublic">
-            <activiti:expression>${sID_Order_GovPublic}</activiti:expression>
+            <activiti:expression><![CDATA[${sID_Order_GovPublic}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateRegistration">
-            <activiti:expression>${sDateRegistration}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateRegistration}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateDoc">
-            <activiti:expression>${sDateDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateDoc}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sApplicant">
-            <activiti:expression>${sApplicant}</activiti:expression>
+            <activiti:expression><![CDATA[${sApplicant}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="nCountAttach">
-            <activiti:expression>${nCountAttach}</activiti:expression>
+            <activiti:expression><![CDATA[${nCountAttach}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sNote">
-            <activiti:expression>${sNote}</activiti:expression>
+            <activiti:expression><![CDATA[${sNote}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="asUrgently">
-            <activiti:expression>${asUrgently}</activiti:expression>
+            <activiti:expression><![CDATA[${asUrgently}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="asTypeResolution">
-            <activiti:expression>${asTypeResolution}</activiti:expression>
+            <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener>
+           <activiti:field name="sTextResolution">
+            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
+          </activiti:field>
+       </activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2_yellow" name="Основний виконавець - формування ітогового документу" activiti:assignee="justice_common">
@@ -147,12 +150,15 @@
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
+         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
+      
         <activiti:formProperty id="sReport" name="Текст звіту про виконання" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Електронна форма документа" type="file"></activiti:formProperty>
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1}</activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -178,6 +184,8 @@
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
+      
         <activiti:formProperty id="asDecision" name="Прийняття рішення про виконання завдання" type="enum" required="true">
           <activiti:value id="sEnumDecisionYes" name="Завдання виконано - сформувати вихідний документ"></activiti:value>
           <activiti:value id="sEnumDecisionNo" name="Повернути документ на доопрацювання"></activiti:value>
@@ -187,12 +195,44 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1}</activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1},${sDoc2}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask4" name="Канцелярія - формування вихідного листа" activiti:assignee="justice_common"></userTask>
+    <userTask id="usertask4" name="Канцелярія - формування вихідного листа" activiti:assignee="justice_common">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Вхідний номер" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumberRegistration2" name="Реєстраційний номер документа" type="string" variable="sID_Order_GovPublic" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration2" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sApplicant2" name="Кореспондент" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Підготував" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTable4" name="Підписав" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTable5" name="Виконавець" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sContent2" name="Короткий зміст документа" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNote2" name="Примітка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" required="true">
+          <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
+          <activiti:value id="sEnum2" name="нарочно"></activiti:value>
+          <activiti:value id="sEnum3" name="самостійно"></activiti:value>
+          <activiti:value id="sEnum4" name="електронною поштою та поштою"></activiti:value>
+          <activiti:value id="sEnum5" name="електронною поштою"></activiti:value>
+          <activiti:value id="sEnum6" name="замовленою кореспонденцією"></activiti:value>
+          <activiti:value id="sEnum7" name="рекомендованим листом з повідомленням"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc3" name="Електронна форма документа" type="file" required="true"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${sDoc1},${sDoc2}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <endEvent id="endevent1" name="End"></endEvent>
     <scriptTask id="scripttask1" name="4 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -272,8 +312,7 @@ var cloneDocumentStepSubject = documentStepService.cloneDocumentStepSubject(snID
 execution.setVariable('cloneDocumentStepSubject', cloneDocumentStepSubject)
 java.lang.System.out.println("HELLO");</script>
     </scriptTask>
-    <sequenceFlow id="flow38" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
-    <sequenceFlow id="flow39" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_171">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_171" id="BPMNPlane__doc_justice_171">
@@ -349,11 +388,7 @@ java.lang.System.out.println("HELLO");</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
         <omgdi:waypoint x="491.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="575.0" y="84.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="641.0" y="42.0"></omgdi:waypoint>
-        <omgdi:waypoint x="725.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
