@@ -104,7 +104,7 @@ public class SetTasks implements TaskListener {
         
         /*processSubjectService.setProcessSubjects(sTaskProcessDefinition_Value, sID_Attachment_Value, sContent_Value, 
                 sAutorResolution_Value, sTextResolution_Value, sDateExecution_Value, delegateTask.getExecution().getId());*/
-        
+        LOG.info("SetTasks start with param..." + mParam);
         processSubjectService.setProcessSubjects(mParam, delegateTask.getExecution().getId());
                 
         LOG.info("SetTasks finished");
