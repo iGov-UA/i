@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
  * @author olga
  */
 @Component("UpdateStatusTask")
-public class UpdateStatusAndReportTask implements TaskListener {
+public class UpdateStatusTask implements TaskListener {
 
     private Expression sID_ProcessSubjectStatus;
     
