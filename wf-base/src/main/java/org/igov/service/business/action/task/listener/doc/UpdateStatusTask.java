@@ -28,7 +28,7 @@ public class UpdateStatusTask implements TaskListener {
     
     private Expression sReport; 
         
-    static final transient Logger LOG = LoggerFactory.getLogger(UpdateStatusAndReportTask.class);
+    static final transient Logger LOG = LoggerFactory.getLogger(UpdateStatusTask.class);
 
     @Autowired
     private ProcessSubjectService processSubjectService;
