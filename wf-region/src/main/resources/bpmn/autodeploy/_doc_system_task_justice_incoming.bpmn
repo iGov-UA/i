@@ -71,19 +71,20 @@
          <activiti:field name="sDateExecution">
             <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
           </activiti:field>
-            <activiti:field name="sReport">
-            <activiti:expression><![CDATA[${sReport}]]></activiti:expression>
-          </activiti:field>
         </activiti:taskListener>
-        </extensionElements>
-    </userTask>
-    <endEvent id="endevent1" name="End">
-      <extensionElements>
         <activiti:executionListener event="complete" delegateExpression="${UpdateStatusTask}">
           <activiti:field name="sID_ProcessSubjectStatus">
             <activiti:string><![CDATA[closed]]></activiti:string>
           </activiti:field>
+              <activiti:field name="sReport">
+            <activiti:expression><![CDATA[${sReport}]]></activiti:expression>
+          </activiti:field>
         </activiti:executionListener>
+        </extensionElements>
+    </userTask>
+    <endEvent id="endevent1" name="End">
+      <extensionElements>
+   
       </extensionElements>
     </endEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
