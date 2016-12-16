@@ -184,7 +184,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           scope.slotsLoading = false;
           ErrorsFactory.push({
             type: 'danger',
-            text: 'В полі ' + sID_Type_ID + ' прописаний підтримуваний тип для поля queueData: ' + scope.formData.params[sID_Type_ID].value
+            text: 'В полі ' + sID_Type_ID + ' прописаний непідтримуваний тип для поля queueData: ' + scope.formData.params[sID_Type_ID].value
           });
           console.error('slotsData for field id [' + this.property.id + '] not loading');
           return;
