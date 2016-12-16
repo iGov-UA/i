@@ -42,7 +42,7 @@ module.exports.getDocumentAbstract = function (req, res) {
   if (req.params.sPass) oParams['sPass'] = req.params.sPass;
 
   var r = request(buildGetRequest(req, '/document/getDocumentAbstract', oParams));
-  
+
   req.pipe(r).on('response', function (response) {
     response.headers['content-type'] = 'application/octet-stream';
   }).pipe(res);
