@@ -63,11 +63,13 @@
           <activiti:value id="unactual" name="Неактуально"></activiti:value>
           <activiti:value id="delegated" name="Делегування іншому виконавцю"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="asReport" name="Якщо треба додати коментарій до звіту - поставте галочку; ;sID_CheckboxTrue=sEnumRepotYes" type="enum">
           <activiti:value id="sEnumRepotYes" name="потрібно додати коментарій"></activiti:value>
           <activiti:value id="sEnumReportNo" name="коментарій до звіту не потрібен"></activiti:value>
         </activiti:formProperty>
-  
+   		<activiti:formProperty id="sReport" name="Текст звіту про виконання" type="textArea"></activiti:formProperty>
+		<activiti:formProperty id="markers9" name="додати текст звіту" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sReport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asReport&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRepotYes'||[sClient] == 'потрібно додати коментарій'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot; }]}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="Якщо інший виконавець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sTable2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегування іншому виконавцю'&quot;}}}"></activiti:formProperty>
          <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -123,6 +125,10 @@
           <activiti:field name="asTypeResolution">
             <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
           </activiti:field>
+           <activiti:field name="sReport">
+            <activiti:expression><![CDATA[${sReport}]]></activiti:expression>
+          </activiti:field>
+          
          
         </activiti:taskListener>
       </extensionElements>

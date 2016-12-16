@@ -100,7 +100,10 @@ execution.setVariable('processInstanceId', processInstanceId)
     </sequenceFlow>
     <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var task = execution.getProcessInstanceId();
+java.lang.System.out.println(task);
+
 var attach = execution.getVariable('sTable2');
+java.lang.System.out.println(attach);
 var table = objectFileService.download_file_from_db(task, attach, null);
 execution.setVariable('attach', attach)
 execution.setVariable('task', task)
