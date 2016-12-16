@@ -11,6 +11,7 @@ var request = require('request')
   , url = require('url')
   , bankidUtil = require('../bankid/bankid.util.js')
   , activiti = require('../../components/activiti');
+var pdfConversion = require('phantom-html-to-pdf')();
 
 var createError = function (error, error_description, response) {
   return {
@@ -242,6 +243,64 @@ module.exports.signHtmlForm = function (accessToken, acceptKeyUrl, formToUpload,
     if (!body)
       callback('Unable to sign a file. bankid.privatbank.ua return an empty response', null);
     else if (error || (error = body.error)) {
+      callback(error, null);
+    } else {
+      callback(null, body);
+    }
+  });
+};
+
+module.exports.signPdfForm = function (accessToken, acceptKeyUrl, formToUpload, callback) {
+  async.waterfall([
+    function (callback) {
+      var options = {
+        html: formToUpload,
+        allowLocalFilesAccess: true,
+        paperSize: {
+          format: 'A4', orientation: 'portrait'
+        },
+        fitToPage: true,
+        customHeaders: [],
+        settings: {
+          javascriptEnabled: true
+        },
+        format: {
+          quality: 100
+        }
+      };
+      pdfConversion(options, function (err, pdf) {
+        callback(err, {content: pdf.stream, contentType: 'application/pdf'});
+      });
+    },
+    function (data, callback) {
+      var uploadURL = bankidUtil.getUploadFileForSignatureURL();
+      var requestOptionsForUploadContent = {
+        url: uploadURL,
+        headers: _.merge({
+          Authorization: bankidUtil.getAuth(accessToken),
+          acceptKeyUrl: acceptKeyUrl,
+          fileType: 'pdf'
+        }, data.contentType),
+        formData: {
+          file: data.content
+        },
+        json: true
+      };
+
+      request.post(requestOptionsForUploadContent, function (error, response, body) {
+        if (!body) {
+          pdfConversion.kill();
+          callback('Unable to sign a file. bankid.privatbank.ua return an empty response', null);
+        } else if (error || (error = body.error)) {
+          pdfConversion.kill();
+          callback(error, null);
+        } else {
+          callback(null, body);
+        }
+      });
+    }
+  ], function (error, body) {
+    if (error) {
       callback(error, null);
     } else {
       callback(null, body);

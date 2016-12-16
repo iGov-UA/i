@@ -518,6 +518,18 @@ public class ProcessSubjectService {
     }
 
     /**
+     * Задать статус и отчет
+     *
+     * @param snID_Process_Activiti
+     * @param sID_ProcessSubjectStatus
+     * @return
+     */
+    public ProcessSubject setProcessSubjectStatusAndReport(String snID_Process_Activiti, String sID_ProcessSubjectStatus, String sReport) {
+        ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByExpected("sID", sID_ProcessSubjectStatus);
+        return processSubjectDao.setProcessSubjectStatusAndReport(snID_Process_Activiti, processSubjectStatus, sReport);
+    }
+
+    /**
      * Задать дату
      *
      * @param snID_Process_Activiti
@@ -666,10 +678,10 @@ public class ProcessSubjectService {
             Date oDateRegistration = parseDate(mParam.get("sDateRegistration"));
             sFormatDateRegistration = df_StartProcess.format(oDateRegistration);
         }
-        if((mParam.get("sDateDoc") != null)&&(!mParam.get("sDateDoc").equals(""))){
+        /*if((mParam.get("sDateDoc") != null)&&(!mParam.get("sDateDoc").equals(""))){
             Date oDateDoc = parseDate(mParam.get("sDateDoc"));
             sFormatDateDoc = df_StartProcess.format(oDateDoc);
-        }
+        }*/
 
         ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
 
@@ -678,19 +690,21 @@ public class ProcessSubjectService {
         mParamDocument.put("sTaskProcessDefinition", mParam.get("sTaskProcessDefinition"));
         mParamDocument.put("sID_Attachment", mParam.get("sID_Attachment"));
         mParamDocument.put("sContent", mParam.get("sContent"));
-        mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
-        mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
-        mParamDocument.put("sDateExecution", sFormatDateExecution);
-        mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
-        mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
+        //
+        //mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
+        //
+        //mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
+        //mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
         mParamDocument.put("sDateRegistration", sFormatDateRegistration);
-        mParamDocument.put("sDateDoc", sFormatDateDoc);
-        mParamDocument.put("sApplicant", mParam.get("sApplicant"));
-        mParamDocument.put("nCountAttach", mParam.get("nCountAttach"));
-        mParamDocument.put("sNote", mParam.get("sNote"));
-        mParamDocument.put("asUrgently", mParam.get("asUrgently"));
-        mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
-       // mParamDocument.put("sTextReport", mParam.get("sTextReport"));
+        mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
+        mParamDocument.put("sDateExecution", sFormatDateExecution);
+        //mParamDocument.put("sDateDoc", sFormatDateDoc);
+        //mParamDocument.put("sApplicant", mParam.get("sApplicant"));
+        //mParamDocument.put("nCountAttach", mParam.get("nCountAttach"));
+        //mParamDocument.put("sNote", mParam.get("sNote"));
+        //mParamDocument.put("asUrgently", mParam.get("asUrgently"));
+        //mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
+        //mParamDocument.put("sTextReport", mParam.get("sTextReport"));
 
         //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
         //иначе проверяем на необходимость редактирования
@@ -766,7 +780,7 @@ public class ProcessSubjectService {
                 }
 
                 if (continueFlag == false) {
-                    ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
+                    ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey((String)mParamDocument.get("sTaskProcessDefinition"), mParamTask);
                     LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                     if (oProcessInstanceChild != null) {
                         ProcessSubject oProcessSubjectChild = processSubjectDao

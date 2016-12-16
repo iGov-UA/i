@@ -281,6 +281,7 @@
         $scope.isClarifySending = false;
         $scope.tableIsInvalid = false;
         $scope.taskData.aTable = [];
+        $scope.usersHierarchyOpened = false;
 
         $scope.validateForm = function(form) {
           var bValid = true;
@@ -1039,7 +1040,6 @@
           });
 
           $scope.tableContentShow = !$scope.tableContentShow;
-          console.log($scope)
         };
 
         // проверяем имя поля на наличие заметок
@@ -1204,6 +1204,22 @@
           } else {
             return true
           }
+        };
+
+        $scope.openUsersHierarchy = function () {
+          $scope.attachIsLoading = true;
+
+          tasks.getProcessSubject($scope.selectedTask.processInstanceId, 0).then(function (res) {
+            $scope.documentFullHierarchy = res.aProcessSubject;
+            $scope.attachIsLoading = false;
+          });
+
+          $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;
+        };
+
+        // пропускать хтмл содержимое для предотвращения конфликтов при байдинге.
+        $scope.trustAsHtml = function (string) {
+          return $sce.trustAsHtml(string);
         };
 
       }
