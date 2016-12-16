@@ -13,7 +13,7 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
       'sFileName': 'dohody.dat',
       'bHeader': false, // есть/нет хеадера
       'saFieldsCalc': '', // поля для калькуляций
-      'saFieldSummary': '' // поля для агрегатов      
+      'saFieldSummary': '' // поля для агрегатов
     };
     return dataArray;
   }
@@ -28,7 +28,7 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
 
   function defaultHandler(exportParams, callback) {
     var dataArray = getDefaultDataArray(exportParams);
-    var exportUrl = getExportUrl(dataArray); 
+    var exportUrl = getExportUrl(dataArray);
 
     //return export URL to client's reports.controller
     callback(exportUrl);
@@ -38,8 +38,8 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
 
     exportLink: function (exportParams, callback) {
       var dataArray = getDefaultDataArray(exportParams);
-      
-      //loading properties from .properties file for a selected Business Process      
+
+      //loading properties from .properties file for a selected Business Process
       var getReportParametersUrl = '/api/reports/template?sPathFile=/export/' + exportParams.sBP + '.properties';
 
       $http.get(getReportParametersUrl).then(function (result) {
@@ -70,20 +70,6 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
       })
 
     },
-
-    statisticLink: function (statisticParams, callback) {
-      var data = {
-        'sID_BP': statisticParams.sBP,
-        'sDateAt': statisticParams.from,
-        'sDateTo': statisticParams.to
-      };
-      var statUrl = './api/reports/statistic?' +
-        'sID_BP_Name=' + data.sID_BP + '&' +
-        'sDateAt=' + data.sDateAt + '&' +
-        'sDateTo=' + data.sDateTo;
-
-      callback(statUrl);
-    }
 
   }
 });
