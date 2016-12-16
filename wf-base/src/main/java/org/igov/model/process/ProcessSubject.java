@@ -27,7 +27,11 @@ public class ProcessSubject extends AbstractEntity {
     @JsonProperty(value = "snID_Process_Activiti")
     @Column
     private String snID_Process_Activiti;
-
+    
+    @JsonProperty(value = "sReport")
+    @Column
+    private String sReport;
+    
     @JsonProperty(value = "oProcessSubjectStatus")
     @ManyToOne(targetEntity = ProcessSubjectStatus.class)
     @JoinColumn(name = "nID_ProcessSubjectStatus")
@@ -44,7 +48,7 @@ public class ProcessSubject extends AbstractEntity {
     @JsonProperty(value = "sDateFact")
     @Transient
     private DateTime sDateFact;
-
+        
     @JsonProperty(value = "sDateEdit")
     @JsonSerialize(using = JsonDateTimeSerializer.class)
     @JsonDeserialize(using = JsonDateTimeDeserializer.class)
@@ -67,18 +71,15 @@ public class ProcessSubject extends AbstractEntity {
     @Transient
     private List<ProcessSubject> aProcessSubj;
     
-   
+    public List<ProcessSubject> getaProcessSubj() {
+	return aProcessSubj;
+    }
 
+    public void setaProcessSubj(List<ProcessSubject> aProcessSubj) {
+	this.aProcessSubj = aProcessSubj;
+    }
 
-	public List<ProcessSubject> getaProcessSubj() {
-		return aProcessSubj;
-	}
-
-	public void setaProcessSubj(List<ProcessSubject> aProcessSubj) {
-		this.aProcessSubj = aProcessSubj;
-	}
-
-	public String getSnID_Process_Activiti() {
+    public String getSnID_Process_Activiti() {
         return snID_Process_Activiti;
     }
 
@@ -116,6 +117,14 @@ public class ProcessSubject extends AbstractEntity {
 
     public void setsDateEdit(DateTime sDateEdit) {
         this.sDateEdit = sDateEdit;
+    }
+    
+    public String getsReport() {
+        return sReport;
+    }
+
+    public void setsReport(String sReport) {
+        this.sReport = sReport;
     }
 
     public DateTime getsDatePlan() {

@@ -2001,7 +2001,8 @@ angular.module('about').controller('aboutController', function ($scope) {
         {
           "sID_Group":"sumy.sumy",
           "sFIO":"Олексій Сердюк",
-          "sURL":"",
+          "sURL":"https://ua.linkedin.com/in/alexey-serdiuk-994a07101",
+          "sPhoto": "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAANJAAAAJDgxMjM2MTYzLWFlODgtNGU0NC1iMDg4LTE4MDM0MzVhMjBhMg.jpg",
           "sCity":"Суми"
         },
 
