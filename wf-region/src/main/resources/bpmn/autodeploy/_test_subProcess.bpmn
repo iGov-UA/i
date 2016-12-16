@@ -101,13 +101,13 @@ execution.setVariable('processInstanceId', processInstanceId)
     <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var task = execution.getProcessInstanceId();
 var attach = execution.getVariable('sTable2');
-var table = execution.download_file_from_db(task, attach);
+var table = objectFileService.download_file_from_db(task, attach, null);
 execution.setVariable('attach', attach)
 execution.setVariable('task', task)
 execution.setVariable('some', table)</script>
     </scriptTask>
     <sequenceFlow id="flow22" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
-    <userTask id="usertask4" name="User Task General Process Призначення виконавця" activiti:candidateGroups="justice_common">
+    <userTask id="usertask4" name="User Task General Process второй шаг" activiti:candidateGroups="justice_common">
       <extensionElements>
         <activiti:formProperty id="task" name="ид процесса" type="string"></activiti:formProperty>
         <activiti:formProperty id="attach" name="attach" type="string" writable="false"></activiti:formProperty>
