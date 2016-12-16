@@ -213,6 +213,9 @@ angular.module('dashboardJsApp')
                 var name = table.name.split(';')[0];
                 promises.push(self.uploadTable(table, taskId, null, name));
               }
+            } else {
+              var tableName = table.name.split(';')[0];
+              promises.push(self.uploadTable(table, taskId, null, tableName));
             }
           })
         }
