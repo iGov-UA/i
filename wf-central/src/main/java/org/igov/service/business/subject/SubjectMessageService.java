@@ -286,8 +286,8 @@ public class SubjectMessageService {
             messageFeedback.setsID_Source(sID_Source);
             messageFeedback.setsAuthorFIO(sAuthorFIO);
             messageFeedback.setsMail(sMail);
-            messageFeedback.getoSubjectMessage().setHead(sHead);
-            messageFeedback.getoSubjectMessage().setBody(sBody);
+            //messageFeedback.getoSubjectMessage().setHead(sHead);
+            //messageFeedback.getoSubjectMessage().setBody(sBody);
             messageFeedback.setsPlace(sPlace);
             messageFeedback.setsEmployeeFIO(sEmployeeFIO);
             messageFeedback.setnID_Rate(nID_Rate);
@@ -322,8 +322,8 @@ public class SubjectMessageService {
                 messageFeedback.setsID_Source(sID_Source);
                 messageFeedback.setsAuthorFIO(sAuthorFIO);
                 messageFeedback.setsMail(sMail);
-                messageFeedback.getoSubjectMessage().setHead(sHead);
-                messageFeedback.getoSubjectMessage().setBody(sBody);
+                //messageFeedback.getoSubjectMessage().setHead(sHead);
+                //messageFeedback.getoSubjectMessage().setBody(sBody);
                 messageFeedback.setsPlace(sPlace);
                 messageFeedback.setsEmployeeFIO(sEmployeeFIO);
                 messageFeedback.setnID_Rate(nID_Rate);
