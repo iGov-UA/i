@@ -2012,6 +2012,9 @@ public class ActionTaskService {
         } else {
             List<String> attachmetIDs = new ArrayList<>();
             for (Attachment attachment : attachments){
+                    if(attachment.getDescription() == null || attachment.getDescription().equals("")){
+                        attachment.setDescription("Файл без названия");
+                    }
                 attachmetIDs.add(attachment.getId());
             }
             LOG.info("Task attachments: " + attachmetIDs.toString());
