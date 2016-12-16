@@ -49,27 +49,28 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+           <activiti:expression>${sTable2}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
             <activiti:string><![CDATA[_doc_system_task_justice_incoming]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression>${sTable2}</activiti:expression>
           </activiti:field>
           <activiti:field name="sContent">
-            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
+            <activiti:expression>${sContent}</activiti:expression>
           </activiti:field>
           <activiti:field name="sDateRegistration">
-            <activiti:expression><![CDATA[${sDateRegistration}]]></activiti:expression>
+            <activiti:expression>${sDateRegistration}</activiti:expression>
           </activiti:field>
-          <activiti:field name="sAutorResolution">
-            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
+           <activiti:field name="sAutorResolution">
+            <activiti:expression>${sAutorResolution}</activiti:expression>
           </activiti:field>
          <activiti:field name="sDateExecution">
-            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
+            <activiti:expression>${sDateExecution}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:executionListener event="complete" delegateExpression="${UpdateStatusTask}">
@@ -77,7 +78,7 @@
             <activiti:string><![CDATA[closed]]></activiti:string>
           </activiti:field>
               <activiti:field name="sReport">
-            <activiti:expression><![CDATA[${sReport}]]></activiti:expression>
+            <activiti:expression>${sReport}</activiti:expression>
           </activiti:field>
         </activiti:executionListener>
         </extensionElements>
