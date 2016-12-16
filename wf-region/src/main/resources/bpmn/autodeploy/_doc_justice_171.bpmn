@@ -70,9 +70,10 @@
         <activiti:formProperty id="markers6" name="показывать таблицу всегда" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sTable2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;nDeepLevel&quot;},&quot;sCondition&quot;:&quot;[sClient] != null &quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="cloneDocumentStepSubject" name="cloneDocumentStepSubject" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
+            <activiti:expression>${sDoc1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -81,48 +82,48 @@
             <activiti:string><![CDATA[system_task]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression>${sTable2}</activiti:expression>
           </activiti:field>
           <activiti:field name="sContent">
-            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
+            <activiti:expression>${sContent}</activiti:expression>
           </activiti:field>
           <activiti:field name="sAutorResolution">
-            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
+            <activiti:expression>${sAutorResolution}</activiti:expression>
           </activiti:field>
           <activiti:field name="sTextResolution">
-            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
+            <activiti:expression>${sTextResolution}</activiti:expression>
           </activiti:field>
           <activiti:field name="sDateExecution">
-            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
+            <activiti:expression>${sDateExecution}</activiti:expression>
           </activiti:field>
           <activiti:field name="sTypeDoc">
-            <activiti:expression><![CDATA[${sTypeDoc}]]></activiti:expression>
+            <activiti:expression>${sTypeDoc}</activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Order_GovPublic">
-            <activiti:expression><![CDATA[${sID_Order_GovPublic}]]></activiti:expression>
+            <activiti:expression>${sID_Order_GovPublic}</activiti:expression>
           </activiti:field>
           <activiti:field name="sDateRegistration">
-            <activiti:expression><![CDATA[${sDateRegistration}]]></activiti:expression>
+            <activiti:expression>${sDateRegistration}</activiti:expression>
           </activiti:field>
           <activiti:field name="sDateDoc">
-            <activiti:expression><![CDATA[${sDateDoc}]]></activiti:expression>
+            <activiti:expression>${sDateDoc}</activiti:expression>
           </activiti:field>
           <activiti:field name="sApplicant">
-            <activiti:expression><![CDATA[${sApplicant}]]></activiti:expression>
+            <activiti:expression>${sApplicant}</activiti:expression>
           </activiti:field>
           <activiti:field name="nCountAttach">
-            <activiti:expression><![CDATA[${nCountAttach}]]></activiti:expression>
+            <activiti:expression>${nCountAttach}</activiti:expression>
           </activiti:field>
           <activiti:field name="sNote">
-            <activiti:expression><![CDATA[${sNote}]]></activiti:expression>
+            <activiti:expression>${sNote}</activiti:expression>
           </activiti:field>
           <activiti:field name="asUrgently">
-            <activiti:expression><![CDATA[${asUrgently}]]></activiti:expression>
+            <activiti:expression>${asUrgently}</activiti:expression>
           </activiti:field>
           <activiti:field name="asTypeResolution">
-            <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
+            <activiti:expression>${asTypeResolution}</activiti:expression>
           </activiti:field>
-          </activiti:taskListener>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2_yellow" name="Основний виконавець - формування ітогового документу" activiti:assignee="justice_common">
@@ -151,7 +152,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
+            <activiti:expression>${sDoc1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -186,7 +187,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
+            <activiti:expression>${sDoc1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -264,14 +265,15 @@ execution.setVariable('sUsertask1_name2', sUsertask1_name2)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision =='sEnumDecisionNo'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask2" name="надання прав наступному виконавцю" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-var snID_Process_Activiti = execution.getProcessInstanceId();
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId();
 var sKey_GroupPostfix = 'MJU_Dnipro_Top1_Dep1_Exec1'
 var sKey_GroupPostfix_New = execution.getVariable('sName_SubjectRole')
-var cloneDocumentStepSubject = execution.getcloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New)
-execution.setVariable('cloneDocumentStepSubject', cloneDocumentStepSubject)</script>
+var cloneDocumentStepSubject = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New)
+execution.setVariable('cloneDocumentStepSubject', cloneDocumentStepSubject)
+java.lang.System.out.println("HELLO");</script>
     </scriptTask>
-    <sequenceFlow id="flow38" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_171">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_171" id="BPMNPlane__doc_justice_171">
@@ -347,7 +349,11 @@ execution.setVariable('cloneDocumentStepSubject', cloneDocumentStepSubject)</scr
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
         <omgdi:waypoint x="491.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="660.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="84.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="641.0" y="42.0"></omgdi:waypoint>
+        <omgdi:waypoint x="725.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
