@@ -621,6 +621,7 @@ public class SubjectMessageController {
         }else{
             try {
                 String sAnswer=null;
+                LOG.info("nIdSubject that we try to set in controller: " + nID_Subject);
                 SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
                         sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nID,
                         nID_Subject, sID_Order);

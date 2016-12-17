@@ -279,11 +279,12 @@ public class SubjectMessageService {
             String sHead, String sBody, String sPlace, String sEmployeeFIO,
             Long nID_Rate, Long nID_Service, String sAnswer, Long nId,
             Long nID_Subject, String sID_Order) {
-
+        
         SubjectMessageFeedback messageFeedback;
         SubjectMessage subjectMessage;
         if (nId == null) {
             LOG.info("!!!nId is null sID_Order = " + sID_Order);
+            LOG.info("nID_Subject in set SubjectMessage: " + nID_Subject);
             messageFeedback = new SubjectMessageFeedback();
             messageFeedback.setsID_Source(sID_Source);
             messageFeedback.setsAuthorFIO(sAuthorFIO);
@@ -310,9 +311,11 @@ public class SubjectMessageService {
                 subjectMessage.setsSubjectInfo(sAuthorFIO);
                 subjectMessage.setMail(sMail);
                 subjectMessage.setId_subject(nID_Subject);
+                LOG.info("nID_Subject inside SubjectMessage: " + Long.toString(subjectMessage.getId_subject()));
                 subjectMessage = subjectMessageDao.saveOrUpdate(subjectMessage);
                 messageFeedback.setoSubjectMessage(subjectMessage);
             }
+            LOG.info("Save feedback once");
             return subjectMessageFeedbackDao.save(messageFeedback);
         } else {
             messageFeedback = subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
@@ -353,7 +356,7 @@ public class SubjectMessageService {
                     subjectMessage.setMail(sMail);
 //                    createSubjectContact(sMail, subjectMessage.getoSubject());
                     LOG.info("1TEST_sMail: " + sMail);
-                    subjectContactDao.saveOrUpdate(createSubjectContact(sMail, subjectMessage.getoSubject()));
+//                    subjectContactDao.saveOrUpdate(createSubjectContact(sMail, subjectMessage.getoSubject()));
                     LOG.info("1sMail: " + subjectMessage.getMail());
                     LOG.info("2oMail: " + subjectMessage.getoMail().getsValue());
                 }
