@@ -579,11 +579,12 @@ public class SubjectMessageControllerScenario {
 		expectedFeedback.setnID_Rate(-1L);
 		expectedFeedback.setnID_Service(-1L);
 		expectedFeedback.setsAnswer(expectedComments);
-
+                
 		when(oSubjectMessageService.setSubjectMessageFeedback(expectedFeedback.getsID_Source(),
-                                expectedFeedback.getsAuthorFIO(), expectedFeedback.getsMail(), expectedFeedback.getsHead(),
-				expectedFeedback.getsBody(), expectedFeedback.getsPlace(), expectedFeedback.getsEmployeeFIO(),				expectedFeedback.getnID_Rate(), expectedFeedback.getnID_Service(), "feedbackAfterInit", null, null,
-				null)).thenCallRealMethod();
+ 				expectedFeedback.getsAuthorFIO(), expectedFeedback.getsMail(), expectedFeedback.getsHead(),
+ 				expectedFeedback.getsBody(), expectedFeedback.getsPlace(), expectedFeedback.getsEmployeeFIO(),
+ 				expectedFeedback.getnID_Rate(), expectedFeedback.getnID_Service(), "feedbackAfterInit", null, null,
+  				null)).thenCallRealMethod();
 
 		mockMvc.perform(post("/subject/message/setFeedbackExternal").contentType(MediaType.APPLICATION_JSON)
 				.param("sID_Source", expectedFeedback.getsID_Source())
