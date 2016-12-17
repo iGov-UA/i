@@ -61,7 +61,7 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
             oCriteria.add(Restrictions.lt("id", nID__LessThen_Filter));
         }
         
-//        oCriteria.add(Restrictions.isNotNull("sBody"));
+        oCriteria.add(Restrictions.isNotNull("sBody"));
 //        oCriteria.createAlias("oSubjectMessage", "sm").add(Restrictions.isNotNull("sm.body"));
         oCriteria.add(Restrictions.isNotNull("sAuthorFIO"));
         oCriteria.addOrder(Order.desc("id"));
