@@ -698,12 +698,13 @@ public class ProcessSubjectService {
         mParamDocument.put("sDateRegistration", sFormatDateRegistration);
         mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
         mParamDocument.put("sDateExecution", sFormatDateExecution);
+        mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
         //mParamDocument.put("sDateDoc", sFormatDateDoc);
         //mParamDocument.put("sApplicant", mParam.get("sApplicant"));
         //mParamDocument.put("nCountAttach", mParam.get("nCountAttach"));
         //mParamDocument.put("sNote", mParam.get("sNote"));
         //mParamDocument.put("asUrgently", mParam.get("asUrgently"));
-        //mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
+        //
         //mParamDocument.put("sTextReport", mParam.get("sTextReport"));
 
         //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем

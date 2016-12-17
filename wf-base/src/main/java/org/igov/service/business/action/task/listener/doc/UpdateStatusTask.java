@@ -22,13 +22,13 @@ import org.springframework.stereotype.Component;
  * @author olga
  */
 @Component("UpdateStatusTask")
-public class UpdateStatusAndReportTask implements TaskListener {
+public class UpdateStatusTask implements TaskListener {
 
     private Expression sID_ProcessSubjectStatus;
     
     private Expression sReport; 
         
-    static final transient Logger LOG = LoggerFactory.getLogger(UpdateStatusAndReportTask.class);
+    static final transient Logger LOG = LoggerFactory.getLogger(UpdateStatusTask.class);
 
     @Autowired
     private ProcessSubjectService processSubjectService;
