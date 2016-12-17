@@ -278,20 +278,19 @@ public class SubjectMessageService {
     public SubjectMessageFeedback setSubjectMessageFeedback(String sID_Source, String sAuthorFIO, String sMail,
             String sHead, String sBody, String sPlace, String sEmployeeFIO,
             Long nID_Rate, Long nID_Service, String sAnswer, Long nId,
-            Long nID_Subject, String sID_Order) {
-
+            Long nID_Subject, String sID_Order) throws CommonServiceException{
+        
         SubjectMessageFeedback messageFeedback;
         SubjectMessage subjectMessage;
         if (nId == null) {
             LOG.info("!!!nId is null sID_Order = " + sID_Order);
+            LOG.info("nID_Subject in set SubjectMessage: " + nID_Subject);
             messageFeedback = new SubjectMessageFeedback();
             messageFeedback.setsID_Source(sID_Source);
             messageFeedback.setsAuthorFIO(sAuthorFIO);
             messageFeedback.setsMail(sMail);
             //messageFeedback.getoSubjectMessage().setHead(sHead);
             //messageFeedback.getoSubjectMessage().setBody(sBody);
-            messageFeedback.setsHead(sHead);
-            messageFeedback.setsBody(sBody);
             messageFeedback.setsPlace(sPlace);
             messageFeedback.setsEmployeeFIO(sEmployeeFIO);
             messageFeedback.setnID_Rate(nID_Rate);
@@ -312,9 +311,11 @@ public class SubjectMessageService {
                 subjectMessage.setsSubjectInfo(sAuthorFIO);
                 subjectMessage.setMail(sMail);
                 subjectMessage.setId_subject(nID_Subject);
+                LOG.info("nID_Subject inside SubjectMessage: " + Long.toString(subjectMessage.getId_subject()));
                 subjectMessage = subjectMessageDao.saveOrUpdate(subjectMessage);
                 messageFeedback.setoSubjectMessage(subjectMessage);
             }
+            LOG.info("Save feedback once");
             return subjectMessageFeedbackDao.save(messageFeedback);
         } else {
             messageFeedback = subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
@@ -328,8 +329,6 @@ public class SubjectMessageService {
                 messageFeedback.setsMail(sMail);
                 //messageFeedback.getoSubjectMessage().setHead(sHead);
                 //messageFeedback.getoSubjectMessage().setBody(sBody);
-                messageFeedback.setsHead(sHead);
-                messageFeedback.setsBody(sBody);
                 messageFeedback.setsPlace(sPlace);
                 messageFeedback.setsEmployeeFIO(sEmployeeFIO);
                 messageFeedback.setnID_Rate(nID_Rate);
@@ -353,16 +352,26 @@ public class SubjectMessageService {
                 }
                 subjectMessage.setDate(new DateTime());
                 subjectMessage.setsSubjectInfo(sAuthorFIO);
-                if (sMail != null) {
-                    subjectMessage.setMail(sMail);
-//                    createSubjectContact(sMail, subjectMessage.getoSubject());
-                    LOG.info("1TEST_sMail: " + sMail);
-                    subjectContactDao.saveOrUpdate(createSubjectContact(sMail, subjectMessage.getoSubject()));
-                    LOG.info("1sMail: " + subjectMessage.getMail());
-                    LOG.info("2oMail: " + subjectMessage.getoMail().getsValue());
-                }
+                
                 if (nID_Subject != null) {
                     subjectMessage.setId_subject(nID_Subject);
+                }
+                
+                if (sMail != null && !sMail.isEmpty()) {
+                    subjectMessage.setMail(sMail);
+                    SubjectContact subjectContact = null;
+                    
+                    if (nID_Subject != null) {
+                            subjectContact = syncMail(sMail, nID_Subject);
+                    }
+
+                    if (subjectContact != null) {
+                                LOG.info("(testSyncMail without nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
+                                        subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
+                                        subjectContact.getsDate(), subjectContact.getsValue());
+                    } else {
+                        LOG.info("(testSyncMail without nID_Subject after calling method: subjectContact null)");
+                    }
                 }
                 subjectMessage = subjectMessageDao.saveOrUpdate(subjectMessage);
                 messageFeedback.setoSubjectMessage(subjectMessage);
@@ -406,7 +415,7 @@ public class SubjectMessageService {
     public List<SubjectMessageFeedback> getAllSubjectMessageFeedback_Filtered(Long nID_service, Long nID__LessThen_Filter, Integer nRowsMax) {
         return subjectMessageFeedbackDao.getAllSubjectMessageFeedback_Filtered(nID_service, nID__LessThen_Filter, nRowsMax);
     }
-
+    
     //при параметре nID_Subject == null
     private SubjectContact syncMail(String sMail, Subject oSubject) {
 
