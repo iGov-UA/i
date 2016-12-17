@@ -359,7 +359,19 @@ public class SubjectMessageService {
                 if (sMail != null) {
                     subjectMessage.setMail(sMail);
                     createSubjectContact(sMail, subjectMessage.getoSubject());
-                    subjectContactDao.saveOrUpdate(createSubjectContact(sMail, subjectMessage.getoSubject()));
+                    SubjectContact oSubjectContact = subjectContactDao.findByExpected("sValue", sMail);
+                    if(oSubjectContact == null)
+                    {
+                        subjectContactDao.saveOrUpdate(createSubjectContact(sMail, subjectMessage.getoSubject()));
+                    }else{
+                        if(oSubjectContact.getSubjectContactType().getsName_EN().equals("Email")){
+                          subjectContactDao.saveOrUpdate(createSubjectContact(sMail, subjectMessage.getoSubject()));  
+                        }
+                    }
+                    
+                    SubjectContact oTestSubjectContact = subjectContactDao.findByExpected("sValue", sMail);
+                    LOG.info("SubjectContactType test: " + oTestSubjectContact.getSubjectContactType());
+                    LOG.info("SubjectContactType value: " + oTestSubjectContact.getsValue());
                 }
                 subjectMessage = subjectMessageDao.saveOrUpdate(subjectMessage);
                 messageFeedback.setoSubjectMessage(subjectMessage);
