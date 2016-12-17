@@ -87,6 +87,8 @@ public class SubjectMessageService {
 
     public SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
             String sContacts, String sData, Long nID_subjectMessageType) throws CommonServiceException {
+
+        LOG.info("Inside createSubjectMessage");
         SubjectContact subjectContact = null;
         Subject subject = new Subject();
         SubjectMessage message = null;
@@ -99,21 +101,21 @@ public class SubjectMessageService {
                 try {
                     subjectContact = syncMail(sMail, nID_subject);
                 } catch (Exception e) {
-                    LOG.warn("Error occured while syncing mail {}", e.getMessage());
+                    LOG.warn("Error occurred while syncing mail {}", e.getMessage());
                 }
                 if (subjectContact != null && subjectContact.getSubjectContactType().getsName_EN().equals("Email")) {
                     LOG.info("(syncMail with nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                             subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
                             subjectContact.getsDate(), subjectContact.getsValue());
                 } else {
-                    if(subjectContact != null) {
-                        subjectContact.setSubjectContactType(createEmailSubjectContactType());
-                    }
-                    else {
+//                    if(subjectContact != null) {
+//                        subjectContact.setSubjectContactType(createEmailSubjectContactType());
+//                    }
+//                    else {
                         LOG.info("(syncMail with nID_Subject after calling method: SubjectContact null)");
-                        saveNewSubjectContactInstance(sMail, subject, subjectContact);
-                        LOG.info("Now SubjectContact is not null");
-                    }
+//                        saveNewSubjectContactInstance(sMail, subject, subjectContact);
+//                        LOG.info("Now SubjectContact is not null");
+//                    }
                 }
 
             }
