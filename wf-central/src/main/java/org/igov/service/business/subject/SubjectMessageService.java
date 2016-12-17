@@ -366,11 +366,11 @@ public class SubjectMessageService {
                     }
 
                     if (subjectContact != null) {
-                                LOG.info("(syncMail without nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
+                                LOG.info("(testSyncMail without nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                                         subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
                                         subjectContact.getsDate(), subjectContact.getsValue());
                     } else {
-                        LOG.info("(syncMail without nID_Subject after calling method: subjectContact null)");
+                        LOG.info("(testSyncMail without nID_Subject after calling method: subjectContact null)");
                     }
                 }
                 subjectMessage = subjectMessageDao.saveOrUpdate(subjectMessage);
