@@ -59,17 +59,41 @@
           </li>
         </ul>
 
-        <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-               aria-expanded="false">{{getCurrentUserName()}} <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#" ng-click="goToProfile()">Профіль</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#" ng-click="logout()">Вийти</a></li>
-            </ul>
-          </li>
-        </ul>
+
+        <div class="nav navbar-nav navbar-right right-menu-group">
+          <div class="nav navbar-nav document-button" ng-if="usersDocumentsBPs.length > 0">
+            <a ng-click="openCloseUsersSelect()"
+               class="btn btn-info">Створити документ
+            </a>
+            <div class="document-select-block" ng-show="showOrHideSelect">
+                <ui-select ng-model="document.selected" theme="bootstrap" on-select="onSelectDocList($item)">
+
+                  <ui-select-match>
+                    <span title="{{$select.selected.sName}} ({{$select.selected.sID}})">
+                      {{$select.selected.sName}}
+                    </span>
+                  </ui-select-match>
+
+                  <ui-select-choices repeat="doc in usersDocumentsBPs | filter:$select.search">
+                    <span title="{{doc.sName}} ({{doc.sID}})">
+                      {{doc.sName}} ({{doc.sID}})
+                    </span>
+                  </ui-select-choices>
+                </ui-select>
+            </div>
+          </div>
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                 aria-expanded="false">{{getCurrentUserName()}} <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#" ng-click="goToProfile()">Профіль</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#" ng-click="logout()">Вийти</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
 
         <div class="archive-container" ng-if="tasksSearch.archive && switchArchive && archive">
           <div class="archive-close" ng-click="closeArchive()">X</div>
