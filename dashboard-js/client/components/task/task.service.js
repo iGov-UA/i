@@ -670,6 +670,24 @@ angular.module('dashboardJsApp')
           return true;
         }
         return false;
+      },
+      isUserHasDocuments: function (login) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getBPs',
+          params: {
+            sLogin: login
+          }
+        })
+      },
+      createNewDocument: function (bpID) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: 'api/documents/setDocument',
+          params: {
+            sID_BP: bpID
+          }
+        })
       }
     };
   });

@@ -5,8 +5,10 @@
     .module('dashboardJsApp')
     .controller('NavbarCtrl', navbarCtrl);
 
-  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService', '$state', 'tasks'];
-  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService, $state, tasks) {
+  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService',
+                        '$state', 'tasks', 'lunaService', 'Modal'];
+  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService,
+                      $state, tasks, lunaService, Modal) {
     $scope.menu = [{
       'title': 'Задачі',
       'link': '/tasks'
@@ -131,6 +133,49 @@
 
     $scope.isSelectedInstrumentsMenu = function(menuItem) {
       return menuItem.state==$state.current.name;
+    };
+
+    $scope.assignTask = function (id) {
+
+      tasks.assignTask(id, Auth.getCurrentUser().id)
+        .then(function (result) {
+          Modal.assignDocument(function (event) {
+            $state.go('tasks.typeof.view', {type:'selfAssigned'});
+          }, 'Документ успiшно створено');
+        })
+        .catch();
+    };
+
+    $scope.usersDocumentsBPs = [];
+    $scope.showOrHideSelect = false;
+    $scope.hasDocuments = function () {
+      var user = Auth.getCurrentUser().id;
+      tasks.isUserHasDocuments(user).then(function (res) {
+        if(Array.isArray(res) && res.length > 0) {
+          $scope.usersDocumentsBPs = res.filter(function (item) {
+            return item.sID.split('_')[0] === 'doc';
+          })
+        }
+      })
+    };
+    $scope.hasDocuments();
+
+    $scope.document = {};
+    $scope.openCloseUsersSelect = function () {
+      $scope.showOrHideSelect = !$scope.showOrHideSelect;
+    };
+
+    $scope.onSelectDocList = function (item) {
+      tasks.createNewDocument(item.sID).then(function (res) {
+        if(res.snID_Process) {
+          var val = res.snID_Process + lunaService.getLunaValue(res.snID_Process);
+          tasksSearchService.searchTaskByUserInput(val)
+            .then(function(res) {
+              $scope.assignTask(res[0]);
+            });
+          $scope.showOrHideSelect = false;
+        }
+      });
     };
   }
 })();
