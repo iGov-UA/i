@@ -590,7 +590,7 @@ public class SubjectMessageController {
             HttpServletResponse oResponse
     ) throws CommonServiceException, IOException {
 
-        LOG.info("Started! (sID_Source={}, nID_Service={}, nID={}, sID_Order={})", sID_Source, nID_Service, nID, sID_Order);
+        LOG.info("Started! (sID_Source={}, nID_Service={}, nID={}, sID_Order={}, nID_Subject={})", sID_Source, nID_Service, nID, nID_Subject);
 
         String responseMessage = null;
 
