@@ -355,9 +355,10 @@ public class SubjectMessageService {
                 if (sMail != null) {
                     subjectMessage.setMail(sMail);
 //                    createSubjectContact(sMail, subjectMessage.getoSubject());
-                    LOG.info("1TEST_sMail: " + sMail);
-                    subjectContactDao.saveOrUpdate(createSubjectContact(sMail, subjectMessage.getoSubject()));
-                    LOG.info("1sMail: " + subjectMessage.getMail());
+//                    LOG.info("1TEST_sMail: " + sMail);
+//                    subjectContactDao.saveOrUpdate(createSubjectContact(sMail, subjectMessage.getoSubject()));
+//                    LOG.info("1sMail: " + subjectMessage.getMail());
+//                    LOG.info("2oMail: " + subjectMessage.getoMail().getsValue());
                 }
                 if (nID_Subject != null) {
                     subjectMessage.setId_subject(nID_Subject);
