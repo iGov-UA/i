@@ -1213,31 +1213,31 @@ public class ActionTaskService {
         return result;
     }
 
-    private List<ProcessDefinition> getAvailabilityProcessDefinitionByLogin(String sLogin, List<ProcessDefinition> processDefinitionsList) {
+    private List<ProcessDefinition> getAvailabilityProcessDefinitionByLogin(String sLogin, List<ProcessDefinition> aProcessDefinition) {
 
-        List<ProcessDefinition> resultList = new LinkedList<>();
+        List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
 
-        List<Group> groups;
-        groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
-        if (groups != null && !groups.isEmpty()) {
+        List<Group> aGroup;
+        aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+        if (aGroup != null && !aGroup.isEmpty()) {
             StringBuilder sb = new StringBuilder();
-            for (Group group : groups) {
-                sb.append(group.getId());
+            for (Group oGroup : aGroup) {
+                sb.append(oGroup.getId());
                 sb.append(",");
             }
-            LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
+            LOG.info("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
         }
 
-        for (ProcessDefinition processDef : processDefinitionsList) {
-            LOG.info("process definition id: {}", processDef.getId());
+        for (ProcessDefinition oProcessDefinition : aProcessDefinition) {
+            LOG.info("process definition id: {}", oProcessDefinition.getId());
 
-            Set<String> candidateCroupsToCheck = getGroupsByProcessDefinition(processDef);
+            Set<String> aCandidateCroupsToCheck = getGroupsByProcessDefinition(oProcessDefinition);
 
-            if(checkIncludeProcessDefinitionIntoGroupList(groups, candidateCroupsToCheck)){
-                resultList.add(processDef);
+            if(checkIncludeProcessDefinitionIntoGroupList(aGroup, aCandidateCroupsToCheck)){
+                aProcessDefinition_Return.add(oProcessDefinition);
             }
         }
-        return resultList;
+        return aProcessDefinition_Return;
     }
 
     private Set<String> getGroupsByProcessDefinition(ProcessDefinition processDef) {
