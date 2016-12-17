@@ -656,7 +656,8 @@ public class ActionEventController implements ControllerConstants {
                             && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
                         } else {
-                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) ? oSubjectMessageFeedback.getoSubjectMessage().getBody() + "." : "";
+                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
+                     //   sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) ? oSubjectMessageFeedback.getoSubjectMessage().getBody() + "." : "";
                         }
                         
                     // Кусок кода для теста. После тестирования будет убрано.

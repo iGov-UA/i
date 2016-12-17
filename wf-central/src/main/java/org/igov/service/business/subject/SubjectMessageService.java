@@ -290,6 +290,8 @@ public class SubjectMessageService {
             messageFeedback.setsMail(sMail);
             //messageFeedback.getoSubjectMessage().setHead(sHead);
             //messageFeedback.getoSubjectMessage().setBody(sBody);
+            messageFeedback.setsHead(sHead);
+            messageFeedback.setsBody(sBody);
             messageFeedback.setsPlace(sPlace);
             messageFeedback.setsEmployeeFIO(sEmployeeFIO);
             messageFeedback.setnID_Rate(nID_Rate);
@@ -326,6 +328,8 @@ public class SubjectMessageService {
                 messageFeedback.setsMail(sMail);
                 //messageFeedback.getoSubjectMessage().setHead(sHead);
                 //messageFeedback.getoSubjectMessage().setBody(sBody);
+                messageFeedback.setsHead(sHead);
+                messageFeedback.setsBody(sBody);
                 messageFeedback.setsPlace(sPlace);
                 messageFeedback.setsEmployeeFIO(sEmployeeFIO);
                 messageFeedback.setnID_Rate(nID_Rate);

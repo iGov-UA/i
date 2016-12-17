@@ -56,7 +56,15 @@ public class SubjectMessageFeedback extends AbstractEntity {
     @JsonProperty(value = "sAnswer") 
     @Column(name = "sAnswer", nullable = true)
     private String sAnswer;
-
+    
+    @JsonProperty(value = "sHead")
+    @Column(name = "sHead", nullable = true)
+    private String sHead;
+ 
+    @JsonProperty(value = "sBody")
+    @Column(name = "sBody", nullable = false)
+    private String sBody;
+    
     @JsonProperty(value = "oSubjectMessage")
     @OneToOne
     @JoinColumn(name = "nID_SubjectMessage", nullable = true)
@@ -114,7 +122,24 @@ public class SubjectMessageFeedback extends AbstractEntity {
     public String getsPlace() {
         return sPlace;
     }
-
+    
+    public String getsHead() {
+        return sHead;
+    }
+ 
+    public void setsHead(String sHead) {
+        this.sHead = sHead;
+    }
+ 
+    public String getsBody() {
+        return sBody;
+    }
+ 
+    public void setsBody(String sBody) {
+        this.sBody = sBody;
+    }
+ 
+    
     public void setsPlace(String sPlace) {
         this.sPlace = sPlace;
     }
