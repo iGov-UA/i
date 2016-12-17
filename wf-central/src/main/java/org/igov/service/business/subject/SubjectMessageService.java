@@ -356,24 +356,25 @@ public class SubjectMessageService {
                 if (nID_Subject != null) {
                     subjectMessage.setId_subject(nID_Subject);
                 }
+                
                 if (sMail != null) {
                     subjectMessage.setMail(sMail);
                     SubjectContact oSubjectContact = subjectContactDao.findByExpected("sValue", sMail);
+                    Subject subject = subjectDao.getSubject(nID_Subject);
                     
                     if(oSubjectContact == null)
                     {
-                        
-                        //subjectContactDao.saveOrUpdate(createSubjectContact(sMail, subjectMessage.getoSubject()));
+                        createSubjectContact(sMail, subject);
                     }else{
                         
                         if(oSubjectContact.getSubjectContactType().getsName_EN().equals("Email")){
-                          //subjectContactDao.saveOrUpdate(createSubjectContact(sMail, subjectMessage..getoSubject()));  
+                            createSubjectContact(sMail, subject);  
                         }
                     }
                     
-                    /*SubjectContact oTestSubjectContact = subjectContactDao.findByExpected("sValue", sMail);
+                    SubjectContact oTestSubjectContact = subjectContactDao.findByExpected("sValue", sMail);
                     LOG.info("SubjectContactType test: " + oTestSubjectContact.getSubjectContactType());
-                    LOG.info("SubjectContactType value: " + oTestSubjectContact.getsValue());*/
+                    LOG.info("SubjectContactType value: " + oTestSubjectContact.getsValue());
                 }
                 subjectMessage = subjectMessageDao.saveOrUpdate(subjectMessage);
                 messageFeedback.setoSubjectMessage(subjectMessage);
@@ -417,7 +418,7 @@ public class SubjectMessageService {
     public List<SubjectMessageFeedback> getAllSubjectMessageFeedback_Filtered(Long nID_service, Long nID__LessThen_Filter, Integer nRowsMax) {
         return subjectMessageFeedbackDao.getAllSubjectMessageFeedback_Filtered(nID_service, nID__LessThen_Filter, nRowsMax);
     }
-
+    
     //при параметре nID_Subject == null
     private SubjectContact syncMail(String sMail, Subject oSubject) {
 
