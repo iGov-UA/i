@@ -278,7 +278,7 @@ public class SubjectMessageService {
     public SubjectMessageFeedback setSubjectMessageFeedback(String sID_Source, String sAuthorFIO, String sMail,
             String sHead, String sBody, String sPlace, String sEmployeeFIO,
             Long nID_Rate, Long nID_Service, String sAnswer, Long nId,
-            Long nID_Subject, String sID_Order) {
+            Long nID_Subject, String sID_Order) throws CommonServiceException{
         
         SubjectMessageFeedback messageFeedback;
         SubjectMessage subjectMessage;
@@ -357,24 +357,21 @@ public class SubjectMessageService {
                     subjectMessage.setId_subject(nID_Subject);
                 }
                 
-                if (sMail != null) {
+                if (sMail != null && !sMail.isEmpty()) {
                     subjectMessage.setMail(sMail);
-                    SubjectContact oSubjectContact = subjectContactDao.findByExpected("sValue", sMail);
-                    Subject subject = subjectDao.getSubject(nID_Subject);
+                    SubjectContact subjectContact = null;
                     
-                    if(oSubjectContact == null)
-                    {
-                        createSubjectContact(sMail, subject);
-                    }else{
-                        
-                        if(oSubjectContact.getSubjectContactType().getsName_EN().equals("Email")){
-                            createSubjectContact(sMail, subject);  
-                        }
+                    if (nID_Subject != null) {
+                            subjectContact = syncMail(sMail, nID_Subject);
                     }
-                    
-                    SubjectContact oTestSubjectContact = subjectContactDao.findByExpected("sValue", sMail);
-                    LOG.info("SubjectContactType test: " + oTestSubjectContact.getSubjectContactType());
-                    LOG.info("SubjectContactType value: " + oTestSubjectContact.getsValue());
+
+                    if (subjectContact != null) {
+                                LOG.info("(syncMail without nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
+                                        subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
+                                        subjectContact.getsDate(), subjectContact.getsValue());
+                    } else {
+                        LOG.info("(syncMail without nID_Subject after calling method: subjectContact null)");
+                    }
                 }
                 subjectMessage = subjectMessageDao.saveOrUpdate(subjectMessage);
                 messageFeedback.setoSubjectMessage(subjectMessage);
