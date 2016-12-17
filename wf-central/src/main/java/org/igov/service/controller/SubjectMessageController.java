@@ -591,7 +591,7 @@ public class SubjectMessageController {
     ) throws CommonServiceException, IOException {
 
         LOG.info("Started! (sID_Source={}, nID_Service={}, nID={}, sID_Order={}, nID_Subject={})", sID_Source, nID_Service, nID, nID_Subject);
-
+        LOG.info("nID_Subject: " + nID_Subject)
         String responseMessage = null;
 
         /*if(nID_Rate==null){
