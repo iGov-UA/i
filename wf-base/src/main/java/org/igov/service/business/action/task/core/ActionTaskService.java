@@ -1135,7 +1135,7 @@ public class ActionTaskService {
      * @param sLogin - Логин пользователя
      * @return
      */
-    public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin){
+    public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly){
 
         if (sLogin==null || sLogin.isEmpty()) {
             LOG.error("Unable to found business processes for sLogin="+sLogin);
