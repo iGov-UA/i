@@ -20,7 +20,8 @@ angular.module('dashboardJsApp', [
   'iGovTable',
   'datepickerService',
   'autocompleteService',
-  'datetimepicker'
+  'datetimepicker',
+  'ea.treeview'
 ]).config(function($urlRouterProvider, $locationProvider) {
   $urlRouterProvider
     .otherwise('/');

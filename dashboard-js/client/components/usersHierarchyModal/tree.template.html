@@ -1,0 +1,32 @@
+<div ng-class="{'tree-trunk': !hasParent()}">
+  <div data-ng-if="hasChildren()"
+       class="tree-parent"
+       data-ng-class="{'tree-child': hasParent()}">
+
+    <div data-ng-click="toggleExpanded()" class="clickable">
+      <i data-ng-class="{'glyphicon glyphicon-plus': !item.expanded, 'glyphicon glyphicon-minus': item.expanded}"></i>
+      <span ng-repeat="user in item.aUser" ng-if="item.sLogin === user.sLogin">
+                <span style="font-size: 16px; font-weight: bold">{{user.sFirstName}} {{user.sLastName}} ({{item.oProcessSubjectStatus.sName}} {{item.sDateEdit}})</span>
+                <p>{{item.sReport}}</p>
+            </span>
+    </div>
+
+    <ea-tree-view data-ng-if="item.expanded"
+                  branch-name="{{branchName}}"
+                  dataset-id="datasetId"
+                  callback="callback"
+                  items="item.aProcessSubjects">
+    </ea-tree-view>
+
+  </div>
+
+  <div data-ng-if="!hasChildren()"
+       data-ng-click="activate()"
+       class="tree-child notClickable"
+       data-ng-class="{active: item.isActive}">
+        <span ng-repeat="user in item.aUser" ng-if="item.sLogin === user.sLogin">
+            <span style="font-size: 16px; font-weight: bold">{{user.sFirstName}} {{user.sLastName}} ({{item.oProcessSubjectStatus.sName}} {{item.sDateEdit}})</span>
+            <p>{{item.sReport}}</p>
+        </span>
+  </div>
+</div>

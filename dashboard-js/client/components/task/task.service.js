@@ -139,13 +139,24 @@ angular.module('dashboardJsApp')
         })
       },
 
-      getProcessSubject: function (id, level) {
+      getProcessSubject: function (id) {
         return simpleHttpPromise({
           method: 'GET',
           url: '/api/documents/getProcessSubject',
           params: {
             snID_Process_Activiti: id,
-            nDeepLevel: level !== undefined ? level : 1
+            nDeepLevel: 1
+          }
+        })
+      },
+
+      getProcessSubjectTree: function (id) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getProcessSubjectTree',
+          params: {
+            snID_Process_Activiti: id,
+            nDeepLevel: 0
           }
         })
       },

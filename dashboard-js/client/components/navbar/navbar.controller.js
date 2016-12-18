@@ -150,13 +150,15 @@
     $scope.showOrHideSelect = false;
     $scope.hasDocuments = function () {
       var user = Auth.getCurrentUser().id;
-      tasks.isUserHasDocuments(user).then(function (res) {
-        if(Array.isArray(res) && res.length > 0) {
-          $scope.usersDocumentsBPs = res.filter(function (item) {
-            return item.sID.split('_')[0] === 'doc';
-          })
-        }
-      })
+      if(user) {
+        tasks.isUserHasDocuments(user).then(function (res) {
+          if(Array.isArray(res) && res.length > 0) {
+            $scope.usersDocumentsBPs = res.filter(function (item) {
+              return item.sID.split('_')[0] === 'doc';
+            })
+          }
+        })
+      }
     };
     $scope.hasDocuments();
 

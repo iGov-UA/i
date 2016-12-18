@@ -8,12 +8,12 @@
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
-      'processSubject', '$sce',
+      'processSubject', '$sce', 'eaTreeViewFactory',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
                 lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
-                processSubject, $sce) {
+                processSubject, $sce, eaTreeViewFactory) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -1208,10 +1208,10 @@
 
         $scope.openUsersHierarchy = function () {
           $scope.attachIsLoading = true;
-
-          tasks.getProcessSubject($scope.selectedTask.processInstanceId, 0).then(function (res) {
-            $scope.documentFullHierarchy = res.aProcessSubject;
+          tasks.getProcessSubjectTree($scope.selectedTask.processInstanceId).then(function (res) {
+            $scope.documentFullHierarchy = res;
             $scope.attachIsLoading = false;
+            eaTreeViewFactory.setItems($scope.documentFullHierarchy.aProcessSubject, $scope.$id);
           });
 
           $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;

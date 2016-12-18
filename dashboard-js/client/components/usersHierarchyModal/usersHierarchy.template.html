@@ -7,17 +7,7 @@
     <div class='col-md-12 users-hierarchy-modal-dialog-content-view' ng-style='dialogStyle'>
       <div class='users-hierarchy-modal-dialog-content' ng-if="attachIsLoading">Завантаження користувачiв...</div>
       <div class='users-hierarchy-modal-dialog-content' ng-if="!attachIsLoading">
-        <div ng-repeat="subject in documentFullHierarchy">
-          <ul>
-            <li ng-repeat="user in subject.aUser" ng-if="subject.sLogin === user.sLogin">
-              <h4>{{user.sFirstName}} {{user.sLastName}} ({{subject.oProcessSubjectStatus.sName}} {{subject.sDateEdit | removeHoursFromDate}})</h4>
-              <span compile-template
-                    data-ng-bind-html="trustAsHtml(subject.sReport)"
-                    style="display: block; margin: 0 5% 0 5%">
-              </span>
-            </li>
-          </ul>
-        </div>
+        <ea-tree-view branch-name='aProcessSubjects' item-template-url="components/usersHierarchyModal/tree.template.html" items="documentFullHierarchy.aProcessSubject" dataset-id="$id" callback="show"></ea-tree-view>
       </div>
     </div>
   </div>
