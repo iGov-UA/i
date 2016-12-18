@@ -532,6 +532,7 @@ module.exports.signForm = function (req, res) {
   var type = req.session.type;
   var userService = authProviderRegistry.getUserService(type);
   var nID_Server = req.query.nID_Server;
+  var bConvertToPDF = req.query.bConvertToPDF ? req.query.bConvertToPDF : false;
 
   if(!userService.signHtmlForm){
     res.status(400).send(errors.createError(errors.codes.LOGIC_SERVICE_ERROR,
@@ -622,13 +623,23 @@ module.exports.signForm = function (req, res) {
       function (formData, callback) {
         var accessToken = req.session.access.accessToken;
         createHtml(formData, function (formToUpload) {
-          userService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
-            if (error) {
-              callback(error, null);
-            } else {
-              callback(null, result)
-            }
-          });
+          if(bConvertToPDF === 'true' || bConvertToPDF == true){
+            userService.signPdfForm(accessToken, callbackURL, formToUpload, function (error, result) {
+              if (error) {
+                callback(error, null);
+              } else {
+                callback(null, result)
+              }
+            });
+          } else {
+            userService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
+              if (error) {
+                callback(error, null);
+              } else {
+                callback(null, result)
+              }
+            });
+          }
         });
       }
     ], function (error, result) {

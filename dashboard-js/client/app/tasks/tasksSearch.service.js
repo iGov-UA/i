@@ -4,6 +4,12 @@
   var tasksSearchService = function (tasks, Modal, defaultSearchHandlerService, $location, iGovNavbarHelper, $route, $q) {
 
     var messageMap = {'CRC Error': 'Неправильний ID', 'Record not found': 'ID не знайдено'};
+    var oPreviousTextSearch = {
+      value : '',
+      cursor : 0,
+      aIds : [],
+      result : ''
+    };
 
     var searchTaskByUserInput = function (value) {
       var defer = $q.defer();
@@ -13,6 +19,7 @@
           if (messageMap.hasOwnProperty(result))
             searchTaskByText(value, defer);
           else {
+            cleanPreviousTextSearch();
             var aIds = JSON.parse(result);
             if (angular.isArray(aIds) && aIds.length > 0) {
               defer.resolve(aIds);
@@ -29,26 +36,61 @@
     };
 
     var searchTaskByText = function (value, defer) {
-      tasks.getTasksByText(value, 'selfAssigned')
-        .then(function (result) {
-          if (messageMap.hasOwnProperty(result)) {
-            Modal.inform.error()(messageMap[result]);
-            defer.reject();
-          }
-          else {
-            var aIds = JSON.parse(result);
-            if (angular.isArray(aIds) && aIds.length > 0) {
-              defer.resolve(aIds);
-              searchSuccess(aIds[0]);
-            } else {
-              Modal.inform.error()('За даним критерієм задач не знайдено');
+      if (oPreviousTextSearch.value === value){
+        oPreviousTextSearch.cursor++;
+        if(oPreviousTextSearch.cursor == oPreviousTextSearch.aIds.length){
+          oPreviousTextSearch.cursor = 0;
+        }
+        defer.resolve(oPreviousTextSearch.aIds);
+        searchSuccess(oPreviousTextSearch.aIds[oPreviousTextSearch.cursor]);
+      } else {
+        cleanPreviousTextSearch();
+        tasks.getTasksByText(value, 'selfAssigned')
+          .then(function (result) {
+            if (messageMap.hasOwnProperty(result)) {
+              Modal.inform.error()(messageMap[result]);
               defer.reject();
+            } else {
+              var aIds = JSON.parse(result);
+              if (angular.isArray(aIds) && aIds.length > 0) {
+                if (oPreviousTextSearch.result === result) {
+                  oPreviousTextSearch.value = value;
+                  oPreviousTextSearch.cursor++;
+                  if(oPreviousTextSearch.cursor == aIds.length){
+                    oPreviousTextSearch.cursor = 0;
+                  }
+                  defer.resolve(aIds);
+                  searchSuccess(aIds[oPreviousTextSearch.cursor]);
+                } else {
+                  oPreviousTextSearch = {
+                    value : value,
+                    cursor : 0,
+                    aIds: aIds,
+                    result : result
+                  };
+                  defer.resolve(aIds);
+                  searchSuccess(aIds[0]);
+                }
+              } else {
+                Modal.inform.error()('За даним критерієм задач не знайдено');
+                defer.reject();
+              }
             }
-          }
-        }).catch(function (response) {
-        defaultSearchHandlerService.handleError(response, messageMap)
-        defer.reject();
-      });
+          }).catch(function (response) {
+          cleanPreviousTextSearch();
+          defaultSearchHandlerService.handleError(response, messageMap);
+          defer.reject();
+        });
+      }
+    };
+
+    var cleanPreviousTextSearch = function () {
+      oPreviousTextSearch = {
+        value : '',
+        cursor : 0,
+        aIds : [],
+        result : ''
+      };
     };
 
     var searchTypes = ['unassigned','selfAssigned'];

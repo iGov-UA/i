@@ -79,6 +79,9 @@ public class ProcessSubjectService {
 
     @Autowired
     private ProcessSubjectStatusDao processSubjectStatusDao;
+    
+  //Мапа для укладывания ид родителя и его детей в методе получения иерархии  getChildrenTree
+    Map<Long, List<ProcessSubject>> getChildrenTreeRes = new HashMap<>();
 
     public ProcessSubjectResult getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel, String sFind) {
 
@@ -198,12 +201,10 @@ public class ProcessSubjectService {
      * @return
      */
     public ProcessSubjectResultTree getCatalogProcessSubjectTree(String snID_Process_Activiti, Long deepLevel, String sFind) {
-
         List<ProcessSubject> aChildResult = new ArrayList();
         List<ProcessSubjectTree> processSubjectRelations = new ArrayList<>(baseEntityDao.findAll(ProcessSubjectTree.class));
         List<ProcessSubjectParentNode> parentProcessSubjects = new ArrayList<>();
         Map<Long, List<ProcessSubject>> subjToNodeMap = new HashMap<>();
-        Map<ProcessSubject, List<ProcessSubject>> parentAndChild = new HashMap<>();
         Map<String, Long> mapGroupActiviti = new HashMap<>();
         ProcessSubjectParentNode parentProcessSubject = null;
         Set<Long> idParentList = new LinkedHashSet<>();
@@ -222,8 +223,6 @@ public class ProcessSubjectService {
                     parentProcessSubjects.add(parentProcessSubject);
                     // мапа парент_id -ребенок
                     subjToNodeMap.put(parent.getId(), parentProcessSubject.getChildren());
-                    // мапа парент_obj -ребенок
-                    parentAndChild.put(parent, parentProcessSubject.getChildren());
                     // мапа группа-ид парента
                     mapGroupActiviti.put(parent.getSnID_Process_Activiti(), parent.getId());
                 } else {
@@ -235,8 +234,6 @@ public class ProcessSubjectService {
                             processSubjectParentNode.getChildren().add(child);
                             // мапа парент_id -ребенок
                             subjToNodeMap.put(parent.getId(), processSubjectParentNode.getChildren());
-                            // мапа парент_obj -ребенок
-                            parentAndChild.put(parent, parentProcessSubject.getChildren());
                             // мапа группа-ид парента
                             mapGroupActiviti.put(parent.getSnID_Process_Activiti(), parent.getId());
                         }
@@ -250,7 +247,7 @@ public class ProcessSubjectService {
         Long groupFiltr = mapGroupActiviti.get(snID_Process_Activiti);
         // детей его детей
         List<ProcessSubject> children = subjToNodeMap.get(groupFiltr);
-        Map<Long, List<ProcessSubject>> hierarchyProcessSubject = null;
+        Map<Long, List<ProcessSubject>> hierarchyProcessSubject = new HashMap<>();
         // children полный список первого уровня
         if (children != null && !children.isEmpty()) {
         	final List<Long> idChildren = Lists
@@ -261,15 +258,15 @@ public class ProcessSubjectService {
                         }
                     }));
             aChildResult.addAll(children);
+            
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
-           
-           LOG.info("hierarchyProcessSubjecttttttttt " + hierarchyProcessSubject);
-           LOG.info("aChildResulttttttttttttt " + aChildResult);
+           LOG.info("subjToNodeMap " + subjToNodeMap);
+           LOG.info("hierarchyProcessSubject " + hierarchyProcessSubject);
+           LOG.info("aChildResult " + aChildResult);
         }
 
-       // List<ProcessSubject> aChildResultByUser = new ArrayList<>();
-      //  Map<ProcessSubject, List<ProcessSubject>> hierarchyProcessSubjectRes = new HashMap();
-		/*if (aChildResult != null && !aChildResult.isEmpty()) {
+        List<ProcessSubject> aChildResultByUser = new ArrayList<>();
+		if (aChildResult != null && !aChildResult.isEmpty()) {
 			if (sFind != null && !sFind.isEmpty()) {
 					for (ProcessSubject processSubject : aChildResult) {
 						List<ProcessUser> aSubjectUser = getUsersByGroupSubject(
@@ -302,19 +299,21 @@ public class ProcessSubjectService {
 					}
 				}
 			}
-		}*/
+		}
 
         ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
-        /*if (sFind != null && !sFind.isEmpty()) {
+        if (sFind != null && !sFind.isEmpty()) {
         	processSubjectResultTree.setaProcessSubject(aChildResultByUser);
         } else {
         	processSubjectResultTree.setaProcessSubject(aChildResult);
-        }*/
-        processSubjectResultTree.setaProcessSubject(aChildResult);
+        }
         for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
-            /*List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject.getId());
-            processSubject.setsProcessSubj(aChildResultByKey);*/
+            //получаем по ключу лист детей и устанавливаем 
+            List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject.getId());
+            if (aChildResultByKey != null && !aChildResultByKey.isEmpty()) {
+				processSubject.setaProcessSubj(aChildResultByKey);
+			}
         }
         return processSubjectResultTree;
 
@@ -380,13 +379,14 @@ public class ProcessSubjectService {
                         LOG.info("nID_ChildLevel: " + nID_ChildLevel + " aChildLevel_Result: "
                                 + aChildLevel_Result.size());
                         // получаем только ид чилдренов
-                        anID_ChildLevel_Result = Lists.newArrayList(
+                        List<Long> anID_Child = Lists.newArrayList(
                                 Collections2.transform(aChildLevel_Result, new Function<ProcessSubject, Long>() {
                                     @Override
                                     public Long apply(ProcessSubject subjectGroup) {
                                         return subjectGroup.getId();
                                     }
                                 }));
+                        anID_ChildLevel_Result.addAll(anID_Child);
                         LOG.info("nID_ChildLevel: " + nID_ChildLevel + " anID_ChildLevel_Result: "
                                 + anID_ChildLevel_Result.size());
                         // добавляем детей к общему списку детей
@@ -419,47 +419,41 @@ public class ProcessSubjectService {
      * @param result
      * @return
      */
+    
     public Map<Long, List<ProcessSubject>> getChildrenTree(List<ProcessSubject> aChildLevel, List<Long> anID_ChildLevel,
             Map<Long, List<ProcessSubject>> subjToNodeMap, Set<Long> anID_PerentAll, Long deepLevelRequested,
             int deepLevelFact, List<ProcessSubject> result) {
-    	Map<Long, List<ProcessSubject>> subjToNodeMapRes = new HashMap<>();
         List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
-        LOG.info("subjToNodeMapppppppppppp: " + subjToNodeMap);
-        LOG.info("aChildLevel: " + aChildLevel.size() + " anID_ChildLevel: " + anID_ChildLevel);
         if (deepLevelFact < deepLevelRequested.intValue()) {
             for (Long nID_ChildLevel : anID_ChildLevel) {
                 if (anID_PerentAll.contains(nID_ChildLevel)) {
                     // достаем детей детей
                     aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);
                     if (aChildLevel_Result != null && !aChildLevel_Result.isEmpty()) {
-                        LOG.info("nID_ChildLevel: " + nID_ChildLevel + " aChildLevel_Result: "
-                                + aChildLevel_Result.size());
                         // получаем только ид чилдренов
-                        anID_ChildLevel_Result = Lists.newArrayList(
+                        List<Long> anID_Child = Lists.newArrayList(
                                 Collections2.transform(aChildLevel_Result, new Function<ProcessSubject, Long>() {
                                     @Override
                                     public Long apply(ProcessSubject subjectGroup) {
                                         return subjectGroup.getId();
                                     }
                                 }));
-                        LOG.info("nID_ChildLevel: " + nID_ChildLevel + " anID_ChildLevel_Result: "
-                                + anID_ChildLevel_Result.size());
+                        //если anID_ChildLevel больше 1, то всех ид складываем в лист
+                        anID_ChildLevel_Result.addAll(anID_Child);
                         // добавляем детей к общему списку детей
                         result.addAll(aChildLevel_Result);
-                        subjToNodeMapRes.put(nID_ChildLevel, aChildLevel_Result);
-                        LOG.info("result: " + result.size());
+                        getChildrenTreeRes.put(nID_ChildLevel, aChildLevel_Result);
                     }
                 }
             }
             deepLevelFact++;
-            LOG.info("deepLevelFact: " + deepLevelFact + " deepLevelRequested: " + deepLevelRequested);
             if (deepLevelFact < deepLevelRequested.intValue()) {
             	getChildrenTree(aChildLevel_Result,anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
                         checkDeepLevel(deepLevelRequested), deepLevelFact, result);
             }
         }
-        return subjToNodeMapRes;
+        return getChildrenTreeRes;
     }
 
     /**
@@ -524,6 +518,18 @@ public class ProcessSubjectService {
     }
 
     /**
+     * Задать статус и отчет
+     *
+     * @param snID_Process_Activiti
+     * @param sID_ProcessSubjectStatus
+     * @return
+     */
+    public ProcessSubject setProcessSubjectStatusAndReport(String snID_Process_Activiti, String sID_ProcessSubjectStatus, String sReport) {
+        ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByExpected("sID", sID_ProcessSubjectStatus);
+        return processSubjectDao.setProcessSubjectStatusAndReport(snID_Process_Activiti, processSubjectStatus, sReport);
+    }
+
+    /**
      * Задать дату
      *
      * @param snID_Process_Activiti
@@ -579,54 +585,56 @@ public class ProcessSubjectService {
                     .active()
                     .singleResult();
 
-                Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
-                LOG.info("mProcessVariable: " + mProcessVariable);
+                if(oProcessInstance != null){
+                    Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+                    LOG.info("mProcessVariable: " + mProcessVariable);
 
-                Map<String, Object> mParamDocumentNew = new HashMap<>();
+                    Map<String, Object> mParamDocumentNew = new HashMap<>();
 
-                for(String mKey : mParamDocument.keySet()){
+                    for(String mKey : mParamDocument.keySet()){
 
-                    Object oParamDocument = mParamDocument.get(mKey);
-                    Object oProcessVariable = mProcessVariable.get(mKey);
+                        Object oParamDocument = mParamDocument.get(mKey);
+                        Object oProcessVariable = mProcessVariable.get(mKey);
 
-                    if(oParamDocument != null){
-                        if(oProcessVariable != null){
-                            if(!(((String)oParamDocument).equals((String)oProcessVariable))){
-                                mParamDocumentNew.put(mKey, oParamDocument);
-                                LOG.info("--------------------------");
-                                LOG.info("mParamDocument elem new: " + oParamDocument);
-                                LOG.info("mProcessVariable elem: " + oProcessVariable);
-                                LOG.info("--------------------------");
-                             }
-                        }
-                        else{
-                             mParamDocumentNew.put(mKey, null);
-                        }
-                    }else{
-                        if(oProcessVariable != null){
-                            mParamDocumentNew.put(mKey, oProcessVariable);
+                        if(oParamDocument != null){
+                            if(oProcessVariable != null){
+                                if(!(((String)oParamDocument).equals((String)oProcessVariable))){
+                                    mParamDocumentNew.put(mKey, oParamDocument);
+                                    LOG.info("--------------------------");
+                                    LOG.info("mParamDocument elem new: " + oParamDocument);
+                                    LOG.info("mProcessVariable elem: " + oProcessVariable);
+                                    LOG.info("--------------------------");
+                                 }
+                            }
+                            else{
+                                 mParamDocumentNew.put(mKey, null);
+                            }
+                        }else{
+                            if(oProcessVariable != null){
+                                mParamDocumentNew.put(mKey, oProcessVariable);
+                            }
                         }
                     }
-                }
 
-                LOG.info("mParamDocumentNew: " + mParamDocumentNew);
-                DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+                    LOG.info("mParamDocumentNew: " + mParamDocumentNew);
+                    DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
 
-                if(!mParamDocumentNew.isEmpty()){
+                    if(!mParamDocumentNew.isEmpty()){
 
-                    for(ProcessSubject oProcessSubject : aProcessSubject_Child){
-                        oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
+                        for(ProcessSubject oProcessSubject : aProcessSubject_Child){
+                            oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
 
-                        DateTime datePlan = null;
-                        if (mParamDocument.get("sDateExecution") != null){
-                            datePlan = new DateTime(parseDate((String)mParamDocument.get("sDateExecution")));
-                        }
+                            DateTime datePlan = null;
+                            if (mParamDocument.get("sDateExecution") != null){
+                                datePlan = new DateTime(parseDate((String)mParamDocument.get("sDateExecution")));
+                            }
 
-                        oProcessSubject.setsDatePlan(datePlan);
-                        processSubjectDao.saveOrUpdate(oProcessSubject);
+                            oProcessSubject.setsDatePlan(datePlan);
+                            processSubjectDao.saveOrUpdate(oProcessSubject);
 
-                        for(String mKey : mParamDocumentNew.keySet()){
-                            runtimeService.setVariable(oProcessSubject.getSnID_Process_Activiti(), mKey, mParamDocumentNew.get(mKey));
+                            for(String mKey : mParamDocumentNew.keySet()){
+                                runtimeService.setVariable(oProcessSubject.getSnID_Process_Activiti(), mKey, mParamDocumentNew.get(mKey));
+                            }
                         }
                     }
                 }
@@ -670,10 +678,10 @@ public class ProcessSubjectService {
             Date oDateRegistration = parseDate(mParam.get("sDateRegistration"));
             sFormatDateRegistration = df_StartProcess.format(oDateRegistration);
         }
-        if((mParam.get("sDateDoc") != null)&&(!mParam.get("sDateDoc").equals(""))){
+        /*if((mParam.get("sDateDoc") != null)&&(!mParam.get("sDateDoc").equals(""))){
             Date oDateDoc = parseDate(mParam.get("sDateDoc"));
             sFormatDateDoc = df_StartProcess.format(oDateDoc);
-        }
+        }*/
 
         ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
 
@@ -682,19 +690,23 @@ public class ProcessSubjectService {
         mParamDocument.put("sTaskProcessDefinition", mParam.get("sTaskProcessDefinition"));
         mParamDocument.put("sID_Attachment", mParam.get("sID_Attachment"));
         mParamDocument.put("sContent", mParam.get("sContent"));
-        mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
-        mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
-        mParamDocument.put("sDateExecution", sFormatDateExecution);
-        mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
-        mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
+        //
+        //;
+        //
+        //mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
+        //mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
         mParamDocument.put("sDateRegistration", sFormatDateRegistration);
-        mParamDocument.put("sDateDoc", sFormatDateDoc);
-        mParamDocument.put("sApplicant", mParam.get("sApplicant"));
-        mParamDocument.put("nCountAttach", mParam.get("nCountAttach"));
-        mParamDocument.put("sNote", mParam.get("sNote"));
-        mParamDocument.put("asUrgently", mParam.get("asUrgently"));
+        mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
+        mParamDocument.put("sDateExecution", sFormatDateExecution);
         mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
-        mParamDocument.put("sTextReport", mParam.get("sTextReport"));
+        mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
+        //mParamDocument.put("sDateDoc", sFormatDateDoc);
+        //mParamDocument.put("sApplicant", mParam.get("sApplicant"));
+        //mParamDocument.put("nCountAttach", mParam.get("nCountAttach"));
+        //mParamDocument.put("sNote", mParam.get("sNote"));
+        //mParamDocument.put("asUrgently", mParam.get("asUrgently"));
+        //
+        //mParamDocument.put("sTextReport", mParam.get("sTextReport"));
 
         //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
         //иначе проверяем на необходимость редактирования
@@ -770,7 +782,7 @@ public class ProcessSubjectService {
                 }
 
                 if (continueFlag == false) {
-                    ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey("system_task", mParamTask);
+                    ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey((String)mParamDocument.get("sTaskProcessDefinition"), mParamTask);
                     LOG.info("oProcessInstanceChild id: " + (oProcessInstanceChild != null ? oProcessInstanceChild.getId() : " oInstanse is null"));
                     if (oProcessInstanceChild != null) {
                         ProcessSubject oProcessSubjectChild = processSubjectDao

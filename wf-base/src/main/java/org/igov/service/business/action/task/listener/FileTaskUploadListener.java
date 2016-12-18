@@ -24,11 +24,8 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
     static final transient Logger LOG = LoggerFactory.getLogger(FileTaskUploadListener.class);
 
     private static final long serialVersionUID = 1L;
-    
-    //@Autowired
-    //private TaskService taskService;
 
-    private List<Attachment> aAttachmentList;
+    private List<Attachment> aAttachment;
 
     @Override
     public void notify(DelegateTask oTask) {
@@ -59,11 +56,11 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
                     .getStartFormData(oExecution.getProcessDefinitionId());
             LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
                     oExecution.getProcessDefinitionId());
-            aAttachmentList = addAttachmentsToTask(oStartFormData, oTask);
+            aAttachment = addAttachmentsToTask(oStartFormData, oTask);
         }
     }
 
-    public List<Attachment> getaAttachmentList() {
-        return aAttachmentList;
+    public List<Attachment> getaAttachment() {
+        return aAttachment;
     }
 }

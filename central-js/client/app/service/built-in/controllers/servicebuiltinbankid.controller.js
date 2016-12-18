@@ -10,7 +10,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       var currentState = $state.$current;
       var isStyled = false;
-      
+
       $scope.paramsBackup = null;
 
       $scope.oServiceData = oServiceData;
@@ -260,7 +260,24 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               'some business key 111',
               'process name here', $scope.activitiForm, $scope.data.formData)
               .then(function (result) {
-                var signPath = ActivitiService.getSignFormPath(oServiceData, result.formID, oService, $scope.data.formData.params);
+                var bConvertToPDF = false;
+                for(var fieldInd = $scope.activitiForm.formProperties.length - 1; fieldInd >= 0; fieldInd--){
+                  if($scope.activitiForm.formProperties[fieldInd].id === 'form_signed'){
+                    var aFormSignValues = $scope.activitiForm.formProperties[fieldInd].name.replace(/\s+/, "").split(';');
+                    if (aFormSignValues.length > 2) {
+                      var aFormSignValuesElements = aFormSignValues[2].split(',');
+                      angular.forEach(aFormSignValuesElements, function (sCondition) {
+                        if(sCondition === 'bPrintFormFileAsPDF=true'
+                          || sCondition === 'bPrintFormFileAsPDF=True'
+                          || sCondition === 'bPrintFormFileAsPDF=TRUE'){
+                          bConvertToPDF = true;
+                        }
+                      })
+                    }
+                    break;
+                  }
+                }
+                var signPath = ActivitiService.getSignFormPath(oServiceData, result.formID, oService, $scope.data.formData.params, bConvertToPDF);
                 $window.location.href = $location.protocol() + '://' + $location.host() + ':' + $location.port() + signPath;
                 //$window.location.href = $location.absUrl()
                 //  + '?formID=' + result.formID
@@ -624,13 +641,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       $scope.showFormField = function (property) {
 
-      	if( isStyled == false ) { 
+      	if( isStyled == false ) {
 
       	  FieldAttributesService.enableStyles();
 
       	  isStyled = true;
       	}
-    	  
+
         var p = getFieldProps(property);
         if ($scope.data.formData.params.bReferent.value && property.id.startsWith('bankId')) {
           return true;

@@ -590,8 +590,8 @@ public class SubjectMessageController {
             HttpServletResponse oResponse
     ) throws CommonServiceException, IOException {
 
-        LOG.info("Started! (sID_Source={}, nID_Service={}, nID={}, sID_Order={})", sID_Source, nID_Service, nID, sID_Order);
-
+        LOG.info("Started! (sID_Source={}, nID_Service={}, nID={}, sID_Order={}, nID_Subject={})", sID_Source, nID_Service, nID, nID_Subject);
+        LOG.info("nID_Subject: " + nID_Subject);
         String responseMessage = null;
 
         /*if(nID_Rate==null){
@@ -621,6 +621,7 @@ public class SubjectMessageController {
         }else{
             try {
                 String sAnswer=null;
+                LOG.info("nIdSubject that we try to set in controller: " + nID_Subject);
                 SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
                         sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nID,
                         nID_Subject, sID_Order);

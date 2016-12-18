@@ -134,7 +134,7 @@ public class DocumentStepService {
 //setDocumentStep(snID_Process_Activiti[, sKey_Step)]    
 //3.1) setDocumentStepSubjectRight(snID_Process_Activiti, sKey_GroupPostfix, bWrite) //Установить право записи, равное bWrite, для ветки к путем sKey_Step/sKey_GroupPostfix
 //3.2) cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New) //Клонировать ветку права записи с путем sKey_Step/sKey_GroupPostfix в ветку с путем 
-    public List<Map<String, Object>> cloneDocumentStepSubject(String snID_Process_Activiti, String sKey_GroupPostfix, String sKey_GroupPostfix_New) {//JSONObject //Map<String, Object>
+    public DocumentStepSubjectRight cloneDocumentStepSubject(String snID_Process_Activiti, String sKey_GroupPostfix, String sKey_GroupPostfix_New) {//JSONObject //Map<String, Object>
         LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sKey_GroupPostfix_New={}", sKey_GroupPostfix, snID_Process_Activiti, sKey_GroupPostfix_New);
         List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
         if (aTaskActive.size() < 1 || aTaskActive.get(0) == null) {
@@ -169,29 +169,59 @@ public class DocumentStepService {
             //String sID = oProperty.getId();
         }
         LOG.info("mProcessVariable(added)={}", mProcessVariable);
+        String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document");
+        /*if (StringUtils.isEmpty(sKey_Step_Document)) {
+            throw new IllegalStateException("There is no active Document Step! mProcessVariable=" + mProcessVariable +
+            //        " Process variable sKey_Step_Document is empty.");
+            //sKey_Step_Document="1";
+        }*/
 
         List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.info("aDocumentStep={}", aDocumentStep);
         
-        
-        /*
-        DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
-        oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group);
-        oDocumentStepSubjectRight.setbWrite(bWrite);
-
-        Object sName = oGroup.opt("sName");
-        if (sName != null) {
-            oDocumentStepSubjectRight.setsName((String) sName);
+        DocumentStep oDocumentStep_Active = aDocumentStep
+                .stream()
+                .filter(o -> sKey_Step_Document == null ? o.getnOrder().equals(1) : o.getsKey_Step().equals(sKey_Step_Document))
+                .findAny()
+                .orElse(null);
+        LOG.info("oDocumentStep_Active={}", oDocumentStep_Active);
+        if (oDocumentStep_Active == null) {
+            throw new IllegalStateException("There is no active Document Step, process variable sKey_Step_Document="
+                    + sKey_Step_Document);
         }
+        DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Source = new LinkedList(oDocumentStep_Active.getRights());
+        for(DocumentStepSubjectRight oDocumentStepSubjectRight_Source : aDocumentStepSubjectRight_Source){
+            if(sKey_GroupPostfix.equals(oDocumentStepSubjectRight_Source.getsKey_GroupPostfix())){
+                oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_GroupPostfix_New);
+                oDocumentStepSubjectRight.setbWrite(oDocumentStepSubjectRight_Source.getbWrite());
+                Object sName = oDocumentStepSubjectRight_Source.getsName(); //oGroup.opt("sName");
+                if (sName != null) {
+                    oDocumentStepSubjectRight.setsName((String) sName);
+                }
 
-        List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
-        oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
-        oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
-        LOG.info("right for step: {}", oDocumentStepSubjectRight);
-        aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);        
-        */
-        
-        return null;
+                //List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
+                List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = new LinkedList();
+                
+                for(DocumentStepSubjectRightField oDocumentStepSubjectRightField_Source : oDocumentStepSubjectRight_Source.getDocumentStepSubjectRightFields()){
+                    DocumentStepSubjectRightField oDocumentStepSubjectRightField=new DocumentStepSubjectRightField();
+                    oDocumentStepSubjectRightField.setbWrite(oDocumentStepSubjectRightField_Source.getbWrite());
+                    oDocumentStepSubjectRightField.setsMask_FieldID(oDocumentStepSubjectRightField_Source.getsMask_FieldID());
+                    oDocumentStepSubjectRightField.setDocumentStepSubjectRight(oDocumentStepSubjectRight);
+                    //oDocumentStepSubjectRightField_Source.getsMask_FieldID();
+                }
+                
+                oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
+                oDocumentStepSubjectRight.setDocumentStep(oDocumentStep_Active);
+                LOG.info("right for step: {}", oDocumentStepSubjectRight);
+                aDocumentStepSubjectRight_Source.add(oDocumentStepSubjectRight);        
+                
+                oDocumentStep_Active.setRights(aDocumentStepSubjectRight_Source);
+                documentStepDao.saveOrUpdate(oDocumentStep_Active);
+            }
+            
+        }
+        return oDocumentStepSubjectRight;
     }
 
     private List<DocumentStepSubjectRightField> mapToFields(JSONObject group, DocumentStepSubjectRight rightForGroup) {
