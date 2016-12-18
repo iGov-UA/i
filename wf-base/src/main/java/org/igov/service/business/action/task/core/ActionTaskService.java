@@ -1147,7 +1147,10 @@ public class ActionTaskService {
 
         List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
         List<ProcessDefinition> aProcessDefinition = oRepositoryService
-                .createProcessDefinitionQuery().active().latestVersion().list();
+                .createProcessDefinitionQuery()
+                //.active()
+                .latestVersion().list();
+
         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
             LOG.info("Found {} active process definitions", aProcessDefinition.size());
 //            aProcessDefinition_Return = getAvailabilityProcessDefinitionByLogin(sLogin, aProcessDefinition);
