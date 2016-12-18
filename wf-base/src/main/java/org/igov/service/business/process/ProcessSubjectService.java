@@ -691,13 +691,14 @@ public class ProcessSubjectService {
         mParamDocument.put("sID_Attachment", mParam.get("sID_Attachment"));
         mParamDocument.put("sContent", mParam.get("sContent"));
         //
-        //mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
+        //;
         //
         //mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
         //mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
         mParamDocument.put("sDateRegistration", sFormatDateRegistration);
         mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
         mParamDocument.put("sDateExecution", sFormatDateExecution);
+        mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
         mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
         //mParamDocument.put("sDateDoc", sFormatDateDoc);
         //mParamDocument.put("sApplicant", mParam.get("sApplicant"));
