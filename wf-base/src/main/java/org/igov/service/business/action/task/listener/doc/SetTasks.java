@@ -66,6 +66,8 @@ public class SetTasks implements TaskListener {
                 = getStringFromFieldExpression(this.sAutorResolution, delegateTask.getExecution());
         String sDateExecution_Value
                 = getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution());
+        String sAsTypeResolution_Value
+                = getStringFromFieldExpression(this.asTypeResolution, delegateTask.getExecution());
         String sTextResolution_Value
                 = getStringFromFieldExpression(this.sTextResolution, delegateTask.getExecution());
         
@@ -79,8 +81,6 @@ public class SetTasks implements TaskListener {
                 = getStringFromFieldExpression(this.sNote, delegateTask.getExecution());
         String sAsUrgently_Value
                 = getStringFromFieldExpression(this.asUrgently, delegateTask.getExecution());
-        String sAsTypeResolution_Value
-                = getStringFromFieldExpression(this.asTypeResolution, delegateTask.getExecution());
         String sTextReport_Value
                 = getStringFromFieldExpression(this.sTextReport, delegateTask.getExecution());*/
                 
@@ -94,6 +94,7 @@ public class SetTasks implements TaskListener {
         mParam.put("sDateRegistration", sDateRegistration_Value);
         mParam.put("sAutorResolution", sAutorResolution_Value);
         mParam.put("sDateExecution", sDateExecution_Value);
+        mParam.put("asTypeResolution", sAsTypeResolution_Value);
         mParam.put("sTextResolution", sTextResolution_Value);
         
         //mParam.put("sDateDoc", sDateDoc_Value);
@@ -101,7 +102,7 @@ public class SetTasks implements TaskListener {
         //mParam.put("nCountAttach", snCountAttach_Value);
         //mParam.put("sNote", sNote_Value);
         //mParam.put("asUrgently", sAsUrgently_Value);
-        //mParam.put("asTypeResolution", sAsTypeResolution_Value);
+
         //mParam.put("sTextReport", sTextReport_Value);
         
         /*processSubjectService.setProcessSubjects(sTaskProcessDefinition_Value, sID_Attachment_Value, sContent_Value, 
