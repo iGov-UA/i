@@ -154,7 +154,7 @@
         tasks.isUserHasDocuments(user).then(function (res) {
           if(Array.isArray(res) && res.length > 0) {
             $scope.usersDocumentsBPs = res.filter(function (item) {
-              return item.sID.split('_')[0] === 'doc';
+              return item.sID.charAt(0) === '_' && item.sID.split('_')[1] === 'doc';
             })
           }
         })
