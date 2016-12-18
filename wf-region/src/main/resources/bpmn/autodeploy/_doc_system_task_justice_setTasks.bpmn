@@ -36,7 +36,7 @@
         <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot; }]}"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
-         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
+        <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
           <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
@@ -46,7 +46,6 @@
           <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
-     
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="asReport" name="Якщо треба додати коментарій до звіту - поставте галочку; ;sID_CheckboxTrue=sEnumRepotYes" type="enum">
           <activiti:value id="sEnumRepotYes" name="потрібно додати коментарій"></activiti:value>
@@ -88,11 +87,19 @@
           <activiti:field name="sDateExecution">
             <activiti:expression>${sDateExecution}</activiti:expression>
           </activiti:field>
-           <activiti:field name="asTypeResolution">
-            <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
+          <activiti:field name="asTypeResolution">
+            <activiti:expression>${asTypeResolution}</activiti:expression>
           </activiti:field>
-           <activiti:field name="sTextResolution">
-            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
+          <activiti:field name="sTextResolution">
+            <activiti:expression>${sTextResolution}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:string><![CDATA[closed]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sReport">
+            <activiti:expression>${sReport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
