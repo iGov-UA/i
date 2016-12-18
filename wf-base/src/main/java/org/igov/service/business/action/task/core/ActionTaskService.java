@@ -1133,6 +1133,7 @@ public class ActionTaskService {
     /**
      * Получение списка бизнес процессов к которым у пользователя есть доступ
      * @param sLogin - Логин пользователя
+     * @param bDocOnly Выводить только список БП документов
      * @return
      */
     public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly){
@@ -1147,7 +1148,10 @@ public class ActionTaskService {
 
         List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
         List<ProcessDefinition> aProcessDefinition = oRepositoryService
-                .createProcessDefinitionQuery().active().latestVersion().list();
+                .createProcessDefinitionQuery()
+                //.active()
+                .latestVersion().list();
+
         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
             LOG.info("Found {} active process definitions", aProcessDefinition.size());
 //            aProcessDefinition_Return = getAvailabilityProcessDefinitionByLogin(sLogin, aProcessDefinition);
@@ -1166,35 +1170,39 @@ public class ActionTaskService {
             }
 
             for (ProcessDefinition oProcessDefinition : aProcessDefinition) {
-                LOG.info("process definition id: {}", oProcessDefinition.getId());
-
-                Set<String> aCandidateCroupsToCheck = getGroupsByProcessDefinition(oProcessDefinition);
-                /*
-                Set<String> aCandidateCroupsToCheck = new HashSet<>();
-                loadCandidateGroupsFromTasks(oProcessDefinition, aCandidateCroupsToCheck);
-                loadCandidateStarterGroup(oProcessDefinition, aCandidateCroupsToCheck);
-                //return aCandidateCroupsToCheck;
-                */
-
-                /*if(checkIncludeProcessDefinitionIntoGroupList(aGroup, aCandidateCroupsToCheck)){
-                    aProcessDefinition_Return.add(oProcessDefinition);
-                }*/
                 
-                for (Group oGroup : aGroup) {
-                    for (String sProcessGroupMask : aCandidateCroupsToCheck) {//asProcessGroupMask
-                        if (sProcessGroupMask.contains("${")) {
-                            sProcessGroupMask = sProcessGroupMask.replaceAll("\\$\\{?.*}", "(.*)");
-                        }
-                        if(!sProcessGroupMask.contains("*")){
-                            if (oGroup.getId().matches(sProcessGroupMask)) {
-                                //return true;
-                                aProcessDefinition_Return.add(oProcessDefinition);
+                String sID_BP = oProcessDefinition.getId();
+                
+                LOG.info("process definition id: sID_BP={}", oProcessDefinition.getId());
+                
+                if(!bDocOnly || sID_BP.startsWith("_doc_")){
+                    Set<String> aCandidateCroupsToCheck = getGroupsByProcessDefinition(oProcessDefinition);
+                    /*
+                    Set<String> aCandidateCroupsToCheck = new HashSet<>();
+                    loadCandidateGroupsFromTasks(oProcessDefinition, aCandidateCroupsToCheck);
+                    loadCandidateStarterGroup(oProcessDefinition, aCandidateCroupsToCheck);
+                    //return aCandidateCroupsToCheck;
+                    */
+
+                    /*if(checkIncludeProcessDefinitionIntoGroupList(aGroup, aCandidateCroupsToCheck)){
+                        aProcessDefinition_Return.add(oProcessDefinition);
+                    }*/
+
+                    for (Group oGroup : aGroup) {
+                        for (String sProcessGroupMask : aCandidateCroupsToCheck) {//asProcessGroupMask
+                            if (sProcessGroupMask.contains("${")) {
+                                sProcessGroupMask = sProcessGroupMask.replaceAll("\\$\\{?.*}", "(.*)");
+                            }
+                            if(!sProcessGroupMask.contains("*")){
+                                if (oGroup.getId().matches(sProcessGroupMask)) {
+                                    //return true;
+                                    aProcessDefinition_Return.add(oProcessDefinition);
+                                }
                             }
                         }
                     }
+                    //return false;
                 }
-                //return false;
-                
                 
             }
             //return aProcessDefinition_Return;
