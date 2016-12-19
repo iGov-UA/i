@@ -59,7 +59,7 @@ public class ProcessSubjectService {
     private static final Log LOG = LogFactory.getLog(ProcessSubjectService.class);
     private static final long FAKE_ROOT_PROCESS_ID = 0;
     
-    private static String IS_ROOT = "Y";
+    private static Boolean IS_ROOT = true;
 
 
     @Autowired
@@ -203,9 +203,9 @@ public class ProcessSubjectService {
      * @param sFind - текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)
      * @return
      */
-    public ProcessSubjectResultTree getCatalogProcessSubjectTree(String snID_Process_Activiti, Long deepLevel, String sFind, String bIncludeRoot) {
+    public ProcessSubjectResultTree getCatalogProcessSubjectTree(String snID_Process_Activiti, Long deepLevel, String sFind, Boolean bIncludeRoot) {
     	
-    	if(bIncludeRoot == null || bIncludeRoot.isEmpty()) {
+    	if(bIncludeRoot == null) {
     		bIncludeRoot=IS_ROOT;
     	}
         List<ProcessSubject> aChildResult = new ArrayList();
@@ -321,8 +321,8 @@ public class ProcessSubjectService {
 
         ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
         if (sFind != null && !sFind.isEmpty()) {
-        	if (IS_ROOT.equals(bIncludeRoot)) {
-				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(bIncludeRoot, parentChildren,
+        	if (bIncludeRoot) {
+				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(parentChildren,
 						groupFiltr);
 				processSubjectResultTree.setaProcessSubject(rootProcessSubject);
 				processSubjectResultTree.getaProcessSubject().addAll(aChildResultByUser);
@@ -330,8 +330,8 @@ public class ProcessSubjectService {
 				processSubjectResultTree.setaProcessSubject(aChildResultByUser);
 			}
         } else {
-			if (IS_ROOT.equals(bIncludeRoot)) {
-				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(bIncludeRoot, parentChildren,
+			if (bIncludeRoot) {
+				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(parentChildren,
 						groupFiltr);
 				processSubjectResultTree.setaProcessSubject(rootProcessSubject);
 				processSubjectResultTree.getaProcessSubject().addAll(aChildResult);
@@ -354,7 +354,7 @@ public class ProcessSubjectService {
     /**
      * если флаг на вход Y, то в ответ включать самый верхний рутовый ProcessSubject
      */
-	public List<ProcessSubject> getRootProcessSubject(String bIncludeRoot, Map<ProcessSubject, List<ProcessSubject>> parentChildren,
+	public List<ProcessSubject> getRootProcessSubject(Map<ProcessSubject, List<ProcessSubject>> parentChildren,
 			Long groupFiltr) {
 		
 		List<ProcessSubject> rootProcessSubjects = new ArrayList<>();

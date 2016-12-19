@@ -52,7 +52,7 @@ public class ProcessSubjectController {
     public ProcessSubjectResultTree getProcessSubjectTree(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
             @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
             @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind,
-            @ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (Y-отоборажаем, N-нет, по умолчанию Y)", required = false) @RequestParam(value = "bIncludeRoot", required = false) String bIncludeRoot)
+            @ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (true-отоборажаем, false-нет, по умолчанию Y)", required = false) @RequestParam(value = "bIncludeRoot", required = false) Boolean bIncludeRoot)
             throws Exception {
     	ProcessSubjectResultTree processSubjectResultTree = null;
         try {
