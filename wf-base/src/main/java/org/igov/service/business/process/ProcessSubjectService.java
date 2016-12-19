@@ -273,7 +273,7 @@ public class ProcessSubjectService {
                         }
                     }));
             aChildResult.addAll(children);
-			if (IS_ROOT.equals(bIncludeRoot)) {
+			if (bIncludeRoot) {
 				hierarchyProcessSubject.put(groupFiltr, children);
 			}
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
