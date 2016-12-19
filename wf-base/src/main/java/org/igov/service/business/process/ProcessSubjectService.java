@@ -275,11 +275,12 @@ public class ProcessSubjectService {
                             return subjectGroup.getId();
                         }
                     }));
-            aChildResult.addAll(children);
+            
             if(bIncludeRoot) {
-            	aChildResult.addAll(getRootProcessSubject(parentChildren,
+            	children.addAll(getRootProcessSubject(parentChildren,
 						groupFiltr));
             }
+            aChildResult.addAll(children);
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
           
            LOG.info("subjToNodeMap " + subjToNodeMap);
