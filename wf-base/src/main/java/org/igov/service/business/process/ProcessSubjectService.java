@@ -276,10 +276,6 @@ public class ProcessSubjectService {
                         }
                     }));
             
-            if(bIncludeRoot) {
-            	children.addAll(getRootProcessSubject(parentChildren,
-						groupFiltr));
-            }
             aChildResult.addAll(children);
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
           
@@ -326,24 +322,24 @@ public class ProcessSubjectService {
 
         ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
         if (sFind != null && !sFind.isEmpty()) {
-        	/*if (bIncludeRoot) {
+        	if (bIncludeRoot) {
 				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(parentChildren,
 						groupFiltr);
 				processSubjectResultTree.setaProcessSubject(rootProcessSubject);
 				processSubjectResultTree.getaProcessSubject().addAll(aChildResultByUser);
 			} else {
 				processSubjectResultTree.setaProcessSubject(aChildResultByUser);
-			}*/
+			}
         	processSubjectResultTree.setaProcessSubject(aChildResultByUser);
         } else {
-			/*if (bIncludeRoot) {
+			if (bIncludeRoot) {
 				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(parentChildren,
 						groupFiltr);
 				processSubjectResultTree.setaProcessSubject(rootProcessSubject);
 				processSubjectResultTree.getaProcessSubject().addAll(aChildResult);
 			} else {
 				processSubjectResultTree.setaProcessSubject(aChildResult);
-			}*/
+			}
         	processSubjectResultTree.setaProcessSubject(aChildResult);
         }
         for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
