@@ -51,11 +51,12 @@ public class ProcessSubjectController {
     @ResponseBody
     public ProcessSubjectResultTree getProcessSubjectTree(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
             @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
-            @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind)
+            @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind,
+            @ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (Y-отоборажаем, N-нет, по умолчанию Y)", required = false) @RequestParam(value = "bIncludeRoot", required = false) String bIncludeRoot)
             throws Exception {
     	ProcessSubjectResultTree processSubjectResultTree = null;
         try {
-        	processSubjectResultTree = processSubjectService.getCatalogProcessSubjectTree(snID_Process_Activiti, nDeepLevel, sFind);
+        	processSubjectResultTree = processSubjectService.getCatalogProcessSubjectTree(snID_Process_Activiti, nDeepLevel, sFind,bIncludeRoot);
 
         } catch (Exception e) {
             LOG.error("FAIL: ", e);
