@@ -318,12 +318,20 @@ public class ProcessSubjectService {
 
         ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
         if (sFind != null && !sFind.isEmpty()) {
-        	processSubjectResultTree.setaProcessSubject(aChildResultByUser);
+        	if (IS_ROOT.equals(bIncludeRoot)) {
+				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(bIncludeRoot, parentChildren,
+						groupFiltr);
+				processSubjectResultTree.setaProcessSubject(rootProcessSubject);
+				processSubjectResultTree.getaProcessSubject().addAll(aChildResultByUser);
+			} else {
+				processSubjectResultTree.setaProcessSubject(aChildResultByUser);
+			}
         } else {
 			if (IS_ROOT.equals(bIncludeRoot)) {
 				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(bIncludeRoot, parentChildren,
 						groupFiltr);
-				processSubjectResultTree.getaProcessSubject().addAll(rootProcessSubject);
+				processSubjectResultTree.setaProcessSubject(rootProcessSubject);
+				processSubjectResultTree.getaProcessSubject().addAll(aChildResult);
 			} else {
 				processSubjectResultTree.setaProcessSubject(aChildResult);
 			}
