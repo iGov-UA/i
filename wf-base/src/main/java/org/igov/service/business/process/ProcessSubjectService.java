@@ -725,6 +725,7 @@ public class ProcessSubjectService {
         mParamDocument.put("sDateExecution", sFormatDateExecution);
         mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
         mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
+        mParamDocument.put("sDoc1", mParam.get("sDoc1"));
         //mParamDocument.put("sDateDoc", sFormatDateDoc);
         //mParamDocument.put("sApplicant", mParam.get("sApplicant"));
         //mParamDocument.put("nCountAttach", mParam.get("nCountAttach"));
