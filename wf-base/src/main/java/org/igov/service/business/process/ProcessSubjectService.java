@@ -58,6 +58,9 @@ public class ProcessSubjectService {
 
     private static final Log LOG = LogFactory.getLog(ProcessSubjectService.class);
     private static final long FAKE_ROOT_PROCESS_ID = 0;
+    
+    private static String IS_ROOT = "Y";
+
 
     @Autowired
     private BaseEntityDao<Long> baseEntityDao;
@@ -200,11 +203,16 @@ public class ProcessSubjectService {
      * @param sFind - текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)
      * @return
      */
-    public ProcessSubjectResultTree getCatalogProcessSubjectTree(String snID_Process_Activiti, Long deepLevel, String sFind) {
+    public ProcessSubjectResultTree getCatalogProcessSubjectTree(String snID_Process_Activiti, Long deepLevel, String sFind, String bIncludeRoot) {
+    	
+    	if(bIncludeRoot == null || bIncludeRoot.isEmpty()) {
+    		bIncludeRoot=IS_ROOT;
+    	}
         List<ProcessSubject> aChildResult = new ArrayList();
         List<ProcessSubjectTree> processSubjectRelations = new ArrayList<>(baseEntityDao.findAll(ProcessSubjectTree.class));
         List<ProcessSubjectParentNode> parentProcessSubjects = new ArrayList<>();
         Map<Long, List<ProcessSubject>> subjToNodeMap = new HashMap<>();
+        Map<ProcessSubject, List<ProcessSubject>> parentChildren = new HashMap<>();
         Map<String, Long> mapGroupActiviti = new HashMap<>();
         ProcessSubjectParentNode parentProcessSubject = null;
         Set<Long> idParentList = new LinkedHashSet<>();
@@ -223,6 +231,7 @@ public class ProcessSubjectService {
                     parentProcessSubjects.add(parentProcessSubject);
                     // мапа парент_id -ребенок
                     subjToNodeMap.put(parent.getId(), parentProcessSubject.getChildren());
+                    parentChildren.put(parent, parentProcessSubject.getChildren());
                     // мапа группа-ид парента
                     mapGroupActiviti.put(parent.getSnID_Process_Activiti(), parent.getId());
                 } else {
@@ -234,6 +243,7 @@ public class ProcessSubjectService {
                             processSubjectParentNode.getChildren().add(child);
                             // мапа парент_id -ребенок
                             subjToNodeMap.put(parent.getId(), processSubjectParentNode.getChildren());
+                            parentChildren.put(parent, parentProcessSubject.getChildren());
                             // мапа группа-ид парента
                             mapGroupActiviti.put(parent.getSnID_Process_Activiti(), parent.getId());
                         }
@@ -245,8 +255,29 @@ public class ProcessSubjectService {
 
         // достаем ид snID_Process_Activiti которое на вход
         Long groupFiltr = mapGroupActiviti.get(snID_Process_Activiti);
+        
+        LOG.info("groupFiltr " + groupFiltr);
+        
+        
         // детей его детей
         List<ProcessSubject> children = subjToNodeMap.get(groupFiltr);
+        
+        List<ProcessSubject> rootProcessSubjects = new ArrayList<>();
+        
+       /**
+        * если флаг на вход Y, то в ответ включать самый верхний рутовый ProcessSubject
+        */
+     if(IS_ROOT.equals(bIncludeRoot))  {
+        for(Map.Entry<ProcessSubject, List<ProcessSubject>> entry : parentChildren.entrySet()) {
+        	ProcessSubject root = entry.getKey();
+        	if(root.getId().equals(groupFiltr)) {
+        		rootProcessSubjects.add(root);
+        	}
+        }
+     }
+     LOG.info("rootProcessSubjectsss " + rootProcessSubjects);
+        
+        
         Map<Long, List<ProcessSubject>> hierarchyProcessSubject = new HashMap<>();
         // children полный список первого уровня
         if (children != null && !children.isEmpty()) {
@@ -261,7 +292,6 @@ public class ProcessSubjectService {
             
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
            LOG.info("subjToNodeMap " + subjToNodeMap);
-           LOG.info("hierarchyProcessSubject " + hierarchyProcessSubject);
            LOG.info("aChildResult " + aChildResult);
         }
 
@@ -700,6 +730,7 @@ public class ProcessSubjectService {
         mParamDocument.put("sDateExecution", sFormatDateExecution);
         mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
         mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
+        mParamDocument.put("sDoc1", mParam.get("sDoc1"));
         //mParamDocument.put("sDateDoc", sFormatDateDoc);
         //mParamDocument.put("sApplicant", mParam.get("sApplicant"));
         //mParamDocument.put("nCountAttach", mParam.get("nCountAttach"));
