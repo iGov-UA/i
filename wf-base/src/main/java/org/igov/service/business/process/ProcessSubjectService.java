@@ -318,9 +318,23 @@ public class ProcessSubjectService {
 
         ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
         if (sFind != null && !sFind.isEmpty()) {
-        	processSubjectResultTree.setaProcessSubject(aChildResultByUser);
+        	if (IS_ROOT.equals(bIncludeRoot)) {
+				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(bIncludeRoot, parentChildren,
+						groupFiltr);
+				processSubjectResultTree.setaProcessSubject(rootProcessSubject);
+				processSubjectResultTree.getaProcessSubject().addAll(aChildResultByUser);
+			} else {
+				processSubjectResultTree.setaProcessSubject(aChildResultByUser);
+			}
         } else {
-        	processSubjectResultTree.setaProcessSubject(aChildResult);
+			if (IS_ROOT.equals(bIncludeRoot)) {
+				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(bIncludeRoot, parentChildren,
+						groupFiltr);
+				processSubjectResultTree.setaProcessSubject(rootProcessSubject);
+				processSubjectResultTree.getaProcessSubject().addAll(aChildResult);
+			} else {
+				processSubjectResultTree.setaProcessSubject(aChildResult);
+			}
         }
         for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
@@ -330,10 +344,10 @@ public class ProcessSubjectService {
 				processSubject.setaProcessSubj(aChildResultByKey);
 			}
         }
-        if(IS_ROOT.equals(bIncludeRoot))  {
+     /*   if(IS_ROOT.equals(bIncludeRoot))  {
         	List<ProcessSubject> rootProcessSubject = getRootProcessSubject(bIncludeRoot, parentChildren, groupFiltr);
         	processSubjectResultTree.getaProcessSubject().addAll(rootProcessSubject);
-        }
+        }*/
         return processSubjectResultTree;
 
     }
