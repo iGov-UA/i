@@ -265,16 +265,6 @@ public class ProcessSubjectService {
         // детей его детей
         List<ProcessSubject> children = subjToNodeMap.get(groupFiltr);
         
-        List<ProcessSubject> rootProcessSubjects = getRootProcessSubject(parentChildren,
-				groupFiltr);
-        
-        for(ProcessSubject rootProcessSubject:rootProcessSubjects) {
-        	rootProcessSubject.setaProcessSubj(children);
-        	for(ProcessSubject childrenProcessSubject : children) {
-        	rootProcessSubject.getaUser().addAll(childrenProcessSubject.getaUser());
-        	}
-        }
-        
         Map<Long, List<ProcessSubject>> hierarchyProcessSubject = new HashMap<>();
         // children полный список первого уровня
         if (children != null && !children.isEmpty()) {
@@ -286,8 +276,18 @@ public class ProcessSubjectService {
                         }
                     }));
             
-            aChildResult.addAll(children);
-            hierarchyProcessSubject.put(groupFiltr, rootProcessSubjects);
+           
+            List<ProcessSubject> rootProcessSubjects = getRootProcessSubject(parentChildren,
+    				groupFiltr);
+            
+            for(ProcessSubject rootProcessSubject:rootProcessSubjects) {
+            	rootProcessSubject.setaProcessSubj(children);
+            	for(ProcessSubject childrenProcessSubject : children) {
+            	rootProcessSubject.getaUser().addAll(childrenProcessSubject.getaUser());
+            	}
+            }
+            aChildResult.addAll(rootProcessSubjects);
+            
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
           
            LOG.info("subjToNodeMap " + subjToNodeMap);
