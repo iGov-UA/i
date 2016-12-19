@@ -1221,7 +1221,7 @@
         $scope.trustAsHtml = function (string) {
           return $sce.trustAsHtml(string);
         };
-
+console.log($scope)
       }
     ])
 })();
