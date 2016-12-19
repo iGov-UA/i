@@ -273,8 +273,11 @@ public class ProcessSubjectService {
                         }
                     }));
             aChildResult.addAll(children);
-            
+			if (IS_ROOT.equals(bIncludeRoot)) {
+				hierarchyProcessSubject.put(groupFiltr, children);
+			}
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
+          
            LOG.info("subjToNodeMap " + subjToNodeMap);
            LOG.info("aChildResult " + aChildResult);
            
@@ -344,10 +347,6 @@ public class ProcessSubjectService {
 				processSubject.setaProcessSubj(aChildResultByKey);
 			}
         }
-     /*   if(IS_ROOT.equals(bIncludeRoot))  {
-        	List<ProcessSubject> rootProcessSubject = getRootProcessSubject(bIncludeRoot, parentChildren, groupFiltr);
-        	processSubjectResultTree.getaProcessSubject().addAll(rootProcessSubject);
-        }*/
         return processSubjectResultTree;
 
     }
