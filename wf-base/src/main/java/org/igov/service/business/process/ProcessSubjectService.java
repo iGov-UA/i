@@ -265,6 +265,16 @@ public class ProcessSubjectService {
         // детей его детей
         List<ProcessSubject> children = subjToNodeMap.get(groupFiltr);
         
+        List<ProcessSubject> rootProcessSubjects = getRootProcessSubject(parentChildren,
+				groupFiltr);
+        
+        for(ProcessSubject rootProcessSubject:rootProcessSubjects) {
+        	rootProcessSubject.setaProcessSubj(children);
+        	for(ProcessSubject childrenProcessSubject : children) {
+        	rootProcessSubject.getaUser().addAll(childrenProcessSubject.getaUser());
+        	}
+        }
+        
         Map<Long, List<ProcessSubject>> hierarchyProcessSubject = new HashMap<>();
         // children полный список первого уровня
         if (children != null && !children.isEmpty()) {
@@ -277,6 +287,7 @@ public class ProcessSubjectService {
                     }));
             
             aChildResult.addAll(children);
+            hierarchyProcessSubject.put(groupFiltr, rootProcessSubjects);
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
           
            LOG.info("subjToNodeMap " + subjToNodeMap);
@@ -322,25 +333,25 @@ public class ProcessSubjectService {
 
         ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
         if (sFind != null && !sFind.isEmpty()) {
-        	if (bIncludeRoot) {
+        	/*if (bIncludeRoot) {
 				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(parentChildren,
 						groupFiltr);
 				processSubjectResultTree.setaProcessSubject(rootProcessSubject);
 				processSubjectResultTree.getaProcessSubject().addAll(aChildResultByUser);
 			} else {
 				processSubjectResultTree.setaProcessSubject(aChildResultByUser);
-			}
-        	//processSubjectResultTree.setaProcessSubject(aChildResultByUser);
+			}*/
+        	processSubjectResultTree.setaProcessSubject(aChildResultByUser);
         } else {
-			if (bIncludeRoot) {
+			/*if (bIncludeRoot) {
 				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(parentChildren,
 						groupFiltr);
 				processSubjectResultTree.setaProcessSubject(rootProcessSubject);
 				processSubjectResultTree.getaProcessSubject().addAll(aChildResult);
 			} else {
 				processSubjectResultTree.setaProcessSubject(aChildResult);
-			}
-        	//processSubjectResultTree.setaProcessSubject(aChildResult);
+			}*/
+        	processSubjectResultTree.setaProcessSubject(aChildResult);
         }
         for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
