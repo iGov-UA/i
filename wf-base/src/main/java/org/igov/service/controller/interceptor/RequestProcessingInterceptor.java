@@ -392,7 +392,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
             //LOG.info("ok!");
             LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
-            if (DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())) {
+            if (oProcessDefinition.getKey().startsWith("_doc_") || DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())) {
                 ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
             }
         }
