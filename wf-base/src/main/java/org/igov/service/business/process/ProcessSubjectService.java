@@ -262,22 +262,6 @@ public class ProcessSubjectService {
         // детей его детей
         List<ProcessSubject> children = subjToNodeMap.get(groupFiltr);
         
-        List<ProcessSubject> rootProcessSubjects = new ArrayList<>();
-        
-       /**
-        * если флаг на вход Y, то в ответ включать самый верхний рутовый ProcessSubject
-        */
-     if(IS_ROOT.equals(bIncludeRoot))  {
-        for(Map.Entry<ProcessSubject, List<ProcessSubject>> entry : parentChildren.entrySet()) {
-        	ProcessSubject root = entry.getKey();
-        	if(root.getId().equals(groupFiltr)) {
-        		rootProcessSubjects.add(root);
-        	}
-        }
-     }
-     LOG.info("rootProcessSubjectsss " + rootProcessSubjects);
-        
-        
         Map<Long, List<ProcessSubject>> hierarchyProcessSubject = new HashMap<>();
         // children полный список первого уровня
         if (children != null && !children.isEmpty()) {
@@ -293,6 +277,7 @@ public class ProcessSubjectService {
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
            LOG.info("subjToNodeMap " + subjToNodeMap);
            LOG.info("aChildResult " + aChildResult);
+           
         }
 
         List<ProcessSubject> aChildResultByUser = new ArrayList<>();
@@ -345,9 +330,31 @@ public class ProcessSubjectService {
 				processSubject.setaProcessSubj(aChildResultByKey);
 			}
         }
+        if(IS_ROOT.equals(bIncludeRoot))  {
+        	List<ProcessSubject> rootProcessSubject = getRootProcessSubject(bIncludeRoot, parentChildren, groupFiltr);
+        	processSubjectResultTree.getaProcessSubject().addAll(rootProcessSubject);
+        }
         return processSubjectResultTree;
 
     }
+
+    /**
+     * если флаг на вход Y, то в ответ включать самый верхний рутовый ProcessSubject
+     */
+	public List<ProcessSubject> getRootProcessSubject(String bIncludeRoot, Map<ProcessSubject, List<ProcessSubject>> parentChildren,
+			Long groupFiltr) {
+		
+		List<ProcessSubject> rootProcessSubjects = new ArrayList<>();
+		
+            for(Map.Entry<ProcessSubject, List<ProcessSubject>> entry : parentChildren.entrySet()) {
+            	ProcessSubject root = entry.getKey();
+            	root.setaUser(getUsersByGroupSubject(root.getsLogin()));
+            	if(root.getId().equals(groupFiltr)) {
+            		rootProcessSubjects.add(root);
+            	}
+            }
+         return rootProcessSubjects;
+	}
 
     /**
      * Сохранить сущность
