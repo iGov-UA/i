@@ -256,11 +256,13 @@ public class ProcessSubjectService {
         // достаем ид snID_Process_Activiti которое на вход
         Long groupFiltr = mapGroupActiviti.get(snID_Process_Activiti);
         
+        LOG.info("groupFiltr " + groupFiltr);
+        
         
         // детей его детей
         List<ProcessSubject> children = subjToNodeMap.get(groupFiltr);
         
-        List<ProcessSubject> rootProcessSubjects = subjToNodeMap.get(groupFiltr);
+        List<ProcessSubject> rootProcessSubjects = new ArrayList<>();
         
        /**
         * если флаг на вход Y, то в ответ включать самый верхний рутовый ProcessSubject
