@@ -33,6 +33,11 @@
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="Керівник - накладення резолюції, призначення виконавців" activiti:assignee="${sName_SubjectRole}">
@@ -70,60 +75,60 @@
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="cloneDocumentStepSubject" name="cloneDocumentStepSubject" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1}</activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
             <activiti:string><![CDATA[system_task]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression>${sTable2}</activiti:expression>
+            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sContent">
-            <activiti:expression>${sContent}</activiti:expression>
+            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sAutorResolution">
-            <activiti:expression>${sAutorResolution}</activiti:expression>
+            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateExecution">
-            <activiti:expression>${sDateExecution}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sTypeDoc">
-            <activiti:expression>${sTypeDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${sTypeDoc}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Order_GovPublic">
-            <activiti:expression>${sID_Order_GovPublic}</activiti:expression>
+            <activiti:expression><![CDATA[${sID_Order_GovPublic}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateRegistration">
-            <activiti:expression>${sDateRegistration}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateRegistration}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateDoc">
-            <activiti:expression>${sDateDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateDoc}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sApplicant">
-            <activiti:expression>${sApplicant}</activiti:expression>
+            <activiti:expression><![CDATA[${sApplicant}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="nCountAttach">
-            <activiti:expression>${nCountAttach}</activiti:expression>
+            <activiti:expression><![CDATA[${nCountAttach}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sNote">
-            <activiti:expression>${sNote}</activiti:expression>
+            <activiti:expression><![CDATA[${sNote}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="asUrgently">
-            <activiti:expression>${asUrgently}</activiti:expression>
+            <activiti:expression><![CDATA[${asUrgently}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="asTypeResolution">
-            <activiti:expression>${asTypeResolution}</activiti:expression>
+            <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sTextResolution">
-            <activiti:expression>${sTextResolution}</activiti:expression>
+            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDoc1">
-            <activiti:expression>${sDoc1}</activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -156,7 +161,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1},${sDoc2}</activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -193,7 +198,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1},${sDoc2}</activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1},${sDoc2}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -226,7 +231,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1},${sDoc2}</activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1},${sDoc2}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -253,46 +258,12 @@ execution.setVariable('sDateExecution', sNewDate)
 //3. получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
-
-//4. формирование динамического названия юзертаски
-var sUsertask1_name =""
-if (execution.getVariable('asCategoryIncoming')=='sEnumCentralGov'){
-sUsertask1_name="документ центральних органів влади"
-}
-if (execution.getVariable('asCategoryIncoming')=='sEnumActsRevision'){
-sUsertask1_name="акт ревізії"
-}
-if (execution.getVariable('asCategoryIncoming')=='sEnumLogisticalSupport'){
-sUsertask1_name="заявка на матеріально-технічне забезпечення"
-}
-if (execution.getVariable('asCategoryIncoming')=='sEnumFaksohramy'){
-sUsertask1_name="факсограма"
-}
-if (execution.getVariable('asCategoryIncoming')=='sEnumEdocs'){
-sUsertask1_name="електронний документ"
-}
-if (execution.getVariable('asCategoryIncoming')=='sEnumOfficialLetters'){
-sUsertask1_name="службовий лист"
-}
-execution.setVariable('sUsertask1_name', sUsertask1_name)
-
-var sUsertask1_name2 =""
-if (execution.getVariable('asEnumOfficialLetters')=='sEnumInitiativeLetter'){
-sUsertask1_name2="ініциативний"
-}
-if (execution.getVariable('asEnumOfficialLetters')=='sEnumResponseLetter'){
-sUsertask1_name2="лист-відповідь"
-}
-if (execution.getVariable('asEnumOfficialLetters')=='sEnumInsideLetter'){
-sUsertask1_name2="внутрішній"
-}
-execution.setVariable('sUsertask1_name2', sUsertask1_name2)</script>
+</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow29" sourceRef="usertask2" targetRef="usertask2_yellow"></sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="usertask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="usertask3" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="usertask4">
@@ -310,83 +281,95 @@ var cloneDocumentStepSubject = documentStepService.cloneDocumentStepSubject(snID
 execution.setVariable('cloneDocumentStepSubject', cloneDocumentStepSubject)
 java.lang.System.out.println("HELLO");</script>
     </scriptTask>
-    <sequenceFlow id="flow38" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="scripttask3" targetRef="usertask2"></sequenceFlow>
+    <scriptTask id="scripttask3" name="скриптяка-задержака" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var unixdate= Math.round((new Date()).getTime()) </script>
+    </scriptTask>
+    <sequenceFlow id="flow39" sourceRef="usertask1" targetRef="scripttask3"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="usertask2" targetRef="usertask2_yellow"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_171">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_171" id="BPMNPlane__doc_justice_171">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="31.0" y="88.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="31.0" y="169.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="84.0" width="130.0" x="361.0" y="64.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="130.0" x="361.0" y="145.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="84.0" width="131.0" x="660.0" y="65.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="131.0" x="660.0" y="146.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_yellow" id="BPMNShape_usertask2_yellow">
-        <omgdc:Bounds height="84.0" width="131.0" x="660.0" y="172.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="131.0" x="660.0" y="253.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="84.0" width="130.0" x="511.0" y="172.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="130.0" x="511.0" y="253.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="75.0" width="130.0" x="511.0" y="351.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="130.0" x="511.0" y="432.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="555.0" y="279.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="555.0" y="360.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="440.0" y="371.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="440.0" y="452.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="84.0" width="121.0" x="220.0" y="64.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="121.0" x="220.0" y="145.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="84.0" width="116.0" x="80.0" y="64.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="116.0" x="80.0" y="145.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="83.0" width="131.0" x="510.0" y="1.0"></omgdc:Bounds>
+        <omgdc:Bounds height="83.0" width="131.0" x="680.0" y="20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="83.0" width="130.0" x="511.0" y="146.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="341.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="361.0" y="106.0"></omgdi:waypoint>
+        <omgdi:waypoint x="341.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="361.0" y="187.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="66.0" y="105.0"></omgdi:waypoint>
-        <omgdi:waypoint x="80.0" y="106.0"></omgdi:waypoint>
+        <omgdi:waypoint x="66.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="80.0" y="187.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="196.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="220.0" y="106.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="725.0" y="149.0"></omgdi:waypoint>
-        <omgdi:waypoint x="725.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="196.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="187.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="511.0" y="388.0"></omgdi:waypoint>
-        <omgdi:waypoint x="475.0" y="388.0"></omgdi:waypoint>
+        <omgdi:waypoint x="511.0" y="469.0"></omgdi:waypoint>
+        <omgdi:waypoint x="475.0" y="469.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="576.0" y="256.0"></omgdi:waypoint>
-        <omgdi:waypoint x="575.0" y="279.0"></omgdi:waypoint>
+        <omgdi:waypoint x="576.0" y="337.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="360.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="575.0" y="319.0"></omgdi:waypoint>
-        <omgdi:waypoint x="576.0" y="351.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="400.0"></omgdi:waypoint>
+        <omgdi:waypoint x="576.0" y="432.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="660.0" y="214.0"></omgdi:waypoint>
-        <omgdi:waypoint x="641.0" y="214.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="641.0" y="295.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="595.0" y="299.0"></omgdi:waypoint>
-        <omgdi:waypoint x="726.0" y="298.0"></omgdi:waypoint>
-        <omgdi:waypoint x="725.0" y="256.0"></omgdi:waypoint>
+        <omgdi:waypoint x="595.0" y="380.0"></omgdi:waypoint>
+        <omgdi:waypoint x="726.0" y="379.0"></omgdi:waypoint>
+        <omgdi:waypoint x="725.0" y="337.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="491.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="660.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="641.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="188.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="491.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="511.0" y="187.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="725.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="725.0" y="253.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

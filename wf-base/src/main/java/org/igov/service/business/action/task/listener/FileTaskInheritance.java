@@ -38,7 +38,9 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
     
     @Override
     public void notify(DelegateTask oTask) {
-
+        
+        LOG.info("fileTaskInheritance start....");
+        
         DelegateExecution oExecution = oTask.getExecution();
 
         List<Attachment> asID_Attachment_ToAdd = null;
