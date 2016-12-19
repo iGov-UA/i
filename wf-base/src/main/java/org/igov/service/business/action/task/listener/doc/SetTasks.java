@@ -32,7 +32,7 @@ public class SetTasks implements TaskListener {
     private Expression nCountAttach;
     private Expression sContent;
     private Expression sNote;
-    private Expression asUrgently;
+    private Expression sDoc1;
     private Expression sAutorResolution;
     private Expression asTypeResolution;
     private Expression sTextResolution;
@@ -70,6 +70,8 @@ public class SetTasks implements TaskListener {
                 = getStringFromFieldExpression(this.asTypeResolution, delegateTask.getExecution());
         String sTextResolution_Value
                 = getStringFromFieldExpression(this.sTextResolution, delegateTask.getExecution());
+        String sDoc1_Value
+                = getStringFromFieldExpression(this.sDoc1, delegateTask.getExecution());
         
         /*String sDateDoc_Value
                 = getStringFromFieldExpression(this.sDateDoc, delegateTask.getExecution());
@@ -96,6 +98,7 @@ public class SetTasks implements TaskListener {
         mParam.put("sDateExecution", sDateExecution_Value);
         mParam.put("asTypeResolution", sAsTypeResolution_Value);
         mParam.put("sTextResolution", sTextResolution_Value);
+        mParam.put("sDoc1", sDoc1_Value);
         
         //mParam.put("sDateDoc", sDateDoc_Value);
         //mParam.put("sApplicant", sApplicant_Value);
