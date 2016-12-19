@@ -264,10 +264,6 @@ public class ProcessSubjectService {
         
         // детей его детей
         List<ProcessSubject> children = subjToNodeMap.get(groupFiltr);
-        if(bIncludeRoot) {
-        children.addAll(getRootProcessSubject(parentChildren,
-						groupFiltr));
-        }
         
         Map<Long, List<ProcessSubject>> hierarchyProcessSubject = new HashMap<>();
         // children полный список первого уровня
@@ -326,25 +322,25 @@ public class ProcessSubjectService {
 
         ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
         if (sFind != null && !sFind.isEmpty()) {
-        	/*if (bIncludeRoot) {
+        	if (bIncludeRoot) {
 				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(parentChildren,
 						groupFiltr);
 				processSubjectResultTree.setaProcessSubject(rootProcessSubject);
 				processSubjectResultTree.getaProcessSubject().addAll(aChildResultByUser);
 			} else {
 				processSubjectResultTree.setaProcessSubject(aChildResultByUser);
-			}*/
-        	processSubjectResultTree.setaProcessSubject(aChildResultByUser);
+			}
+        	//processSubjectResultTree.setaProcessSubject(aChildResultByUser);
         } else {
-			/*if (bIncludeRoot) {
+			if (bIncludeRoot) {
 				List<ProcessSubject> rootProcessSubject = getRootProcessSubject(parentChildren,
 						groupFiltr);
 				processSubjectResultTree.setaProcessSubject(rootProcessSubject);
 				processSubjectResultTree.getaProcessSubject().addAll(aChildResult);
 			} else {
 				processSubjectResultTree.setaProcessSubject(aChildResult);
-			}*/
-        	processSubjectResultTree.setaProcessSubject(aChildResult);
+			}
+        	//processSubjectResultTree.setaProcessSubject(aChildResult);
         }
         for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
