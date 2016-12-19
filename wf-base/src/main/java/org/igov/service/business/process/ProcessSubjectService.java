@@ -285,7 +285,7 @@ public class ProcessSubjectService {
             	for(ProcessSubject childrenProcessSubject : children) {
             		if(rootProcessSubject.getaUser()!=null && !rootProcessSubject.getaUser().isEmpty()) {
             			if(childrenProcessSubject.getaUser()!=null && !childrenProcessSubject.getaUser().isEmpty()) {
-            			rootProcessSubject.getaUser().addAll(childrenProcessSubject.getaUser());
+            			rootProcessSubject.setaUser(childrenProcessSubject.getaUser());
             			}
             		}
             	
@@ -344,7 +344,8 @@ public class ProcessSubjectService {
         	processSubjectResultTree.setaProcessSubject(aChildResult);
         }
         for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
-            processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
+            //processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
+            processSubject.setaUser(getUsersByGroupSubject(processSubject.getSnID_Process_Activiti()));
             //получаем по ключу лист детей и устанавливаем 
             List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject.getId());
             if (aChildResultByKey != null && !aChildResultByKey.isEmpty()) {
