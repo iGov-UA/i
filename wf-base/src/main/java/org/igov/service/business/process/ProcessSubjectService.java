@@ -260,6 +260,8 @@ public class ProcessSubjectService {
         // детей его детей
         List<ProcessSubject> children = subjToNodeMap.get(groupFiltr);
         
+        List<ProcessSubject> rootProcessSubjects = subjToNodeMap.get(groupFiltr);
+        
        /**
         * если флаг на вход Y, то в ответ включать самый верхний рутовый ProcessSubject
         */
@@ -267,10 +269,11 @@ public class ProcessSubjectService {
         for(Map.Entry<ProcessSubject, List<ProcessSubject>> entry : parentChildren.entrySet()) {
         	ProcessSubject root = entry.getKey();
         	if(root.getId().equals(groupFiltr)) {
-        		children.add(root);
+        		rootProcessSubjects.add(root);
         	}
         }
      }
+     LOG.info("rootProcessSubjectsss " + rootProcessSubjects);
         
         
         Map<Long, List<ProcessSubject>> hierarchyProcessSubject = new HashMap<>();
