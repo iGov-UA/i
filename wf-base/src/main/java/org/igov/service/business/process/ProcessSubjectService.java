@@ -276,7 +276,7 @@ public class ProcessSubjectService {
                         }
                     }));
             
-           
+           if(bIncludeRoot) {
             List<ProcessSubject> rootProcessSubjects = getRootProcessSubject(parentChildren,
     				groupFiltr);
             
@@ -294,6 +294,9 @@ public class ProcessSubjectService {
             LOG.info("rootProcessSubjects " + rootProcessSubjects);
             
             aChildResult.addAll(rootProcessSubjects);
+           }else {
+        	   aChildResult.addAll(children);
+           }
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
           
            LOG.info("subjToNodeMap " + subjToNodeMap);
@@ -344,8 +347,7 @@ public class ProcessSubjectService {
         	processSubjectResultTree.setaProcessSubject(aChildResult);
         }
         for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
-            //processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
-            processSubject.setaUser(getUsersByGroupSubject(processSubject.getSnID_Process_Activiti()));
+            processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
             //получаем по ключу лист детей и устанавливаем 
             List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject.getId());
             if (aChildResultByKey != null && !aChildResultByKey.isEmpty()) {
