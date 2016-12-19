@@ -212,13 +212,14 @@ public class SubjectGroupService {
 						LOG.info("nID_ChildLevel: " + nID_ChildLevel + " aChildLevel_Result: "
 								+ aChildLevel_Result.size());
 						// получаем только ид чилдренов
-						anID_ChildLevel_Result = Lists.newArrayList(
+						List<Long> anID_Child = Lists.newArrayList(
 								Collections2.transform(aChildLevel_Result, new Function<SubjectGroup, Long>() {
 									@Override
 									public Long apply(SubjectGroup subjectGroup) {
 										return subjectGroup.getId();
 									}
 								}));
+						anID_ChildLevel_Result.addAll(anID_Child);
 						LOG.info("nID_ChildLevel: " + nID_ChildLevel + " anID_ChildLevel_Result: "
 								+ anID_ChildLevel_Result.size());
 						// добавляем детей к общему списку детей

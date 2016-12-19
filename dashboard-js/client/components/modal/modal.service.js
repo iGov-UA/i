@@ -53,6 +53,23 @@ angular.module('dashboardJsApp')
         });
 
       },
+      assignDocument: function (redirectCallback, message) {
+        var warningModal = openModal({
+          modal: {
+            dismissable: true,
+            title: 'Успіх!',
+            html: '<strong>' + message + '</strong>',
+            buttons: [{
+              classes: 'btn-success',
+              text: 'Вiдкрити документ',
+              click: function(e) {
+                redirectCallback();
+                warningModal.close(e);
+              }
+            }]
+          }
+        }, 'modal-success');
+      },
       inform: {
         info: function(callBack) {
           return function() {

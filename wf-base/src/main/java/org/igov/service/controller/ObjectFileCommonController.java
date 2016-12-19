@@ -813,7 +813,7 @@ public class ObjectFileCommonController {
     @Transactional
     public @ResponseBody
     AttachmentEntityI setTaskAttachment(
-            @ApiParam(value = "строка-Логин пользователя", required = true) @RequestParam(value = "nTaskId") String taskId,
+            @ApiParam(value = "номер-ИД задачи", required = true) @RequestParam(value = "nTaskId") String taskId,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "sDescription") String description,
             @RequestParam(value = "sFileName") String sFileName,

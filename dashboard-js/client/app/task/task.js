@@ -70,6 +70,40 @@
                       }
                       return defer.promise;
                     }
+                  ],
+                  documentRights: [
+                    'oTask',
+                    'tasks',
+                    'taskForm',
+                    function (oTask, tasks, taskForm) {
+                      var searchResult = taskForm.filter(function (item) {
+                        return item.id === 'sKey_Step_Document';
+                      });
+                      if(searchResult.length !== 0) {
+                        return tasks.getDocumentStepRights(oTask.processInstanceId);
+                      } else {
+                        return false;
+                      }
+                    }
+                  ],
+                  documentLogins: [
+                    'oTask',
+                    'tasks',
+                    'documentRights',
+                    function (oTask, tasks, documentRights) {
+                      if(documentRights) {
+                        return tasks.getDocumentStepLogins(oTask.processInstanceId);
+                      }
+                    }
+                  ],
+                  processSubject: [
+                    'oTask',
+                    'tasks',
+                    'documentRights',
+                    'taskForm',
+                    function (oTask, tasks) {
+                      return tasks.getProcessSubject(oTask.processInstanceId);
+                    }
                   ]
                 }
               },

@@ -95,6 +95,24 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
         }
         return processSubject;
     }
+    
+    @Transactional
+    @Override
+    public ProcessSubject setProcessSubjectStatusAndReport(String snID_Process_Activiti, ProcessSubjectStatus processSubjectStatus, String sReport) {
+        ProcessSubject processSubject = findByProcessActiviti(snID_Process_Activiti);
+        if (processSubject != null) {
+            processSubject.setProcessSubjectStatus(processSubjectStatus);
+            processSubject.setsReport(sReport);
+            processSubject.setsDateEdit(new DateTime(new Date()));
+            processSubject = saveOrUpdate(processSubject);
+            LOG.info(String.format("ProcessSubjectStatus=%s to entity with snID_Process_Activiti=%s  and sReport=%s was added",
+                    processSubjectStatus.getId(), snID_Process_Activiti, sReport));
+        } else {
+            LOG.warn(String.format("Entity with snID_Process_Activiti = %s is absent!",
+                    snID_Process_Activiti));
+        }
+        return processSubject;
+    }
 
     @Transactional
     @Override

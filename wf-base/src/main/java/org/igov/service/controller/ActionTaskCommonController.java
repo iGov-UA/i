@@ -2646,6 +2646,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * Returns business processes which belong to a specified user
      *
      * @param sLogin - login of user in user activity
+     * @param bDocOnly
+     * @return 
      */
     @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
             + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=userId\n\n"
@@ -2700,14 +2702,32 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Transactional
     public @ResponseBody
     List<Map<String, String>> getBusinessProcesses(
-            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
+            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
+            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "true") Boolean bDocOnly
+                    )
+            
             throws IOException {
 
         //String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         //LOG.info("Result: {}", jsonRes);
-        return oActionTaskService.getBusinessProcessesOfLogin(sLogin);
+        return oActionTaskService.getBusinessProcessesOfLogin(sLogin, bDocOnly);
     }    
     
+
+    @ApiOperation(value = "/setDocument", notes = "##### Получение списка прав у логина по документу#####\n\n")
+    @RequestMapping(value = "/setDocument", method = RequestMethod.GET)
+    public @ResponseBody
+    Map<String,Object> setDocument(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
+            @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
+    ) throws Exception {
+        //return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
+        Map<String, Object> mParam = new HashMap<>();        
+        ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+        Map<String, Object> mReturn = new HashMap<>();
+        mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
+        return mReturn;
+    }    
+
     
     
 }

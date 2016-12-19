@@ -281,6 +281,12 @@
       </div>
 
       <div ng-if="aProcessSubject && aProcessSubject.length !== 0">
+        <div ng-if="!inUnassigned()">
+          <a ng-click="openUsersHierarchy()"
+             class="btn btn-link attach-btn">Детальніше
+          </a>
+        </div>
+
         <h4>Виконавцi:</h4>
         <div ng-repeat="subject in aProcessSubject">
           <span ng-repeat="user in subject.aUser" ng-if="subject.sLogin === user.sLogin">
@@ -394,4 +400,5 @@
 
 <print-dialog></print-dialog>
 <table-modal></table-modal>
+<users-hierarchy-modal></users-hierarchy-modal>
 <sign-info-content-dialog></sign-info-content-dialog>
