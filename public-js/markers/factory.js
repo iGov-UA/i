@@ -1,15 +1,23 @@
 angular.module('iGovMarkers')
     .factory('iGovMarkers', function ($http, iGovMarkersDefaults, iGovMarkersSchema) {
-        var markers = iGovMarkersDefaults;
-        var definitions = iGovMarkersSchema;
-        var fieldIDs = {
-            isPresent: {},
-            sFieldNotFaundMessages: "",
-            isFieldNotFound: false,
-            nValidateFields: 0,
-            nFieldTurnOn: 0
-        };
+        var markers, definitions, fieldIDs;
         return {
+            reset: function () {
+              markers = null;
+              definitions = null;
+              fieldIDs = null;
+            },
+            init: function () {
+              markers = iGovMarkersDefaults.getDefaultMarkers();
+              definitions = iGovMarkersSchema;
+              fieldIDs = {
+                isPresent: {},
+                sFieldNotFaundMessages: "",
+                isFieldNotFound: false,
+                nValidateFields: 0,
+                nFieldTurnOn: 0
+              };
+            },
             getMarkers: function () {
                 return markers;
             },
