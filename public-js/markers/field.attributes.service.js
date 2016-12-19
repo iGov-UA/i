@@ -1,6 +1,7 @@
 angular.module('iGovMarkers').service('FieldAttributesService', ['iGovMarkers', FieldAttributesService]);
 
 function FieldAttributesService(MarkersFactory) {
+  MarkersFactory.init();
   var self = this;
 
   this.EditableStatus = {

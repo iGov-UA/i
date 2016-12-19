@@ -31,6 +31,10 @@
           return null;
         }
 
+        FieldMotionService.reset();
+        iGovMarkers.reset();
+        iGovMarkers.init();
+
         var sLoginAsignee = "sLoginAsignee";
 
         function getObjFromTaskFormById(id) {
@@ -1221,7 +1225,6 @@
         $scope.trustAsHtml = function (string) {
           return $sce.trustAsHtml(string);
         };
-console.log($scope)
       }
     ])
 })();
