@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -48,6 +50,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.gwt.user.client.rpc.core.java.util.Collections;
 
 /**
  *
@@ -273,9 +276,10 @@ public class ProcessSubjectService {
                         }
                     }));
             aChildResult.addAll(children);
-			if (bIncludeRoot) {
-				hierarchyProcessSubject.put(groupFiltr, children);
-			}
+            if(bIncludeRoot) {
+            	aChildResult.addAll(getRootProcessSubject(parentChildren,
+						groupFiltr));
+            }
            hierarchyProcessSubject =  getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
           
            LOG.info("subjToNodeMap " + subjToNodeMap);
