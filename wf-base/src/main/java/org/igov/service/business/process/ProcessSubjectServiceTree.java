@@ -174,7 +174,6 @@ public class ProcessSubjectServiceTree {
      */
     public List<ProcessSubject> getProcessSubjectTree(Map<Long, List<ProcessSubject>> hierarchyProcessSubject,
 			List<ProcessSubject> aChildResult) {
-    	List<ProcessSubject> resultTree = new ArrayList<>();
 		for (ProcessSubject processSubject : aChildResult) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
             //получаем по ключу лист детей и устанавливаем 
