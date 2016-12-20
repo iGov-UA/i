@@ -111,7 +111,7 @@
           tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value)
             .then(function(res) {
               if(res.aIDs.length > 1){
-                $scope.tasksSearch.count = (res.nCurrentIndex + 1) + '/' + res.aIDs.length;
+                $scope.tasksSearch.count = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;
               } else {
                 $scope.tasksSearch.count = res.aIDs.length;
               }
