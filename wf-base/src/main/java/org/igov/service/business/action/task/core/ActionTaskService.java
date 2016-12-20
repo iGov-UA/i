@@ -1149,7 +1149,7 @@ public class ActionTaskService {
         List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
         List<ProcessDefinition> aProcessDefinition = oRepositoryService
                 .createProcessDefinitionQuery()
-                //.active()
+                .active()
                 .latestVersion().list();
 
         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
