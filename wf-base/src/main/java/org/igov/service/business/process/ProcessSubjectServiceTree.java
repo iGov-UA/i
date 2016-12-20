@@ -51,10 +51,6 @@ public class ProcessSubjectServiceTree {
     Map<Long, List<ProcessSubject>> getChildrenTreeRes = new HashMap<>();
     
     
-    //Лист иерархии
-   // List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
-
-
     /**
      * Сервис получения полной иерархии (родитель - ребенок)
      *
@@ -153,9 +149,20 @@ public class ProcessSubjectServiceTree {
         List<ProcessSubject> resultTree = null;
         if (sFind != null && !sFind.isEmpty()) {
         	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResultByUser);
+        	
         }else {
-        	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResult);
+        	//resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResult);
+        	resultTree = Lists
+                     .newArrayList(Collections2.filter(getProcessSubjectTree(hierarchyProcessSubject, aChildResult), new Predicate<ProcessSubject>() {
+                         @Override
+                         public boolean apply(ProcessSubject processSubject) {
+                             // получить только отфильтрованный
+                             // список по snID_Process_Activiti
+                             return processSubject.getId().equals(snID_Process_Activiti);
+                         }
+                     }));
         }
+        
         processSubjectResultTree.setaProcessSubject(resultTree);
         return processSubjectResultTree;
 
@@ -178,6 +185,7 @@ public class ProcessSubjectServiceTree {
      */
     public List<ProcessSubject> getProcessSubjectTree(Map<Long, List<ProcessSubject>> hierarchyProcessSubject,
 			List<ProcessSubject> aChildResult) {
+    	List<ProcessSubject> resultTree = new ArrayList<>();
 		for (ProcessSubject processSubject : aChildResult) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
             //получаем по ключу лист детей и устанавливаем 
@@ -300,7 +308,6 @@ public class ProcessSubjectServiceTree {
     public Map<Long, List<ProcessSubject>> getChildrenTree(List<ProcessSubject> aChildLevel, List<Long> anID_ChildLevel,
             Map<Long, List<ProcessSubject>> subjToNodeMap, Set<Long> anID_PerentAll, Long deepLevelRequested,
             int deepLevelFact, List<ProcessSubject> result) {
-    	// List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
         if (deepLevelFact < deepLevelRequested.intValue()) {
             for (Long nID_ChildLevel : anID_ChildLevel) {
@@ -319,7 +326,6 @@ public class ProcessSubjectServiceTree {
                         //если anID_ChildLevel больше 1, то всех ид складываем в лист
                         anID_ChildLevel_Result.addAll(anID_Child);
                         // добавляем детей к общему списку детей
-                       // result.addAll(aChildLevel);
                         getChildrenTreeRes.put(nID_ChildLevel, aChildLevel);
                     }
                 }
