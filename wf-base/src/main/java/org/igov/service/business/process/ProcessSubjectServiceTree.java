@@ -135,6 +135,8 @@ public class ProcessSubjectServiceTree {
                             return subjectGroup.getId();
                         }
                     }));
+            
+            idChildren.add(groupFiltr);
 
           //  aChildResult.addAll(children);
             
@@ -318,7 +320,7 @@ public class ProcessSubjectServiceTree {
                         //если anID_ChildLevel больше 1, то всех ид складываем в лист
                         anID_ChildLevel_Result.addAll(anID_Child);
                         // добавляем детей к общему списку детей
-                        result.addAll(aChildLevel);
+                       // result.addAll(aChildLevel);
                         getChildrenTreeRes.put(nID_ChildLevel, aChildLevel);
                     }
                 }
@@ -329,6 +331,7 @@ public class ProcessSubjectServiceTree {
                 getChildrenTree(aChildLevel, anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
                         checkDeepLevel(deepLevelRequested), deepLevelFact, result);
             }
+            result.addAll(aChildLevel);
         }
         return getChildrenTreeRes;
     }
