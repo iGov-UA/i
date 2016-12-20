@@ -144,7 +144,7 @@ public class ProcessSubjectTreeService {
         List<ProcessSubject> aChildResultByUser = filtrChildResultByUser(sFind, aChildResult);
 
         ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
-        List<ProcessSubject> resultTree = null;
+        List<ProcessSubject> resultTree = new ArrayList<>();
         if (sFind != null && !sFind.isEmpty()) {
         	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResultByUser);
         	
