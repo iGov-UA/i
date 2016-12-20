@@ -131,7 +131,7 @@ public class ProcessSubjectServiceTree {
                         }
                     }));
 
-      //      aChildResult.addAll(children);
+            aChildResult.addAll(children);
             
             hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
 
@@ -167,7 +167,7 @@ public class ProcessSubjectServiceTree {
      * Метод построения иерархии
      * @param hierarchyProcessSubject
      * @param aChildResult
-     * @return
+     * @return List<ProcessSubject> - результирующий иерархический список
      */
     public List<ProcessSubject> getProcessSubjectTree(Map<Long, List<ProcessSubject>> hierarchyProcessSubject,
 			List<ProcessSubject> aChildResult) {
@@ -187,7 +187,7 @@ public class ProcessSubjectServiceTree {
      * 
      *  <b>если null - устанавливать true для отображения по умолчанию</b>
      * @param bIncludeRoot - флаг который прихоидит на вход (true - отображаем, false - нет)
-     * @return
+     * @return bIncludeRoot - фактическое значение флага
      */
 
     public static boolean isDisplayRootElement(Boolean bIncludeRoot) {
@@ -202,7 +202,7 @@ public class ProcessSubjectServiceTree {
      * Фильтр по параметру sFind - текст поиска в ФИО
      * @param sFind - текст поиска в ФИО
      * @param aChildResult - результирующий лист, который фильтруем
-     * @return
+     * @return List<ProcessSubject> - отфильтрованный список по строке поиска в фио
      */
 	public List<ProcessSubject> filtrChildResultByUser(String sFind, List<ProcessSubject> aChildResult) {
 		List<ProcessSubject> aChildResultByUser = new ArrayList<>();
@@ -243,10 +243,12 @@ public class ProcessSubjectServiceTree {
 		return aChildResultByUser;
 	}
 
-    /**
-     * получение рутового елемента
-     * ProcessSubject
-     */
+   /**
+    * 
+    * @param parentChildren - список парентов
+    * @param groupFiltr - ид, по которому строится иерархия 
+    * @return ProcessSubject - рутовый елемент
+    */
     public ProcessSubject getRootProcessSubject(Map<ProcessSubject, List<ProcessSubject>> parentChildren,
             Long groupFiltr) {
 
@@ -315,13 +317,14 @@ public class ProcessSubjectServiceTree {
                     }
                 }
             }
-            // добавляем детей к общему списку детей
-            result.addAll(aChildLevel_Result);
+            
             deepLevelFact++;
             if (deepLevelFact < deepLevelRequested.intValue()) {
                 getChildrenTree(aChildLevel_Result, anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
                         checkDeepLevel(deepLevelRequested), deepLevelFact, result);
             }
+         // добавляем детей к общему списку детей
+            result.addAll(aChildLevel_Result);
         }
         return getChildrenTreeRes;
     }
