@@ -1,11 +1,102 @@
 {
 	"motion" : {
+		"ValuesFieldsOnCondition_1" : {
+			"aField_ID" : ["lastName_UA2", "firstName_UA2", "middleName_UA2", "sManPassport", "sManAdress", "privatePhone", "privateMail", "sManContact", "workPhone", "workMail"], 
+			"asID_Field_sValue" : ["[bankIdlastName]", "[bankIdfirstName]", "[bankIdmiddleName]", "[bankIdPassport]", "[bankIdAddressFactual]", "[phone]", "[email]", "", "", ""], 
+			"asID_Field" : {
+				"sClient" : "asStatementLodged", 
+				"sClient_2" : "asOwnerType"
+			}, 
+			"sCondition" : "([sClient] == 'sShipOwner' || [sClient] == 'sOwner') && ([sClient_2] != 'sCompany' && [sClient_2] != 'sMan')"
+		}, 
+		"ValuesFieldsOnCondition_2" : {
+			"aField_ID" : ["lastName_UA2", "firstName_UA2", "middleName_UA2", "sManPassport", "sManAdress", "privatePhone", "privateMail", "sManContact", "workPhone", "workMail"], 
+			"asID_Field_sValue" : ["", "", "", "", "", "", "", "[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]", "[phone]", "[email]"], 
+			"asID_Field" : {
+				"sClient" : "asStatementLodged", 
+				"sClient_2" : "asOwnerType"
+			}, 
+			"sCondition" : "([sClient] == 'sMan') && ([sClient_2] != 'sCompany' && [sClient_2] != 'sMan')"
+		}, 
+		"ValuesFieldsOnCondition_3" : {
+			"aField_ID" : ["lastName_UA2", "firstName_UA2", "middleName_UA2", "sManPassport", "sManAdress", "privatePhone", "privateMail", "sManContact", "workPhone", "workMail"], 
+			"asID_Field_sValue" : ["", "", "", "", "", "", "", "", "", ""], 
+			"asID_Field" : {
+				"sClient" : "asStatementLodged", 
+				"sClient_2" : "asOwnerType"
+			}, 
+			"sCondition" : "([sClient] == 'sOtherPay') && ([sClient_2] != 'sCompany' && [sClient_2] != 'sMan')"
+		},
+		"ValuesFieldsOnCondition_4" : {
+			"aField_ID" : ["sExName"], 
+			"asID_Field_sValue" : ["[sCurName]"], 
+			"asID_Field" : {
+				"sClient" : "bRename" 
+			}, 
+			"sCondition" : "[sClient] == 'yes'"
+		},
 		"ShowFieldsOnCondition_1" : {
+			"aField_ID" : ["asOwnerType"], 
+			"asID_Field" : {
+				"sReason" : "asStatementLodged"
+			}, 
+			"sCondition" : "[sReason] == 'sShipOwner' || [sReason] == 'sOwner' || [sReason]=='sMan' || [sReason]=='sOtherPay'"
+		}, 
+		"ShowFieldsOnCondition_2" : {
+			"aField_ID" : ["sCompName", "edrpou", "sCompAdress"], 
+			"asID_Field" : {
+				"sReason" : "asStatementLodged", 
+				"sReason_2" : "asOwnerType"
+			}, 
+			"sCondition" : "([sReason] == 'sShipOwner' || [sReason] == 'sOwner' || [sReason]=='sMan' || [sReason]=='sOtherPay') && [sReason_2]=='sCompany'"
+		}, 
+		"ShowFieldsOnCondition_3" : {
+			"aField_ID" : ["lastName_UA2", "firstName_UA2", "middleName_UA2", "sManPassport", "sManAdress", "privatePhone", "privateMail"], 
+			"asID_Field" : {
+				"sReason" : "asStatementLodged", 
+				"sReason_2" : "asOwnerType"
+			}, 
+			"sCondition" : "([sReason] == 'sShipOwner' || [sReason] == 'sOwner' || [sReason]=='sMan' || [sReason]=='sOtherPay') && [sReason_2]=='sMan'"
+		}, 
+		"ShowFieldsOnCondition_4" : {
+			"aField_ID" : ["sShipPlace", "sShipDate", "sManContact", "workPhone", "workMail"], 
+			"asID_Field" : {
+				"sReason" : "asStatementLodged", 
+				"sReason_2" : "asOwnerType"
+			}, 
+			"sCondition" : "([sReason] == 'sShipOwner' || [sReason] == 'sOwner' || [sReason]=='sMan' || [sReason]=='sOtherPay') && ([sReason_2]=='sCompany' || [sReason_2]=='sMan')"
+		},
+		"ShowFieldsOnCondition_5" : {
+			"aField_ID" : ["sExName"], 
+			"asID_Field" : {
+				"sReason" : "bRename"
+			}, 
+			"sCondition" : "[sReason]=='yes'"
+		}, 
+		"ShowFieldsOnCondition_6" : {
+			"aField_ID" : ["asOglyad"], 
+			"asID_Field" : {
+				"sReason" : "asTypeSupervision"
+			}, 
+			"sCondition" : "[sReason]=='clasific'"
+		}, 
+		"ShowFieldsOnCondition_7" : {
+			"aField_ID" : ["bTONNAGEConvention69", "bSOLAS74_88", "bLoadLinesConvention66_88", "bMARPOL73_78_97", "bIMSBCCode", "bIBCCode", "bAnti_Fouling01", "bBWMConvention2004", "bILO152", "bIMDGCode", "sKonvenSert1", "sKonvenSert2"], 
+			"asID_Field" : {
+				"sReason" : "asTypeSupervision"
+			}, 
+			"sCondition" : "[sReason]=='konvenSert'"
+		}, 
+		"ShowFieldsOnCondition_8" : {
 			"aField_ID" : ["nFileTekhDocument"], 
 			"asID_Field" : {
 				"sReason" : "bTekhDocument"
 			}, 
 			"sCondition" : "[sReason]=='yes'"
+		}, 
+		"ShowFieldsOnNotEmpty_9" : {
+			"aField_ID" : ["sKonvenSert2"], 
+			"sField_ID_s" : "sKonvenSert1"
 		}
 	}
 }
