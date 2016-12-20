@@ -48,40 +48,57 @@ public class SetTasks implements TaskListener {
         
         LOG.info("SetTasks start..." + delegateTask.getProcessInstanceId());
         
+        
         String sTaskProcessDefinition_Value 
-                = getStringFromFieldExpression(this.sTaskProcessDefinition, delegateTask.getExecution());
+                = (this.sTaskProcessDefinition != null)?getStringFromFieldExpression(this.sTaskProcessDefinition, delegateTask.getExecution()) : null;
+        
         String sID_Attachment_Value
-                = getStringFromFieldExpression(this.sID_Attachment, delegateTask.getExecution());
+                = (this.sID_Attachment != null) ? getStringFromFieldExpression(this.sID_Attachment, delegateTask.getExecution()) : null;
+        
         String sContent_Value
-                = getStringFromFieldExpression(this.sContent, delegateTask.getExecution());
+                = (this.sContent != null) ? getStringFromFieldExpression(this.sContent, delegateTask.getExecution()) : null;
+        
         String sAutorResolution_Value
-                = getStringFromFieldExpression(this.sAutorResolution, delegateTask.getExecution());
+                = (this.sAutorResolution != null) ? getStringFromFieldExpression(this.sAutorResolution, delegateTask.getExecution()) : null;
+        
         String sDateExecution_Value
-                = getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution());
+                = (this.sDateExecution != null) ? getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution()) : null;
+        
         String sTypeDoc_Value
-                = getStringFromFieldExpression(this.sTypeDoc, delegateTask.getExecution());
+                = (this.sTypeDoc != null) ? getStringFromFieldExpression(this.sTypeDoc, delegateTask.getExecution()) : null;
+        
         String sID_Order_GovPublic_Value
-                = getStringFromFieldExpression(this.sID_Order_GovPublic, delegateTask.getExecution());
+                = (this.sID_Order_GovPublic != null) ? getStringFromFieldExpression(this.sID_Order_GovPublic, delegateTask.getExecution()) : null;
+        
         String sDateRegistration_Value
-                = getStringFromFieldExpression(this.sDateRegistration, delegateTask.getExecution());
+                = (this.sDateRegistration != null) ? getStringFromFieldExpression(this.sDateRegistration, delegateTask.getExecution()) : null;
+        
         String sDateDoc_Value
-                = getStringFromFieldExpression(this.sDateDoc, delegateTask.getExecution());
+                = (this.sDateDoc != null) ? getStringFromFieldExpression(this.sDateDoc, delegateTask.getExecution()) : null;
+        
         String sApplicant_Value
-                = getStringFromFieldExpression(this.sApplicant, delegateTask.getExecution());
+                = (this.sApplicant != null) ? getStringFromFieldExpression(this.sApplicant, delegateTask.getExecution()) : null;
+        
         String snCountAttach_Value
-                = getStringFromFieldExpression(this.nCountAttach, delegateTask.getExecution());
+                = (this.nCountAttach != null) ? getStringFromFieldExpression(this.nCountAttach, delegateTask.getExecution()) : null;
+        
         String sNote_Value
-                = getStringFromFieldExpression(this.sNote, delegateTask.getExecution());
+                = (this.sNote != null) ? getStringFromFieldExpression(this.sNote, delegateTask.getExecution()) : null;
+        
         String sAsUrgently_Value
-                = getStringFromFieldExpression(this.asUrgently, delegateTask.getExecution());
+                = (this.asUrgently != null) ? getStringFromFieldExpression(this.asUrgently, delegateTask.getExecution()) : null;
+        
         String sAsTypeResolution_Value
-                = getStringFromFieldExpression(this.asTypeResolution, delegateTask.getExecution());
+                = (this.asTypeResolution != null) ? getStringFromFieldExpression(this.asTypeResolution, delegateTask.getExecution()) : null;
+        
         String sTextResolution_Value
-                = getStringFromFieldExpression(this.sTextResolution, delegateTask.getExecution());
+                = (this.sTextResolution != null) ? getStringFromFieldExpression(this.sTextResolution, delegateTask.getExecution()) : null;
+        
         String sDoc1_Value
-                = getStringFromFieldExpression(this.sDoc1, delegateTask.getExecution());
+                = (this.sDoc1 != null) ? getStringFromFieldExpression(this.sDoc1, delegateTask.getExecution()) : null;
+        
         String sName_SubjectRole
-                = getStringFromFieldExpression(this.sName_SubjectRole, delegateTask.getExecution());
+                = (this.sName_SubjectRole != null) ? getStringFromFieldExpression(this.sName_SubjectRole, delegateTask.getExecution()) : null;
               
         Map<String, String> mParam = new HashMap<>();
         
