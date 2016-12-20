@@ -149,16 +149,7 @@ public class ProcessSubjectServiceTree {
         	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResultByUser);
         	
         }else {
-        	//resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResult);
-        	resultTree = Lists
-                     .newArrayList(Collections2.filter(getProcessSubjectTree(hierarchyProcessSubject, aChildResult), new Predicate<ProcessSubject>() {
-                         @Override
-                         public boolean apply(ProcessSubject processSubject) {
-                             // получить только отфильтрованный
-                             // список по snID_Process_Activiti
-                             return processSubject.getId().equals(snID_Process_Activiti);
-                         }
-                     }));
+        	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResult);
         }
         
         processSubjectResultTree.setaProcessSubject(resultTree);
@@ -183,7 +174,6 @@ public class ProcessSubjectServiceTree {
      */
     public List<ProcessSubject> getProcessSubjectTree(Map<Long, List<ProcessSubject>> hierarchyProcessSubject,
 			List<ProcessSubject> aChildResult) {
-    	List<ProcessSubject> resultTree = new ArrayList<>();
 		for (ProcessSubject processSubject : aChildResult) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
             //получаем по ключу лист детей и устанавливаем 
