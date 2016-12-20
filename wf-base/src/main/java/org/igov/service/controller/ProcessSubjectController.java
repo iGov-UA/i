@@ -4,6 +4,7 @@ import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectResult;
 import org.igov.model.process.ProcessSubjectResultTree;
 import org.igov.service.business.process.ProcessSubjectService;
+import org.igov.service.business.process.ProcessSubjectServiceTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class ProcessSubjectController {
 
     @Autowired
     private ProcessSubjectService processSubjectService;
+    
+    @Autowired
+    private ProcessSubjectServiceTree processSubjectServiceTree;
 
     @ApiOperation(value = "Получение иерархии процессов", notes = "##### Пример:\n"
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/getProcessSubject?snID_Process_Activiti=MJU_Dnipro&nDeepLevel=1 \n")
@@ -56,7 +60,7 @@ public class ProcessSubjectController {
             throws Exception {
     	ProcessSubjectResultTree processSubjectResultTree = null;
         try {
-        	processSubjectResultTree = processSubjectService.getCatalogProcessSubjectTree(snID_Process_Activiti, nDeepLevel, sFind,bIncludeRoot);
+        	processSubjectResultTree = processSubjectServiceTree.getCatalogProcessSubjectTree(snID_Process_Activiti, nDeepLevel, sFind,bIncludeRoot);
 
         } catch (Exception e) {
             LOG.error("FAIL: ", e);

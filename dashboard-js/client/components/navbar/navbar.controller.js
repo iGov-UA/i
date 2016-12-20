@@ -146,7 +146,11 @@
             $state.go('tasks.typeof.view', {type:'selfAssigned'});
           }, 'Документ успiшно створено');
         })
-        .catch();
+        .catch(function (e) {
+          Modal.assignDocument(function (event) {
+
+          }, 'Документ успiшно створено');
+        });
     };
 
     $scope.usersDocumentsBPs = [];
@@ -177,18 +181,6 @@
           tasksSearchService.searchTaskByUserInput(val)
             .then(function(res) {
               $scope.assignTask(res.aIDs[0]);
-            });
-          $scope.showOrHideSelect = false;
-        }
-      });
-    };
-    $scope.temporaryCreate = function () {
-      tasks.createNewDocument('_doc_justice_171').then(function (res) {
-        if(res.snID_Process) {
-          var val = res.snID_Process + lunaService.getLunaValue(res.snID_Process);
-          tasksSearchService.searchTaskByUserInput(val)
-            .then(function(res) {
-              $scope.assignTask(res.aIDs[0], val);
             });
           $scope.showOrHideSelect = false;
         }
