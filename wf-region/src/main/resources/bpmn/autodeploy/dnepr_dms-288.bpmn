@@ -258,7 +258,7 @@ ${sNameOrgan},<br>
         <timeDate>${sEndDay}</timeDate>
       </timerEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow42" sourceRef="escalationTimer1" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="escalationTimer" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var delta='10';
@@ -454,7 +454,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow46" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Очередь" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Заявка прийнята ДМС" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -619,7 +619,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
         <omgdi:waypoint x="571.0" y="110.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="811.0" y="31.0"></omgdi:waypoint>
+        <omgdi:waypoint x="662.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="686.0" y="48.0"></omgdi:waypoint>
         <omgdi:waypoint x="742.0" y="83.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>

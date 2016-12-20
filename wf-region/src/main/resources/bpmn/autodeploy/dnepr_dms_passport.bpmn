@@ -236,6 +236,7 @@ ${sNameOrgan},<br>
           <activiti:value id="sPaspMore" name="так, потрібно отримати другий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay1" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат візиту" type="enum" required="true">
           <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
@@ -436,7 +437,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow52" sourceRef="scripttask4" targetRef="servicetask6"></sequenceFlow>
-    <userTask id="usertask3" name="Очередь" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3" name="Заявка прийнята ДМС" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
