@@ -1220,11 +1220,6 @@
 
           $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;
         };
-
-        // пропускать хтмл содержимое для предотвращения конфликтов при байдинге.
-        $scope.trustAsHtml = function (string) {
-          return $sce.trustAsHtml(string);
-        };
       }
     ])
 })();
