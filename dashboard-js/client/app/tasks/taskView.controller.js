@@ -1220,6 +1220,8 @@
 
           $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;
         };
+
+        $rootScope.$broadcast("update-search-counter");
       }
     ])
 })();

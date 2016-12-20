@@ -86,6 +86,7 @@
     };
 
     $scope.tasksSearch = iGovNavbarHelper.tasksSearch;
+    var tempCountValue = 0;
 
     $scope.searchInputKeyup = function ($event) {
       if ($event.keyCode === 13 && $scope.tasksSearch.value) {
@@ -108,11 +109,13 @@
             $scope.switchArchive = true;
           })
         } else {
-          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value)
+          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.iGovNavbarHelper.currentTab)
             .then(function(res) {
               if(res.aIDs.length > 1){
-                $scope.tasksSearch.count = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;
+                tempCountValue = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;
+                $scope.tasksSearch.count = '... / ' + res.aIDs.length;
               } else {
+                tempCountValue = res.aIDs.length;
                 $scope.tasksSearch.count = res.aIDs.length;
               }
             })
@@ -125,6 +128,10 @@
         $scope.switchArchive = false;
       }
     };
+
+    $scope.$on('update-search-counter', function () {
+      $scope.tasksSearch.count = tempCountValue;
+    });
 
     $scope.closeArchive = function () {
       $scope.switchArchive = false;
@@ -185,6 +192,7 @@
     $scope.onSelectDocList = function (item) {
       tasks.createNewDocument(item.sID).then(function (res) {
         if(res.snID_Process) {
+          tempCountValue = 0;
           var val = res.snID_Process + lunaService.getLunaValue(res.snID_Process);
           tasksSearchService.searchTaskByUserInput(val)
             .then(function(res) {
