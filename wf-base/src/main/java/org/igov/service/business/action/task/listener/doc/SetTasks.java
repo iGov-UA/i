@@ -156,9 +156,9 @@ public class SetTasks implements TaskListener {
         }catch(Exception ex){}
         
         
-        String sName_SubjectRole = null;
+        String sName_SubjectRole_Value = "";
         try{
-            sName_SubjectRole = (this.sName_SubjectRole != null) ? getStringFromFieldExpression(this.sName_SubjectRole, delegateTask.getExecution()) : "";
+            sName_SubjectRole_Value = (this.sName_SubjectRole != null) ? getStringFromFieldExpression(this.sName_SubjectRole, delegateTask.getExecution()) : "";
         }catch(Exception ex){}
         
         
@@ -168,7 +168,7 @@ public class SetTasks implements TaskListener {
         mParam.put("sID_Attachment", sID_Attachment_Value);
         mParam.put("sContent", sContent_Value);
         mParam.put("sAutorResolution", sAutorResolution_Value);
-        mParam.put("sName_SubjectRole", sName_SubjectRole);
+        mParam.put("sName_SubjectRole", sName_SubjectRole_Value);
         mParam.put("sDateExecution", sDateExecution_Value);
         mParam.put("sTypeDoc", sTypeDoc_Value);
         mParam.put("sID_Order_GovPublic", sID_Order_GovPublic_Value);
