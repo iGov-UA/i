@@ -160,8 +160,9 @@
 		</activiti:formProperty>
         <activiti:formProperty id="nFileTekhDocument" name="Копія суднової технічної документації" type="file"></activiti:formProperty>
 		
-        <activiti:formProperty id="markersStart" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_1245_start.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markersStartStyle" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_1245_start_style.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersStart" name="markers Start" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_1245_start.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersStartStyle" name="markers Start Style" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_1245_start_style.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersStartCopy" name="markers Start Copy" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_1245_start_copy.json')}"></activiti:formProperty>
         
       </extensionElements>
     </startEvent>
@@ -230,14 +231,14 @@
         <activiti:formProperty id="email" name="Е-mail" type="string" writable="false"></activiti:formProperty>
 
 
-        <activiti:formProperty id="asStatementLodged" name="Заяву подає" type="enum" required="true">
+        <activiti:formProperty id="asStatementLodged" name="Заяву подає" type="enum" writable="false">
           <activiti:value id="sShipOwner" name="Судновласник"></activiti:value>
           <activiti:value id="sOwner" name="Власник"></activiti:value>
           <activiti:value id="sMan" name="Пред’явник судна"></activiti:value>
           <activiti:value id="sOtherPay" name="Інший"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="asOwnerType" name="Власник судна" type="enum" required="true">
+        <activiti:formProperty id="asOwnerType" name="Власник судна" type="enum" writable="false">
           <activiti:value id="sCompany" name="юридична особа"></activiti:value>
           <activiti:value id="sMan" name="фізична особа"></activiti:value>
         </activiti:formProperty>
@@ -273,12 +274,12 @@
         <activiti:formProperty id="sExName" name="Попередня назва судна; ;writable=false" type="string"></activiti:formProperty>
 
 
-        <activiti:formProperty id="asTypeSupervision" name="Вид нагляду" type="enum" required="true">
+        <activiti:formProperty id="asTypeSupervision" name="Вид нагляду" type="enum" writable="false">
           <activiti:value id="clasific" name="класифікаційний"></activiti:value>
           <activiti:value id="konvenSert" name="конвенційна сертифікація"></activiti:value>
         </activiti:formProperty>        
         
-		<activiti:formProperty id="asOglyad" name="Оберіть тип класифікаційного огляду" type="enum" required="true">
+		<activiti:formProperty id="asOglyad" name="Оберіть тип класифікаційного огляду" type="enum" writable="false">
           <activiti:value id="sNew" name="первісний для перепризначення класу"></activiti:value>
           <activiti:value id="sReg" name="черговий для поновлення класу"></activiti:value>
           <activiti:value id="sYear" name="щорічний для підтвердження класу"></activiti:value>
@@ -288,49 +289,49 @@
           <activiti:value id="sOther" name="інший"></activiti:value>
         </activiti:formProperty>
 
-		<activiti:formProperty id="bTONNAGEConvention69" name="TONNAGE Convention 69; ;sID_CheckboxTrue=yes" type="enum">
+		<activiti:formProperty id="bTONNAGEConvention69" name="TONNAGE Convention 69; ;sID_CheckboxTrue=yes" type="enum" writable="false">
 		  <activiti:value id="yes" name="так"></activiti:value>
 		  <activiti:value id="no" name="ні"></activiti:value>
 		</activiti:formProperty>
-		<activiti:formProperty id="bSOLAS74_88" name="SOLAS 74/88; ;sID_CheckboxTrue=yes" type="enum">
+		<activiti:formProperty id="bSOLAS74_88" name="SOLAS 74/88; ;sID_CheckboxTrue=yes" type="enum" writable="false">
 		  <activiti:value id="yes" name="так"></activiti:value>
 		  <activiti:value id="no" name="ні"></activiti:value>
 		</activiti:formProperty>
-		<activiti:formProperty id="bLoadLinesConvention66_88" name="Load Lines Convention 66/88; ;sID_CheckboxTrue=yes" type="enum">
+		<activiti:formProperty id="bLoadLinesConvention66_88" name="Load Lines Convention 66/88; ;sID_CheckboxTrue=yes" type="enum" writable="false">
 		  <activiti:value id="yes" name="так"></activiti:value>
 		  <activiti:value id="no" name="ні"></activiti:value>
 		</activiti:formProperty>
-		<activiti:formProperty id="bMARPOL73_78_97" name="MARPOL 73/78/97; ;sID_CheckboxTrue=yes" type="enum">
+		<activiti:formProperty id="bMARPOL73_78_97" name="MARPOL 73/78/97; ;sID_CheckboxTrue=yes" type="enum" writable="false">
 		  <activiti:value id="yes" name="так"></activiti:value>
 		  <activiti:value id="no" name="ні"></activiti:value>
 		</activiti:formProperty>
-		<activiti:formProperty id="bIMSBCCode" name="IMSBC Code; ;sID_CheckboxTrue=yes" type="enum">
+		<activiti:formProperty id="bIMSBCCode" name="IMSBC Code; ;sID_CheckboxTrue=yes" type="enum" writable="false">
 		  <activiti:value id="yes" name="так"></activiti:value>
 		  <activiti:value id="no" name="ні"></activiti:value>
 		</activiti:formProperty>
-		<activiti:formProperty id="bIBCCode" name="IBC Code; ;sID_CheckboxTrue=yes" type="enum">
+		<activiti:formProperty id="bIBCCode" name="IBC Code; ;sID_CheckboxTrue=yes" type="enum" writable="false">
 		  <activiti:value id="yes" name="так"></activiti:value>
 		  <activiti:value id="no" name="ні"></activiti:value>
 		</activiti:formProperty>
-		<activiti:formProperty id="bAnti_Fouling01" name="Anti-Fouling 01; ;sID_CheckboxTrue=yes" type="enum">
+		<activiti:formProperty id="bAnti_Fouling01" name="Anti-Fouling 01; ;sID_CheckboxTrue=yes" type="enum" writable="false">
 		  <activiti:value id="yes" name="так"></activiti:value>
 		  <activiti:value id="no" name="ні"></activiti:value>
 		</activiti:formProperty>
-		<activiti:formProperty id="bBWMConvention2004" name="BWМ Convention 2004; ;sID_CheckboxTrue=yes" type="enum">
+		<activiti:formProperty id="bBWMConvention2004" name="BWМ Convention 2004; ;sID_CheckboxTrue=yes" type="enum" writable="false">
 		  <activiti:value id="yes" name="так"></activiti:value>
 		  <activiti:value id="no" name="ні"></activiti:value>
 		</activiti:formProperty>
-		<activiti:formProperty id="bILO152" name="ILO 152 (Вантажопідіймальні пристрої); ;sID_CheckboxTrue=yes" type="enum">
+		<activiti:formProperty id="bILO152" name="ILO 152 (Вантажопідіймальні пристрої); ;sID_CheckboxTrue=yes" type="enum" writable="false">
 		  <activiti:value id="yes" name="так"></activiti:value>
 		  <activiti:value id="no" name="ні"></activiti:value>
 		</activiti:formProperty>
-		<activiti:formProperty id="bIMDGCode" name="IMDG Code; ;sID_CheckboxTrue=yes" type="enum">
+		<activiti:formProperty id="bIMDGCode" name="IMDG Code; ;sID_CheckboxTrue=yes" type="enum" writable="false">
 		  <activiti:value id="yes" name="так"></activiti:value>
 		  <activiti:value id="no" name="ні"></activiti:value>
 		</activiti:formProperty>
 
-        <activiti:formProperty id="sKonvenSert1" name="Інший варіант конвенції 1;якщо немає в вище приведеному спискові" type="string"></activiti:formProperty>        
-        <activiti:formProperty id="sKonvenSert2" name="Інший варіант конвенції 2;якщо немає в вище приведеному спискові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKonvenSert1" name="Інший варіант конвенції 1; ;writable=false" type="string"></activiti:formProperty>        
+        <activiti:formProperty id="sKonvenSert2" name="Інший варіант конвенції 2; ;writable=false" type="string"></activiti:formProperty>
 
 
 
@@ -342,7 +343,7 @@
         <activiti:formProperty id="sClassSurveillance" name="Клас попереднього КТ; ;writable=false" type="string"></activiti:formProperty>
 
 
-        <activiti:formProperty id="sShipNumbSRU" name="Регістровий номер;наприклад SRU123459;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShipNumbSRU" name="Регістровий номер; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShipNumbIMO" name="Номер ІМО/ЄІН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRadioCallSignal" name="Радіопозивний сигнал; ;writable=false" type="string"></activiti:formProperty>
 
@@ -369,7 +370,7 @@
         <activiti:formProperty id="sNavigationArea" name="Район плавання, що заявляється; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAlterations" name="Переобладнання, що планується; ;writable=false" type="string"></activiti:formProperty>
 
- 		<activiti:formProperty id="bTekhDocument" name="Наявність суднової технічної документації; ;sID_CheckboxTrue=yes" type="enum">
+ 		<activiti:formProperty id="bTekhDocument" name="Наявність суднової технічної документації; ;sID_CheckboxTrue=yes" type="enum" writable="false">
 		  <activiti:value id="yes" name="так"></activiti:value>
 		  <activiti:value id="no" name="ні"></activiti:value>
 		</activiti:formProperty>        
