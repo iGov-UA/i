@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_39_dnepr_mvk" name="Копії рішень міської (селищної) ради про надання дозволу на розроблення проекту відведення земельної ділянки" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 14.12.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 20.12.2016</documentation>
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
@@ -19,7 +19,7 @@
           <activiti:value id="sDocTypeGolova" name="розпорядження міського голови"></activiti:value>
           <activiti:value id="sDocTypeOther" name="інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="lable1" name=" " type="label" default="Зверніть увагу!!! Копії рішень та витягів доступні лише з 01.01.2008 року! Для отримання копій за період до 2008 року звертайтеся до архіву!"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name=" " type="label" default="&lt;b&gt; Зверніть увагу!!! Копії рішень та витягів доступні лише з 01.01.2008 року! Для отримання копій за період до 2008 року звертайтеся до архіву! &lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sDocDate" name="Дата прийняття документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocNumber" name="Номер документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocName" name="Назва документа" type="string" required="true"></activiti:formProperty>
@@ -42,9 +42,10 @@
         <activiti:formProperty id="sSum" name="Сума платежу" type="invisible" default="16.09"></activiti:formProperty>
         <activiti:formProperty id="sSumScreen" name="Вартість послуги Укрпошти" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта для службових повідомлень ЦНАП" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта для службових повідомлень ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
@@ -276,16 +277,16 @@
     <sequenceFlow id="flow31" sourceRef="servicetask7" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
-        <timeDate>${sNotification_day}</timeDate>
+        <timeDuration>PT1H</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow36" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="timerintermediatecatchevent1" targetRef="scripttask3"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="exclusivegateway3" targetRef="servicetask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment!=''}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="exclusivegateway3" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment==''}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment =="" && sCountPayment=="24"}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask9" name="Несплата" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -425,11 +426,18 @@ if (m &lt; 10) m = "0"+m;
 
 var new_year = new_src.getFullYear();
 var new_hour = new_src.getHours();
+if (new_hour &lt; 10) new_hour = "0" + new_hour;
 var new_minutes = new_src.getMinutes();
+if (new_minutes &lt; 10) new_minutes = "0" + new_minutes;
 var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
 
+
+timer = 'P1DT5M';
 execution.setVariable('sNotification_day', timer)
+timer = '2016-12-16T01:05:00'
 timer = 'PT5M';
+timer = 'PT1H';
+timer = 'P1DT5M';
 
 var per1 = ' '
 var per2 = ' '
@@ -582,6 +590,16 @@ execution.setVariable('docTyp', per2)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType == 'sMyself' && asResultCNAP1 == 'dozvMyself'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow49" sourceRef="servicetask13" targetRef="endevent2"></sequenceFlow>
+    <scriptTask id="scripttask3" name="Таймер Скріпт" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var src=execution.getVariable('sCountPayment')
+src=(+src + +1)
+execution.setVariable('sCountPayment', src)</script>
+    </scriptTask>
+    <sequenceFlow id="flow50" sourceRef="exclusivegateway3" targetRef="timerintermediatecatchevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""&& sCountPayment!="24"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow51" sourceRef="scripttask3" targetRef="exclusivegateway3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_39_dnepr_mvk">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_39_dnepr_mvk" id="BPMNPlane_dnepr_cnap_39_dnepr_mvk">
@@ -607,13 +625,13 @@ execution.setVariable('docTyp', per2)
         <omgdc:Bounds height="35.0" width="35.0" x="367.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="422.0" y="27.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="540.0" y="87.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="105.0" x="520.0" y="20.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="626.0" y="143.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="660.0" y="178.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="661.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="81.0" width="122.0" x="179.0" y="630.0"></omgdc:Bounds>
@@ -648,6 +666,9 @@ execution.setVariable('docTyp', per2)
       <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
         <omgdc:Bounds height="70.0" width="154.0" x="366.0" y="633.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="421.0" y="20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="-72.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="-50.0" y="107.0"></omgdi:waypoint>
@@ -676,20 +697,20 @@ execution.setVariable('docTyp', per2)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
         <omgdi:waypoint x="402.0" y="47.0"></omgdi:waypoint>
-        <omgdi:waypoint x="422.0" y="47.0"></omgdi:waypoint>
+        <omgdi:waypoint x="421.0" y="47.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="442.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="443.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="443.0" y="143.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="462.0" y="47.0"></omgdi:waypoint>
-        <omgdi:waypoint x="520.0" y="47.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="143.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="625.0" y="47.0"></omgdi:waypoint>
-        <omgdi:waypoint x="677.0" y="48.0"></omgdi:waypoint>
-        <omgdi:waypoint x="677.0" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="198.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="250.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="442.0" y="319.0"></omgdi:waypoint>
@@ -719,7 +740,7 @@ execution.setVariable('docTyp', per2)
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
         <omgdi:waypoint x="651.0" y="360.0"></omgdi:waypoint>
         <omgdi:waypoint x="677.0" y="361.0"></omgdi:waypoint>
-        <omgdi:waypoint x="677.0" y="213.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="285.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="442.0" y="555.0"></omgdi:waypoint>
@@ -747,6 +768,18 @@ execution.setVariable('docTyp', per2)
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
         <omgdi:waypoint x="443.0" y="703.0"></omgdi:waypoint>
         <omgdi:waypoint x="442.0" y="720.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="580.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="645.0" y="106.0"></omgdi:waypoint>
+        <omgdi:waypoint x="645.0" y="-1.0"></omgdi:waypoint>
+        <omgdi:waypoint x="384.0" y="-1.0"></omgdi:waypoint>
+        <omgdi:waypoint x="384.0" y="30.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="526.0" y="47.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="47.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
