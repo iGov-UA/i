@@ -139,7 +139,7 @@ ${sNameUnit}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-  <serviceTask id="servicetask5" name="відмова" activiti:delegateExpression="#{MailTaskWithAttachments}">
+  <serviceTask id="servicetask5" name="відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -161,9 +161,6 @@ ${sNameUnit}&lt;br /&gt;
 ${sNameUnit}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}"</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
