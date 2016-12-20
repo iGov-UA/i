@@ -108,17 +108,17 @@ public class ProcessSubjectServiceTree {
         }
         // достаем ид snID_Process_Activiti которое на вход
        Long groupFiltr = mapGroupActiviti.get(snID_Process_Activiti);
+       //получаем его детей
         List<ProcessSubject> children = new ArrayList<>();
         
-        if (isDisplayRootElement(bIncludeRoot)) {
-        	ProcessSubject rootProcessSubject = getRootProcessSubject(parentChildren,
-                    groupFiltr);
-        	children.add(rootProcessSubject);
-        	
-        }else {
-        // детей его детей
-        children = subjToNodeMap.get(groupFiltr);
-        }
+		if (isDisplayRootElement(bIncludeRoot)) {
+			ProcessSubject rootProcessSubject = getRootProcessSubject(parentChildren, groupFiltr);
+			children.add(rootProcessSubject);
+
+		} else {
+			// детей его детей
+			children = subjToNodeMap.get(groupFiltr);
+		}
 
         Map<Long, List<ProcessSubject>> hierarchyProcessSubject = new HashMap<>();
         // children полный список первого уровня
@@ -131,7 +131,7 @@ public class ProcessSubjectServiceTree {
                         }
                     }));
 
-            aChildResult.addAll(children);
+      //      aChildResult.addAll(children);
             
             hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
 
@@ -142,12 +142,6 @@ public class ProcessSubjectServiceTree {
 
         List<ProcessSubject> aChildResultByUser = filtrChildResultByUser(sFind, aChildResult);
 
-        /*ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
-        if (sFind != null && !sFind.isEmpty()) {
-            processSubjectResultTree.setaProcessSubject(aChildResultByUser);
-        } else {
-            processSubjectResultTree.setaProcessSubject(aChildResult);
-        }*/
         ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
         List<ProcessSubject> resultTree = null;
         if (sFind != null && !sFind.isEmpty()) {
@@ -190,8 +184,9 @@ public class ProcessSubjectServiceTree {
 
     /**
      * Проверка флага на отображение рутового елемента:
-     *  если null true  - устанавливать true для отображения
-     * @param bIncludeRoot
+     * 
+     *  <b>если null - устанавливать true для отображения по умолчанию</b>
+     * @param bIncludeRoot - флаг который прихоидит на вход (true - отображаем, false - нет)
      * @return
      */
 
