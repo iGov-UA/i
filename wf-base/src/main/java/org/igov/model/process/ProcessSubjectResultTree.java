@@ -6,6 +6,9 @@
 package org.igov.model.process;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonRootName;
 
 /**
  * Класс - Получение иерархии процессов
@@ -13,20 +16,18 @@ import java.io.Serializable;
  * 
  * @author inna
  */
+@JsonRootName(value = "aProcessSubjectTree")
 public class ProcessSubjectResultTree implements Serializable {
 
-	private ProcessSubject aProcessSubjectTree;
+	private List<ProcessSubject> aProcessSubjectTree;
 
-
-	public ProcessSubject getaProcessSubject() {
+	public List<ProcessSubject> getaProcessSubjectTree() {
 		return aProcessSubjectTree;
 	}
 
-
-	public void setaProcessSubject(ProcessSubject aProcessSubjectTree) {
+	public void setaProcessSubjectTree(List<ProcessSubject> aProcessSubjectTree) {
 		this.aProcessSubjectTree = aProcessSubjectTree;
 	}
-
 
 	@Override
 	public String toString() {

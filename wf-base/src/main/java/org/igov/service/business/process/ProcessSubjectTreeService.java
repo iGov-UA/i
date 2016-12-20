@@ -154,8 +154,9 @@ public class ProcessSubjectTreeService {
         
 		if (checkDeepLevelWidth(deepLevelWidth) < resultTree.size()) {
 			if (resultTree != null && !resultTree.isEmpty()) {
-				processSubjectResultTree
-						.setaProcessSubject(resultTree.get(checkDeepLevelWidth(deepLevelWidth).intValue()));
+				 List<ProcessSubject> result = new ArrayList<>();
+				 result.add(resultTree.get(checkDeepLevelWidth(deepLevelWidth).intValue()));
+				processSubjectResultTree.setaProcessSubjectTree(result);
 			}
 		}
         return processSubjectResultTree;
