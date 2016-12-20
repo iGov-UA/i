@@ -178,6 +178,10 @@
       return $stateParams.type === "unassigned" || $stateParams.type === "selfAssigned";
     };
 
+    $scope.hideNaviWhenLoginPage = function () {
+      return $location.path() === '/';
+    };
+
     $scope.onSelectDocList = function (item) {
       tasks.createNewDocument(item.sID).then(function (res) {
         if(res.snID_Process) {
