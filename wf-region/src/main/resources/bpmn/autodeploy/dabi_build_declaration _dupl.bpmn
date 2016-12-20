@@ -1,0 +1,1004 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="dabi_build_declaration_dupl" name="ДАБІ Видача дублікату Декларації про початок будівельних робіт" isExecutable="true">
+    <startEvent id="startevent_step1" name="1. Реєстрація вхідного документу, внесення інформації до облікової системи">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" required="true">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPersonAddress" name="Місце проживання" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPersonINN" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" default="Потрібна інтеграція з обліковою системою"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Номер телефону" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" required="true">
+          <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnumTechUpgrade" name="Технічне переоснащення діючих підприємств"></activiti:value>
+          <activiti:value id="sEnumRenewal" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта;згідно з Державним класифікатором будівель та споруд ДК 018-2000" type="string" default="Після доопрацювання буде вибір з довідника" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationNumber" name="Номер декларації про початок виконання будівельних робіт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationDate" name="Дата видачі декларації про початок виконання будівельних робіт" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nLossNotice" name="Копія документа, який підтверджує розміщення у ЗМІ повідомлення про втрату документа" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nDuplApplication" name="Заява на видачу дублікату" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_required" name="Required_marker" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_req.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_valid.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <parallelGateway id="parallelgateway1" name="Exclusive Gateway"></parallelGateway>
+    <sequenceFlow id="flow17" sourceRef="parallelgateway1" targetRef="usertask_step2"></sequenceFlow>
+    <userTask id="usertask_step2" name="2. Ознайомлення директором ДАБК" activiti:candidateGroups="kyiv_dabi_boss">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonAddress" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonINN" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" writable="false">
+          <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnumTechUpgrade" name="Технічне переоснащення діючих підприємств"></activiti:value>
+          <activiti:value id="sEnumRenewal" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта;згідно з Державним класифікатором будівель та споруд ДК 018-2000" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationNumber" name="Номер декларації про початок виконання будівельних робіт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationDate" name="Дата видачі декларації про початок виконання будівельних робіт" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар працівника сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow18" sourceRef="parallelgateway1" targetRef="usertask_step3"></sequenceFlow>
+    <userTask id="usertask_step3" name="3. Ознайомлення заступником директора ДАБК" activiti:candidateGroups="kyiv_dabi_deputy_boss">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonAddress" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonINN" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" writable="false">
+          <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnumTechUpgrade" name="Технічне переоснащення діючих підприємств"></activiti:value>
+          <activiti:value id="sEnumRenewal" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта;згідно з Державним класифікатором будівель та споруд ДК 018-2000" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationNumber" name="Номер декларації про початок виконання будівельних робіт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationDate" name="Дата видачі декларації про початок виконання будівельних робіт" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар працівника сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow16" sourceRef="parallelgateway1" targetRef="usertask_step4"></sequenceFlow>
+    <userTask id="usertask_step4" name="4. Ознайомлення керівником Управління дозвільних процедур та визначення відповідального" activiti:candidateGroups="kyiv_dabi_permit_boss">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonAddress" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonINN" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" writable="false">
+          <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnumTechUpgrade" name="Технічне переоснащення діючих підприємств"></activiti:value>
+          <activiti:value id="sEnumRenewal" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта;згідно з Державним класифікатором будівель та споруд ДК 018-2000" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationNumber" name="Номер декларації про початок виконання будівельних робіт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationDate" name="Дата видачі декларації про початок виконання будівельних робіт" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар працівника сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAsignee_step6" name="Відповідальний виконавець;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step6,sDestinationFieldID_sName=sAssigneeName_step6" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_step6" name="Група виконавців" type="string" default="kyiv_dabi_permit_empl"></activiti:formProperty>
+        <activiti:formProperty id="sAssigneeName_step6" name="Виконавець" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPermitBossComment" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow19" sourceRef="usertask_step4" targetRef="parallelgateway2"></sequenceFlow>
+    <parallelGateway id="parallelgateway2" name="Exclusive Gateway"></parallelGateway>
+    <sequenceFlow id="flow20" sourceRef="parallelgateway2" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask_step5" name="5. Ознайомлення керівником відділу дозвільних документів" activiti:candidateGroups="kyiv_dabi_permit_doc_boss">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonAddress" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonINN" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" writable="false">
+          <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnumTechUpgrade" name="Технічне переоснащення діючих підприємств"></activiti:value>
+          <activiti:value id="sEnumRenewal" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта;згідно з Державним класифікатором будівель та споруд ДК 018-2000" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationNumber" name="Номер декларації про початок виконання будівельних робіт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationDate" name="Дата видачі декларації про початок виконання будівельних робіт" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAssigneeName_step6" name="Відповідальний виконавець" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPermitBossComment" name="Коментар Керівника Управління дозвільних процедур" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow21" sourceRef="parallelgateway2" targetRef="usertask_step6"></sequenceFlow>
+    <userTask id="usertask_step6" name="6. Опрацювання пакету документів, підготовка та передача документів для виготовлення дублікату">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonAddress" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonINN" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationNumber" name="Номер декларації про початок виконання будівельних робіт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationDate" name="Дата видачі декларації про початок виконання будівельних робіт" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" writable="false">
+          <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnumTechUpgrade" name="Технічне переоснащення діючих підприємств"></activiti:value>
+          <activiti:value id="sEnumRenewal" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта;згідно з Державним класифікатором будівель та споруд ДК 018-2000" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLossNotice" name="Посилання на інформацію у ЗМІ про втрату документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPermitBossComment" name="Коментар Керівника Управління дозвільних процедур" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_req.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_valid.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee_step6]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask_step6" cancelActivity="false">
+      <timerEventDefinition>
+        <timeDuration>PT4H</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <userTask id="usertask_step_6.1_red" name="6.1 Повідомлення про невиконання завдання" activiti:candidateGroups="kyiv_dabi_permit_boss">
+      <extensionElements>
+        <activiti:formProperty id="sAssigneeName_step6" name="ПІБ відповідального виконавця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask_step_6.2_red" name="6.2 Повідомлення про невиконання завдання">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee_step6]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask_step13.1" name="13.1  Повідомлення заявника листом про можливість отримати дублікат " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[noreply@dabi.gov.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Повідомлення щодо видачі дублікату декларації про початок виконання будівельних робіт]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[У Департаменті з питань державного архітектурно-будівельного контролю міста Києва 
+виконавчого органу Київської міської ради (Київської міської державної адміністрації) 
+опрацьовано лист, зареєстрований ${sID_NumberASKOD} 
+щодо видачі дублікату декларації про початок виконання будівельних робіт. 
+Повідомляємо, що Ви можете отримати дублікат декларації про початок виконання 
+будівельних робіт за місцем подачі документів.]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <userTask id="usertask_upload" name="Upload File" activiti:candidateGroups="kyiv_dabi_doc">
+      <extensionElements>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow40" sourceRef="startevent_step1" targetRef="usertask_upload"></sequenceFlow>
+    <boundaryEvent id="boundarytimer3" name="Timer" attachedToRef="usertask_upload" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT5S</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow41" sourceRef="boundarytimer3" targetRef="parallelgateway1"></sequenceFlow>
+    <userTask id="usertask_step7" name="7. Ознайомлення керівником юр.сектору та визначення відповідального" activiti:candidateGroups="kyiv_dabi_law_boss">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonAddress" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonINN" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" writable="false">
+          <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnumTechUpgrade" name="Технічне переоснащення діючих підприємств"></activiti:value>
+          <activiti:value id="sEnumRenewal" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта;згідно з Державним класифікатором будівель та споруд ДК 018-2000" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationNumber" name="Номер декларації про початок виконання будівельних робіт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationDate" name="Дата видачі декларації про початок виконання будівельних робіт" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар працівника сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAsignee_step8" name="Відповідальний виконавець;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step8,sDestinationFieldID_sName=sAssigneeName_step8" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_step8" name="Група виконавців" type="string" default="kyiv_dabi_law"></activiti:formProperty>
+        <activiti:formProperty id="sAssigneeName_step8" name="Виконавець" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLawBossComment" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow44" sourceRef="parallelgateway1" targetRef="usertask_step7"></sequenceFlow>
+    <userTask id="usertask_step8" name="8. Ознайомлення з документами">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonAddress" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonINN" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationNumber" name="Номер декларації про початок виконання будівельних робіт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationDate" name="Дата видачі декларації про початок виконання будівельних робіт" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" writable="false">
+          <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnumTechUpgrade" name="Технічне переоснащення діючих підприємств"></activiti:value>
+          <activiti:value id="sEnumRenewal" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта;згідно з Державним класифікатором будівель та споруд ДК 018-2000" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLossNotice" name="Посилання на інформацію у ЗМІ про втрату документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLawBossComment" name="Коментар Керівника Юридичного сектору" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLawEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee_step8]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow45" sourceRef="usertask_step7" targetRef="usertask_step8"></sequenceFlow>
+    <parallelGateway id="parallelgateway4" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow47" sourceRef="usertask_step6" targetRef="parallelgateway4"></sequenceFlow>
+    <sequenceFlow id="flow48" sourceRef="usertask_step8" targetRef="parallelgateway4"></sequenceFlow>
+    <boundaryEvent id="boundarytimer4" name="Timer" attachedToRef="usertask_step8" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT4H</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <userTask id="usertask_step8.1_red" name="8.1 Повідомлення про невиконання завдання начальника Юр.сектору" activiti:candidateGroups="kyiv_dabi_law_boss">
+      <extensionElements>
+        <activiti:formProperty id="sAssigneeName_step8" name="ПІБ відповідального виконавця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask_step8.2_red" name="8.2 Повідомлення про невиконання завдання співробіника Юр.сектору">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee_step8]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask_step9" name="9. Оформлення дублікату зареєстрованої декларації про початок виконання будівельних робіт. Підготовка листа.">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonAddress" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonINN" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationNumber" name="Номер декларації про початок виконання будівельних робіт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationDate" name="Дата видачі декларації про початок виконання будівельних робіт" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" writable="false">
+          <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnumTechUpgrade" name="Технічне переоснащення діючих підприємств"></activiti:value>
+          <activiti:value id="sEnumRenewal" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта;згідно з Державним класифікатором будівель та споруд ДК 018-2000" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLossNotice" name="Посилання на інформацію у ЗМІ про втрату документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPermitBossComment" name="Коментар Керівника Управління дозвільних процедур" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLawBossComment" name="Коментар Керівника Юридичного сектору" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPermitEmpComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLawEmpComment" name="Коментар співробітника Юридичного сектору" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_req.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_valid.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee_step6]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow52" sourceRef="parallelgateway4" targetRef="usertask_step9"></sequenceFlow>
+    <boundaryEvent id="boundarytimer5" name="Timer" attachedToRef="usertask_step9" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT4H</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <userTask id="usertask_step9.1_red" name="9.1 Повідомлення про невиконане завдання" activiti:candidateGroups="kyiv_dabi_permit_boss">
+      <extensionElements>
+        <activiti:formProperty id="sAssigneeName_step6" name="ПІБ відповідального виконавця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask_step9.2" name="9.2 Повідомлення про невиконане завдання">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee_step6]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask_step13" name="13. Реєстрація вихідного документу" activiti:candidateGroups="kyiv_dabi_doc">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonAddress" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonINN" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationNumber" name="Номер декларації про початок виконання будівельних робіт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationDate" name="Дата видачі декларації про початок виконання будівельних робіт" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" writable="false">
+          <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnumTechUpgrade" name="Технічне переоснащення діючих підприємств"></activiti:value>
+          <activiti:value id="sEnumRenewal" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта;згідно з Державним класифікатором будівель та споруд ДК 018-2000" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLossNotice" name="Посилання на інформацію у ЗМІ про втрату документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPermitBossComment" name="Коментар Керівника Управління дозвільних процедур" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLawBossComment" name="Коментар Керівника Юридичного сектору" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPermitEmpComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLawEmpComment" name="Коментар співробітника Юридичного сектору" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc" name="Документ" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberOutputDoc" name="Реєстраційний номер вихідного документу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_req.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_valid.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow56" sourceRef="usertask_step9" targetRef="usertask_step13"></sequenceFlow>
+    <sequenceFlow id="flow57" sourceRef="usertask_step13" targetRef="servicetask_step13.1"></sequenceFlow>
+    <userTask id="usertask_step14" name="14. Підтвердження отримання дублікату заявником" activiti:candidateGroups="kyiv_dabi_doc">
+      <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPersonLastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonMiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonAddress" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonINN" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalAddress" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationNumber" name="Номер декларації про початок виконання будівельних робіт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuildDeclarationDate" name="Дата видачі декларації про початок виконання будівельних робіт" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" writable="false">
+          <activiti:value id="sEnumNewConstr" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnumReconstr" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnumTechUpgrade" name="Технічне переоснащення діючих підприємств"></activiti:value>
+          <activiti:value id="sEnumRenewal" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnumBigRepair" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта;згідно з Державним класифікатором будівель та споруд ДК 018-2000" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLossNotice" name="Посилання на інформацію у ЗМІ про втрату документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPermitBossComment" name="Коментар Керівника Управління дозвільних процедур" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLawBossComment" name="Коментар Керівника Юридичного сектору" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPermitEmpComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLawEmpComment" name="Коментар співробітника Юридичного сектору" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberOutputDoc" name="Реєстраційний номер вихідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment2" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_req.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_declar_dupl_valid.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow58" sourceRef="servicetask_step13.1" targetRef="usertask_step14"></sequenceFlow>
+    <sequenceFlow id="flow59" sourceRef="usertask_step14" targetRef="parallelgateway5"></sequenceFlow>
+    <sequenceFlow id="flow60" sourceRef="boundarytimer4" targetRef="usertask_step8.1_red"></sequenceFlow>
+    <sequenceFlow id="flow61" sourceRef="boundarytimer4" targetRef="usertask_step8.2_red"></sequenceFlow>
+    <userTask id="usertask1" name="CheckAssigneeGroup" activiti:candidateGroups="kyiv_dabi_doc"></userTask>
+    <boundaryEvent id="boundarytimer6" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT5S</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow62" sourceRef="boundarytimer6" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow63" sourceRef="exclusivegateway1" targetRef="usertask_step5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult=='False'}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow64" sourceRef="usertask_step5" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow65" sourceRef="exclusivegateway1" targetRef="exclusivegateway2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sResult=='True'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow66" sourceRef="boundarytimer1" targetRef="usertask_step_6.1_red"></sequenceFlow>
+    <sequenceFlow id="flow67" sourceRef="boundarytimer1" targetRef="usertask_step_6.2_red"></sequenceFlow>
+    <sequenceFlow id="flow68" sourceRef="boundarytimer5" targetRef="usertask_step9.1_red"></sequenceFlow>
+    <sequenceFlow id="flow69" sourceRef="boundarytimer5" targetRef="usertask_step9.2"></sequenceFlow>
+    <parallelGateway id="parallelgateway5" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow70" sourceRef="usertask_step3" targetRef="parallelgateway5"></sequenceFlow>
+    <sequenceFlow id="flow71" sourceRef="usertask_step2" targetRef="parallelgateway5"></sequenceFlow>
+    <sequenceFlow id="flow72" sourceRef="exclusivegateway2" targetRef="parallelgateway5"></sequenceFlow>
+    <sequenceFlow id="flow73" sourceRef="parallelgateway5" targetRef="endevent1"></sequenceFlow>
+    <textAnnotation id="textannotation1">
+      <text>Управління дозвільних процедур</text>
+    </textAnnotation>
+    <association id="association1" sourceRef="textannotation1" targetRef="usertask_step_6.1_red"></association>
+    <textAnnotation id="textannotation5">
+      <text> керівник Управління дозвільних процедур</text>
+    </textAnnotation>
+    <association id="association5" sourceRef="textannotation5" targetRef="usertask_step9.1_red"></association>
+    <textAnnotation id="textannotation6">
+      <text>співробітник відділу дозвільних документів</text>
+    </textAnnotation>
+    <association id="association6" sourceRef="textannotation6" targetRef="usertask_step9.2"></association>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dabi_build_declaration_dupl">
+    <bpmndi:BPMNPlane bpmnElement="dabi_build_declaration_dupl" id="BPMNPlane_dabi_build_declaration_dupl">
+      <bpmndi:BPMNShape bpmnElement="startevent_step1" id="BPMNShape_startevent_step1">
+        <omgdc:Bounds height="35.0" width="35.0" x="38.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="97.0" y="211.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step2" id="BPMNShape_usertask_step2">
+        <omgdc:Bounds height="71.0" width="168.0" x="147.0" y="440.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step3" id="BPMNShape_usertask_step3">
+        <omgdc:Bounds height="71.0" width="168.0" x="147.0" y="530.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step4" id="BPMNShape_usertask_step4">
+        <omgdc:Bounds height="86.0" width="168.0" x="157.0" y="152.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="369.0" y="174.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step5" id="BPMNShape_usertask_step5">
+        <omgdc:Bounds height="81.0" width="119.0" x="330.0" y="377.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step6" id="BPMNShape_usertask_step6">
+        <omgdc:Bounds height="91.0" width="157.0" x="467.0" y="149.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="473.0" y="213.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="567.0" y="620.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step_6.1_red" id="BPMNShape_usertask_step_6.1_red">
+        <omgdc:Bounds height="55.0" width="134.0" x="518.0" y="258.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step_6.2_red" id="BPMNShape_usertask_step_6.2_red">
+        <omgdc:Bounds height="55.0" width="133.0" x="518.0" y="324.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask_step13.1" id="BPMNShape_servicetask_step13.1">
+        <omgdc:Bounds height="75.0" width="159.0" x="756.0" y="410.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_upload" id="BPMNShape_usertask_upload">
+        <omgdc:Bounds height="55.0" width="105.0" x="3.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer3" id="BPMNShape_boundarytimer3">
+        <omgdc:Bounds height="30.0" width="30.0" x="1.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step7" id="BPMNShape_usertask_step7">
+        <omgdc:Bounds height="77.0" width="168.0" x="157.0" y="31.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step8" id="BPMNShape_usertask_step8">
+        <omgdc:Bounds height="81.0" width="157.0" x="467.0" y="29.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer4" id="BPMNShape_boundarytimer4">
+        <omgdc:Bounds height="30.0" width="30.0" x="595.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway4" id="BPMNShape_parallelgateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="675.0" y="117.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step8.1_red" id="BPMNShape_usertask_step8.1_red">
+        <omgdc:Bounds height="55.0" width="189.0" x="700.0" y="0.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step8.2_red" id="BPMNShape_usertask_step8.2_red">
+        <omgdc:Bounds height="61.0" width="188.0" x="701.0" y="59.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step9" id="BPMNShape_usertask_step9">
+        <omgdc:Bounds height="97.0" width="166.0" x="724.0" y="162.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer5" id="BPMNShape_boundarytimer5">
+        <omgdc:Bounds height="30.0" width="30.0" x="854.0" y="157.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step9.1_red" id="BPMNShape_usertask_step9.1_red">
+        <omgdc:Bounds height="66.0" width="128.0" x="907.0" y="117.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step9.2" id="BPMNShape_usertask_step9.2">
+        <omgdc:Bounds height="66.0" width="128.0" x="907.0" y="195.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step13" id="BPMNShape_usertask_step13">
+        <omgdc:Bounds height="61.0" width="110.0" x="780.0" y="304.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask_step14" id="BPMNShape_usertask_step14">
+        <omgdc:Bounds height="71.0" width="156.0" x="758.0" y="530.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="125.0" x="327.0" y="245.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer6" id="BPMNShape_boundarytimer6">
+        <omgdc:Bounds height="30.0" width="30.0" x="423.0" y="259.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="369.0" y="314.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="467.0" y="397.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway5" id="BPMNShape_parallelgateway5">
+        <omgdc:Bounds height="40.0" width="40.0" x="564.0" y="545.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
+        <omgdc:Bounds height="50.0" width="100.0" x="637.0" y="191.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation5" id="BPMNShape_textannotation5">
+        <omgdc:Bounds height="61.0" width="100.0" x="947.0" y="31.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation6" id="BPMNShape_textannotation6">
+        <omgdc:Bounds height="50.0" width="100.0" x="957.0" y="289.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="117.0" y="251.0"></omgdi:waypoint>
+        <omgdi:waypoint x="117.0" y="471.0"></omgdi:waypoint>
+        <omgdi:waypoint x="147.0" y="475.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="117.0" y="251.0"></omgdi:waypoint>
+        <omgdi:waypoint x="116.0" y="566.0"></omgdi:waypoint>
+        <omgdi:waypoint x="147.0" y="565.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="117.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="117.0" y="195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="157.0" y="195.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="325.0" y="195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="369.0" y="194.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="389.0" y="214.0"></omgdi:waypoint>
+        <omgdi:waypoint x="389.0" y="245.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="409.0" y="194.0"></omgdi:waypoint>
+        <omgdi:waypoint x="467.0" y="194.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="55.0" y="45.0"></omgdi:waypoint>
+        <omgdi:waypoint x="55.0" y="80.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="16.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="117.0" y="211.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="117.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="116.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="157.0" y="69.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="325.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="467.0" y="69.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
+        <omgdi:waypoint x="624.0" y="194.0"></omgdi:waypoint>
+        <omgdi:waypoint x="695.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="624.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="695.0" y="117.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="715.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="808.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="807.0" y="162.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
+        <omgdi:waypoint x="807.0" y="259.0"></omgdi:waypoint>
+        <omgdi:waypoint x="835.0" y="304.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
+        <omgdi:waypoint x="835.0" y="365.0"></omgdi:waypoint>
+        <omgdi:waypoint x="835.0" y="410.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
+        <omgdi:waypoint x="835.0" y="485.0"></omgdi:waypoint>
+        <omgdi:waypoint x="836.0" y="530.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="758.0" y="565.0"></omgdi:waypoint>
+        <omgdi:waypoint x="604.0" y="565.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
+        <omgdi:waypoint x="625.0" y="45.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="27.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+        <omgdi:waypoint x="625.0" y="45.0"></omgdi:waypoint>
+        <omgdi:waypoint x="795.0" y="59.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
+        <omgdi:waypoint x="438.0" y="289.0"></omgdi:waypoint>
+        <omgdi:waypoint x="389.0" y="314.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+        <omgdi:waypoint x="389.0" y="354.0"></omgdi:waypoint>
+        <omgdi:waypoint x="389.0" y="377.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="449.0" y="417.0"></omgdi:waypoint>
+        <omgdi:waypoint x="467.0" y="417.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="409.0" y="334.0"></omgdi:waypoint>
+        <omgdi:waypoint x="486.0" y="334.0"></omgdi:waypoint>
+        <omgdi:waypoint x="487.0" y="397.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
+        <omgdi:waypoint x="488.0" y="243.0"></omgdi:waypoint>
+        <omgdi:waypoint x="585.0" y="258.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow67" id="BPMNEdge_flow67">
+        <omgdi:waypoint x="488.0" y="243.0"></omgdi:waypoint>
+        <omgdi:waypoint x="502.0" y="353.0"></omgdi:waypoint>
+        <omgdi:waypoint x="518.0" y="351.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
+        <omgdi:waypoint x="884.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="907.0" y="150.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
+        <omgdi:waypoint x="884.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="971.0" y="195.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
+        <omgdi:waypoint x="315.0" y="565.0"></omgdi:waypoint>
+        <omgdi:waypoint x="564.0" y="565.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
+        <omgdi:waypoint x="315.0" y="475.0"></omgdi:waypoint>
+        <omgdi:waypoint x="584.0" y="475.0"></omgdi:waypoint>
+        <omgdi:waypoint x="584.0" y="545.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
+        <omgdi:waypoint x="507.0" y="417.0"></omgdi:waypoint>
+        <omgdi:waypoint x="584.0" y="417.0"></omgdi:waypoint>
+        <omgdi:waypoint x="584.0" y="545.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow73" id="BPMNEdge_flow73">
+        <omgdi:waypoint x="584.0" y="585.0"></omgdi:waypoint>
+        <omgdi:waypoint x="584.0" y="620.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
+        <omgdi:waypoint x="687.0" y="241.0"></omgdi:waypoint>
+        <omgdi:waypoint x="585.0" y="258.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association5" id="BPMNEdge_association5">
+        <omgdi:waypoint x="997.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="971.0" y="117.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association6" id="BPMNEdge_association6">
+        <omgdi:waypoint x="1007.0" y="289.0"></omgdi:waypoint>
+        <omgdi:waypoint x="971.0" y="261.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

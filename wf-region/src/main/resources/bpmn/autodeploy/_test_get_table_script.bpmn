@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_get_table_script" name="Тест получение данных из библиотеки в скрипт" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="taskId" name="taskId" type="string" default="24520049"></activiti:formProperty>        
+        <activiti:formProperty id="attachmentId" name="attachmentId" type="string" default="24520026"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script><![CDATA[
+//подключаем библиотеки
+
+import org.activiti.engine.ActivitiObjectNotFoundException
+import org.activiti.engine.history.HistoricTaskInstance
+import org.activiti.engine.task.Attachment
+import org.activiti.engine.HistoryService
+import org.activiti.engine.ProcessEngine
+import org.activiti.engine.ProcessEngines
+import org.igov.service.business.action.task.core.ActionTaskService
+import org.springframework.beans.factory.annotation.Autowired
+
+ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine()
+HistoryService historyService = processEngine.getHistoryService()
+
+//@Autowired
+//ActionTaskService oActionTaskService = new ActionTaskService()
+
+String taskId = execution.getVariable('taskId')
+String attachmentId = execution.getVariable('attachmentId')
+Integer nFile = 1
+
+// Получаем по задаче ид процесса
+HistoricTaskInstance historicTaskInstanceQuery = historyService.createHistoricTaskInstanceQuery().taskId(taskId).singleResult()
+String processInstanceId = historicTaskInstanceQuery.getProcessInstanceId()
+
+// Выбираем по процессу прикрепленные файлы
+//Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, nFile, processInstanceId)
+
+//Результат
+/*
+String sFileName = attachmentRequested.getName()
+String description = attachmentRequested.getDescription()
+String type = attachmentRequested.getType()
+String id = attachmentRequested.getId()
+// */
+
+execution.setVariable('Res_processInstanceId', processInstanceId)
+
+//*
+execution.setVariable('Res_sFileName', sFileName)
+execution.setVariable('Res_description', description)
+execution.setVariable('Res_type', type)
+execution.setVariable('Res_id', id)
+// */
+   		]]> </script>
+	</scriptTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <userTask id="usertask1" name="User Task" activiti:candidateGroups="sales">
+      <extensionElements>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>        
+        <activiti:formProperty id="Res_processInstanceId" name="processInstanceId" type="string" writable="false"></activiti:formProperty>  
+        <activiti:formProperty id="Res_sFileName" name="sFileName" type="string" writable="false"></activiti:formProperty>  
+        <activiti:formProperty id="Res_description" name="description" type="string" writable="false"></activiti:formProperty>  
+        <activiti:formProperty id="Res_type" name="type" type="string" writable="false"></activiti:formProperty>  
+        <activiti:formProperty id="Res_id" name="id" type="string" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_dictionary_script">
+    <bpmndi:BPMNPlane bpmnElement="_test_dictionary_script" id="BPMNPlane__test_dictionary_script">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="410.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="490.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="640.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="790.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="445.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="595.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="745.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
