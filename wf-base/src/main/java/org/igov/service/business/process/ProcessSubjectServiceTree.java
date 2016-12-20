@@ -106,14 +106,21 @@ public class ProcessSubjectServiceTree {
             }
 
         }
-
         // достаем ид snID_Process_Activiti которое на вход
-        Long groupFiltr = mapGroupActiviti.get(snID_Process_Activiti);
-
+       Long groupFiltr = mapGroupActiviti.get(snID_Process_Activiti);
+        List<ProcessSubject> children = new ArrayList<>();
+        if (isDisplayRootElement(bIncludeRoot)) {
+        	ProcessSubject rootProcessSubject = getRootProcessSubject(parentChildren,
+                    groupFiltr);
+        	children.add(rootProcessSubject);
+        	
+        }else {
+        
         LOG.info("groupFiltr " + groupFiltr);
 
         // детей его детей
-        List<ProcessSubject> children = subjToNodeMap.get(groupFiltr);
+        children = subjToNodeMap.get(groupFiltr);
+        }
 
         Map<Long, List<ProcessSubject>> hierarchyProcessSubject = new HashMap<>();
         // children полный список первого уровня
@@ -126,7 +133,7 @@ public class ProcessSubjectServiceTree {
                         }
                     }));
 
-            if (isDisplayRootElement(bIncludeRoot)) {
+/*            if (isDisplayRootElement(bIncludeRoot)) {
             	ProcessSubject rootProcessSubject = getRootProcessSubject(parentChildren,
                         groupFiltr);
 
@@ -139,7 +146,10 @@ public class ProcessSubjectServiceTree {
                 aChildResult.add(rootProcessSubject);
             } else {
                 aChildResult.addAll(children);
-            }
+            }*/
+            
+            aChildResult.addAll(children);
+            
             hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
 
             LOG.info("subjToNodeMap " + subjToNodeMap);
