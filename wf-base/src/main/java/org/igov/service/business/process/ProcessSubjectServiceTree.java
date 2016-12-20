@@ -108,19 +108,17 @@ public class ProcessSubjectServiceTree {
         }
         // достаем ид snID_Process_Activiti которое на вход
        Long groupFiltr = mapGroupActiviti.get(snID_Process_Activiti);
+       //получаем его детей
         List<ProcessSubject> children = new ArrayList<>();
-        if (isDisplayRootElement(bIncludeRoot)) {
-        	ProcessSubject rootProcessSubject = getRootProcessSubject(parentChildren,
-                    groupFiltr);
-        	children.add(rootProcessSubject);
-        	
-        }else {
         
-        LOG.info("groupFiltr " + groupFiltr);
+		if (isDisplayRootElement(bIncludeRoot)) {
+			ProcessSubject rootProcessSubject = getRootProcessSubject(parentChildren, groupFiltr);
+			children.add(rootProcessSubject);
 
-        // детей его детей
-        children = subjToNodeMap.get(groupFiltr);
-        }
+		} else {
+			// детей его детей
+			children = subjToNodeMap.get(groupFiltr);
+		}
 
         Map<Long, List<ProcessSubject>> hierarchyProcessSubject = new HashMap<>();
         // children полный список первого уровня
@@ -133,22 +131,7 @@ public class ProcessSubjectServiceTree {
                         }
                     }));
 
-/*            if (isDisplayRootElement(bIncludeRoot)) {
-            	ProcessSubject rootProcessSubject = getRootProcessSubject(parentChildren,
-                        groupFiltr);
-
-            	if(rootProcessSubject!=null) {
-                    rootProcessSubject.setaProcessSubj(children);
-                    rootProcessSubject.setaUser(getUsersByGroupSubject(rootProcessSubject.getsLogin()));
-            	}
-                LOG.info("rootProcessSubject " + rootProcessSubject);
-
-                aChildResult.add(rootProcessSubject);
-            } else {
-                aChildResult.addAll(children);
-            }*/
-            
-            aChildResult.addAll(children);
+      //      aChildResult.addAll(children);
             
             hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
 
@@ -160,12 +143,35 @@ public class ProcessSubjectServiceTree {
         List<ProcessSubject> aChildResultByUser = filtrChildResultByUser(sFind, aChildResult);
 
         ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
+        List<ProcessSubject> resultTree = null;
         if (sFind != null && !sFind.isEmpty()) {
-            processSubjectResultTree.setaProcessSubject(aChildResultByUser);
-        } else {
-            processSubjectResultTree.setaProcessSubject(aChildResult);
+        	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResultByUser);
+        }else {
+        	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResult);
         }
-        for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
+        processSubjectResultTree.setaProcessSubject(resultTree);
+        return processSubjectResultTree;
+
+    }
+
+
+
+	
+
+
+
+//=====================================================Дополнительные методы=============================================================================
+
+    
+    /**
+     * Метод построения иерархии
+     * @param hierarchyProcessSubject
+     * @param aChildResult
+     * @return
+     */
+    public List<ProcessSubject> getProcessSubjectTree(Map<Long, List<ProcessSubject>> hierarchyProcessSubject,
+			List<ProcessSubject> aChildResult) {
+		for (ProcessSubject processSubject : aChildResult) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
             //получаем по ключу лист детей и устанавливаем 
             List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject.getId());
@@ -173,19 +179,14 @@ public class ProcessSubjectServiceTree {
                 processSubject.setaProcessSubj(aChildResultByKey);
             }
         }
-        return processSubjectResultTree;
-
-    }
-
-
-
-//=====================================================Дополнительные методы=============================================================================
-
+		return aChildResult;
+	}
 
     /**
      * Проверка флага на отображение рутового елемента:
-     *  если null true  - устанавливать true для отображения
-     * @param bIncludeRoot
+     * 
+     *  <b>если null - устанавливать true для отображения по умолчанию</b>
+     * @param bIncludeRoot - флаг который прихоидит на вход (true - отображаем, false - нет)
      * @return
      */
 
@@ -309,11 +310,13 @@ public class ProcessSubjectServiceTree {
                         //если anID_ChildLevel больше 1, то всех ид складываем в лист
                         anID_ChildLevel_Result.addAll(anID_Child);
                         // добавляем детей к общему списку детей
-                        result.addAll(aChildLevel_Result);
+                       // result.addAll(aChildLevel_Result);
                         getChildrenTreeRes.put(nID_ChildLevel, aChildLevel_Result);
                     }
                 }
             }
+            // добавляем детей к общему списку детей
+            result.addAll(aChildLevel_Result);
             deepLevelFact++;
             if (deepLevelFact < deepLevelRequested.intValue()) {
                 getChildrenTree(aChildLevel_Result, anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
