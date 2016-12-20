@@ -35,6 +35,7 @@ public class SetTasks implements TaskListener {
     private Expression sNote;
     private Expression sDoc1;
     private Expression sAutorResolution;
+    private Expression sName_SubjectRole;
     private Expression asTypeResolution;
     private Expression sTextResolution;
     private Expression sDateExecution;
@@ -79,13 +80,16 @@ public class SetTasks implements TaskListener {
                 = getStringFromFieldExpression(this.sTextResolution, delegateTask.getExecution());
         String sDoc1_Value
                 = getStringFromFieldExpression(this.sDoc1, delegateTask.getExecution());
-                        
+        String sName_SubjectRole
+                = getStringFromFieldExpression(this.sName_SubjectRole, delegateTask.getExecution());
+              
         Map<String, String> mParam = new HashMap<>();
         
         mParam.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
         mParam.put("sID_Attachment", sID_Attachment_Value);
         mParam.put("sContent", sContent_Value);
         mParam.put("sAutorResolution", sAutorResolution_Value);
+        mParam.put("sName_SubjectRole", sName_SubjectRole);
         mParam.put("sDateExecution", sDateExecution_Value);
         mParam.put("sTypeDoc", sTypeDoc_Value);
         mParam.put("sID_Order_GovPublic", sID_Order_GovPublic_Value);
