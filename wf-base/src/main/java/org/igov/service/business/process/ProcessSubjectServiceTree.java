@@ -137,7 +137,7 @@ public class ProcessSubjectServiceTree {
                     }));
             
             
-          //  aChildResult.addAll(children);
+          aChildResult.addAll(children);
             
            
             hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
