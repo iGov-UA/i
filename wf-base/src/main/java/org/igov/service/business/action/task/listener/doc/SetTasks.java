@@ -49,57 +49,119 @@ public class SetTasks implements TaskListener {
         LOG.info("SetTasks start..." + delegateTask.getProcessInstanceId());
         
         
-        String sTaskProcessDefinition_Value 
-                = (this.sTaskProcessDefinition != null)?getStringFromFieldExpression(this.sTaskProcessDefinition, delegateTask.getExecution()) : null;
+        String sTaskProcessDefinition_Value = "";
+        try{
+            sTaskProcessDefinition_Value 
+                = (this.sTaskProcessDefinition != null)?getStringFromFieldExpression(this.sTaskProcessDefinition, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
         
-        String sID_Attachment_Value
-                = (this.sID_Attachment != null) ? getStringFromFieldExpression(this.sID_Attachment, delegateTask.getExecution()) : null;
         
-        String sContent_Value
-                = (this.sContent != null) ? getStringFromFieldExpression(this.sContent, delegateTask.getExecution()) : null;
+        String sID_Attachment_Value = "";
+        try{
+                sID_Attachment_Value = (this.sID_Attachment != null) ? getStringFromFieldExpression(this.sID_Attachment, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
         
-        String sAutorResolution_Value
-                = (this.sAutorResolution != null) ? getStringFromFieldExpression(this.sAutorResolution, delegateTask.getExecution()) : null;
         
-        String sDateExecution_Value
-                = (this.sDateExecution != null) ? getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution()) : null;
+        String sContent_Value = "";
+        try{
+            sContent_Value
+                = (this.sContent != null) ? getStringFromFieldExpression(this.sContent, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
         
-        String sTypeDoc_Value
-                = (this.sTypeDoc != null) ? getStringFromFieldExpression(this.sTypeDoc, delegateTask.getExecution()) : null;
         
-        String sID_Order_GovPublic_Value
-                = (this.sID_Order_GovPublic != null) ? getStringFromFieldExpression(this.sID_Order_GovPublic, delegateTask.getExecution()) : null;
+        String sAutorResolution_Value = "";
+        try{
+            sAutorResolution_Value = (this.sAutorResolution != null) ? getStringFromFieldExpression(this.sAutorResolution, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
         
-        String sDateRegistration_Value
-                = (this.sDateRegistration != null) ? getStringFromFieldExpression(this.sDateRegistration, delegateTask.getExecution()) : null;
         
-        String sDateDoc_Value
-                = (this.sDateDoc != null) ? getStringFromFieldExpression(this.sDateDoc, delegateTask.getExecution()) : null;
+        String sDateExecution_Value = "";
+        try{
+            sDateExecution_Value = (this.sDateExecution != null) ? getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
         
-        String sApplicant_Value
-                = (this.sApplicant != null) ? getStringFromFieldExpression(this.sApplicant, delegateTask.getExecution()) : null;
         
-        String snCountAttach_Value
-                = (this.nCountAttach != null) ? getStringFromFieldExpression(this.nCountAttach, delegateTask.getExecution()) : null;
+        String sTypeDoc_Value = "";
+        try{
+            sTypeDoc_Value = (this.sTypeDoc != null) ? getStringFromFieldExpression(this.sTypeDoc, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
         
-        String sNote_Value
-                = (this.sNote != null) ? getStringFromFieldExpression(this.sNote, delegateTask.getExecution()) : null;
         
-        String sAsUrgently_Value
-                = (this.asUrgently != null) ? getStringFromFieldExpression(this.asUrgently, delegateTask.getExecution()) : null;
+        String sID_Order_GovPublic_Value = "";
+        try{
+            sID_Order_GovPublic_Value
+                = (this.sID_Order_GovPublic != null) ? getStringFromFieldExpression(this.sID_Order_GovPublic, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
         
-        String sAsTypeResolution_Value
-                = (this.asTypeResolution != null) ? getStringFromFieldExpression(this.asTypeResolution, delegateTask.getExecution()) : null;
         
-        String sTextResolution_Value
-                = (this.sTextResolution != null) ? getStringFromFieldExpression(this.sTextResolution, delegateTask.getExecution()) : null;
+        String sDateRegistration_Value = "";
+        try{
+            sDateRegistration_Value
+                = (this.sDateRegistration != null) ? getStringFromFieldExpression(this.sDateRegistration, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
         
-        String sDoc1_Value
-                = (this.sDoc1 != null) ? getStringFromFieldExpression(this.sDoc1, delegateTask.getExecution()) : null;
         
-        String sName_SubjectRole
-                = (this.sName_SubjectRole != null) ? getStringFromFieldExpression(this.sName_SubjectRole, delegateTask.getExecution()) : null;
-              
+        String sDateDoc_Value = "";
+        try{
+            sDateDoc_Value
+                = (this.sDateDoc != null) ? getStringFromFieldExpression(this.sDateDoc, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
+        
+        
+        String sApplicant_Value = "";
+        try{
+            sApplicant_Value
+                = (this.sApplicant != null) ? getStringFromFieldExpression(this.sApplicant, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
+        
+        
+        String snCountAttach_Value = "";
+        try{
+            snCountAttach_Value
+                = (this.nCountAttach != null) ? getStringFromFieldExpression(this.nCountAttach, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
+        
+        
+        String sNote_Value = "";
+        try{
+            sNote_Value
+                = (this.sNote != null) ? getStringFromFieldExpression(this.sNote, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
+        
+        
+        String sAsUrgently_Value = "";
+        try{
+            sAsUrgently_Value
+                = (this.asUrgently != null) ? getStringFromFieldExpression(this.asUrgently, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
+        
+        
+        String sAsTypeResolution_Value = "";
+        try{
+            sAsTypeResolution_Value
+                = (this.asTypeResolution != null) ? getStringFromFieldExpression(this.asTypeResolution, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
+        
+        
+        String sTextResolution_Value = "";
+        try{
+            sTextResolution_Value
+                = (this.sTextResolution != null) ? getStringFromFieldExpression(this.sTextResolution, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
+        
+        
+        String sDoc1_Value = "";
+        try{
+            sDoc1_Value = (this.sDoc1 != null) ? getStringFromFieldExpression(this.sDoc1, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
+        
+        
+        String sName_SubjectRole = null;
+        try{
+            sName_SubjectRole = (this.sName_SubjectRole != null) ? getStringFromFieldExpression(this.sName_SubjectRole, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
+        
+        
         Map<String, String> mParam = new HashMap<>();
         
         mParam.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
