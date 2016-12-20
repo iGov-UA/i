@@ -115,10 +115,10 @@ public class ProcessSubjectServiceTree {
        //получаем его детей
         List<ProcessSubject> children = new ArrayList<>();
         
+        List<Long> idChildren = new ArrayList<>();
 		if (isDisplayRootElement(bIncludeRoot)) {
 			ProcessSubject rootProcessSubject = getRootProcessSubject(parentChildren, groupFiltr);
 			children.add(rootProcessSubject);
-
 		} else {
 			// детей его детей
 			children = subjToNodeMap.get(groupFiltr);
@@ -128,7 +128,7 @@ public class ProcessSubjectServiceTree {
         
         // children полный список первого уровня
         if (children != null && !children.isEmpty()) {
-            final List<Long> idChildren = Lists
+        	idChildren = Lists
                     .newArrayList(Collections2.transform(children, new Function<ProcessSubject, Long>() {
                         @Override
                         public Long apply(ProcessSubject subjectGroup) {
@@ -136,8 +136,7 @@ public class ProcessSubjectServiceTree {
                         }
                     }));
             
-            idChildren.add(groupFiltr);
-
+            
           //  aChildResult.addAll(children);
             
            
@@ -331,8 +330,9 @@ public class ProcessSubjectServiceTree {
                 getChildrenTree(aChildLevel, anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
                         checkDeepLevel(deepLevelRequested), deepLevelFact, result);
             }
-            result.addAll(aChildLevel);
+           
         }
+        result.addAll(aChildLevel);
         return getChildrenTreeRes;
     }
 
