@@ -16,15 +16,18 @@ import java.util.List;
  */
 public class ProcessSubjectResultTree implements Serializable {
 
-	private List<ProcessSubject> aProcessSubject;
+	private ProcessSubject aProcessSubject;
 
-	public List<ProcessSubject> getaProcessSubject() {
+
+	public ProcessSubject getaProcessSubject() {
 		return aProcessSubject;
 	}
 
-	public void setaProcessSubject(List<ProcessSubject> aProcessSubject) {
+
+	public void setaProcessSubject(ProcessSubject aProcessSubject) {
 		this.aProcessSubject = aProcessSubject;
 	}
+
 
 	@Override
 	public String toString() {

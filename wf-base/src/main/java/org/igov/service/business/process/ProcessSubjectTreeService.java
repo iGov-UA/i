@@ -35,9 +35,9 @@ import com.google.common.collect.Lists;
  * @author inna
  */
 @Service
-public class ProcessSubjectServiceTree {
+public class ProcessSubjectTreeService {
 
-    private static final Log LOG = LogFactory.getLog(ProcessSubjectServiceTree.class);
+    private static final Log LOG = LogFactory.getLog(ProcessSubjectTreeService.class);
     private static final long FAKE_ROOT_PROCESS_ID = 0;
 
     @Autowired
@@ -60,7 +60,7 @@ public class ProcessSubjectServiceTree {
      * ФИО)
      * @return
      */
-    public ProcessSubjectResultTree getCatalogProcessSubjectTree(String snID_Process_Activiti, Long deepLevel, String sFind, Boolean bIncludeRoot) {
+    public ProcessSubjectResultTree getCatalogProcessSubjectTree(String snID_Process_Activiti, Long deepLevel, String sFind, Boolean bIncludeRoot, Long deepLevelWidth) {
 
         List<ProcessSubject> aChildResult = new ArrayList<>();
         List<ProcessSubjectTree> processSubjectRelations = new ArrayList<>(baseEntityDao.findAll(ProcessSubjectTree.class));
@@ -152,7 +152,12 @@ public class ProcessSubjectServiceTree {
         	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResult);
         }
         
-        processSubjectResultTree.setaProcessSubject(resultTree);
+		if (checkDeepLevelWidth(deepLevelWidth) < resultTree.size()) {
+			if (resultTree != null && !resultTree.isEmpty()) {
+				processSubjectResultTree
+						.setaProcessSubject(resultTree.get(checkDeepLevelWidth(deepLevelWidth).intValue()));
+			}
+		}
         return processSubjectResultTree;
 
     }
@@ -199,7 +204,7 @@ public class ProcessSubjectServiceTree {
         }
 		return bIncludeRoot;
 	}
-
+    
     
     /**
      * Метод получения отфильтрованного списка объектов по заданному условию поиска
@@ -276,6 +281,18 @@ public class ProcessSubjectServiceTree {
             return 1000L;
         }
         return deepLevel;
+    }
+    
+    /**
+     * метод возвращающий значение deepLevelWidth
+     * @param deepLevelWidth - ширина иерархии
+     * @return deepLevelWidth - возвращается 1 если на вход передали null или 0
+     */
+    public Long checkDeepLevelWidth(Long deepLevelWidth) {
+        if (deepLevelWidth == null || deepLevelWidth.intValue() == 0 || deepLevelWidth.intValue()==1) {
+            return 0L;
+        }
+        return deepLevelWidth-1;
     }
 
 
