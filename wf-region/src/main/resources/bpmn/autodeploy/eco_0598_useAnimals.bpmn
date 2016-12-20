@@ -20,7 +20,7 @@
         <activiti:formProperty id="sDateStart" name="Від" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateEnd" name="До" type="date" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="markers1" name="Конкретні види (групи видів) диких тварин та інших об’єктів тваринного світу, а також намічені обсяги їх використання" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sFaunaQuantity&quot;],&quot;sValue&quot;:&quot;Конкретні види (групи видів) диких тварин та інших об’єктів тваринного світу, а також намічені обсяги їх використання&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Конкретні види (групи видів) диких тварин та інших об’єктів тваринного світу, а також намічені обсяги їх використання" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;nFaunaQuantity&quot;],&quot;sValue&quot;:&quot;Конкретні види (групи видів) диких тварин та інших об’єктів тваринного світу, а також намічені обсяги їх використання&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nFaunaQuantity" name="Види тварин чи рослин; Чисельність" type="table" default="${markerService.loadFromFile('table/eco/eco_0598_useAnimals_table.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="sSpecialConditions" name="Особливі умови використання диких тварин та інших об'єктів тваринного світу" type="textArea" required="true"></activiti:formProperty>
@@ -111,7 +111,7 @@
         <activiti:formProperty id="sDateStart" name="Від; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDateEnd" name="До; ;writable=false" type="date"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_1" name="Конкретні види (групи видів) диких тварин та інших об’єктів тваринного світу, а також намічені обсяги їх використання" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sFaunaQuantity&quot;],&quot;sValue&quot;:&quot;Конкретні види (групи видів) диких тварин та інших об’єктів тваринного світу, а також намічені обсяги їх використання&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Конкретні види (групи видів) диких тварин та інших об’єктів тваринного світу, а також намічені обсяги їх використання" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;nFaunaQuantity&quot;],&quot;sValue&quot;:&quot;Конкретні види (групи видів) диких тварин та інших об’єктів тваринного світу, а також намічені обсяги їх використання&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nFaunaQuantity" name="Види тварин чи рослин; Чисельність" type="table" default="${markerService.loadFromFile('table/eco/eco_0598_useAnimals_table.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="sSpecialConditions" name="Особливі умови використання диких тварин та інших об'єктів тваринного світу; ;writable=false" type="textArea"></activiti:formProperty>
@@ -268,7 +268,7 @@
         <activiti:formProperty id="sDateStart" name="Від" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateEnd" name="До" type="date" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_1" name="Конкретні види (групи видів) диких тварин та інших об’єктів тваринного світу, а також намічені обсяги їх використання" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sFaunaQuantity&quot;],&quot;sValue&quot;:&quot;Конкретні види (групи видів) диких тварин та інших об’єктів тваринного світу, а також намічені обсяги їх використання&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Конкретні види (групи видів) диких тварин та інших об’єктів тваринного світу, а також намічені обсяги їх використання" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;nFaunaQuantity&quot;],&quot;sValue&quot;:&quot;Конкретні види (групи видів) диких тварин та інших об’єктів тваринного світу, а також намічені обсяги їх використання&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nFaunaQuantity" name="Види тварин чи рослин; Чисельність" type="table" default="${markerService.loadFromFile('table/eco/eco_0598_useAnimals_table.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="sSpecialConditions" name="Особливі умови використання диких тварин та інших об'єктів тваринного світу" type="textArea" writable="false"></activiti:formProperty>
@@ -283,6 +283,11 @@
         <activiti:formProperty id="nFileReject" name="Скан-копія листа з відмовою" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="requiredFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_4.json')}"></activiti:formProperty>
+      	<activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFaunaQuantity}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask3" targetRef="usertask2_yellow"></sequenceFlow>
