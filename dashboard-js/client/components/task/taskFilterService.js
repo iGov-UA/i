@@ -1,4 +1,5 @@
-angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$rootScope', 'processes', function ($filter, $rootScope, processes) {
+angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$rootScope', 'processes', '$state',
+  function ($filter, $rootScope, processes, $state) {
   var taskDefinitions = [
     {name: 'Всі', id: 'all'},
     {name: 'Старт', id: 'usertask1'},
@@ -14,6 +15,9 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
       var strictTaskDefinitions = this.getProcessTaskDefinitions(filteredTasks);
       $rootScope.$broadcast('taskFilter:strictTaskDefinitions:update', strictTaskDefinitions);
       filteredTasks = this.filterStrictTaskDefinitions(filteredTasks, model.strictTaskDefinitions);
+      if($state.params.type === 'documents' && filteredTasks !== null) {
+        filteredTasks = this.filterDocuments(filteredTasks);
+      }
       return filteredTasks;
     },
     filterTaskDefinitions: function (tasks, taskDefinition) {
@@ -128,6 +132,12 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
         return retval;
       });
       return promise;
+    },
+    filterDocuments: function (tasks) {
+      var documents = tasks.filter(function (task) {
+        return task.processDefinitionId.charAt(0) === '_' && task.processDefinitionId.split('_')[1] === 'doc';
+      });
+      return documents;
     }
   };
   return service;

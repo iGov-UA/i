@@ -23,7 +23,7 @@
             cleanPreviousTextSearch();
             var aIds = JSON.parse(result);
             if (angular.isArray(aIds) && aIds.length > 0) {
-              searchSuccess(aIds[0]);
+              !tab ? searchSuccess(aIds[0]) : searchSuccess(aIds[0], tab);
               defer.resolve({
                 aIDs : aIds,
                 nCurrentIndex : 0
@@ -109,7 +109,7 @@
       };
     };
 
-    var searchTypes = ['unassigned','selfAssigned'];
+    var searchTypes = ['unassigned','selfAssigned', 'documents'];
 
     var searchSuccess = function (taskId, tab, onlyThisTab) {
       if (tab) {

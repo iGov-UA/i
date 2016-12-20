@@ -150,7 +150,7 @@
       tasks.assignTask(id, Auth.getCurrentUser().id)
         .then(function (result) {
           Modal.assignDocument(function (event) {
-            $state.go('tasks.typeof.view', {type:'selfAssigned'});
+            $state.go('tasks.typeof.view', {type:'documents'});
           }, 'Документ успiшно створено');
         })
         .catch(function (e) {
@@ -182,7 +182,7 @@
     };
 
     $scope.showCreateDocButton = function () {
-      return $stateParams.type === "unassigned" || $stateParams.type === "selfAssigned";
+      return $stateParams.type === "unassigned" || $stateParams.type === "selfAssigned" || $stateParams.type === 'documents';
     };
 
     $scope.hideNaviWhenLoginPage = function () {
@@ -194,9 +194,10 @@
         if(res.snID_Process) {
           tempCountValue = 0;
           var val = res.snID_Process + lunaService.getLunaValue(res.snID_Process);
-          tasksSearchService.searchTaskByUserInput(val)
+          tasksSearchService.searchTaskByUserInput(val, 'documents')
             .then(function(res) {
-              $scope.assignTask(res.aIDs[0]);
+              Modal.assignDocument(function (event) {
+              }, 'Документ успiшно створено');
             });
           $scope.showOrHideSelect = false;
         }
