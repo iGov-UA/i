@@ -6,6 +6,7 @@
     var messageMap = {'CRC Error': 'Неправильний ID', 'Record not found': 'ID не знайдено'};
     var oPreviousTextSearch = {
       value : '',
+      onTab: '',
       cursor : 0,
       aIds : [],
       result : ''
@@ -39,7 +40,7 @@
     };
 
     var searchTaskByText = function (value, tab, defer) {
-      if (oPreviousTextSearch.value === value){
+      if (oPreviousTextSearch.value === value && oPreviousTextSearch.onTab === tab){
         oPreviousTextSearch.cursor++;
         if(oPreviousTextSearch.cursor == oPreviousTextSearch.aIds.length){
           oPreviousTextSearch.cursor = 0;
@@ -60,6 +61,7 @@
               var aIds = JSON.parse(result);
               if (angular.isArray(aIds) && aIds.length > 0) {
                 if (oPreviousTextSearch.result === result) {
+                  oPreviousTextSearch.onTab = tab;
                   oPreviousTextSearch.value = value;
                   oPreviousTextSearch.cursor++;
                   if(oPreviousTextSearch.cursor == aIds.length){
@@ -73,6 +75,7 @@
                 } else {
                   oPreviousTextSearch = {
                     value : value,
+                    onTab : tab,
                     cursor : 0,
                     aIds: aIds,
                     result : result
@@ -99,6 +102,7 @@
     var cleanPreviousTextSearch = function () {
       oPreviousTextSearch = {
         value : '',
+        onTab: '',
         cursor : 0,
         aIds : [],
         result : ''
