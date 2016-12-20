@@ -179,17 +179,5 @@
         }
       });
     };
-    $scope.temporaryCreate = function () {
-      tasks.createNewDocument('_doc_justice_171').then(function (res) {
-        if(res.snID_Process) {
-          var val = res.snID_Process + lunaService.getLunaValue(res.snID_Process);
-          tasksSearchService.searchTaskByUserInput(val)
-            .then(function(res) {
-              $scope.assignTask(res[0], val);
-            });
-          $scope.showOrHideSelect = false;
-        }
-      });
-    };
   }
 })();
