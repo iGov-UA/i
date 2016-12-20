@@ -289,10 +289,11 @@ public class ProcessSubjectServiceTree {
      * @param result
      * @return Map<Long, List<ProcessSubject>>  - id-parent-->list child
      */
+    List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
     public Map<Long, List<ProcessSubject>> getChildrenTree(List<ProcessSubject> aChildLevel, List<Long> anID_ChildLevel,
             Map<Long, List<ProcessSubject>> subjToNodeMap, Set<Long> anID_PerentAll, Long deepLevelRequested,
             int deepLevelFact, List<ProcessSubject> result) {
-        List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
+        
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
         if (deepLevelFact < deepLevelRequested.intValue()) {
             for (Long nID_ChildLevel : anID_ChildLevel) {
@@ -311,7 +312,7 @@ public class ProcessSubjectServiceTree {
                         //если anID_ChildLevel больше 1, то всех ид складываем в лист
                         anID_ChildLevel_Result.addAll(anID_Child);
                         // добавляем детей к общему списку детей
-                       // result.addAll(aChildLevel_Result);
+                        result.addAll(aChildLevel_Result);
                         getChildrenTreeRes.put(nID_ChildLevel, aChildLevel_Result);
                     }
                 }
