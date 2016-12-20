@@ -981,16 +981,17 @@ public class ActionTaskService {
         
     }
 
-    private void loadCandidateGroupsFromTasks(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
-        BpmnModel bpmnModel = oRepositoryService.getBpmnModel(processDef.getId());
-        for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
-            if (flowElement instanceof UserTask) {
-                UserTask userTask = (UserTask) flowElement;
-                List<String> candidateGroups = userTask.getCandidateGroups();
-                if (candidateGroups != null && !candidateGroups.isEmpty()) {
-                    candidateCroupsToCheck.addAll(candidateGroups);
-                    LOG.info(String.format("Added candidate groups %s from user task %s", candidateGroups,
-                            userTask.getId()));
+    private void loadCandidateGroupsFromTasks(ProcessDefinition oProcessDefinition, Set<String> asID_CandidateGroupToCheck) {
+        LOG.info("oProcessDefinition.getId()={}", oProcessDefinition.getId());
+        BpmnModel oBpmnModel = oRepositoryService.getBpmnModel(oProcessDefinition.getId());
+        for (FlowElement oFlowElement : oBpmnModel.getMainProcess().getFlowElements()) {
+            if (oFlowElement instanceof UserTask) {
+                UserTask oUserTask = (UserTask) oFlowElement;
+                LOG.info("oUserTask.getId()={}", oUserTask.getId());
+                List<String> asID_CandidateGroup = oUserTask.getCandidateGroups();
+                if (asID_CandidateGroup != null && !asID_CandidateGroup.isEmpty()) {
+                    asID_CandidateGroupToCheck.addAll(asID_CandidateGroup);
+                    LOG.info("Added candidate groups asID_CandidateGroup={} from user task oUserTask.getId()={}", asID_CandidateGroup, oUserTask.getId());
                 }
             }
         }
@@ -1176,13 +1177,13 @@ public class ActionTaskService {
                 LOG.info("process definition id: sID_BP={}", oProcessDefinition.getId());
                 
                 if(!bDocOnly || sID_BP.startsWith("_doc_")){
-                    Set<String> aCandidateCroupsToCheck = getGroupsByProcessDefinition(oProcessDefinition);
-                    /*
+//                    Set<String> aCandidateCroupsToCheck = getGroupsByProcessDefinition(oProcessDefinition);
+                    
                     Set<String> aCandidateCroupsToCheck = new HashSet<>();
                     loadCandidateGroupsFromTasks(oProcessDefinition, aCandidateCroupsToCheck);
                     loadCandidateStarterGroup(oProcessDefinition, aCandidateCroupsToCheck);
                     //return aCandidateCroupsToCheck;
-                    */
+                    
 
                     /*if(checkIncludeProcessDefinitionIntoGroupList(aGroup, aCandidateCroupsToCheck)){
                         aProcessDefinition_Return.add(oProcessDefinition);
