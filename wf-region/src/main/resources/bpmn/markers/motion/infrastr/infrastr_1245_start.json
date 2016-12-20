@@ -1,5 +1,32 @@
 {
 	"motion" : {
+		"ValuesFieldsOnCondition_1" : {
+			"aField_ID" : ["lastName_UA2", "firstName_UA2", "middleName_UA2", "sManPassport", "sManAdress", "privatePhone", "privateMail", "sManContact", "workPhone", "workMail"], 
+			"asID_Field_sValue" : ["[bankIdlastName]", "[bankIdfirstName]", "[bankIdmiddleName]", "[bankIdPassport]", "[bankIdAddressFactual]", "[phone]", "[email]", "", "", ""], 
+			"asID_Field" : {
+				"sClient" : "asStatementLodged", 
+				"sClient_2" : "asOwnerType"
+			}, 
+			"sCondition" : "([sClient] == 'sShipOwner' || [sClient] == 'sOwner') && ([sClient_2] != 'sCompany' || [sClient_2] != 'sMan')"
+		}, 
+		"ValuesFieldsOnCondition_2" : {
+			"aField_ID" : ["lastName_UA2", "firstName_UA2", "middleName_UA2", "sManPassport", "sManAdress", "privatePhone", "privateMail", "sManContact", "workPhone", "workMail"], 
+			"asID_Field_sValue" : ["", "", "", "", "", "", "", "[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]", "[phone]", "[email]"], 
+			"asID_Field" : {
+				"sClient" : "asStatementLodged", 
+				"sClient_2" : "asOwnerType"
+			}, 
+			"sCondition" : "([sClient] == 'sMan') && ([sClient_2] != 'sCompany' || [sClient_2] != 'sMan')"
+		}, 
+		"ValuesFieldsOnCondition_3" : {
+			"aField_ID" : ["lastName_UA2", "firstName_UA2", "middleName_UA2", "sManPassport", "sManAdress", "privatePhone", "privateMail", "sManContact", "workPhone", "workMail"], 
+			"asID_Field_sValue" : ["", "", "", "", "", "", "", "", "", ""], 
+			"asID_Field" : {
+				"sClient" : "asStatementLodged", 
+				"sClient_2" : "asOwnerType"
+			}, 
+			"sCondition" : "([sClient] == 'sOtherPay') && ([sClient_2] != 'sCompany' || [sClient_2] != 'sMan')"
+		}, 
 		"ShowFieldsOnCondition_1" : {
 			"aField_ID" : ["asOwnerType"], 
 			"asID_Field" : {
@@ -58,10 +85,6 @@
 				"sReason" : "bTekhDocument"
 			}, 
 			"sCondition" : "[sReason]=='yes'"
-		}, 
-		"ShowFieldsOnNotEmpty_9" : {
-			"aField_ID" : ["sKonvenSert2"], 
-			"sField_ID_s" : "sKonvenSert1"
 		}
 	}
 }
