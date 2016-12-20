@@ -130,7 +130,7 @@
           <activiti:field name="sDoc1">
             <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
           </activiti:field>
-            <activiti:field name="sName_SubjectRole">
+          <activiti:field name="sName_SubjectRole">
             <activiti:expression><![CDATA[${sName_SubjectRole}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
@@ -208,7 +208,7 @@
     </userTask>
     <userTask id="usertask4" name="Канцелярія - формування вихідного листа" activiti:assignee="justice_common">
       <extensionElements>
-       <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Лист-відповідь" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Лист-відповідь" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
@@ -285,12 +285,17 @@ var cloneDocumentStepSubject = documentStepService.cloneDocumentStepSubject(snID
 execution.setVariable('cloneDocumentStepSubject', cloneDocumentStepSubject)
 java.lang.System.out.println("HELLO");</script>
     </scriptTask>
-    <sequenceFlow id="flow38" sourceRef="scripttask3" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="timerintermediatecatchevent1" targetRef="usertask2"></sequenceFlow>
     <scriptTask id="scripttask3" name="скриптяка-задержака" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var unixdate= Math.round((new Date()).getTime()) </script>
     </scriptTask>
-    <sequenceFlow id="flow39" sourceRef="usertask1" targetRef="scripttask3"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="usertask1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <sequenceFlow id="flow40" sourceRef="usertask2" targetRef="usertask2_yellow"></sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDuration>PT1M</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_171">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_171" id="BPMNPlane__doc_justice_171">
@@ -328,7 +333,10 @@ java.lang.System.out.println("HELLO");</script>
         <omgdc:Bounds height="83.0" width="131.0" x="680.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="83.0" width="130.0" x="511.0" y="146.0"></omgdc:Bounds>
+        <omgdc:Bounds height="83.0" width="130.0" x="513.0" y="152.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="560.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="341.0" y="187.0"></omgdi:waypoint>
@@ -364,12 +372,12 @@ java.lang.System.out.println("HELLO");</script>
         <omgdi:waypoint x="725.0" y="337.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="641.0" y="187.0"></omgdi:waypoint>
-        <omgdi:waypoint x="660.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="577.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="725.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="491.0" y="187.0"></omgdi:waypoint>
-        <omgdi:waypoint x="511.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="426.0" y="145.0"></omgdi:waypoint>
+        <omgdi:waypoint x="577.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="725.0" y="230.0"></omgdi:waypoint>
