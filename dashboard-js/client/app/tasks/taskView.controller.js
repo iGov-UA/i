@@ -1213,13 +1213,7 @@
         $scope.openUsersHierarchy = function () {
           $scope.attachIsLoading = true;
           tasks.getProcessSubjectTree($scope.selectedTask.processInstanceId).then(function (res) {
-            // $scope.documentFullHierarchy = res;
-            // for tests
-            $scope.documentFullHierarchy = {};
-            $scope.documentFullHierarchy.aProcessSubject = [];
-            var firstChild = res.aProcessSubject[0];
-            $scope.documentFullHierarchy.aProcessSubject.push(firstChild);
-            // for tests
+            $scope.documentFullHierarchy = res;
             $scope.attachIsLoading = false;
             eaTreeViewFactory.setItems($scope.documentFullHierarchy.aProcessSubject, $scope.$id);
           });
