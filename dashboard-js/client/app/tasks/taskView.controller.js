@@ -287,6 +287,11 @@
         $scope.taskData.aTable = [];
         $scope.usersHierarchyOpened = false;
 
+        // todo соеденить с isUnasigned
+        $scope.isDocument = function () {
+          return $state.params.type === 'documents';
+        };
+
         $scope.validateForm = function(form) {
           var bValid = true;
           var oValidationFormData = {};
@@ -312,7 +317,7 @@
         };
 
         var isItemFormPropertyDisabled = function (oItemFormProperty){
-          if (!$scope.selectedTask || !$scope.selectedTask.assignee || !oItemFormProperty
+          if (!$scope.selectedTask || (!$scope.selectedTask.assignee && !$scope.isDocument()) || !oItemFormProperty
             || !$scope.sSelectedTask || $scope.sSelectedTask === 'finished')
           return true;
 
@@ -1219,6 +1224,16 @@
           });
 
           $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;
+        };
+
+        $scope.assignAndSubmitDocument = function () {
+          $scope.taskForm.isInProcess = true;
+
+          tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
+            .then(function (result) {
+              $scope.submitTask(form);
+            })
+            .catch(defaultErrorHandler);
         };
 
         $rootScope.$broadcast("update-search-counter");

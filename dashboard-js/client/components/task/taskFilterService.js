@@ -16,7 +16,9 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
       $rootScope.$broadcast('taskFilter:strictTaskDefinitions:update', strictTaskDefinitions);
       filteredTasks = this.filterStrictTaskDefinitions(filteredTasks, model.strictTaskDefinitions);
       if($state.params.type === 'documents' && filteredTasks !== null) {
-        filteredTasks = this.filterDocuments(filteredTasks);
+        filteredTasks = this.filterDocuments(filteredTasks, true);
+      } else if ($state.params.type !== 'documents' && filteredTasks !== null){
+        filteredTasks = this.filterDocuments(filteredTasks, false);
       }
       return filteredTasks;
     },
@@ -133,10 +135,16 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
       });
       return promise;
     },
-    filterDocuments: function (tasks) {
-      var documents = tasks.filter(function (task) {
-        return task.processDefinitionId.charAt(0) === '_' && task.processDefinitionId.split('_')[1] === 'doc';
-      });
+    filterDocuments: function (tasks, isDoc) {
+      if(isDoc) {
+        var documents = tasks.filter(function (task) {
+          return task.processDefinitionId.charAt(0) === '_' && task.processDefinitionId.split('_')[1] === 'doc';
+        });
+      } else {
+        var documents = tasks.filter(function (task) {
+          return !(task.processDefinitionId.charAt(0) === '_' && task.processDefinitionId.split('_')[1] === 'doc');
+        });
+      }
       return documents;
     }
   };
