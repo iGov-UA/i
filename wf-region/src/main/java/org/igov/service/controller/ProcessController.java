@@ -106,11 +106,12 @@ public class ProcessController {
             LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!string sID_: " + sID_.trim());
             sID_ = sID_.trim();
             if (sID_.length() >= 3) {
-                List<String> sIDInValues = new ArrayList<>();
-                sIDInValues.add(sID_);
-                sIDInValues.add(sID_.toLowerCase());
-                sIDInValues.add(sID_.toUpperCase());
-                List<Process> processes = processDao.findAllByInValues("sID_", sIDInValues);
+//                List<String> sIDInValues = new ArrayList<>();
+                //                sIDInValues.add(sID_.toLowerCase());
+                //                sIDInValues.add(sID_.toUpperCase());
+//                List<Process> processes = processDao.findAllByInValues("sID_", sIDInValues);
+                List<Process> processes = processDao.findAllBy("sID_", sID_.toUpperCase() );
+                processes.addAll(processDao.findAllBy("sID_", sID_.toLowerCase()));
                 LOG.info("processes: " + processes.size());
                 result.addAll(processes);
             }
