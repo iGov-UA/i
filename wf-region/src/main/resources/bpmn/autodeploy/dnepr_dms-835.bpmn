@@ -148,8 +148,8 @@ ${sNameOrgan},<br>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
-    <sequenceFlow id="flow41" sourceRef="parallelgateway3" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <sequenceFlow id="flow41" sourceRef="parallelgateway3" targetRef="servicetask6"></sequenceFlow>
+    <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -203,18 +203,10 @@ ${sNameOrgan},<br>
  								[pattern/mail/_common_signature_end.html]
 								[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
-        </activiti:field>
+        
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask2_green"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2_green" name="Заявка прийнята ДМС" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
@@ -372,7 +364,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
     <sequenceFlow id="flow50" sourceRef="exclusivegateway6" targetRef="scripttask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay == null}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Service Task" activiti:delegateExpression=" #{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -422,9 +414,19 @@ ${sNameOrgan},<br>
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow51" sourceRef="scripttask4" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow51" sourceRef="scripttask4" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask2" name="User Task" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
@@ -448,7 +450,7 @@ ${sNameOrgan},<br>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow53" sourceRef="servicetask6" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow53" sourceRef="servicetask6" targetRef="usertask2_green"></sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
       <timerEventDefinition>
         <timeDate>${sEndDay}</timeDate>
@@ -489,7 +491,7 @@ ${sNameOrgan},<br>
         <omgdc:Bounds height="35.0" width="35.0" x="928.0" y="256.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="512.0" y="88.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="513.0" y="5.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
         <omgdc:Bounds height="55.0" width="105.0" x="638.0" y="88.0"></omgdc:Bounds>
@@ -525,7 +527,7 @@ ${sNameOrgan},<br>
         <omgdc:Bounds height="55.0" width="105.0" x="369.0" y="3.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="512.0" y="3.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="513.0" y="88.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="676.0" y="3.0"></omgdc:Bounds>
@@ -579,11 +581,11 @@ ${sNameOrgan},<br>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="492.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="512.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="513.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="617.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="638.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="618.0" y="32.0"></omgdi:waypoint>
+        <omgdi:waypoint x="676.0" y="30.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="729.0" y="73.0"></omgdi:waypoint>
@@ -644,11 +646,11 @@ ${sNameOrgan},<br>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
         <omgdi:waypoint x="474.0" y="30.0"></omgdi:waypoint>
-        <omgdi:waypoint x="512.0" y="30.0"></omgdi:waypoint>
+        <omgdi:waypoint x="513.0" y="32.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
-        <omgdi:waypoint x="617.0" y="30.0"></omgdi:waypoint>
-        <omgdi:waypoint x="676.0" y="30.0"></omgdi:waypoint>
+        <omgdi:waypoint x="618.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="638.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
         <omgdi:waypoint x="782.0" y="16.0"></omgdi:waypoint>
