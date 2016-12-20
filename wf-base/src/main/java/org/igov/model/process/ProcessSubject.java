@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.List;
 import javax.persistence.Transient;
 
-@JsonRootName(value = "aProcessSubject")
 @javax.persistence.Entity
 public class ProcessSubject extends AbstractEntity {
 

@@ -55,12 +55,12 @@ public class ProcessSubjectController {
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/getProcessSubjectTree?snID_Process_Activiti=MJU_Dnipro&nDeepLevel=1 \n")
     @RequestMapping(value = "/getProcessSubjectTree", method = RequestMethod.GET)
     @ResponseBody
-    public List<ProcessSubject> getProcessSubjectTree(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
+    public ProcessSubjectResultTree getProcessSubjectTree(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
             @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
             @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind,
             @ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (true-отоборажаем, false-нет, по умолчанию Y)", required = false) @RequestParam(value = "bIncludeRoot", required = false) Boolean bIncludeRoot)
             throws Exception {
-    	List<ProcessSubject> processSubjectResultTree = null;
+    	ProcessSubjectResultTree processSubjectResultTree = null;
         try {
         	processSubjectResultTree = processSubjectServiceTree.getCatalogProcessSubjectTree(snID_Process_Activiti, nDeepLevel, sFind,bIncludeRoot);
 

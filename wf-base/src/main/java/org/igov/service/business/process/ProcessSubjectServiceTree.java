@@ -60,7 +60,7 @@ public class ProcessSubjectServiceTree {
      * ФИО)
      * @return
      */
-    public List<ProcessSubject> getCatalogProcessSubjectTree(String snID_Process_Activiti, Long deepLevel, String sFind, Boolean bIncludeRoot) {
+    public ProcessSubjectResultTree getCatalogProcessSubjectTree(String snID_Process_Activiti, Long deepLevel, String sFind, Boolean bIncludeRoot) {
 
         List<ProcessSubject> aChildResult = new ArrayList<>();
         List<ProcessSubjectTree> processSubjectRelations = new ArrayList<>(baseEntityDao.findAll(ProcessSubjectTree.class));
@@ -148,13 +148,15 @@ public class ProcessSubjectServiceTree {
         } else {
             processSubjectResultTree.setaProcessSubject(aChildResult);
         }*/
+        ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
         List<ProcessSubject> resultTree = null;
         if (sFind != null && !sFind.isEmpty()) {
         	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResultByUser);
         }else {
         	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResult);
         }
-        return resultTree;
+        processSubjectResultTree.setaProcessSubject(resultTree);
+        return processSubjectResultTree;
 
     }
 
@@ -313,11 +315,13 @@ public class ProcessSubjectServiceTree {
                         //если anID_ChildLevel больше 1, то всех ид складываем в лист
                         anID_ChildLevel_Result.addAll(anID_Child);
                         // добавляем детей к общему списку детей
-                        result.addAll(aChildLevel_Result);
+                       // result.addAll(aChildLevel_Result);
                         getChildrenTreeRes.put(nID_ChildLevel, aChildLevel_Result);
                     }
                 }
             }
+            // добавляем детей к общему списку детей
+            result.addAll(aChildLevel_Result);
             deepLevelFact++;
             if (deepLevelFact < deepLevelRequested.intValue()) {
                 getChildrenTree(aChildLevel_Result, anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
