@@ -150,7 +150,7 @@
       tasks.assignTask(id, Auth.getCurrentUser().id)
         .then(function (result) {
           Modal.assignDocument(function (event) {
-            $state.go('tasks.typeof.view', {type:'documents'});
+
           }, 'Документ успiшно створено');
         })
         .catch(function (e) {
@@ -196,8 +196,7 @@
           var val = res.snID_Process + lunaService.getLunaValue(res.snID_Process);
           tasksSearchService.searchTaskByUserInput(val, 'documents')
             .then(function(res) {
-              Modal.assignDocument(function (event) {
-              }, 'Документ успiшно створено');
+              $scope.assignTask(res.aIDs[0], val)
             });
           $scope.showOrHideSelect = false;
         }

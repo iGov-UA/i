@@ -29,13 +29,13 @@
       title: 'Необроблені',
       type: tasks.filterTypes.unassigned,
       count: 0,
-      showCount: true,
+      showCount: false,
       tab: 'unassigned'
     }, {
       title: 'В роботі',
       type: tasks.filterTypes.selfAssigned,
       count: 0,
-      showCount: true,
+      showCount: false,
       tab: 'selfAssigned'
     }, {
       title: 'Документи',
