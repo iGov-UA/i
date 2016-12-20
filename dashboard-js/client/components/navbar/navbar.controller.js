@@ -143,7 +143,11 @@
             $state.go('tasks.typeof.view', {type:'selfAssigned'});
           }, 'Документ успiшно створено');
         })
-        .catch();
+        .catch(function (e) {
+          Modal.assignDocument(function (event) {
+
+          }, 'Документ успiшно створено');
+        });
     };
 
     $scope.usersDocumentsBPs = [];
