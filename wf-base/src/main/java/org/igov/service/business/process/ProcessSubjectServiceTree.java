@@ -49,8 +49,8 @@ public class ProcessSubjectServiceTree {
 
     //Мапа для укладывания ид родителя и его детей в методе получения иерархии  getChildrenTree
     Map<Long, List<ProcessSubject>> getChildrenTreeRes = new HashMap<>();
-
-
+    
+    
     /**
      * Сервис получения полной иерархии (родитель - ребенок)
      *
@@ -108,49 +108,33 @@ public class ProcessSubjectServiceTree {
         }
         // достаем ид snID_Process_Activiti которое на вход
        Long groupFiltr = mapGroupActiviti.get(snID_Process_Activiti);
+       //получаем его детей
         List<ProcessSubject> children = new ArrayList<>();
-        if (isDisplayRootElement(bIncludeRoot)) {
-        	ProcessSubject rootProcessSubject = getRootProcessSubject(parentChildren,
-                    groupFiltr);
-        	children.add(rootProcessSubject);
-        	
-        }else {
         
-        LOG.info("groupFiltr " + groupFiltr);
-
-        // детей его детей
-        children = subjToNodeMap.get(groupFiltr);
-        }
+        List<Long> idChildren = new ArrayList<>();
+		if (isDisplayRootElement(bIncludeRoot)) {
+			ProcessSubject rootProcessSubject = getRootProcessSubject(parentChildren, groupFiltr);
+			children.add(rootProcessSubject);
+		} else {
+			// детей его детей
+			children = subjToNodeMap.get(groupFiltr);
+		}
 
         Map<Long, List<ProcessSubject>> hierarchyProcessSubject = new HashMap<>();
+        
         // children полный список первого уровня
         if (children != null && !children.isEmpty()) {
-            final List<Long> idChildren = Lists
+        	idChildren = Lists
                     .newArrayList(Collections2.transform(children, new Function<ProcessSubject, Long>() {
                         @Override
                         public Long apply(ProcessSubject subjectGroup) {
                             return subjectGroup.getId();
                         }
                     }));
-
-/*            if (isDisplayRootElement(bIncludeRoot)) {
-            	ProcessSubject rootProcessSubject = getRootProcessSubject(parentChildren,
-                        groupFiltr);
-
-            	if(rootProcessSubject!=null) {
-                    rootProcessSubject.setaProcessSubj(children);
-                    rootProcessSubject.setaUser(getUsersByGroupSubject(rootProcessSubject.getsLogin()));
-            	}
-                LOG.info("rootProcessSubject " + rootProcessSubject);
-
-                aChildResult.add(rootProcessSubject);
-            } else {
-                aChildResult.addAll(children);
-            }*/
             
-            aChildResult.addAll(children);
             
-            hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
+          aChildResult.addAll(children);
+          hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
 
             LOG.info("subjToNodeMap " + subjToNodeMap);
             LOG.info("aChildResult " + aChildResult);
@@ -160,12 +144,47 @@ public class ProcessSubjectServiceTree {
         List<ProcessSubject> aChildResultByUser = filtrChildResultByUser(sFind, aChildResult);
 
         ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
+        List<ProcessSubject> resultTree = null;
         if (sFind != null && !sFind.isEmpty()) {
-            processSubjectResultTree.setaProcessSubject(aChildResultByUser);
-        } else {
-            processSubjectResultTree.setaProcessSubject(aChildResult);
+        	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResultByUser);
+        	
+        }else {
+        	//resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResult);
+        	resultTree = Lists
+                     .newArrayList(Collections2.filter(getProcessSubjectTree(hierarchyProcessSubject, aChildResult), new Predicate<ProcessSubject>() {
+                         @Override
+                         public boolean apply(ProcessSubject processSubject) {
+                             // получить только отфильтрованный
+                             // список по snID_Process_Activiti
+                             return processSubject.getId().equals(snID_Process_Activiti);
+                         }
+                     }));
         }
-        for (ProcessSubject processSubject : processSubjectResultTree.getaProcessSubject()) {
+        
+        processSubjectResultTree.setaProcessSubject(resultTree);
+        return processSubjectResultTree;
+
+    }
+
+
+
+	
+
+
+
+//=====================================================Дополнительные методы=============================================================================
+
+    
+    /**
+     * Метод построения иерархии
+     * @param hierarchyProcessSubject
+     * @param aChildResult
+     * @return List<ProcessSubject> - результирующий иерархический список
+     */
+    public List<ProcessSubject> getProcessSubjectTree(Map<Long, List<ProcessSubject>> hierarchyProcessSubject,
+			List<ProcessSubject> aChildResult) {
+    	List<ProcessSubject> resultTree = new ArrayList<>();
+		for (ProcessSubject processSubject : aChildResult) {
             processSubject.setaUser(getUsersByGroupSubject(processSubject.getsLogin()));
             //получаем по ключу лист детей и устанавливаем 
             List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject.getId());
@@ -173,20 +192,15 @@ public class ProcessSubjectServiceTree {
                 processSubject.setaProcessSubj(aChildResultByKey);
             }
         }
-        return processSubjectResultTree;
-
-    }
-
-
-
-//=====================================================Дополнительные методы=============================================================================
-
+		return aChildResult;
+	}
 
     /**
      * Проверка флага на отображение рутового елемента:
-     *  если null true  - устанавливать true для отображения
-     * @param bIncludeRoot
-     * @return
+     * 
+     *  <b>если null - устанавливать true для отображения по умолчанию</b>
+     * @param bIncludeRoot - флаг который прихоидит на вход (true - отображаем, false - нет)
+     * @return bIncludeRoot - фактическое значение флага
      */
 
     public static boolean isDisplayRootElement(Boolean bIncludeRoot) {
@@ -198,10 +212,10 @@ public class ProcessSubjectServiceTree {
 
     
     /**
-     * Фильтр по параметру sFind - текст поиска в ФИО
+     * Метод получения отфильтрованного списка объектов по заданному условию поиска
      * @param sFind - текст поиска в ФИО
      * @param aChildResult - результирующий лист, который фильтруем
-     * @return
+     * @return List<ProcessSubject> - отфильтрованный список по строке поиска в фио
      */
 	public List<ProcessSubject> filtrChildResultByUser(String sFind, List<ProcessSubject> aChildResult) {
 		List<ProcessSubject> aChildResultByUser = new ArrayList<>();
@@ -242,10 +256,12 @@ public class ProcessSubjectServiceTree {
 		return aChildResultByUser;
 	}
 
-    /**
-     * получение рутового елемента
-     * ProcessSubject
-     */
+   /**
+    * Метод получения списка рутового елемента иерархии
+    * @param parentChildren - список парентов
+    * @param groupFiltr - ид, по которому строится иерархия 
+    * @return ProcessSubject - рутовый елемент
+    */
     public ProcessSubject getRootProcessSubject(Map<ProcessSubject, List<ProcessSubject>> parentChildren,
             Long groupFiltr) {
 
@@ -261,10 +277,9 @@ public class ProcessSubjectServiceTree {
 
 
     /**
-     * проверяем входящий параметр deepLevel
-     *
-     * @param deepLevel
-     * @return
+     * метод возвращающий значение deepLevel
+     * @param deepLevel - глубина иерархии
+     * @return deepLevel - возвращается 1000 если на вход передали null или 0
      */
     public Long checkDeepLevel(Long deepLevel) {
         if (deepLevel == null || deepLevel.intValue() == 0) {
@@ -285,18 +300,19 @@ public class ProcessSubjectServiceTree {
      * @param deepLevelRequested желаемая глубина
      * @param deepLevelFact фактическая глубина
      * @param result
-     * @return
+     * @return Map<Long, List<ProcessSubject>>  - id-parent-->list child
      */
+    
     public Map<Long, List<ProcessSubject>> getChildrenTree(List<ProcessSubject> aChildLevel, List<Long> anID_ChildLevel,
             Map<Long, List<ProcessSubject>> subjToNodeMap, Set<Long> anID_PerentAll, Long deepLevelRequested,
             int deepLevelFact, List<ProcessSubject> result) {
-        List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
+    	 List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
         if (deepLevelFact < deepLevelRequested.intValue()) {
             for (Long nID_ChildLevel : anID_ChildLevel) {
                 if (anID_PerentAll.contains(nID_ChildLevel)) {
                     // достаем детей детей
-                    aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);
+                	aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);
                     if (aChildLevel_Result != null && !aChildLevel_Result.isEmpty()) {
                         // получаем только ид чилдренов
                         List<Long> anID_Child = Lists.newArrayList(
@@ -314,21 +330,22 @@ public class ProcessSubjectServiceTree {
                     }
                 }
             }
+            
             deepLevelFact++;
             if (deepLevelFact < deepLevelRequested.intValue()) {
                 getChildrenTree(aChildLevel_Result, anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
                         checkDeepLevel(deepLevelRequested), deepLevelFact, result);
             }
+           
         }
         return getChildrenTreeRes;
     }
 
-    /**
-     * Получение списка юзеров по ид группы
-     *
-     * @param snID_Process_Activiti
-     * @return
-     */
+   /**
+    * Получение списка юзеров по ид группы
+    * @param snID_Process_Activiti -ид группы
+    * @return List<ProcessUser> - список юзеров
+    */
     public List<ProcessUser> getUsersByGroupSubject(String snID_Process_Activiti) {
 
         List<ProcessUser> amsUsers = new ArrayList<>();

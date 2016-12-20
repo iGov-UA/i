@@ -13,19 +13,4 @@ angular.module('dashboardJsApp')
     },
     templateUrl: 'components/usersHierarchyModal/usersHierarchy.template.html'
   };
-}])
-  .directive('compileTemplate', function ($compile, $parse) {
-  return {
-    link: function (scope, element, attr) {
-      var parsed = $parse(attr.ngBindHtml);
-
-      function getStringValue() {
-        return (parsed(scope) || '').toString();
-      }
-
-      scope.$watch(getStringValue, function () {
-        $compile(element, null, -9999)(scope);
-      });
-    }
-  }
-});
+}]);

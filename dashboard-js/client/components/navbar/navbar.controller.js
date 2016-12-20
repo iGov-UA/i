@@ -6,9 +6,9 @@
     .controller('NavbarCtrl', navbarCtrl);
 
   navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService',
-                        '$state', 'tasks', 'lunaService', 'Modal'];
+                        '$state', 'tasks', 'lunaService', 'Modal', '$stateParams'];
   function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService,
-                      $state, tasks, lunaService, Modal) {
+                      $state, tasks, lunaService, Modal, $stateParams) {
     $scope.menu = [{
       'title': 'Задачі',
       'link': '/tasks'
@@ -179,6 +179,14 @@
     $scope.document = {};
     $scope.openCloseUsersSelect = function () {
       $scope.showOrHideSelect = !$scope.showOrHideSelect;
+    };
+
+    $scope.showCreateDocButton = function () {
+      return $stateParams.type === "unassigned" || $stateParams.type === "selfAssigned";
+    };
+
+    $scope.hideNaviWhenLoginPage = function () {
+      return $location.path() === '/';
     };
 
     $scope.onSelectDocList = function (item) {
