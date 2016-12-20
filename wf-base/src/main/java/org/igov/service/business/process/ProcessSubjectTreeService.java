@@ -286,7 +286,7 @@ public class ProcessSubjectTreeService {
     /**
      * метод возвращающий значение deepLevelWidth
      * @param deepLevelWidth - ширина иерархии
-     * @return deepLevelWidth - возвращается 1 если на вход передали null или 0
+     * @return deepLevelWidth - возвращается 1 (берем первый елемент из листа с объектами по иерархии) если на вход передали null или 0
      */
     public Long checkDeepLevelWidth(Long deepLevelWidth) {
         if (deepLevelWidth == null || deepLevelWidth.intValue() == 0 || deepLevelWidth.intValue()==1) {

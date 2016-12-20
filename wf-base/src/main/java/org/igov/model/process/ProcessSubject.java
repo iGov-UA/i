@@ -68,7 +68,7 @@ public class ProcessSubject extends AbstractEntity {
     @Transient
     private List<ProcessUser> aUser;
     
-    @JsonProperty(value = "aProcessSubjects")
+    @JsonProperty(value = "aProcessSubjectChilds")
     @Transient
     private List<ProcessSubject> aProcessSubj;
     

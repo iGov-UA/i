@@ -6,7 +6,6 @@
 package org.igov.model.process;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Класс - Получение иерархии процессов
@@ -16,22 +15,22 @@ import java.util.List;
  */
 public class ProcessSubjectResultTree implements Serializable {
 
-	private ProcessSubject aProcessSubject;
+	private ProcessSubject aProcessSubjectTree;
 
 
 	public ProcessSubject getaProcessSubject() {
-		return aProcessSubject;
+		return aProcessSubjectTree;
 	}
 
 
-	public void setaProcessSubject(ProcessSubject aProcessSubject) {
-		this.aProcessSubject = aProcessSubject;
+	public void setaProcessSubject(ProcessSubject aProcessSubjectTree) {
+		this.aProcessSubjectTree = aProcessSubjectTree;
 	}
 
 
 	@Override
 	public String toString() {
-		return "aProcessSubject=" + aProcessSubject;
+		return "aProcessSubjectTree=" + aProcessSubjectTree;
 	}
 
 	
