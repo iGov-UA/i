@@ -22,8 +22,11 @@
             cleanPreviousTextSearch();
             var aIds = JSON.parse(result);
             if (angular.isArray(aIds) && aIds.length > 0) {
-              defer.resolve(aIds);
               searchSuccess(aIds[0]);
+              defer.resolve({
+                aIDs : aIds,
+                nCurrentIndex : 0
+              });
             } else
               searchTaskByText(value, defer);
           }
@@ -41,8 +44,11 @@
         if(oPreviousTextSearch.cursor == oPreviousTextSearch.aIds.length){
           oPreviousTextSearch.cursor = 0;
         }
-        defer.resolve(oPreviousTextSearch.aIds);
         searchSuccess(oPreviousTextSearch.aIds[oPreviousTextSearch.cursor]);
+        defer.resolve({
+          aIDs : oPreviousTextSearch.aIds,
+          nCurrentIndex : oPreviousTextSearch.cursor
+        });
       } else {
         cleanPreviousTextSearch();
         tasks.getTasksByText(value, 'selfAssigned')
@@ -59,8 +65,11 @@
                   if(oPreviousTextSearch.cursor == aIds.length){
                     oPreviousTextSearch.cursor = 0;
                   }
-                  defer.resolve(aIds);
                   searchSuccess(aIds[oPreviousTextSearch.cursor]);
+                  defer.resolve({
+                    aIDs : aIds,
+                    nCurrentIndex : oPreviousTextSearch.cursor
+                  });
                 } else {
                   oPreviousTextSearch = {
                     value : value,
@@ -68,8 +77,11 @@
                     aIds: aIds,
                     result : result
                   };
-                  defer.resolve(aIds);
                   searchSuccess(aIds[0]);
+                  defer.resolve({
+                    aIDs : aIds,
+                    nCurrentIndex : oPreviousTextSearch.cursor
+                  });
                 }
               } else {
                 Modal.inform.error()('За даним критерієм задач не знайдено');

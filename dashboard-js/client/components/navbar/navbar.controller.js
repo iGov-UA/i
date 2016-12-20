@@ -108,10 +108,13 @@
             $scope.switchArchive = true;
           })
         } else {
-          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.tasksSearch.archive)
-            .then(function(res, aIds) {
-              // $scope.tasksSearch.count = aIds.length;
-              $scope.tasksSearch.count = res.length;
+          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value)
+            .then(function(res) {
+              if(res.aIDs.length > 1){
+                $scope.tasksSearch.count = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;
+              } else {
+                $scope.tasksSearch.count = res.aIDs.length;
+              }
             })
             .finally(function(res) {
               $scope.tasksSearch.loading=false;
@@ -181,7 +184,7 @@
           var val = res.snID_Process + lunaService.getLunaValue(res.snID_Process);
           tasksSearchService.searchTaskByUserInput(val)
             .then(function(res) {
-              $scope.assignTask(res[0]);
+              $scope.assignTask(res.aIDs[0]);
             });
           $scope.showOrHideSelect = false;
         }
