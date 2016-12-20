@@ -11,11 +11,13 @@ import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.List;
 import javax.persistence.Transient;
 
+@JsonRootName(value = "aProcessSubject")
 @javax.persistence.Entity
 public class ProcessSubject extends AbstractEntity {
 
