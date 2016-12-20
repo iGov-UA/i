@@ -1,900 +1,709 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="uk" lang="uk">
-<head>
+  <head>
     <title>Надання витягу з реєстру платників єдиного податку</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style type="text/css">
-        section.PrintFormClaim {
-            font-size: 12pt;
-            font-family: "Times New Roman";
-            width: 18cm;
-        }
-
-            section.PrintFormClaim div {
-                margin-top: 6pt;
-            }
-
-            section.PrintFormClaim u {
-                padding: 0 10px;
-            }
-
-            /* Подчеркивание с отступами не подходит для  */
-            section.PrintFormClaim em {
-                padding: 0 15px;
-                font-style: normal;
-                border-bottom: 1px solid black;
-            }
-        /* Отменяем подчеркивание у ссылки */
-
-        .whomBlock {
-            text-align: juice;
-        }
-
-        .claimBlock {
-            text-align: center;
-            margin-top: 6pt;
-            letter-spacing: 4px;
-            font-size: 14pt;
-            font-weight: 600;
-        }
-
-        .smallText {
-            font-size: 12pt;
-            line-height: 1.1;
-        }
-
-        section.PrintFormClaim table {
-            align-self: center;
-        }
-
-        section.PrintFormClaim td.bb {
-            border: 0px solid black;
-            border-bottom: 1px solid black;
-        }
-
-        section.PrintFormClaim td.notb,
-        section.PrintFormClaim table.notb td,
-        section.PrintFormClaim .notb {
-            border: 0px solid black;
-        }
-
-        section.PrintFormClaim td {
-            border: 1px solid black;
-            text-align: justify;
-        }
-
-        section.PrintFormClaim table {
-            align-self: center;
-            border-collapse: collapse; /* Отображать двойные линии как одинарные */
-        }
-
-        section.PrintFormClaim th {
-            border: 1px solid black;
-        }
-
-        .under_multifield { /* Мой кейс, многострочный текст*/
-            border-bottom: 1px solid black;
-            text-align: justify;
-            clear: both;
-        }
-
-            .under_multifield > b {
-                float: left;
-                padding: 0 10px 0 0;
-                font-weight: normal;
-                position: relative;
-                bottom: -3px;
-                background-color: white;
-            }
-
-            .under_multifield > u {
-                padding: 0 10px;
-                text-decoration: none;
-                border-bottom: 1px solid black;
-                position: relative;
-                bottom: -2px;
-                line-height: 125%;
-            }
-
-        .under_field { /* Блок с подписью */
-            margin: 0 0 15px 0;
-            border-bottom: 1px solid black;
-            position: relative;
-            display: inline-block;
-            clear: both;
-        }
-
-            .under_field > b { /*если не надо подчеркивать*/
-                padding: 0 10px 0 0;
-                font-weight: normal;
-                background: white;
-                display: inline-block;
-                position: relative;
-                left: 0;
-                font-style: normal;
-                bottom: -1;
-                background-color: white;
-            }
-
-            /*если надо подчеркнуть*/
-            .under_field > u {
-                padding: 0 10px;
-                text-decoration: none;
-                background: white;
-                display: inline-block;
-                position: relative;
-                left: 0;
-            }
-
-            /*текст снизу*/
-            .under_field > span {
-                position: absolute;
-                left: 0;
-                right: 0;
-                text-align: center;
-                color: #606060;
-                bottom: -16px;
-                font-size: 10pt;
-            }
-
-        /* линия отреза */
-        .lineCut {
-            border-bottom: 2px dashed #000;
-        }
-
-            .lineCut > span {
-                bottom: 10px;
-                background: white;
-                float: left;
-                position: relative;
-            }
-
-        /*чек-боксы*/
-        .check_box {
-            width: 20px;
-            height: 20px;
-            border: 1px solid #000;
-            margin: 0 10px 0 5px;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .text_box {
-            height: 25px;
-            border: 1px solid #000;
-            margin-left: 5px;
-            display: inline-block;
-            line-height: 23px;
-        }
-
-
-        /* номер дела, ярлык */
-        .numBusines {
-            border: 1px solid #000000;
-            margin-top: 25px;
-            float: right;
-        }
-
-            .numBusines > div {
-                height: 20px;
-                margin-right: 5px;
-                margin-left: 5px;
-                border-bottom: 1px solid black;
-                position: relative;
-                display: block;
-            }
-
-                .numBusines > div > i {
-                    height: 21px;
-                    left: 0;
-                    padding-right: 5px;
-                    background: white;
-                    display: inline-block;
-                    position: relative;
-                    font-style: normal;
-                }
-
-                .numBusines > div > span {
-                    position: absolute;
-                    left: 0;
-                    right: 0;
-                    text-align: center;
-                    color: #606060;
-                    bottom: -16px;
-                    font-size: 11px;
-                }
-
-        .m-b-5 {
-            margin-bottom: 5px;
-        }
-
-        .m-b-30 {
-            margin-bottom: 30px;
-        }
-
-        .clear {
-            clear: both;
-        }
-
-        /* организация колонок */
-        .layout {
-            overflow: hidden;
-        }
-
-            .layout DIV {
-                float: left;
-            }
-
-        /* выравнивание текста */
-        section.PrintFormClaim .ta-l {
-            text-align: left;
-        }
-
-        section.PrintFormClaim .ta-j {
-            text-align: justify;
-        }
-
-        section.PrintFormClaim .ta-j-w {
-            text-align: justify;
-            -webkit-hyphens: auto;
-            -moz-hyphens: auto;
-            -ms-hyphens: auto;
-            hyphens: auto;
-            word-wrap: break-word;
-        }
-
-        section.PrintFormClaim .ta-r {
-            text-align: right;
-        }
-
-        section.PrintFormClaim .ta-c {
-            text-align: center;
-        }
-
-        /* ширина в процентах */
-        .w1p {
-            width: 1%;
-        }
-
-        .w4p {
-            width: 4%;
-        }
-
-        .w5p {
-            width: 5%;
-        }
-
-        .w8p {
-            width: 8%;
-        }
-
-        .w10p {
-            width: 10%;
-        }
-
-        .w20p {
-            width: 20%;
-        }
-
-        .w25p {
-            width: 25%;
-        }
-
-        .w30p {
-            width: 30%;
-        }
-
-        .w33p {
-            width: 33%;
-        }
-
-        .w40p {
-            width: 40%;
-        }
-
-        .w50p {
-            width: 50%;
-        }
-
-        .w60p {
-            width: 60%;
-        }
-
-        .w70p {
-            width: 70%;
-        }
-
-        .w80p {
-            width: 80%;
-        }
-
-        .w90p {
-            width: 90%;
-        }
-
-        .w95p {
-            width: 95%;
-        }
-
-        .w100p {
-            width: 100%;
-        }
-
-        /* ширина */
-        .w20 {
-            width: 20px;
-        }
-
-        .w50 {
-            width: 50px;
-        }
-
-        .w100 {
-            width: 100px;
-        }
-
-        .w150 {
-            width: 150px;
-        }
-
-        .w200 {
-            width: 200px;
-        }
-
-        .w250 {
-            width: 250px;
-        }
-
-        .w300 {
-            width: 300px;
-        }
-
-        .w350 {
-            width: 350px;
-        }
-
-        .w450 {
-            width: 450px;
-        }
-
-        .w400 {
-            width: 400px;
-        }
-
-        .w500 {
-            width: 500px;
-        }
-
-        /* отступ  */
-        .pl-paragraph {
-            text-indent: 1cm;
-        }
-
-            .pl-paragraph > div,
-            .pl-paragraph > span {
-                text-indent: initial;
-            }
-
-        .pl-25 {
-            padding-left: 25px;
-        }
-
-        .pl-50 {
-            padding-left: 50px;
-        }
-
-        .pl-75 {
-            padding-left: 75px;
-        }
-
-        .pl-100 {
-            padding-left: 100px;
-        }
-
-        .pl-150 {
-            padding-left: 150px;
-        }
-
-        .pl-200 {
-            padding-left: 200px;
-        }
-
-        .pl-250 {
-            padding-left: 250px;
-        }
-
-        .pl-300 {
-            padding-left: 300px;
-        }
-
-        .ml-5 {
-            margin-left: 5cm;
-        }
-
-        .ml-6 {
-            margin-left: 6cm;
-        }
-
-        .ml-7 {
-            margin-left: 7cm;
-        }
-
-        .ml-8 {
-            margin-left: 8cm;
-        }
-
-        .ml-9 {
-            margin-left: 9cm;
-        }
-
-        .ml-10 {
-            margin-left: 10cm;
-        }
-
-        .ml-11 {
-            margin-left: 11cm;
-        }
-
-        .ml-12 {
-            margin-left: 12cm;
-        }
-
-        .ml-13 {
-            margin-left: 13cm;
-        }
-
-        .ml-14 {
-            margin-left: 14cm;
-        }
-
-
-
-        /* междустрочные интервалы */
-        .line0 {
-            line-height: 0;
-        }
-
-        .line05 {
-            line-height: 0.5;
-        }
-
-        .line1 {
-            line-height: 1;
-        }
-
-        .line15 {
-            line-height: 1.5;
-        }
-
-        .line2 {
-            line-height: 2;
-        }
-
-        .line25 {
-            line-height: 2.5;
-        }
-
-        .line3 {
-            line-height: 3;
-        }
-
-        /*отступы по горизонтали*/
-        .pg-10 {
-            padding: 0 10px;
-        }
-
-        .pg-15 {
-            padding: 0 15px;
-        }
-
-        .pg-20 {
-            padding: 0 20px;
-        }
-
-        .pg-25 {
-            padding: 0 25px;
-        }
-
-        .pg-50 {
-            padding: 0 50px;
-        }
-
-        .pg-75 {
-            padding: 0 75px;
-        }
-
-        .pg-100 {
-            padding: 0 100px;
-        }
-
-
-
-        /* Форматирование текста*/
-        .i {
-            font-style: italic;
-        }
-
-        .b {
-            font-weight: 600;
-        }
-
-        .u {
-            text-decoration: underline;
-        }
-
-        .ub {
-            border-bottom: 1px solid #000;
-        }
-
-
-        .test {
-            border: 1px solid red;
-        }
-
-        /* свойства для печати*/
-        @media print {
-            @page {
-                margin: 1cm 1.5cm 1cm 2.5cm;
-            }
-
-            * {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            a[href^="http://"]:after, a[href^="ftp://"]:after {
-                content: " (" attr(href) ")";
-                color: blue;
-            }
-
-            section {
-                page-break-after: avoid;
-            }
-
-            h1 {
-                page-break-after: avoid;
-            }
-
-            p {
-                page-break-inside: avoid;
-                orphans: 3;
-                widows: 2;
-            }
-
-            ul, img {
-                page-break-inside: avoid;
-            }
-        }
+      section.PrintFormClaim {
+        font-size: 12pt;
+        font-family: "Times New Roman";
+        width: 18cm;
+      }
+
+      section.PrintFormClaim div {
+        margin-top: 6pt;
+      }
+
+      section.PrintFormClaim u {
+        padding: 0 10px;
+      }
+
+      /* Подчеркивание с отступами не подходит для  */
+      section.PrintFormClaim em {
+        padding: 0 15px;
+        font-style: normal;
+        border-bottom: 1px solid black;
+      }
+      /* Отменяем подчеркивание у ссылки */
+
+      .whomBlock {
+        text-align: juice;
+      }
+
+      .claimBlock {
+        text-align: center;
+        margin-top: 6pt;
+        letter-spacing: 4px;
+        font-size: 14pt;
+        font-weight: 600;
+      }
+
+      .smallText {
+        font-size: 12pt;
+        line-height: 1.1;
+      }
+
+      section.PrintFormClaim table {
+        align-self: center;
+      }
+
+      section.PrintFormClaim td.bb {
+        border: 0px solid black;
+        border-bottom: 1px solid black;
+      }
+
+      section.PrintFormClaim td.notb,
+      section.PrintFormClaim table.notb td,
+      section.PrintFormClaim .notb {
+        border: 0px solid black;
+      }
+
+      section.PrintFormClaim td {
+        border: 1px solid black;
+        text-align: justify;
+      }
+
+      section.PrintFormClaim table {
+        align-self: center;
+        border-collapse: collapse; /* Отображать двойные линии как одинарные */
+      }
+
+      section.PrintFormClaim th {
+        border: 1px solid black;
+      }
+
+      .under_multifield { /* Мой кейс, многострочный текст*/
+        border-bottom: 1px solid black;
+        text-align: justify;
+        clear: both;
+      }
+
+      .under_multifield > b {
+        float: left;
+        padding: 0 10px 0 0;
+        font-weight: normal;
+        position: relative;
+        bottom: -3px;
+        background-color: white;
+      }
+
+      .under_multifield > u {
+        padding: 0 10px;
+        text-decoration: none;
+        border-bottom: 1px solid black;
+        position: relative;
+        bottom: -2px;
+        line-height: 125%;
+      }
+
+      .under_field { /* Блок с подписью */
+        margin: 0 0 15px 0;
+        border-bottom: 1px solid black;
+        position: relative;
+        display: inline-block;
+        clear: both;
+      }
+
+      .under_field > b { /*если не надо подчеркивать*/
+        padding: 0 10px 0 0;
+        font-weight: normal;
+        background: white;
+        display: inline-block;
+        position: relative;
+        left: 0;
+        font-style: normal;
+        bottom: -1;
+        background-color: white;
+      }
+
+      /*если надо подчеркнуть*/
+      .under_field > u {
+        padding: 0 10px;
+        text-decoration: none;
+        background: white;
+        display: inline-block;
+        position: relative;
+        left: 0;
+      }
+
+      /*текст снизу*/
+      .under_field > span {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #606060;
+        bottom: -16px;
+        font-size: 10pt;
+      }
+
+      /* линия отреза */
+      .lineCut {
+        border-bottom: 2px dashed #000;
+      }
+
+      .lineCut > span {
+        bottom: 10px;
+        background: white;
+        float: left;
+        position: relative;
+      }
+
+      /*чек-боксы*/
+      .check_box {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #000;
+        margin: 0 10px 0 5px;
+        display: inline-block;
+        text-align: center;
+      }
+
+      .text_box {
+        height: 25px;
+        border: 1px solid #000;
+        margin-left: 5px;
+        display: inline-block;
+        line-height: 23px;
+      }
+
+
+      /* номер дела, ярлык */
+      .numBusines {
+        border: 1px solid #000000;
+        margin-top: 25px;
+        float: right;
+      }
+
+      .numBusines > div {
+        height: 20px;
+        margin-right: 5px;
+        margin-left: 5px;
+        border-bottom: 1px solid black;
+        position: relative;
+        display: block;
+      }
+
+      .numBusines > div > i {
+        height: 21px;
+        left: 0;
+        padding-right: 5px;
+        background: white;
+        display: inline-block;
+        position: relative;
+        font-style: normal;
+      }
+
+      .numBusines > div > span {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #606060;
+        bottom: -16px;
+        font-size: 11px;
+      }
+
+      .m-b-5 {
+        margin-bottom: 5px;
+      }
+
+      .m-b-30 {
+        margin-bottom: 30px;
+      }
+
+      .clear {
+        clear: both;
+      }
+
+      /* организация колонок */
+      .layout {
+        overflow: hidden;
+      }
+
+      .layout DIV {
+        float: left;
+      }
+
+      /* выравнивание текста */
+      section.PrintFormClaim .ta-l {
+        text-align: left;
+      }
+
+      section.PrintFormClaim .ta-j {
+        text-align: justify;
+      }
+
+      section.PrintFormClaim .ta-j-w {
+        text-align: justify;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+        word-wrap: break-word;
+      }
+
+      section.PrintFormClaim .ta-r {
+        text-align: right;
+      }
+
+      section.PrintFormClaim .ta-c {
+        text-align: center;
+      }
+
+      /* ширина в процентах */            
+      .w1p {width: 1%;}      
+      .w4p {width: 4%;}      
+      .w5p {width: 5%;}      
+      .w8p {width: 8%;}   
+      .w10p { width: 10%;}
+      .w20p { width: 20%;}
+      .w30p { width: 30%;}
+      .w33p { width: 33%;} 
+      .w40p { width: 40%;}
+      .w50p { width: 50%;}   
+      .w60p { width: 60%;}   
+      .w70p { width: 70%;}   
+      .w80p { width: 80%;}   
+      .w90p { width: 90%;}    
+      .w95p { width: 95%;}     
+      .w100p { width: 100%;}
+
+      /* ширина */
+      .w20 {	width: 20px;}
+      .w50 {	width: 50px;}
+      .w100 {	width: 100px;}
+      .w150 {	width: 150px;}
+      .w200 {	width: 200px;}
+      .w250 {	width: 250px;}
+      .w300 {	width: 300px;}
+      .w350 {	width: 350px;}
+      .w450 {	width: 450px;}
+      .w400 {	width: 400px;}
+      .w500 {	width: 500px;}
+
+      /* отступ  */
+      .pl-paragraph { text-indent: 1cm;}
+      .pl-paragraph>div,
+      .pl-paragraph>span  
+      { text-indent: initial;} 
+
+      .pl-25 { padding-left: 25px;}
+      .pl-50 { padding-left: 50px;}
+      .pl-75 { padding-left: 75px;}
+      .pl-100 { padding-left: 100px;}
+      .pl-150 { padding-left: 150px;}
+      .pl-200 { padding-left: 200px;}
+      .pl-250 { padding-left: 250px;}
+      .pl-300 { padding-left: 300px;}
+
+      .ml-5{ margin-left: 5cm;}
+      .ml-6{ margin-left: 6cm;}
+      .ml-7{ margin-left: 7cm;}
+      .ml-8{ margin-left: 8cm;}
+      .ml-9{ margin-left: 9cm;}
+      .ml-10{ margin-left: 10cm;}
+      .ml-11{ margin-left: 11cm;}
+      .ml-12{ margin-left: 12cm;}
+      .ml-13{ margin-left: 13cm;}
+      .ml-14{ margin-left: 14cm;}
+
+      /* междустрочные интервалы */
+      .line0 { line-height: 0; }
+      .line05 { line-height: 0.5;}
+      .line1 { line-height: 1;}
+      .line15 { line-height: 1.5;}
+      .line2 { line-height: 2;}
+      .line25 { line-height: 2.5;}
+      .line3 { line-height: 3;}
+
+      /*отступы по горизонтали*/
+      .pg-10 { padding: 0 10px;}
+      .pg-15 { padding: 0 15px;}
+      .pg-20 { padding: 0 20px;}
+      .pg-25 { padding: 0 25px;}
+      .pg-50 { padding: 0 50px;}
+      .pg-75 { padding: 0 75px;}
+      .pg-100 { padding: 0 100px;}
+
+      /* Форматирование текста*/
+      .i{font-style: italic;}
+      .b{font-weight: 600;}
+      .u{text-decoration: underline;}
+      .ub{border-bottom: 1px solid #000;}
+
+      .test{ border: 1px solid red;}
+
+      /* свойства для печати*/
+      @media print {
+        @page {
+          margin: 1cm 1.5cm 1cm 2.5cm;
+        }
+
+        * {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        a[href^="http://"]:after, a[href^="ftp://"]:after {
+          content: " (" attr(href) ")";
+          color: blue;
+        }
+
+        section {
+          page-break-after: avoid;
+        }
+
+        h1 {
+          page-break-after: avoid;
+        }
+
+        p {
+          page-break-inside: avoid;
+          orphans: 3;
+          widows: 2;
+        }
+
+        ul, img {
+          page-break-inside: avoid;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <section lang="uk" class="PrintFormClaim">
 
 
-        <div class="b">Class SRU</div>
-        <br>
+      <div class="b">Class SRU</div>
+      <br>
 
-        <div class="claimBlock">
-            ЗАЯВКА
-        </div>
+      <div class="claimBlock">
+        ЗАЯВКА
+      </div>
 
-        <div class="b ta-c line0">
-            на прийняття під технічний нагляд судна в експлуатації
-        </div>
-        <br>
+      <div class="b ta-c line0">
+        на прийняття під технічний нагляд судна в експлуатації
+      </div>
+      <br>
 
-        <div>
-            Куди: <span class="b pl-75">Регістр судноплавства України</span>
-        </div>
-        <br>
+      <div>
+        Куди: <span class="b pl-75">Регістр судноплавства України</span>
+      </div>
+      <br>
 
-        <table class="w100p">
-            <tbody>
-                <tr>
-                    <td colspan="2" rowspan="2">
-                        Вид нагляду
-                    </td>
-                    <td style="border-right:0px solid white">
-                        класифікаційний
-                    </td>
-                    <td style="border-left:1px">
-                        <span class="check_box">
-                            <span id="spanClassif" style="visibility:hidden">
-                                &#10004;
-                            </span>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="border-right:0px solid white">
-                        конвенційна сертифікація
-                    </td>
-                    <td style="border-left:0px">
-                        <span class="check_box">
-                            <span id="spanSert" style="visibility:hidden">
-                                &#10004;
-                            </span>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td rowspan="2">Назва судна</td>
-                    <td>діюча</td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td>попередня</td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Вид нагляду
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Прапор
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Порт приписки
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Знаходилось під наглядом - попереднє КТ
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Регістровий номер попереднього КТ
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Клас попереднього КТ
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Номер ІМО
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Радіопозивний сигнал
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Тип та призначення судна
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Номер проекту та його розробник
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Рік, місце побудови та номер з побудови
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Дата закладки кіля
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Валова місткість
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Дедвейт, т
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Пасажиромісткість, чол. (для пасажирських суден)
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Довжина найбільша, м
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Ширина, м
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Висота борту, м
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Кількість головних двигунів, шт
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Сумарна потужність головних двигунів, кВт
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Кількість генераторів електростанції, шт
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Сумарна механічна потужність електростанції, кВт
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Сумарна електрична потужність електростанції, кВт
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Район плавання, що заявляється
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Переобладнання, що планується
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" rowspan="2">
-                        Наявність суднової технічної документації
-                    </td>
-                    <td style="border-right:0px solid white">
-                        є (перелік може бути надано у додатку)
-                    </td>
-                    <td style="border-left:0px">
-                        <span class="check_box">
-                            <span id="spanShipYes" style="visibility:hidden">
-                                &#10004;
-                            </span>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="border-right:0px solid white">
-                        немає
-                    </td>
-                    <td style="border-left:0px">
-                        <span class="check_box">
-                            <span id="spanShipNo" style="visibility:hidden">
-                                &#10004;
-                            </span>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Судновласник (оператор) (реквізити)
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Власник судна (реквізити)
-                    </td>
-                    <td colspan="2"></td>
-                </tr>
-            </tbody>
-        </table>
+      <table class="w100p">
+        <tbody>
+          <tr>
+            <td colspan="2" rowspan="2">
+              Вид нагляду
+            </td>
+            <td style="border-right:0px solid white">
+              класифікаційний
+            </td>
+            <td style="border-left:1px">
+              <span class="check_box">
+                <span id="spanClassif" style="visibility:hidden">
+                  &#10004;
+                </span>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td style="border-right:0px solid white">
+              конвенційна сертифікація
+            </td>
+            <td style="border-left:0px">
+              <span class="check_box">
+                <span id="spanSert" style="visibility:hidden">
+                  &#10004;
+                </span>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td rowspan="2">Назва судна</td>
+            <td>діюча</td>
+            <td colspan="2">[sCurName]</td>
+          </tr>
+          <tr>
+            <td>попередня</td>
+            <td colspan="2">[sExName]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Вид нагляду
+            </td>
+            <td colspan="2">[asTypeSupervision]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Прапор
+            </td>
+            <td colspan="2">[sFlagState]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Порт приписки
+            </td>
+            <td colspan="2">[sHomePort]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Знаходилось під наглядом - попереднє КТ
+            </td>
+            <td colspan="2">[sNameSurveillance]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Регістровий номер попереднього КТ
+            </td>
+            <td colspan="2">[sNumberSurveillance]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Клас попереднього КТ
+            </td>
+            <td colspan="2">[sClassSurveillance]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Номер ІМО
+            </td>
+            <td colspan="2">[sShipNumbIMO]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Радіопозивний сигнал
+            </td>
+            <td colspan="2">[sRadioCallSignal]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Тип та призначення судна
+            </td>
+            <td colspan="2">[sTypeDestinationShip]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Номер проекту та його розробник
+            </td>
+            <td colspan="2">[sNumberProjectShip]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Рік, місце побудови та номер з побудови
+            </td>
+            <td colspan="2">[sYearPlaceBuildShip]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Дата закладки кіля
+            </td>
+            <td colspan="2">[sDateKeelLaying]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Валова місткість
+            </td>
+            <td colspan="2">[sGrossTonnage]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Дедвейт, т
+            </td>
+            <td colspan="2">[sDeadweight]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Пасажиромісткість, чол. (для пасажирських суден)
+            </td>
+            <td colspan="2">[sPassenger]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Довжина найбільша, м
+            </td>
+            <td colspan="2">[sLengthShip]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Ширина, м
+            </td>
+            <td colspan="2">[sWidthShip]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Висота борту, м
+            </td>
+            <td colspan="2">[sHeightBoardShip]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Кількість головних двигунів, шт
+            </td>
+            <td colspan="2">[sNumberMainEngines]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Сумарна потужність головних двигунів, кВт
+            </td>
+            <td colspan="2">[sTotalPowerMainEngines]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Кількість генераторів електростанції, шт
+            </td>
+            <td colspan="2">[sNumberPowerGenerators]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Сумарна механічна потужність електростанції, кВт
+            </td>
+            <td colspan="2">[sTotalMechanicalPowerGenerators]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Сумарна електрична потужність електростанції, кВт
+            </td>
+            <td colspan="2">[sTotalElectricPowerGenerators]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Район плавання, що заявляється
+            </td>
+            <td colspan="2">[sNavigationArea]</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Переобладнання, що планується
+            </td>
+            <td colspan="2">[sAlterations]</td>
+          </tr>
+          <tr>
+            <td colspan="2" rowspan="2">
+              Наявність суднової технічної документації
+            </td>
+            <td style="border-right:0px solid white">
+              є (перелік може бути надано у додатку)
+            </td>
+            <td style="border-left:0px">
+              <span class="check_box">
+                <span id="spanShipYes" style="visibility:hidden">
+                  &#10004;
+                </span>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td style="border-right:0px solid white">
+              немає
+            </td>
+            <td style="border-left:0px">
+              <span class="check_box">
+                <span id="spanShipNo" style="visibility:hidden">
+                  &#10004;
+                </span>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Судновласник (оператор) (реквізити)
+            </td>
+            <td colspan="2">
+[sCompName] [edrpou] [sCompAdress]
+              [lastName_UA2] [firstName_UA2] [middleName_UA2]
+              [sManPassport] [sManAdress] [privatePhone] [privateMail]
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Власник судна (реквізити)
+            </td>
+            <td colspan="2">
+              [sShipPlace] [sShipDate] [sManContact] [workPhone] [workMail]              
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-        <div class="ta-J">
-            В полі <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span>
-            слід проставляти позначку &#10004;, якщо вибрано відповідний параметр.
-        </div>
-        <br />
-        <br />
+      <div class="ta-J">
+        В полі <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span>
+        слід проставляти позначку &#10004;, якщо вибрано відповідний параметр.
+      </div>
+      <br />
+      <br />
 
-        <div class="under_multifield ta-j w100p">
-            <b>
-                Заявник
-            </b>
-            <u>
+      <div class="under_multifield ta-j w100p">
+        <b>
+          Заявник
+        </b>
+        <u>
+          [asStatementLodged]: [clFIO] [bankIdPassport] [bankIdAddressFactual] [phone] [email]
+        </u>
+      </div>
 
-            </u>
-        </div>
+      <br /><br />
 
-        <br /><br />
+      <table class="notb w90p">
+        <colgroup>
+          <col width="25%" />
+          <col width="15%" />
+          <col width="23%" />
+          <col width="19%" />
+        </colgroup>
+        <tbody>
+          <tr>
+            <td>
+              Дата <br />
+              "___" ______20 ___р.
+            </td>
+            <td></td>
+            <td>
+              Підпис відповідальної<br />
+              особи заявника
+            </td>
+            <td style="border-bottom:1px solid black"></td>
+          </tr>
+        </tbody>
+      </table>
 
-        <table class="notb w90p">
-            <colgroup>
-                <col width="25%" />
-                <col width="15%" />
-                <col width="23%" />
-                <col width="19%" />
-            </colgroup>
-            <tbody>
-                <tr>
-                    <td>
-                        Дата <br />
-                        "___" ______20 ___р.
-                    </td>
-                    <td></td>
-                    <td>
-                        Підпис відповідальної<br />
-                        особи заявника
-                    </td>
-                    <td style="border-bottom:1px solid black"></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="ta-r">
-            МП
-        </div>
+      <div class="ta-r">
+        МП
+      </div>
 
     </section>
 
 
     <script>
-        function ShowElements(sCondition) {
-            for (var i = 1; i < arguments.length; i++) {
-                if (sCondition) {
-                    document.getElementById(arguments[i]).style.visibility = 'visible';
-                } else {
-                    document.getElementById(arguments[i]).style.visibility = 'hidden';
-                }
-            }
+      function ShowElements(sCondition) {
+        for (var i = 1; i < arguments.length; i++) {
+          if (sCondition) {
+            document.getElementById(arguments[i]).style.visibility = 'visible';
+          } else {
+            document.getElementById(arguments[i]).style.visibility = 'hidden';
+          }
         }
+      }
 
-        function ShowElementsOnTrue(sCondition) {
-            for (var i = 1; i < arguments.length; i++) {
-                if (sCondition) {
-                    document.getElementById(arguments[i]).style.display = 'inline';
-                } else {
-                    document.getElementById(arguments[i]).style.display = 'none';
-                }
-            }
+      function ShowElementsOnTrue(sCondition) {
+        for (var i = 1; i < arguments.length; i++) {
+          if (sCondition) {
+            document.getElementById(arguments[i]).style.display = 'inline';
+          } else {
+            document.getElementById(arguments[i]).style.display = 'none';
+          }
         }
+      }
 
-        var asTypeSupervision = "[asTypeSupervision]";
-        var asTechnicalDocum = "[asTechnicalDocum]";        
+      var asTypeSupervision = "[asTypeSupervision]";
+      var asTechnicalDocum = "[asTechnicalDocum]";        
 
-        ShowElements(asTypeSupervision == "класифікаційний", "spanClassif");
-        ShowElements(asTypeSupervision != "класифікаційний", "spanSert");
-        ShowElements(asTechnicalDocum == "є (перелік може бути надано у додатку)", "spanShipYes");
-        ShowElements(asTechnicalDocum != "є (перелік може бути надано у додатку)", "spanShipNo");
+      ShowElements(asTypeSupervision == "класифікаційний", "spanClassif");
+      ShowElements(asTypeSupervision != "класифікаційний", "spanSert");
+      ShowElements(asTechnicalDocum == "є (перелік може бути надано у додатку)", "spanShipYes");
+      ShowElements(asTechnicalDocum != "є (перелік може бути надано у додатку)", "spanShipNo");
 
     </script>
-</body>
+  </body>
 </html>
