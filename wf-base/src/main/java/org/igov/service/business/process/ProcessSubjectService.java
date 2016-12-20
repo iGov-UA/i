@@ -726,6 +726,7 @@ public class ProcessSubjectService {
         mParamDocument.put("sID_Attachment", mParam.get("sID_Attachment"));
         mParamDocument.put("sContent", mParam.get("sContent"));
         mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
+        mParamDocument.put("sName_SubjectRole", mParam.get("sName_SubjectRole"));
         mParamDocument.put("sDateExecution", sFormatDateExecution);
         mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
         mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
@@ -743,7 +744,7 @@ public class ProcessSubjectService {
         //иначе проверяем на необходимость редактирования
         if (oProcessSubjectParent == null) {
             oProcessSubjectParent = processSubjectDao
-                    .setProcessSubject(snProcess_ID, mParam.get("sAutorResolution"),
+                    .setProcessSubject(snProcess_ID, mParam.get("sName_SubjectRole"),
                             new DateTime(oDateExecution), 0L, processSubjectStatus);
         }else{
             editProcessSubject(oProcessSubjectParent, mParamDocument);
