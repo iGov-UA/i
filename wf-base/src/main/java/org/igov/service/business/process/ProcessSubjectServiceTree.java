@@ -149,16 +149,7 @@ public class ProcessSubjectServiceTree {
         	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResultByUser);
         	
         }else {
-        	//resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResult);
-        	resultTree = Lists
-                     .newArrayList(Collections2.filter(getProcessSubjectTree(hierarchyProcessSubject, aChildResult), new Predicate<ProcessSubject>() {
-                         @Override
-                         public boolean apply(ProcessSubject processSubject) {
-                             // получить только отфильтрованный
-                             // список по snID_Process_Activiti
-                             return processSubject.getId().equals(snID_Process_Activiti);
-                         }
-                     }));
+        	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResult);
         }
         
         processSubjectResultTree.setaProcessSubject(resultTree);
