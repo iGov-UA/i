@@ -11,13 +11,13 @@
       result : ''
     };
 
-    var searchTaskByUserInput = function (value) {
+    var searchTaskByUserInput = function (value, tab) {
       var defer = $q.defer();
       var matches = value.match(/((\d+)-)?(\d+)/);
       if (matches) {
         tasks.getTasksByOrder(matches[3]).then(function (result) {
           if (messageMap.hasOwnProperty(result))
-            searchTaskByText(value, defer);
+            searchTaskByText(value, tab, defer);
           else {
             cleanPreviousTextSearch();
             var aIds = JSON.parse(result);
@@ -28,30 +28,30 @@
                 nCurrentIndex : 0
               });
             } else
-              searchTaskByText(value, defer);
+              searchTaskByText(value, tab, defer);
           }
         }).catch(function () {
-          searchTaskByText(value, defer);
+          searchTaskByText(value, tab, defer);
         })
       } else
-        searchTaskByText(value, defer);
+        searchTaskByText(value, tab, defer);
       return defer.promise;
     };
 
-    var searchTaskByText = function (value, defer) {
+    var searchTaskByText = function (value, tab, defer) {
       if (oPreviousTextSearch.value === value){
         oPreviousTextSearch.cursor++;
         if(oPreviousTextSearch.cursor == oPreviousTextSearch.aIds.length){
           oPreviousTextSearch.cursor = 0;
         }
-        searchSuccess(oPreviousTextSearch.aIds[oPreviousTextSearch.cursor]);
+        searchSuccess(oPreviousTextSearch.aIds[oPreviousTextSearch.cursor], tab, true);
         defer.resolve({
           aIDs : oPreviousTextSearch.aIds,
           nCurrentIndex : oPreviousTextSearch.cursor
         });
       } else {
         cleanPreviousTextSearch();
-        tasks.getTasksByText(value, 'selfAssigned')
+        tasks.getTasksByText(value, tab)
           .then(function (result) {
             if (messageMap.hasOwnProperty(result)) {
               Modal.inform.error()(messageMap[result]);
@@ -65,7 +65,7 @@
                   if(oPreviousTextSearch.cursor == aIds.length){
                     oPreviousTextSearch.cursor = 0;
                   }
-                  searchSuccess(aIds[oPreviousTextSearch.cursor]);
+                  searchSuccess(aIds[oPreviousTextSearch.cursor], tab, true);
                   defer.resolve({
                     aIDs : aIds,
                     nCurrentIndex : oPreviousTextSearch.cursor
@@ -77,7 +77,7 @@
                     aIds: aIds,
                     result : result
                   };
-                  searchSuccess(aIds[0]);
+                  searchSuccess(aIds[0], tab, true);
                   defer.resolve({
                     aIDs : aIds,
                     nCurrentIndex : oPreviousTextSearch.cursor
@@ -107,11 +107,17 @@
 
     var searchTypes = ['unassigned','selfAssigned'];
 
-    var searchSuccess = function (taskId) {
-      searchTaskInType(taskId, searchTypes[0]);
+    var searchSuccess = function (taskId, tab, onlyThisTab) {
+      if (tab) {
+        searchTaskInType(taskId, tab, onlyThisTab);
+      } else {
+        searchTaskInType(taskId, searchTypes[0], onlyThisTab);
+      }
     };
 
-    var searchTaskInType = function(taskId, type, page) {
+    var searchTaskInType = function(taskId, type, onlyThisType, page) {
+      if (!onlyThisType)
+        onlyThisType = false;
       if (!page)
         page = 0;
       tasks.list(type, {page: page}).then(function(response){
@@ -132,9 +138,9 @@
 
         if (!taskFound) {
           if ((response.start + response.size) < response.total)
-            searchTaskInType(taskId, type, page + 1);
+            searchTaskInType(taskId, type, onlyThisType, page + 1);
           else if (searchTypes.indexOf(type) < searchTypes.length - 1) {
-            searchTaskInType(taskId, searchTypes[searchTypes.indexOf(type) + 1], 0);
+            if (!onlyThisType) searchTaskInType(taskId, searchTypes[searchTypes.indexOf(type) + 1], onlyThisType, 0);
           }
         }
       })

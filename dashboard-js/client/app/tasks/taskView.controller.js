@@ -1225,6 +1225,8 @@
         $scope.trustAsHtml = function (string) {
           return $sce.trustAsHtml(string);
         };
+
+        $rootScope.$broadcast("update-search-counter");
       }
     ])
 })();
