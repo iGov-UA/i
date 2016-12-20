@@ -110,8 +110,9 @@ public class ProcessController {
                 //                sIDInValues.add(sID_.toLowerCase());
                 //                sIDInValues.add(sID_.toUpperCase());
 //                List<Process> processes = processDao.findAllByInValues("sID_", sIDInValues);
-                List<Process> processes = processDao.findAllBy("sID_", sID_.toUpperCase() );
-                processes.addAll(processDao.findAllBy("sID_", sID_.toLowerCase()));
+//                List<Process> processes = processDao.findAllBy("sID_", sID_.toUpperCase() );
+                List<Process> processes = new ArrayList();
+                processes.add(processDao.findByExpected("sID_", sID_.toUpperCase() ));
                 LOG.info("processes: " + processes.size());
                 result.addAll(processes);
             }
