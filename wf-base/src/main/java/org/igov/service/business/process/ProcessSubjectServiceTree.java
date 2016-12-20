@@ -134,9 +134,7 @@ public class ProcessSubjectServiceTree {
             
             
           aChildResult.addAll(children);
-            
-           
-            hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
+          hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
 
             LOG.info("subjToNodeMap " + subjToNodeMap);
             LOG.info("aChildResult " + aChildResult);
@@ -308,16 +306,17 @@ public class ProcessSubjectServiceTree {
     public Map<Long, List<ProcessSubject>> getChildrenTree(List<ProcessSubject> aChildLevel, List<Long> anID_ChildLevel,
             Map<Long, List<ProcessSubject>> subjToNodeMap, Set<Long> anID_PerentAll, Long deepLevelRequested,
             int deepLevelFact, List<ProcessSubject> result) {
+    	 List<ProcessSubject> aChildLevel_Result = new ArrayList<>();
         List<Long> anID_ChildLevel_Result = new ArrayList<>();
         if (deepLevelFact < deepLevelRequested.intValue()) {
             for (Long nID_ChildLevel : anID_ChildLevel) {
                 if (anID_PerentAll.contains(nID_ChildLevel)) {
                     // достаем детей детей
-                	aChildLevel = subjToNodeMap.get(nID_ChildLevel);
-                    if (aChildLevel != null && !aChildLevel.isEmpty()) {
+                	aChildLevel_Result = subjToNodeMap.get(nID_ChildLevel);
+                    if (aChildLevel_Result != null && !aChildLevel_Result.isEmpty()) {
                         // получаем только ид чилдренов
                         List<Long> anID_Child = Lists.newArrayList(
-                                Collections2.transform(aChildLevel, new Function<ProcessSubject, Long>() {
+                                Collections2.transform(aChildLevel_Result, new Function<ProcessSubject, Long>() {
                                     @Override
                                     public Long apply(ProcessSubject subjectGroup) {
                                         return subjectGroup.getId();
@@ -326,19 +325,19 @@ public class ProcessSubjectServiceTree {
                         //если anID_ChildLevel больше 1, то всех ид складываем в лист
                         anID_ChildLevel_Result.addAll(anID_Child);
                         // добавляем детей к общему списку детей
-                        getChildrenTreeRes.put(nID_ChildLevel, aChildLevel);
+                        result.addAll(aChildLevel_Result);
+                        getChildrenTreeRes.put(nID_ChildLevel, aChildLevel_Result);
                     }
                 }
             }
             
             deepLevelFact++;
             if (deepLevelFact < deepLevelRequested.intValue()) {
-                getChildrenTree(aChildLevel, anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
+                getChildrenTree(aChildLevel_Result, anID_ChildLevel_Result, subjToNodeMap, anID_PerentAll,
                         checkDeepLevel(deepLevelRequested), deepLevelFact, result);
             }
            
         }
-        result.addAll(aChildLevel);
         return getChildrenTreeRes;
     }
 
