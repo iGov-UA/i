@@ -18,7 +18,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/_test_autosign_printform_ECP.html]" type="invisible" default="_test_autosign_printform_ECP.html" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;bPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
+<!--        <activiti:formProperty id="PrintForm_1" name="File label;File title;bPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file"></activiti:formProperty> -->
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
 
 <!--        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -28,7 +28,8 @@
         </activiti:taskListener>-->
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask7" name="Повідомлення про вдалу попередню перевірку" activiti:delegateExpression="#{MailTaskWithAttachments}">
+<!--     <serviceTask id="servicetask7" name="Повідомлення про вдалу попередню перевірку" activiti:delegateExpression="#{MailTaskWithAttachments}"> -->
+     <serviceTask id="servicetask7" name="Повідомлення про вдалу попередню перевірку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -42,9 +43,9 @@
         <activiti:field name="text">
           <activiti:expression>почта</activiti:expression>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
-        </activiti:field>
+<!--        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field> -->
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask9" name="Service Task" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
