@@ -51,7 +51,6 @@
         });
       } else {
         cleanPreviousTextSearch();
-        debugger;
         tasks.getTasksByText(value, 'selfAssigned')
           .then(function (result) {
             if (messageMap.hasOwnProperty(result)) {
