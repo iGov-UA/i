@@ -1176,7 +1176,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
             @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
             HttpServletResponse httpResponse) throws IOException, CommonServiceException, EmailException {
-
+LOG.info("!!!!!!!!!!!!!!begin");
+LOG.info("dateAt= " + dateAt);
+LOG.info("dateTo= " + dateTo);
+LOG.info("sTaskEndDateAt= " + sTaskEndDateAt);
+LOG.info("sTaskEndDateTo= " + sTaskEndDateTo);
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
 //      'saFieldSummary': '' // поля для агрегатов
