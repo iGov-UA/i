@@ -373,6 +373,7 @@ public class SubjectMessageService {
                                         " subjectContactType: " +  subjectContact.getSubjectContactType().getsName_EN() +
                                         " subjectContactDate: " + subjectContact.getsDate() + " subjectContactValue: " + subjectContact.getsValue());
                         } else {
+                            
                             LOG.info("(testSyncMail without nID_Subject after calling method: subjectContact null)");
                         }
                     }
