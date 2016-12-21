@@ -360,17 +360,21 @@ public class SubjectMessageService {
                 if (sMail != null && !sMail.isEmpty()) {
                     subjectMessage.setMail(sMail);
                     SubjectContact subjectContact = null;
-                    
+                
                     if (nID_Subject != null) {
-                            subjectContact = syncMail(sMail, nID_Subject);
-                    }
-
-                    if (subjectContact != null) {
-                                LOG.info("(testSyncMail without nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
+                        
+                        Subject subject = subjectDao.findByExpected("sID", nID_Subject);
+                        subjectContact = createSubjectContact(sMail, subject, "Email");
+                        
+                        if (subjectContact != null) {
+                            subjectMessage.setoMail(subjectContact);
+                            LOG.info("(testSyncMail without nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                                         subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
                                         subjectContact.getsDate(), subjectContact.getsValue());
-                    } else {
-                        LOG.info("(testSyncMail without nID_Subject after calling method: subjectContact null)");
+                                        
+                        } else {
+                            LOG.info("(testSyncMail without nID_Subject after calling method: subjectContact null)");
+                        }
                     }
                 }
                 subjectMessage = subjectMessageDao.saveOrUpdate(subjectMessage);
@@ -580,7 +584,24 @@ public class SubjectMessageService {
         return res;
     }
 
+    private SubjectContact createSubjectContact(String sMail, Subject subject, String sSubjectContactType) {
+        
+        SubjectContact res = subjectContactDao.findContactsByCriteria(subject, sMail, sSubjectContactType);
+        
+        if (res == null){
+            SubjectContact contact = new SubjectContact();
+            contact.setSubject(subject);
+            contact.setSubjectContactType(subjectContactTypeDao.getEmailType());
+            contact.setsDate();
+            contact.setsValue(sMail);
+            res = subjectContactDao.saveOrUpdate(contact);
+        }
+        
+        return res;
+    }
+    
     private SubjectContact createSubjectContact(String sMail, Subject subject) {
+        
         SubjectContact contact = new SubjectContact();
         contact.setSubject(subject);
         contact.setSubjectContactType(subjectContactTypeDao.getEmailType());

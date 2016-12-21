@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 import org.igov.model.core.GenericEntityDao;
 
 import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * User: goodg_000
@@ -17,7 +19,18 @@ public class SubjectContactDaoImpl extends GenericEntityDao<Long, SubjectContact
     public SubjectContactDaoImpl() {
         super(SubjectContact.class);
     }
-
+    
+    @Override
+    public SubjectContact findContactsByCriteria(Subject subject, String sMail, String sSubjectContactType) {
+        Criteria criteria = createCriteria();
+        
+        criteria.add(Restrictions.eq("sValue", sMail));
+        criteria.add(Restrictions.eq("subject", subject));
+        criteria.add(Restrictions.eq("subjectContactType,sName_EN", sSubjectContactType));
+        
+        return (SubjectContact)criteria.uniqueResult();
+    }
+    
     @Override
     public List<SubjectContact> findContacts(Subject subject) {
         return findAllBy("subject", subject);
