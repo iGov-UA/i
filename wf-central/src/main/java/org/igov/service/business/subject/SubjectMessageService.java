@@ -364,9 +364,10 @@ public class SubjectMessageService {
                     if (nID_Subject != null) {
                         
                         Subject subject = subjectDao.getSubject(nID_Subject);
-                        subjectContact = createSubjectContact(sMail, subject, "Email");
+                        subjectContact = createMailSubjectContact(sMail, subject);
                         
                         if (subjectContact != null) {
+                            
                             subjectMessage.setoMail(subjectContact);
                             LOG.info("test SubjectContactMail: " +
                                         " Id: " +  subjectContact.getId() + " SubjectId: " + subjectContact.getSubject().getId() +
@@ -585,9 +586,9 @@ public class SubjectMessageService {
         return res;
     }
 
-    private SubjectContact createSubjectContact(String sMail, Subject subject, String sSubjectContactType) {
+    private SubjectContact createMailSubjectContact(String sMail, Subject subject) {
         
-        SubjectContact res = subjectContactDao.findContactsByCriteria(subject, sMail, sSubjectContactType);
+        SubjectContact res = subjectContactDao.findContactsByCriteria(subject, sMail);
         
         if (res == null){
             SubjectContact contact = new SubjectContact();
@@ -596,6 +597,15 @@ public class SubjectMessageService {
             contact.setsDate();
             contact.setsValue(sMail);
             res = subjectContactDao.saveOrUpdate(contact);
+        }else{
+            if(!res.getSubjectContactType().getsName_EN().equals("Email")){
+                SubjectContact contact = new SubjectContact();
+                contact.setSubject(subject);
+                contact.setSubjectContactType(subjectContactTypeDao.getEmailType());
+                contact.setsDate();
+                contact.setsValue(sMail); 
+                res = subjectContactDao.saveOrUpdate(contact);
+            }
         }
         
         return res;

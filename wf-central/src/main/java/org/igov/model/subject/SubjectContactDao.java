@@ -14,5 +14,5 @@ public interface SubjectContactDao extends EntityDao<Long, SubjectContact> {
 
     List<SubjectContact> findContacts(Subject subject);
     List<SubjectContact> findoMail(SubjectContact oMail);
-    SubjectContact findContactsByCriteria(Subject subject, String sMail, String sSubjectContactType);
+    SubjectContact findContactsByCriteria(Subject subject, String sMail);
 }

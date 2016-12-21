@@ -21,12 +21,11 @@ public class SubjectContactDaoImpl extends GenericEntityDao<Long, SubjectContact
     }
     
     @Override
-    public SubjectContact findContactsByCriteria(Subject subject, String sMail, String sSubjectContactType) {
+    public SubjectContact findContactsByCriteria(Subject subject, String sMail) {
         Criteria criteria = createCriteria();
         
         criteria.add(Restrictions.eq("sValue", sMail));
         criteria.add(Restrictions.eq("subject", subject));
-        criteria.add(Restrictions.eq("subjectContactType.sName_EN", sSubjectContactType));
         
         return (SubjectContact)criteria.uniqueResult();
     }
