@@ -1199,7 +1199,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     + "' not found. Wrong BP name.", Task.class);
         }
         Date dBeginDate = oActionTaskService.getBeginDate(dateAt);
+        LOG.info("dBeginDate: " + dBeginDate);
+        LOG.info("dateAt: " + dateAt);
         Date dEndDate = oActionTaskService.getEndDate(dateTo);
+        LOG.info("dEndDate: " + dEndDate);
+        LOG.info("dateAt: " + dateAt);
         String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
         //LOG.info("4444separator " + separator);
         //LOG.info("7777nASCI_Spliter " + nASCI_Spliter);
