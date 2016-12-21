@@ -1,19 +1,33 @@
 {
-    "motion": 
-            {
-                "ShowFieldsOnCondition_43": 
-                {"aField_ID": 
-                    ["sNameCompany", "sAddressCompany", "sInnCompany", "sChiefPib", "sOtherInformationCompany"],
-                    "asID_Field": 
-                            {"sCondit":"asRefEntity"},
-                    "sCondition": "[sCondit] == 'sEnumCompany'"
-                },
-                 "ShowFieldsOnCondition_44": 
-                {"aField_ID": 
-                    ["sPersonAdministrativeResponsibility", "sDateOfBirthResponsibility", "sPlaceOfLiveResponsibility", "sPlaceOfWorkResponsibility", "sPositionResponsibility", "sIdentityResponsibility", "sTaxNumberResponsibility", "sOtherInformationResponsibility"],
-                    "asID_Field": 
-                            {"sCondit":"asRefEntity"},
-                    "sCondition": "[sCondit] == 'sEnumIndividual'"
-                }
-            }
+  "motion": 
+    {
+    "ShowFieldsOnCondition_43": 
+        {"aField_ID":  ["sNameCompany", "sAddressCompany", "sInnCompany", "sChiefPib", "sOtherInformationCompany"],
+         "asID_Field": {"sCondit":"asRefEntity"},
+         "sCondition": "[sCondit] == 'sEnumCompany'"
+        },
+    "ShowFieldsOnCondition_44": 
+        {"aField_ID":   ["asRefEntity"],
+         "asID_Field": {"sField1":"asHowDecisionRemark","sField2":"asProtocolType"},
+         "sCondition": "[sField1] == 'sEnumDecisionRemarkYes'||[sField2]=='sEnumProtocolType_1'"
+        },
+    "ShowFieldsOnCondition_45": 
+        {"aField_ID":  ["sPersonAdministrativeResponsibility"],
+         "asID_Field": {"sField":"asProtocolType"},
+         "sCondition": "[sField]=='sEnumProtocolType_2'"
+        },
+    "ShowFieldsOnCondition_46": 
+        {"aField_ID": 
+            ["sDateOfBirthResponsibility", "sPlaceOfBirthResponsibility", "sPlaceOfLiveResponsibility", 
+            "sPlaceOfWorkResponsibility", "sPositionResponsibility", "sIdentityResponsibility", 
+            "sTaxNumberResponsibility", "sOtherInformationResponsibility"],
+         "asID_Field": {"sField1":"asProtocolType","sField2":"asRefEntity"},
+         "sCondition": "[sField1]=='sEnumProtocolType_2'||[sField1]=='sEnumProtocolType_2'&&[sField2]=='sEnumIndividual'"
+        },
+    "ShowFieldsOnCondition_47": 
+        {"aField_ID":  ["sPibIndividual"],
+         "asID_Field": {"sField1":"asProtocolType","sField2":"asRefEntity"},
+         "sCondition": "[sField1]=='sEnumProtocolType_1'||[sField1]=='sEnumProtocolType_2'&&[sField2]=='sEnumIndividual'"
+        }
+    }
 }

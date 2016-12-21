@@ -1,0 +1,38 @@
+{
+  "motion": 
+    {
+    "RequiredFieldsOnCondition_Person": 
+      {"aField_ID":
+        ["sPersonLastName","sPersonFirstName","sPersonMiddleName",
+         "sPersonAddress","sPersonPassport","sPersonINN"], 
+       "asID_Field": {"sCondit":"asApplicantType"},
+       "sCondition": "[sCondit] == 'sEnumAppPerson'"
+      },
+                      
+    "RequiredFieldsOnCondition_Legal": 
+      {"aField_ID": 	["sLegalForm","sLegalName","sLegalAddress","sLegalEDRPOU"], 
+       "asID_Field": 	{"sCondit":"asApplicantType"},
+       "sCondition": 	"[sCondit] == 'sEnumAppLegal'"
+      },
+    "RequiredFieldsOnCondition_ContrPers": 
+      {"aField_ID": 	["sGenPersonName"], 
+       "asID_Field": 	{"sCondit":"asGeneralContractor"},
+       "sCondition": 	"[sCondit] == 'sEnumGenPerson'"
+      },
+    "RequiredFieldsOnCondition_ContrLegal": 
+      {"aField_ID": 	["sGenLegalForm","sGenLegalName","sGenLegalINN"], 
+       "asID_Field": 	{"sCondit":"asGeneralContractor"},
+       "sCondition": 	"[sCondit] == 'sEnumGenLegal'"
+      },
+    "RequiredFieldsOnCondition_DecisionYes": 
+      {"aField_ID": 	["sID_NumberDABI"], 
+       "asID_Field": 	{"sCondit":"asDecision"},
+       "sCondition": 	"[sCondit] == 'sEnumDecisionOK'"
+      },  
+    "RequiredFieldsOnCondition_DecisionNo": 
+      {"aField_ID": 	["sRejectionReason"], 
+       "asID_Field": 	{"sCondit":"asDecision"},
+       "sCondition": 	"[sCondit] == 'sEnumDecisionReturn'"
+      }          
+    }
+}

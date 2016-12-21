@@ -1,0 +1,49 @@
+{"motion" : {
+  "RequiredFieldsOnCondition_8" : {"sNote":["ген.підрядник фіз.особа"],
+    "aField_ID":["sContractorPib","sContractorPassport","sContractorAddress","sContractorInn"],
+    "asID_Field":{"sCond":"sContractor"},
+    "sCondition":"([sCond]=='sEnumIndividual')"
+  },
+  "RequiredFieldsOnCondition_9" : {"sNote":["ген.підрядник юр.особа"],
+    "aField_ID":["sContractorOrganizationType","sContractorOrganizationName","sContractorOrganizationAddress",
+      "sContractorOrganizationInn","sContractorOrganizationPhone"],
+    "asID_Field":{"sCond":"sContractor"},
+    "sCondition":"([sCond]=='sEnumCompany')"
+  },
+  "RequiredFieldsOnCondition_10" : {"sNote":["право власності"],
+    "aField_ID":["sObjectOwnerNumber"],
+    "asID_Field":{"sCond":"asLandUsed"},
+    "sCondition":"([sCond]=='sEnumObjectOwner')"
+  },   
+  "RequiredFieldsOnCondition_11" : {"sNote":["договір суперфіція"],
+    "aField_ID":["sObjectOwnerSuperfic"],
+    "asID_Field":{"sCond":"asLandUsed"},
+    "sCondition":"([sCond]=='sEnumSuperfic')"
+  },
+  "RequiredFieldsOnCondition_11":{"sNote":["змінено підрядника"],
+    "aField_ID":["sDocLetter"],
+    "asID_Field":{"sCond1":"saReasonChange4"},
+    "sCondition":"([sCond1] == 'yes')"
+  },
+  "RequiredFieldsOnCondition_12":{"sNote":["право іншому замовникові/ змінено осіб авторського або технічного нагляду"],
+    "aField_ID":["sDocChangeMessage"],
+    "asID_Field":{"sCond1":"saReasonChange1","sCond2":"saReasonChange2","sCond3":"saReasonChange3"},
+    "sCondition":"[sCond1]=='yes' || [sCond2]=='yes' || [sCond3]=='yes'"
+  },
+  "RequiredFieldsOnCondition_13":{"sNote":["виправлення технічної помилки і підготовчі"],
+    "aField_ID":["sDocDeclarationPrepare"],
+    "asID_Field":{"sCond":"saReasonChange5","sCond1":"asTypeChange"},
+    "sCondition":"[sCond]=='yes' && [sCond1]=='sEnumPrepare'"
+  },
+  "RequiredFieldsOnCondition_14":{"sNote":["рішення негативне"],
+    "aField_ID":["sID_numberDABI"],
+    "asID_Field":{"sCond":"decide"},
+    "sCondition":"([sCond]=='accept')"
+  },
+  "RequiredFieldsOnCondition_15":{"sNote":["рішення позитивне"],
+    "aField_ID":["comment"],
+    "asID_Field":{"sCond":"decide"},
+    "sCondition":"([sCond]=='reject')"
+  } 
+}           
+}

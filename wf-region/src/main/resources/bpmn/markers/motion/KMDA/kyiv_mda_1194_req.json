@@ -1,0 +1,40 @@
+{"motion" : {
+  "RequiredFieldsOnCondition_1":{"sNote":["будівельні роботи"],
+    "aField_ID":["sDateRegistrationBuild","sDocDeclarationBuild"],
+    "asID_Field":{"sCond":"asTypeChange"},
+    "sCondition":"[sCond]=='sEnumBuild'"
+  },
+  "RequiredFieldsOnCondition_2":{"sNote":["підготовчі роботи"],
+    "aField_ID":["sDateRegistrationPrepare"],
+    "asID_Field":{"sCond":"asTypeChange"},
+    "sCondition":"[sCond]='sEnumPrepare'"
+  },
+  "RequiredFieldsOnCondition_3" : {"sNote":["виправлення технічної помилки і будівельні"],
+    "aField_ID":["sSupervisionPib","sSupervisionCertificate","sSupervisionPhone","sProjectDocExpertName","sProjectDocExpertInn",
+      "sProjectDocExpertPib","sProjectDocExpertCertificate","sArchitectPib","sNumberConditions","sNameOrganConditions",
+      "sDateConditions","sObjectTotalArea","sObjectHouseFloor","sObjectHouseIntegratedTotalArea","sObjectHouseNonLiveArea"],
+    "asID_Field":{"sCond":"saReasonChange5","sCond1":"asTypeChange"},
+    "sCondition":"([sCond]=='yes') && ([sCond1]=='sEnumBuild')"
+  },
+  "RequiredFieldsOnCondition_4" : {"sNote":["виправлення технічної помилки"],
+    "aField_ID":["sProjectOrganizationName","sProjectOrganizationInn","asProjectApprove","asLandUsed","sDocDeclaration","sDocZayava"],
+    "asID_Field":{"sCond":"saReasonChange5"},
+    "sCondition":"([sCond]=='yes')"
+  },
+  "RequiredFieldsOnCondition_5" : {"sNote":["виправлення технічної помилки і фіз.особа"],
+    "aField_ID":["sProjectPibApprove","sProjectPositionApprove","sProjectDocDateApprove"],
+    "asID_Field":{"sCond":"saReasonChange5","sCond1":"asProjectApprove"},
+    "sCondition":"([sCond]=='yes')&&([sCond1]=='sEnumIndividual')"
+  },
+  "RequiredFieldsOnCondition_6" : {"sNote":["виправлення технічної помилки і юр.особа"],
+    "aField_ID":["sProjectDocName","sProjectDocNumber","sProjectDocDate"],
+    "asID_Field":{"sCond":"saReasonChange5","sCond1":"asProjectApprove"},
+    "sCondition":"([sCond]=='yes')&&([sCond1]=='sEnumCompany')"
+  },
+  "RequiredFieldsOnCondition_7" : {"sNote":["виправлення технічної помилки  або змінено підрядника"],
+    "aField_ID":["sContractor"],
+    "asID_Field":{"sCond":"saReasonChange5","sCond1":"saReasonChange4"},
+    "sCondition":"([sCond]=='yes')||([sCond1]=='yes')"
+  } 
+}           
+}
