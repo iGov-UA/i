@@ -363,7 +363,7 @@ public class SubjectMessageService {
                 
                     if (nID_Subject != null) {
                         
-                        Subject subject = subjectDao.findByExpected("sID", nID_Subject);
+                        Subject subject = subjectDao.getSubject(nID_Subject);
                         subjectContact = createSubjectContact(sMail, subject, "Email");
                         
                         if (subjectContact != null) {
