@@ -368,10 +368,10 @@ public class SubjectMessageService {
                         
                         if (subjectContact != null) {
                             subjectMessage.setoMail(subjectContact);
-                            LOG.info("(testSyncMail without nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
-                                        subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
-                                        subjectContact.getsDate(), subjectContact.getsValue());
-                                        
+                            LOG.info("test SubjectContactMail: " +
+                                        " Id: " +  subjectContact.getId() + " SubjectId: " + subjectContact.getSubject().getId() +
+                                        " subjectContactType: " +  subjectContact.getSubjectContactType().getsName_EN() +
+                                        " subjectContactDate: " + subjectContact.getsDate() + " subjectContactValue: " + subjectContact.getsValue());
                         } else {
                             LOG.info("(testSyncMail without nID_Subject after calling method: subjectContact null)");
                         }
