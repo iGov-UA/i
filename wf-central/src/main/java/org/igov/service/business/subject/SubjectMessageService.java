@@ -368,17 +368,17 @@ public class SubjectMessageService {
                         
                         if (subjectContact != null) {
                             
-                            subjectMessage.setoMail(subjectContact);
-                            LOG.info("test SubjectContactMail: " +
-                                        " Id: " +  subjectContact.getId() + " SubjectId: " + subjectContact.getSubject().getId() +
-                                        " subjectContactType: " +  subjectContact.getSubjectContactType().getsName_EN() +
-                                        " subjectContactDate: " + subjectContact.getsDate() + " subjectContactValue: " + subjectContact.getsValue());
-                        } else {
-                            
-                            LOG.info("(testSyncMail without nID_Subject after calling method: subjectContact null)");
+                                subjectMessage.setoMail(subjectContact);
+                                LOG.info("test SubjectContactMail: " +
+                                            " Id: " +  subjectContact.getId() + " SubjectId: " + subjectContact.getSubject().getId() +
+                                            " subjectContactType: " +  subjectContact.getSubjectContactType().getsName_EN() +
+                                            " subjectContactDate: " + subjectContact.getsDate() + " subjectContactValue: " + subjectContact.getsValue());
+                            } else {
+
+                                LOG.info("(testSyncMail without nID_Subject after calling method: subjectContact null)");
+                            }
                         }
                     }
-                }
                 subjectMessage = subjectMessageDao.saveOrUpdate(subjectMessage);
                 messageFeedback.setoSubjectMessage(subjectMessage);
             }
@@ -603,6 +603,9 @@ public class SubjectMessageService {
             boolean isContainContact = false;
             
             for(SubjectContact oSubjectContact :aSubjectContact){
+                
+                LOG.info("oSubjectContact value:" + oSubjectContact.getsValue());
+                
                 if(oSubjectContact.getSubjectContactType().getsName_EN().equals("Email")){
                     isContainContact = true;
                 }
