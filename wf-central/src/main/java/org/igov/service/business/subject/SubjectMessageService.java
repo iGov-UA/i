@@ -588,27 +588,37 @@ public class SubjectMessageService {
 
     private SubjectContact createMailSubjectContact(String sMail, Subject subject) {
         
-        SubjectContact res = subjectContactDao.findContactsByCriteria(subject, sMail);
+        List<SubjectContact> aSubjectContact = subjectContactDao.findContactsByCriteria(subject, sMail);
+        SubjectContact result = null;
         
-        if (res == null){
+        if ((aSubjectContact == null)||(aSubjectContact.isEmpty())){
             SubjectContact contact = new SubjectContact();
             contact.setSubject(subject);
             contact.setSubjectContactType(subjectContactTypeDao.getEmailType());
             contact.setsDate();
             contact.setsValue(sMail);
-            res = subjectContactDao.saveOrUpdate(contact);
+            result = subjectContactDao.saveOrUpdate(contact);
         }else{
-            if(!res.getSubjectContactType().getsName_EN().equals("Email")){
+            
+            boolean isContainContact = false;
+            
+            for(SubjectContact oSubjectContact :aSubjectContact){
+                if(oSubjectContact.getSubjectContactType().getsName_EN().equals("Email")){
+                    isContainContact = true;
+                }
+            }
+            
+            if(!isContainContact){
                 SubjectContact contact = new SubjectContact();
                 contact.setSubject(subject);
                 contact.setSubjectContactType(subjectContactTypeDao.getEmailType());
                 contact.setsDate();
                 contact.setsValue(sMail); 
-                res = subjectContactDao.saveOrUpdate(contact);
+                result = subjectContactDao.saveOrUpdate(contact);
             }
         }
         
-        return res;
+        return result;
     }
     
     private SubjectContact createSubjectContact(String sMail, Subject subject) {
