@@ -3,7 +3,7 @@
   <process id="dpss_0135_post" name="Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП, з яким Вам буде зручніше взаємодіяти" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -150,8 +150,8 @@
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ (для юридичних осіб) або ідентифікаційний номер фізичної особи - підприємця; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="trusted_person" name="П.І.Б. керівника юридичної особи / фізичної особи - підприємця/уповноваженої особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора, який прийняв заяву" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapka220" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
@@ -160,13 +160,14 @@
         <activiti:formProperty id="document" name="Назва документу" type="invisible" default="дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum">
-          <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
-          <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
+          <activiti:value id="attr1_wait" name="Дозвіл (санітарний паспорт) або рішення про анулювання або про відмову готове до передачі в ЦНАП"></activiti:value>
+          <activiti:value id="attr2_finish" name="Відмова громадянину у видачі дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="Per3" name="Перевірте подані громадянином дані, заповніть всі необхідні поля (П.І.Б адміністратора, дату реєстрації, реєстраційний номер та рішення про надання послуги) - потім роздрукуйте форму заяви." type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file10" name="Дозвіл (або рішення) держпродспоживслужби" type="file"></activiti:formProperty>
+      <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]" type="invisible" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -354,16 +355,20 @@
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Дата реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Коментар ДПСС" type="textArea"  writable="false"></activiti:formProperty>
         <activiti:formProperty id="status2" name="Статус дозволу (санітарного паспорту)" type="enum">
           <activiti:value id="attr3_finish" name="Дозвіл (санітарний паспорт) або рішення про анулювання готове, запросити громадянина"></activiti:value>
           <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбою"></activiti:value>
+          <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4},${file5},${file6},${file7},${file8},${file9},${file10},${file11}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file10" name="Завантажте скановану копию дозволу (або рішення) держсанепідслужби" type="file" default=" "></activiti:formProperty>
-      </extensionElements>
+       </extensionElements>
     </userTask>
     <serviceTask id="servicetask11" name="Відправлено поштою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
