@@ -280,6 +280,8 @@ public class SubjectMessageService {
             Long nID_Rate, Long nID_Service, String sAnswer, Long nId,
             Long nID_Subject, String sID_Order) throws CommonServiceException{
         
+        LOG.info("sMail is:" + sMail);
+        
         SubjectMessageFeedback messageFeedback;
         SubjectMessage subjectMessage;
         if (nId == null) {
