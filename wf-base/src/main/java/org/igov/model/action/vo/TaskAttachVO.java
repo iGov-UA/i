@@ -1,24 +1,4 @@
-/*
-{
-"sID_StorageType": "Redis" //тип хранилища
-, "sKey": "jHG986-7gOO-ho&H07-Hdfgy4-554yws" //ключ контента
-, "sVersion": "2016-12-16" //строка-версия
-, "sDateTime": "2016-12-16 23:23:48.001" //строка-дата и время (загрузки)
-, "sFileNameExt": "passport.pdf" //строка названия и расширения файла
-, "sContentType": "html/text" //строка с типом контента (по стандартам)
-, "nBytes": 2345235 //Чисол байтов, которые занимает контент
-, "bSigned": true //наложено или не наложено ЭЦП
-, "aAttribute": [ //массив атрибутов
-   {
-      sID:"sVar1" //строка-ИД атрибута
-      , sValue:"value1" //строка значения атрибута
-   }
-   , {
-      sID:"nCount" //строка-ИД атрибута
-      , sValue:"12" //строка значения атрибута
-   }
-]
-} */
+
 package org.igov.model.action.vo;
 
 import java.util.List;
@@ -115,8 +95,5 @@ public class TaskAttachVO {
     public void setaAttribute(List<Map<String, Object>> aAttribute) {
         this.aAttribute = aAttribute;
     }
-    
-    
-    
     
 }
