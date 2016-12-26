@@ -69,7 +69,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
             LOG.info("Ukrdoc response getDocument:" + resp);
             JSONObject respJson = new JSONObject(resp);
             Object content = respJson.get("content");
-            Object actors = respJson.get("actors");
+            //Object actors = respJson.get("actors");
 
             if (content != null) {
 
@@ -77,7 +77,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sHead_Document_UkrDoc", name);
                 String text = (String) ((JSONObject) content).get("text");
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sDocument_Body_UkrDoc", text);
-                String actor = (String) ((JSONObject) actors).get("id");
+ /*               String actor = (String) ((JSONObject) actors).get("id");
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sDocument_Actor_UkrDoc", actor);
                 JSONArray ratifiers = (JSONArray) ((JSONObject) actors).get("ratifiers");
                 if (ratifiers != null && ratifiers.length() > 0) {
@@ -85,7 +85,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                     runtimeService.setVariable(execution.getProcessInstanceId(), "sDocument_Ratifier_UkrDoc", ratifier.get("id"));
                 } else {
                     runtimeService.setVariable(execution.getProcessInstanceId(), "sDocument_Ratifier_UkrDoc", "None");
-                }
+                }*/
                 try {
                     LOG.info("class: " + ((JSONObject) ((JSONObject) content).get("extensions")).get("files").getClass());
                     JSONArray files = (JSONArray) ((JSONObject) ((JSONObject) content).get("extensions")).get("files");
