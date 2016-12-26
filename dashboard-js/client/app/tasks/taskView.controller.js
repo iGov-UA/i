@@ -1028,7 +1028,19 @@
         });
 
         $scope.insertSeparator = function(sPropertyId){
-          return FieldAttributesService.insertSeparators(sPropertyId);
+          var oLine = FieldAttributesService.insertSeparators(sPropertyId);
+          var oItem = null;
+          if (oLine.bShow){
+            angular.forEach($scope.taskForm, function (item) {
+              if (item.id == oLine.sLinkedFieldID) oItem = item;
+            });
+            if(oItem){
+              oLine.bShow = oItem.value && $scope.isFormPropertyDisabled(oItem);
+            } else {
+              oLine.bShow = false;
+            }
+          }
+          return oLine;
         };
 
         $scope.isTableAttachment = function (item) {
