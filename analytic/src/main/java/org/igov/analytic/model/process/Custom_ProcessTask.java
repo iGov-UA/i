@@ -28,17 +28,17 @@ public class Custom_ProcessTask extends AbstractEntity {
     @Column
     private Integer nProc_def_id;
 
-    @JsonProperty(value = "nTask_def_key")
+    @JsonProperty(value = "sTask_def_key")
     @Column
-    private Integer nTask_def_key;
+    private String sTask_def_key;
 
     @JsonProperty(value = "nProc_inst_id")
     @Column
     private Integer nProc_inst_id;
 
-    @JsonProperty(value = "oExecution_id")
+    @JsonProperty(value = "nExecution_id")
     @Column
-    private Integer oExecution_id;
+    private Integer nExecution_id;
 
     @JsonProperty(value = "sName")
     @Column
@@ -75,9 +75,9 @@ public class Custom_ProcessTask extends AbstractEntity {
     @Column
     private String sDelete_reason;
 
-    @JsonProperty(value = "sPriority")
+    @JsonProperty(value = "nPriority")
     @Column
-    private String sPriority;
+    private Integer nPriority;
 
     @JsonProperty(value = "oDue_Date")
     @JsonSerialize(using = JsonDateSerializer.class)
@@ -114,12 +114,12 @@ public class Custom_ProcessTask extends AbstractEntity {
         this.nProc_def_id = nProc_def_id;
     }
 
-    public Integer getnTask_def_key() {
-        return nTask_def_key;
+    public String getsTask_def_key() {
+        return sTask_def_key;
     }
 
-    public void setnTask_def_key(Integer nTask_def_key) {
-        this.nTask_def_key = nTask_def_key;
+    public void setsTask_def_key(String sTask_def_key) {
+        this.sTask_def_key = sTask_def_key;
     }
 
     public Integer getnProc_inst_id() {
@@ -130,12 +130,20 @@ public class Custom_ProcessTask extends AbstractEntity {
         this.nProc_inst_id = nProc_inst_id;
     }
 
-    public Integer getoExecution_id() {
-        return oExecution_id;
+    public Integer getnExecution_id() {
+        return nExecution_id;
     }
 
-    public void setoExecution_id(Integer oExecution_id) {
-        this.oExecution_id = oExecution_id;
+    public void setnExecution_id(Integer nExecution_id) {
+        this.nExecution_id = nExecution_id;
+    }
+
+    public Integer getnPriority() {
+        return nPriority;
+    }
+
+    public void setnPriority(Integer nPriority) {
+        this.nPriority = nPriority;
     }
 
     public String getsName() {
@@ -202,13 +210,6 @@ public class Custom_ProcessTask extends AbstractEntity {
         this.sDelete_reason = sDelete_reason;
     }
 
-    public String getsPriority() {
-        return sPriority;
-    }
-
-    public void setsPriority(String sPriority) {
-        this.sPriority = sPriority;
-    }
 
     public DateTime getoDue_Date() {
         return oDue_Date;

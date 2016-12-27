@@ -18,17 +18,21 @@ public class Custom_Process extends AbstractEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private Process oProcess;
 
-    @JsonProperty(value = "nProcessDefinitionId")
+    @JsonProperty(value = "sProcessDefinitionId")
     @Column
-    private Integer nProcessDefinitionId;
+    private String sProcessDefinitionId;
+
+    @JsonProperty(value = "nProcInstId")
+    @Column
+    private Integer nProcInstId;
 
     @JsonProperty(value = "nExecutionId")
     @Column
     private Integer nExecutionId;
 
-    @JsonProperty(value = "nActionId")
+    @JsonProperty(value = "sActionId")
     @Column
-    private Integer nActionId;
+    private String sActionId;
 
     @JsonProperty(value = "nTaskId")
     @Column
@@ -66,12 +70,12 @@ public class Custom_Process extends AbstractEntity {
         this.oProcess = oProcess;
     }
 
-    public Integer getnProcessDefinitionId() {
-        return nProcessDefinitionId;
+    public String getsProcessDefinitionId() {
+        return sProcessDefinitionId;
     }
 
-    public void setnProcessDefinitionId(Integer nProcessDefinitionId) {
-        this.nProcessDefinitionId = nProcessDefinitionId;
+    public void setsProcessDefinitionId(String sProcessDefinitionId) {
+        this.sProcessDefinitionId = sProcessDefinitionId;
     }
 
     public Integer getnExecutionId() {
@@ -82,12 +86,12 @@ public class Custom_Process extends AbstractEntity {
         this.nExecutionId = nExecutionId;
     }
 
-    public Integer getnActionId() {
-        return nActionId;
+    public String getsActionId() {
+        return sActionId;
     }
 
-    public void setnActionId(Integer nActionId) {
-        this.nActionId = nActionId;
+    public void setsActionId(String sActionId) {
+        this.sActionId = sActionId;
     }
 
     public Integer getnTaskId() {
@@ -144,5 +148,13 @@ public class Custom_Process extends AbstractEntity {
 
     public void setnTenantId(Integer nTenantId) {
         this.nTenantId = nTenantId;
+    }
+
+    public Integer getnProcInstId() {
+        return nProcInstId;
+    }
+
+    public void setnProcInstId(Integer nProcInstId) {
+        this.nProcInstId = nProcInstId;
     }
 }
