@@ -138,7 +138,7 @@
         <activiti:formProperty id="email" name="Електронна пошта; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i75116857714"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="16.09"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
@@ -178,6 +178,10 @@
         <activiti:formProperty id="file10" name="Дозвіл (або рішення) держпродспоживслужби" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]" type="invisible" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asResultType" name="Обраний спосіб отримання результату" type="enum" writable="false">
+          <activiti:value id="sMyself" name="особисто в ЦНАП"></activiti:value>
+          <activiti:value id="sPost" name="Поштовим відправленням"></activiti:value>
+        </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -190,9 +194,6 @@
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow7" name="status == 'attr2_finish'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr2_finish'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow8" name="status == 'attr1_wait'" sourceRef="exclusivegateway1" targetRef="exclusivegateway5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask9" name="оплата пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -352,7 +353,7 @@
           <activiti:value id="sRekPrior" name="пріоритетний рекомендований лист"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Поштова адреса; куди направити листа з відповіддю" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="Номер транзакції платежу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="Номер транзакції платежу" type="string" default="${sID_Payment}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса об'єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_company" name="У давальному відмінку повне найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
@@ -507,20 +508,6 @@ if (typeMail === 'sRekPrior') {
 }
 execution.setVariable('sSum', sum);
 
-var delta='1';
-var unixdate= Math.round((new Date()).getTime());
-var unixdate=unixdate+86400*1000*delta;
-var new_src = new Date(unixdate);
-var d = new_src.getDate();
-if (d &lt; 10) d = "0"+d;
-var m = new_src.getMonth();
-var m = (+m + +1);
-if (m &lt; 10) m = "0"+m;
-var new_year = new_src.getFullYear();
-var new_hour = new_src.getHours();
-var new_minutes = new_src.getMinutes();
-var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
-execution.setVariable('sNotification_day', timer)
 
 var per4 = 'substance'
 var per5 = 'substance_2'
@@ -601,17 +588,10 @@ execution.setVariable('list_documents', res)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment == ''}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask7" targetRef="servicetask10"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow30" name="почтой" sourceRef="exclusivegateway5" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType == 'sPost'}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="flow32" name="оплачено" sourceRef="exclusivegateway4" targetRef="parallelgateway2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment != ''}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="servicetask3" targetRef="servicetask8"></sequenceFlow>
-    <sequenceFlow id="flow34" name="пешком" sourceRef="exclusivegateway5" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType == 'sMyself'}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="servicetask8" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="servicetask9" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask10" targetRef="usertask2"></sequenceFlow>
@@ -635,6 +615,34 @@ execution.setVariable('list_documents', res)</script>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow49" sourceRef="parallelgateway2" targetRef="servicetask10"></sequenceFlow>
     <sequenceFlow id="flow50" sourceRef="parallelgateway2" targetRef="usertask3"></sequenceFlow>
+    <scriptTask id="scripttask4" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var delta='1';
+var unixdate= Math.round((new Date()).getTime());
+var unixdate=unixdate+86400*1000*delta;
+var new_src = new Date(unixdate);
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
+var new_year = new_src.getFullYear();
+var new_hour = new_src.getHours();
+var new_minutes = new_src.getMinutes();
+var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
+execution.setVariable('sNotification_day', timer)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow51" sourceRef="scripttask4" targetRef="servicetask9"></sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="exclusivegateway1" targetRef="exclusivegateway7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr1_wait'}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow53" sourceRef="exclusivegateway7" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType==sMyself}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow54" sourceRef="exclusivegateway7" targetRef="scripttask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType==sPost}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dpss_0135_post">
     <bpmndi:BPMNPlane bpmnElement="dpss_0135_post" id="BPMNPlane_dpss_0135_post">
@@ -704,9 +712,6 @@ execution.setVariable('list_documents', res)</script>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="507.0" y="396.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="596.0" y="245.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
         <omgdc:Bounds height="40.0" width="40.0" x="923.0" y="455.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -718,6 +723,12 @@ execution.setVariable('list_documents', res)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="653.0" y="548.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="353.0" y="275.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
+        <omgdc:Bounds height="40.0" width="40.0" x="596.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="58.0" y="142.0"></omgdi:waypoint>
@@ -737,13 +748,6 @@ execution.setVariable('list_documents', res)</script>
         <omgdi:waypoint x="861.0" y="71.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="653.0" y="25.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="616.0" y="162.0"></omgdi:waypoint>
-        <omgdi:waypoint x="616.0" y="245.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="574.0" y="159.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -782,13 +786,6 @@ execution.setVariable('list_documents', res)</script>
         <omgdi:waypoint x="580.0" y="475.0"></omgdi:waypoint>
         <omgdi:waypoint x="651.0" y="475.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="596.0" y="265.0"></omgdi:waypoint>
-        <omgdi:waypoint x="580.0" y="301.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="36.0" x="528.0" y="251.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
         <omgdi:waypoint x="507.0" y="416.0"></omgdi:waypoint>
         <omgdi:waypoint x="444.0" y="416.0"></omgdi:waypoint>
@@ -801,13 +798,6 @@ execution.setVariable('list_documents', res)</script>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="321.0" y="142.0"></omgdi:waypoint>
         <omgdi:waypoint x="335.0" y="142.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="636.0" y="265.0"></omgdi:waypoint>
-        <omgdi:waypoint x="650.0" y="302.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="39.0" x="664.0" y="245.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="440.0" y="142.0"></omgdi:waypoint>
@@ -861,6 +851,24 @@ execution.setVariable('list_documents', res)</script>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="693.0" y="568.0"></omgdi:waypoint>
         <omgdi:waypoint x="720.0" y="568.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="458.0" y="302.0"></omgdi:waypoint>
+        <omgdi:waypoint x="475.0" y="301.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="616.0" y="162.0"></omgdi:waypoint>
+        <omgdi:waypoint x="616.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="636.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="697.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="268.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
+        <omgdi:waypoint x="596.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="404.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="275.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
