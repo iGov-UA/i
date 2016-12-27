@@ -26,7 +26,7 @@ public class Custom_ProcessTask extends AbstractEntity {
 
     @JsonProperty(value = "nProc_def_id")
     @Column
-    private Integer nProc_def_id;
+    private String nProc_def_id;
 
     @JsonProperty(value = "sTask_def_key")
     @Column
@@ -106,11 +106,11 @@ public class Custom_ProcessTask extends AbstractEntity {
         this.oProcessTask = oProcessTask;
     }
 
-    public Integer getnProc_def_id() {
+    public String getnProc_def_id() {
         return nProc_def_id;
     }
 
-    public void setnProc_def_id(Integer nProc_def_id) {
+    public void setnProc_def_id(String nProc_def_id) {
         this.nProc_def_id = nProc_def_id;
     }
 

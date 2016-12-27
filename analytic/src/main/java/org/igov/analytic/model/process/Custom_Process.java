@@ -18,49 +18,51 @@ public class Custom_Process extends AbstractEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private Process oProcess;
 
-    @JsonProperty(value = "sProcessDefinitionId")
-    @Column
-    private String sProcessDefinitionId;
 
     @JsonProperty(value = "nProcInstId")
     @Column
-    private Integer nProcInstId;
+    private Integer nProc_inst_id;
 
-    @JsonProperty(value = "nExecutionId")
+    @JsonProperty(value = "sBusiness_key")
     @Column
-    private Integer nExecutionId;
+    private String sBusiness_key;
 
-    @JsonProperty(value = "sActionId")
+    @JsonProperty(value = "sProc_def_id")
     @Column
-    private String sActionId;
+    private String sProc_def_id;
 
-    @JsonProperty(value = "nTaskId")
-    @Column
-    private Integer nTaskId;
-
-    @JsonProperty(value = "nCallProcInstId")
-    @Column
-    private Integer nCallProcInstId;
-
-    @JsonProperty(value = "sActionName")
-    @Column
-    private String sActionName;
-
-    @JsonProperty(value = "sActionType")
-    @Column
-    private String sActionType;
-
-    @JsonProperty(value = "sAssignee")
-    @Column
-    private String sAssignee;
 
     @JsonProperty(value = "nDuration")
     @Column
     private Long nDuration;
 
-    @JsonProperty(value = "nTenantId")
+    @JsonProperty(value = "sStart_user_id")
     @Column
-    private Integer nTenantId;
+    private String sStart_user_id;
+
+    @JsonProperty(value = "sStart_act_id")
+    @Column
+    private String sStart_act_id;
+
+    @JsonProperty(value = "sEnd_act_id")
+    @Column
+    private String sEnd_act_id;
+
+    @JsonProperty(value = "sSuper_process_instance_id")
+    @Column
+    private String sSuper_process_instance_id;
+
+    @JsonProperty(value = "sDelete_reason")
+    @Column
+    private String sDelete_reason;
+
+    @JsonProperty(value = "sTenant_id")
+    @Column
+    private String sTenant_id;
+
+    @JsonProperty(value = "sName")
+    @Column
+    private String sName;
 
     public Process getoProcess() {
         return oProcess;
@@ -70,68 +72,28 @@ public class Custom_Process extends AbstractEntity {
         this.oProcess = oProcess;
     }
 
-    public String getsProcessDefinitionId() {
-        return sProcessDefinitionId;
+    public Integer getnProc_inst_id() {
+        return nProc_inst_id;
     }
 
-    public void setsProcessDefinitionId(String sProcessDefinitionId) {
-        this.sProcessDefinitionId = sProcessDefinitionId;
+    public void setnProc_inst_id(Integer nProc_inst_id) {
+        this.nProc_inst_id = nProc_inst_id;
     }
 
-    public Integer getnExecutionId() {
-        return nExecutionId;
+    public String getsBusiness_key() {
+        return sBusiness_key;
     }
 
-    public void setnExecutionId(Integer nExecutionId) {
-        this.nExecutionId = nExecutionId;
+    public void setsBusiness_key(String sBusiness_key) {
+        this.sBusiness_key = sBusiness_key;
     }
 
-    public String getsActionId() {
-        return sActionId;
+    public String getsProc_def_id() {
+        return sProc_def_id;
     }
 
-    public void setsActionId(String sActionId) {
-        this.sActionId = sActionId;
-    }
-
-    public Integer getnTaskId() {
-        return nTaskId;
-    }
-
-    public void setnTaskId(Integer nTaskId) {
-        this.nTaskId = nTaskId;
-    }
-
-    public Integer getnCallProcInstId() {
-        return nCallProcInstId;
-    }
-
-    public void setnCallProcInstId(Integer nCallProcInstId) {
-        this.nCallProcInstId = nCallProcInstId;
-    }
-
-    public String getsActionName() {
-        return sActionName;
-    }
-
-    public void setsActionName(String sActionName) {
-        this.sActionName = sActionName;
-    }
-
-    public String getsActionType() {
-        return sActionType;
-    }
-
-    public void setsActionType(String sActionType) {
-        this.sActionType = sActionType;
-    }
-
-    public String getsAssignee() {
-        return sAssignee;
-    }
-
-    public void setsAssignee(String sAssignee) {
-        this.sAssignee = sAssignee;
+    public void setsProc_def_Id(String sProc_def_Id) {
+        this.sProc_def_id = sProc_def_Id;
     }
 
     public Long getnDuration() {
@@ -142,19 +104,59 @@ public class Custom_Process extends AbstractEntity {
         this.nDuration = nDuration;
     }
 
-    public Integer getnTenantId() {
-        return nTenantId;
+    public String getsStart_user_Id() {
+        return sStart_user_id;
     }
 
-    public void setnTenantId(Integer nTenantId) {
-        this.nTenantId = nTenantId;
+    public void setsStart_user_Id(String sStart_user_Id) {
+        this.sStart_user_id = sStart_user_Id;
     }
 
-    public Integer getnProcInstId() {
-        return nProcInstId;
+    public String getsStart_act_Id() {
+        return sStart_act_id;
     }
 
-    public void setnProcInstId(Integer nProcInstId) {
-        this.nProcInstId = nProcInstId;
+    public void setsStart_act_Id(String sStart_act_Id) {
+        this.sStart_act_id = sStart_act_Id;
+    }
+
+    public String getsEnd_act_Id() {
+        return sEnd_act_id;
+    }
+
+    public void setsEnd_act_Id(String sEnd_act_Id) {
+        this.sEnd_act_id = sEnd_act_Id;
+    }
+
+    public String getsSuper_process_instance_id() {
+        return sSuper_process_instance_id;
+    }
+
+    public void setsSuper_process_instance_id(String sSuper_process_instance_id) {
+        this.sSuper_process_instance_id = sSuper_process_instance_id;
+    }
+
+    public String getsDelete_reason() {
+        return sDelete_reason;
+    }
+
+    public void setsDelete_reason(String sDelete_reason) {
+        this.sDelete_reason = sDelete_reason;
+    }
+
+    public String getsTenant_id() {
+        return sTenant_id;
+    }
+
+    public void setsTenant_id(String sTenant_id) {
+        this.sTenant_id = sTenant_id;
+    }
+
+    public String getsName() {
+        return sName;
+    }
+
+    public void setsName(String sName) {
+        this.sName = sName;
     }
 }
