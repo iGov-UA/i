@@ -29,14 +29,20 @@
       title: 'Необроблені',
       type: tasks.filterTypes.unassigned,
       count: 0,
-      showCount: true,
+      showCount: false,
       tab: 'unassigned'
     }, {
       title: 'В роботі',
       type: tasks.filterTypes.selfAssigned,
       count: 0,
-      showCount: true,
+      showCount: false,
       tab: 'selfAssigned'
+    }, {
+      title: 'Документи',
+      type: tasks.filterTypes.documents,
+      count: 0,
+      showCount: false,
+      tab: 'documents'
     }, {
       title: 'Мій розклад',
       type: tasks.filterTypes.tickets,

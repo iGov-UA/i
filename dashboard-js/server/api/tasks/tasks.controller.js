@@ -123,6 +123,9 @@ exports.index = function (req, res) {
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
       query.taskAssignee = user.id;
+    } else if (req.query.filterType === 'documents') {
+      query.candidateOrAssigned = user.id;
+      query.size = 100;
     } else if (req.query.filterType === 'tickets') {
       path = 'action/flow/getFlowSlotTickets';
       query.sLogin = user.id;

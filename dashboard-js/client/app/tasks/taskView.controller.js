@@ -287,6 +287,11 @@
         $scope.taskData.aTable = [];
         $scope.usersHierarchyOpened = false;
 
+        // todo соеденить с isUnasigned
+        $scope.isDocument = function () {
+          return $state.params.type === 'documents';
+        };
+
         $scope.validateForm = function(form) {
           var bValid = true;
           var oValidationFormData = {};
@@ -312,7 +317,7 @@
         };
 
         var isItemFormPropertyDisabled = function (oItemFormProperty){
-          if (!$scope.selectedTask || !$scope.selectedTask.assignee || !oItemFormProperty
+          if (!$scope.selectedTask || (!$scope.selectedTask.assignee && !$scope.isDocument()) || !oItemFormProperty
             || !$scope.sSelectedTask || $scope.sSelectedTask === 'finished')
           return true;
 
@@ -1023,7 +1028,19 @@
         });
 
         $scope.insertSeparator = function(sPropertyId){
-          return FieldAttributesService.insertSeparators(sPropertyId);
+          var oLine = FieldAttributesService.insertSeparators(sPropertyId);
+          var oItem = null;
+          if (oLine.bShow){
+            angular.forEach($scope.taskForm, function (item) {
+              if (item.id == oLine.sLinkedFieldID) oItem = item;
+            });
+            if(oItem){
+              oLine.bShow = oItem.value && $scope.isFormPropertyDisabled(oItem);
+            } else {
+              oLine.bShow = false;
+            }
+          }
+          return oLine;
         };
 
         $scope.isTableAttachment = function (item) {
@@ -1213,18 +1230,22 @@
         $scope.openUsersHierarchy = function () {
           $scope.attachIsLoading = true;
           tasks.getProcessSubjectTree($scope.selectedTask.processInstanceId).then(function (res) {
-            // $scope.documentFullHierarchy = res;
-            // for tests
-            $scope.documentFullHierarchy = {};
-            $scope.documentFullHierarchy.aProcessSubject = [];
-            var firstChild = res.aProcessSubject[0];
-            $scope.documentFullHierarchy.aProcessSubject.push(firstChild);
-            // for tests
+            $scope.documentFullHierarchy = res;
             $scope.attachIsLoading = false;
-            eaTreeViewFactory.setItems($scope.documentFullHierarchy.aProcessSubject, $scope.$id);
+            eaTreeViewFactory.setItems($scope.documentFullHierarchy.aProcessSubjectTree, $scope.$id);
           });
 
           $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;
+        };
+
+        $scope.assignAndSubmitDocument = function () {
+          $scope.taskForm.isInProcess = true;
+
+          tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
+            .then(function (result) {
+              $scope.submitTask(form);
+            })
+            .catch(defaultErrorHandler);
         };
 
         $rootScope.$broadcast("update-search-counter");

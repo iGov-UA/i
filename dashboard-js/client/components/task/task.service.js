@@ -23,6 +23,7 @@ angular.module('dashboardJsApp')
       filterTypes: {
         selfAssigned: 'selfAssigned',
         unassigned: 'unassigned',
+        documents: 'documents',
         finished: 'finished',
         tickets: 'tickets',
         all: 'all'
