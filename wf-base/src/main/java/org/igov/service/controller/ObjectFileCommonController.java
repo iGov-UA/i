@@ -579,7 +579,7 @@ public class ObjectFileCommonController {
                 processInstanceId, sFilename,// file.getOriginalFilename()
                 description, file.getInputStream());
         if(oAttachment != null && sID_Field != null && !"".equals(sID_Field.trim())){
-            oRuntimeService.setVariable(processInstanceId, sID_Field, oAttachment.getId());
+            //oRuntimeService.setVariable(processInstanceId, sID_Field, oAttachment.getId());
             LOG.debug("setVariable: processInstanceId = {}, sID_Field = {}, attachmentId = {}", processInstanceId, sID_Field, oAttachment.getId());
         }
 
