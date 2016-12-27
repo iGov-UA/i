@@ -656,7 +656,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bIncludeStartForm.equals(Boolean.TRUE)) {
             response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
         }
+        
+        LOG.info("Attach is not triggered!");
+        
         if (bIncludeAttachments.equals(Boolean.TRUE)) {
+            LOG.info("Attach is triggered!");
             response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));
         }
         if (bIncludeMessages.equals(Boolean.TRUE)) {
@@ -1172,7 +1176,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
             @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
             HttpServletResponse httpResponse) throws IOException, CommonServiceException, EmailException {
-
+LOG.info("!!!!!!!!!!!!!!begin");
+LOG.info("1dateAt= " + dateAt);
+LOG.info("2dateTo= " + dateTo);
+LOG.info("3sTaskEndDateAt= " + sTaskEndDateAt);
+LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
 //      'saFieldSummary': '' // поля для агрегатов
@@ -1195,7 +1203,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     + "' not found. Wrong BP name.", Task.class);
         }
         Date dBeginDate = oActionTaskService.getBeginDate(dateAt);
+        LOG.info("dBeginDate: " + dBeginDate);
+        LOG.info("dateAt: " + dateAt);
         Date dEndDate = oActionTaskService.getEndDate(dateTo);
+        LOG.info("dEndDate: " + dEndDate);
+        LOG.info("dateAt: " + dateAt);
         String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
         //LOG.info("4444separator " + separator);
         //LOG.info("7777nASCI_Spliter " + nASCI_Spliter);

@@ -582,8 +582,11 @@ public class ActionEventController implements ControllerConstants {
             HttpServletResponse oHttpServletResponse) {
         LOG.info("{Enter into function}");
         DateTimeFormatter oDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        LOG.info("oDateFormat" + oDateFormat.toString());
         DateTime oDateAt = oDateFormat.parseDateTime(sDateAt);
+        LOG.info("oDateAt" + oDateAt.toString());
         DateTime oDateTo = oDateFormat.parseDateTime(sDateTo);
+        LOG.info("oDateTo" + oDateTo.toString());
         Charset charset = Charset.availableCharsets().getOrDefault(sCodepage, Charset.forName("windows-1251"));
         List<HistoryEvent_Service> aHistoryEvent_Service = new ArrayList<>();
 

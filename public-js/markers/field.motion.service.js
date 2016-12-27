@@ -202,4 +202,9 @@ function FieldMotionService(MarkersFactory) {
   function grepByPrefix(prefix) {
     return MarkersFactory.grepByPrefix('motion', prefix);
   }
+
+  this.reset = function () {
+    fieldId_entryTriggered = {};
+    aFieldIDs = [];
+  }
 }
