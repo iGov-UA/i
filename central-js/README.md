@@ -49,3 +49,4 @@ You should add these parameters to process.json file:<br>
 For test-alpha, test-beta:<br>
 Private key for tests is used, you should add only this parameter:<br>
 <li>"BANKID_ENABLE_CIPHER":"true"
+
