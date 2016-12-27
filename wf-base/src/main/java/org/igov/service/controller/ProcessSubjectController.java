@@ -1,7 +1,5 @@
 package org.igov.service.controller;
 
-import java.util.List;
-
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectResult;
 import org.igov.model.process.ProcessSubjectResultTree;
