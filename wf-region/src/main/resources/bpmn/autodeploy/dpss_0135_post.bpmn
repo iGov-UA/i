@@ -502,9 +502,9 @@
     <scriptTask id="scripttask1" name="Edit email, timer, post cost" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var typeMail = execution.getVariable('asTypeMail');
-var sum = 16.09;
+var sum = 16;
 if (typeMail === 'sRekPrior') {
-	sum =  36.45;
+	sum =  36;
 }
 execution.setVariable('sSum', sum);
 
@@ -638,10 +638,10 @@ execution.setVariable('sNotification_day', timer)
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow53" sourceRef="exclusivegateway7" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType==sMyself}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType=='sMyself'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow54" sourceRef="exclusivegateway7" targetRef="scripttask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType==sPost}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType=='sPost'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dpss_0135_post">
