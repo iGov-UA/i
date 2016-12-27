@@ -394,19 +394,9 @@
 								${substance_2}.<br />
 								</p>
 								<p>
-								Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис у ЦНАП.<br/> 
-								При собі треба мати:<br/> 
-								1. Документ, що посвідчує особу.<br/> 
-								2. Для уповоноваженої особи - довіренність.<br/>
-								3. Оригінали документів, що були завантажені при подачі заяви на сайті.<br/>
-								4. Підписану завірену печаткою заяву, яка знаходиться в прикріпленому файлі.
+								Оригінал дозвільного документу направлено Вам обраним способом доставки поштовою службою.
 								</p>
-								${sPhoneOrgan}<br />
-								<br />
-								<br />
-								${sWorkTime}<br />
-								${sAddress}<br />
-								<br />
+																<br />
 								[pattern/mail/_common_signature_start.html]
 								${sNameOrgan}<br />
 								[pattern/mail/_common_signature_end.html]
@@ -481,7 +471,7 @@
           <activiti:value id="sRekPrior" name="рекомендований лист з кур'єрською доставкою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
-       </extensionElements>
+      </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="servicetask10"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -491,10 +481,11 @@
       <script>var typeMail = execution.getVariable('asTypeMail');
 var sum = 16;
 if (typeMail === 'sRekPrior') {
-	execution.setVariable('sSum', '36');
+	execution.setVariable('sSum', '36.45');
 }
 if (typeMail != 'sRekPrior') {
-execution.setVariable('sSum', '16');
+execution.setVariable('sSum', '16.09');
+}
 
 
 var per4 = 'substance'
@@ -586,7 +577,7 @@ execution.setVariable('list_documents', res)</script>
     <sequenceFlow id="flow39" sourceRef="scripttask2" targetRef="servicetask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow40" sourceRef="exclusivegateway6" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment == ''}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment == ''} || ${asResultType=='sMyself'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="exclusivegateway6" targetRef="servicetask11">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment != ''}]]></conditionExpression>
@@ -683,7 +674,7 @@ execution.setVariable('sNotification_day', timer)
         <omgdc:Bounds height="91.0" width="105.0" x="970.0" y="365.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="720.0" y="541.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="770.0" y="541.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="1233.0" y="393.0"></omgdc:Bounds>
@@ -710,7 +701,7 @@ execution.setVariable('sNotification_day', timer)
         <omgdc:Bounds height="55.0" width="105.0" x="1104.0" y="481.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="653.0" y="548.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="682.0" y="548.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="55.0" width="105.0" x="353.0" y="275.0"></omgdc:Bounds>
@@ -778,7 +769,7 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="507.0" y="416.0"></omgdi:waypoint>
         <omgdi:waypoint x="444.0" y="416.0"></omgdi:waypoint>
         <omgdi:waypoint x="444.0" y="568.0"></omgdi:waypoint>
-        <omgdi:waypoint x="653.0" y="568.0"></omgdi:waypoint>
+        <omgdi:waypoint x="682.0" y="568.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="48.0" x="451.0" y="396.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -816,7 +807,7 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="1104.0" y="508.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="825.0" y="568.0"></omgdi:waypoint>
+        <omgdi:waypoint x="875.0" y="568.0"></omgdi:waypoint>
         <omgdi:waypoint x="1245.0" y="568.0"></omgdi:waypoint>
         <omgdi:waypoint x="1250.0" y="528.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
@@ -833,12 +824,12 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="923.0" y="475.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="673.0" y="548.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="548.0"></omgdi:waypoint>
         <omgdi:waypoint x="703.0" y="506.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
-        <omgdi:waypoint x="693.0" y="568.0"></omgdi:waypoint>
-        <omgdi:waypoint x="720.0" y="568.0"></omgdi:waypoint>
+        <omgdi:waypoint x="722.0" y="568.0"></omgdi:waypoint>
+        <omgdi:waypoint x="770.0" y="568.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
         <omgdi:waypoint x="458.0" y="302.0"></omgdi:waypoint>
