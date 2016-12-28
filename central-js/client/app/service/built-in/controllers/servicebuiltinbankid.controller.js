@@ -8,6 +8,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       'use strict';
 
+      FieldMotionService.reset();
+      iGovMarkers.reset();
+      iGovMarkers.init();
+
       var currentState = $state.$current;
       var isStyled = false;
 

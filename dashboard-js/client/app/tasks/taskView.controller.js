@@ -8,12 +8,12 @@
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
-      'processSubject', '$sce',
+      'processSubject', '$sce', 'eaTreeViewFactory',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
                 lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
-                processSubject, $sce) {
+                processSubject, $sce, eaTreeViewFactory) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -30,6 +30,10 @@
           }
           return null;
         }
+
+        FieldMotionService.reset();
+        iGovMarkers.reset();
+        iGovMarkers.init();
 
         var sLoginAsignee = "sLoginAsignee";
 
@@ -283,6 +287,11 @@
         $scope.taskData.aTable = [];
         $scope.usersHierarchyOpened = false;
 
+        // todo соеденить с isUnasigned
+        $scope.isDocument = function () {
+          return $state.params.type === 'documents';
+        };
+
         $scope.validateForm = function(form) {
           var bValid = true;
           var oValidationFormData = {};
@@ -308,7 +317,7 @@
         };
 
         var isItemFormPropertyDisabled = function (oItemFormProperty){
-          if (!$scope.selectedTask || !$scope.selectedTask.assignee || !oItemFormProperty
+          if (!$scope.selectedTask || (!$scope.selectedTask.assignee && !$scope.isDocument()) || !oItemFormProperty
             || !$scope.sSelectedTask || $scope.sSelectedTask === 'finished')
           return true;
 
@@ -1019,7 +1028,19 @@
         });
 
         $scope.insertSeparator = function(sPropertyId){
-          return FieldAttributesService.insertSeparators(sPropertyId);
+          var oLine = FieldAttributesService.insertSeparators(sPropertyId);
+          var oItem = null;
+          if (oLine.bShow){
+            angular.forEach($scope.taskForm, function (item) {
+              if (item.id == oLine.sLinkedFieldID) oItem = item;
+            });
+            if(oItem){
+              oLine.bShow = oItem.value && $scope.isFormPropertyDisabled(oItem);
+            } else {
+              oLine.bShow = false;
+            }
+          }
+          return oLine;
         };
 
         $scope.isTableAttachment = function (item) {
@@ -1208,20 +1229,26 @@
 
         $scope.openUsersHierarchy = function () {
           $scope.attachIsLoading = true;
-
-          tasks.getProcessSubject($scope.selectedTask.processInstanceId, 0).then(function (res) {
-            $scope.documentFullHierarchy = res.aProcessSubject;
+          tasks.getProcessSubjectTree($scope.selectedTask.processInstanceId).then(function (res) {
+            $scope.documentFullHierarchy = res;
             $scope.attachIsLoading = false;
+            eaTreeViewFactory.setItems($scope.documentFullHierarchy.aProcessSubjectTree, $scope.$id);
           });
 
           $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;
         };
 
-        // пропускать хтмл содержимое для предотвращения конфликтов при байдинге.
-        $scope.trustAsHtml = function (string) {
-          return $sce.trustAsHtml(string);
+        $scope.assignAndSubmitDocument = function () {
+          $scope.taskForm.isInProcess = true;
+
+          tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
+            .then(function (result) {
+              $scope.submitTask(form);
+            })
+            .catch(defaultErrorHandler);
         };
 
+        $rootScope.$broadcast("update-search-counter");
       }
     ])
 })();

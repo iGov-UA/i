@@ -2,6 +2,7 @@
 package org.igov.service.controller;
 
 import org.igov.model.subject.SubjectGroupAndUser;
+import org.igov.model.subject.SubjectGroupTree;
 import org.igov.service.business.subject.SubjectGroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,20 +51,41 @@ public class SubjectGroupController {
 	        + "}\n\n"
 	        + "\n```\n"
 	        )
-    @RequestMapping(value = "/getSubjectGroups", method = RequestMethod.GET)
-    @ResponseBody
-    public SubjectGroupAndUser getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
-    		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
-    		 @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind)
-            throws Exception  {
-    	SubjectGroupAndUser subjectGroupResult = null;
-    	try {
-    		subjectGroupResult = subjectGroupService.getCatalogSubjectGroups(sID_Group_Activiti,nDeepLevel,sFind);
-    		
-    	} catch (Exception e) {
-    		 LOG.error("FAIL: ", e);
-        }
+	@RequestMapping(value = "/getSubjectGroups", method = RequestMethod.GET)
+	@ResponseBody
+	public SubjectGroupAndUser getSubjectGroups(
+			@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
+			@ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
+			@ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (true-отоборажаем, false-нет, по умолчанию Y)", required = false) @RequestParam(value = "bIncludeRoot", required = false) Boolean bIncludeRoot,
+			@ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind)
+			throws Exception {
+		SubjectGroupAndUser subjectGroupResult = null;
+		try {
+			subjectGroupResult = subjectGroupService
+					.getCatalogSubjectGroups(sID_Group_Activiti, nDeepLevel, bIncludeRoot, sFind);
+
+		} catch (Exception e) {
+			LOG.error("FAIL: ", e);
+		}
 		return subjectGroupResult;
-    }
-    
+	}
+
+	@RequestMapping(value = "/getSubjectGroupTree", method = RequestMethod.GET)
+	@ResponseBody
+	public SubjectGroupTree getSubjectGroupTree(
+			@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
+			@ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
+			@ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (true-отоборажаем, false-нет, по умолчанию Y)", required = false) @RequestParam(value = "bIncludeRoot", required = false) Boolean bIncludeRoot,
+			@ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind)
+			throws Exception {
+		SubjectGroupTree subjectGroupResult = null;
+		try {
+			//            subjectGroupResult = subjectGroupService.getCatalogSubjectGroups(sID_Group_Activiti, nDeepLevel, bIncludeRoot, sFind);
+
+		} catch (Exception e) {
+			LOG.error("FAIL: ", e);
+		}
+		return subjectGroupResult;
+	}
+
 }

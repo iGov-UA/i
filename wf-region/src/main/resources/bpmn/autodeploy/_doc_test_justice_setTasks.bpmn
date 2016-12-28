@@ -30,7 +30,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
-     
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="asCreateOutcomingLetter" name="Поставьте галочку, якщо бажаєте перейти на інший крок процесу; ;sID_CheckboxTrue=sEnumCreateOutcomingLetter" type="enum" default="sEnumNotCreateOutcomingLetter">
           <activiti:value id="sEnumCreateOutcomingLetter" name="сформувати"></activiti:value>
@@ -64,8 +63,11 @@
           <activiti:field name="asTypeResolution">
             <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
           </activiti:field>
-           <activiti:field name="sTextResolution">
+          <activiti:field name="sTextResolution">
             <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sName_SubjectRole">
+            <activiti:expression><![CDATA[${sName_SubjectRole}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
