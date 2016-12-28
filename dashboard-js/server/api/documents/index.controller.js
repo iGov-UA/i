@@ -83,3 +83,13 @@ exports.setDocument = function (req, res) {
     res.send(result);
   })
 };
+
+exports.getProcessSubjectTree = function (req, res) {
+  activiti.get({
+    path: '/subject/process/getProcessSubjectTree',
+    query: req.query
+  }, function (error, statusCode, result) {
+    res.statusCode = statusCode;
+    res.send(result);
+  })
+};

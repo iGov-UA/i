@@ -25,6 +25,7 @@ angular.module('iGovMarkers').service('ValidationService', ['moment', 'amMoment'
 
 function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory) {
 
+  MarkersFactory.init();
   this.markers = MarkersFactory.getMarkers();
 
   var self = this;

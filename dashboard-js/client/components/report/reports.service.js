@@ -21,7 +21,17 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
   function getExportUrl(dataArray) {
     var exportUrl = './api/reports/export?';
     for (var key in dataArray) {
-      exportUrl = exportUrl + key + '=' + dataArray[key] + '&';
+      if (key === 'sDateAt' || key === 'sDateTo'){
+        var sd = dataArray[key] + '';
+        if (sd.search(new RegExp(/\d\d.\d\d.\d\d\d\d/)) == 0) {
+          var s = sd.substr(6, 4) + '-' + sd.substr(3, 2) + '-' + sd.substr(0, 2);
+          exportUrl = exportUrl + key + '=' + s + '&';
+        } else {
+          exportUrl = exportUrl + key + '=' + dataArray[key] + '&';
+        }
+      } else {
+        exportUrl = exportUrl + key + '=' + dataArray[key] + '&';
+      }
     }
     return exportUrl;
   }
