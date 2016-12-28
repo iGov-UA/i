@@ -64,6 +64,9 @@ public class ProcessSubjectTreeService {
 
         List<ProcessSubject> aChildResult = new ArrayList<>();
         List<ProcessSubjectTree> processSubjectRelations = new ArrayList<>(baseEntityDao.findAll(ProcessSubjectTree.class));
+        
+        ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
+        if(processSubjectRelations!=null&& !processSubjectRelations.isEmpty()) {
         List<ProcessSubjectParentNode> parentProcessSubjects = new ArrayList<>();
         Map<Long, List<ProcessSubject>> subjToNodeMap = new HashMap<>();
         Map<ProcessSubject, List<ProcessSubject>> parentChildren = new HashMap<>();
@@ -143,7 +146,7 @@ public class ProcessSubjectTreeService {
 
         List<ProcessSubject> aChildResultByUser = filtrChildResultByUser(sFind, aChildResult);
 
-        ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
+        
         List<ProcessSubject> resultTree = new ArrayList<>();
         if (sFind != null && !sFind.isEmpty()) {
         	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResultByUser);
@@ -159,6 +162,7 @@ public class ProcessSubjectTreeService {
 				processSubjectResultTree.setaProcessSubjectTree(result);
 			}
 		}
+        }
         return processSubjectResultTree;
 
     }
