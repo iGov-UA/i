@@ -317,13 +317,9 @@ var cloneDocumentStepSubject = documentStepService.cloneDocumentStepSubject(snID
 execution.setVariable('cloneDocumentStepSubject', cloneDocumentStepSubject)
 java.lang.System.out.println("HELLO");</script>
     </scriptTask>
-    <scriptTask id="scripttask3" name="превращение даты во что-то нормальное" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>
-      execution.setVariable("sDateRegistration", execution.getVariable("sDateRegistration").format("yyyy-MM-dd"))
-      execution.setVariable("sDateDoc", execution.getVariable("sDateDoc").format("yyyy-MM-dd"))
-      execution.setVariable("sDateBegin", execution.getVariable("sDateBegin").format("yyyy-MM-dd"))
-      execution.setVariable("sDateEnd", execution.getVariable("sDateEnd").format("yyyy-MM-dd"))
-      execution.setVariable("sDateExecution", execution.getVariable("sDateExecution").format("yyyy-MM-dd"))
+    <scriptTask id="scripttask3" name="превращение даты" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>execution.setVariable("sDateEnd", execution.getVariable("sDateEnd").format("yyyy-MM-dd"))
+
       </script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
