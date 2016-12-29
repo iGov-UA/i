@@ -10,7 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.activiti.engine.HistoryService;
-import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.igov.analytic.model.access.AccessGroup;
 import org.igov.analytic.model.access.AccessUser;
@@ -94,19 +93,9 @@ public class ProcessController {
     public String duplicate() {
        StringBuilder stringBuilder = new StringBuilder();
         List<HistoricProcessInstance> processInstances = historyService.createHistoricProcessInstanceQuery().list();
-        List<HistoricActivityInstance> activityInstances = historyService.createHistoricActivityInstanceQuery().list();
-        List<HistoricProcessInstance> nativeProcessInstances = historyService.createNativeHistoricProcessInstanceQuery().list();
 
         for(HistoricProcessInstance instance: processInstances) {
             stringBuilder.append(instance);
-        }
-
-        for(HistoricActivityInstance instance: activityInstances) {
-            stringBuilder.append(instance);
-        }
-
-        for(HistoricProcessInstance historicProcessInstance: nativeProcessInstances) {
-            stringBuilder.append(historicProcessInstance);
         }
 
         return "historyService.createHistoricProcessInstanceQuery().list();" + stringBuilder.toString();
