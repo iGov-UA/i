@@ -828,7 +828,7 @@ public class ObjectFileCommonController {
             Task task = tasks.iterator().next();
             processInstanceId = task.getProcessInstanceId();
             assignee = task.getAssignee() != null ? task.getAssignee()
-                    : "kermit";
+                    : "kermit"; 
             LOG.debug("processInstanceId:{}, taskId:{}, assignee:{} ", processInstanceId, taskId, assignee);
         } else {
             LOG.error("There is no tasks at all!");
