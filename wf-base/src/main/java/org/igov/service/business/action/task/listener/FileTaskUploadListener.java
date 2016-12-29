@@ -43,6 +43,7 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
         // получить группу бп
         Set<IdentityLink> identityLink = oTask.getCandidates();
         // получить User группы
+	LOG.info("Find group: " + identityLink.iterator().next().getGroupId());
         List<User> aUser = oExecution.getEngineServices().getIdentityService()
                 .createUserQuery()
                 .memberOfGroup(identityLink.iterator().next().getGroupId())
