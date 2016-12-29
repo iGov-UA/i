@@ -541,8 +541,8 @@ public class ObjectFileCommonController {
         Attachment oAttachment = taskService.createAttachment(file.getContentType() + ";" + oActionTaskService.getFileExtention(file), taskId,
                 processInstanceId, sFilename,// file.getOriginalFilename()
                 description, file.getInputStream());
-        if (oAttachment != null && sID_Field != null && !"".equals(sID_Field.trim())) {
-            oRuntimeService.setVariable(processInstanceId, sID_Field, oAttachment.getId());
+        if(oAttachment != null && sID_Field != null && !"".equals(sID_Field.trim())){
+            //oRuntimeService.setVariable(processInstanceId, sID_Field, oAttachment.getId());
             LOG.debug("setVariable: processInstanceId = {}, sID_Field = {}, attachmentId = {}", processInstanceId, sID_Field, oAttachment.getId());
         }
 
@@ -828,7 +828,7 @@ public class ObjectFileCommonController {
             Task task = tasks.iterator().next();
             processInstanceId = task.getProcessInstanceId();
             assignee = task.getAssignee() != null ? task.getAssignee()
-                    : "kermit"; 
+                    : "kermit";
             LOG.debug("processInstanceId:{}, taskId:{}, assignee:{} ", processInstanceId, taskId, assignee);
         } else {
             LOG.error("There is no tasks at all!");

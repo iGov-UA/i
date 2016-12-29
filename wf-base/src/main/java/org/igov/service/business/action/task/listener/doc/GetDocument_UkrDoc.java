@@ -77,7 +77,8 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sHead_Document_UkrDoc", name);
                 String text = (String) ((JSONObject) content).get("text");
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sDocument_Body_UkrDoc", text);
-                String actor = (String) ((JSONObject) actors).get("id");
+                Object auhtor = ((JSONObject) actors).get("author");
+                String actor = (String) ((JSONObject) auhtor).get("id");
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sDocument_Actor_UkrDoc", actor);
                 JSONArray ratifiers = (JSONArray) ((JSONObject) actors).get("ratifiers");
                 if (ratifiers != null && ratifiers.length() > 0) {

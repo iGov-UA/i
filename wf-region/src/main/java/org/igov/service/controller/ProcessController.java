@@ -9,43 +9,32 @@ import com.google.common.base.Optional;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
-
 import org.igov.analytic.model.access.AccessGroup;
 import org.igov.analytic.model.access.AccessUser;
-import org.igov.model.action.task.core.entity.ProcDefinitionI;
+import org.igov.analytic.model.attribute.*;
+import org.igov.analytic.model.process.Process;
+import org.igov.analytic.model.process.ProcessDao;
+import org.igov.analytic.model.process.ProcessTask;
+import org.igov.analytic.model.source.SourceDB;
+import org.igov.analytic.model.source.SourceDBDao;
+import org.igov.io.db.kv.analytic.IFileStorage;
+import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
+import org.igov.service.ArchiveServiceImpl;
+import org.igov.util.VariableMultipartFile;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.analytic.model.process.Process;
-import org.igov.analytic.model.process.ProcessTask;
-import org.igov.analytic.model.attribute.Attribute;
-import org.igov.analytic.model.attribute.AttributeDao;
-import org.igov.analytic.model.attribute.AttributeType;
-import org.igov.analytic.model.attribute.AttributeTypeDao;
-import org.igov.analytic.model.attribute.Attribute_File;
-import org.igov.analytic.model.attribute.Attribute_FileDao;
-import org.igov.analytic.model.attribute.Attribute_StringShort;
-import org.igov.analytic.model.process.ProcessDao;
-import org.igov.analytic.model.source.SourceDB;
-import org.igov.analytic.model.source.SourceDBDao;
-import org.igov.io.db.kv.analytic.IFileStorage;
-import org.igov.service.ArchiveServiceImpl;
-import org.igov.util.VariableMultipartFile;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author olga
@@ -101,7 +90,7 @@ public class ProcessController {
             @ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_") String sID_,
             @ApiParam(value = "ид источника", required = false) @RequestParam(value = "nID_Source", required = false) Long nID_Source) {
         LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-        List<Process> result = new ArrayList();
+        List<Process> result = new ArrayList<>();
         try {
             LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!string sID_: " + sID_.trim());
             sID_ = sID_.trim().toUpperCase();

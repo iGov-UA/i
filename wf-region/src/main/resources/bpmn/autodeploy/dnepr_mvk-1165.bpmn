@@ -25,6 +25,7 @@
           <activiti:value id="sChech" name="Чечелівський"></activiti:value>
           <activiti:value id="sShev" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sWarning11" name="УВАГА" type="label" default="Поштове відправлення діє тільки для Соборного, Чечелівського і Шевченківського районів. Крім того у Шевченківському і Чечелівському довідка видається не на всі будинки. Перелік будинків де можна отримати довідку зазначено нижче."></activiti:formProperty>
         <activiti:formProperty id="asDistrict1" name="Оберіть район до якого належить Ваш будинок" type="enum" default="sNo1" required="true">
           <activiti:value id="sNo1" name=" "></activiti:value>
           <activiti:value id="sSobor" name="Соборний"></activiti:value>
@@ -73,7 +74,7 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i75116857714"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="15.78"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="16.09"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Отримання довідки про склад сім'ї"></activiti:formProperty>
@@ -83,9 +84,9 @@
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var typeMail = execution.getVariable('asTypeMail');
-var sum = 15.78;
+var sum = 16.09;
 if (typeMail === 'sRekPrior') {
-	sum =  36.14;
+	sum =  36.45;
 }
 execution.setVariable('sSum', sum);
 var distr = '';
@@ -425,10 +426,10 @@ execution.setVariable('sNotification_day', timer)
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow35" sourceRef="servicetask8" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="servicetask8" targetRef="scripttask2"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow40" sourceRef="parallelgateway1" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask2" name="Укрпошта" activiti:candidateGroups="UkrPost_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Укрпошта" activiti:candidateGroups="UkrPost_prav">
       <extensionElements>
         <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -448,12 +449,22 @@ execution.setVariable('sNotification_day', timer)
           <activiti:value id="sRekPrior" name="рекомендований лист з кур'єрською доставкою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDistrict1" name="Де отримати документи для поштового відправлення" type="enum" writable="false">
+          <activiti:value id="sNo1" name=" "></activiti:value>
+          <activiti:value id="sSobor" name="Единий абонентський відділ-1, проспект Героїв 20 Б"></activiti:value>
+          <activiti:value id="sChech" name="Единий абонентський відділ-2, проспект Б. Хмельницкого 14"></activiti:value>
+          <activiti:value id="sShev" name="Единий абонентський відділ-2, проспект Б. Хмельницкого 14"></activiti:value>
+        </activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow41" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
-    <sequenceFlow id="flow42" sourceRef="servicetask5" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="scripttask2" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="usertask2" targetRef="parallelgateway2"></sequenceFlow>
+    <scriptTask id="scripttask2" name="Script Task2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var x = 1;</script>
+    </scriptTask>
+    <sequenceFlow id="flow44" sourceRef="servicetask5" targetRef="scripttask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk-1165">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk-1165" id="BPMNPlane_dnepr_mvk-1165">
@@ -488,16 +499,16 @@ execution.setVariable('sNotification_day', timer)
         <omgdc:Bounds height="55.0" width="105.0" x="388.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="460.0" y="370.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="475.0" y="298.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="423.0" y="530.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="421.0" y="530.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="420.0" y="305.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="314.0" y="370.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="300.0" y="298.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="420.0" y="162.0"></omgdc:Bounds>
@@ -506,7 +517,10 @@ execution.setVariable('sNotification_day', timer)
         <omgdc:Bounds height="55.0" width="105.0" x="530.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="420.0" y="445.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="418.0" y="450.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="386.0" y="381.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="51.0" y="107.0"></omgdi:waypoint>
@@ -526,7 +540,7 @@ execution.setVariable('sNotification_day', timer)
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
         <omgdi:waypoint x="210.0" y="425.0"></omgdi:waypoint>
         <omgdi:waypoint x="210.0" y="547.0"></omgdi:waypoint>
-        <omgdi:waypoint x="423.0" y="547.0"></omgdi:waypoint>
+        <omgdi:waypoint x="421.0" y="547.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="230.0" y="107.0"></omgdi:waypoint>
@@ -566,26 +580,26 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="440.0" y="305.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="440.0" y="345.0"></omgdi:waypoint>
-        <omgdi:waypoint x="512.0" y="370.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="325.0"></omgdi:waypoint>
+        <omgdi:waypoint x="475.0" y="325.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="33.0" x="475.0" y="357.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="33.0" x="502.0" y="286.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="440.0" y="485.0"></omgdi:waypoint>
-        <omgdi:waypoint x="440.0" y="530.0"></omgdi:waypoint>
+        <omgdi:waypoint x="438.0" y="490.0"></omgdi:waypoint>
+        <omgdi:waypoint x="438.0" y="530.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="440.0" y="345.0"></omgdi:waypoint>
-        <omgdi:waypoint x="366.0" y="370.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="325.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="325.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="42.0" x="359.0" y="357.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="42.0" x="333.0" y="286.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="366.0" y="425.0"></omgdi:waypoint>
-        <omgdi:waypoint x="440.0" y="445.0"></omgdi:waypoint>
+        <omgdi:waypoint x="352.0" y="353.0"></omgdi:waypoint>
+        <omgdi:waypoint x="438.0" y="381.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="440.0" y="202.0"></omgdi:waypoint>
@@ -596,13 +610,17 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="582.0" y="230.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="512.0" y="425.0"></omgdi:waypoint>
-        <omgdi:waypoint x="440.0" y="445.0"></omgdi:waypoint>
+        <omgdi:waypoint x="438.0" y="436.0"></omgdi:waypoint>
+        <omgdi:waypoint x="438.0" y="450.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="582.0" y="285.0"></omgdi:waypoint>
-        <omgdi:waypoint x="582.0" y="464.0"></omgdi:waypoint>
-        <omgdi:waypoint x="460.0" y="465.0"></omgdi:waypoint>
+        <omgdi:waypoint x="582.0" y="469.0"></omgdi:waypoint>
+        <omgdi:waypoint x="458.0" y="470.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="527.0" y="353.0"></omgdi:waypoint>
+        <omgdi:waypoint x="438.0" y="381.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

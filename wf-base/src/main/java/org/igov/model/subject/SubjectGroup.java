@@ -5,7 +5,10 @@
  */
 package org.igov.model.subject;
 
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.Transient;
 
 import org.igov.model.core.NamedEntity;
 
@@ -31,7 +34,31 @@ public class SubjectGroup extends NamedEntity{
     @Column
     private String sChain;
     
+    @JsonProperty(value = "aUser")
+    @Transient
+    private List<SubjectUser> aUser;
     
+    @JsonProperty(value = "aSubjectGroupChilds")
+    @Transient
+    private List<SubjectGroup> aSubjectGroup;
+    
+    
+	public List<SubjectUser> getaUser() {
+		return aUser;
+	}
+
+	public void setaUser(List<SubjectUser> aUser) {
+		this.aUser = aUser;
+	}
+
+	public List<SubjectGroup> getaSubjectGroup() {
+		return aSubjectGroup;
+	}
+
+	public void setaSubjectGroup(List<SubjectGroup> aSubjectGroup) {
+		this.aSubjectGroup = aSubjectGroup;
+	}
+
 	public String getsID_Group_Activiti() {
         return sID_Group_Activiti;
     }

@@ -109,7 +109,7 @@
       };
     };
 
-    var searchTypes = ['unassigned','selfAssigned', 'documents'];
+    var searchTypes = ['unassigned','selfAssigned'];
 
     var searchSuccess = function (taskId, tab, onlyThisTab) {
       if (tab) {
