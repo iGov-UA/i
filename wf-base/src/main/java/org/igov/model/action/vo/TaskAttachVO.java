@@ -1,4 +1,3 @@
-
 package org.igov.model.action.vo;
 
 import java.util.List;
