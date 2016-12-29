@@ -1027,10 +1027,46 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow70" sourceRef="servicetask21" targetRef="endevent5"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
-        <timeDuration>PT1H</timeDuration>
+        <timeDuration>PT72H</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
-    <serviceTask id="servicetask24" name="Пошта нема оплати" activiti:delegateExpression="{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask24" name="Пошта нема оплати" activiti:delegateExpression="{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Поштове відправлення не оплачено. ${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;Не оплачено доставку поштою по вашому зверненню щодо ${sPosluga_nameZV}. &lt;br /&gt;
+В зв'язку з відсутністю оплатати протягом 3х днів, відповідь поштою надано не буде.&lt;/p&gt;
+Отримати відповідь можна у ЦНАПі. Коли буде готова відповідь Вас буде додатково сповіщено СМС та електронною поштою.&lt;br /&gt;
+&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vidpovid' nadislano lystom [sID_Order]. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <scriptTask id="scripttask3" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var x =' '</script>
     </scriptTask>
