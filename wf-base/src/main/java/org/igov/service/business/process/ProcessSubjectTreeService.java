@@ -34,6 +34,7 @@ import com.google.common.collect.Lists;
  *
  * @author inna
  */
+@Component("processSubjectTreeService")
 @Service
 public class ProcessSubjectTreeService {
 
