@@ -9,6 +9,8 @@ import com.google.common.base.Optional;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.igov.analytic.model.access.AccessGroup;
 import org.igov.analytic.model.access.AccessUser;
 import org.igov.analytic.model.attribute.*;
@@ -25,6 +27,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -71,6 +74,9 @@ public class ProcessController {
     @Autowired
     private ArchiveServiceImpl archiveService;
 
+    @Autowired
+    HistoryService historyService;
+
     @ApiOperation(value = "/backup", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/backup", method = RequestMethod.GET)
     public
@@ -79,6 +85,20 @@ public class ProcessController {
         LOG.info("/backup!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         archiveService.archiveData();
         LOG.info("/backup ok!!!");
+    }
+
+    //http://localhost:8080/wf-region/service/analytic/process/duplicate
+    @RequestMapping(value = "/duplicate", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseBody
+    public String duplicate() {
+       StringBuilder stringBuilder = new StringBuilder();
+        List<HistoricProcessInstance> processInstances = historyService.createHistoricProcessInstanceQuery().list();
+
+        for(HistoricProcessInstance instance: processInstances) {
+            stringBuilder.append(instance.getId()).append(instance.getName()).append("\n");
+        }
+
+        return "size of processInstances: " + processInstances.size() + "\n" + stringBuilder.toString();
     }
 
     //http://localhost:8080/wf-region/service/analytic/process/getProcesses?sID_=1
@@ -101,15 +121,15 @@ public class ProcessController {
             }
         } catch (Exception ex) {
             LOG.error("ex: ", ex);
-            Process process = creatStub();
+            Process process = createStub();
             process.setsID_(ex.getMessage());
             result.add(process);
         }
         return result;
     }
 
-    private Process creatStub() {
-        LOG.info("/creatStub!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
+    private Process createStub() {
+        LOG.info("/createStub!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         Process process = new Process();
         ProcessTask processTask = new ProcessTask();
         Attribute attribute = new Attribute();

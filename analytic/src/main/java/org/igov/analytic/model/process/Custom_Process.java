@@ -159,4 +159,22 @@ public class Custom_Process extends AbstractEntity {
     public void setsName(String sName) {
         this.sName = sName;
     }
+
+    @Override
+    public String toString() {
+        return "Custom_Process{" +
+                "oProcess=" + oProcess +
+                ", nProc_inst_id=" + nProc_inst_id +
+                ", sBusiness_key='" + sBusiness_key + '\'' +
+                ", sProc_def_id='" + sProc_def_id + '\'' +
+                ", nDuration=" + nDuration +
+                ", sStart_user_id='" + sStart_user_id + '\'' +
+                ", sStart_act_id='" + sStart_act_id + '\'' +
+                ", sEnd_act_id='" + sEnd_act_id + '\'' +
+                ", sSuper_process_instance_id='" + sSuper_process_instance_id + '\'' +
+                ", sDelete_reason='" + sDelete_reason + '\'' +
+                ", sTenant_id='" + sTenant_id + '\'' +
+                ", sName='" + sName + '\'' +
+                '}';
+    }
 }

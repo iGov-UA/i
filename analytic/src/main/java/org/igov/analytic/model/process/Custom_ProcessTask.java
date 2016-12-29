@@ -242,4 +242,28 @@ public class Custom_ProcessTask extends AbstractEntity {
     public void setnTenant_id(Integer nTenant_id) {
         this.nTenant_id = nTenant_id;
     }
+
+    @Override
+    public String toString() {
+        return "Custom_ProcessTask{" +
+                "oProcessTask=" + oProcessTask +
+                ", nProc_def_id='" + nProc_def_id + '\'' +
+                ", sTask_def_key='" + sTask_def_key + '\'' +
+                ", nProc_inst_id=" + nProc_inst_id +
+                ", nExecution_id=" + nExecution_id +
+                ", sName='" + sName + '\'' +
+                ", nParent_task_id=" + nParent_task_id +
+                ", sDescription='" + sDescription + '\'' +
+                ", sOwner='" + sOwner + '\'' +
+                ", sAssignee='" + sAssignee + '\'' +
+                ", oClaim_time=" + oClaim_time +
+                ", nDuration=" + nDuration +
+                ", sDelete_reason='" + sDelete_reason + '\'' +
+                ", nPriority=" + nPriority +
+                ", oDue_Date=" + oDue_Date +
+                ", nForm_key=" + nForm_key +
+                ", sCategory='" + sCategory + '\'' +
+                ", nTenant_id=" + nTenant_id +
+                '}';
+    }
 }
