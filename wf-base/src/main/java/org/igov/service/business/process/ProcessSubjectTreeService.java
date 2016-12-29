@@ -23,6 +23,7 @@ import org.igov.model.process.ProcessSubjectResultTree;
 import org.igov.model.process.ProcessSubjectTree;
 import org.igov.model.process.ProcessUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
@@ -34,6 +35,7 @@ import com.google.common.collect.Lists;
  *
  * @author inna
  */
+@Component("processSubjectTreeService")
 @Service
 public class ProcessSubjectTreeService {
 
