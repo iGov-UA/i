@@ -37,11 +37,13 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
 		if (attachments != null && attachments.size() > 0){
 			LOG.info("Returning from listener as there are {} attachments already assigned to the task", attachments.size());
 		}
+	LOG.info("SCAN:file oTask: " + oTask.getId() + " process: " + oTask.getProcessInstanceId());    
 		
         DelegateExecution oExecution = oTask.getExecution();
         // получить группу бп
         Set<IdentityLink> identityLink = oTask.getCandidates();
         // получить User группы
+	LOG.info("Find group: " + identityLink.iterator().next().getGroupId());
         List<User> aUser = oExecution.getEngineServices().getIdentityService()
                 .createUserQuery()
                 .memberOfGroup(identityLink.iterator().next().getGroupId())
