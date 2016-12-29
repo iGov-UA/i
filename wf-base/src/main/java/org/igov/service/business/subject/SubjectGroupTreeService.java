@@ -164,7 +164,7 @@ public class SubjectGroupTreeService {
     public List<SubjectGroup> getSubjectGroupTree(Map<Long, List<SubjectGroup>> hierarchySubjectGroup,
 			List<SubjectGroup> aChildResult) {
 		for (SubjectGroup subjectGroup : aChildResult) {
-			subjectGroup.setaUser(getUsersByGroupSubject(subjectGroup.getsChain()));
+			subjectGroup.setaUser(getUsersByGroupSubject(subjectGroup.getsID_Group_Activiti()));
             //получаем по ключу лист детей и устанавливаем 
             List<SubjectGroup> aChildResultByKey = hierarchySubjectGroup.get(subjectGroup.getId());
             if (aChildResultByKey != null && !aChildResultByKey.isEmpty()) {
