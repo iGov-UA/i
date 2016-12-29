@@ -24,29 +24,29 @@ public class CustomProcessTask extends AbstractEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private ProcessTask oProcessTask;
 
-    @JsonProperty(value = "nProc_def_id")
+    @JsonProperty(value = "nProcessDefinitionId")
     @Column
-    private String nProc_def_id;
+    private String nProcessDefinitionId;
 
-    @JsonProperty(value = "sTask_def_key")
+    @JsonProperty(value = "sTaskDefinitionKey")
     @Column
-    private String sTask_def_key;
+    private String sTaskDefinitionKey;
 
-    @JsonProperty(value = "nProc_inst_id")
+    @JsonProperty(value = "nProcessInstanceId")
     @Column
-    private Integer nProc_inst_id;
+    private Integer nProcessInstanceId;
 
-    @JsonProperty(value = "nExecution_id")
+    @JsonProperty(value = "nExecutionId")
     @Column
-    private Integer nExecution_id;
+    private Integer nExecutionId;
 
     @JsonProperty(value = "sName")
     @Column
     private String sName;
 
-    @JsonProperty(value = "nParent_task_id")
+    @JsonProperty(value = "nParentTaskId")
     @Column
-    private Integer nParent_task_id;
+    private Integer nParentTaskId;
 
     @JsonProperty(value = "sDescription")
     @Column
@@ -60,12 +60,12 @@ public class CustomProcessTask extends AbstractEntity {
     @Column
     private String sAssignee;
 
-    @JsonProperty(value = "oClaim_time")
+    @JsonProperty(value = "oClaimTime")
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
     @Column
-    private DateTime oClaim_time;
+    private DateTime oClaimTime;
 
     @JsonProperty(value = "nDuration")
     @Column
@@ -73,30 +73,30 @@ public class CustomProcessTask extends AbstractEntity {
 
     @JsonProperty(value = "sDelete")
     @Column
-    private String sDelete_reason;
+    private String sDeleteReason;
 
     @JsonProperty(value = "nPriority")
     @Column
     private Integer nPriority;
 
-    @JsonProperty(value = "oDue_Date")
+    @JsonProperty(value = "oDueDate")
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
     @Column
-    private DateTime oDue_Date;
+    private DateTime oDueDate;
 
-    @JsonProperty(value = "nForm_key")
+    @JsonProperty(value = "nFormKey")
     @Column
-    private Integer nForm_key;
+    private Integer nFormKey;
 
     @JsonProperty(value = "sCategory")
     @Column
     private String sCategory;
 
-    @JsonProperty(value = "nTenant_id")
+    @JsonProperty(value = "nTenantId")
     @Column
-    private Integer nTenant_id;
+    private Integer nTenantId;
 
     public ProcessTask getoProcessTask() {
         return oProcessTask;
@@ -106,44 +106,36 @@ public class CustomProcessTask extends AbstractEntity {
         this.oProcessTask = oProcessTask;
     }
 
-    public String getnProc_def_id() {
-        return nProc_def_id;
+    public String getnProcessDefinitionId() {
+        return nProcessDefinitionId;
     }
 
-    public void setnProc_def_id(String nProc_def_id) {
-        this.nProc_def_id = nProc_def_id;
+    public void setnProcessDefinitionId(String nProcessDefinitionId) {
+        this.nProcessDefinitionId = nProcessDefinitionId;
     }
 
-    public String getsTask_def_key() {
-        return sTask_def_key;
+    public String getsTaskDefinitionKey() {
+        return sTaskDefinitionKey;
     }
 
-    public void setsTask_def_key(String sTask_def_key) {
-        this.sTask_def_key = sTask_def_key;
+    public void setsTaskDefinitionKey(String sTaskDefinitionKey) {
+        this.sTaskDefinitionKey = sTaskDefinitionKey;
     }
 
-    public Integer getnProc_inst_id() {
-        return nProc_inst_id;
+    public Integer getnProcessInstanceId() {
+        return nProcessInstanceId;
     }
 
-    public void setnProc_inst_id(Integer nProc_inst_id) {
-        this.nProc_inst_id = nProc_inst_id;
+    public void setnProcessInstanceId(Integer nProcessInstanceId) {
+        this.nProcessInstanceId = nProcessInstanceId;
     }
 
-    public Integer getnExecution_id() {
-        return nExecution_id;
+    public Integer getnExecutionId() {
+        return nExecutionId;
     }
 
-    public void setnExecution_id(Integer nExecution_id) {
-        this.nExecution_id = nExecution_id;
-    }
-
-    public Integer getnPriority() {
-        return nPriority;
-    }
-
-    public void setnPriority(Integer nPriority) {
-        this.nPriority = nPriority;
+    public void setnExecutionId(Integer nExecutionId) {
+        this.nExecutionId = nExecutionId;
     }
 
     public String getsName() {
@@ -154,12 +146,12 @@ public class CustomProcessTask extends AbstractEntity {
         this.sName = sName;
     }
 
-    public Integer getnParent_task_id() {
-        return nParent_task_id;
+    public Integer getnParentTaskId() {
+        return nParentTaskId;
     }
 
-    public void setnParent_task_id(Integer nParent_task_id) {
-        this.nParent_task_id = nParent_task_id;
+    public void setnParentTaskId(Integer nParentTaskId) {
+        this.nParentTaskId = nParentTaskId;
     }
 
     public String getsDescription() {
@@ -186,12 +178,12 @@ public class CustomProcessTask extends AbstractEntity {
         this.sAssignee = sAssignee;
     }
 
-    public DateTime getoClaim_time() {
-        return oClaim_time;
+    public DateTime getoClaimTime() {
+        return oClaimTime;
     }
 
-    public void setoClaim_time(DateTime oClaim_time) {
-        this.oClaim_time = oClaim_time;
+    public void setoClaimTime(DateTime oClaimTime) {
+        this.oClaimTime = oClaimTime;
     }
 
     public Long getnDuration() {
@@ -202,29 +194,36 @@ public class CustomProcessTask extends AbstractEntity {
         this.nDuration = nDuration;
     }
 
-    public String getsDelete_reason() {
-        return sDelete_reason;
+    public String getsDeleteReason() {
+        return sDeleteReason;
     }
 
-    public void setsDelete_reason(String sDelete_reason) {
-        this.sDelete_reason = sDelete_reason;
+    public void setsDeleteReason(String sDeleteReason) {
+        this.sDeleteReason = sDeleteReason;
     }
 
-
-    public DateTime getoDue_Date() {
-        return oDue_Date;
+    public Integer getnPriority() {
+        return nPriority;
     }
 
-    public void setoDue_Date(DateTime oDue_Date) {
-        this.oDue_Date = oDue_Date;
+    public void setnPriority(Integer nPriority) {
+        this.nPriority = nPriority;
     }
 
-    public Integer getnForm_key() {
-        return nForm_key;
+    public DateTime getoDueDate() {
+        return oDueDate;
     }
 
-    public void setnForm_key(Integer nForm_key) {
-        this.nForm_key = nForm_key;
+    public void setoDueDate(DateTime oDueDate) {
+        this.oDueDate = oDueDate;
+    }
+
+    public Integer getnFormKey() {
+        return nFormKey;
+    }
+
+    public void setnFormKey(Integer nFormKey) {
+        this.nFormKey = nFormKey;
     }
 
     public String getsCategory() {
@@ -235,35 +234,11 @@ public class CustomProcessTask extends AbstractEntity {
         this.sCategory = sCategory;
     }
 
-    public Integer getnTenant_id() {
-        return nTenant_id;
+    public Integer getnTenantId() {
+        return nTenantId;
     }
 
-    public void setnTenant_id(Integer nTenant_id) {
-        this.nTenant_id = nTenant_id;
-    }
-
-    @Override
-    public String toString() {
-        return "Custom_ProcessTask{" +
-                "oProcessTask=" + oProcessTask +
-                ", nProc_def_id='" + nProc_def_id + '\'' +
-                ", sTask_def_key='" + sTask_def_key + '\'' +
-                ", nProc_inst_id=" + nProc_inst_id +
-                ", nExecution_id=" + nExecution_id +
-                ", sName='" + sName + '\'' +
-                ", nParent_task_id=" + nParent_task_id +
-                ", sDescription='" + sDescription + '\'' +
-                ", sOwner='" + sOwner + '\'' +
-                ", sAssignee='" + sAssignee + '\'' +
-                ", oClaim_time=" + oClaim_time +
-                ", nDuration=" + nDuration +
-                ", sDelete_reason='" + sDelete_reason + '\'' +
-                ", nPriority=" + nPriority +
-                ", oDue_Date=" + oDue_Date +
-                ", nForm_key=" + nForm_key +
-                ", sCategory='" + sCategory + '\'' +
-                ", nTenant_id=" + nTenant_id +
-                '}';
+    public void setnTenantId(Integer nTenantId) {
+        this.nTenantId = nTenantId;
     }
 }

@@ -19,46 +19,46 @@ public class CustomProcess extends AbstractEntity {
     private Process oProcess;
 
 
-    @JsonProperty(value = "nProcInstId")
+    @JsonProperty(value = "nProcessInstanceId")
     @Column
-    private Integer nProc_inst_id;
+    private Integer nProcessInstanceId;
 
-    @JsonProperty(value = "sBusiness_key")
+    @JsonProperty(value = "sBusinessKey")
     @Column
-    private String sBusiness_key;
+    private String sBusinessKey;
 
-    @JsonProperty(value = "sProc_def_id")
+    @JsonProperty(value = "sProcessDefinitionId")
     @Column
-    private String sProc_def_id;
+    private String sProcessDefinitionId;
 
 
     @JsonProperty(value = "nDuration")
     @Column
     private Long nDuration;
 
-    @JsonProperty(value = "sStart_user_id")
+    @JsonProperty(value = "sStartUserId")
     @Column
-    private String sStart_user_id;
+    private String sStartUserId;
 
-    @JsonProperty(value = "sStart_act_id")
+    @JsonProperty(value = "sStartActionId")
     @Column
-    private String sStart_act_id;
+    private String sStartActionId;
 
-    @JsonProperty(value = "sEnd_act_id")
+    @JsonProperty(value = "sEndActionId")
     @Column
-    private String sEnd_act_id;
+    private String sEndActionId;
 
-    @JsonProperty(value = "sSuper_process_instance_id")
+    @JsonProperty(value = "sSuperProcessInstanceId")
     @Column
-    private String sSuper_process_instance_id;
+    private String sSuperProcessInstanceId;
 
-    @JsonProperty(value = "sDelete_reason")
+    @JsonProperty(value = "sDeleteReason")
     @Column
-    private String sDelete_reason;
+    private String sDeleteReason;
 
-    @JsonProperty(value = "sTenant_id")
+    @JsonProperty(value = "sTenantId")
     @Column
-    private String sTenant_id;
+    private String sTenantId;
 
     @JsonProperty(value = "sName")
     @Column
@@ -72,28 +72,28 @@ public class CustomProcess extends AbstractEntity {
         this.oProcess = oProcess;
     }
 
-    public Integer getnProc_inst_id() {
-        return nProc_inst_id;
+    public Integer getnProcessInstanceId() {
+        return nProcessInstanceId;
     }
 
-    public void setnProc_inst_id(Integer nProc_inst_id) {
-        this.nProc_inst_id = nProc_inst_id;
+    public void setnProcessInstanceId(Integer nProcessInstanceId) {
+        this.nProcessInstanceId = nProcessInstanceId;
     }
 
-    public String getsBusiness_key() {
-        return sBusiness_key;
+    public String getsBusinessKey() {
+        return sBusinessKey;
     }
 
-    public void setsBusiness_key(String sBusiness_key) {
-        this.sBusiness_key = sBusiness_key;
+    public void setsBusinessKey(String sBusinessKey) {
+        this.sBusinessKey = sBusinessKey;
     }
 
-    public String getsProc_def_id() {
-        return sProc_def_id;
+    public String getsProcessDefinitionId() {
+        return sProcessDefinitionId;
     }
 
-    public void setsProc_def_Id(String sProc_def_Id) {
-        this.sProc_def_id = sProc_def_Id;
+    public void setsProcessDefinitionId(String sProcessDefinitionId) {
+        this.sProcessDefinitionId = sProcessDefinitionId;
     }
 
     public Long getnDuration() {
@@ -104,52 +104,52 @@ public class CustomProcess extends AbstractEntity {
         this.nDuration = nDuration;
     }
 
-    public String getsStart_user_Id() {
-        return sStart_user_id;
+    public String getsStartUserId() {
+        return sStartUserId;
     }
 
-    public void setsStart_user_Id(String sStart_user_Id) {
-        this.sStart_user_id = sStart_user_Id;
+    public void setsStartUserId(String sStartUserId) {
+        this.sStartUserId = sStartUserId;
     }
 
-    public String getsStart_act_Id() {
-        return sStart_act_id;
+    public String getsStartActionId() {
+        return sStartActionId;
     }
 
-    public void setsStart_act_Id(String sStart_act_Id) {
-        this.sStart_act_id = sStart_act_Id;
+    public void setsStartActionId(String sStartActionId) {
+        this.sStartActionId = sStartActionId;
     }
 
-    public String getsEnd_act_Id() {
-        return sEnd_act_id;
+    public String getsEndActionId() {
+        return sEndActionId;
     }
 
-    public void setsEnd_act_Id(String sEnd_act_Id) {
-        this.sEnd_act_id = sEnd_act_Id;
+    public void setsEndActionId(String sEndActionId) {
+        this.sEndActionId = sEndActionId;
     }
 
-    public String getsSuper_process_instance_id() {
-        return sSuper_process_instance_id;
+    public String getsSuperProcessInstanceId() {
+        return sSuperProcessInstanceId;
     }
 
-    public void setsSuper_process_instance_id(String sSuper_process_instance_id) {
-        this.sSuper_process_instance_id = sSuper_process_instance_id;
+    public void setsSuperProcessInstanceId(String sSuperProcessInstanceId) {
+        this.sSuperProcessInstanceId = sSuperProcessInstanceId;
     }
 
-    public String getsDelete_reason() {
-        return sDelete_reason;
+    public String getsDeleteReason() {
+        return sDeleteReason;
     }
 
-    public void setsDelete_reason(String sDelete_reason) {
-        this.sDelete_reason = sDelete_reason;
+    public void setsDeleteReason(String sDeleteReason) {
+        this.sDeleteReason = sDeleteReason;
     }
 
-    public String getsTenant_id() {
-        return sTenant_id;
+    public String getsTenantId() {
+        return sTenantId;
     }
 
-    public void setsTenant_id(String sTenant_id) {
-        this.sTenant_id = sTenant_id;
+    public void setsTenantId(String sTenantId) {
+        this.sTenantId = sTenantId;
     }
 
     public String getsName() {
@@ -158,23 +158,5 @@ public class CustomProcess extends AbstractEntity {
 
     public void setsName(String sName) {
         this.sName = sName;
-    }
-
-    @Override
-    public String toString() {
-        return "Custom_Process{" +
-                "oProcess=" + oProcess +
-                ", nProc_inst_id=" + nProc_inst_id +
-                ", sBusiness_key='" + sBusiness_key + '\'' +
-                ", sProc_def_id='" + sProc_def_id + '\'' +
-                ", nDuration=" + nDuration +
-                ", sStart_user_id='" + sStart_user_id + '\'' +
-                ", sStart_act_id='" + sStart_act_id + '\'' +
-                ", sEnd_act_id='" + sEnd_act_id + '\'' +
-                ", sSuper_process_instance_id='" + sSuper_process_instance_id + '\'' +
-                ", sDelete_reason='" + sDelete_reason + '\'' +
-                ", sTenant_id='" + sTenant_id + '\'' +
-                ", sName='" + sName + '\'' +
-                '}';
     }
 }

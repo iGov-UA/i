@@ -98,7 +98,7 @@ public class ProcessController {
 
 
         for(HistoricProcessInstance instance: processInstances) {
-            stringBuilder.append(createNewArchiveProcess(instance)).append("\n").append(createNewCustomArchiveProcess(instance));
+            stringBuilder.append(createNewArchiveProcess(instance)).append("\n").append(createNewCustomArchiveProcess(instance)).append("\n");
         }
 
         return "Size of processInstances: " + processInstances.size() + "\n" + stringBuilder.toString();
@@ -106,7 +106,9 @@ public class ProcessController {
 
     private Process createNewArchiveProcess(HistoricProcessInstance instance) {
         Process archiveProcess = new  Process();
-        archiveProcess.setoSourceDB(new SourceDB());
+        SourceDB sourceDB = new SourceDB();
+        sourceDB.setId(2L);
+        archiveProcess.setoSourceDB(sourceDB);
         archiveProcess.setoDateStart(new DateTime(instance.getStartTime()));
         archiveProcess.setoDateFinish(new DateTime(instance.getEndTime()));
         return archiveProcess;
@@ -115,10 +117,10 @@ public class ProcessController {
     private CustomProcess createNewCustomArchiveProcess(HistoricProcessInstance instance) {
         CustomProcess archiveCustomProcess = new CustomProcess();
         archiveCustomProcess.setnDuration(instance.getDurationInMillis());
-        archiveCustomProcess.setsBusiness_key(instance.getBusinessKey());
-        archiveCustomProcess.setsDelete_reason(instance.getDeleteReason());
+        archiveCustomProcess.setsBusinessKey(instance.getBusinessKey());
+        archiveCustomProcess.setsDeleteReason(instance.getDeleteReason());
         archiveCustomProcess.setsName(instance.getName());
-        archiveCustomProcess.setsTenant_id(instance.getTenantId());
+        archiveCustomProcess.setsTenantId(instance.getTenantId());
         archiveCustomProcess.setoProcess(createNewArchiveProcess(instance));
         return archiveCustomProcess;
     }
