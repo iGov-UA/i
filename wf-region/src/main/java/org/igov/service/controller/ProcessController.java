@@ -95,10 +95,10 @@ public class ProcessController {
         List<HistoricProcessInstance> processInstances = historyService.createHistoricProcessInstanceQuery().list();
 
         for(HistoricProcessInstance instance: processInstances) {
-            stringBuilder.append(instance);
+            stringBuilder.append(instance.getId()).append(instance.getName()).append("\n");
         }
 
-        return "historyService.createHistoricProcessInstanceQuery().list();" + stringBuilder.toString();
+        return "size of processInstances: " + processInstances.size() + "\n" + stringBuilder.toString();
     }
 
     //http://localhost:8080/wf-region/service/analytic/process/getProcesses?sID_=1
