@@ -14,6 +14,7 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.igov.analytic.model.access.AccessGroup;
 import org.igov.analytic.model.access.AccessUser;
 import org.igov.analytic.model.attribute.*;
+import org.igov.analytic.model.process.CustomProcess;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessDao;
 import org.igov.analytic.model.process.ProcessTask;
@@ -92,13 +93,34 @@ public class ProcessController {
     @ResponseBody
     public String duplicate() {
        StringBuilder stringBuilder = new StringBuilder();
-        List<HistoricProcessInstance> processInstances = historyService.createHistoricProcessInstanceQuery().list();
+
+        List<HistoricProcessInstance> processInstances = historyService.createHistoricProcessInstanceQuery().finished().list();
+
 
         for(HistoricProcessInstance instance: processInstances) {
-            stringBuilder.append(instance.getId()).append(instance.getName()).append("\n");
+            stringBuilder.append(createNewArchiveProcess(instance)).append("\n").append(createNewCustomArchiveProcess(instance));
         }
 
-        return "size of processInstances: " + processInstances.size() + "\n" + stringBuilder.toString();
+        return "Size of processInstances: " + processInstances.size() + "\n" + stringBuilder.toString();
+    }
+
+    private Process createNewArchiveProcess(HistoricProcessInstance instance) {
+        Process archiveProcess = new  Process();
+        archiveProcess.setoSourceDB(new SourceDB());
+        archiveProcess.setoDateStart(new DateTime(instance.getStartTime()));
+        archiveProcess.setoDateFinish(new DateTime(instance.getEndTime()));
+        return archiveProcess;
+    }
+
+    private CustomProcess createNewCustomArchiveProcess(HistoricProcessInstance instance) {
+        CustomProcess archiveCustomProcess = new CustomProcess();
+        archiveCustomProcess.setnDuration(instance.getDurationInMillis());
+        archiveCustomProcess.setsBusiness_key(instance.getBusinessKey());
+        archiveCustomProcess.setsDelete_reason(instance.getDeleteReason());
+        archiveCustomProcess.setsName(instance.getName());
+        archiveCustomProcess.setsTenant_id(instance.getTenantId());
+        archiveCustomProcess.setoProcess(createNewArchiveProcess(instance));
+        return archiveCustomProcess;
     }
 
     //http://localhost:8080/wf-region/service/analytic/process/getProcesses?sID_=1

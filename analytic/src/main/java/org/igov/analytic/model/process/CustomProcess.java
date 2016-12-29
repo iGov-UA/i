@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
  * Created by dpekach on 26.12.16.
  */
 @Entity
-public class Custom_Process extends AbstractEntity {
+public class CustomProcess extends AbstractEntity {
 
     @JsonProperty(value = "oProcess")
     @OneToOne(fetch = FetchType.LAZY)

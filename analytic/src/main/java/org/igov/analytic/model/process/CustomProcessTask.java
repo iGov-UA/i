@@ -18,7 +18,7 @@ import javax.persistence.OneToOne;
  * Created by dpekach on 26.12.16.
  */
 @Entity
-public class Custom_ProcessTask extends AbstractEntity {
+public class CustomProcessTask extends AbstractEntity {
 
     @JsonProperty(value = "oProcessTask")
     @OneToOne(fetch = FetchType.LAZY)
