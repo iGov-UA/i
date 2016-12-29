@@ -209,7 +209,7 @@ public class SubjectGroupTreeService {
                     // и оставляем только processSubject чьи логины
                     // содержаться
                     // в отфильтрованном списке
-                    if (sFindLogin.contains(subjectGroup.getsChain())) {
+                    if (sFindLogin.contains(subjectGroup.getsID_Group_Activiti())) {
                         aChildResultByUser.add(subjectGroup);
 
                     }
