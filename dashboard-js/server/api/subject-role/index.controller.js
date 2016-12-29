@@ -8,7 +8,7 @@ module.exports.getSubjectGroups = function (req, res) {
     res.end();
   };
   var options = {
-    path: 'subject/group/getSubjectGroups',
+    path: 'subject/group/getSubjectGroupsTree',
     query: req.query
   };
   activiti.get(options, callback)
