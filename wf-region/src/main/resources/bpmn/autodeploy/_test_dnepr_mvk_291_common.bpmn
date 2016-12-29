@@ -1106,6 +1106,10 @@
         <activiti:formProperty id="sAnswerStatus" name="Статус відповіді колл-центра" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDocument_Actor_UkrDoc" name="Автор відповіді" type="string" default="EO180277SMV"></activiti:formProperty>
+        <activiti:formProperty id="sDocument_Ratifier_UkrDoc" name="Відповідь затвердив" type="string" default="EO180277SMV"></activiti:formProperty>
+        <activiti:formProperty id="executeDate" name="Дата на яке поставити завдання" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sCommentOperator" name="Коментар до відповіді" type="textArea" default="Тест комментарий оператора в ЭСК"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible" default="В РАЗРАБОТКЕ"></activiti:formProperty>
         <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asSelectionDepartment" name="Оберіть департамент (управління) куди направляється оригінал документу" type="enum">
@@ -1137,6 +1141,7 @@
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asStatusOperator" name="Обробка звернення" type="enum" required="true">
+        <activiti:value id="sEnumSendInESC" name="Відправити в ЕСК"></activiti:value>
           <activiti:value id="sEnumSendEmail" name="Відправити швидку відповідь на е-mail"></activiti:value>
           <activiti:value id="sEnumSendInFrontOffice" name="Відправити до фронт-офісу для письмової відповіді"></activiti:value>
           <activiti:value id="sEnumSendInUkrDoc" name="Відправити супервайзеру в УкрДок"></activiti:value>
@@ -4539,7 +4544,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway14" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow110" sourceRef="exclusivegateway14" targetRef="servicetask15">
+    <sequenceFlow id="flow110" sourceRef="exclusivegateway14" targetRef="endevent14">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperatorInspection=='sEnumSendRework'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow111" sourceRef="exclusivegateway14" targetRef="exclusivegateway11">
@@ -4557,6 +4562,10 @@ execution.setVariable('sNumberCard', numUD)</script>
     <sequenceFlow id="flow112" sourceRef="scripttask6" targetRef="exclusivegateway14"></sequenceFlow>
     <endEvent id="endevent13" name="End"></endEvent>
     <sequenceFlow id="flow113" sourceRef="servicetask15" targetRef="endevent13"></sequenceFlow>
+    <endEvent id="endevent14" name="End"></endEvent>
+    <sequenceFlow id="flow114" sourceRef="exclusivegateway1" targetRef="servicetask15">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumSendInESC'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="_test_dnepr_mvk_291_common" id="BPMNPlane__test_dnepr_mvk_291_common">
@@ -4669,7 +4678,7 @@ execution.setVariable('sNumberCard', numUD)</script>
         <omgdc:Bounds height="55.0" width="161.0" x="2050.0" y="541.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask15" id="BPMNShape_servicetask15">
-        <omgdc:Bounds height="55.0" width="105.0" x="2247.0" y="703.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1898.0" y="51.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway14" id="BPMNShape_exclusivegateway14">
         <omgdc:Bounds height="40.0" width="40.0" x="2108.0" y="710.0"></omgdc:Bounds>
@@ -4678,7 +4687,10 @@ execution.setVariable('sNumberCard', numUD)</script>
         <omgdc:Bounds height="55.0" width="105.0" x="2076.0" y="624.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent13" id="BPMNShape_endevent13">
-        <omgdc:Bounds height="35.0" width="35.0" x="2397.0" y="713.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="2048.0" y="61.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent14" id="BPMNShape_endevent14">
+        <omgdc:Bounds height="35.0" width="35.0" x="2270.0" y="650.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="853.0" y="104.0"></omgdi:waypoint>
@@ -4906,8 +4918,8 @@ execution.setVariable('sNumberCard', numUD)</script>
         <omgdi:waypoint x="2128.0" y="624.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow110" id="BPMNEdge_flow110">
-        <omgdi:waypoint x="2148.0" y="730.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2247.0" y="730.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2128.0" y="710.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2287.0" y="685.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow111" id="BPMNEdge_flow111">
         <omgdi:waypoint x="2128.0" y="750.0"></omgdi:waypoint>
@@ -4918,8 +4930,12 @@ execution.setVariable('sNumberCard', numUD)</script>
         <omgdi:waypoint x="2128.0" y="710.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow113" id="BPMNEdge_flow113">
-        <omgdi:waypoint x="2352.0" y="730.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2397.0" y="730.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2003.0" y="78.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2048.0" y="78.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow114" id="BPMNEdge_flow114">
+        <omgdi:waypoint x="1703.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1950.0" y="106.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
