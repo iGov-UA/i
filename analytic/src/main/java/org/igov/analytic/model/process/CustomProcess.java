@@ -19,9 +19,9 @@ public class CustomProcess extends AbstractEntity {
     private Process oProcess;
 
 
-    @JsonProperty(value = "nProcessInstanceId")
+    @JsonProperty(value = "sProcessInstanceId")
     @Column
-    private Integer nProcessInstanceId;
+    private String sProcessInstanceId;
 
     @JsonProperty(value = "sBusinessKey")
     @Column
@@ -40,13 +40,13 @@ public class CustomProcess extends AbstractEntity {
     @Column
     private String sStartUserId;
 
-    @JsonProperty(value = "sStartActionId")
+    @JsonProperty(value = "sStartActivityId")
     @Column
-    private String sStartActionId;
+    private String sStartActivityId;
 
-    @JsonProperty(value = "sEndActionId")
+    @JsonProperty(value = "sEndActivityId")
     @Column
-    private String sEndActionId;
+    private String sEndActivityId;
 
     @JsonProperty(value = "sSuperProcessInstanceId")
     @Column
@@ -72,12 +72,12 @@ public class CustomProcess extends AbstractEntity {
         this.oProcess = oProcess;
     }
 
-    public Integer getnProcessInstanceId() {
-        return nProcessInstanceId;
+    public String getsProcessInstanceId() {
+        return sProcessInstanceId;
     }
 
-    public void setnProcessInstanceId(Integer nProcessInstanceId) {
-        this.nProcessInstanceId = nProcessInstanceId;
+    public void setsProcessInstanceId(String sProcessInstanceId) {
+        this.sProcessInstanceId = sProcessInstanceId;
     }
 
     public String getsBusinessKey() {
@@ -112,20 +112,20 @@ public class CustomProcess extends AbstractEntity {
         this.sStartUserId = sStartUserId;
     }
 
-    public String getsStartActionId() {
-        return sStartActionId;
+    public String getsStartActivityId() {
+        return sStartActivityId;
     }
 
-    public void setsStartActionId(String sStartActionId) {
-        this.sStartActionId = sStartActionId;
+    public void setsStartActivityId(String sStartActivityId) {
+        this.sStartActivityId = sStartActivityId;
     }
 
-    public String getsEndActionId() {
-        return sEndActionId;
+    public String getsEndActivityId() {
+        return sEndActivityId;
     }
 
-    public void setsEndActionId(String sEndActionId) {
-        this.sEndActionId = sEndActionId;
+    public void setsEndActivityId(String sEndActivityId) {
+        this.sEndActivityId = sEndActivityId;
     }
 
     public String getsSuperProcessInstanceId() {
@@ -164,13 +164,13 @@ public class CustomProcess extends AbstractEntity {
     public String toString() {
         return "CustomProcess{" +
                 "oProcess=" + oProcess +
-                ", nProcessInstanceId=" + nProcessInstanceId +
+                ", sProcessInstanceId=" + sProcessInstanceId +
                 ", sBusinessKey='" + sBusinessKey + '\'' +
                 ", sProcessDefinitionId='" + sProcessDefinitionId + '\'' +
                 ", nDuration=" + nDuration +
                 ", sStartUserId='" + sStartUserId + '\'' +
-                ", sStartActionId='" + sStartActionId + '\'' +
-                ", sEndActionId='" + sEndActionId + '\'' +
+                ", sStartActivityId='" + sStartActivityId + '\'' +
+                ", sEndActivityId='" + sEndActivityId + '\'' +
                 ", sSuperProcessInstanceId='" + sSuperProcessInstanceId + '\'' +
                 ", sDeleteReason='" + sDeleteReason + '\'' +
                 ", sTenantId='" + sTenantId + '\'' +

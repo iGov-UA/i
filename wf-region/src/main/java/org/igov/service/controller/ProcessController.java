@@ -107,7 +107,7 @@ public class ProcessController {
     private Process createNewArchiveProcess(HistoricProcessInstance instance) {
         Process archiveProcess = new  Process();
         SourceDB sourceDB = new SourceDB();
-        sourceDB.setId(2L);
+        sourceDB.setName("iGov");
         archiveProcess.setoSourceDB(sourceDB);
         archiveProcess.setoDateStart(new DateTime(instance.getStartTime()));
         archiveProcess.setoDateFinish(new DateTime(instance.getEndTime()));
@@ -116,11 +116,18 @@ public class ProcessController {
 
     private CustomProcess createNewCustomArchiveProcess(HistoricProcessInstance instance) {
         CustomProcess archiveCustomProcess = new CustomProcess();
+
         archiveCustomProcess.setnDuration(instance.getDurationInMillis());
         archiveCustomProcess.setsBusinessKey(instance.getBusinessKey());
         archiveCustomProcess.setsDeleteReason(instance.getDeleteReason());
         archiveCustomProcess.setsName(instance.getName());
         archiveCustomProcess.setsTenantId(instance.getTenantId());
+        archiveCustomProcess.setsSuperProcessInstanceId(instance.getSuperProcessInstanceId());
+        archiveCustomProcess.setsStartActivityId(instance.getStartActivityId());
+        archiveCustomProcess.setsStartUserId(instance.getStartUserId());
+        archiveCustomProcess.setsProcessDefinitionId(instance.getProcessDefinitionId());
+        archiveCustomProcess.setsProcessInstanceId(instance.getProcessDefinitionId());
+
         archiveCustomProcess.setoProcess(createNewArchiveProcess(instance));
         return archiveCustomProcess;
     }
