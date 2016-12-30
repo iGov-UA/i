@@ -97,12 +97,16 @@ public class ProcessController {
 
         List<HistoricProcessInstance> processInstances = historyService.createHistoricProcessInstanceQuery().finished().list();
 
-
         for(HistoricProcessInstance instance: processInstances) {
             stringBuilder.append(createNewArchiveProcess(instance)).append("\n").append(createNewCustomArchiveProcess(instance)).append("\n");
             Map<String, Object> map = instance.getProcessVariables();
-            for(Map.Entry<String, Object> entry: map.entrySet()) {
-                stringBuilder.append("Entry: key").append(entry.getKey()).append("\n").append("entry: value").append(entry.getValue()).append("\n");
+            if(map.isEmpty())
+                stringBuilder.append("ProcessVariables map is empty").append("\n");
+            else {
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                    stringBuilder.append("Entry: key").append(entry.getKey()).append("\n").append("entry: value")
+                            .append(entry.getValue()).append("\n");
+                }
             }
         }
 
