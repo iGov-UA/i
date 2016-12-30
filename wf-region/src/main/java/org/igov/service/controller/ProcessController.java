@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author olga
@@ -99,6 +100,10 @@ public class ProcessController {
 
         for(HistoricProcessInstance instance: processInstances) {
             stringBuilder.append(createNewArchiveProcess(instance)).append("\n").append(createNewCustomArchiveProcess(instance)).append("\n");
+            Map<String, Object> map = instance.getProcessVariables();
+            for(Map.Entry<String, Object> entry: map.entrySet()) {
+                stringBuilder.append("Entry: key").append(entry.getKey()).append("\n").append("entry: value").append(entry.getValue()).append("\n");
+            }
         }
 
         return "Size of processInstances: " + processInstances.size() + "\n" + stringBuilder.toString();
