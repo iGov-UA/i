@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricVariableInstance;
 import org.igov.analytic.model.access.AccessGroup;
 import org.igov.analytic.model.access.AccessUser;
 import org.igov.analytic.model.attribute.*;
@@ -113,25 +114,23 @@ public class ProcessController {
         return "Size of processInstances: " + processInstances.size() + "\n" + stringBuilder.toString();
     }
 
-
     @RequestMapping(value = "/duplicate2", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String duplicate2(@RequestParam(value = "start_user_id") String start_user_id) {
         StringBuilder stringBuilder = new StringBuilder();
         List<HistoricProcessInstance> instances = historyService.createHistoricProcessInstanceQuery().startedBy(start_user_id).list();
-
         for(HistoricProcessInstance instance: instances) {
+            String currentProcessInstanceId = instance.getId();
+
+            List<HistoricVariableInstance> variablesList = historyService.createHistoricVariableInstanceQuery().processInstanceId(currentProcessInstanceId).list();
+            stringBuilder.append("There are variables for current process");
+
+            for(HistoricVariableInstance varInstance: variablesList) {
+                stringBuilder.append("Variable name:").append(varInstance.getVariableName()).append("var value:").append(varInstance.getValue());
+            }
+
 
             stringBuilder.append(createNewArchiveProcess(instance)).append("\n").append(createNewCustomArchiveProcess(instance)).append("\n");
-            Map<String, Object> map = instance.getProcessVariables();
-            if(map.isEmpty())
-                stringBuilder.append("ProcessVariables map is empty").append("\n");
-            else {
-                for (Map.Entry<String, Object> entry : map.entrySet()) {
-                    stringBuilder.append("Entry: key").append(entry.getKey()).append("\n").append("entry: value")
-                            .append(entry.getValue()).append("\n");
-                }
-            }
         }
         return "Size of processInstances: " + instances.size() + "\n" + stringBuilder.toString();
 
