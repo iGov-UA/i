@@ -121,6 +121,7 @@ public class ProcessController {
         List<HistoricProcessInstance> instances = historyService.createHistoricProcessInstanceQuery().startedBy(start_user_id).list();
         for(HistoricProcessInstance instance: instances) {
             String currentProcessInstanceId = instance.getId();
+            stringBuilder.append("currentProcessInstanceId: ").append(currentProcessInstanceId);
 
             List<HistoricVariableInstance> variablesList = historyService.createHistoricVariableInstanceQuery().processInstanceId(currentProcessInstanceId).list();
             stringBuilder.append("There are variables for current process");
