@@ -39,8 +39,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author olga
@@ -99,44 +99,13 @@ public class ProcessController {
         List<HistoricProcessInstance> processInstances = historyService.createHistoricProcessInstanceQuery().finished().list();
 
         for(HistoricProcessInstance instance: processInstances) {
+            stringBuilder.append(createNewArchiveProcess(instance)).append("\n").append(createNewCustomArchiveProcess(instance)).append("\n-------------------");
 
-            stringBuilder.append(createNewArchiveProcess(instance)).append("\n").append(createNewCustomArchiveProcess(instance)).append("\n");
-            Map<String, Object> map = instance.getProcessVariables();
-            if(map.isEmpty())
-                stringBuilder.append("ProcessVariables map is empty").append("\n");
-            else {
-                for (Map.Entry<String, Object> entry : map.entrySet()) {
-                    stringBuilder.append("Entry: key").append(entry.getKey()).append("\n").append("entry: value")
-                            .append(entry.getValue()).append("\n");
-                }
-            }
         }
         return "Size of processInstances: " + processInstances.size() + "\n" + stringBuilder.toString();
     }
 
-    @RequestMapping(value = "/duplicate2", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-    @ResponseBody
-    public String duplicate2(@RequestParam(value = "start_user_id") String start_user_id) {
-        StringBuilder stringBuilder = new StringBuilder();
-        List<HistoricProcessInstance> instances = historyService.createHistoricProcessInstanceQuery().startedBy(start_user_id).list();
-        for(HistoricProcessInstance instance: instances) {
-            String currentProcessInstanceId = instance.getId();
-            stringBuilder.append("currentProcessInstanceId: ").append(currentProcessInstanceId);
-
-            List<HistoricVariableInstance> variablesList = historyService.createHistoricVariableInstanceQuery().processInstanceId(currentProcessInstanceId).list();
-            stringBuilder.append("There are variables for current process");
-
-            for(HistoricVariableInstance varInstance: variablesList) {
-                stringBuilder.append("Variable name:").append(varInstance.getVariableName()).append("var value:").append(varInstance.getValue());
-            }
-
-
-            stringBuilder.append(createNewArchiveProcess(instance)).append("\n").append(createNewCustomArchiveProcess(instance)).append("\n");
-        }
-        return "Size of processInstances: " + instances.size() + "\n" + stringBuilder.toString();
-
-    }
-
+    //TODO rewrite this method as it provides multiple objects each time it is called
     private Process createNewArchiveProcess(HistoricProcessInstance instance) {
         Process archiveProcess = new  Process();
         SourceDB sourceDB = new SourceDB();
@@ -144,8 +113,26 @@ public class ProcessController {
         archiveProcess.setoSourceDB(sourceDB);
         archiveProcess.setoDateStart(new DateTime(instance.getStartTime()));
         archiveProcess.setoDateFinish(new DateTime(instance.getEndTime()));
+        String currentProcessInstanceId = instance.getId();
+
+        List<HistoricVariableInstance> variablesList = historyService.createHistoricVariableInstanceQuery().processInstanceId(currentProcessInstanceId).list();
+        archiveProcess.setaAttribute(createAttributeForArchiveProcess(variablesList));
+
+
+
         return archiveProcess;
     }
+
+    //TODO write this method up to the end, it doesn't work now, ask Olga
+    private List<Attribute> createAttributeForArchiveProcess(List<HistoricVariableInstance> variableInstances) {
+        List<Attribute> resultList = new LinkedList<>();
+
+        for(HistoricVariableInstance instance: variableInstances) {
+            Attribute attribute = new Attribute();
+        }
+        return null;
+    }
+
 
     private CustomProcess createNewCustomArchiveProcess(HistoricProcessInstance instance) {
         CustomProcess archiveCustomProcess = new CustomProcess();
