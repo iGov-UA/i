@@ -25,6 +25,7 @@ import org.igov.service.business.access.BankIDUtils;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.FileTaskUpload;
+import org.igov.service.conf.AttachmetService;
 import org.igov.service.business.object.ObjectFileService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
@@ -46,10 +47,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import org.igov.io.fs.FileSystemData;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
@@ -57,6 +60,10 @@ import org.igov.io.web.HttpRequester;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import org.igov.service.controller.interceptor.ActionProcessCountUtils;
 import static org.igov.util.Tool.sTextTranslit;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * @author BW
@@ -97,6 +104,9 @@ public class ObjectFileCommonController {
 
     @Autowired
     private ObjectFileService oObjectFileService;
+    
+    @Autowired
+    protected AttachmetService attachmetService;
 
     @ApiOperation(value = "PutAttachmentsToRedis", notes = "#####  Укладываем в редис multipartFileToByteArray\n")
     @RequestMapping(value = "/upload_file_to_redis", method = RequestMethod.POST)
@@ -806,7 +816,50 @@ public class ObjectFileCommonController {
         return declarContent;
         //D_FILL=HFILL=01012016
     }
+    
+    @ApiOperation(value = "setAttachment", notes
+            = "##### загрузка файла-атачмента по новому концепту")
+    @RequestMapping(value = "/setAttachment", method = RequestMethod.POST, produces = "application/json")
+    @Transactional
+    public @ResponseBody
+    String setAttachment(
+            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process,
+            @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
+            @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
+            @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = true) @RequestParam(value = "saAttribute_JSON", required = false, defaultValue = "[]") String saAttribute_JSON,
+            @ApiParam(value = "файл для сохранения в БД", required = false)@RequestParam(value = "oFile", required = false) MultipartFile file,
+            @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
+            @ApiParam(value = "если не null - удаляем аттач перед записью", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
+            @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
+            @RequestBody String sData){        
+            
+            List<Map<String, Object>> aAttribute_JSON = new ArrayList<>();
+        
+            if(!saAttribute_JSON.equals("[]")){
+                
+                JSONParser parser = new JSONParser();
+                JSONObject oJSONObject;
+                
+                try {
+                    oJSONObject = (JSONObject) parser.parse(saAttribute_JSON);
+                    JSONArray aAttribute = (JSONArray) oJSONObject.get("Attribute");
+                
+                    for (int i = 0; i < aAttribute.size(); i++){
+                        JSONObject oJSONAttributeObject = (JSONObject) aAttribute.get(i);
+                        Map<String, Object> attributeMap = new HashMap<>();
+                        attributeMap.put((String)oJSONAttributeObject.get("sID"), oJSONAttributeObject.get("sValue"));
+                        aAttribute_JSON.add(attributeMap);
+                    }
+                } catch (ParseException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            
+            return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, sData.getBytes(Charset.forName("UTF-8")));
+        
+    }
 
+    
     @ApiOperation(value = "setTaskAttachment", notes
             = "#####  Set/update файла-атачмента к таске Activiti")
     @RequestMapping(value = "/setTaskAttachment", method = RequestMethod.POST, produces = "application/json")

@@ -13,7 +13,7 @@ public class TaskAttachVO {
     private String sKey;
     private String sVersion;
     private String sDateTime;
-    private String sFileNameExt;
+    private String sFileNameAndExt;
     private String sContentType;
     private String nBytes;
     private boolean bSigned;
@@ -39,8 +39,8 @@ public class TaskAttachVO {
         return sDateTime;
     }
 
-    public String getsFileNameExt() {
-        return sFileNameExt;
+    public String getsFileNameAndExt() {
+        return sFileNameAndExt;
     }
 
     public String getsContentType() {
@@ -75,8 +75,8 @@ public class TaskAttachVO {
         this.sDateTime = sDateTime;
     }
 
-    public void setsFileNameExt(String sFileNameExt) {
-        this.sFileNameExt = sFileNameExt;
+    public void setsFileNameAndExt(String sFileNameExt) {
+        this.sFileNameAndExt = sFileNameExt;
     }
 
     public void setsContentType(String sContentType) {
