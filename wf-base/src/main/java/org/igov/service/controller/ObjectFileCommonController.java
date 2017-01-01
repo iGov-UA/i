@@ -826,12 +826,12 @@ public class ObjectFileCommonController {
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process,
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
-            @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "saAttribute_JSON", required = false, defaultValue = "[]") String saAttribute_JSON,
-            @ApiParam(value = "файл для сохранения в БД", required = false)@RequestParam(value = "oFile", required = false) String file,
+            @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "saAttribute_JSON", required = false, defaultValue = "[]") List<Map<String, Object>> saAttribute_JSON,
+            @ApiParam(value = "файл для сохранения в БД", required = false)@RequestParam(value = "oFile", required = false) MultipartFile file,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "если не null - удаляем аттач перед записью", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
-            @RequestBody String sData) {        
+            @ApiParam(value = "контент файла в виде строки", required = false)@RequestBody String sData) throws IOException {        
             
             LOG.info("setAttachment nID_Process: " + nID_Process);
             LOG.info("setAttachment bSigned: " + bSigned);
@@ -843,7 +843,12 @@ public class ObjectFileCommonController {
             LOG.info("setAttachment sContentType: " + sContentType);
             LOG.info("setAttachment sData: " + sData);
             
-            List<Map<String, Object>> aAttribute_JSON = new ArrayList<>();
+            if(sData != null && file != null){
+                throw new RuntimeException("File data and body data isn't null");
+            }
+
+            
+            /*List<Map<String, Object>> aAttribute_JSON = new ArrayList<>();
         
             if(!saAttribute_JSON.equals("[]")){
                 
@@ -863,21 +868,20 @@ public class ObjectFileCommonController {
                 } catch (ParseException ex) {
                     throw new RuntimeException(ex);
                 }
-            }
-            
-            if(sData != null && file != null){
-                throw new RuntimeException("File data and body data isn't null");
-            }
+            } */
             
             if(sData != null){
-                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, sData.getBytes());
+                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, saAttribute_JSON, sData.getBytes(Charsets.UTF_8));
             }
             else if(file != null){
-                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, file.getBytes());
+                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, saAttribute_JSON, file.getBytes());
             }
             else{
                 return "data is null";
             }
+            
+            //AttachmentCover oAttachmentCover = new AttachmentCover();
+            //return oAttachmentCover.apply(attachment);
     }
 
     

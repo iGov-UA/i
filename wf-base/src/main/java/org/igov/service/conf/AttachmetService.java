@@ -14,6 +14,7 @@ import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.action.vo.TaskAttachVO;
+import static org.igov.util.Tool.sTextTranslit;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,9 +33,10 @@ public class AttachmetService {
         @Autowired
         private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
         
-        protected IBytesDataStorage bytesDataStorage;
+        @Autowired
+        private IBytesDataStorage oBytesDataStaticStorage;
         
-	private final Logger LOG = LoggerFactory.getLogger(MongoCreateAttachmentCmd.class);
+	private final Logger LOG = LoggerFactory.getLogger(AttachmetService.class);
 	
 	
 	public String createAttachment (String nID_Process, String sFileNameAndExt,
@@ -48,13 +50,14 @@ public class AttachmetService {
             LOG.info("createAttachment saAttribute_JSON size: " + saAttribute_JSON.size());
             LOG.info("createAttachment aContent: " + new String(aContent));
             
-            TaskAttachVO oTaskAttachVO = new  TaskAttachVO();
+            TaskAttachVO oTaskAttachVO = new TaskAttachVO();
             
             String sKey = null;
+            sFileNameAndExt = sTextTranslit(sFileNameAndExt);
             
             if (aContent != null) {
                 if(sID_StorageType.equals("Mongo")){
-                    sKey = bytesDataStorage.saveData(aContent);
+                    sKey = oBytesDataStaticStorage.saveData(aContent);
                 }
                 if (sID_StorageType.equals("Redis")){
                     try {
@@ -63,6 +66,8 @@ public class AttachmetService {
                         throw new RuntimeException(ex);
                     }
                }
+            }else{
+                throw new RuntimeException("Content is null");
             }
             
             LOG.info("database sKey: " + sKey);

@@ -365,7 +365,7 @@ public abstract class AbstractModelTask {
                             String sID_StorageType = oTaskAttachVO.getsID_StorageType();
                             
                             if(sID_StorageType.equals("Redis")){
-                                oObjectFileService.moveAttachsToMongo(null, null, "Process ID");
+                                
                                 oTaskAttachVO.setsID_StorageType("Mongo");
                                 oTaskAttachVO.setsKey("Need to find key");
                             }
