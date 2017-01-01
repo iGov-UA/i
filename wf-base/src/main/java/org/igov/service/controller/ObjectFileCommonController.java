@@ -831,7 +831,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "если не null - удаляем аттач перед записью", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
-            @RequestBody String sData) throws IOException{        
+            @RequestBody String sData) {        
             
             LOG.info("setAttachment nID_Process: " + nID_Process);
             LOG.info("setAttachment bSigned: " + bSigned);
@@ -866,7 +866,7 @@ public class ObjectFileCommonController {
             }
             
             //return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, sData.getBytes(Charset.forName("UTF-8")));
-            return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, file.getBytes());
+            return "Param: " + attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, file.getBytes());
     }
 
     
