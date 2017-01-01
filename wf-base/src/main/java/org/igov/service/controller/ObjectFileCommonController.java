@@ -841,7 +841,7 @@ public class ObjectFileCommonController {
             LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
             LOG.info("setAttachment sID_Field: " + sID_Field);
             LOG.info("setAttachment sContentType: " + sContentType);
-            LOG.info("setAttachment sContentType: " + sData);
+            LOG.info("setAttachment sData: " + sData);
             
             List<Map<String, Object>> aAttribute_JSON = new ArrayList<>();
         
@@ -865,8 +865,8 @@ public class ObjectFileCommonController {
                 }
             }
             
-            //return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, sData.getBytes(Charset.forName("UTF-8")));
-            return "Param: " + attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, file.getBytes());
+            return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, sData.getBytes(Charset.forName("UTF-8")));
+            //return "Param: " + attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, file.getBytes());
     }
 
     
