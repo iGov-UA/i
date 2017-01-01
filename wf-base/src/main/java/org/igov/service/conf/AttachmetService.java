@@ -49,6 +49,7 @@ public class AttachmetService {
             LOG.info("createAttachment sID_StorageType: " + sID_StorageType);
             LOG.info("createAttachment saAttribute_JSON size: " + saAttribute_JSON.size());
             LOG.info("createAttachment aContent: " + new String(aContent));
+             
             
             TaskAttachVO oTaskAttachVO = new TaskAttachVO();
             
