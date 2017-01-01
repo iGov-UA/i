@@ -865,7 +865,7 @@ public class ObjectFileCommonController {
                 }
             }
             
-            return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, sData.getBytes(Charset.forName("UTF-8")));
+            return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, sData.getBytes());
             //return "Param: " + attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, file.getBytes());
     }
 
