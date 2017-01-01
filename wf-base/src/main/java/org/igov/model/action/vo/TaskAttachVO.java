@@ -10,32 +10,32 @@ import java.util.Map;
  */
 public class TaskAttachVO {
     
-    @JsonProperty(value = "sID_StorageType")
+    //@JsonProperty(value = "sID_StorageType")
     private String sID_StorageType;
     
-    @JsonProperty(value = "sKey")
+    //@JsonProperty(value = "sKey")
     private String sKey;
     
-    @JsonProperty(value = "sVersion")
+    //@JsonProperty(value = "sVersion")
     private String sVersion;
     
-    @JsonProperty(value = "sDateTime")
+    //@JsonProperty(value = "sDateTime")
     private String sDateTime;
     
-    @JsonProperty(value = "sFileNameAndExt")
+    //@JsonProperty(value = "sFileNameAndExt")
     private String sFileNameAndExt;
     
-    @JsonProperty(value = "sContentType")
+    //@JsonProperty(value = "sContentType")
     private String sContentType;
     
-    @JsonProperty(value = "nBytes")
+    //@JsonProperty(value = "nBytes")
     private String nBytes;
     
-    @JsonProperty(value = "bSigned")
+    //@JsonProperty(value = "bSigned")
     private boolean bSigned;
     
-    @JsonProperty(value = "aAttribute")
-    private List<Map<String, Object>> aAttribute;
+    //@JsonProperty(value = "aAttribute")
+    //private List<Map<String, Object>> aAttribute;
 
     public TaskAttachVO() {
     }
@@ -72,9 +72,9 @@ public class TaskAttachVO {
         return bSigned;
     }
 
-    public List<Map<String, Object>> getaAttribute() {
+    /*public List<Map<String, Object>> getaAttribute() {
         return aAttribute;
-    }
+    }*/
 
     public void setsID_StorageType(String sID_StorageType) {
         this.sID_StorageType = sID_StorageType;
@@ -108,8 +108,8 @@ public class TaskAttachVO {
         this.bSigned = bSigned;
     }
 
-    public void setaAttribute(List<Map<String, Object>> aAttribute) {
+    /*public void setaAttribute(List<Map<String, Object>> aAttribute) {
         this.aAttribute = aAttribute;
-    }
+    }*/
     
 }

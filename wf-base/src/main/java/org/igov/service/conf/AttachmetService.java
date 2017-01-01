@@ -84,7 +84,7 @@ public class AttachmetService {
             oTaskAttachVO.setsContentType("html/text");
             oTaskAttachVO.setnBytes(Integer.toString(aContent.length));
             oTaskAttachVO.setbSigned(bSigned);
-            oTaskAttachVO.setaAttribute(saAttribute_JSON);
+            //oTaskAttachVO.setaAttribute(saAttribute_JSON);
             
             String sID_Field = ((JSONObject)((Object)oTaskAttachVO)).toJSONString();
             oRuntimeService.setVariable(nID_Process, sID_Field, sKey);
