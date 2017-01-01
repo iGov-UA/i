@@ -865,8 +865,19 @@ public class ObjectFileCommonController {
                 }
             }
             
-            return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, sData.getBytes());
-            //return "Param: " + attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, file.getBytes());
+            if(sData != null && file != null){
+                throw new RuntimeException("File data and body data isn't null");
+            }
+            
+            if(sData != null){
+                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, sData.getBytes());
+            }
+            else if(file != null){
+                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute_JSON, file.getBytes());
+            }
+            else{
+                return "data is null";
+            }
     }
 
     
