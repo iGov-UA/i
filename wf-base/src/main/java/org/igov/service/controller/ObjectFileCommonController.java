@@ -826,7 +826,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process,
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
-            @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "saAttribute_JSON", required = false, defaultValue = "[]") List<Map<String, Object>> saAttribute_JSON,
+            @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
             @ApiParam(value = "файл для сохранения в БД", required = false)@RequestParam(value = "oFile", required = false) MultipartFile file,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "если не null - удаляем аттач перед записью", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
@@ -836,7 +836,7 @@ public class ObjectFileCommonController {
             LOG.info("setAttachment nID_Process: " + nID_Process);
             LOG.info("setAttachment bSigned: " + bSigned);
             LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
-            LOG.info("setAttachment saAttribute_JSON: " + saAttribute_JSON);
+            LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
             LOG.info("setAttachment file: " + file);
             LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
             LOG.info("setAttachment sID_Field: " + sID_Field);
@@ -870,11 +870,15 @@ public class ObjectFileCommonController {
                 }
             } */
             
+            if (aAttribute == null){
+               aAttribute = new ArrayList<>();
+            }
+            
             if(sData != null){
-                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, saAttribute_JSON, sData.getBytes(Charsets.UTF_8));
+                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute, sData.getBytes(Charsets.UTF_8));
             }
             else if(file != null){
-                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, saAttribute_JSON, file.getBytes());
+                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute, file.getBytes());
             }
             else{
                 return "data is null";
