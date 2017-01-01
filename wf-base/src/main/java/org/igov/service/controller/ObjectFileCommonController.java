@@ -819,14 +819,14 @@ public class ObjectFileCommonController {
     
     @ApiOperation(value = "setAttachment", notes
             = "##### загрузка файла-атачмента по новому концепту")
-    @RequestMapping(value = "/setAttachment", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/setAttachment", method = {RequestMethod.POST, RequestMethod.GET}, produces = "application/json")
     @Transactional
     public @ResponseBody
     String setAttachment(
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process,
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
-            @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = true) @RequestParam(value = "saAttribute_JSON", required = false, defaultValue = "[]") String saAttribute_JSON,
+            @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "saAttribute_JSON", required = false, defaultValue = "[]") String saAttribute_JSON,
             @ApiParam(value = "файл для сохранения в БД", required = false)@RequestParam(value = "oFile", required = false) MultipartFile file,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "если не null - удаляем аттач перед записью", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
