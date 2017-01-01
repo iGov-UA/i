@@ -1,5 +1,6 @@
 package org.igov.model.action.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
@@ -9,15 +10,31 @@ import java.util.Map;
  */
 public class TaskAttachVO {
     
+    @JsonProperty(value = "sID_StorageType")
     private String sID_StorageType;
+    
+    @JsonProperty(value = "sKey")
     private String sKey;
+    
+    @JsonProperty(value = "sVersion")
     private String sVersion;
+    
+    @JsonProperty(value = "sDateTime")
     private String sDateTime;
+    
+    @JsonProperty(value = "sFileNameAndExt")
     private String sFileNameAndExt;
+    
+    @JsonProperty(value = "sContentType")
     private String sContentType;
+    
+    @JsonProperty(value = "nBytes")
     private String nBytes;
+    
+    @JsonProperty(value = "bSigned")
     private boolean bSigned;
     
+    @JsonProperty(value = "aAttribute")
     private List<Map<String, Object>> aAttribute;
 
     public TaskAttachVO() {
