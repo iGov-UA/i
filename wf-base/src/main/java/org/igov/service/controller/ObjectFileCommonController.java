@@ -819,7 +819,7 @@ public class ObjectFileCommonController {
     
     @ApiOperation(value = "setAttachment", notes
             = "##### загрузка файла-атачмента по новому концепту")
-    @RequestMapping(value = "/setAttachment", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/setAttachment", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public @ResponseBody
     String setAttachment(
