@@ -833,6 +833,16 @@ public class ObjectFileCommonController {
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @RequestBody String sData){        
             
+            LOG.info("setAttachment nID_Process: " + nID_Process);
+            LOG.info("setAttachment bSigned: " + bSigned);
+            LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
+            LOG.info("setAttachment saAttribute_JSON: " + saAttribute_JSON);
+            LOG.info("setAttachment file: " + file);
+            LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
+            LOG.info("setAttachment sID_Field: " + sID_Field);
+            LOG.info("setAttachment sContentType: " + sContentType);
+            LOG.info("setAttachment sContentType: " + sData);
+            
             List<Map<String, Object>> aAttribute_JSON = new ArrayList<>();
         
             if(!saAttribute_JSON.equals("[]")){

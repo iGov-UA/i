@@ -41,6 +41,13 @@ public class AttachmetService {
 			boolean bSigned, String sID_StorageType, List<Map<String, Object>> saAttribute_JSON,
 			byte[] aContent){
             
+            LOG.info("createAttachment nID_Process: " + nID_Process);
+            LOG.info("createAttachment sFileNameAndExt: " + sFileNameAndExt);
+            LOG.info("createAttachment bSigned: " + bSigned);
+            LOG.info("createAttachment sID_StorageType: " + sID_StorageType);
+            LOG.info("createAttachment saAttribute_JSON size: " + saAttribute_JSON.size());
+            LOG.info("createAttachment aContent: " + new String(aContent));
+            
             TaskAttachVO oTaskAttachVO = new  TaskAttachVO();
             
             String sKey = null;
