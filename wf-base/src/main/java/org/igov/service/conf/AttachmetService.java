@@ -110,6 +110,8 @@ public class AttachmetService {
         Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
         byte [] aResultArray = null;
         String sFileName = null;
+        String sVersion = null;
+        String sContentType = null;
         LOG.info("VariableMap: " + variables);
                    
         if (variables != null) {
@@ -123,6 +125,8 @@ public class AttachmetService {
                 String sID_StorageType = (String)result.get("sID_StorageType");
                 String sKey = (String)result.get("sKey");
                 sFileName = (String)result.get("sFileNameExt");
+                sVersion = (String)result.get("sVersion");
+                sContentType = (String)result.get("sContentType");      
                     
                 if(sID_StorageType.equals("Mongo")){
                     aResultArray = oBytesDataStaticStorage.getData(sKey);
@@ -144,7 +148,7 @@ public class AttachmetService {
         if(aResultArray != null){
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(aResultArray);
             //ObjectInputStream ois = new ObjectInputStream(byteArrayInputStream);
-            resultFile = new VariableMultipartFile(byteArrayInputStream, null, sFileName, null);
+            resultFile = new VariableMultipartFile(byteArrayInputStream, sContentType, sFileName, sVersion);
             //ois.close();
         }
         
