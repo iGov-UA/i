@@ -847,6 +847,8 @@ public class ObjectFileCommonController {
                 throw new RuntimeException("File data and body data isn't null");
             }
 
+            JSONParser parser = new JSONParser();
+            
             
             /*List<Map<String, Object>> aAttribute_JSON = new ArrayList<>();
         
@@ -875,10 +877,10 @@ public class ObjectFileCommonController {
             }
             
             if(sData != null){
-                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute, sData.getBytes(Charsets.UTF_8));
+                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, sContentType, aAttribute, sData.getBytes(Charsets.UTF_8));
             }
             else if(file != null){
-                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, aAttribute, file.getBytes());
+                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, sContentType, aAttribute, file.getBytes());
             }
             else{
                 return "data is null";
