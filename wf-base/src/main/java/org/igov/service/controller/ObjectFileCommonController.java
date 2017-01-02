@@ -825,7 +825,10 @@ public class ObjectFileCommonController {
             @ApiParam(value = "ИД процесса", required = true) @RequestParam(required = true, value = "nID_Process") String nID_Process,
             @ApiParam(value = "ИД поля", required = true) @RequestParam(required = true, value = "sID_Field") String sID_Field,
             HttpServletResponse httpResponse) throws Exception {
-
+        
+        LOG.info("nID_Process: " + nID_Process);
+        LOG.info("sID_Field: " + sID_Field);
+        
         VariableMultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field);
         
         httpResponse.setHeader("Content-disposition", "attachment; filename="

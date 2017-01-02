@@ -110,10 +110,12 @@ public class AttachmetService {
         Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
         byte [] aResultArray = null;
         String sFileName = null;
-        
+        LOG.info("VariableMap: " + variables);
+                   
         if (variables != null) {
             if (variables.containsKey(sID_Field)){
-                    
+                LOG.info("VariableMap contains found key");
+                
                 JSONParser parser = new JSONParser();
                 JSONObject result = (JSONObject) parser.parse(String.valueOf(variables.get(sID_Field)));
                     
@@ -123,9 +125,15 @@ public class AttachmetService {
                     
                 if(sID_StorageType.equals("Mongo")){
                     aResultArray = oBytesDataStaticStorage.getData(sKey);
+                    if(aResultArray != null){
+                        LOG.info("Mongo byte array isn't null");
+                    }
                 }
                 if (sID_StorageType.equals("Redis")){
                     aResultArray = oBytesDataInmemoryStorage.getBytes(sKey);
+                     if(aResultArray != null){
+                        LOG.info("Redis byte array isn't null");
+                    }
                 }
             }
         }
@@ -138,6 +146,10 @@ public class AttachmetService {
             
             resultFile = new VariableMultipartFile(ois, null, sFileName, null);
             ois.close();
+        }
+        
+        if(resultFile != null){
+            LOG.info("result file isn't null");
         }
         
         return resultFile;
