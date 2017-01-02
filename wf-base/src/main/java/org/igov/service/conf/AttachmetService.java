@@ -143,10 +143,9 @@ public class AttachmetService {
         
         if(aResultArray != null){
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(aResultArray);
-            ObjectInputStream ois = new ObjectInputStream(byteArrayInputStream);
-            
-            resultFile = new VariableMultipartFile(ois, null, sFileName, null);
-            ois.close();
+            //ObjectInputStream ois = new ObjectInputStream(byteArrayInputStream);
+            resultFile = new VariableMultipartFile(byteArrayInputStream, null, sFileName, null);
+            //ois.close();
         }
         
         if(resultFile != null){
