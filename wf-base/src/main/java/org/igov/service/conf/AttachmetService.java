@@ -100,7 +100,7 @@ public class AttachmetService {
         
         
         String sID_Field = JsonRestUtils.toJson((Object)oTaskAttachVO);
-        oRuntimeService.setVariable(nID_Process, sID_Field, sKey);
+        oRuntimeService.setVariable(nID_Process, sKey, sID_Field);
             
 	return sID_Field;
     }
@@ -113,6 +113,7 @@ public class AttachmetService {
         LOG.info("VariableMap: " + variables);
                    
         if (variables != null) {
+            
             if (variables.containsKey(sID_Field)){
                 LOG.info("VariableMap contains found key");
                 
