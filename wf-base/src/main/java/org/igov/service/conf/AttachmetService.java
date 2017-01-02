@@ -1,21 +1,33 @@
 package org.igov.service.conf;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.RuntimeService;
 
 
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.Task;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.vo.TaskAttachVO;
 import static org.igov.util.Tool.sTextTranslit;
 import org.json.simple.JSONObject;
 import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.VariableMultipartFile;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +37,7 @@ import org.springframework.stereotype.Service;
 public class AttachmetService {
 	
     @Autowired
-    protected TaskService taskService;
+    protected TaskService oTaskService;
         
     @Autowired
     private RuntimeService oRuntimeService;
@@ -92,4 +104,42 @@ public class AttachmetService {
             
 	return sID_Field;
     }
+    
+    public VariableMultipartFile getAttachment(String nID_Process, String sID_Field) throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException {
+       
+        Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
+        byte [] aResultArray = null;
+        String sFileName = null;
+        
+        if (variables != null) {
+            if (variables.containsKey(sID_Field)){
+                    
+                JSONParser parser = new JSONParser();
+                JSONObject result = (JSONObject) parser.parse(String.valueOf(variables.get(sID_Field)));
+                    
+                String sID_StorageType = (String)result.get("sID_StorageType");
+                String sKey = (String)result.get("sKey");
+                sFileName = (String)result.get("sFileNameExt");
+                    
+                if(sID_StorageType.equals("Mongo")){
+                    aResultArray = oBytesDataStaticStorage.getData(sKey);
+                }
+                if (sID_StorageType.equals("Redis")){
+                    aResultArray = oBytesDataInmemoryStorage.getBytes(sKey);
+                }
+            }
+        }
+        
+        VariableMultipartFile resultFile = null;
+        
+        if(aResultArray != null){
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(aResultArray);
+            ObjectInputStream ois = new ObjectInputStream(byteArrayInputStream);
+            
+            resultFile = new VariableMultipartFile(ois, null, sFileName, null);
+            ois.close();
+        }
+        
+        return resultFile;
+    }    
 }

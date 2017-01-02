@@ -817,6 +817,27 @@ public class ObjectFileCommonController {
         //D_FILL=HFILL=01012016
     }
     
+    @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
+    @RequestMapping(value = "/getAttachment", method = RequestMethod.GET)
+    @Transactional
+    public @ResponseBody
+    byte[] getAttachment(
+            @ApiParam(value = "ИД процесса", required = true) @RequestParam(required = true, value = "nID_Process") String nID_Process,
+            @ApiParam(value = "ИД поля", required = true) @RequestParam(required = true, value = "sID_Field") String sID_Field,
+            HttpServletResponse httpResponse) throws Exception {
+
+        VariableMultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field);
+        
+        httpResponse.setHeader("Content-disposition", "attachment; filename="
+                + multipartFile.getOriginalFilename());
+        httpResponse.setHeader("Content-Type", "application/octet-stream");
+
+        httpResponse.setContentLength(multipartFile.getBytes().length);
+
+        return multipartFile.getBytes();
+    }
+    
+    
     @ApiOperation(value = "setAttachment", notes
             = "##### загрузка файла-атачмента по новому концепту")
     @RequestMapping(value = "/setAttachment", method = RequestMethod.POST, produces = "application/json")
@@ -846,32 +867,7 @@ public class ObjectFileCommonController {
             if(sData != null && file != null){
                 throw new RuntimeException("File data and body data isn't null");
             }
-
-            JSONParser parser = new JSONParser();
-            
-            
-            /*List<Map<String, Object>> aAttribute_JSON = new ArrayList<>();
-        
-            if(!saAttribute_JSON.equals("[]")){
-                
-                JSONParser parser = new JSONParser();
-                JSONObject oJSONObject;
-                
-                try {
-                    oJSONObject = (JSONObject) parser.parse(saAttribute_JSON);
-                    JSONArray aAttribute = (JSONArray) oJSONObject.get("Attribute");
-                
-                    for (int i = 0; i < aAttribute.size(); i++){
-                        JSONObject oJSONAttributeObject = (JSONObject) aAttribute.get(i);
-                        Map<String, Object> attributeMap = new HashMap<>();
-                        attributeMap.put((String)oJSONAttributeObject.get("sID"), oJSONAttributeObject.get("sValue"));
-                        aAttribute_JSON.add(attributeMap);
-                    }
-                } catch (ParseException ex) {
-                    throw new RuntimeException(ex);
-                }
-            } */
-            
+           
             if (aAttribute == null){
                aAttribute = new ArrayList<>();
             }
