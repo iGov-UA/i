@@ -74,7 +74,7 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i75116857714"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="16.09"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="15.78"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Отримання довідки про склад сім'ї"></activiti:formProperty>
@@ -84,9 +84,9 @@
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var typeMail = execution.getVariable('asTypeMail');
-var sum = 16.09;
+var sum = 15.78;
 if (typeMail === 'sRekPrior') {
-	sum =  36.45;
+	sum =  36.14;
 }
 execution.setVariable('sSum', sum);
 var distr = '';
@@ -444,16 +444,16 @@ execution.setVariable('sNotification_day', timer)
           <activiti:value id="sShev" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPostAddress" name="Адреса, на яку надіслати листа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTypeMail" name="Тип поштового відправлення" type="enum" required="true">
+        <activiti:formProperty id="asTypeMail" name="Тип поштового відправлення" type="enum">
           <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
           <activiti:value id="sRekPrior" name="рекомендований лист з кур'єрською доставкою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDistrict1" name="Де отримати документи для поштового відправлення" type="enum" writable="false">
           <activiti:value id="sNo1" name=" "></activiti:value>
-          <activiti:value id="sSobor" name="Единий абонентський відділ-1, проспект Героїв 20 Б"></activiti:value>
-          <activiti:value id="sChech" name="Единий абонентський відділ-2, проспект Б. Хмельницкого 14"></activiti:value>
-          <activiti:value id="sShev" name="Единий абонентський відділ-2, проспект Б. Хмельницкого 14"></activiti:value>
+          <activiti:value id="sSobor" name="Єдиний абонентський відділ-1, проспект Героїв 20 Б"></activiti:value>
+          <activiti:value id="sChech" name="Єдиний абонентський відділ-2, проспект Б. Хмельницкого 14"></activiti:value>
+          <activiti:value id="sShev" name="Єдиний абонентський відділ-2, проспект Б. Хмельницкого 14"></activiti:value>
         </activiti:formProperty>
       </extensionElements>
     </userTask>
