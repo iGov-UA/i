@@ -2807,7 +2807,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
 
         //String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         //LOG.info("Result: {}", jsonRes);
-        return oActionTaskService.getBusinessProcessesOfLogin(sLogin, bDocOnly);
+        return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly);
     }  
     
 
