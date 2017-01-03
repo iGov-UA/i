@@ -76,9 +76,11 @@ public class AttachmetService {
             }
             if (sID_StorageType.equals("Redis")){
                 try {
-                    sKey = oBytesDataInmemoryStorage.putBytes(AbstractModelTask.multipartFileToByteArray(AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory(aContent)).toByteArray());
-                } catch (RecordInmemoryException|IOException|ClassNotFoundException ex) {
-                     throw new RuntimeException(ex);
+                    //sKey = oBytesDataInmemoryStorage.putBytes(AbstractModelTask.multipartFileToByteArray(AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory(aContent)).toByteArray());
+                    sKey = oBytesDataInmemoryStorage.putBytes(aContent);
+                //} catch (RecordInmemoryException|IOException|ClassNotFoundException ex) {
+                } catch (RecordInmemoryException ex){
+                    throw new RuntimeException(ex);
                 }
             }
         }else{
