@@ -1823,7 +1823,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
         List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
         for (Map<String, Object> taskData : tasks){
         	for (Map.Entry<String, String> currentFilter : mapOfFieldsToSort.entrySet()){
-        		LOG.info("Matching process variables {} and task variables {} with the filter {}", task.getProcessVariables(), task.getTaskLocalVariables(), currentFilter);
+        		LOG.info("Matching variables {} with the filter {}", taskData, currentFilter);
         		if (taskData.containsKey(currentFilter.getKey()) &&
         				matchValues(taskData.get(currentFilter.getKey()), currentFilter.getValue())) {
         			LOG.info("Adding task {} as it matches pattern {}", taskData, currentFilter);
