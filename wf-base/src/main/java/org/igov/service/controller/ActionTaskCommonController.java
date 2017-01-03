@@ -1822,14 +1822,21 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
         
         List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
         for (Map<String, Object> taskData : tasks){
+        	boolean toSkip = false;
         	for (Map.Entry<String, String> currentFilter : mapOfFieldsToSort.entrySet()){
         		LOG.info("Matching variables {} with the filter {}", taskData, currentFilter);
-        		if (taskData.containsKey(currentFilter.getKey()) &&
-        				matchValues(taskData.get(currentFilter.getKey()), currentFilter.getValue())) {
-        			LOG.info("Adding task {} as it matches pattern {}", taskData, currentFilter);
-        			res.add(taskData);
+        		if (!taskData.containsKey(currentFilter.getKey()) ||
+        				!matchValues(taskData.get(currentFilter.getKey()), currentFilter.getValue())) {
+        			LOG.info("Skipping task {}. It doesn't match filter {}", taskData, currentFilter);
+        			toSkip = true;
+        			break;
         		} 
         	}
+        	if (toSkip){
+        		continue;
+        	}
+			LOG.info("Adding task {} as it matches pattern", taskData);
+        	res.add(taskData);
         }
 		return res;
 	}
