@@ -363,8 +363,8 @@ java.lang.System.out.println("HELLO");</script>
     <sequenceFlow id="flow58" sourceRef="scripttask3" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <scriptTask id="scripttask4" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var processInstanceId =execution.getVariable('processInstanceId')
-var sMainExecutor = processSubjectTreeService.getCatalogProcessSubjectTree('processInstanceId', 1, null, false, 1)
-execution.setVariable('sMainExecutor', sMainExecutor)</script>
+var sMainExecutor = processSubjectTreeService.getCatalogProcessSubjectTree(processInstanceId, 1, null, false, 1)
+</script>
     </scriptTask>
     <sequenceFlow id="flow59" sourceRef="usertask2" targetRef="scripttask4"></sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="scripttask4" targetRef="usertask2_yellow"></sequenceFlow>
