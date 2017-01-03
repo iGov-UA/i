@@ -1,6 +1,7 @@
 package org.igov.service.conf;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.base.Charsets;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,7 +94,7 @@ public class AttachmetService {
         oTaskAttachVO.setsVersion(df.format(new Date()));
         oTaskAttachVO.setsDateTime(dtf.format(new Date()));
         oTaskAttachVO.setsFileNameAndExt(sFileNameAndExt);
-        oTaskAttachVO.setsContentType("html/text");
+        oTaskAttachVO.setsContentType(sContentType);
         oTaskAttachVO.setnBytes(Integer.toString(aContent.length));
         oTaskAttachVO.setbSigned(bSigned);
         oTaskAttachVO.setaAttribute(saAttribute_JSON);
@@ -124,7 +125,7 @@ public class AttachmetService {
                     
                 String sID_StorageType = (String)result.get("sID_StorageType");
                 String sKey = (String)result.get("sKey");
-                sFileName = (String)result.get("sFileNameExt");
+                sFileName = (String)result.get("sFileNameAndExt");
                 sVersion = (String)result.get("sVersion");
                 sContentType = (String)result.get("sContentType");      
                     
@@ -146,9 +147,11 @@ public class AttachmetService {
         VariableMultipartFile resultFile = null;
         
         if(aResultArray != null){
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(aResultArray);
+            String sResult = new String(aResultArray, "UTF-8");
+            
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(sResult.getBytes(Charsets.UTF_8));
             //ObjectInputStream ois = new ObjectInputStream(byteArrayInputStream);
-            resultFile = new VariableMultipartFile(byteArrayInputStream, sContentType, sFileName, sVersion);
+            resultFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sFileName, sContentType);
             //ois.close();
         }
         
