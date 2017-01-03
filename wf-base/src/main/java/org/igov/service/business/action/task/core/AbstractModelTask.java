@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
+import org.igov.util.VariableMultipartFile;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -41,6 +42,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.igov.service.business.object.ObjectFileService;
+import org.igov.service.conf.AttachmetService;
 import org.json.simple.JSONArray;
 
 public abstract class AbstractModelTask {
@@ -58,11 +60,14 @@ public abstract class AbstractModelTask {
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     @Autowired
     public TaskService taskService;
-    @Autowired
+    /*@Autowired
     private ObjectFileService oObjectFileService;
     
     @Autowired
-    private IBytesDataStorage oBytesDataStaticStorage;
+    private IBytesDataStorage oBytesDataStaticStorage;*/
+    
+    @Autowired
+    protected AttachmetService oAttachmetService;
     
     @Autowired
     GeneralConfig generalConfig;
@@ -372,15 +377,32 @@ public abstract class AbstractModelTask {
                             
                             String sID_StorageType = oTaskAttachVO.getsID_StorageType();
                             LOG.info("oJsonTaskAttachVO sID_StorageType: " + sID_StorageType);
+                            VariableMultipartFile oVariableMultipartFile = null;
                             
-                            if(sID_StorageType.equals("Redis")){
-                                //byte [] aByteFile = oBytesDataInmemoryStorage.getBytes(oTaskAttachVO.getsKey());
+                            try {
+                                oVariableMultipartFile = oAttachmetService.getAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n));
+                            } catch (ParseException|RecordInmemoryException|IOException|ClassNotFoundException ex) {
+                                LOG.info("getAttachment has some errors: " + ex);
+                            }
+                            
+                            if(oVariableMultipartFile != null){
+                                byte [] aByteFile = oVariableMultipartFile.getBytes();
+                                try {
+                                    oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n),
+                                            oTaskAttachVO.getsFileNameAndExt(), oTaskAttachVO.isbSigned(), "Mongo", "text/html", oTaskAttachVO.getaAttribute(), aByteFile);
+                                } catch (JsonProcessingException ex) {
+                                    LOG.info("createAttachment has some errors: " + ex);
+                                }
+                            }else{
+                                LOG.info("oVariableMultipartFile is null");
+                            }
+                                
                                 //String sMongoKey = oBytesDataStaticStorage.saveData(aByteFile);
                                 //oTaskAttachVO.setsKey(sMongoKey);
                                 oTaskAttachVO.setsID_StorageType("Mongo");
                                 //String sNewValue = JsonRestUtils.toJson((Object)oTaskAttachVO);
                                 //LOG.info("New oTaskAttachVO value from listner: " + sNewValue);
-                            }
+                            
                         }else if (oJsonTaskAttachVO != null && getField(oFormData, asFieldID.get(n)).getType() instanceof TableFormType){
                             LOG.info("It isn't TaskAttachVO. So, maybe it's a table? ^_^ ");
                             try {
@@ -530,7 +552,8 @@ public abstract class AbstractModelTask {
             }
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
-        return aAttachment;
+        //return aAttachemet;
+        return new LinkedList<Attachment>();
 
     }
 
