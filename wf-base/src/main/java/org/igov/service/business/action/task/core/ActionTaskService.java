@@ -45,6 +45,7 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
@@ -1177,24 +1178,27 @@ public class ActionTaskService {
         return amPropertyBP;
     }
     
-    //TODO: Need to define a way how to get field from deployment 
     public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly){
 
         List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
 				sLogin, bDocOnly);
 
-        List<Map<String, String>> amPropertyBP = new LinkedList<>();
+        Map<String,Map<String, String>> amPropertyBP = new HashMap<String,Map<String, String>>();
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return){
+        	StartFormData formData = oFormService.getStartFormData(oProcessDefinition.getId());
             Map<String, String> mPropertyBP = new HashMap<String, String>();
-//            for (Map.Entry<String, String> currVar : oProcessDefinition.entrySet()){
-//            	mPropertyBP.put("sID", currVar.getKey());
-//            	mPropertyBP.put("sName", oProcessDefinition.getName());
-//            }
-            LOG.info("Added record to response {}", mPropertyBP);
-            amPropertyBP.add(mPropertyBP);
+            for (FormProperty property : formData.getFormProperties()){
+            	mPropertyBP.put("sID", property.getId());
+            	mPropertyBP.put("sName", property.getName());
+            	mPropertyBP.put("sID_Type", property.getType().getName());
+                amPropertyBP.put(mPropertyBP.get("sID"), mPropertyBP);
+                LOG.info("Added record to response {}", mPropertyBP);
+            }
         }
 
-        return amPropertyBP;
+        List<Map<String, String>> res = new LinkedList<Map<String,String>>();
+        res.addAll(amPropertyBP.values());
+        return res;
     }
 
 	private List<ProcessDefinition> getBusinessProcessesObjectsOfLogin(
