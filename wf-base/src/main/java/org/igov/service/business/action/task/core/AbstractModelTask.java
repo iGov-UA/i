@@ -334,7 +334,7 @@ public abstract class AbstractModelTask {
      * @param oTask where we add Attachments.
      * @return list of Attachment
      */
-    public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask) throws RecordInmemoryException, JsonProcessingException {
+    public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask){
         DelegateExecution oExecution = oTask.getExecution();
         List<Attachment> aAttachment = new LinkedList<>();
         LOG.info("Start FileTaskUploadListener");
@@ -374,12 +374,12 @@ public abstract class AbstractModelTask {
                             LOG.info("oJsonTaskAttachVO sID_StorageType: " + sID_StorageType);
                             
                             if(sID_StorageType.equals("Redis")){
-                                byte [] aByteFile = oBytesDataInmemoryStorage.getBytes(oTaskAttachVO.getsKey());
-                                String sMongoKey = oBytesDataStaticStorage.saveData(aByteFile);
-                                oTaskAttachVO.setsKey(sMongoKey);
+                                //byte [] aByteFile = oBytesDataInmemoryStorage.getBytes(oTaskAttachVO.getsKey());
+                                //String sMongoKey = oBytesDataStaticStorage.saveData(aByteFile);
+                                //oTaskAttachVO.setsKey(sMongoKey);
                                 oTaskAttachVO.setsID_StorageType("Mongo");
-                                String sNewValue = JsonRestUtils.toJson((Object)oTaskAttachVO);
-                                LOG.info("New oTaskAttachVO value from listner: " + sNewValue);
+                                //String sNewValue = JsonRestUtils.toJson((Object)oTaskAttachVO);
+                                //LOG.info("New oTaskAttachVO value from listner: " + sNewValue);
                             }
                         }else if (oJsonTaskAttachVO != null && getField(oFormData, asFieldID.get(n)).getType() instanceof TableFormType){
                             LOG.info("It isn't TaskAttachVO. So, maybe it's a table? ^_^ ");
