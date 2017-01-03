@@ -360,18 +360,20 @@ public abstract class AbstractModelTask {
                             LOG.info("There aren't TaskAttachVO objects in sFieldValue - JSON parsing error: ", ex);
                         }
                         
-                        if( oJsonTaskAttachVO != null && oJsonTaskAttachVO instanceof TaskAttachVO){
+                        if(oJsonTaskAttachVO != null && oJsonTaskAttachVO instanceof TaskAttachVO){
+                            LOG.info("oJsonTaskAttachVO instanceof TaskAttachVO)");
+                            
                             TaskAttachVO oTaskAttachVO = (TaskAttachVO) oJsonTaskAttachVO;
                             
                             String sID_StorageType = oTaskAttachVO.getsID_StorageType();
+                            LOG.info("oJsonTaskAttachVO sID_StorageType: " + sID_StorageType);
                             
                             if(sID_StorageType.equals("Redis")){
-                                
                                 oTaskAttachVO.setsID_StorageType("Mongo");
                                 oTaskAttachVO.setsKey("Need to find key");
                             }
                             
-                        }else if (oJsonTaskAttachVO != null && getField(oFormData, asFieldID.get(n) ).getType() instanceof TableFormType){
+                        }else if (oJsonTaskAttachVO != null && getField(oFormData, asFieldID.get(n)).getType() instanceof TableFormType){
                             
                             try {
                                 JSONObject oJSONObject = (JSONObject) parser.parse(sFieldValue);   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
