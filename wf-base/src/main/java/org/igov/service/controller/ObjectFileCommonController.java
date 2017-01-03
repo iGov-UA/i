@@ -853,7 +853,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
             @ApiParam(value = "файл для сохранения в БД", required = false)@RequestParam(value = "oFile", required = false) MultipartFile file,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
-            @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
+            @ApiParam(value = "ид поля", required = true)@RequestParam(value = "sID_Field", required = true) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "контент файла в виде строки", required = false)@RequestBody String sData) throws IOException {        
             
@@ -876,10 +876,10 @@ public class ObjectFileCommonController {
             }
             
             if(sData != null){
-                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, sContentType, aAttribute, sData.getBytes(Charsets.UTF_8));
+                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, sContentType, aAttribute, sData.getBytes(Charsets.UTF_8));
             }
             else if(file != null){
-                return attachmetService.createAttachment(nID_Process, sFileNameAndExt, bSigned, sID_StorageType, sContentType, aAttribute, file.getBytes());
+                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, sContentType, aAttribute, file.getBytes());
             }
             else{
                 return "data is null";
