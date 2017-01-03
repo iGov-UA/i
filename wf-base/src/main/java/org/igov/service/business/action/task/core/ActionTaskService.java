@@ -1162,7 +1162,44 @@ public class ActionTaskService {
      */
     public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly){
 
-        if (sLogin==null || sLogin.isEmpty()) {
+        List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
+				sLogin, bDocOnly);
+
+        List<Map<String, String>> amPropertyBP = new LinkedList<>();
+        for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return){
+            Map<String, String> mPropertyBP = new HashMap<>();
+            mPropertyBP.put("sID", oProcessDefinition.getKey());
+            mPropertyBP.put("sName", oProcessDefinition.getName());
+            LOG.info("Added record to response {}", mPropertyBP);
+            amPropertyBP.add(mPropertyBP);
+        }
+
+        return amPropertyBP;
+    }
+    
+    //TODO: Need to define a way how to get field from deployment 
+    public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly){
+
+        List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
+				sLogin, bDocOnly);
+
+        List<Map<String, String>> amPropertyBP = new LinkedList<>();
+        for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return){
+            Map<String, String> mPropertyBP = new HashMap<String, String>();
+//            for (Map.Entry<String, String> currVar : oProcessDefinition.entrySet()){
+//            	mPropertyBP.put("sID", currVar.getKey());
+//            	mPropertyBP.put("sName", oProcessDefinition.getName());
+//            }
+            LOG.info("Added record to response {}", mPropertyBP);
+            amPropertyBP.add(mPropertyBP);
+        }
+
+        return amPropertyBP;
+    }
+
+	private List<ProcessDefinition> getBusinessProcessesObjectsOfLogin(
+			String sLogin, Boolean bDocOnly) {
+		if (sLogin==null || sLogin.isEmpty()) {
             LOG.error("Unable to found business processes for sLogin="+sLogin);
             throw new ActivitiObjectNotFoundException(
                     "Unable to found business processes for sLogin="+sLogin,
@@ -1237,18 +1274,8 @@ public class ActionTaskService {
         } else {
             LOG.info("Have not found active process definitions.");
         }
-
-        List<Map<String, String>> amPropertyBP = new LinkedList<>();
-        for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return){
-            Map<String, String> mPropertyBP = new HashMap<>();
-            mPropertyBP.put("sID", oProcessDefinition.getKey());
-            mPropertyBP.put("sName", oProcessDefinition.getName());
-            LOG.info("Added record to response {}", mPropertyBP);
-            amPropertyBP.add(mPropertyBP);
-        }
-
-        return amPropertyBP;
-    }    
+		return aProcessDefinition_Return;
+	}    
     
     
     
