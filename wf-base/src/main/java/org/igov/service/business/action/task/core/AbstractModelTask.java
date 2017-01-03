@@ -319,6 +319,7 @@ public abstract class AbstractModelTask {
      * @return list of Attachment
      */
     public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask) {
+        LOG.info("addAttachmentsToTask oTask: " + oTask.getId() + " process: " + oTask.getProcessInstanceId());
         DelegateExecution oExecution = oTask.getExecution();
         List<Attachment> aAttachment = new LinkedList<>();
         LOG.info("SCAN:file");
