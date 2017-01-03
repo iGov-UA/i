@@ -134,16 +134,16 @@ execution.setVariable("dPassportDate",strDate)
     <serviceTask id="servicetask2" name="Лист-звернення до держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+          <activiti:expression>noreply@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk1}]]></activiti:expression>
+          <activiti:expression>${sMailClerk1}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Оформлення щомісячної грошової допомоги у зв’язку з обмеженням споживання продуктів харчування потерпілим від наслідків аварії на ЧАЕС]]></activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Оформлення щомісячної грошової допомоги у зв’язку з обмеженням споживання продуктів харчування потерпілим від наслідків аварії на ЧАЕС</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -154,26 +154,26 @@ execution.setVariable("dPassportDate",strDate)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Оформлення щомісячної грошової допомоги у зв’язку з обмеженням споживання продуктів харчування потерпілим від наслідків аварії на ЧАЕС]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;
 				Ваш запит взято в роботу
-			</p>			
-			<br>
-			За наявності питань можете звернутись за наступними контактами<br>
-			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			&lt;/p&gt;			
+			&lt;br&gt;
+			За наявності питань можете звернутись за наступними контактами&lt;br&gt;
+			${sAddress}&lt;br&gt;
+			${sWorkTime}&lt;br&gt;
+			${sPhoneOrgan}&lt;br&gt;&lt;br&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrgan}.&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -219,14 +219,12 @@ execution.setVariable("dPassportDate",strDate)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>
-				${bankId_scan_passport},
+            <activiti:expression>${bankId_scan_passport},
 				${bankId_scan_inn},
 				${nFileChernobylCertificateChild},
 				${nFileMSEKDisability},
 				${nFilePersonalAccountBank},
-				${nFilePensionCertificate}
-			</activiti:expression>
+				${nFilePensionCertificate}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -242,30 +240,30 @@ execution.setVariable("dPassportDate",strDate)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Оформлення щомісячної грошової допомоги у зв’язку з обмеженням споживання продуктів харчування потерпілим від наслідків аварії на ЧАЕС]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;
 				За даними держоргану Вам ВІДМОВЛЕНО у наданні щомісячної грошової допомоги компенсації вартості продуктів харчування потерпілим від наслідків аварії на ЧАЕС
-			</p>
-			<p>
-				Коментар Державного службовця:<br>
-				<b><i>${decisionComment}</i></b>
-			</p>
-			<br>
-			За наявності питань можете звернутись за наступними контактами<br>
-			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			&lt;/p&gt;
+			&lt;p&gt;
+				Коментар Державного службовця:&lt;br&gt;
+				&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
+			&lt;/p&gt;
+			&lt;br&gt;
+			За наявності питань можете звернутись за наступними контактами&lt;br&gt;
+			${sAddress}&lt;br&gt;
+			${sWorkTime}&lt;br&gt;
+			${sPhoneOrgan}&lt;br&gt;&lt;br&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrgan}.&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -276,35 +274,35 @@ execution.setVariable("dPassportDate",strDate)
     <serviceTask id="servicetask6" name="Документи відповідають" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+          <activiti:expression>noreply@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Оформлення щомісячної грошової допомоги у зв’язку з обмеженням споживання продуктів харчування потерпілим від наслідків аварії на ЧАЕС]]></activiti:expression>
+          <activiti:expression>Оформлення щомісячної грошової допомоги у зв’язку з обмеженням споживання продуктів харчування потерпілим від наслідків аварії на ЧАЕС</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;
 				За даними держоргану Ваші документи відповідають умовам надання  
 				щомісячної грошової допомоги компенсації вартості продуктів харчування 
 				потерпілим від наслідків аварії на ЧАЕС
-			</p>
-			<p>
-				Всі надані дані були передані на обробку в центральний орган, для остаточного рішення. <br>
+			&lt;/p&gt;
+			&lt;p&gt;
+				Всі надані дані були передані на обробку в центральний орган, для остаточного рішення. &lt;br&gt;
 				На протязі 30 календарних днів ми надішлемо Вам листа з остаточним рішенням     
-			</p>
-			<br>
-			За наявності питань можете звернутись за наступними контактами<br>
-			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			&lt;/p&gt;
+			&lt;br&gt;
+			За наявності питань можете звернутись за наступними контактами&lt;br&gt;
+			${sAddress}&lt;br&gt;
+			${sWorkTime}&lt;br&gt;
+			${sPhoneOrgan}&lt;br&gt;&lt;br&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrgan}.&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -349,14 +347,12 @@ execution.setVariable("dPassportDate",strDate)
         <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('chernobyl/chaes_654_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>
-				${bankId_scan_passport},
+            <activiti:expression>${bankId_scan_passport},
 				${bankId_scan_inn},
 				${nFileChernobylCertificateChild},
 				${nFileMSEKDisability},
 				${nFilePersonalAccountBank},
-				${nFilePensionCertificate}
-			</activiti:expression>
+				${nFilePensionCertificate}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -375,32 +371,32 @@ execution.setVariable("dPassportDate",strDate)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Оформлення щомісячної грошової допомоги у зв’язку з обмеженням споживання продуктів харчування потерпілим від наслідків аварії на ЧАЕС]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;
 				Вітаємо, Вам буде НАДАНО щомісячну грошової допомоги компенсації вартості продуктів харчування 
 				потерпілим від наслідків аварії на ЧАЕС
-			</p>
-			<p>
-				Коментар Державного службовця:<br>
-				<b><i>${decisionComment}</i></b>
-			</p>
-			<br>
-			Для отримання компенсації зверніться за наступними контактами:<br>
-			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br><br>			
+			&lt;/p&gt;
+			&lt;p&gt;
+				Коментар Державного службовця:&lt;br&gt;
+				&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
+			&lt;/p&gt;
+			&lt;br&gt;
+			Для отримання компенсації зверніться за наступними контактами:&lt;br&gt;
+			${sAddress}&lt;br&gt;
+			${sWorkTime}&lt;br&gt;
+			${sPhoneOrgan}&lt;br&gt;&lt;br&gt;&lt;br&gt;			
 			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrgan}.&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

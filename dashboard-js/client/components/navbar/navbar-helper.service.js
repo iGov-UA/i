@@ -38,6 +38,12 @@
       showCount: true,
       tab: 'selfAssigned'
     }, {
+      title: 'Документи',
+      type: tasks.filterTypes.documents,
+      count: 0,
+      showCount: false,
+      tab: 'documents'
+    }, {
       title: 'Мій розклад',
       type: tasks.filterTypes.tickets,
       count: 0,

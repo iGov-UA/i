@@ -13,5 +13,6 @@ import java.util.List;
 public interface SubjectContactDao extends EntityDao<Long, SubjectContact> {
 
     List<SubjectContact> findContacts(Subject subject);
-    List<SubjectContact> findoMail(SubjectContact oMail); 
+    List<SubjectContact> findoMail(SubjectContact oMail);
+    List<SubjectContact> findContactsByCriteria(Subject subject, String sMail);
 }
