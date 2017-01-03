@@ -2783,7 +2783,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
     }    
     
     @ApiOperation(value = "Получение списка полей бизнес процессов, к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка полей бизнес процессов к которым у пользователя есть доступ #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=userId\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getFields?sLogin=userId\n\n"
             + "Метод возвращает json со списком полей бизнес процессов, к которым у пользователя есть доступ, в формате:\n"
             + "\n```json\n"
             + "[\n"
