@@ -77,7 +77,7 @@ public class AttachmetService {
             if (sID_StorageType.equals("Redis")){
                 try {
                     sKey = oBytesDataInmemoryStorage.putBytes(AbstractModelTask.multipartFileToByteArray(AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory(aContent)).toByteArray());
-                } catch (RecordInmemoryException|IOException ex) {
+                } catch (RecordInmemoryException|IOException|ClassNotFoundException ex) {
                      throw new RuntimeException(ex);
                 }
             }
