@@ -851,7 +851,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
             @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
-            @ApiParam(value = "файл для сохранения в БД", required = false)@RequestParam(value = "oFile", required = false) MultipartFile file,
+            @ApiParam(value = "файл для сохранения в БД", required = false)@RequestParam(value = "oFile", required = false) MultipartFile oFile,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = true)@RequestParam(value = "sID_Field", required = true) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
@@ -861,13 +861,13 @@ public class ObjectFileCommonController {
             LOG.info("setAttachment bSigned: " + bSigned);
             LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
             LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
-            LOG.info("setAttachment file: " + file);
+            LOG.info("setAttachment file: " + oFile);
             LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
             LOG.info("setAttachment sID_Field: " + sID_Field);
             LOG.info("setAttachment sContentType: " + sContentType);
             LOG.info("setAttachment sData: " + sData);
             
-            if(sData != null && file != null){
+            if(sData != null && oFile != null){
                 throw new RuntimeException("File data and body data isn't null");
             }
            
@@ -878,8 +878,8 @@ public class ObjectFileCommonController {
             if(sData != null){
                 return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, sContentType, aAttribute, sData.getBytes(Charsets.UTF_8));
             }
-            else if(file != null){
-                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, sContentType, aAttribute, file.getBytes());
+            else if(oFile != null){
+                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, sContentType, aAttribute, oFile.getBytes());
             }
             else{
                 return "data is null";
