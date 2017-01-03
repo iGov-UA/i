@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="common_zags_1" name="Подати заяву про державну реєстрацію шлюбу" isExecutable="true">
+  <process id="zags_0703_marriageFast" name="Подати заяву про державну реєстрацію шлюбу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string"></activiti:formProperty>
@@ -127,10 +127,10 @@
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="setters" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="Referent fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/zags_0703_marriageFast_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="setters" type="markers" default="${markerService.loadFromFile('minust/zags_0703_marriageFast_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/zags_0703_marriageFast_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Referent fields" type="markers" default="${markerService.loadFromFile('minust/zags_0703_marriageFast_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWeddingDay" name="Дата церемонии" type="invisible"></activiti:formProperty>
       </extensionElements>
@@ -244,10 +244,10 @@
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0703_marriageFast.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/zags_0703_marriageFast.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0703_marriageFast_5_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Шнші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -367,8 +367,8 @@
           <activiti:value id="notSigned" name="Після 3 днів очикування підписи наречених не отримано. Закрити звернення."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/zags_0703_marriageFast.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0703_marriageFast_5_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Шнші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Результат надання послуги" type="enum" required="true">
           <activiti:value id="accept2" name="Підтверджую, що заявники отримали послугу"></activiti:value>
@@ -652,8 +652,8 @@ ${sMail_Signature}<br>
           <activiti:value id="accept2" name="Звернення потребує підписів.Повідомити заявника"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/zags_0703_marriageFast.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0703_marriageFast_5_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Шнші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="isSigned" name="Заява отримала підписи наречених?" type="enum" required="true">
           <activiti:value id="signed" name="Отримано обидва підписа наречених на паперовому носії"></activiti:value>
@@ -939,10 +939,10 @@ execution.setVariable('sCountPayment', src)</script>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/zags_0703_marriageFast.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/zags_0703_marriageFast.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0703_marriageFast_5_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_FeePay},${Scan_MarriageTerm},${Scan_MarriageDoc1},${Scan_Passport1},${Scan_MarriageDoc2},${Scan_Passport2}]]></activiti:expression>
@@ -1075,8 +1075,8 @@ execution.setVariable('sWeddingDay', timeVisit)</script>
     </scriptTask>
     <sequenceFlow id="flow78" sourceRef="scripttask3" targetRef="exclusivegateway4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_1">
-    <bpmndi:BPMNPlane bpmnElement="common_zags_1" id="BPMNPlane_common_zags_1">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_zags_0703_marriageFast">
+    <bpmndi:BPMNPlane bpmnElement="zags_0703_marriageFast" id="BPMNPlane_zags_0703_marriageFast">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="94.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
