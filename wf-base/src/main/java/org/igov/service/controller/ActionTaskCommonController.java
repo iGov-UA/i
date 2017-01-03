@@ -1781,8 +1781,6 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
                     }
                 }
                 
-                if (!StringUtils.isEmpty(soaFilterField))
-                	tasks = filterTasks(tasks, soaFilterField);
 
                 List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
                 if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
@@ -1791,6 +1789,9 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
                     oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
                 }
 
+                if (!StringUtils.isEmpty(soaFilterField))
+                	data = filterTasks(data, soaFilterField);
+                
                 res.put("data", data);
                 res.put("size", nSize);
                 res.put("start", nStart);
@@ -1804,7 +1805,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
         return res;
     }
 
-    private List<TaskInfo> filterTasks(List<TaskInfo> tasks,
+    private List<Map<String, Object>> filterTasks(List<Map<String, Object>> tasks,
 			String soaFilterField) {
     	JSONArray jsonArray = new JSONArray(soaFilterField);
 
@@ -1819,19 +1820,15 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
         }
         LOG.info("Converted filter fields to the map {}", mapOfFieldsToSort);
         
-        List<TaskInfo> res = new LinkedList<TaskInfo>();
-        for (TaskInfo task : tasks){
+        List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
+        for (Map<String, Object> taskData : tasks){
         	for (Map.Entry<String, String> currentFilter : mapOfFieldsToSort.entrySet()){
         		LOG.info("Matching process variables {} and task variables {} with the filter {}", task.getProcessVariables(), task.getTaskLocalVariables(), currentFilter);
-        		if (task.getProcessVariables().containsKey(currentFilter.getKey()) &&
-        				matchValues(task.getProcessVariables().get(currentFilter.getKey()), currentFilter.getValue())) {
-        			LOG.info("Adding task {} as it matches pattern {}", task.getId(), currentFilter);
-        			res.add(task);
-        		} else if (task.getTaskLocalVariables().containsKey(currentFilter.getKey()) &&
-        				matchValues(task.getTaskLocalVariables().get(currentFilter.getKey()), currentFilter.getValue())) {
-        			LOG.info("Adding task {} as it matches pattern {}", task.getId(), currentFilter);
-        			res.add(task);
-        		}
+        		if (taskData.containsKey(currentFilter.getKey()) &&
+        				matchValues(taskData.get(currentFilter.getKey()), currentFilter.getValue())) {
+        			LOG.info("Adding task {} as it matches pattern {}", taskData, currentFilter);
+        			res.add(taskData);
+        		} 
         	}
         }
 		return res;
