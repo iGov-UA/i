@@ -1836,6 +1836,10 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
 
 	private boolean matchValues(Object value, String pattern) {
 		LOG.info("Matching value {} with the pattern {}", value, pattern);
+		if (pattern.contains("*")){
+			pattern = pattern.replace("*", "");
+			return value.toString().startsWith(pattern);
+		}
 		return value.toString().matches(pattern);
 	}
 
