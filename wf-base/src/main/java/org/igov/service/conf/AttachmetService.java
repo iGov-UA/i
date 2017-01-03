@@ -23,6 +23,7 @@ import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.vo.TaskAttachVO;
+import org.igov.service.business.action.task.core.AbstractModelTask;
 import static org.igov.util.Tool.sTextTranslit;
 import org.json.simple.JSONObject;
 import org.igov.util.JSON.JsonRestUtils;
@@ -75,8 +76,8 @@ public class AttachmetService {
             }
             if (sID_StorageType.equals("Redis")){
                 try {
-                    sKey = oBytesDataInmemoryStorage.putBytes(aContent);
-                } catch (RecordInmemoryException ex) {
+                    sKey = oBytesDataInmemoryStorage.putBytes(AbstractModelTask.multipartFileToByteArray(AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory(aContent)).toByteArray());
+                } catch (RecordInmemoryException|IOException ex) {
                      throw new RuntimeException(ex);
                 }
             }
