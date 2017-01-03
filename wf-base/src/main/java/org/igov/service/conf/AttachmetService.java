@@ -101,9 +101,12 @@ public class AttachmetService {
         
         
         String sID_Field_Value = JsonRestUtils.toJson((Object)oTaskAttachVO);
-        oRuntimeService.setVariable(nID_Process, sID_Field, sID_Field_Value);
-            
-	return sID_Field;
+        
+        if(nID_Process != null){
+            oRuntimeService.setVariable(nID_Process, sID_Field, sID_Field_Value);
+        }
+	
+        return sID_Field_Value;
     }
     
     public VariableMultipartFile getAttachment(String nID_Process, String sID_Field) throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException {
