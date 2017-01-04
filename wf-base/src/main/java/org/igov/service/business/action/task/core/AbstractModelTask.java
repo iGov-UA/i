@@ -397,7 +397,7 @@ public abstract class AbstractModelTask {
                             }else{
                                 LOG.info("oVariableMultipartFile is null");
                             }
-                        }else if (oJsonTaskAttachVO != null && getField(oFormData, asFieldID.get(n)).getType() instanceof TableFormType){
+                        }/*else if (oJsonTaskAttachVO != null && getField(oFormData, asFieldID.get(n)).getType() instanceof TableFormType){
                             LOG.info("It isn't TaskAttachVO. So, maybe it's a table? ^_^ ");
                             try {
                                 JSONObject oJSONObject = (JSONObject) parser.parse(sFieldValue);   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
@@ -426,7 +426,7 @@ public abstract class AbstractModelTask {
                             } catch (ParseException ex) {
                                 LOG.info("Some error during table parsing : ", ex);
                             }
-                        }
+                        }*/
                         else{ //Old logic
                             LOG.info("No, it doesn't :(");
                             String sID_Field = asFieldID.get(n);
