@@ -361,22 +361,20 @@ public abstract class AbstractModelTask {
                         .equals(sFieldValue.trim())) {
                     if (!asFieldName.isEmpty() && n < asFieldName.size()) {
                         
-                        Object oJsonTaskAttachVO = null;
+                        JSONObject oJsonTaskAttachVO = null;
                         JSONParser parser = new JSONParser(); //new logic
                         
                         try {
-                            oJsonTaskAttachVO = parser.parse(sFieldValue);
-                        
+                            oJsonTaskAttachVO = (JSONObject)parser.parse(sFieldValue);
                         } catch (ParseException ex) {
                             LOG.info("There aren't TaskAttachVO objects in sFieldValue - JSON parsing error: ", ex);
                         }
                         
-                        if(oJsonTaskAttachVO != null && ((TaskAttachVO)oJsonTaskAttachVO).getsID_StorageType() != null){
+                        if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null){
                             LOG.info("oJsonTaskAttachVO instanceof TaskAttachVO)");
-                            TaskAttachVO oTaskAttachVO = (TaskAttachVO) oJsonTaskAttachVO;
-                            
-                            String sID_StorageType = oTaskAttachVO.getsID_StorageType();
-                            LOG.info("oJsonTaskAttachVO sID_StorageType: " + sID_StorageType);
+                            //TaskAttachVO oTaskAttachVO = (TaskAttachVO) oJsonTaskAttachVO;
+                            //String sID_StorageType = oTaskAttachVO.getsID_StorageType();
+                            LOG.info("oJsonTaskAttachVO sID_StorageType: " + oJsonTaskAttachVO.get("sID_StorageType"));
                             MultipartFile oMultipartFile = null;
                             
                             try {
@@ -388,9 +386,10 @@ public abstract class AbstractModelTask {
                             
                             if(oMultipartFile != null){
                                 try {
+                                   
                                     byte [] aByteFile = oMultipartFile.getBytes();
                                     oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n),
-                                            oTaskAttachVO.getsFileNameAndExt(), oTaskAttachVO.isbSigned(), "Mongo", "text/html", oTaskAttachVO.getaAttribute(), aByteFile);
+                                            (String)oJsonTaskAttachVO.get("sFileNameAndExt"), Boolean.parseBoolean((String)oJsonTaskAttachVO.get("bSigned")), "Mongo", "text/html", new ArrayList<Map<String, Object>>()/*oJsonTaskAttachVO.get("aAttribute")*/, aByteFile);
                                 } catch (IOException ex) {
                                     LOG.info("createAttachment has some errors: " + ex);
                                 }
