@@ -1,5 +1,6 @@
 package org.igov.service.business.action.task.core;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -27,17 +28,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
+import org.igov.util.VariableMultipartFile;
 
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.logging.Level;
 import org.apache.commons.io.IOUtils;
+import org.igov.io.db.kv.statical.IBytesDataStorage;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.action.vo.TaskAttachVO;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.igov.service.business.object.ObjectFileService;
+import org.igov.service.conf.AttachmetService;
 import org.json.simple.JSONArray;
 
 public abstract class AbstractModelTask {
@@ -55,9 +60,15 @@ public abstract class AbstractModelTask {
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     @Autowired
     public TaskService taskService;
-    @Autowired
+    /*@Autowired
     private ObjectFileService oObjectFileService;
-
+    
+    @Autowired
+    private IBytesDataStorage oBytesDataStaticStorage;*/
+    
+    @Autowired
+    protected AttachmetService oAttachmetService;
+    
     @Autowired
     GeneralConfig generalConfig;
 
@@ -328,9 +339,10 @@ public abstract class AbstractModelTask {
      * @param oTask where we add Attachments.
      * @return list of Attachment
      */
-    public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask) {
+    public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask){
         DelegateExecution oExecution = oTask.getExecution();
         List<Attachment> aAttachment = new LinkedList<>();
+        LOG.info("Start FileTaskUploadListener");
         LOG.info("SCAN:file");
         List<String> asFieldID = getListFieldCastomTypeFile(oFormData);
         LOG.info("[addAttachmentsToTask]");
@@ -350,7 +362,7 @@ public abstract class AbstractModelTask {
                     if (!asFieldName.isEmpty() && n < asFieldName.size()) {
                         
                         Object oJsonTaskAttachVO = null;
-                        JSONParser parser = new JSONParser();
+                        JSONParser parser = new JSONParser(); //new logic
                         
                         try {
                             oJsonTaskAttachVO = parser.parse(sFieldValue);
@@ -359,19 +371,41 @@ public abstract class AbstractModelTask {
                             LOG.info("There aren't TaskAttachVO objects in sFieldValue - JSON parsing error: ", ex);
                         }
                         
-                        if( oJsonTaskAttachVO != null && oJsonTaskAttachVO instanceof TaskAttachVO){
+                        if(oJsonTaskAttachVO != null && oJsonTaskAttachVO instanceof TaskAttachVO){
+                            LOG.info("oJsonTaskAttachVO instanceof TaskAttachVO)");
                             TaskAttachVO oTaskAttachVO = (TaskAttachVO) oJsonTaskAttachVO;
                             
                             String sID_StorageType = oTaskAttachVO.getsID_StorageType();
+                            LOG.info("oJsonTaskAttachVO sID_StorageType: " + sID_StorageType);
+                            MultipartFile oMultipartFile = null;
                             
-                            if(sID_StorageType.equals("Redis")){
-                                
-                                oTaskAttachVO.setsID_StorageType("Mongo");
-                                oTaskAttachVO.setsKey("Need to find key");
+                            try {
+                                oMultipartFile = oAttachmetService
+                                        .getAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n), null, null);
+                            } catch (ParseException|RecordInmemoryException|IOException|ClassNotFoundException ex) {
+                                LOG.info("getAttachment has some errors: " + ex);
                             }
                             
-                        }else if (oJsonTaskAttachVO != null && getField(oFormData, asFieldID.get(n) ).getType() instanceof TableFormType){
+                            if(oMultipartFile != null){
+                                try {
+                                    byte [] aByteFile = oMultipartFile.getBytes();
+                                    oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n),
+                                            oTaskAttachVO.getsFileNameAndExt(), oTaskAttachVO.isbSigned(), "Mongo", "text/html", oTaskAttachVO.getaAttribute(), aByteFile);
+                                } catch (IOException ex) {
+                                    LOG.info("createAttachment has some errors: " + ex);
+                                }
+                            }else{
+                                LOG.info("oVariableMultipartFile is null");
+                            }
+                                
+                                //String sMongoKey = oBytesDataStaticStorage.saveData(aByteFile);
+                                //oTaskAttachVO.setsKey(sMongoKey);
+                                oTaskAttachVO.setsID_StorageType("Mongo");
+                                //String sNewValue = JsonRestUtils.toJson((Object)oTaskAttachVO);
+                                //LOG.info("New oTaskAttachVO value from listner: " + sNewValue);
                             
+                        }else if (oJsonTaskAttachVO != null && getField(oFormData, asFieldID.get(n)).getType() instanceof TableFormType){
+                            LOG.info("It isn't TaskAttachVO. So, maybe it's a table? ^_^ ");
                             try {
                                 JSONObject oJSONObject = (JSONObject) parser.parse(sFieldValue);   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
                                 LOG.info("JSON String: " + oJSONObject.toJSONString());
@@ -401,7 +435,7 @@ public abstract class AbstractModelTask {
                             }
                         }
                         else{ //Old logic
-                        
+                            LOG.info("No, it doesn't :(");
                             String sID_Field = asFieldID.get(n);
                             LOG.info("(sID_Field={})", sID_Field);
 
@@ -519,7 +553,8 @@ public abstract class AbstractModelTask {
             }
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
-        return aAttachment;
+        //return aAttachemet;
+        return new LinkedList<Attachment>();
 
     }
 

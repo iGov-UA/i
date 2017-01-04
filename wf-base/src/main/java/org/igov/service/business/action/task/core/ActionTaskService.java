@@ -45,6 +45,7 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
@@ -1162,7 +1163,47 @@ public class ActionTaskService {
      */
     public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly){
 
-        if (sLogin==null || sLogin.isEmpty()) {
+        List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
+				sLogin, bDocOnly);
+
+        List<Map<String, String>> amPropertyBP = new LinkedList<>();
+        for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return){
+            Map<String, String> mPropertyBP = new HashMap<>();
+            mPropertyBP.put("sID", oProcessDefinition.getKey());
+            mPropertyBP.put("sName", oProcessDefinition.getName());
+            LOG.info("Added record to response {}", mPropertyBP);
+            amPropertyBP.add(mPropertyBP);
+        }
+
+        return amPropertyBP;
+    }
+    
+    public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly){
+
+        List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
+				sLogin, bDocOnly);
+
+        Map<String,Map<String, String>> amPropertyBP = new HashMap<String,Map<String, String>>();
+        for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return){
+        	StartFormData formData = oFormService.getStartFormData(oProcessDefinition.getId());
+            Map<String, String> mPropertyBP = new HashMap<String, String>();
+            for (FormProperty property : formData.getFormProperties()){
+            	mPropertyBP.put("sID", property.getId());
+            	mPropertyBP.put("sName", property.getName());
+            	mPropertyBP.put("sID_Type", property.getType().getName());
+                amPropertyBP.put(mPropertyBP.get("sID"), mPropertyBP);
+                LOG.info("Added record to response {}", mPropertyBP);
+            }
+        }
+
+        List<Map<String, String>> res = new LinkedList<Map<String,String>>();
+        res.addAll(amPropertyBP.values());
+        return res;
+    }
+
+	private List<ProcessDefinition> getBusinessProcessesObjectsOfLogin(
+			String sLogin, Boolean bDocOnly) {
+		if (sLogin==null || sLogin.isEmpty()) {
             LOG.error("Unable to found business processes for sLogin="+sLogin);
             throw new ActivitiObjectNotFoundException(
                     "Unable to found business processes for sLogin="+sLogin,
@@ -1237,18 +1278,8 @@ public class ActionTaskService {
         } else {
             LOG.info("Have not found active process definitions.");
         }
-
-        List<Map<String, String>> amPropertyBP = new LinkedList<>();
-        for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return){
-            Map<String, String> mPropertyBP = new HashMap<>();
-            mPropertyBP.put("sID", oProcessDefinition.getKey());
-            mPropertyBP.put("sName", oProcessDefinition.getName());
-            LOG.info("Added record to response {}", mPropertyBP);
-            amPropertyBP.add(mPropertyBP);
-        }
-
-        return amPropertyBP;
-    }    
+		return aProcessDefinition_Return;
+	}    
     
     
     

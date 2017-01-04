@@ -1,8 +1,10 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
@@ -63,16 +65,21 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 import org.igov.model.document.DocumentStepSubjectRight;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+
 import org.igov.service.business.document.DocumentStepService;
+
 import static org.igov.util.Tool.sO;
+
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 //import com.google.common.base.Optional;
@@ -1717,7 +1724,8 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
             @ApiParam(value = "nSize", required = false) @RequestParam(value = "nSize", defaultValue = "10", required = false) Integer nSize,
             @ApiParam(value = "nStart", required = false) @RequestParam(value = "nStart", defaultValue = "0", required = false) Integer nStart,
             @ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue = "OpenedUnassigned", required = false) String sFilterStatus,
-            @ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue = "false", required = false) boolean bFilterHasTicket) throws CommonServiceException {
+            @ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue = "false", required = false) boolean bFilterHasTicket,
+            @ApiParam(value = "soaFilterField", required = false) @RequestParam(value = "soaFilterField", required = false) String soaFilterField) throws CommonServiceException {
 
         Map<String, Object> res = new HashMap<String, Object>();
 
@@ -1772,6 +1780,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
                         tasks.clear();
                     }
                 }
+                
 
                 List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
                 if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
@@ -1780,6 +1789,9 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
                     oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
                 }
 
+                if (!StringUtils.isEmpty(soaFilterField))
+                	data = filterTasks(data, soaFilterField);
+                
                 res.put("data", data);
                 res.put("size", nSize);
                 res.put("start", nStart);
@@ -1793,7 +1805,52 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
         return res;
     }
 
-    @ApiOperation(value = "getCountTask", notes = "#####  ActionCommonTaskController: Получение количествоа задач по нескольким наборам критериев-фильтров для указанного логина #####\n\n"
+    private List<Map<String, Object>> filterTasks(List<Map<String, Object>> tasks,
+			String soaFilterField) {
+    	JSONArray jsonArray = new JSONArray(soaFilterField);
+
+    	Map<String, String> mapOfFieldsToSort = new HashMap<String, String>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject elem = (JSONObject) jsonArray.get(i);
+            if (elem.has("sID") && elem.has("sValue")){
+            	mapOfFieldsToSort.put(elem.getString("sID"), elem.getString("sValue"));
+            } else {
+            	LOG.info("{} json element doesn't have either sID or sValue fields", i);
+            }
+        }
+        LOG.info("Converted filter fields to the map {}", mapOfFieldsToSort);
+        
+        List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
+        for (Map<String, Object> taskData : tasks){
+        	boolean toSkip = false;
+        	for (Map.Entry<String, String> currentFilter : mapOfFieldsToSort.entrySet()){
+        		LOG.info("Matching variables {} with the filter {}", taskData, currentFilter);
+        		if (!taskData.containsKey(currentFilter.getKey()) ||
+        				!matchValues(taskData.get(currentFilter.getKey()), currentFilter.getValue())) {
+        			LOG.info("Skipping task {}. It doesn't match filter {}", taskData, currentFilter);
+        			toSkip = true;
+        			break;
+        		} 
+        	}
+        	if (toSkip){
+        		continue;
+        	}
+			LOG.info("Adding task {} as it matches pattern", taskData);
+        	res.add(taskData);
+        }
+		return res;
+	}
+
+	private boolean matchValues(Object value, String pattern) {
+		LOG.info("Matching value {} with the pattern {}", value, pattern);
+		if (pattern.contains("*")){
+			pattern = pattern.replace("*", "");
+			return value.toString().startsWith(pattern);
+		}
+		return value.toString().matches(pattern);
+	}
+
+	@ApiOperation(value = "getCountTask", notes = "#####  ActionCommonTaskController: Получение количествоа задач по нескольким наборам критериев-фильтров для указанного логина #####\n\n"
             + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getCountTask?sLogin=[sLogin]?&amFilter=[amFilter]\n\n\n"
             + "Параметры:\n"
             + "- sLogin - имя пользователя для которого подсчитывать количества тасок\n"
@@ -2724,6 +2781,34 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
         //LOG.info("Result: {}", jsonRes);
         return oActionTaskService.getBusinessProcessesOfLogin(sLogin, bDocOnly);
     }    
+    
+    @ApiOperation(value = "Получение списка полей бизнес процессов, к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка полей бизнес процессов к которым у пользователя есть доступ #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getFields?sLogin=userId\n\n"
+            + "Метод возвращает json со списком полей бизнес процессов, к которым у пользователя есть доступ, в формате:\n"
+            + "\n```json\n"
+            + "[\n"
+            + "  {\n"
+            + "    \"sID\": \"ID field value\", \"sName\": \"[name of the field]\", \"sID_Type\": \"[type of the field]\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"ID field value\", \"sName\": \"[name of the field]\", \"sID_Type\": \"[type of the field]\"\n"
+			+ "  }\n"
+            + "]\n"
+            + "\n```\n")
+    @RequestMapping(value = "/getFields", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @Transactional
+    public @ResponseBody
+    List<Map<String, String>> getBusinessProcessesFields(
+            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
+            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "true") Boolean bDocOnly
+                    )
+            
+            throws IOException {
+
+        //String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
+        //LOG.info("Result: {}", jsonRes);
+        return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly);
+    }  
     
 
     @ApiOperation(value = "/setDocument", notes = "##### Получение списка прав у логина по документу#####\n\n")
