@@ -822,7 +822,7 @@ public class ObjectFileCommonController {
     @RequestMapping(value = "/getAttachment", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
-    byte[] getAttachment(
+    MultipartFile getAttachment(
             @ApiParam(value = "ИД процесса", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
             @ApiParam(value = "ИД поля", required = false) @RequestParam(required = false, value = "sID_Field") String sID_Field,
             @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = false, value = "sKey") String sKey,
@@ -832,22 +832,22 @@ public class ObjectFileCommonController {
         LOG.info("nID_Process: " + nID_Process);
         LOG.info("sID_Field: " + sID_Field);
         
-        //MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
+        MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
         
-        byte[] aRes = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
-       /* httpResponse.setHeader("Content-disposition", "attachment; filename="
+        //byte[] aRes = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
+        httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + multipartFile.getOriginalFilename());
         httpResponse.setHeader("Content-Type", "application/octet-stream");
 
-        httpResponse.setContentLength(multipartFile.getBytes().length);*/
+        httpResponse.setContentLength(multipartFile.getBytes().length);
        
-        httpResponse.setHeader("Content-disposition", "attachment; filename="
+        /*httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + "test.txt");
         httpResponse.setHeader("Content-Type", "application/octet-stream");
 
-        httpResponse.setContentLength(aRes.length);
+        httpResponse.setContentLength(aRes.length);*/
 
-        return aRes;
+        return multipartFile;
     }
     
     
@@ -861,7 +861,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
             @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
-            @ApiParam(value = "файл для сохранения в БД", required = false)@RequestParam(value = "oFile", required = false) MultipartFile oFile,
+            @ApiParam(value = "файл для сохранения в БД", required = true)@RequestParam(value = "oFile", required = true) MultipartFile oFile,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType) throws JsonProcessingException, IOException
@@ -911,7 +911,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
-            @ApiParam(value = "контент файла в виде строки", required = false)@RequestBody String sData) throws IOException {        
+            @ApiParam(value = "контент файла в виде строки", required = true)@RequestBody String sData) throws IOException {        
             
             LOG.info("setAttachment nID_Process: " + nID_Process);
             LOG.info("setAttachment bSigned: " + bSigned);
