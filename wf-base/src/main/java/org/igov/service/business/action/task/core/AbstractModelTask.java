@@ -371,7 +371,7 @@ public abstract class AbstractModelTask {
                             LOG.info("There aren't TaskAttachVO objects in sFieldValue - JSON parsing error: ", ex);
                         }
                         
-                        if(oJsonTaskAttachVO != null && oJsonTaskAttachVO instanceof TaskAttachVO){
+                        if(oJsonTaskAttachVO != null && ((TaskAttachVO)oJsonTaskAttachVO).getsID_StorageType() != null){
                             LOG.info("oJsonTaskAttachVO instanceof TaskAttachVO)");
                             TaskAttachVO oTaskAttachVO = (TaskAttachVO) oJsonTaskAttachVO;
                             
@@ -397,13 +397,6 @@ public abstract class AbstractModelTask {
                             }else{
                                 LOG.info("oVariableMultipartFile is null");
                             }
-                                
-                                //String sMongoKey = oBytesDataStaticStorage.saveData(aByteFile);
-                                //oTaskAttachVO.setsKey(sMongoKey);
-                                oTaskAttachVO.setsID_StorageType("Mongo");
-                                //String sNewValue = JsonRestUtils.toJson((Object)oTaskAttachVO);
-                                //LOG.info("New oTaskAttachVO value from listner: " + sNewValue);
-                            
                         }else if (oJsonTaskAttachVO != null && getField(oFormData, asFieldID.get(n)).getType() instanceof TableFormType){
                             LOG.info("It isn't TaskAttachVO. So, maybe it's a table? ^_^ ");
                             try {

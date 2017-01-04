@@ -521,7 +521,7 @@ public class ObjectFileCommonController {
     public @ResponseBody
     AttachmentEntityI putAttachmentsToExecution(//ResponseEntity
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
-            @ApiParam(value = "файл html. в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
+            @ApiParam(value = "файл html. в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,//Название не менять! Не будет работать прикрепление файла через проксю!!!
             @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "description") String description,
             @ApiParam(value = "ИД поля формы, к которому загружается файл", required = false) @RequestParam(value = "sID_Field") String sID_Field)
             throws IOException {
