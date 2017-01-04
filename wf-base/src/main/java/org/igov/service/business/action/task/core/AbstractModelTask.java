@@ -387,12 +387,11 @@ public abstract class AbstractModelTask {
                             }
                             
                             if(oMultipartFile != null){
-                                
                                 try {
                                     byte [] aByteFile = oMultipartFile.getBytes();
                                     oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n),
                                             oTaskAttachVO.getsFileNameAndExt(), oTaskAttachVO.isbSigned(), "Mongo", "text/html", oTaskAttachVO.getaAttribute(), aByteFile);
-                                } catch (IOException|JsonProcessingException ex) {
+                                } catch (IOException ex) {
                                     LOG.info("createAttachment has some errors: " + ex);
                                 }
                             }else{

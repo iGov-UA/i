@@ -114,6 +114,7 @@ public class AttachmetService {
     
     public MultipartFile getAttachment(String nID_Process, String sID_Field) 
             throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException {
+        MultipartFile oMultipartFile = null;
         
         if(nID_Process != null && sID_Field != null){
             
@@ -122,7 +123,7 @@ public class AttachmetService {
             String sFileName = null;
             String sVersion = null;
             String sContentType = null;
-            MultipartFile oMultipartFile = null;
+            
             ByteArrayInputStream byteArrayInputStream = null;
             LOG.info("VariableMap: " + variables);
 
