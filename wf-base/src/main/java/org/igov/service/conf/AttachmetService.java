@@ -153,7 +153,7 @@ public class AttachmetService {
         if(sID_StorageType.equals("Mongo")){
             aResultArray = oBytesDataStaticStorage.getData(sKey);
             byteArrayInputStream = new ByteArrayInputStream(aResultArray);
-            oMultipartFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sFileName, sContentType);
+            oMultipartFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sTextTranslit(sFileName), sContentType);
             if (aResultArray != null) {
                 LOG.info("Mongo byte array isn't null");
             }

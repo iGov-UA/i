@@ -44,6 +44,7 @@ import org.json.simple.parser.ParseException;
 import org.igov.service.business.object.ObjectFileService;
 import org.igov.service.conf.AttachmetService;
 import org.json.simple.JSONArray;
+import static org.igov.util.Tool.sTextTranslit;
 
 public abstract class AbstractModelTask {
 
@@ -372,8 +373,6 @@ public abstract class AbstractModelTask {
                         
                         if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null){
                             LOG.info("oJsonTaskAttachVO instanceof TaskAttachVO)");
-                            //TaskAttachVO oTaskAttachVO = (TaskAttachVO) oJsonTaskAttachVO;
-                            //String sID_StorageType = oTaskAttachVO.getsID_StorageType();
                             LOG.info("oJsonTaskAttachVO sID_StorageType: " + oJsonTaskAttachVO.get("sID_StorageType"));
                             MultipartFile oMultipartFile = null;
                             
@@ -386,10 +385,22 @@ public abstract class AbstractModelTask {
                             
                             if(oMultipartFile != null){
                                 try {
-                                   
+                                    JSONArray aJSONAttribute = (JSONArray) oJsonTaskAttachVO.get("aAttribute");
+                                    List<Map<String, Object>> aAttribute = new ArrayList<>();
+                                    
+                                    if(!aJSONAttribute.isEmpty()){
+                                        for(Object oAttributeElem : aJSONAttribute){
+                                           Map<String, Object> mParam = new HashMap<>();
+                                           mParam.put((String)((JSONObject)oAttributeElem).get("sID"), ((JSONObject)oAttributeElem).get("sValue"));
+                                           aAttribute.add(mParam);
+                                        }
+                                    }
+                                    
                                     byte [] aByteFile = oMultipartFile.getBytes();
                                     oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n),
-                                            (String)oJsonTaskAttachVO.get("sFileNameAndExt"), (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html", new ArrayList<Map<String, Object>>()/*oJsonTaskAttachVO.get("aAttribute")*/, aByteFile);
+                                            sTextTranslit((String)oJsonTaskAttachVO.get("sFileNameAndExt")), 
+                                            (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html", 
+                                            aAttribute, aByteFile);
                                 } catch (IOException ex) {
                                     LOG.info("createAttachment has some errors: " + ex);
                                 }
