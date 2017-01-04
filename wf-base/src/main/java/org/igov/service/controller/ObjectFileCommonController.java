@@ -822,7 +822,7 @@ public class ObjectFileCommonController {
     @RequestMapping(value = "/getAttachment", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
-    MultipartFile getAttachment(
+    byte[] getAttachment(
             @ApiParam(value = "ИД процесса", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
             @ApiParam(value = "ИД поля", required = false) @RequestParam(required = false, value = "sID_Field") String sID_Field,
             @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = false, value = "sKey") String sKey,
@@ -847,7 +847,7 @@ public class ObjectFileCommonController {
 
         httpResponse.setContentLength(aRes.length);*/
 
-        return multipartFile;
+        return multipartFile.getBytes();
     }
     
     
