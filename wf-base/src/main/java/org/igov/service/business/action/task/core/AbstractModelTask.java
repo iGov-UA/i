@@ -389,7 +389,7 @@ public abstract class AbstractModelTask {
                                    
                                     byte [] aByteFile = oMultipartFile.getBytes();
                                     oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n),
-                                            (String)oJsonTaskAttachVO.get("sFileNameAndExt"), Boolean.parseBoolean((String)oJsonTaskAttachVO.get("bSigned")), "Mongo", "text/html", new ArrayList<Map<String, Object>>()/*oJsonTaskAttachVO.get("aAttribute")*/, aByteFile);
+                                            (String)oJsonTaskAttachVO.get("sFileNameAndExt"), (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html", new ArrayList<Map<String, Object>>()/*oJsonTaskAttachVO.get("aAttribute")*/, aByteFile);
                                 } catch (IOException ex) {
                                     LOG.info("createAttachment has some errors: " + ex);
                                 }
