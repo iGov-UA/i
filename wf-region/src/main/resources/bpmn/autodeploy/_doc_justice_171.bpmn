@@ -90,6 +90,7 @@
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="cloneDocumentStepSubject" name="cloneDocumentStepSubject" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMainExecutor" name="sMainExecutor" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -362,9 +363,15 @@ java.lang.System.out.println("HELLO");</script>
     <sequenceFlow id="flow57" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow58" sourceRef="scripttask3" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <scriptTask id="scripttask4" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var processInstanceId =execution.getVariable('processInstanceId')
-var sMainExecutor = processSubjectTreeService.getCatalogProcessSubjectTree(processInstanceId, 1, null, false, 1)
-</script>
+      <script>var processInstanceId = execution.getVariable('processInstanceId');
+var obj = processSubjectTreeService.getCatalogProcessSubjectTree(processInstanceId, 1, null, false, 1);
+var sMainExecutor = " ";
+var i = 0;
+do {
+	var sLogin = obj.aProcessSubjectTree[0].aUser[i].sLogin;
+    i++
+} while (obj.aProcessSubjectTree[0].sLogin == obj.aProcessSubjectTree[0].aUser[i].sLogin)
+execution.setVariable('sMainExecutor', sLogin)</script>
     </scriptTask>
     <sequenceFlow id="flow59" sourceRef="usertask2" targetRef="scripttask4"></sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="scripttask4" targetRef="usertask2_yellow"></sequenceFlow>
