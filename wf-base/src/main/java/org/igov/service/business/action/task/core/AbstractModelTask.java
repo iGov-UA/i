@@ -377,20 +377,21 @@ public abstract class AbstractModelTask {
                             
                             String sID_StorageType = oTaskAttachVO.getsID_StorageType();
                             LOG.info("oJsonTaskAttachVO sID_StorageType: " + sID_StorageType);
-                            VariableMultipartFile oVariableMultipartFile = null;
+                            byte[] aRes = null;
                             
                             try {
-                                oVariableMultipartFile = oAttachmetService.getAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n));
+                                aRes = oAttachmetService
+                                        .getAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n), null, null);
                             } catch (ParseException|RecordInmemoryException|IOException|ClassNotFoundException ex) {
                                 LOG.info("getAttachment has some errors: " + ex);
                             }
                             
-                            if(oVariableMultipartFile != null){
-                                byte [] aByteFile = oVariableMultipartFile.getBytes();
+                            if(aRes != null){
                                 try {
+                                    byte [] aByteFile = aRes;
                                     oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n),
                                             oTaskAttachVO.getsFileNameAndExt(), oTaskAttachVO.isbSigned(), "Mongo", "text/html", oTaskAttachVO.getaAttribute(), aByteFile);
-                                } catch (JsonProcessingException ex) {
+                                } catch (IOException ex) {
                                     LOG.info("createAttachment has some errors: " + ex);
                                 }
                             }else{
