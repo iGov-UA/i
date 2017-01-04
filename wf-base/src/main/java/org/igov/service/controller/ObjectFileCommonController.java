@@ -824,14 +824,14 @@ public class ObjectFileCommonController {
     byte[] getAttachment(
             @ApiParam(value = "ИД процесса", required = true) @RequestParam(required = true, value = "nID_Process") String nID_Process,
             @ApiParam(value = "ИД поля", required = true) @RequestParam(required = true, value = "sID_Field") String sID_Field,
-            @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = true, value = "nID_Process") String sKey,
-            @ApiParam(value = "Тип БД", required = false) @RequestParam(required = true, value = "sID_Field") String sID_StorageType,
+            @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = true, value = "sKey") String sKey,
+            @ApiParam(value = "Тип БД", required = false) @RequestParam(required = true, value = "sID_StorageType") String sID_StorageType,
             HttpServletResponse httpResponse) throws Exception {
         
         LOG.info("nID_Process: " + nID_Process);
         LOG.info("sID_Field: " + sID_Field);
         
-        MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field);
+        MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
         
         httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + multipartFile.getOriginalFilename());
@@ -853,12 +853,14 @@ public class ObjectFileCommonController {
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
             @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
-            @ApiParam(value = "файл для сохранения в БД", required = false)@RequestParam(value = "oFile", required = false) MultipartFile oFile,
+            //@ApiParam(value = "файл для сохранения в БД", required = false)@RequestParam(value = "oFile", required = false) MultipartFile oFile,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "контент файла в виде строки", required = false)@RequestBody String sData) throws IOException {        
             
+            MultipartFile oFile = null;
+        
             LOG.info("setAttachment nID_Process: " + nID_Process);
             LOG.info("setAttachment bSigned: " + bSigned);
             LOG.info("setAttachment sID_StorageType: " + sID_StorageType);

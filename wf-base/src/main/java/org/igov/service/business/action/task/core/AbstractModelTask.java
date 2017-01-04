@@ -381,7 +381,7 @@ public abstract class AbstractModelTask {
                             
                             try {
                                 oMultipartFile = oAttachmetService
-                                        .getAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n));
+                                        .getAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n), null, null);
                             } catch (ParseException|RecordInmemoryException|IOException|ClassNotFoundException ex) {
                                 LOG.info("getAttachment has some errors: " + ex);
                             }

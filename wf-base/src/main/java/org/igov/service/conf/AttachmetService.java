@@ -112,19 +112,20 @@ public class AttachmetService {
         return sID_Field_Value;
     }
     
-    public MultipartFile getAttachment(String nID_Process, String sID_Field) 
+    public MultipartFile getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
             throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException {
         MultipartFile oMultipartFile = null;
+        
+        byte [] aResultArray = null;
+        String sFileName = null;
+        String sVersion = "";
+        String sContentType = "";
+        ByteArrayInputStream byteArrayInputStream = null;
         
         if(nID_Process != null && sID_Field != null){
             
             Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
-            byte [] aResultArray = null;
-            String sFileName = null;
-            String sVersion = null;
-            String sContentType = null;
             
-            ByteArrayInputStream byteArrayInputStream = null;
             LOG.info("VariableMap: " + variables);
 
             if (variables != null) {
@@ -135,28 +136,12 @@ public class AttachmetService {
                     JSONParser parser = new JSONParser();
                     JSONObject result = (JSONObject) parser.parse(String.valueOf(variables.get(sID_Field)));
 
-                    String sID_StorageType = (String)result.get("sID_StorageType");
-                    String sKey = (String)result.get("sKey");
+                    sID_StorageType = (String)result.get("sID_StorageType");
+                    sKey = (String)result.get("sKey");
                     sFileName = (String)result.get("sFileNameAndExt");
                     sVersion = (String)result.get("sVersion");
                     sContentType = (String)result.get("sContentType");      
 
-                    if(sID_StorageType.equals("Mongo")){
-                        aResultArray = oBytesDataStaticStorage.getData(sKey);
-                        byteArrayInputStream =  new ByteArrayInputStream(aResultArray);
-                        oMultipartFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sFileName, sContentType);
-                        if(aResultArray != null){
-                            LOG.info("Mongo byte array isn't null");
-                        }
-                    }
-                    if (sID_StorageType.equals("Redis")){
-                        aResultArray = oBytesDataInmemoryStorage.getBytes(sKey);
-                        oMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aResultArray); //приводим
-                        
-                        if(aResultArray != null){
-                            LOG.info("Redis byte array isn't null");
-                        }
-                    }
                 }
             }
 
@@ -164,6 +149,24 @@ public class AttachmetService {
                 LOG.info("result file is null");
             }
         }
+        if(sID_StorageType.equals("Mongo")){
+            aResultArray = oBytesDataStaticStorage.getData(sKey);
+            byteArrayInputStream = new ByteArrayInputStream(aResultArray);
+            oMultipartFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sFileName, sContentType);
+            if (aResultArray != null) {
+                LOG.info("Mongo byte array isn't null");
+            }
+        }
+        if (sID_StorageType.equals("Redis")) {
+            aResultArray = oBytesDataInmemoryStorage.getBytes(sKey);
+            oMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aResultArray); //приводим
+
+            if (aResultArray != null) {
+                LOG.info("Redis byte array isn't null");
+            }
+        }
+        
+        
         return oMultipartFile;
     }
 }
