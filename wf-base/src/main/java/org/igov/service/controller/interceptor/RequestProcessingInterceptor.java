@@ -170,7 +170,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         if (!bFinish) {
             LOG.info("(mRequestParam={})", mRequestParam);
-            LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
+            //LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
+            LOG.info("(sRequestBody={})", sRequestBody);
             if (sURL.endsWith("/service/document/setDocumentFile")
                     || sURL.contains("/service/object/file/")) {
             } else {
@@ -180,7 +181,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String sResponseBody = !bFinish ? null : oResponse.toString();
         if (bFinish) {
-            LOG.info("(sResponseBody={})", sCut(nLen, sResponseBody));
+            //LOG.info("(sResponseBody={})", sCut(nLen, sResponseBody));
+            LOG.info("(sResponseBody={})", nLen, sResponseBody);
             //https://region.igov.org.ua/wf/service/form/form-data
             if (sURL.endsWith("/service/action/item/getService")
                     || sURL.endsWith("/service/action/item/getServicesTree")
@@ -309,6 +311,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String snID_Process = String.valueOf(omResponseBody.get("id")); //разобраться чего получаем нал в некоторых случаях
         if (snID_Process != null && !"null".equalsIgnoreCase(snID_Process)) {
             Long nID_Process = Long.valueOf(snID_Process);
+            LOG.info("snID_Process please be here: " + snID_Process);
             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             String snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
             mParam.put("nID_Subject", snID_Subject);
