@@ -79,7 +79,7 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="0.01"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Тестовая транзакция (код платежу 21081100)"></activiti:formProperty>
       </extensionElements>
@@ -214,11 +214,12 @@
           <activiti:value id="sMistake" name="Заявка взята в роботу помилково"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для громадянина у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sFine" name="Сума для сплати штрафу" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/registration.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="required fields" type="markers" default="${markerService.loadFromFile('rvk/registration_req.json')}"></activiti:formProperty>
         <activiti:formProperty id="sOficer" name="Телефон органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sArea" name="РВК" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/rvk/zajava_regRVK.html]" type="invisible" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible"></activiti:formProperty>
@@ -373,7 +374,7 @@
 				</ul>
 			</p>
 			<p>
-			За несвоєчасне інформування про зміну облікових даних Вам потрібно сплатити штраф у розмірі ${sSum}.<br>
+			За несвоєчасне інформування про зміну облікових даних Вам потрібно сплатити штраф у розмірі ${sFine} грн.<br>
 			Реквізити для сплати: ${sRekvVoen}
 			</p>
 			<p>Також можна сплатити штраф за допомогою он-лай сервісу.</p>
@@ -478,11 +479,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="sParentAddress" name="Адреса реєстрації батьків;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Контактний  телефон батьків" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFine" name="Сума штрафу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" writable="false">
           <activiti:value id="accept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
           <activiti:value id="sPenalty" name="Повідомити громадянина про необхідність сплаті штрафу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ІД транзакції платежа при сплаті штрафу онлайн" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат зустрічі" type="enum" required="true">
           <activiti:value id="sReestr" name="Громадянин отримав послугу"></activiti:value>
@@ -543,7 +545,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow54" sourceRef="servicetask7" targetRef="endevent8"></sequenceFlow>
     <endEvent id="endevent8" name="End"></endEvent>
     <scriptTask id="scripttask1" name="Script Task комісія к штрафу" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('sSum')
+      <script>var src=execution.getVariable('sFine')
 var price = +src * 1.018
 var sum = price.toFixed(2)
 var sum1 = String(sum)
