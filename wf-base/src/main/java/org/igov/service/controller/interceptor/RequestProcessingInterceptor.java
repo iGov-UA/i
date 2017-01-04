@@ -170,7 +170,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         if (!bFinish) {
             LOG.info("(mRequestParam={})", mRequestParam);
-            LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
+            //LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
+            LOG.info("(sRequestBody={})", sRequestBody);
             if (sURL.endsWith("/service/document/setDocumentFile")
                     || sURL.contains("/service/object/file/")) {
             } else {
