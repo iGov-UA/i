@@ -38,11 +38,12 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
     this.fileName = files[0].name;
   };
 
-  file.prototype.upload = function (oServiceData) {
+  file.prototype.upload = function (oServiceData, fileFieldID) {
     var self = this;
     var scope = $rootScope.$new(true, $rootScope);
+    var param = fileFieldID ? ActivitiService.getUploadFileURL(oServiceData, null, {name:this.fileName, id:fileFieldID}) : ActivitiService.getUploadFileURL(oServiceData);
     uiUploader.startUpload({
-      url: ActivitiService.getUploadFileURL(oServiceData),
+      url: param,
       concurrency: 1,
       onProgress: function (file) {
         self.isUploading = true;

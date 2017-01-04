@@ -5,6 +5,19 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
     link: function (scope, element, attrs, ngModel) {
       var fileField = element.find('input');
       var oFile = scope.data.formData.params[ngModel.$name];
+      var oFileField = {isNew:false};
+
+      //for new upload service
+      angular.forEach(scope.activitiForm.formProperties, function (item) {
+        if(item.id === ngModel.$name && item.name.split(';').length === 3) {
+          if(item.name.split(';')[2] === "bNew=true") {
+            oFileField = {
+              id:item.id,
+              isNew:true
+            }
+          }
+        }
+      });
 
       // todo table file
       // if(!oFile && ngModel.$name) {
@@ -58,7 +71,11 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
               scope.switchProcessUploadingState();
               console.log("Start uploading " + aFilteredFiles.length + " file(s)");
               oFile.setFiles(aFilteredFiles);
-              oFile.upload(scope.oServiceData);
+              if(oFileField.isNew) {
+                oFile.upload(scope.oServiceData, oFileField.id);
+              } else {
+                oFile.upload(scope.oServiceData);
+              }
               console.log('ngModel.$name=' + ngModel.$name);
             }
           }
