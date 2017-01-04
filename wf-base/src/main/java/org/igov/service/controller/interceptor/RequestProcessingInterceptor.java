@@ -170,8 +170,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         if (!bFinish) {
             LOG.info("(mRequestParam={})", mRequestParam);
-            //LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
-            LOG.info("(sRequestBody={})", sRequestBody);
+            LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
             if (sURL.endsWith("/service/document/setDocumentFile")
                     || sURL.contains("/service/object/file/")) {
             } else {
@@ -181,8 +180,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String sResponseBody = !bFinish ? null : oResponse.toString();
         if (bFinish) {
-            //LOG.info("(sResponseBody={})", sCut(nLen, sResponseBody));
-            LOG.info("(sResponseBody={})", nLen, sResponseBody);
+            LOG.info("(sResponseBody={})", sCut(nLen, sResponseBody));
             //https://region.igov.org.ua/wf/service/form/form-data
             if (sURL.endsWith("/service/action/item/getService")
                     || sURL.endsWith("/service/action/item/getServicesTree")

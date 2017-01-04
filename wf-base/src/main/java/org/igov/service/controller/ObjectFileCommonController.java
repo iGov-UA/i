@@ -114,7 +114,7 @@ public class ObjectFileCommonController {
     @Transactional
     public @ResponseBody
     String putAttachmentsToRedis(
-            @RequestParam(required = true, value = "file") MultipartFile file)
+            @RequestParam(required = true, value = "file") MultipartFile file) //Название не менять! Не будет работать прикрепление файла через проксю!!!
             throws FileServiceIOException {
         try {
             LOG.info("file.getContentType: " + file.getContentType());
@@ -864,7 +864,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
             @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
-            @ApiParam(value = "файл для сохранения в БД", required = true)@RequestParam(value = "file", required = true) MultipartFile file,
+            @ApiParam(value = "файл для сохранения в БД", required = true)@RequestParam(value = "file", required = true) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType) throws JsonProcessingException, IOException
