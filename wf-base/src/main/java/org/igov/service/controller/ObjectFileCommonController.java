@@ -824,8 +824,8 @@ public class ObjectFileCommonController {
     byte[] getAttachment(
             @ApiParam(value = "ИД процесса", required = true) @RequestParam(required = true, value = "nID_Process") String nID_Process,
             @ApiParam(value = "ИД поля", required = true) @RequestParam(required = true, value = "sID_Field") String sID_Field,
-            @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = true, value = "sKey") String sKey,
-            @ApiParam(value = "Тип БД", required = false) @RequestParam(required = true, value = "sID_StorageType") String sID_StorageType,
+            @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = false, value = "sKey") String sKey,
+            @ApiParam(value = "Тип БД", required = false) @RequestParam(required = false, value = "sID_StorageType") String sID_StorageType,
             HttpServletResponse httpResponse) throws Exception {
         
         LOG.info("nID_Process: " + nID_Process);
