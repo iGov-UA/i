@@ -851,12 +851,12 @@ public class ObjectFileCommonController {
     }
     
     
-    @ApiOperation(value = "setAttachmentoFile", notes
+    @ApiOperation(value = "setAttachmentFile", notes
             = "##### загрузка файла-атачмента по новому концепту")
-    @RequestMapping(value = "/setAttachmentoFile", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/setAttachmentFile", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public @ResponseBody
-    String setAttachmentoFile(
+    String setAttachmentFile(
             @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
@@ -898,12 +898,12 @@ public class ObjectFileCommonController {
     }
     
     
-    @ApiOperation(value = "setAttachmentsData", notes
+    @ApiOperation(value = "setAttachmentContent", notes
             = "##### загрузка body-атачмента по новому концепту")
-    @RequestMapping(value = "/setAttachmentsData", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/setAttachmentContent", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public @ResponseBody
-    String setAttachmentsData(
+    String setAttachmentContent(
             @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
