@@ -1,0 +1,438 @@
+﻿<style>
+    .article-block {
+        font-family: Open Sans, Arial, sans-serif;
+        color: #333333;
+    }
+
+        .article-block li {
+            margin: 10px 0;
+        }
+
+        .article-block ol,
+        .article-block ul {
+            margin-bottom: 36px;
+        }
+
+            .article-block .content-art ol,
+            .article-block .content-art ul,
+            .article-block ol ul,
+            .article-block ol ol,
+            .article-block ul ul,
+            .article-block ul ol {
+                margin-bottom: 12px;
+            }
+
+        .article-block table ol,
+        .article-block table ul {
+            margin: 0 0 0 25px;
+            padding: 0;
+        }
+
+        .article-block table li {
+            padding: 5px 0 0 0;
+            margin: 0;
+        }
+
+        .article-block .notmarker > li {
+            list-style-type: none; /* Убираем маркеры */
+        }
+
+        .article-block sup {
+            color: #428bca;
+            font-size: 10.8333px;
+        }
+
+        .article-block a {
+            color: #428bca;
+        }
+
+        .article-block h1,
+        .article-block .ind-section {
+            margin-top: 46px;
+        }
+
+            .article-block h1.topic {
+                margin-top: 12px;
+            }
+
+        .article-block h2 {
+            margin-top: 36px;
+        }
+
+        .article-block h3 {
+            margin-top: 24px;
+        }
+
+        .article-block h1 > sup {
+            color: #428bca;
+            font-size: 15.8333px;
+        }
+
+        .article-block table {
+            border-spacing: 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            border-collapse: separate;
+        }
+
+        .article-block th {
+            background: #eeeeee;
+            text-align: center;
+        }
+
+        .article-block td,
+        .article-block th {
+            padding: 16px 10px;
+            vertical-align: central;
+            border-left: 1px solid #ddd;
+            border-top: 1px solid #ddd;
+        }
+
+        .article-block .tableNotHead tr:first-child > td,
+        .article-block tr:first-child > th {
+            border-top: none;
+        }
+
+            .article-block td:first-child,
+            .article-block tr:first-child > th:first-child {
+                border-left: none;
+            }
+            /* из-за background */
+            .article-block tr:first-child > th:first-child {
+                border-top-left-radius: 5px;
+            }
+
+            .article-block tr:first-child > th:last-child {
+                border-top-right-radius: 5px;
+            }
+
+        .article-block tr > td.small-text,
+        .article-block .small-text {
+            font-size: 10pt;
+        }
+
+        .article-block tr > td.va-c,
+        .article-block .va-c {
+            vertical-align: central;
+        }
+
+        .article-block tr > td.va-b,
+        .article-block .va-b {
+            vertical-align: bottom;
+        }
+
+        .article-block tr > td.va-t,
+        .article-block .va-t {
+            vertical-align: top;
+        }
+
+        .article-block tr > td.ta-c,
+        .article-block .ta-c {
+            text-align: center;
+        }
+
+        .article-block tr > td.ta-l,
+        .article-block .ta-l {
+            text-align: left;
+        }
+
+        .article-block tr > td.ta-r,
+        .article-block .ta-r {
+            text-align: right;
+        }
+
+        .article-block tr > td.ta-j,
+        .article-block p,
+        .article-block li,
+        .article-block .ta-j {
+            text-align: justify;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            word-wrap: break-word;
+        }
+
+        .article-block .attention-block {
+            margin: 20px;
+            padding: 20px;
+            border-left: 3px solid #eee;
+        }
+
+            .article-block .attention-block h4 {
+                margin-top: 0;
+                margin-bottom: 5px;
+            }
+
+            .article-block .attention-block p:last-child {
+                margin-bottom: 0;
+            }
+
+        .article-block .attention-block-info {
+            background-color: #f4f8fa;
+            border-color: #5bc0de;
+        }
+
+            .article-block .attention-block-info h4 {
+                color: #5bc0de;
+            }
+
+        .article-block .attention {
+            padding: 16px 10px;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
+                                        
+        .article-block li .attention {
+            padding: 5px 10px;
+        }
+
+            .article-block .attention li:last-of-type,
+            .article-block .attention ol,
+            .article-block .attention ul {
+                margin-bottom:0;
+            }
+            
+
+        .article-block .note {
+            color: #999;
+        }
+
+        .article-block .b {
+            font-weight: bold;
+        }
+
+        .article-block .notb {
+            font-weight: 100;
+        }
+
+    .formula em,
+    .variables em,
+    .variable {
+        font-weight: bold;
+    }
+
+    .article-block .formula table {
+        border-spacing: 0;
+        border: 0;
+        border-radius: 0px;
+        border-collapse: separate;
+        margin: auto;
+        padding: 0;
+    }
+
+    .article-block .formula tr,
+    .article-block .formula td {
+        vertical-align: central;
+        margin: 0;
+        padding: 3px 5px;
+        border: 0;
+    }
+</style>
+<article lang="uk" class="article-block">
+
+
+    <h1 class="topic">Як побудувати власний будинок</h1>
+    <p>Зміст:</p>
+    <ol class="notmarker">
+        <li>
+            <a href="" ng-click="gotoAnchor(1)">
+                Крок 1. Придбайте земельну ділянку
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="gotoAnchor(2)">
+                Крок 2. Проведіть топографічне дослідження ділянки
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="gotoAnchor(3)">
+                Крок 3. Розробіть проект будинка
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="gotoAnchor(4)">
+                Крок 4. Отримайте дозвільні документи на будівництво
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="gotoAnchor(5)">
+                Крок 5. Зареєструйте декларацію про готовність об’єкта до експлуатації
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="gotoAnchor(6)">
+                Крок 6. Зареєструйте право власності на будинок
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="gotoAnchor(7)">
+                Законодавство
+            </a>
+        </li>
+    </ol>
+    <h1 id="anchor1">Крок 1. Придбайте земельну ділянку</h1>
+    <p>
+        Розпочати будівництво власного будинку можливо після придбання земельної ділянки та збору <a href="" target="_blank">відповідної документації</a>. 
+        Важливо, щоб цільове призначення ділянки було саме будівництво, а не, скажімо, садівництво або сільське господарство.
+    </p>
+    <h1 id="anchor2">Крок 2. Проведіть топографічне дослідження ділянки </h1>
+    <p>
+        Дозвіл на будівництво неможливо отримати, поки не буде проведено топографічне дослідження ділянки та визначено можливості будівництва на цієї території. 
+        Відповідно, необхідно отримати акт дослідження ділянки і розбивки кордонів у будь-якої геодезичної фірми у Вашому місті, 
+        на підставі якого в тому числі і буде видано дозвіл на проведення земляних та монтажних робіт.
+    </p>
+    <h1 id="anchor3">Крок 3. Розробіть проект будинка </h1>
+    <p>
+        Вирішивши всі питання, пов'язані із землею, перед початком будівництва Вам необхідно розробити проект майбутнього будинка, 
+        після чого приступити до оформлення та узгодження дозвільної документації, що надає право на будівництво.
+    </p>
+    <p>
+        Придбати проект можна в проектній конторі. Якщо у вас архітектурна освіта, не забороняється скласти свій проект, 
+        однак майте на увазі – його доведеться затвердити у відповідних органах.
+    </p>
+    <p class="attention">
+        <strong>Зверніть увагу!</strong><br>
+        Відстань від дороги загального користування до несучої стіни будинку не може бути менше 5 метрів. 
+        До кордону сусідньої ділянки від самого будинку повинно бути не менше 3 м, а від господарських споруд – не менше 2 м. 
+        Офіційні межі ділянки повинні залишатися з зовнішнього боку поставленого паркану. 
+        З плануванням озеленення ділянки теж можуть виникнути проблеми, якщо дерева будуть посаджені на відстані ближче 3 м від кордону сусідів, а чагарники – менше 1 м.
+    </p>
+    <h1 id="anchor4">Крок 4. Отримайте дозвільні документи на будівництво </h1>
+    <p>
+        Дозвільні документи на будівництво є законною підставою для реалізації будь-якого будівельного або архітектурного проекту. 
+        Будівельна документація надається Державною архітектурно-будівельною інспекцією (ДАБІ) з метою контролю над виконанням нормативів, 
+        правил, вимог і умов містобудівного законодавства.
+    </p>
+    <h3>Залежно від виду будівлі потрібні різні дозвільні документи на будівництво: </h3>
+    <table>
+        <colgroup>
+            <col width="30%" />
+            <col width="35%" />
+            <col width="35%" />
+        </colgroup>
+        <tbody>
+            <tr class="ta-c">
+                <td>
+                    <h4><strong>Мала забудова 1-2 категорії складності</strong></h4>
+                    (індивідуальні житлові, садові та дачні будинки не більше 2-х поверхів, площею не більше 300 кв. метрів,
+                    господарські будівлі, споруди, гаражі, які розташовані на земельних ділянках).
+                </td>
+                <td>
+                    <h4><strong>Будівлі 1-3 категорії складності</strong></h4>
+                    (житлові та адміністративні будівлі понад 300 кв. метрів)
+                </td>
+                <td>
+                    <h4><strong>Споруди 4-5 категорії складності</strong></h4>
+                    (багатоквартирні житлові будинки, нежитлові приміщення, бізнес-центри, торгові центри, заправки, магазини).
+                </td>
+            </tr>
+            <tr class="va-t">
+                <td>
+                    Щоб почати будівництво необхідно:
+                    <ul>
+                        <li>оформити будівельний паспорт (департамент містобудування та архітектури);</li>
+                        <li>розробити проектну документацію;</li>
+                        <li>оформити повідомлення про початок будівництва (ДАБІ).</li>
+                    </ul>
+                </td>
+                <td>
+                    Щоб почати будівництво необхідно:
+                    <ul>
+                        <li>отримати містобудівні умови і обмеження (департамент містобудування та архітектури);</li>
+                        <li>отримати технічні умови;</li>
+                        <li>розробити проектну документацію;</li>
+                        <li>зареєструвати <a href="https://igov.org.ua/service/55/general" target="_blank">декларацію про початок виконання будівельних робіт</a>. 
+                        Скористатися цією послугою Ви можете на порталі iGov.org.ua</li>
+                    </ul>
+                    Заповнена декларація (2 примірники) та пакет документів подаються в ДАБІ на перевірку і реєстрацію. 
+                    Інспекція перевіряє документи протягом 10 днів і надає позитивне рішення, або відмову, якщо є зауваження. 
+                    Якщо по закінченні 10 днів замовник не отримав відповідь (позитивний або негативний) декларація вважається зареєстрованою автоматично. 
+                    Термін дії документа - до закінчення будівництва.
+                    <br /><br />
+                    <strong>Документи для реєстрації декларації:</strong>
+                    <ul>
+                        <li>документи, що ідентифікують особу заявника;</li>
+                        <li>правовстановлюючий документ на земельну ділянку;</li>
+                        <li>правовстановлюючий документ на будівельний об'єкт;</li>
+                        <li>містобудівні умови;</li>
+                        <li>проект будівництва;</li>
+                        <li>декларація.</li>
+                    </ul>
+                </td>
+                <td>
+                    Щоб почати будівництво необхідно:
+                    <ul>
+                        <li>отримати містобудівні умови і обмеження (департамент містобудування та архітектури);</li>
+                        <li>отримати технічні умови;</li>
+                        <li>розробити проектну документацію;</li>
+                        <li>провести експертизу проектної документації;</li>
+                        <li>отримати дозвіл на будівництво (ДАБІ).</li>
+                    </ul>
+                    Дозвіл на будівництво об'єкта - офіційний документ, що надає право на проведення таких робіт, як: будівництво, реконструкція, 
+                    капітальний ремонт замовнику об'єкта та його підряднику.<br />
+                    Пакет документів і заповнений дозвіл в 2 примірниках подається в ДАБІ, працівники якої протягом 5-10 днів перевіряють документацію та надають зареєстроване дозвіл. 
+                    Термін дії документа - 3 роки.
+                    <br /><br />
+                    <strong>Документи для отримання дозволу:</strong>
+                    <ul>
+                        <li>заява на отримання документа;</li>
+                        <li>документи, що ідентифікують особу заявника;</li>
+                        <li>правовстановлюючий документ на земельну ділянку та будівельний об'єкт;</li>
+                        <li>копії наказів про призначення відповідальних осіб;</li>
+                        <li>будівельна ліцензія.</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h1 id="anchor5">Крок 5. Зареєструйте декларацію про готовність об’єкта до експлуатації </h1>
+    <p>
+        Коли роботи з будівництва завершені, потрібно зареєструвати декларацію про готовність об’єкта до експлуатації у дозвільному центрі. 
+        Потім – підключити будинок до інженерних мереж. Декларація про прийняття об’єкта в експлуатацію 
+        є підставою для укладення договорів про постачання на об’єкт необхідних для його функціонування ресурсів.
+    </p>
+    <p>
+        Якщо на земельній ділянці, де зводили будинок немає поштової адреси, потрібно її надати. 
+        Це можна зробити на порталі <a href="https://igov.org.ua/service/1429/general" target="_blank">iGov.org.ua</a>
+    </p>
+    <h1 id="anchor6">Крок 6. Зареєструйте право власності на будинок </h1>
+    <p>Останній етап будівництва – це державна реєстрація прав власності на нерухоме майно.</p>
+    <p>Перелік документів, які потрібно подати в Державну реєстраційну службу:</p>
+    <ul>
+        <li>заява про державну реєстрацію;</li>
+        <li>копія паспорта та реєстраційного номера облікової картки платника податку;</li>
+        <li>копія документа, що засвідчує право власності на земельну ділянку чи право користування нею;</li>
+        <li>копія технічного паспорта на об’єкт нерухомого майна;</li>
+        <li><a href="https://igov.org.ua/service/54/general" target="_blank">декларація про готовність об’єкта до експлуатації</a> (послуга доступна на порталі iGov.org.ua);</li>
+        <li>документ, що підтверджує <a href="https://igov.org.ua/service/1429/general" target="_blank">присвоєння об’єкту нерухомого майна поштової адреси</a> 
+        (послуга доступна на порталі iGov.org.ua);</li>
+        <li>документ, що підтверджує внесення плати за надання витягу з Державного реєстру прав та сплату державного мита.</li>
+    </ul>
+    <h1 id="anchor7">Законодавство </h1>
+    <ol>
+        <li>
+            <a href="http://zakon2.rada.gov.ua/laws/show/3038-17" target="_blank">
+                ЗУ «Про регулювання містобудівної діяльності»
+            </a>
+        </li>
+        <li>
+            <a href="http://zakon2.rada.gov.ua/laws/show/461-2011-%D0%BF" target="_blank">
+                Постанова КМУ від 13 квітня 2011 р. № 461 «Порядок прийняття в експлуатацію закінчених будівництвом об'єктів»
+            </a>
+        </li>
+        <li>
+            <a href="http://zakon2.rada.gov.ua/laws/show/z0830-11" target="_blank">
+                ПОРЯДОК прийняття в експлуатацію індивідуальних (садибних) житлових будинків, садових, дачних будинків, 
+                господарських (присадибних) будівель і споруд, прибудов до них, громадських будинків I та II категорій складності, 
+                які збудовані без дозволу на виконання будівельних робіт, і проведення технічного обстеження їх будівельних конструкцій та інженерних мереж
+            </a>
+        </li>
+    </ol>
+
+
+
+</article>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
