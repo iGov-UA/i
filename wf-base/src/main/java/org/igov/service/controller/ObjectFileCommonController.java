@@ -831,7 +831,7 @@ public class ObjectFileCommonController {
         LOG.info("nID_Process: " + nID_Process);
         LOG.info("sID_Field: " + sID_Field);
         
-        MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
+        MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field);
         
         httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + multipartFile.getOriginalFilename());
