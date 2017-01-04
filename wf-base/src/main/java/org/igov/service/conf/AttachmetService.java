@@ -134,8 +134,8 @@ public class AttachmetService {
                     JSONParser parser = new JSONParser();
                     JSONObject result = (JSONObject) parser.parse(String.valueOf(variables.get(sID_Field)));
 
-                    sID_StorageType = (String)result.get("sID_StorageType");
-                    sKey = (String)result.get("sKey");
+                    String sID_StorageType = (String)result.get("sID_StorageType");
+                    String sKey = (String)result.get("sKey");
                     sFileName = (String)result.get("sFileNameAndExt");
                     sVersion = (String)result.get("sVersion");
                     sContentType = (String)result.get("sContentType");      
@@ -162,8 +162,7 @@ public class AttachmetService {
             if(oMultipartFile == null){
                 LOG.info("result file is null");
             }
-
-            return oMultipartFile;
         }
+        return oMultipartFile;
     }
 }
