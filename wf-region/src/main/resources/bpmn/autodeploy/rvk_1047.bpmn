@@ -79,7 +79,7 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
 		<activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
 		<activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible"></activiti:formProperty>
-		<activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="0.01"></activiti:formProperty>
+		<activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
 		<activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
 		<activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Тестовая транзакция (код платежу 21081100)"></activiti:formProperty>
       </extensionElements>
@@ -217,7 +217,8 @@
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/registration.json')}"></activiti:formProperty>
         <activiti:formProperty id="sOficer" name="Телефон органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sArea" name="РВК" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFine" name="Сума для сплати штрафу" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="long" default="${sFine*1.018}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/rvk/zajava_regRVK.html]" type="invisible" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
 		<activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" ></activiti:formProperty>
@@ -320,6 +321,7 @@
 					<li>оригінал військовооблікового документу;</li>
 				</ul>
 			</p>
+                        Коментар державного службовця:<br>
 			<b><i>${comment}</i></b>
 			<p>
 			Розклад прийому громадян: ${sRozklad}
@@ -391,6 +393,7 @@
 					<li>оригінал військовооблікового документу;</li>
 				</ul>
 			</p>
+                        Коментар державного службовця:<br>
 			<b><i>${comment}</i></b>
 			<p>
 			Розклад прийому громадян: ${sRozklad}
@@ -479,7 +482,7 @@
           <activiti:value id="accept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
           <activiti:value id="sPenalty" name="Повідомити громадянина про необхідність сплаті штрафу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ІД транзакції платежа при сплаті штрафу онлайн" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат зустрічі" type="enum" required="true">
           <activiti:value id="sReestr" name="Громадянин отримав послугу"></activiti:value>
