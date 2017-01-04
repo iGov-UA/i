@@ -170,7 +170,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         if (!bFinish) {
             LOG.info("(mRequestParam={})", mRequestParam);
-            LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
+            //LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
+            LOG.info("(sRequestBody={})", sRequestBody);
             if (sURL.endsWith("/service/document/setDocumentFile")
                     || sURL.contains("/service/object/file/")) {
             } else {
@@ -180,7 +181,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String sResponseBody = !bFinish ? null : oResponse.toString();
         if (bFinish) {
-            LOG.info("(sResponseBody={})", sCut(nLen, sResponseBody));
+            //LOG.info("(sResponseBody={})", sCut(nLen, sResponseBody));
+            LOG.info("(sResponseBody={})", nLen, sResponseBody);
             //https://region.igov.org.ua/wf/service/form/form-data
             if (sURL.endsWith("/service/action/item/getService")
                     || sURL.endsWith("/service/action/item/getServicesTree")
@@ -676,7 +678,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task)
                 .singleResult();
-        
+
         mParam.put("sUserTaskName", oHistoricTaskInstance.getName());
         String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
         closeEscalationProcessIfExists(snID_Process);
