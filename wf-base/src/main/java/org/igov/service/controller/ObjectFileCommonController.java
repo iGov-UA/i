@@ -824,12 +824,14 @@ public class ObjectFileCommonController {
     byte[] getAttachment(
             @ApiParam(value = "ИД процесса", required = true) @RequestParam(required = true, value = "nID_Process") String nID_Process,
             @ApiParam(value = "ИД поля", required = true) @RequestParam(required = true, value = "sID_Field") String sID_Field,
+            @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = true, value = "nID_Process") String sKey,
+            @ApiParam(value = "Тип БД", required = false) @RequestParam(required = true, value = "sID_Field") String sID_StorageType,
             HttpServletResponse httpResponse) throws Exception {
         
         LOG.info("nID_Process: " + nID_Process);
         LOG.info("sID_Field: " + sID_Field);
         
-        VariableMultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field);
+        MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
         
         httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + multipartFile.getOriginalFilename());
@@ -875,11 +877,21 @@ public class ObjectFileCommonController {
                aAttribute = new ArrayList<>();
             }
             
-            if(sData != null){
-                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, sContentType, aAttribute, sData.getBytes(Charsets.UTF_8));
+            if(sData != null && "Mongo".equals(sID_StorageType)){
+                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
+                        sContentType, aAttribute, sData.getBytes(Charsets.UTF_8));
             }
-            else if(oFile != null){
-                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, sContentType, aAttribute, oFile.getBytes());
+            else if(oFile != null && "Mongo".equals(sID_StorageType)){
+                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
+                        sContentType, aAttribute, oFile.getBytes());
+            }
+            else if(sData != null && "Redis".equals(sID_StorageType)){
+                throw new RuntimeException("There is no suitable metod for string data for redis");   
+            }
+            else if(oFile != null && "Redis".equals(sID_StorageType)){
+                byte[] aContent = AbstractModelTask.multipartFileToByteArray(oFile, oFile.getOriginalFilename()).toByteArray();
+                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
+                       sContentType, aAttribute, aContent);
             }
             else{
                 return "data is null";
