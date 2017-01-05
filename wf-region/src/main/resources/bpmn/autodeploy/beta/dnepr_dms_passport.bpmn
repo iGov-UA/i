@@ -45,7 +45,7 @@
     <sequenceFlow id="flow34" sourceRef="exclusivegateway6" targetRef="scripttask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay != null}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="отримання дати" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('date_of_visit')
 var year=src.substr(0,4)
 var month=src.substr(5,2)
@@ -150,7 +150,11 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow38" name="${sCancelInfo != 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="endevent4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent4" name="End"></endEvent>
+    <endEvent id="endevent4" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <sequenceFlow id="flow41" sourceRef="parallelgateway3" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -300,7 +304,11 @@ execution.setVariable('sCustom', custom)</script>
     <sequenceFlow id="flow48" sourceRef="exclusivegateway5" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult == 'attr2_missed'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
+    <endEvent id="endevent2" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <serviceTask id="servicetask5" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -333,7 +341,7 @@ execution.setVariable('sCustom', custom)</script>
     <sequenceFlow id="flow39" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow50" sourceRef="servicetask1" targetRef="exclusivegateway6"></sequenceFlow>
-    <scriptTask id="scripttask4" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask4" name="отримання дати" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('visitDay1')
 var date_of_visit=src.substr(27,16)
 var tickNum=src.substr(99,3)
@@ -377,7 +385,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
     <sequenceFlow id="flow51" sourceRef="exclusivegateway6" targetRef="scripttask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay == null}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="Лист черга" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>

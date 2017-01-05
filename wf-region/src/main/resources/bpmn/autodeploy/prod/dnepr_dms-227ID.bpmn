@@ -7,7 +7,6 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-       
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Нове прізвище" type="string" required="true"></activiti:formProperty>
@@ -18,15 +17,12 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС району (міста), до якого належить Ваше місце реєстрації" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="visitDay1" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay1" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_ServiceCustomPrivate_visitDay1" name="Номер черги за довідником ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Type_visitDay1" name="Тип зовнішньої черги" type="invisible" default="DMS"></activiti:formProperty>
         <activiti:formProperty id="sTicketCode" name="Код талону" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTicketNumber" name="Номер талону" type="invisible"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
@@ -95,7 +91,11 @@ execution.setVariable('sEndDay', timerEnd)</script>
     <sequenceFlow id="flow34" name="${sCancelInfo != 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="endevent4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent4" name="End"></endEvent>
+    <endEvent id="endevent4" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <sequenceFlow id="flow33" name="${sCancelInfo == 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo == 'Заявка актуальна'}]]></conditionExpression>
     </sequenceFlow>
@@ -328,7 +328,11 @@ execution.setVariable('sCustom', custom)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
+    <endEvent id="endevent2" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow44" sourceRef="exclusivegateway6" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay != null}]]></conditionExpression>
@@ -461,7 +465,6 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="invisible" default="Auto"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
-       
     </userTask>
     <sequenceFlow id="flow47" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">

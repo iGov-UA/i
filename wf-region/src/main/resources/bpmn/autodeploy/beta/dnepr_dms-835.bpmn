@@ -147,7 +147,11 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow38" name="${sCancelInfo != 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="endevent4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent4" name="End"></endEvent>
+    <endEvent id="endevent4" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <sequenceFlow id="flow41" sourceRef="parallelgateway3" targetRef="servicetask6"></sequenceFlow>
     <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -203,7 +207,6 @@ ${sNameOrgan},<br>
  								[pattern/mail/_common_signature_end.html]
 								[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-        
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
@@ -285,7 +288,11 @@ execution.setVariable('sCustom', custom)</script>
     <sequenceFlow id="flow46" sourceRef="exclusivegateway4" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult == 'attr2_missed'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
+    <endEvent id="endevent2" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <serviceTask id="servicetask5" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -423,7 +430,6 @@ ${sNameOrgan},<br>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
-        
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow51" sourceRef="scripttask4" targetRef="servicetask3"></sequenceFlow>
