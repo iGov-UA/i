@@ -24,6 +24,7 @@ import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.vo.TaskAttachVO;
 import org.igov.service.business.action.task.core.AbstractModelTask;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import static org.igov.util.Tool.sTextTranslit;
 import org.json.simple.JSONObject;
 import org.igov.util.JSON.JsonRestUtils;
@@ -34,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class AttachmetService {
@@ -76,9 +78,7 @@ public class AttachmetService {
             }
             if (sID_StorageType.equals("Redis")){
                 try {
-                    //sKey = oBytesDataInmemoryStorage.putBytes(AbstractModelTask.multipartFileToByteArray(AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory(aContent)).toByteArray());
                     sKey = oBytesDataInmemoryStorage.putBytes(aContent);
-                //} catch (RecordInmemoryException|IOException|ClassNotFoundException ex) {
                 } catch (RecordInmemoryException ex){
                     throw new RuntimeException(ex);
                 }
@@ -112,59 +112,63 @@ public class AttachmetService {
         return sID_Field_Value;
     }
     
-    public VariableMultipartFile getAttachment(String nID_Process, String sID_Field) throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException {
-       
-        Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
+    public MultipartFile getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
+    //    byte[] getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
+            throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException {
+        MultipartFile oMultipartFile = null;
+        
         byte [] aResultArray = null;
         String sFileName = null;
-        String sVersion = null;
-        String sContentType = null;
-        LOG.info("VariableMap: " + variables);
-                   
-        if (variables != null) {
+        String sVersion = "";
+        String sContentType = "";
+        ByteArrayInputStream byteArrayInputStream = null;
+        
+        if(nID_Process != null && sID_Field != null){
             
-            if (variables.containsKey(sID_Field)){
-                LOG.info("VariableMap contains found key");
-                
-                JSONParser parser = new JSONParser();
-                JSONObject result = (JSONObject) parser.parse(String.valueOf(variables.get(sID_Field)));
-                    
-                String sID_StorageType = (String)result.get("sID_StorageType");
-                String sKey = (String)result.get("sKey");
-                sFileName = (String)result.get("sFileNameAndExt");
-                sVersion = (String)result.get("sVersion");
-                sContentType = (String)result.get("sContentType");      
-                    
-                if(sID_StorageType.equals("Mongo")){
-                    aResultArray = oBytesDataStaticStorage.getData(sKey);
-                    if(aResultArray != null){
-                        LOG.info("Mongo byte array isn't null");
-                    }
+            Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
+            
+            LOG.info("VariableMap: " + variables);
+
+            if (variables != null) {
+
+                if (variables.containsKey(sID_Field)){
+                    LOG.info("VariableMap contains found key");
+
+                    JSONParser parser = new JSONParser();
+                    JSONObject result = (JSONObject) parser.parse(String.valueOf(variables.get(sID_Field)));
+
+                    sID_StorageType = (String)result.get("sID_StorageType");
+                    sKey = (String)result.get("sKey");
+                    sFileName = (String)result.get("sFileNameAndExt");
+                    sVersion = (String)result.get("sVersion");
+                    sContentType = (String)result.get("sContentType");      
+
                 }
-                if (sID_StorageType.equals("Redis")){
-                    aResultArray = oBytesDataInmemoryStorage.getBytes(sKey);
-                     if(aResultArray != null){
-                        LOG.info("Redis byte array isn't null");
-                    }
-                }
+            }
+
+            if(oMultipartFile == null){
+                LOG.info("result file is null");
+            }
+        }
+        if(sID_StorageType.equals("Mongo")){
+            aResultArray = oBytesDataStaticStorage.getData(sKey);
+            byteArrayInputStream = new ByteArrayInputStream(aResultArray);
+            oMultipartFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sTextTranslit(sFileName), sContentType);
+            if (aResultArray != null) {
+                LOG.info("Mongo byte array isn't null");
+            }
+        }
+        if (sID_StorageType.equals("Redis")) {
+            aResultArray = oBytesDataInmemoryStorage.getBytes(sKey);
+            oMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aResultArray); //приводим
+
+            if (aResultArray != null) {
+                LOG.info("Redis byte array isn't null");
             }
         }
         
-        VariableMultipartFile resultFile = null;
         
-        if(aResultArray != null){
-            String sResult = new String(aResultArray, "UTF-8");
-            
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(sResult.getBytes(Charsets.UTF_8));
-            //ObjectInputStream ois = new ObjectInputStream(byteArrayInputStream);
-            resultFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sFileName, sContentType);
-            //ois.close();
-        }
-        
-        if(resultFile != null){
-            LOG.info("result file isn't null");
-        }
-        
-        return resultFile;
-    }    
+        return oMultipartFile;
+        //return aResultArray;
+    }
 }

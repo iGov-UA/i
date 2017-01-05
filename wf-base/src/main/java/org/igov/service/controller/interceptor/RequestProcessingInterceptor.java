@@ -309,6 +309,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String snID_Process = String.valueOf(omResponseBody.get("id")); //разобраться чего получаем нал в некоторых случаях
         if (snID_Process != null && !"null".equalsIgnoreCase(snID_Process)) {
             Long nID_Process = Long.valueOf(snID_Process);
+            LOG.info("snID_Process please be here: " + snID_Process);
             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             String snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
             mParam.put("nID_Subject", snID_Subject);
