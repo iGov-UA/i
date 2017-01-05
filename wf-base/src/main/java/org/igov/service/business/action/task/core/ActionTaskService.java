@@ -2314,14 +2314,14 @@ public class ActionTaskService {
 	}
     
 	public List<TaskInfo> returnTasksFromCache(final String sLogin, final String sFilterStatus, final boolean bIncludeAlienAssignedTasks,
-			final List<String> groupsIds){
+			final List<String> groupsIds, String soaFilterField){
 		SerializableResponseEntity<ArrayList<TaskInfo>> entity = cachedInvocationBean
             .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<ArrayList<TaskInfo>>>(
                     GET_ALL_TASK_FOR_USER_CACHE, sLogin, sFilterStatus, bIncludeAlienAssignedTasks) {
                 @Override
                 public SerializableResponseEntity<ArrayList<TaskInfo>> execute() {
                 	LOG.info("Loading tasks from cache for user {} with filterStatus {} and bIncludeAlienAssignedTasks {}", sLogin, sFilterStatus, bIncludeAlienAssignedTasks);
-                	Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus, groupsIds);
+                	Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus, groupsIds, soaFilterField);
                 	
                 	ArrayList<TaskInfo> res = (ArrayList<TaskInfo>) ((taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
             				: (List) ((NativeTaskQuery) taskQuery).list());
@@ -2336,7 +2336,27 @@ public class ActionTaskService {
 	
 	public Object createQuery(String sLogin,
 			boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
-			List<String> groupsIds) {
+			List<String> groupsIds, String soaFilterField) {
+            
+            
+                if (!StringUtils.isEmpty(soaFilterField)){
+                }
+                	//data = filterTasks(data, soaFilterField);
+        
+    	/*JSONArray jsonArray = new JSONArray(soaFilterField);
+
+    	Map<String, String> mapOfFieldsToSort = new HashMap<String, String>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject elem = (JSONObject) jsonArray.get(i);
+            if (elem.has("sID") && elem.has("sValue")){
+            	mapOfFieldsToSort.put(elem.getString("sID"), elem.getString("sValue"));
+            } else {
+            	LOG.info("{} json element doesn't have either sID or sValue fields", i);
+            }
+        }
+        LOG.info("Converted filter fields to the map {}", mapOfFieldsToSort);*/
+            
+            
 		Object taskQuery = null; 
 		if ("Closed".equalsIgnoreCase(sFilterStatus)){
 			taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
@@ -2345,6 +2365,25 @@ public class ActionTaskService {
 			} else {
 				 ((TaskInfoQuery)taskQuery).orderByTaskId();
 			}
+                                
+                        if (!StringUtils.isEmpty(soaFilterField)){
+                            JSONArray oJSONArray = new JSONArray(soaFilterField);
+                            Map<String, String> mFilterField = new HashMap<String, String>();
+                            for (int i = 0; i < oJSONArray.length(); i++) {
+                                JSONObject oJSON = (JSONObject) oJSONArray.get(i);
+                                if (oJSON.has("sID") && oJSON.has("sValue")){
+                                    mFilterField.put(oJSON.getString("sID"), oJSON.getString("sValue"));
+                                    //((TaskQuery)taskQuery).taskVariableValueEqualsIgnoreCase(sLogin, sLogin);
+                                    //((TaskQuery)taskQuery).taskVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+                                    ((TaskInfoQuery)taskQuery).taskVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+                                } else {
+                                    LOG.info("{} json element doesn't have either sID or sValue fields", i);
+                                }
+                            }
+                            LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);                                    
+                        }
+                	//data = filterTasks(data, soaFilterField);
+                        
 			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
 			if (bIncludeAlienAssignedTasks){
@@ -2384,6 +2423,24 @@ public class ActionTaskService {
 				} else {
 					 ((TaskQuery)taskQuery).orderByTaskId();
 				}
+                                
+                                if (!StringUtils.isEmpty(soaFilterField)){
+                                    JSONArray oJSONArray = new JSONArray(soaFilterField);
+                                    Map<String, String> mFilterField = new HashMap<String, String>();
+                                    for (int i = 0; i < oJSONArray.length(); i++) {
+                                        JSONObject oJSON = (JSONObject) oJSONArray.get(i);
+                                        if (oJSON.has("sID") && oJSON.has("sValue")){
+                                            mFilterField.put(oJSON.getString("sID"), oJSON.getString("sValue"));
+                                            //((TaskQuery)taskQuery).taskVariableValueEqualsIgnoreCase(sLogin, sLogin);
+                                            ((TaskQuery)taskQuery).taskVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+                                        } else {
+                                            LOG.info("{} json element doesn't have either sID or sValue fields", i);
+                                        }
+                                    }
+                                    LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);                                    
+                                }
+                	//data = filterTasks(data, soaFilterField);
+                        
 				 ((TaskQuery)taskQuery).asc();
 			}
 		}

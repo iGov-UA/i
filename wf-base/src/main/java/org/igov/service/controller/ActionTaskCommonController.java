@@ -1747,7 +1747,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
                 Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
                 long totalNumber = 0;
                 Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy, sFilterStatus,
-                        groupsIds);
+                        groupsIds, soaFilterField);
 
                 totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count() : oActionTaskService.getCountOfTasksForGroups(groupsIds);
                 LOG.info("Total number of tasks:{}", totalNumber);
@@ -1794,8 +1794,8 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
                     oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
                 }
 
-                if (!StringUtils.isEmpty(soaFilterField))
-                	data = filterTasks(data, soaFilterField);
+                /*if (!StringUtils.isEmpty(soaFilterField))
+                	data = filterTasks(data, soaFilterField);*/
                 
                 res.put("data", data);
                 res.put("size", nSize);
@@ -1810,6 +1810,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
         return res;
     }
 
+    @Deprecated
     private List<Map<String, Object>> filterTasks(List<Map<String, Object>> tasks,
 			String soaFilterField) {
     	JSONArray jsonArray = new JSONArray(soaFilterField);
@@ -1914,7 +1915,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
             }
 
             LOG.info("Selecting tasks sLogin:{} sFilterStatus:{} bIncludeAlienAssignedTasks:{}", sLogin, sFilterStatus, bIncludeAlienAssignedTasks);
-            List<TaskInfo> taskQuery = oActionTaskService.returnTasksFromCache(sLogin, sFilterStatus, bIncludeAlienAssignedTasks, groupsIds);
+            List<TaskInfo> taskQuery = oActionTaskService.returnTasksFromCache(sLogin, sFilterStatus, bIncludeAlienAssignedTasks, groupsIds, null);//
 
             long totalNumber = taskQuery.size();
             LOG.info("Retreived {} tasks", taskQuery.size());
