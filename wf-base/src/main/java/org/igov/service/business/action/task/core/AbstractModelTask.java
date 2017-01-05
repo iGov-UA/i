@@ -44,6 +44,7 @@ import org.json.simple.parser.ParseException;
 import org.igov.service.business.object.ObjectFileService;
 import org.igov.service.conf.AttachmetService;
 import org.json.simple.JSONArray;
+import static org.igov.util.Tool.sTextTranslit;
 
 public abstract class AbstractModelTask {
 
@@ -361,50 +362,52 @@ public abstract class AbstractModelTask {
                         .equals(sFieldValue.trim())) {
                     if (!asFieldName.isEmpty() && n < asFieldName.size()) {
                         
-                        Object oJsonTaskAttachVO = null;
+                        JSONObject oJsonTaskAttachVO = null;
                         JSONParser parser = new JSONParser(); //new logic
                         
                         try {
-                            oJsonTaskAttachVO = parser.parse(sFieldValue);
-                        
+                            oJsonTaskAttachVO = (JSONObject)parser.parse(sFieldValue);
                         } catch (ParseException ex) {
                             LOG.info("There aren't TaskAttachVO objects in sFieldValue - JSON parsing error: ", ex);
                         }
                         
-                        if(oJsonTaskAttachVO != null && oJsonTaskAttachVO instanceof TaskAttachVO){
+                        if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null){
                             LOG.info("oJsonTaskAttachVO instanceof TaskAttachVO)");
-                            TaskAttachVO oTaskAttachVO = (TaskAttachVO) oJsonTaskAttachVO;
-                            
-                            String sID_StorageType = oTaskAttachVO.getsID_StorageType();
-                            LOG.info("oJsonTaskAttachVO sID_StorageType: " + sID_StorageType);
-                            byte[] aRes = null;
+                            LOG.info("oJsonTaskAttachVO sID_StorageType: " + oJsonTaskAttachVO.get("sID_StorageType"));
+                            MultipartFile oMultipartFile = null;
                             
                             try {
-                                aRes = oAttachmetService
+                                oMultipartFile = oAttachmetService
                                         .getAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n), null, null);
                             } catch (ParseException|RecordInmemoryException|IOException|ClassNotFoundException ex) {
                                 LOG.info("getAttachment has some errors: " + ex);
                             }
                             
-                            if(aRes != null){
+                            if(oMultipartFile != null){
                                 try {
-                                    byte [] aByteFile = aRes;
+                                    JSONArray aJSONAttribute = (JSONArray) oJsonTaskAttachVO.get("aAttribute");
+                                    List<Map<String, Object>> aAttribute = new ArrayList<>();
+                                    
+                                    if(!aJSONAttribute.isEmpty()){
+                                        for(Object oAttributeElem : aJSONAttribute){
+                                           Map<String, Object> mParam = new HashMap<>();
+                                           mParam.put((String)((JSONObject)oAttributeElem).get("sID"), ((JSONObject)oAttributeElem).get("sValue"));
+                                           aAttribute.add(mParam);
+                                        }
+                                    }
+                                    
+                                    byte [] aByteFile = oMultipartFile.getBytes();
                                     oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n),
-                                            oTaskAttachVO.getsFileNameAndExt(), oTaskAttachVO.isbSigned(), "Mongo", "text/html", oTaskAttachVO.getaAttribute(), aByteFile);
+                                            (String)oJsonTaskAttachVO.get("sFileNameAndExt"), 
+                                            (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html", 
+                                            aAttribute, aByteFile);
                                 } catch (IOException ex) {
                                     LOG.info("createAttachment has some errors: " + ex);
                                 }
                             }else{
                                 LOG.info("oVariableMultipartFile is null");
                             }
-                                
-                                //String sMongoKey = oBytesDataStaticStorage.saveData(aByteFile);
-                                //oTaskAttachVO.setsKey(sMongoKey);
-                                oTaskAttachVO.setsID_StorageType("Mongo");
-                                //String sNewValue = JsonRestUtils.toJson((Object)oTaskAttachVO);
-                                //LOG.info("New oTaskAttachVO value from listner: " + sNewValue);
-                            
-                        }else if (oJsonTaskAttachVO != null && getField(oFormData, asFieldID.get(n)).getType() instanceof TableFormType){
+                        }/*else if (oJsonTaskAttachVO != null && getField(oFormData, asFieldID.get(n)).getType() instanceof TableFormType){
                             LOG.info("It isn't TaskAttachVO. So, maybe it's a table? ^_^ ");
                             try {
                                 JSONObject oJSONObject = (JSONObject) parser.parse(sFieldValue);   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
@@ -433,7 +436,7 @@ public abstract class AbstractModelTask {
                             } catch (ParseException ex) {
                                 LOG.info("Some error during table parsing : ", ex);
                             }
-                        }
+                        }*/
                         else{ //Old logic
                             LOG.info("No, it doesn't :(");
                             String sID_Field = asFieldID.get(n);

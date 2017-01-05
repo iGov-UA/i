@@ -95,8 +95,14 @@ module.exports.submit = function (req, res) {
   if(keys.length > 0) {
     async.forEach(keys, function (key, next) {
         function putTableToRedis (table, callback) {
-          var url = '/object/file/upload_file_to_redis';
-          activiti.upload(url, {}, table.id + '.json', JSON.stringify(table), callback);
+          var url = '/object/file/setAttachmentAsFile';
+          var nameAndExt = table.id + '.json';
+          var  params = {
+            sID_StorageType:'Redis',
+            sID_Field:table.id,
+            sFileNameAndExt:nameAndExt
+          };
+          activiti.upload(url, params, nameAndExt, JSON.stringify(table), callback);
         }
         putTableToRedis(formData.params[key], function (error, response, data) {
           formData.params[key] = data;

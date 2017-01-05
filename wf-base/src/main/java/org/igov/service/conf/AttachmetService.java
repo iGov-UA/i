@@ -70,8 +70,7 @@ public class AttachmetService {
         TaskAttachVO oTaskAttachVO = new TaskAttachVO();
             
         String sKey = null;
-        sFileNameAndExt = sTextTranslit(sFileNameAndExt);
-            
+        
         if (aContent != null) {
             if(sID_StorageType.equals("Mongo")){
                 sKey = oBytesDataStaticStorage.saveData(aContent);
@@ -112,8 +111,8 @@ public class AttachmetService {
         return sID_Field_Value;
     }
     
-    public //MultipartFile getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
-        byte[] getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
+    public MultipartFile getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
+    //    byte[] getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
             throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException {
         MultipartFile oMultipartFile = null;
         
@@ -153,14 +152,14 @@ public class AttachmetService {
         if(sID_StorageType.equals("Mongo")){
             aResultArray = oBytesDataStaticStorage.getData(sKey);
             byteArrayInputStream = new ByteArrayInputStream(aResultArray);
-            //oMultipartFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sFileName, sContentType);
+            oMultipartFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sFileName, sContentType);
             if (aResultArray != null) {
                 LOG.info("Mongo byte array isn't null");
             }
         }
         if (sID_StorageType.equals("Redis")) {
             aResultArray = oBytesDataInmemoryStorage.getBytes(sKey);
-            //oMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aResultArray); //приводим
+            oMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aResultArray); //приводим
 
             if (aResultArray != null) {
                 LOG.info("Redis byte array isn't null");
@@ -168,7 +167,7 @@ public class AttachmetService {
         }
         
         
-        //return oMultipartFile;
-        return aResultArray;
+        return oMultipartFile;
+        //return aResultArray;
     }
 }
