@@ -686,7 +686,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
             }
         }
-        if(bIncludeProcessVariables.equals(Boolean.TRUE)){
+        if(bIncludeProcessVariables.equals(Boolean.TRUE) && nID_Process != null){
             Map<String, Object> mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
             response.put("mProcessVariable", mProcessVariable);
         }
