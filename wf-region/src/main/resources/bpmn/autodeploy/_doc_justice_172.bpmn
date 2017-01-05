@@ -25,11 +25,11 @@
         <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asUrgently" name="Якщо терміновий документ - поставте галочку; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
+        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRegular" name="Якщо регулярний документ - поставте галочку; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum">
+        <activiti:formProperty id="asRegular" name="регулярний документ; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum">
           <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
           <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
         </activiti:formProperty>
@@ -72,11 +72,11 @@
         <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asUrgently" name="Якщо терміновий документ - поставте галочку; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
+        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_172.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" required="true">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
@@ -151,7 +151,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2_yellow" name="Основний виконавець - формування підсумкового документу" activiti:candidateGroups="justice_common">
+    <userTask id="usertask2_yellow" name="Основний виконавець - формування підсумкового документу" activiti:candidateGroups="${sMainExecutor}">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -167,11 +167,12 @@
         <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asUrgently" name="Якщо терміновий документ - поставте галочку; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
+        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
@@ -194,7 +195,9 @@
           <activiti:value id="sEnum7" name="рекомендованим листом з повідомленням"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMainExecutor" name="Основний виконавець" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMainExecutor" name="Основний виконавець логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFirstName" name="Основний виконавець прізвище" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLastName" name="Основний виконавець імяпобатькові" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -219,11 +222,21 @@
         <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asUrgently" name="Якщо терміновий документ - поставте галочку; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
+        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
+          <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
+          <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
+          <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
+          <activiti:value id="sEnumToAttention" name="До відома"></activiti:value>
+          <activiti:value id="sEnumToPerform" name="До виконання"></activiti:value>
+          <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
+          <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" writable="false">
@@ -240,9 +253,14 @@
           <activiti:value id="sEnumDecisionNo" name="Повернути документ на доопрацювання"></activiti:value>
           <activiti:value id="sEnumDecisionYesBut" name="Завдання виконано - Не формувати вихідний документ"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sMainExecutor" name="Основний виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFirstName" name="Основний виконавець прізвище" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLastName" name="Основний виконавець імяпобатькові" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSigned" name="Підписав" type="invisible" variable="sAutorResolution"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible" default="${sFirstName} ${sLastName}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="Якщо доопрацювання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;asDecisionNoText&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDecisionNo'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_172_print.html]" type="invisible" default="РКК" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_print.html]" type="invisible" default="РКК" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -259,12 +277,29 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Вхідний номер" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateDoc" name="Дата документа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sApplicant" name="Кореспондент" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asTypeResolution" name="Резолюція" type="invisible">
+          <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
+          <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
+          <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
+          <activiti:value id="sEnumToAttention" name="До відома"></activiti:value>
+          <activiti:value id="sEnumToPerform" name="До виконання"></activiti:value>
+          <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
+          <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNumberRegistration2" name="Реєстраційний номер документа" type="string" variable="sID_Order_GovPublic" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration2" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sApplicant2" name="Кореспондент" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Підготував" type="table" default="${markerService.loadFromFile('table/sed/sTable3_doc_justice_172.json')}" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTable4" name="Підписав" type="table" default="${markerService.loadFromFile('table/sed/sTable4_doc_justice_172.json')}" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Виконавець" type="table" default="${markerService.loadFromFile('table/sed/sTable5_doc_justice_172.json')}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Підготував" type="table" default="${markerService.loadFromFile('table/sed/sTable3_doc_justice_171.json')}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sAutorResolution"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" default="${sFirstName} ${sLastName}"></activiti:formProperty>
         <activiti:formProperty id="sContent2" name="Короткий зміст документа" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNote2" name="Примітка" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" required="true">
@@ -276,8 +311,11 @@
           <activiti:value id="sEnum6" name="замовленою кореспонденцією"></activiti:value>
           <activiti:value id="sEnum7" name="рекомендованим листом з повідомленням"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sMainExecutor" name="Основний виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFirstName" name="Основний виконавець прізвище" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLastName" name="Основний виконавець імяпобатькові" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDoc3" name="Електронна форма документа" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_172_print.html]" type="invisible" default="РКК" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_print.html]" type="invisible" default="РКК" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -291,7 +329,7 @@
     <scriptTask id="scripttask1" name="4 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//1. счетчик добавления номера в поле входящего номера
 var number=execution.getVariable('sID_Order_GovPublic')
-var fullNumber="вх-"+number+"/"
+var fullNumber="в-"+number+"/"
 execution.setVariable('sID_Order_GovPublic', fullNumber)
 
 //2. назначение даты исполнения - по умолчанию + 30 дней к текущей даты и перевод даты в нужный формат дд/мм/гггг
@@ -353,7 +391,20 @@ execution.setVariable('processInstanceId', processInstanceId)
     </sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow58" sourceRef="scripttask3" targetRef="timerintermediatecatchevent1"></sequenceFlow>
-    <sequenceFlow id="flow59" sourceRef="usertask2" targetRef="usertask2_yellow"></sequenceFlow>
+    <scriptTask id="scripttask4" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var processInstanceId = execution.getVariable('processInstanceId');
+var obj = processSubjectTreeService.getCatalogProcessSubjectTree(processInstanceId, 1, null, false, 1);
+var sMainExecutor = " ";
+var i = 0;
+do {
+i++
+} while (obj.aProcessSubjectTree[0].sLogin != obj.aProcessSubjectTree[0].aUser[i].sLogin)
+execution.setVariable('sMainExecutor', obj.aProcessSubjectTree[0].aUser[i].sLogin)
+execution.setVariable('sFirstName', obj.aProcessSubjectTree[0].aUser[i].sFirstName)
+execution.setVariable('sLastName', obj.aProcessSubjectTree[0].aUser[i].sLastName)</script>
+    </scriptTask>
+    <sequenceFlow id="flow59" sourceRef="usertask2" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow60" sourceRef="scripttask4" targetRef="usertask2_yellow"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_172">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_172" id="BPMNPlane__doc_justice_172">
@@ -398,6 +449,9 @@ execution.setVariable('processInstanceId', processInstanceId)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="628.0" y="404.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
+        <omgdc:Bounds height="83.0" width="132.0" x="800.0" y="260.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="341.0" y="187.0"></omgdi:waypoint>
@@ -478,6 +532,10 @@ execution.setVariable('processInstanceId', processInstanceId)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="865.0" y="229.0"></omgdi:waypoint>
+        <omgdi:waypoint x="866.0" y="260.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
+        <omgdi:waypoint x="866.0" y="343.0"></omgdi:waypoint>
         <omgdi:waypoint x="865.0" y="365.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

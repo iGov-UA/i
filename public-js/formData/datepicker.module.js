@@ -30,7 +30,7 @@ angular.module('datetimepicker', [])
                     datetimepickerOptions: '@'
                 },
                 link    : function ($scope, $element, $attrs, ngModelCtrl) {
-                    var passed_in_options = $scope.$eval($attrs.datetimepickerOptions);
+                    var passed_in_options = $scope.$eval($attrs.datetimepickeroptions);
                     var options = jQuery.extend({}, default_options, passed_in_options);
 
                     $element
