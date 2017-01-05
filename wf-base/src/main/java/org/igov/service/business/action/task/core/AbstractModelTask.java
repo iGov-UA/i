@@ -398,7 +398,7 @@ public abstract class AbstractModelTask {
                                     
                                     byte [] aByteFile = oMultipartFile.getBytes();
                                     oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n),
-                                            sTextTranslit((String)oJsonTaskAttachVO.get("sFileNameAndExt")), 
+                                            (String)oJsonTaskAttachVO.get("sFileNameAndExt"), 
                                             (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html", 
                                             aAttribute, aByteFile);
                                 } catch (IOException ex) {

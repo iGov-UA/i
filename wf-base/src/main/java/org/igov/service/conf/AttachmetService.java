@@ -70,8 +70,7 @@ public class AttachmetService {
         TaskAttachVO oTaskAttachVO = new TaskAttachVO();
             
         String sKey = null;
-        sFileNameAndExt = sTextTranslit(sFileNameAndExt);
-            
+        
         if (aContent != null) {
             if(sID_StorageType.equals("Mongo")){
                 sKey = oBytesDataStaticStorage.saveData(aContent);
@@ -153,7 +152,7 @@ public class AttachmetService {
         if(sID_StorageType.equals("Mongo")){
             aResultArray = oBytesDataStaticStorage.getData(sKey);
             byteArrayInputStream = new ByteArrayInputStream(aResultArray);
-            oMultipartFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sTextTranslit(sFileName), sContentType);
+            oMultipartFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sFileName, sContentType);
             if (aResultArray != null) {
                 LOG.info("Mongo byte array isn't null");
             }
