@@ -1197,8 +1197,20 @@ public class ActionTaskService {
 
             Collection<FlowElement> elements = oRepositoryService.getBpmnModel(oProcessDefinition.getId()).getMainProcess().getFlowElements();
             for (FlowElement flowElement : elements){
-            	LOG.info("Element with ID {} name {} attribute {} extension elements {}", flowElement.getId(), flowElement.getName(),
+            	if (flowElement.getId().startsWith("usertask")){
+            		LOG.info("Element with ID {} name {} attribute {} extension elements {}", flowElement.getId(), flowElement.getName(),
             				flowElement.getAttributes(), flowElement.getExtensionElements());
+            		UserTask userTask = (UserTask)flowElement;
+            		for (org.activiti.bpmn.model.FormProperty property : userTask.getFormProperties()){
+                    	Map<String, String> mPropertyBP = new HashMap<String, String>();
+                    	mPropertyBP.put("sID", property.getId());
+                    	mPropertyBP.put("sName", property.getName());
+                    	mPropertyBP.put("sID_Type", property.getType());
+                        amPropertyBP.put(mPropertyBP.get("sID"), mPropertyBP);
+                        LOG.info("Added record to response from user task {}", mPropertyBP);
+                    }
+            	}
+            	
             }
 
         }
