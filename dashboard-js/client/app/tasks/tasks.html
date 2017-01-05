@@ -55,7 +55,9 @@
 
         <div class="row" ng-repeat="field in fieldFilter track by $index">
         <div class="form-group col-sm-12">
-          <label class="col-sm-4 control-label">Фільтр по полях</label>
+          <div class="col-sm-4 control-label">
+            <label ng-show="$index === 0">Фільтр по полях</label>
+          </div>
           <div class="col-sm-8" style="padding: 0">
             <div class="col-sm-4">
               <ui-select ng-model="field.select"
@@ -90,15 +92,12 @@
               </select>
             </div>
 
-            <div class="col-sm-2">
+            <div class="col-sm-1">
               <button class="btn btn-default glyphicon glyphicon-remove"
                       ng-click="removeFieldFilter($index)"
                       style="color: red;"
-                      ng-if="$index !== 0"></button>
-              <button class="btn btn-default glyphicon glyphicon-plus"
-                      ng-click="addFilter()"
-                      style="color: green;"
-                      ng-if="$last"></button>
+                      ng-if="$index !== 0">
+              </button>
             </div>
           </div>
         </div>
