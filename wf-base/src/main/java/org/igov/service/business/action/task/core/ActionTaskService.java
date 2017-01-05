@@ -1186,8 +1186,8 @@ public class ActionTaskService {
         Map<String,Map<String, String>> amPropertyBP = new HashMap<String,Map<String, String>>();
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return){
         	StartFormData formData = oFormService.getStartFormData(oProcessDefinition.getId());
-            Map<String, String> mPropertyBP = new HashMap<String, String>();
             for (FormProperty property : formData.getFormProperties()){
+            	Map<String, String> mPropertyBP = new HashMap<String, String>();
             	mPropertyBP.put("sID", property.getId());
             	mPropertyBP.put("sName", property.getName());
             	mPropertyBP.put("sID_Type", property.getType().getName());
@@ -1196,6 +1196,7 @@ public class ActionTaskService {
             }
         }
 
+        LOG.info("Total list of fields {}", amPropertyBP);
         List<Map<String, String>> res = new LinkedList<Map<String,String>>();
         res.addAll(amPropertyBP.values());
         return res;
