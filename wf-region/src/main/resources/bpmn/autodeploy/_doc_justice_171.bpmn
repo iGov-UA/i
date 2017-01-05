@@ -257,7 +257,7 @@
         <activiti:formProperty id="sFirstName" name="Основний виконавець прізвище" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLastName" name="Основний виконавець імяпобатькові" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSigned" name="Підписав" type="invisible" variable="sAutorResolution"></activiti:formProperty>
-        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible" variable="sFirstName"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible" default="${sFirstName} ${sLastName}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="Якщо доопрацювання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;asDecisionNoText&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDecisionNo'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_print.html]" type="invisible" default="РКК" writable="false"></activiti:formProperty>
@@ -277,12 +277,23 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Вхідний номер" type="invisible"></activiti:formProperty>
+        
+        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateDoc" name="Дата документа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sApplicant" name="Кореспондент" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asTypeResolution" name="Резолюція" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="invisible"></activiti:formProperty>
+         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="invisible"></activiti:formProperty>
+        
         <activiti:formProperty id="sNumberRegistration2" name="Реєстраційний номер документа" type="string" variable="sID_Order_GovPublic" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration2" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sApplicant2" name="Кореспондент" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Підготував" type="table" default="${markerService.loadFromFile('table/sed/sTable3_doc_justice_171.json')}" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sAutorResolution"></activiti:formProperty>
-        <activiti:formProperty id="sExecutor" name="Виконавець" type="string" default="${sFirstName} ${sLastName}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" default="${sFirstName} ${sLastName}"></activiti:formProperty>
         <activiti:formProperty id="sContent2" name="Короткий зміст документа" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNote2" name="Примітка" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" required="true">
