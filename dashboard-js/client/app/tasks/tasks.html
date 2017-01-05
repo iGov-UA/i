@@ -69,14 +69,16 @@
           <a href ng-repeat="mode in ticketsFilter.dateModeList" ng-click="setTicketsDateMode(mode.key)" ng-class="{'selected':ticketsFilter.dateMode==mode.key}"
              class="tickets-date-mode">{{mode.title}}</a>
 
-          <input datetimepicker
-                 class="form-control date-picker"
-                 type="text"
-                 ng-change="applyTicketsFilter()"
-                 options="{{ticketsFilter.options}}"
-                 format="YYYY-MM-DD"
-                 ng-if="ticketsFilter.dateMode=='date'"
-                 ng-model="ticketsFilter.sDate" />
+          <div style="position: relative">
+            <input datetimepicker
+                   class="form-control date-picker"
+                   type="text"
+                   ng-change="applyTicketsFilter()"
+                   options="{{ticketsFilter.options}}"
+                   datetimepickerOptions="{format: 'YYYY-MM-DD'}"
+                   ng-if="ticketsFilter.dateMode=='date'"
+                   ng-model="ticketsFilter.sDate" />
+          </div>
         </div>
 
         <div class="tickets-assign">
