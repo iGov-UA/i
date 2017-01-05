@@ -1197,9 +1197,8 @@ public class ActionTaskService {
 
             Collection<FlowElement> elements = oRepositoryService.getBpmnModel(oProcessDefinition.getId()).getMainProcess().getFlowElements();
             for (FlowElement flowElement : elements){
-            	if (flowElement.getId().startsWith("usertask")){
-            		LOG.info("Element with ID {} name {} attribute {} extension elements {}", flowElement.getId(), flowElement.getName(),
-            				flowElement.getAttributes(), flowElement.getExtensionElements());
+            	if (flowElement instanceof UserTask){
+            		LOG.info("Processing user task with ID {} name {} ", flowElement.getId(), flowElement.getName());
             		UserTask userTask = (UserTask)flowElement;
             		for (org.activiti.bpmn.model.FormProperty property : userTask.getFormProperties()){
                     	Map<String, String> mPropertyBP = new HashMap<String, String>();
