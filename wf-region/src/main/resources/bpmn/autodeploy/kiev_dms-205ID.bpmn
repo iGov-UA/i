@@ -154,7 +154,11 @@ execution.setVariable('sEndDay', timerEnd)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <endEvent id="endevent2" name="End"></endEvent>
+    <endEvent id="endevent2" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <scriptTask id="scripttask2" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var delta='10';
 var unixdate= Math.round((new Date()).getTime());
