@@ -1194,6 +1194,13 @@ public class ActionTaskService {
                 amPropertyBP.put(mPropertyBP.get("sID"), mPropertyBP);
                 LOG.info("Added record to response {}", mPropertyBP);
             }
+
+            Collection<FlowElement> elements = oRepositoryService.getBpmnModel(oProcessDefinition.getId()).getMainProcess().getFlowElements();
+            for (FlowElement flowElement : elements){
+            	LOG.info("Element with ID {} name {} attribute {} extension elements {}", flowElement.getId(), flowElement.getName(),
+            				flowElement.getAttributes(), flowElement.getExtensionElements());
+            }
+
         }
 
         LOG.info("Total list of fields {}", amPropertyBP);
