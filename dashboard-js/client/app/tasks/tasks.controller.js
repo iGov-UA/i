@@ -486,7 +486,9 @@
 
     var addFilter = function () {
       saveItemToLocalStorage('fieldFilter', $scope.fieldFilter);
-      $scope.fieldFilter.push({select:'', string:'', enum:$scope.selectedFieldFilterValue});
+      if($scope.fieldFilter[$scope.fieldFilter.length-1].select !== "") {
+        $scope.fieldFilter.push({select: '', string: '', enum: $scope.selectedFieldFilterValue});
+      }
     };
 
     $scope.onSelectDataList = function ($item, index) {
