@@ -89,7 +89,11 @@ execution.setVariable('sEndDay', timerEnd)</script>
     <sequenceFlow id="flow34" name="${sCancelInfo != 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="endevent4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent4" name="End"></endEvent>
+    <endEvent id="endevent4" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <sequenceFlow id="flow33" name="${sCancelInfo == 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo == 'Заявка актуальна'}]]></conditionExpression>
     </sequenceFlow>
@@ -330,7 +334,11 @@ execution.setVariable('sCustom', custom)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
+    <endEvent id="endevent2" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow44" sourceRef="exclusivegateway6" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay != null}]]></conditionExpression>
