@@ -140,7 +140,7 @@ public class SubjectGroupTreeService {
 	        }else {
 	        	resultTree = getSubjectGroupTree(hierarchyProcessSubject, aChildResult);
 	        }
-	        
+	        if (isDisplayRootElement(bIncludeRoot)) {
 			if (checkDeepLevelWidth(deepLevelWidth) < resultTree.size()) {
 				if (resultTree != null && !resultTree.isEmpty()) {
 					 List<SubjectGroup> result = new ArrayList<>();
@@ -148,6 +148,9 @@ public class SubjectGroupTreeService {
 					processSubjectResultTree.setaSubjectGroupTree(result);
 				}
 			}
+	        }else {
+	        	processSubjectResultTree.setaSubjectGroupTree(resultTree);
+	        }
 		}
 	        return processSubjectResultTree;
 
