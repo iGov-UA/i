@@ -2375,7 +2375,8 @@ public class ActionTaskService {
                                     mFilterField.put(oJSON.getString("sID"), oJSON.getString("sValue"));
                                     //((TaskQuery)taskQuery).taskVariableValueEqualsIgnoreCase(sLogin, sLogin);
                                     //((TaskQuery)taskQuery).taskVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
-                                    ((TaskInfoQuery)taskQuery).taskVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+                                    ((TaskInfoQuery)taskQuery).processVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+//                                    ((TaskInfoQuery)taskQuery).taskVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
                                 } else {
                                     LOG.info("{} json element doesn't have either sID or sValue fields", i);
                                 }
@@ -2432,7 +2433,9 @@ public class ActionTaskService {
                                         if (oJSON.has("sID") && oJSON.has("sValue")){
                                             mFilterField.put(oJSON.getString("sID"), oJSON.getString("sValue"));
                                             //((TaskQuery)taskQuery).taskVariableValueEqualsIgnoreCase(sLogin, sLogin);
-                                            ((TaskQuery)taskQuery).taskVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+                                            //((TaskQuery)taskQuery).processVariableValueEqualsIgnoreCase(sLogin, sLogin)taskVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+                                            ((TaskQuery)taskQuery).processVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+//                                            ((TaskQuery)taskQuery).taskVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
                                         } else {
                                             LOG.info("{} json element doesn't have either sID or sValue fields", i);
                                         }
