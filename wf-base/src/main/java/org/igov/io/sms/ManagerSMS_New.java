@@ -116,7 +116,8 @@ public class ManagerSMS_New {
 
 	String sessionId;
 	try {
-	    sessionId = prominSession_Singleton.getSid_Auth_UkrDoc_SED();
+//	    sessionId = prominSession_Singleton.getSid_Auth_UkrDoc_SED();
+	    sessionId = prominSession_Singleton.getSID_Auth_PB_SMS();
 	} catch (Exception e) {
 	    LOG.error("Error get Session ID", e);
 	    return String.format("Error get Session ID. %s", e.getMessage());
