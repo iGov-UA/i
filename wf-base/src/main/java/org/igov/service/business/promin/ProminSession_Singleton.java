@@ -35,6 +35,7 @@ public class ProminSession_Singleton {
     private final static Logger LOG = LoggerFactory.getLogger(ProminSession_Singleton.class);
     private String sid_Auth_UkrDoc_SED;
     private String sid_Auth_Receipt_PB_Bank;
+    private String aSID_Auth_PB_SMS;
     private long nTimeCreatedMS;
     private final long nTimeLiveLimitMS = 1000 * 60 * 20;
     
@@ -54,6 +55,11 @@ public class ProminSession_Singleton {
         return sid_Auth_Receipt_PB_Bank;
     }
     
+    public String getSID_Auth_PB_SMS() {
+        checkAndUpdateSid();
+        return aSID_Auth_PB_SMS;
+    }
+    
     private void checkAndUpdateSid() {
         LOG.info("getSID ... " + toString());
         if (sid_Auth_UkrDoc_SED == null || (System.currentTimeMillis() - nTimeCreatedMS) > nTimeLiveLimitMS) {
@@ -64,6 +70,9 @@ public class ProminSession_Singleton {
             sid_Auth_Receipt_PB_Bank = getSessionId(generalConfig.getLogin_Auth_Receipt_PB_Bank(),
                     generalConfig.getPassword_Auth_Receipt_PB_Bank(),
                     generalConfig.getURL_GenerateSID_Auth_Receipt_PB_Bank() + "?lang=UA");
+            aSID_Auth_PB_SMS = getSessionId(generalConfig.getLogin_Auth_PB_SMS(),
+                    generalConfig.getPassword_Auth_PB_SMS(),
+                    generalConfig.getURL_GenerateSID_Auth_PB_SMS() + "?lang=UA");
         }
         LOG.info(toString() + " ok!");
     }

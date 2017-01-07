@@ -116,6 +116,13 @@ public class GeneralConfig {
     @Value("${general.OTP.sMerchantPassword}")
     private String sMerchantPassword_OTP;
     
+    @Value("${general.SMS.PB.Auth.sLogin}")
+    private String sLogin_Auth_PB_SMS;
+    @Value("${general.SMS.PB.Auth.sPassword}")
+    private String sPassword_Auth_PB_SMS;
+    @Value("${general.SMS.PB.Auth.sURL_GenerateSID}")
+    private String sURL_GenerateSID_Auth_PB_SMS;
+       
     @Value("${general.SMS.sURL_Send}")
     private String sURL_Send_SMS;
     @Value("${general.SMS.sURL_SendNew}")
@@ -282,6 +289,16 @@ public class GeneralConfig {
         return sMerchantPassword_OTP;
     }
     
+    public String getLogin_Auth_PB_SMS()  {
+        return sLogin_Auth_PB_SMS;
+    }
+    public String getPassword_Auth_PB_SMS()  {
+        return sPassword_Auth_PB_SMS;
+    }
+    public String getURL_GenerateSID_Auth_PB_SMS()  {
+        return sURL_GenerateSID_Auth_PB_SMS;
+    }
+       
     public String getURL_Send_SMS()  {
         return sURL_Send_SMS;
     }
