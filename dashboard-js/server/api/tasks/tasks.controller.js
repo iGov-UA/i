@@ -99,7 +99,7 @@ exports.index = function (req, res) {
     query.soaFilterField = req.query.soaFilterField;
   }
   query.nSize = 50;
-  query.nStart = (req.query.page || 0) * query.size;
+  query.nStart = (req.query.page || 0) * query.nSize;
 
   if (req.query.filterType === 'all') {
     async.waterfall([
@@ -126,6 +126,8 @@ exports.index = function (req, res) {
       query.includeProcessVariables = false;
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
+      query.size = query.nSize;
+      query.start = query.nStart;
       query.sLogin = user.id;
     } else if (req.query.filterType === 'documents') {
       query.sFilterStatus = 'Opened';
