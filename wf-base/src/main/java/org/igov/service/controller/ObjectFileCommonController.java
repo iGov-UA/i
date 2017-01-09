@@ -819,7 +819,7 @@ public class ObjectFileCommonController {
     }
     
     @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
-    @RequestMapping(value = "/getAttachment", method = RequestMethod.GET)
+    @RequestMapping(value = "/getProcessAttach", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
     byte[] getAttachment(
@@ -850,16 +850,13 @@ public class ObjectFileCommonController {
         return multipartFile.getBytes();
     }
     
-    
-    
-    
-    
-    @ApiOperation(value = "setAttachmentAsFile", notes
+   
+    @ApiOperation(value = "setProcessAttach", notes
             = "##### загрузка файла-атачмента по новому концепту")
-    @RequestMapping(value = "/setAttachmentAsFile", method = RequestMethod.POST)
+    @RequestMapping(value = "/setProcessAttach", method = RequestMethod.POST)
     @Transactional
     public @ResponseBody
-    String setAttachmentAsFile(
+    String setProcessAttach(
             @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
@@ -900,12 +897,12 @@ public class ObjectFileCommonController {
     }
     
     
-    @ApiOperation(value = "setAttachmentAsContent", notes
+    @ApiOperation(value = "setProcessAttachText", notes
             = "##### загрузка body-атачмента по новому концепту")
-    @RequestMapping(value = "/setAttachmentAsContent", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/setProcessAttachText", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public @ResponseBody
-    String setAttachmentAsContent(
+    String setProcessAttachText(
             @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
