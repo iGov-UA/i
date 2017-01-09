@@ -819,7 +819,7 @@ public class ObjectFileCommonController {
     }
     
     @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
-    @RequestMapping(value = "/getAttachment", method = RequestMethod.GET)
+    @RequestMapping(value = "/getProcessAttach", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
     byte[] getAttachment(
@@ -850,6 +850,61 @@ public class ObjectFileCommonController {
         return multipartFile.getBytes();
     }
     
+    @ApiOperation(value = "setAttachmentAsFile", notes
+            = "##### загрузка файла-атачмента по новому концепту")
+    @RequestMapping(value = "/setProcessAttach", method = RequestMethod.POST)
+    @Transactional
+    public @ResponseBody
+    String setAttachmentAsFile(
+            @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
+            @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
+            @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
+            @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
+            @ApiParam(value = "файл для сохранения в БД", required = true)@RequestParam(value = "file", required = true) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
+            @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
+            @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType, 
+            @ApiParam(value = "контент файла в виде строки", required = true)@RequestBody String sData)throws JsonProcessingException, IOException
+            {
+        
+            LOG.info("setAttachment nID_Process: " + nID_Process);
+            LOG.info("setAttachment bSigned: " + bSigned);
+            LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
+            LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
+            LOG.info("setAttachment file: " + file);
+            LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
+            LOG.info("setAttachment sID_Field: " + sID_Field);
+            LOG.info("setAttachment sContentType: " + sContentType);
+
+            if (aAttribute == null){
+               aAttribute = new ArrayList<>();
+            }
+            
+            if(sData != null && file != null){
+                throw new RuntimeException("Error! Data source dublicating");
+            }
+            else{
+                if(file != null && "Mongo".equals(sID_StorageType)){
+                    return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
+                            sContentType, aAttribute, file.getBytes());
+                }
+                else if(file != null && "Redis".equals(sID_StorageType)){
+                    byte[] aContent = AbstractModelTask.multipartFileToByteArray(file, file.getOriginalFilename()).toByteArray();
+                    return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
+                           sContentType, aAttribute, aContent);
+                }
+                else if(sData != null && "Mongo".equals(sID_StorageType)){
+                    return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
+                            sContentType, aAttribute, sData.getBytes(Charsets.UTF_8));
+                }
+                else if(sData != null && "Redis".equals(sID_StorageType)){
+                    throw new RuntimeException("There is no suitable metod for string data for redis");   
+                }
+                else{
+                    return "Data source is null";
+                }
+            }
+    }
     
     
     
