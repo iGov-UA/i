@@ -7,7 +7,7 @@ module.exports.uploadProxy = function (req, res) {
   var sHost = req.region.sHost;
   var sURL;
   if(req.query.sFileNameAndExt) {
-    sURL = sHost + '/service/object/file/setAttachmentAsFile?sID_StorageType=Redis' + '&sFileNameAndExt='+ req.query.sFileNameAndExt + '&';
+    sURL = sHost + '/service/object/file/setProcessAttach?sID_StorageType=Redis' + '&sFileNameAndExt='+ req.query.sFileNameAndExt + '&';
   } else {
     sURL = sHost + '/service/object/file/upload_file_to_redis';
   }

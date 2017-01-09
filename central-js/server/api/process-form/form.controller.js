@@ -95,7 +95,7 @@ module.exports.submit = function (req, res) {
   if(keys.length > 0) {
     async.forEach(keys, function (key, next) {
         function putTableToRedis (table, callback) {
-          var url = '/object/file/setAttachmentAsFile';
+          var url = '/object/file/setProcessAttach';
           var nameAndExt = table.id + '.json';
           var  params = {
             sID_StorageType:'Redis',
