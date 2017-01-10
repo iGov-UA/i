@@ -529,7 +529,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
         StringBuffer outputTextBuffer = new StringBuffer();
         Matcher oMatcher = TAG_sURL_FEEDBACK_MESSAGE.matcher(textWithoutTags);
-        LOG.info("Replace tags(oMatcher= {})", oMatcher.find());
+        LOG.info("Replace tags (oMatcher= {})", oMatcher.find());
         while (oMatcher.find()) {
             String tag_sURL_FEEDBACK_MESSAGE = oMatcher.group();
             List<String> aPreviousUserTask_ID = getPreviousTaskId(execution);
@@ -560,7 +560,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
                 if (oFormProperty != null) {
                     String sID = oFormProperty.getId();
-//                    LOG.info("(id={})", id);
+                    LOG.info("(id={})", sID);
 
                     if ("email".equalsIgnoreCase(sID) && oFormProperty.getValue() != null && !"null".equalsIgnoreCase(oFormProperty.getValue())) {
                         sAuthorMail = oFormProperty.getValue();
@@ -576,9 +576,11 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     }
                     if ("clFIO".equalsIgnoreCase(sID) && oFormProperty.getValue() != null && !"null".equalsIgnoreCase(oFormProperty.getValue())) {
                         sAuthorFIO_Original = oFormProperty.getValue();
-                        LOG.info("(sAuthorFIO_Original={})", sAuthorFIO_Original);
-
+//                        LOG.info("(sAuthorFIO_Original={})", sAuthorFIO_Original);
                     }
+                    LOG.info("oFormProperty != null :"
+                            + "(sAuthorMail={}, sAuthorLastName= {}, sAuthorFirstName= {}, sAuthorMiddleName= {}, sAuthorFIO_Original= {})",
+                            sAuthorMail, sAuthorLastName, sAuthorFirstName, sAuthorMiddleName, sAuthorFIO_Original);
                 }
             }
 
