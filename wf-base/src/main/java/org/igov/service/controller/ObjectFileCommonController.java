@@ -896,7 +896,6 @@ public class ObjectFileCommonController {
             //return oAttachmentCover.apply(attachment);
     }
     
-    
     @ApiOperation(value = "setProcessAttachText", notes
             = "##### загрузка body-атачмента по новому концепту")
     @RequestMapping(value = "/setProcessAttachText", method = RequestMethod.POST, produces = "application/json")
