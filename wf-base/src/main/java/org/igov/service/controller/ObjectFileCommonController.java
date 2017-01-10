@@ -114,7 +114,7 @@ public class ObjectFileCommonController {
     @Transactional
     public @ResponseBody
     String putAttachmentsToRedis(
-            @RequestParam(required = true, value = "file") MultipartFile file)
+            @RequestParam(required = true, value = "file") MultipartFile file) //Название не менять! Не будет работать прикрепление файла через проксю!!!
             throws FileServiceIOException {
         try {
             LOG.info("file.getContentType: " + file.getContentType());
@@ -521,7 +521,7 @@ public class ObjectFileCommonController {
     public @ResponseBody
     AttachmentEntityI putAttachmentsToExecution(//ResponseEntity
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
-            @ApiParam(value = "файл html. в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
+            @ApiParam(value = "файл html. в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,//Название не менять! Не будет работать прикрепление файла через проксю!!!
             @ApiParam(value = "строка-описание", required = true) @RequestParam(value = "description") String description,
             @ApiParam(value = "ИД поля формы, к которому загружается файл", required = false) @RequestParam(value = "sID_Field") String sID_Field)
             throws IOException {
@@ -819,7 +819,7 @@ public class ObjectFileCommonController {
     }
     
     @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
-    @RequestMapping(value = "/getAttachment", method = RequestMethod.GET)
+    @RequestMapping(value = "/getProcessAttach", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
     byte[] getAttachment(
@@ -850,18 +850,18 @@ public class ObjectFileCommonController {
         return multipartFile.getBytes();
     }
     
-    
-    @ApiOperation(value = "setAttachmentAsFile", notes
+   
+    @ApiOperation(value = "setProcessAttach", notes
             = "##### загрузка файла-атачмента по новому концепту")
-    @RequestMapping(value = "/setAttachmentAsFile", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/setProcessAttach", method = RequestMethod.POST)
     @Transactional
     public @ResponseBody
-    String setAttachmentAsFile(
+    String setProcessAttach(
             @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
             @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
-            @ApiParam(value = "файл для сохранения в БД", required = true)@RequestParam(value = "oFile", required = true) MultipartFile oFile,
+            @ApiParam(value = "файл для сохранения в БД", required = true)@RequestParam(value = "file", required = true) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType) throws JsonProcessingException, IOException
@@ -871,7 +871,7 @@ public class ObjectFileCommonController {
             LOG.info("setAttachment bSigned: " + bSigned);
             LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
             LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
-            LOG.info("setAttachment file: " + oFile);
+            LOG.info("setAttachment file: " + file);
             LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
             LOG.info("setAttachment sID_Field: " + sID_Field);
             LOG.info("setAttachment sContentType: " + sContentType);
@@ -880,13 +880,12 @@ public class ObjectFileCommonController {
                aAttribute = new ArrayList<>();
             }
             
-            
-            if(oFile != null && "Mongo".equals(sID_StorageType)){
+            if(file != null && "Mongo".equals(sID_StorageType)){
                 return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
-                        sContentType, aAttribute, oFile.getBytes());
+                        sContentType, aAttribute, file.getBytes());
             }
-            else if(oFile != null && "Redis".equals(sID_StorageType)){
-                byte[] aContent = AbstractModelTask.multipartFileToByteArray(oFile, oFile.getOriginalFilename()).toByteArray();
+            else if(file != null && "Redis".equals(sID_StorageType)){
+                byte[] aContent = AbstractModelTask.multipartFileToByteArray(file, file.getOriginalFilename()).toByteArray();
                 return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
                        sContentType, aAttribute, aContent);
             }
@@ -898,12 +897,12 @@ public class ObjectFileCommonController {
     }
     
     
-    @ApiOperation(value = "setAttachmentAsContent", notes
+    @ApiOperation(value = "setProcessAttachText", notes
             = "##### загрузка body-атачмента по новому концепту")
-    @RequestMapping(value = "/setAttachmentAsContent", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/setProcessAttachText", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public @ResponseBody
-    String setAttachmentAsContent(
+    String setProcessAttachText(
             @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,

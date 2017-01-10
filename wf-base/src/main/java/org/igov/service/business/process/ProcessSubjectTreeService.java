@@ -156,7 +156,7 @@ public class ProcessSubjectTreeService {
         }else {
         	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResult);
         }
-        
+        if (isDisplayRootElement(bIncludeRoot)) {
 		if (checkDeepLevelWidth(deepLevelWidth) < resultTree.size()) {
 			if (resultTree != null && !resultTree.isEmpty()) {
 				 List<ProcessSubject> result = new ArrayList<>();
@@ -164,6 +164,11 @@ public class ProcessSubjectTreeService {
 				processSubjectResultTree.setaProcessSubjectTree(result);
 			}
 		}
+        }else {
+        	processSubjectResultTree.setaProcessSubjectTree(resultTree);
+        }
+		
+		
         }
         return processSubjectResultTree;
 

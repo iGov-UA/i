@@ -700,6 +700,15 @@ angular.module('dashboardJsApp')
             sID_BP: bpID
           }
         })
+      },
+      getFilterFieldsList: function (login) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/fields-list',
+          params: {
+            sLogin: login
+          }
+        })
       }
     };
   });

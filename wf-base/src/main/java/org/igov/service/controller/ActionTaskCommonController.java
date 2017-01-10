@@ -608,7 +608,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aGroup возвращается массив отождествленных групп, на которые распространяется данная задача", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments,
-            @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче", required = false) @RequestParam(value = "bIncludeMessages", required = false) Boolean bIncludeMessages)
+            @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче", required = false) @RequestParam(value = "bIncludeMessages", required = false) Boolean bIncludeMessages,
+            @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue ="true") Boolean bIncludeProcessVariables)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
@@ -685,7 +686,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
             }
         }
-
+        if(bIncludeProcessVariables.equals(Boolean.TRUE) && nID_Process != null){
+            Map<String, Object> mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
+            response.put("mProcessVariable", mProcessVariable);
+        }
+        
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
         response.put("sID_Status", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
         response.put("nID_Task", nID_Task);
@@ -1742,7 +1747,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
                 Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
                 long totalNumber = 0;
                 Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy, sFilterStatus,
-                        groupsIds);
+                        groupsIds, soaFilterField);
 
                 totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count() : oActionTaskService.getCountOfTasksForGroups(groupsIds);
                 LOG.info("Total number of tasks:{}", totalNumber);
@@ -1789,8 +1794,8 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
                     oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
                 }
 
-                if (!StringUtils.isEmpty(soaFilterField))
-                	data = filterTasks(data, soaFilterField);
+                /*if (!StringUtils.isEmpty(soaFilterField))
+                	data = filterTasks(data, soaFilterField);*/
                 
                 res.put("data", data);
                 res.put("size", nSize);
@@ -1805,6 +1810,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
         return res;
     }
 
+    @Deprecated
     private List<Map<String, Object>> filterTasks(List<Map<String, Object>> tasks,
 			String soaFilterField) {
     	JSONArray jsonArray = new JSONArray(soaFilterField);
@@ -1909,7 +1915,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
             }
 
             LOG.info("Selecting tasks sLogin:{} sFilterStatus:{} bIncludeAlienAssignedTasks:{}", sLogin, sFilterStatus, bIncludeAlienAssignedTasks);
-            List<TaskInfo> taskQuery = oActionTaskService.returnTasksFromCache(sLogin, sFilterStatus, bIncludeAlienAssignedTasks, groupsIds);
+            List<TaskInfo> taskQuery = oActionTaskService.returnTasksFromCache(sLogin, sFilterStatus, bIncludeAlienAssignedTasks, groupsIds, null);//
 
             long totalNumber = taskQuery.size();
             LOG.info("Retreived {} tasks", taskQuery.size());

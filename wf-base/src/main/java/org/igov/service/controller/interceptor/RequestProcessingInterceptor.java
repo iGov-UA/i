@@ -50,7 +50,7 @@ import static org.igov.util.Tool.sCut;
  */
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
-    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|_doc_justice_171|_doc_justice_172";
+    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|_doc_justice_171|_doc_justice_172|_doc_justice_173|_doc_justice_11|_doc_justice_12|_doc_justice_13|_doc_justice_14|_doc_justice_15|_doc_justice_16";
     private static final String asID_BP_SkipSendMail = "dnepr_mvk_291_common";
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
@@ -170,8 +170,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         if (!bFinish) {
             LOG.info("(mRequestParam={})", mRequestParam);
-            //LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
-            LOG.info("(sRequestBody={})", sRequestBody);
+            LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
             if (sURL.endsWith("/service/document/setDocumentFile")
                     || sURL.contains("/service/object/file/")) {
             } else {
@@ -310,6 +309,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String snID_Process = String.valueOf(omResponseBody.get("id")); //разобраться чего получаем нал в некоторых случаях
         if (snID_Process != null && !"null".equalsIgnoreCase(snID_Process)) {
             Long nID_Process = Long.valueOf(snID_Process);
+            LOG.info("snID_Process please be here: " + snID_Process);
             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             String snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
             mParam.put("nID_Subject", snID_Subject);

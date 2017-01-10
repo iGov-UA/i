@@ -95,8 +95,11 @@ exports.index = function (req, res) {
   //var user = JSON.parse(localStorage.getItem('user'));
   var query = {};
   //https://test.igov.org.ua/wf/service/runtime/tasks?size=20
-  query.size = 50;
-  query.start = (req.query.page || 0) * query.size;
+  if(req.query.soaFilterField) {
+    query.soaFilterField = req.query.soaFilterField;
+  }
+  query.nSize = 50;
+  query.nStart = (req.query.page || 0) * query.nSize;
 
   if (req.query.filterType === 'all') {
     async.waterfall([
@@ -112,19 +115,23 @@ exports.index = function (req, res) {
       }
     });
   } else {
-    var path = 'runtime/tasks';
+    var path = 'action/task/getTasks';
     if (req.query.filterType === 'selfAssigned') {
-      query.assignee = user.id;
+      query.sLogin = user.id;
+      query.sFilterStatus = 'OpenedAssigned';
       query.includeProcessVariables = true;
     } else if (req.query.filterType === 'unassigned') {
-      query.candidateUser = user.id;
-      query.unassigned = true;
+      query.sLogin = user.id;
+      query.sFilterStatus = 'OpenedUnassigned';
       query.includeProcessVariables = false;
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
-      query.taskAssignee = user.id;
+      query.size = query.nSize;
+      query.start = query.nStart;
+      query.sLogin = user.id;
     } else if (req.query.filterType === 'documents') {
-      query.candidateOrAssigned = user.id;
+      query.sFilterStatus = 'Opened';
+      query.sLogin = user.id;
       query.size = 100;
     } else if (req.query.filterType === 'tickets') {
       path = 'action/flow/getFlowSlotTickets';

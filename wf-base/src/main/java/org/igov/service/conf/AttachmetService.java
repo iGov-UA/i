@@ -70,8 +70,7 @@ public class AttachmetService {
         TaskAttachVO oTaskAttachVO = new TaskAttachVO();
             
         String sKey = null;
-        sFileNameAndExt = sTextTranslit(sFileNameAndExt);
-            
+        
         if (aContent != null) {
             if(sID_StorageType.equals("Mongo")){
                 sKey = oBytesDataStaticStorage.saveData(aContent);
