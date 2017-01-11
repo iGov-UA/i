@@ -5,6 +5,8 @@ import org.activiti.engine.form.AbstractFormType;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author inna
@@ -17,12 +19,14 @@ public class QueueDataFormType extends AbstractFormType {
     public static final String Flow_sID_Type = "sID_Type";
     //public static final String nSlots = "nSlots";
     private static final long serialVersionUID = 1L;
+    private static final Logger LOG = LoggerFactory.getLogger(QueueDataFormType.class);
 
     public static Map<String, Object> parseQueueData(String queueData) {
         return new Gson().fromJson(queueData, HashMap.class);
     }
 
     public static Long get_nID_FlowSlotTicket(Map<String, Object> queueDataMap) {
+        LOG.info("queueDataMap: " + queueDataMap);
         return !queueDataMap.containsKey(nID_FlowSlotTicket) ? null : ((Number) queueDataMap.get(nID_FlowSlotTicket)).longValue();
     }
     public static String get_sID_Type(Map<String, Object> queueDataMap) {
