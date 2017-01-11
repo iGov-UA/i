@@ -198,13 +198,10 @@
           <activiti:string><![CDATA[Нове звернення. Призначення допомоги на дітей одиноким матерям.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний колего!</h3>
-			У Вас в черзі на обробку зареєстровано нове звернення № [sID_Order], щодо призначення допомоги на дітей одиноким матерям.<br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify_head.html]
+          	Послуга: Призначення допомоги на дітей одиноким матерям.<br />
 			Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-			Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
-			[pattern/mail/_common_signature.html]
-			[pattern/mail/_common_footer.html]]]>
+			[pattern/mail/new_design/_common_employee_notify_footer.html]]]>
 		  </activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -221,11 +218,10 @@
           <activiti:string><![CDATA[iGov: Призначення допомоги на дітей одиноким матерям. Реєстрація]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>,
-				щодо видачи посвідчень інвалідам з дитинства та дітям інвалідам, 
+				Ваше звернення, щодо видачи посвідчень інвалідам з дитинства та дітям інвалідам, 
 				особам, які не мають права на пенсію та інвалідам зареєстровано у системі.<br>
 				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.
 			</p><br>
@@ -233,11 +229,12 @@
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br>
-			[pattern/mail/_common_signature_start.html]
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
 		  </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
@@ -263,11 +260,10 @@
           <activiti:string><![CDATA[iGov: Призначення допомоги на дітей одиноким матерям. Перевірка наданих даних]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				На жаль, Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>, 
-				щодо призначення допомоги на дітей одиноким матерям було відхилено.
+				На жаль, Ваше звернення, щодо призначення допомоги на дітей одиноким матерям було відхилено.
 			</p>
 			<p>
 				Причина: ${sComment1}
@@ -279,11 +275,12 @@
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br>
-			[pattern/mail/_common_signature_start.html]
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
 		  </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
@@ -309,14 +306,13 @@
           <activiti:string><![CDATA[iGov: Призначення допомоги на дітей одиноким матерям. Перевірка наданих даних]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>,
-				щодо призначення допомоги на дітей одиноким матерям зареєстровано.
+				Ваше звернення, щодо призначення допомоги на дітей одиноким матерям зареєстровано, було оброблене. Надані документи потребують додаткової перевірки.  
 			</p>
 			<p>
-				Вам необхідно принести оригінали документів, які були завантажені під час заповнення фрорми.
+				Для надання послуги, Вам необхідно принести оригінали документів, які були завантажені під час заповнення фрорми.
 			</p>
 			<p>
 				Чекаємо Вас в кабінеті №${sRoom}<br>
@@ -329,11 +325,12 @@
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br>
-			[pattern/mail/_common_signature_start.html]
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
 		  </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
@@ -357,26 +354,30 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Призначення допомоги на дітей одиноким матерям.]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Призначення допомоги на дітей одиноким матерям. Відмова]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було оброблено.<br>
+				Ваше звернення було оброблено.<br>
 				На жаль, Вам відмовлено у призначенні допомоги на дітей одиноким матерям.
 			</p>
 			<p>
 				Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.
 			</p><br>
+			<p>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/780/general">iGov.org.ua</a>
+			</p><br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br>
-			[pattern/mail/_common_signature_start.html]
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
 		  </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
@@ -399,11 +400,11 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Призначення допомоги на дітей одиноким матерям.]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Призначення допомоги на дітей одиноким матерям. Схвалено]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html] 
 			<p>
 				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було оброблено.<br>
 				Ви отримали схвалення щодо свого звернення про призначення допомоги на дітей одиноким матерям.
@@ -414,12 +415,13 @@
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br>
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]]]>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_feedback.html]   	
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
 		  </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">

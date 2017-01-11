@@ -7,9 +7,9 @@
         <activiti:formProperty id="bankIdlastName" name="Призвіще" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sScan_passport" name="Скан-копія паспорта: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nScan_passport" name="Скан-копія паспорта: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Домашня адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail;На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="goal_2" name="Чи подавали на субсидію через портал iGov?" type="enum" required="true">
@@ -50,8 +50,8 @@
           <activiti:expression><![CDATA[Звернення на тему: Отримання інформації про призначення субсидії на оплату житлово-комунальних послуг]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 			<p>
 			Ваше звернення №[sID_Order] щодо отримання інформації про призначення субсидії на оплату житлово-комунальних послуг успішно зареєстроване.<br />
 			Ви отримаєте відповідь протягом найближчого часу.
@@ -61,10 +61,11 @@
 			${sAddress}<br />
 			${sWorkTime}<br />
 			${sPhoneOrgan}</p>
-			[pattern/mail/_common_signature_start.html]
+			[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}<br />
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -80,7 +81,7 @@
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Отримання інформації про призначення субсидії на оплату житлово-комунальних послуг. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -92,16 +93,16 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Домашня адреса; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="goal_2" name="Чи подавали на субсидію через портал iGov?" type="enum" writable="false">
           <activiti:value id="Enum1" name="Так"></activiti:value>
           <activiti:value id="Enum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="SubsReqv" name="Відомості щодо попередньої субсидії: номер, або дата звернення, за наявності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="SubsReqv" name="Відомості щодо попередньої субсидії; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Заявнику призначено субсидію?" type="enum" required="true">
-          <activiti:value id="Enum1" name="Субсидія нараховується (додайте файл з розрахунком)"></activiti:value>
+          <activiti:value id="Enum1" name="Субсидія призначена (додайте файл з розрахунком)"></activiti:value>
           <activiti:value id="Enum2" name="Заява на субсидію в процесі опрацювання"></activiti:value>
           <activiti:value id="Enum3" name="Субсидія не призначалась"></activiti:value>
         </activiti:formProperty>
@@ -110,7 +111,7 @@
         <activiti:formProperty id="marker22" name="прячем резалт" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal_2&quot;},&quot;sCondition&quot;:&quot;[sClient] != 'картошечка'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sScan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nScan_passport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -137,15 +138,16 @@
           <activiti:string><![CDATA[Отримання інформації про призначення субсидії на оплату житлово-комунальних]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 			<p>Результат Вашого звернення з приводу призначення субсидії знаходиться у прикріпленому нижче файлі. (Якщо прикріплений файл відсутній, просимо звернутись у  <a href="https://goo.gl/jUqX3p">форму технічної підтримки,</a>  вказавши номер звернення і район, до якого подавалась заявка)</p>
-			[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
 			<p>${sNameOrgan}<br />
 			</p>
-            [pattern/mail/_common_signature_end.html]
-            [pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${result}]]></activiti:expression>
@@ -176,16 +178,17 @@
           <activiti:string><![CDATA[Отримання інформації про призначення субсидії на оплату житлово-комунальних]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 			<p>Ваше звернення з приводу призначення субсидії знаходиться в опрацюванні, інформація про суму субсидії відсутня в системі. 
 			Ви можете подати повторну <a href="https://igov.org.ua/service/21/general" target="_blank">заяву</a> на отримання інформації про субсидію через 2-4 тижні.</p>
-			[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
 			<p>${sNameOrgan}<br />
 			</p>
-            [pattern/mail/_common_signature_end.html]
-            [pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -213,15 +216,16 @@
           <activiti:string><![CDATA[Отримання інформації про призначення субсидії на оплату житлово-комунальних]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 			<p>За даними УПСЗН субсидія не призначалась.</p>
 			<p>За необхідності Ви можете подати дані на призначення субсидіі  на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
-			[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
 			<p>${sNameOrgan}<br /></p>
-            [pattern/mail/_common_signature_end.html]
-            [pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -320,21 +324,21 @@ execution.setVariable('area', per3)
         <omgdi:waypoint x="640.0" y="162.0"></omgdi:waypoint>
         <omgdi:waypoint x="728.0" y="162.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="91.0" x="628.0" y="169.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="91.0" x="628.0" y="169.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="620.0" y="182.0"></omgdi:waypoint>
         <omgdi:waypoint x="620.0" y="260.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="629.0" y="218.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="629.0" y="218.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="620.0" y="142.0"></omgdi:waypoint>
         <omgdi:waypoint x="620.0" y="85.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="580.0" y="95.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="580.0" y="95.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
