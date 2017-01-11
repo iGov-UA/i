@@ -666,7 +666,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     		options.nMax = 200; 
     	}
 
-    	var bValid = modelValue.length >= options.nMin && modelValue.length <= options.nMax;  
+    	var bValid = modelValue.toString().length >= options.nMin && modelValue.toString().length <= options.nMax;  
 
     	if(bValid === null || bValid === false) { 
     		options.lastError = options.sMessage || ("Довжина строки має бути від '" + options.nMin + "' до '" + options.nMax + "'"); 
