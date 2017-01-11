@@ -567,16 +567,18 @@ execution.setVariable('list_documents', res)</script>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
-        <timeDate>'P1DT5M'</timeDate>
+        <timeDate>${sNotification_day}</timeDate>
       </timerEventDefinition>
     </intermediateCatchEvent>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow18" sourceRef="exclusivegateway3" targetRef="servicetask7">
+    <sequenceFlow id="flow18" sourceRef="exclusivegateway3" targetRef="scripttask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType=='sPost'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="servicetask7" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway4"></sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="exclusivegateway4" targetRef="servicetask8"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="exclusivegateway4" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment == ''}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="servicetask8" targetRef="usertask2"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow24" sourceRef="exclusivegateway4" targetRef="parallelgateway1"></sequenceFlow>
@@ -609,6 +611,9 @@ execution.setVariable('list_documents', res)</script>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway3" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType=='sMyself'}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="scripttask3" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment != ''}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dpss_0134_post">
     <bpmndi:BPMNPlane bpmnElement="dpss_0134_post" id="BPMNPlane_dpss_0134_post">
@@ -628,7 +633,7 @@ execution.setVariable('list_documents', res)</script>
         <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="370.0" y="237.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="237.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="631.0" y="117.0"></omgdc:Bounds>
@@ -771,8 +776,7 @@ execution.setVariable('list_documents', res)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="631.0" y="264.0"></omgdi:waypoint>
-        <omgdi:waypoint x="552.0" y="264.0"></omgdi:waypoint>
-        <omgdi:waypoint x="552.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="605.0" y="264.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="552.0" y="375.0"></omgdi:waypoint>
@@ -792,7 +796,7 @@ execution.setVariable('list_documents', res)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="532.0" y="450.0"></omgdi:waypoint>
-        <omgdi:waypoint x="461.0" y="448.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="449.0"></omgdi:waypoint>
         <omgdi:waypoint x="460.0" y="620.0"></omgdi:waypoint>
         <omgdi:waypoint x="604.0" y="620.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
@@ -826,6 +830,10 @@ execution.setVariable('list_documents', res)</script>
         <omgdi:waypoint x="671.0" y="264.0"></omgdi:waypoint>
         <omgdi:waypoint x="721.0" y="264.0"></omgdi:waypoint>
         <omgdi:waypoint x="724.0" y="320.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="552.0" y="292.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="320.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
