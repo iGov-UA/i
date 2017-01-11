@@ -354,16 +354,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
             LOG.warn("Error: {}", e.getMessage());
             return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
-        }catch (CommonServiceException ex) {
-             sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.\n"
-                    + "З повагою, команда порталу  iGov.org.ua";
-            return new ResponseEntity<>(sMessage, HttpStatus.OK);
         }
         catch (TaskAlreadyUnboundException  e) {
             CommonServiceException oCommonServiceException = new CommonServiceException("BUSINESS_ERR", e.getMessage(), e);
             oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
             LOG.warn("Error: {}", e.getMessage(), e);
             return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
+        }catch (Exception ex) {
+            sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.\n"
+                    + "З повагою, команда порталу  iGov.org.ua";
+            LOG.info("Error: {}", ex);
+            return new ResponseEntity<>(sMessage, HttpStatus.OK);
         }
     }
 
