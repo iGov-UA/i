@@ -474,10 +474,17 @@ public class ActionTaskService {
         }
         for (String queueData : queueDataList) {
             Map<String, Object> m = QueueDataFormType.parseQueueData(queueData);
-            long nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
-            LOG.info("(nID_Order={},nID_FlowSlotTicket={})", nID_Order, nID_FlowSlotTicket);
-            if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
-                throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
+            Long nID_FlowSlotTicket = null;
+            try{
+                nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
+            }catch (Exception ex){
+                LOG.info("QueueDataFormType throw an error: " + ex);
+            }
+            if (nID_FlowSlotTicket != null){
+                LOG.info("(nID_Order={},nID_FlowSlotTicket={})", nID_Order, nID_FlowSlotTicket);
+                if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
+                    throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
+                }
             }
         }
         oRuntimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
