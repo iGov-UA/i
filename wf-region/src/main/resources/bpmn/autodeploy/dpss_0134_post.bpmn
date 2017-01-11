@@ -576,7 +576,9 @@ execution.setVariable('list_documents', res)</script>
     </sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="servicetask7" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway4"></sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="exclusivegateway4" targetRef="servicetask8"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="exclusivegateway4" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment == ''}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="servicetask8" targetRef="usertask2"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow24" sourceRef="exclusivegateway4" targetRef="parallelgateway1"></sequenceFlow>
@@ -609,7 +611,9 @@ execution.setVariable('list_documents', res)</script>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway3" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType=='sMyself'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow32" sourceRef="scripttask3" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="scripttask3" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment != ''}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dpss_0134_post">
     <bpmndi:BPMNPlane bpmnElement="dpss_0134_post" id="BPMNPlane_dpss_0134_post">
@@ -792,7 +796,7 @@ execution.setVariable('list_documents', res)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="532.0" y="450.0"></omgdi:waypoint>
-        <omgdi:waypoint x="461.0" y="448.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="449.0"></omgdi:waypoint>
         <omgdi:waypoint x="460.0" y="620.0"></omgdi:waypoint>
         <omgdi:waypoint x="604.0" y="620.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>

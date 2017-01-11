@@ -4,6 +4,9 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="info" name="Звернення, що подані до 16 години 00 хвилин, будуть невідкладно опрацьовані працівником служби діловодства в день надходження звернення у продовж робочого часу" type="label" default="а ті звернення, які подані після 16 години 00 хвилин, будуть невідкладно опрацьовані на наступний робочий день"></activiti:formProperty>
+         <activiti:formProperty id="saCourt" name="Оберіть відповідний апеляційний суд" type="enum" required="true" default="sEnumCourtKiiv">
+          <activiti:value id="sEnumCourtKiiv" name="Київський апеляційний суд"></activiti:value>
+         </activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище особи, яка внесла дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я особи, яка внесла дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові особи, яка внесла дані" type="string"></activiti:formProperty>
@@ -277,6 +280,9 @@
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Appeal">
       <extensionElements>
+        <activiti:formProperty id="saCourt" name="Оберіть відповідний апеляційний суд" type="enum" writable="false">
+          <activiti:value id="sEnumCourtKiiv" name="Київський апеляційний суд"></activiti:value>
+         </activiti:formProperty>
         <activiti:formProperty id="fio" name="ПІБ особи, яка внесла дані" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPositionAplicant" name="Посада особи, яка внесла дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса особистої електронної пошти(e-mail); ;writable=false" type="string"></activiti:formProperty>
