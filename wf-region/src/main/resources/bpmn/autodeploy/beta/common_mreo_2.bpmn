@@ -77,21 +77,28 @@
           <activiti:string><![CDATA[Надання витягу з Єдиного державного реєстру МВС України]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>  [pattern/mail/mvd/_common_header.html]
- &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
- &lt;p&gt;                                   
+          <activiti:expression>  
+		  [pattern/mail/mvd/new_design/_common_header.html]
+<!--		[pattern/mail/new_design/_common_header.html]-->
+		[pattern/mail/new_design/_common_content_start.html]
+
+<!-- &lt;p&gt;                                   -->
 Ваше звернення успішно оброблено. &lt;br/&gt;
 Запит ${searchDetail} &lt;br/&gt;
 &lt;b&gt;Звертаємо Вашу увагу! Послуга працює поки що в тестовому режимі. База містить записи здебільшого за останні кілька років та постійно наповнюється.&lt;/b&gt;&lt;br/&gt;
 
 Результат обробки: &lt;br/&gt;
-&lt;table cellspacing="0" cellpadding="7" bordercolor="#5CA3CB" border="1" style="color:#5CA3CB;"&gt;
+&lt;table cellspacing="0" cellpadding="7" bordercolor="#449DCD" border="1" style="color:#449DCD;"&gt;
 ${resultData} 
 &lt;/table&gt;
 
-[pattern/mail/mvd/_common_signature.html]
-[pattern/mail/mvd/_common_feedback.html]
-[pattern/mail/mvd/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+<!--[pattern/mail/mvd/_common_feedback.html] -->
+<!--[pattern/mail/mvd/_common_footer.html] -->
+[pattern/mail/mvd/new_design/_common_signature.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
