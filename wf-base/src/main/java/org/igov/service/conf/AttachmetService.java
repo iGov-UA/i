@@ -54,10 +54,10 @@ public class AttachmetService {
         
     private final Logger LOG = LoggerFactory.getLogger(AttachmetService.class);
 	
-	
+    
     public String createAttachment (String nID_Process, String sID_Field, String sFileNameAndExt,
         	boolean bSigned, String sID_StorageType, String sContentType, List<Map<String, Object>> saAttribute_JSON,
-		byte[] aContent) throws JsonProcessingException{
+		byte[] aContent, boolean bSetVariable) throws JsonProcessingException{
             
         LOG.info("createAttachment nID_Process: " + nID_Process);
         LOG.info("createAttachment sFileNameAndExt: " + sFileNameAndExt);
@@ -104,7 +104,7 @@ public class AttachmetService {
         
         String sID_Field_Value = JsonRestUtils.toJson((Object)oTaskAttachVO);
         
-        if(nID_Process != null){
+        if(nID_Process != null && bSetVariable == true){
             oRuntimeService.setVariable(nID_Process, sID_Field, sID_Field_Value);
         }
 	

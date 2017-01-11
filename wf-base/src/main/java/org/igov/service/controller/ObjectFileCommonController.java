@@ -882,12 +882,12 @@ public class ObjectFileCommonController {
             
             if(file != null && "Mongo".equals(sID_StorageType)){
                 return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
-                        sContentType, aAttribute, file.getBytes());
+                        sContentType, aAttribute, file.getBytes(), true);
             }
             else if(file != null && "Redis".equals(sID_StorageType)){
                 byte[] aContent = AbstractModelTask.multipartFileToByteArray(file, file.getOriginalFilename()).toByteArray();
                 return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
-                       sContentType, aAttribute, aContent);
+                       sContentType, aAttribute, aContent, true);
             }
             else{
                 return "data is null";
@@ -926,7 +926,7 @@ public class ObjectFileCommonController {
             
             if(sData != null && "Mongo".equals(sID_StorageType)){
                 return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
-                        sContentType, aAttribute, sData.getBytes(Charsets.UTF_8));
+                        sContentType, aAttribute, sData.getBytes(Charsets.UTF_8), true);
             }
             else if(sData != null && "Redis".equals(sID_StorageType)){
                 throw new RuntimeException("There is no suitable metod for string data for redis");   

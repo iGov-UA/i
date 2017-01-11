@@ -72,6 +72,9 @@ public abstract class AbstractModelTask {
     
     @Autowired
     GeneralConfig generalConfig;
+    
+    @Autowired
+    private RuntimeService oRuntimeService;
 
     /**
      * Возвращает сложный ключ переменной бизнес-процесса
@@ -363,7 +366,7 @@ public abstract class AbstractModelTask {
                 oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), sFieldID,
                         (String) oJsonTaskAttachVO.get("sFileNameAndExt"),
                         (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html",
-                        aAttribute, aByteFile);
+                        aAttribute, aByteFile, true);
             } catch (IOException ex) {
                 LOG.info("createAttachment has some errors: " + ex);
             }
@@ -546,7 +549,7 @@ public abstract class AbstractModelTask {
                                                     JSONObject oJsonMap = (JSONObject) aJsonField.get(j);
                                                     if (oJsonMap != null) {
                                                         Object oValue = oJsonMap.get("type");
-                                                        //if ("file".equals((String)oValue)){
+                                                        if ("file".equals((String)oValue)){
                                                             String oFileValue = (String)oJsonMap.get("value");
                                                             JSONObject oJsonTableTaskAttachVO = null;
                                                             
@@ -558,18 +561,62 @@ public abstract class AbstractModelTask {
                                                             
                                                             if(oJsonTableTaskAttachVO != null && oJsonTableTaskAttachVO.get("sID_StorageType") != null){
                                                                 
-                                                                addNewAttachmentToTask(oExecution, oJsonTableTaskAttachVO, sCurrFieldID);
+                                                                MultipartFile oMultipartFile = null;
+                                                                
+                                                                try {
+                                                                    oMultipartFile = oAttachmetService
+                                                                            .getAttachment(null, null, (String)oJsonTableTaskAttachVO.get("sKey"), "Redis");
+                                                                } catch (ParseException | RecordInmemoryException | IOException | ClassNotFoundException ex) {
+                                                                    LOG.info("getAttachment has some errors: " + ex);
+                                                                }
+                                                                
+                                                                if (oMultipartFile != null) {
+                                                                    try {
+                                                                        JSONArray aJSONAttribute = (JSONArray) oJsonTaskAttachVO.get("aAttribute");
+                                                                        List<Map<String, Object>> aAttribute = new ArrayList<>();
+
+                                                                        if (!aJSONAttribute.isEmpty()) {
+                                                                            for (Object oAttributeElem : aJSONAttribute) {
+                                                                                Map<String, Object> mParam = new HashMap<>();
+                                                                                mParam.put((String) ((JSONObject) oAttributeElem).get("sID"), ((JSONObject) oAttributeElem).get("sValue"));
+                                                                                aAttribute.add(mParam);
+                                                                            }
+                                                                        }
+
+                                                                        byte[] aByteFile = oMultipartFile.getBytes();
+
+                                                                        String sNewTableElemValue = oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), null,
+                                                                                (String) oJsonTaskAttachVO.get("sFileNameAndExt"),
+                                                                                (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html",
+                                                                                aAttribute, aByteFile, false);
+                                                                        
+                                                                        oJsonMap.replace("value", sNewTableElemValue);
+                                                                    
+                                                                    } catch (IOException ex) {
+                                                                        LOG.info("createAttachment has some errors: " + ex);
+                                                                    }
+                                                                } else {
+                                                                    LOG.info("oVariableMultipartFile is null");
+                                                                }
+                                                                //JSONObject 
+                                                                //addNewAttachmentToTask(oExecution, oJsonTableTaskAttachVO, sCurrFieldID);
                                                             }
                                                             else{
                                                                 addOldAttachmentToTask(oTask, oExecution, oFormData, oFileValue, aAttachment, sCurrFieldID, sCurrFieldName);
                                                             }
-                                                        //}
+                                                        }
                                                     }
+                                                    aJsonField.set(j, oJsonMap);
                                                 }
+                                                
+                                               aJsonRow.set(i, aJsonField.toJSONString());
                                             }
                                         }
                                     }
                                 }
+                                oJSONObject.replace("aRow", aJsonRow);
+                                oRuntimeService.setVariable(oExecution.getProcessInstanceId(), sCurrFieldID, oJSONObject.toJSONString());
+                                
                             } catch (ParseException ex) {
                                 LOG.info("Some error during table parsing : ", ex);
                             }
