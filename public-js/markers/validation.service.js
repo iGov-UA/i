@@ -147,22 +147,25 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     var existingValidator = false; 
     
     if((formField != null) && (formField.$name != null)) { 
-    
-    	fieldNameIsListedInMarker = (formField != null) && (formField.$name != null) && (_.indexOf(marker.aField_ID, formField.$name) !== -1);
+
+    	fieldNameIsListedInMarker = (formField != null) && (formField.$name != null) && (_.indexOf(marker.aField_ID, formField.$name) > -1);
 
     	var element = document.getElementsByName(formField.$name); 
     	if( element.length > 0 && element[0].attributes["ng-switch-when"] != null) {
     		formFieldType = element[0].attributes["ng-switch-when"].value;
     	}
+	else if  ( element.length > 0 && self.oFormDataParams[formField.$name] != null) { 
+		formFieldType = self.oFormDataParams[formField.$name].type; 
+	} 
 
-    	fieldTypeIsListedInMarker = (formField != null) && (formFieldType != null) && (_.indexOf(marker.aField_Type, formFieldType) !== -1); 
+    	fieldTypeIsListedInMarker = (formField != null) && (formFieldType != null) && (_.indexOf(marker.aField_Type, formFieldType)  > -1); 
     	
     	existingValidator = (formField != null) && formField.$validators && formField.$validators[keyByMarkerName];
 
     }
 
     if(formField && (fieldNameIsListedInMarker || fieldTypeIsListedInMarker) ) 
-    	console.log( markerName + " formField.$name=" + formField.$name + " formField.attributes[ng-switch-when]=" + formFieldType + " fieldNameIsListedInMarker=" + fieldNameIsListedInMarker + " fieldTypeIsListedInMarker=" + fieldTypeIsListedInMarker );
+    	console.log( markerName + " formField.$name=" + formField.$name + " formField.attributes[ng-switch-when] | formField.attributes[ng-if]=" + formFieldType + " fieldNameIsListedInMarker=" + fieldNameIsListedInMarker + " fieldTypeIsListedInMarker=" + fieldTypeIsListedInMarker );
    
     // для того чтобы валидация работала в таблице, нужно добраться до полей, вводится доп проверка.
     if(!fieldNameIsListedInMarker && !fieldTypeIsListedInMarker) {
@@ -663,7 +666,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     		options.nMax = 200; 
     	}
 
-    	var bValid = modelValue.length >= options.nMin && modelValue.length <= options.nMax;  
+    	var bValid = modelValue.toString().length >= options.nMin && modelValue.toString().length <= options.nMax;  
 
     	if(bValid === null || bValid === false) { 
     		options.lastError = options.sMessage || ("Довжина строки має бути від '" + options.nMin + "' до '" + options.nMax + "'"); 

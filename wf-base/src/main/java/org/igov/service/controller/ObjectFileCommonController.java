@@ -181,7 +181,30 @@ public class ObjectFileCommonController {
 
         return upload;
     }
-
+    
+    @ApiOperation(value = "checkProcessAttach", notes
+            = "##### проверка ЭЦП по новому концепту")
+    @RequestMapping(value = "/checkProcessAttach", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @Transactional
+    public @ResponseBody
+    String checkProcessAttach(
+            @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
+            @ApiParam(value = "название и расширение файла", required = false) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
+            @ApiParam(value = "ид процесса", required = false) @RequestParam(value = "sID_Process", required = true) String sID_Process,
+            @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = true) String sID_Field,
+            @ApiParam(value = "ключ в базе данных", required = false)@RequestParam(value = "sKey", required = false) String sKey) throws IOException, ParseException, RecordInmemoryException, ClassNotFoundException {
+        
+            MultipartFile multipartFile = attachmetService.getAttachment(sID_Process, sID_Field, sKey, sID_StorageType);
+            
+            if(sFileNameAndExt == null){
+                sFileNameAndExt = multipartFile.getOriginalFilename();
+            }
+            
+            String soSignData = BankIDUtils.checkECP(generalConfig, multipartFile.getBytes(), sFileNameAndExt);
+            
+            return soSignData;
+    }
+    
     @ApiOperation(value = "Проверка ЭЦП на файле хранящемся в Redis", notes = "#####  Примеры:\n"
             + "https://test.region.igov.org.ua/wf/service/object/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
             + "Ответ json описывающий ЭЦП:\n\n"
@@ -861,10 +884,11 @@ public class ObjectFileCommonController {
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
             @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
-            @ApiParam(value = "файл для сохранения в БД", required = true)@RequestParam(value = "file", required = true) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
-            @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType) throws JsonProcessingException, IOException
+            @ApiParam(value = "файл для сохранения в БД", required = true)@RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            ) throws JsonProcessingException, IOException
             {
         
             LOG.info("setAttachment nID_Process: " + nID_Process);
