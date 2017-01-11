@@ -853,7 +853,7 @@ public class ObjectFileCommonController {
    
     @ApiOperation(value = "setProcessAttach", notes
             = "##### загрузка файла-атачмента по новому концепту")
-    @RequestMapping(value = "/setProcessAttach", method = RequestMethod.POST)
+    @RequestMapping(value = "/setProcessAttach", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public @ResponseBody
     String setProcessAttach(
