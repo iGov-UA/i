@@ -17,7 +17,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Поштова адреса" type="string"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Поштова адреса" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sPlase_of_reg&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;asResultWay&quot;},&quot;sCondition&quot;:&quot;[sService]=='sOpost'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="електронна пошта; для тестування отримання пошти працівником відповідального органу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта; для тестування отримання пошти працівником відповідального органу" type="invisible" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -51,8 +51,7 @@
           <activiti:string><![CDATA[Звернення: Запит на отримання публічної інформації]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 <p>
 Спеціалісти відповідального підрозділу нададуть відповідь найближчим часом.
@@ -61,8 +60,7 @@
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -124,8 +122,7 @@ ${decisionComment}</p>
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -228,9 +225,7 @@ ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br>           
 [pattern/mail/new_design/_common_signature_end.html]  
-[pattern/mail/new_design/_common_footer.html]
-
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -313,8 +308,7 @@ ${sNameOrgan}<br>
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
