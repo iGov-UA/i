@@ -51,8 +51,7 @@
           <activiti:string><![CDATA[Звернення: Запит на отримання публічної інформації]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 <p>
 Спеціалісти відповідального підрозділу нададуть відповідь найближчим часом.
@@ -61,8 +60,7 @@
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -100,7 +98,7 @@ ${sNameOrgan},<br>
     </userTask>
     <sequenceFlow id="flow50" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow57" name="${asWorkerDecision=='decline'}" sourceRef="exclusivegateway2" targetRef="servicetask4">
+    <sequenceFlow id="flow57" name="${decide=='reject'}" sourceRef="exclusivegateway2" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="Email - відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -124,8 +122,7 @@ ${decisionComment}</p>
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -140,7 +137,7 @@ ${sNameOrgan},<br>
     </serviceTask>
     <sequenceFlow id="flow58" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow59" name="${asWorkerDecision=='accept'} " sourceRef="exclusivegateway2" targetRef="servicetask5">
+    <sequenceFlow id="flow59" name="${decide=='accept'} " sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="Звернення передане на розгляд" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -228,9 +225,7 @@ ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br>           
 [pattern/mail/new_design/_common_signature_end.html]  
-[pattern/mail/new_design/_common_footer.html]
-
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -313,8 +308,7 @@ ${sNameOrgan}<br>
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -393,7 +387,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="569.0" y="173.0"></omgdi:waypoint>
         <omgdi:waypoint x="569.0" y="239.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="460.0" y="193.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="89.0" x="460.0" y="193.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
@@ -404,7 +398,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="589.0" y="153.0"></omgdi:waypoint>
         <omgdi:waypoint x="650.0" y="154.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="558.0" y="70.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="98.0" x="558.0" y="70.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
