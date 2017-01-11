@@ -52,7 +52,7 @@ public class ManagerSMS {
             phone = phone.replace("+", "").trim();
 
             if(!bTest){
-                //Boolean bOldAPI = !bTest;
+                ////Boolean bOldAPI = !bTest;
                 if (bOldAPI) {
                     resp = SendSenderSms(sID_Order, phone, message);
                 } else if (regexpLifeCell.matcher(phone).matches()) {
