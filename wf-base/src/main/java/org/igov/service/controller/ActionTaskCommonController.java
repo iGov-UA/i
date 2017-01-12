@@ -320,7 +320,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     ) throws CommonServiceException, TaskAlreadyUnboundException, Exception {
 
         String sMessage = null;
-
+        LOG.info("input sInfo = ", sInfo);
         sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
         try {
             if (bSimple) {
