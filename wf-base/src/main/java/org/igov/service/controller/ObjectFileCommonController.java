@@ -181,7 +181,30 @@ public class ObjectFileCommonController {
 
         return upload;
     }
-
+    
+    @ApiOperation(value = "checkProcessAttach", notes
+            = "##### проверка ЭЦП по новому концепту")
+    @RequestMapping(value = "/checkProcessAttach", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @Transactional
+    public @ResponseBody
+    String checkProcessAttach(
+            @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
+            @ApiParam(value = "название и расширение файла", required = false) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
+            @ApiParam(value = "ид процесса", required = false) @RequestParam(value = "sID_Process", required = true) String sID_Process,
+            @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = true) String sID_Field,
+            @ApiParam(value = "ключ в базе данных", required = false)@RequestParam(value = "sKey", required = false) String sKey) throws IOException, ParseException, RecordInmemoryException, ClassNotFoundException {
+        
+            MultipartFile multipartFile = attachmetService.getAttachment(sID_Process, sID_Field, sKey, sID_StorageType);
+            
+            if(sFileNameAndExt == null){
+                sFileNameAndExt = multipartFile.getOriginalFilename();
+            }
+            
+            String soSignData = BankIDUtils.checkECP(generalConfig, multipartFile.getBytes(), sFileNameAndExt);
+            
+            return soSignData;
+    }
+    
     @ApiOperation(value = "Проверка ЭЦП на файле хранящемся в Redis", notes = "#####  Примеры:\n"
             + "https://test.region.igov.org.ua/wf/service/object/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
             + "Ответ json описывающий ЭЦП:\n\n"
