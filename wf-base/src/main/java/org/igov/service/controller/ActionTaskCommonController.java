@@ -320,7 +320,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     ) throws CommonServiceException, TaskAlreadyUnboundException, Exception {
 
         String sMessage = null;
-
+        LOG.info("input sInfo = ", sInfo);
         sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
         try {
             if (bSimple) {
@@ -337,10 +337,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 oActionTaskService.cancelTasksInternal(nID_Order, sInfo);
             }
 
-            sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.\n<br>"
+            sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.\n"
                     + "З повагою, команда порталу  iGov.org.ua";
             return new ResponseEntity<>(sMessage, HttpStatus.OK);
-        } catch (CRCInvalidException e) {
+            
+        }
+        catch (CRCInvalidException e) {
             sMessage = "Вибачте, виникла помилка: Помилковий номер заявки!";
             CommonServiceException oCommonServiceException = new CommonServiceException("BUSINESS_ERR", e.getMessage(), e);
             oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
@@ -352,13 +354,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
             LOG.warn("Error: {}", e.getMessage());
             return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
-        } catch (CommonServiceException | TaskAlreadyUnboundException e) {
+        }
+        catch (TaskAlreadyUnboundException  e) {
             CommonServiceException oCommonServiceException = new CommonServiceException("BUSINESS_ERR", e.getMessage(), e);
             oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
             LOG.warn("Error: {}", e.getMessage(), e);
             return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
+        }catch (Exception ex) {
+            sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.\n"
+                    + "З повагою, команда порталу  iGov.org.ua";
+            LOG.info("Error: {}", ex);
+            return new ResponseEntity<>(sMessage, HttpStatus.OK);
         }
-
     }
 
     /**
