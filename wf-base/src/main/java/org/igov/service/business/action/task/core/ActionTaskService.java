@@ -460,7 +460,7 @@ public class ActionTaskService {
         return taskQuery;
     }
 
-    public void cancelTasksInternal(Long nID_Order, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException, ParseException {
+    public void cancelTasksInternal(Long nID_Order, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
         String nID_Process = getOriginalProcessInstanceId(nID_Order);
         getTasksByProcessInstanceId(nID_Process);
         LOG.info("(nID_Order={},nID_Process={},sInfo={})", nID_Order, nID_Process, sInfo);
@@ -493,7 +493,7 @@ public class ActionTaskService {
         
         oRuntimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
                 "[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s",
-                new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))), sInfo == null ? "" : sInfo));
+                df_StartProcess.format(new Date()), sInfo == null ? "" : sInfo));
     }
 
 
