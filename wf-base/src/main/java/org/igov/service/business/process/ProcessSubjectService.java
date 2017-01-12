@@ -654,12 +654,12 @@ public class ProcessSubjectService {
 
 	if (processSubjectResult != null) {
 	    List<ProcessSubject> aProcessSubject_Child = processSubjectResult.getaProcessSubject();
- 
+   
 	    ProcessSubjectStatus oProcessSubjectStatusUnactual = processSubjectStatusDao.findByIdExpected(4L);
 	    DateFormat df_ProcessSubjectSafe = new SimpleDateFormat("dd/MM/yyyy");
 
 	    for (ProcessSubject oProcessSubject_Сhild : aProcessSubject_Child) {
-
+  
 		String sProcessSubjectStatus = oProcessSubject_Сhild.getProcessSubjectStatus().getsID();
 
 		if (!(sProcessSubjectStatus.equals("executed") || sProcessSubjectStatus.equals("notExecuted")
