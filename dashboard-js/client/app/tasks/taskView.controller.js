@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   'use strict';
 
   angular
@@ -8,12 +8,12 @@
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
-      'processSubject', '$document', 
+      'processSubject', '$sce', 'eaTreeViewFactory',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
                 lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
-                processSubject, $document) {
+                processSubject, $sce, eaTreeViewFactory) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -31,12 +31,16 @@
           return null;
         }
 
+        FieldMotionService.reset();
+        iGovMarkers.reset();
+        iGovMarkers.init();
+
         var sLoginAsignee = "sLoginAsignee";
 
         function getObjFromTaskFormById(id) {
           if(id == null) return null;
           for (var i = 0; i < taskForm.length; i++) {
-            if (taskForm[i].id && taskForm[i].id.includes && taskForm[i].id.includes(id)) {
+            if (taskForm[i].id && taskForm[i].id.includes(id)) {
               return taskForm[i];
             }
           }
@@ -100,6 +104,8 @@
                       item.value = item.enumValues[0].id;
                       $scope.updateAssigneeName(item);
                     }
+                    // hidden sAssignName
+                    hiddenObjById(getIdFromActivityProperty("sDestinationFieldID_sName"));
                   }
                 });
               }
@@ -109,6 +115,8 @@
         function print(t) {
           console.log(t);
         }
+
+
 
         function sortUsersByAlphabet(items) {
           items.sort(function (a, b) {
@@ -224,25 +232,23 @@
 
         function searchSelectSubject() {
           angular.forEach(taskForm, function (item) {
-            if (item && item.name) { // v.serhiychuk only check other in this method create antonledkiy
-              var isExecutorSelect = item.name.split(';')[2];
-              if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
-                var match;
-                if (((match = item.id ? item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/) : false))
-                  ||(item.type == 'select' && (match = item.id ? item.id.match(/^s(Country)(_(\d+))?/) : false)) || isExecutorSelect) {
-                  if (match && autocompletesDataFactory[match[1]] && !isExecutorSelect) {
-                    item.type = 'select';
-                    item.selectType = 'autocomplete';
-                    item.autocompleteName = match[1];
-                    if (match[2])
-                      item.autocompleteName += match[2];
-                    item.autocompleteData = autocompletesDataFactory[match[1]];
-                  } else if (!match && isExecutorSelect.indexOf('SubjectRole') > -1) {
-                    item.type = 'select';
-                    item.selectType = 'autocomplete';
-                    item.autocompleteName = 'SubjectRole';
-                    item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
-                  }
+            var isExecutorSelect = item.name.split(';')[2];
+            if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
+              var match;
+              if (((match = item.id ? item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/) : false))
+                ||(item.type == 'select' && (match = item.id ? item.id.match(/^s(Country)(_(\d+))?/) : false)) || isExecutorSelect) {
+                if (match && autocompletesDataFactory[match[1]] && !isExecutorSelect) {
+                  item.type = 'select';
+                  item.selectType = 'autocomplete';
+                  item.autocompleteName = match[1];
+                  if (match[2])
+                    item.autocompleteName += match[2];
+                  item.autocompleteData = autocompletesDataFactory[match[1]];
+                } else if (!match && isExecutorSelect.indexOf('SubjectRole') > -1) {
+                  item.type = 'select';
+                  item.selectType = 'autocomplete';
+                  item.autocompleteName = 'SubjectRole';
+                  item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
                 }
               }
             }
@@ -279,6 +285,12 @@
         $scope.isClarifySending = false;
         $scope.tableIsInvalid = false;
         $scope.taskData.aTable = [];
+        $scope.usersHierarchyOpened = false;
+
+        // todo соеденить с isUnasigned
+        $scope.isDocument = function () {
+          return $state.params.type === 'documents';
+        };
 
         $scope.validateForm = function(form) {
           var bValid = true;
@@ -305,7 +317,7 @@
         };
 
         var isItemFormPropertyDisabled = function (oItemFormProperty){
-          if (!$scope.selectedTask || !$scope.selectedTask.assignee || !oItemFormProperty
+          if (!$scope.selectedTask || (!$scope.selectedTask.assignee && !$scope.isDocument()) || !oItemFormProperty
             || !$scope.sSelectedTask || $scope.sSelectedTask === 'finished')
           return true;
 
@@ -332,8 +344,10 @@
 
         $scope.taskForm = addIndexForFileItems(taskForm);
 
-        $scope.printTemplateList = {}; 
-
+        $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
+        if ($scope.printTemplateList.length > 0) {
+          $scope.model.printTemplate = $scope.printTemplateList[0];
+        }
         $scope.taskForm.taskData = taskData;
 
         if (!oTask.endTime) {
@@ -529,6 +543,14 @@
         };
 
         $scope.isFormPropertyDisabled = isItemFormPropertyDisabled;
+
+        $scope.print = function () {
+          if ($scope.selectedTask && $scope.taskForm) {
+            rollbackReadonlyEnumFields();
+            $scope.printModalState.show = !$scope.printModalState.show;
+          }
+        };
+
 
         function getIdByName(item, asName) {
           var asId = new Array();
@@ -987,7 +1009,7 @@
         $scope.newPrint = function (form, id) {
           runCalculation(form);
           $scope.model.printTemplate = id;
-          $scope.print(form, true);
+          $scope.print(form);
         };
 
         $scope.isClarify = function (name) {
@@ -1006,7 +1028,19 @@
         });
 
         $scope.insertSeparator = function(sPropertyId){
-          return FieldAttributesService.insertSeparators(sPropertyId);
+          var oLine = FieldAttributesService.insertSeparators(sPropertyId);
+          var oItem = null;
+          if (oLine.bShow){
+            angular.forEach($scope.taskForm, function (item) {
+              if (item.id == oLine.sLinkedFieldID) oItem = item;
+            });
+            if(oItem){
+              oLine.bShow = oItem.value && $scope.isFormPropertyDisabled(oItem);
+            } else {
+              oLine.bShow = false;
+            }
+          }
+          return oLine;
         };
 
         $scope.isTableAttachment = function (item) {
@@ -1027,7 +1061,6 @@
           });
 
           $scope.tableContentShow = !$scope.tableContentShow;
-          console.log($scope)
         };
 
         // проверяем имя поля на наличие заметок
@@ -1082,8 +1115,6 @@
 
         TableService.init($scope.taskForm);
 
-        $scope.$on('TableFieldChanged', function(event, args) { $scope.updateTemplateList(); }); 
-
         var idMatch = function () {
           angular.forEach($scope.taskForm, function (item, key, obj) {
             angular.forEach($scope.taskData.aAttachment, function (attachment) {
@@ -1133,18 +1164,6 @@
           return true;
         };
 
-        $scope.print = function (form, isMenuItem) { 
-
-          if( !isMenuItem ) { // Click on Button 
-            $scope.updateTemplateList(); 
-          } 
-
-          if ( ( $scope.printTemplateList.length === 0 || isMenuItem ) && $scope.selectedTask && $scope.taskForm) { 
-            rollbackReadonlyEnumFields();
-            $scope.printModalState.show = !$scope.printModalState.show;
-          }
-        };
-
         $scope.tableIsLoaded = function (item) {
           return typeof item.aRow[0] !== 'number';
         };
@@ -1164,7 +1183,6 @@
               })
             }
           });
-          $scope.updateTemplateList(); 
         };
         $scope.searchingTablesForPrint();
 
@@ -1209,6 +1227,28 @@
           }
         };
 
+        $scope.openUsersHierarchy = function () {
+          $scope.attachIsLoading = true;
+          tasks.getProcessSubjectTree($scope.selectedTask.processInstanceId).then(function (res) {
+            $scope.documentFullHierarchy = res;
+            $scope.attachIsLoading = false;
+            eaTreeViewFactory.setItems($scope.documentFullHierarchy.aProcessSubjectTree, $scope.$id);
+          });
+
+          $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;
+        };
+
+        $scope.assignAndSubmitDocument = function () {
+          $scope.taskForm.isInProcess = true;
+
+          tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
+            .then(function (result) {
+              $scope.submitTask(form);
+            })
+            .catch(defaultErrorHandler);
+        };
+
+        $rootScope.$broadcast("update-search-counter");
       }
     ])
 })();
