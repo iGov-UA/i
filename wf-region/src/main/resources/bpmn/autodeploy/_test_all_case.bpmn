@@ -143,7 +143,7 @@
           <activiti:expression><![CDATA[test]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFileMail}"]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFileMail}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -177,7 +177,7 @@
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFileMail}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -227,7 +227,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFileMail},${nFile0},${nFile1},${nFile2},${nFile3},${form_signed}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nFile0},${nFile1},${nFile2},${nFile3},${form_signed}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -249,6 +249,7 @@
 			[pattern/mail/new_design/_common_content_start.html]
 			<h1>Тестовый лист з принтформою PDF HTML</h1>
 			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_feedback.html]   	
 			[pattern/mail/new_design/_common_signature_start.html]
 			Тестова,<br>
 			[pattern/mail/new_design/_common_signature_end.html]
