@@ -40,9 +40,9 @@
         function getObjFromTaskFormById(id) {
           if(id == null) return null;
           for (var i = 0; i < taskForm.length; i++) {
-            if (taskForm[i].id && taskForm[i].id.includes(id)) {
-              return taskForm[i];
-            }
+             if (taskForm[i].id && taskForm[i].id.includes && taskForm[i].id.includes(id)) {
+               return taskForm[i];
+             }
           }
           return null;
         }
@@ -344,12 +344,10 @@
 
         $scope.taskForm = addIndexForFileItems(taskForm);
 
-        $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
-        if ($scope.printTemplateList.length > 0) {
-          $scope.model.printTemplate = $scope.printTemplateList[0];
-        }
-        $scope.taskForm.taskData = taskData;
+        $scope.printTemplateList = {}; 
 
+        $scope.taskForm.taskData = taskData;
+       
         if (!oTask.endTime) {
           $scope.taskForm.forEach(function (field) {
             if (field.type === 'markers' && $.trim(field.value)) {
@@ -543,14 +541,6 @@
         };
 
         $scope.isFormPropertyDisabled = isItemFormPropertyDisabled;
-
-        $scope.print = function () {
-          if ($scope.selectedTask && $scope.taskForm) {
-            rollbackReadonlyEnumFields();
-            $scope.printModalState.show = !$scope.printModalState.show;
-          }
-        };
-
 
         function getIdByName(item, asName) {
           var asId = new Array();
@@ -1009,7 +999,7 @@
         $scope.newPrint = function (form, id) {
           runCalculation(form);
           $scope.model.printTemplate = id;
-          $scope.print(form);
+          $scope.print(form, true);
         };
 
         $scope.isClarify = function (name) {
@@ -1115,6 +1105,8 @@
 
         TableService.init($scope.taskForm);
 
+        $scope.$on('TableFieldChanged', function(event, args) { $scope.updateTemplateList(); }); 
+
         var idMatch = function () {
           angular.forEach($scope.taskForm, function (item, key, obj) {
             angular.forEach($scope.taskData.aAttachment, function (attachment) {
@@ -1130,6 +1122,18 @@
           });
         };
         idMatch();
+
+        $scope.print = function (form, isMenuItem) { 
+
+          if( !isMenuItem ) { // Click on Button 
+            $scope.updateTemplateList(); 
+          } 
+
+          if ( ( $scope.printTemplateList.length === 0 || isMenuItem ) && $scope.selectedTask && $scope.taskForm) { 
+            rollbackReadonlyEnumFields();
+            $scope.printModalState.show = !$scope.printModalState.show;
+          }
+        };
 
         $scope.addRow = function (form, id, index) {
           ValidationService.validateByMarkers(form, null, true, null, true);
@@ -1183,6 +1187,7 @@
               })
             }
           });
+          $scope.updateTemplateList(); 
         };
         $scope.searchingTablesForPrint();
 
