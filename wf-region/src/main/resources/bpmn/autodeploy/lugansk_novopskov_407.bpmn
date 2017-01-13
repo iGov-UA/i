@@ -65,9 +65,7 @@
           	Видача ордера на службове жиле приміщення]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-          	Звернення № [sID_Order]<br>
-          	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -90,23 +88,25 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача ордера на службове жиле приміщення]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Видача ордера на службове жиле приміщення. Реєстрація]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]  
 			<p>
-				Ваш запит № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> був успішно зареєстрований у нашій системі.
+				Ваш запит, щодо ордера на службове жиле приміщення, був успішно зареєстрований у нашій системі.
 			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>    
@@ -159,7 +159,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Отримання ордера на службове жиле приміщення.]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Отримання ордера на службове жиле приміщення. Відмовлено]]></activiti:string>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -171,10 +171,10 @@
           <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>			
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html] 		
 			<p>
-				Оброблено звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>.<br>
+				Оброблено звернення, що до "Отримання ордера на службове жиле приміщення."
 				За даними держоргану Вам ВІДМОВЛЕНО у наданні ордера на службове жиле приміщення.
 			</p>
 			<p>
@@ -188,11 +188,13 @@
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -209,7 +211,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему: Видача ордера на службове жиле приміщення.]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Видача ордера на службове жиле приміщення. Зареєстровано]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -221,22 +223,24 @@
           <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]  
 			<p> 
 				Документи відповідають. <br>  
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>  щодо отримання  ордера на службове жиле приміщення успішно зареєстроване.<br>
+				Ваше звернення, щодо отримання  ордера на службове жиле приміщення успішно зареєстроване.<br>
 				Ви отримаєте відповідь протягом тридцяти календарних днів.
 			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -291,7 +295,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Отримання ордера на службове жиле приміщення.]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Отримання ордера на службове жиле приміщення. Схвалено]]></activiti:string>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -303,10 +307,10 @@
           <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]  
 			<p>
-				Оброблено звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>.<br>
+				Оброблено Ваше звернення, щодо "Отримання ордера на службове жиле приміщення."
 				Вітаємо, Вам НАДАНО ордер на службове жиле приміщення.
 			</p>
 			<p>
@@ -317,12 +321,14 @@
 			Ордер можна отримати за:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br><br>			
-			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_feedback.html]   	
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
