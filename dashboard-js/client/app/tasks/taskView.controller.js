@@ -1187,6 +1187,7 @@
               })
             }
           });
+          $scope.updateTemplateList(); 
         };
         $scope.searchingTablesForPrint();
 
