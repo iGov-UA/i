@@ -8,6 +8,7 @@
     return {
       restrict: 'EA',
       scope: {
+        options: '=',
         oServiceData: '=',
         onFileUploadSuccess: '&'
       },
@@ -20,56 +21,105 @@
   }
 
   /* @ngInject */
-  function DecryptFileController($scope, $q, $location, $window, uiUploader, ActivitiService){
+  function DecryptFileController($scope, $q, $location, $window, ErrorsFactory, uiUploader, ActivitiService, MessagesService){
     var vm = this;
-    var nID_Server = 5;
+    var nID_Server = -1;
 
     vm.file = {};
     vm.onSelect = onSelect;
+    vm.onDownload = onDownload;
 
     activate();
 
     function activate(){
-      $scope.$watch('vm.file.isUploading', function(){
-      })
+      vm.file.isUploading = false;
     }
 
     function onSelect($files){
-      upload($files, {nID_Server:5});
+      upload($files, {nID_Server:nID_Server});
     }
 
-    function upload (files, oServiceData) {
+    function onDownload(){
+      MessagesService.getMessageFile(vm.options.id).then(function (res) {
+        if(!res.err){
+          var content = new Blob([res], {type: 'application/octet-stream'});
+          var arrFiles = [];
+
+          arrFiles.push(content);
+          upload(arrFiles, {nID_Server:nID_Server}, vm.options.id);
+        }else {
+          ErrorsFactory.push({type:"danger", text: "Виникла помилка при отриманні файлу"});
+        }
+      });
+    }
+
+    function upload (files, oServiceData, id) {
       uiUploader.removeAll();
       uiUploader.addFiles(files);
 
-      vm.file.fileName = files[0].name;
+      vm.file.fileName = files[0].name || vm.options.fileName;
 
       uiUploader.startUpload({
         url: ActivitiService.getUploadFileURL(oServiceData),
         concurrency: 1,
         onProgress: function (file) {
           vm.file.isUploading = true;
+          $scope.$apply();
         },
-        onCompleted: function (file, fileid) {
-          vm.file.value = {id : fileid, signInfo: null, fromDocuments: false};
+        onCompleted: function (file, fileId) {
+          var fileObj;
+
+          try{
+            fileObj = JSON.parse(fileId);
+          }catch(e){
+            fileObj = {};
+          }
+
+          if(!fileObj.error){
+            vm.file.value = {id : fileId, signInfo: null, fromDocuments: false};
+          }else{
+            vm.file.error = fileObj.error;
+          }
+          $scope.$apply();
         },
         onCompletedAll: function () {
+
+          if(!vm.file.error){
+            vm.onFileUploadSuccess(vm.file);
+          }
+
           vm.file.isUploading = false;
-          vm.onFileUploadSuccess(vm.file);
           $scope.$apply();
 
-          decrypt(vm.file);
+          if(vm.file.error){
+            ErrorsFactory.push({
+              type: "denger",
+              oData: {
+                sHead: 'Помилка сервера.',
+                sBody: 'Файл не завантажено.',
+                sFunc: 'DecryptFileController'
+              }
+            });
+          }
 
-          console.log('All files loaded successfully');}
+          if(!vm.file.error){
+            decrypt({file: vm.file, id: id});
+          }
+        }
       });
     }
 
-    function decrypt(result){
-      $window.location.href = $location.protocol() + '://' +
+    function decrypt(params){
+      var hostUrl = $location.protocol() + '://' +
         $location.host() + ':' +
-        $location.port() + '/api/sign-content/decrypt?formID=' +
-        result.value.id + '&nID_Server=' +
-        nID_Server + '&sName=' + vm.file.fileName + '&restoreUrl=' + $location.absUrl();
+        $location.port();
+      var sID_Order = $location.search().sID_Order;
+      var path = $location.path();
+      var restoreUrl = hostUrl + path + (sID_Order ? '?sID_Order=' + sID_Order : '');
+
+      $window.location.href = hostUrl + '/api/sign-content/decrypt?formID=' +
+        params.file.value.id + '&nID_Server=' +
+        nID_Server + '&sName=' + params.file.fileName + '&nID=' + params.id + '&restoreUrl=' + restoreUrl;
     }
   }
 })();

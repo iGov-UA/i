@@ -1,4 +1,4 @@
-<div ng-if="item.type == 'checkbox'" class="row">
+<div ng-if="item.type == 'checkbox' && showField(item)" class="row">
     <div class="col-sm-12">
         <div class="col-sm-6 task-form-title">
             <field-title></field-title>
@@ -8,7 +8,7 @@
                 <input type="checkbox"
                        id="{{item.id}}"
                        name="{{item.id}}"
-                       ng-disabled="isFormPropertyDisabled(item)"
+                       ng-disabled="isFormPropertyDisabled(item) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                        ng-model="item.value"
                        ng-true-value="'{{item.checkbox[item.id].trueValue}}'"
                        ng-false-value="'{{item.checkbox[item.id].falseValue}}'"

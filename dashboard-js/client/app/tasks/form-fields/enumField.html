@@ -1,16 +1,27 @@
-            <div ng-if="item.type == 'enum'" class="row">
+            <div ng-if="item.type == 'enum' && showField(item)" class="row">
               <div class="col-sm-12">
                 <div class="col-sm-6 task-form-title">
                   <field-title></field-title>
                 </div>
                 <div class="col-sm-6" style="margin-bottom: 15px">
-                  <select name="{{item.id}}"
-                          ng-disabled="isFormPropertyDisabled(item)"
-                          style="width:100%; height:25px;;"
-                          ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.enumValues"
-                          ng-required="isRequired(item)"
-                          ng-model="item.value"
-                          ng-class="{submitted:isRequired(item) && isTaskSubmitted()}"></select>
+                  <div ng-if="!isFormPropertyDisabled(item) && isDocumentWritable(item)">
+                    <select name="{{item.id}}"
+                            ng-disabled="isFormPropertyDisabled(item)"
+                            style="width:100%; height:25px;;"
+                            ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.enumValues"
+                            ng-required="isRequired(item)"
+                            ng-model="item.value"
+                            ng-disabled="isFormPropertyDisabled(item) !isDocumentWritable(item) && isDocumentReadable(item)"
+                            ng-class="{submitted:isRequired(item) && isTaskSubmitted()}">
+                    </select>
+                  </div>
+
+                  <div ng-if="showReadableField(item)">
+                    <span class="task-form-written-right-sight"
+                          style="white-space: pre-line"
+                          name="{{item.id}}">{{item.value}}
+                    </span>
+                  </div>
 
                   <span class="validation-message" ng-messages="isFormInvalid && isRequired(item) && form[item.id].$error">
                     <span ng-message="required">Необхідно заповнити.</span>

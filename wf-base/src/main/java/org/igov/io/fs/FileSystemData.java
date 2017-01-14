@@ -44,6 +44,7 @@ public class FileSystemData {
     private static final String SUB_PATH_PATTERNS_DICTONARY = SUB_PATH_PATTERNS_FILES + "dictionary/";
     private static final String SUB_PATH_MARKERS_MOTION_FILES = "bpmn/markers/motion/";
     public static final String SUB_PATH_XML = "pattern/xml/";
+    public static final String SUB_PATH_PATTERN_EMAIL = "pattern/mail/";
 
     public static BufferedReader getBufferedReader_PatternDictonary(String sSubPathFile) throws UnsupportedEncodingException{
         try{

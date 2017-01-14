@@ -1,12 +1,11 @@
-<div class="row" ng-if="!spinner && !resultsAreLoading">
+<div class="row" ng-if="!spinner && !resultsAreLoading && !isOldStyleView">
   <div class="container igov-container" style="padding-left: 0; padding-right: 0">
     <div class="col-sm-4" ng-repeat="category in catalog | orderBy: 'oServiceTag_Root.nOrder'" ng-if="category.aService && isSubdomain() || minSearchLength && !catalog.aNode && !category.aService">
       <div class="col-sm-12 category-container">
         <div class="col-sm-3" style="padding-right: 11.25px">
           <img ng-if="!category.oServiceTag_Root.sLinkImage && !isKyivCity" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
           <img ng-if="!category.oServiceTag_Root.sLinkImage && isKyivCity" style="margin-top: 25px" src="http://new.kievcity.gov.ua/logo.png" alt="img">
-          <img ng-if="category.oServiceTag_Root.sLinkImage && !isDefaultIconsForLocalhost()" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
-          <img ng-if="category.oServiceTag_Root.sLinkImage && isDefaultIconsForLocalhost()" style="margin-top: 25px" ng-src="{{isDefaultIconsForLocalhost(category.oServiceTag_Root.sLinkImage)}}" alt="img">
+          <img ng-if="category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
         </div>
         <div class="col-sm-9 text">
           <h3><a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a></h3>
@@ -29,6 +28,47 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<div ng-if="!spinner && !resultsAreLoading && isOldStyleView">
+
+  <div class="row" ng-if="!busSpinner">
+    <div class="container old-igov-container" style="margin-top: 18px">
+      <div class="container" style="padding-left: 10px; padding-right: 10px">
+        <div class="col-md-4" ng-repeat="subcategory in catalog[0].aSubcategory || catalog.aSubcategory" style="margin-top: 20px">
+          <h3 style="font-size: 24px">
+            <a title="Перейти до перегляду послуг цієї категорії"
+               class="control-element"
+               ui-sref="index.subcategory({'catID': 1, 'scatID': subcategory.nID })"
+               style="font-size: 19px" >
+              {{subcategory.sName}}
+            </a>
+          </h3>
+
+          <ul class="list-unstyled">
+            <li ng-repeat="service in subcategory.aService | orderBy: ['-nStatus', 'nOrder', 'sName'] | limitTo: nLimitCategory(category.nID) as services">
+
+              <p>
+                <a ui-sref="index.service.general({'id': service.nID })"
+                   ng-href="/service/{{service.nID}}/general">
+                  {{service.sName}}
+                </a>
+              </p>
+            </li>
+          </ul>
+          <p>
+            <a class="btn btn-default"
+               role="button"
+               ui-sref="index.subcategory({'catID': 2, 'scatID': subcategory.nID })"
+               ng-hide="subcategory.aService.length <= limit">Всі послуги
+              <span class="badge badge-info">{{ subcategory.aService.length }}</span>
+            </a>
+          </p>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 

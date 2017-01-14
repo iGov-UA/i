@@ -321,25 +321,33 @@ public class FlowService implements ApplicationContextAware {
     public ClearSlotsResult clearFlowSlots(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate,
             boolean bWithTickets) {
 
-        List<FlowSlot> flowSlots = flowSlotDao.findFlowSlotsByFlow(nID_Flow_ServiceData, startDate, stopDate);
+        List<FlowSlot> aFlowSlot = flowSlotDao.findFlowSlotsByFlow(nID_Flow_ServiceData, startDate, stopDate);
         DateTime operationTime = DateTime.now();
 
         ClearSlotsResult res = new ClearSlotsResult();
         List<FlowSlot> flowSlotsToDelete = new ArrayList<>();
-        for (FlowSlot slot : flowSlots) {
-            if (bWithTickets || slot.getFlowSlotTickets().isEmpty()) {
-                flowSlotsToDelete.add(slot);
+        for (FlowSlot oFlowSlot : aFlowSlot) {
+            
+            Boolean bBusy = false;
+            for(FlowSlotTicket oFlowSlotTicket : oFlowSlot.getFlowSlotTickets()){
+                bBusy = bBusy||FlowSlotVO.bBusy(oFlowSlotTicket);
+            }
+            
+            //if (bWithTickets || oFlowSlot.getFlowSlotTickets().isEmpty()) {
+            if (bWithTickets || !bBusy) {
+                flowSlotsToDelete.add(oFlowSlot);
 
                 // detach existing tickets from slots
-                for (FlowSlotTicket oFlowSlotTicket : slot.getFlowSlotTickets()) {
+                for (FlowSlotTicket oFlowSlotTicket : oFlowSlot.getFlowSlotTickets()) {
                     oFlowSlotTicket.getaFlowSlot().clear();
                     oFlowSlotTicket.setsDateEdit(operationTime);
                 }
-                res.getaDeletedSlot().add(new FlowSlotVO(slot));
+                res.getaDeletedSlot().add(new FlowSlotVO(oFlowSlot));
             }
 
-            if (!slot.getFlowSlotTickets().isEmpty()) {
-                res.getaSlotWithTickets().add(new FlowSlotVO(slot));
+            //if (!oFlowSlot.getFlowSlotTickets().isEmpty()) {
+            if (bBusy) {
+                res.getaSlotWithTickets().add(new FlowSlotVO(oFlowSlot));
             }
         }
 

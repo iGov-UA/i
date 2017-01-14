@@ -1,9 +1,9 @@
-<div ng-if="item.type == 'textArea'" class="col-sm-12 form-field">
+<div ng-if="item.type == 'textArea' && showField(item)" class="col-sm-12 form-field">
   <div class="col-sm-6 task-form-title">
     <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && !inUnassigned() && item.writable" style="color: red">*</span></label>
   </div>
   <div class="col-sm-6" style="padding-right: 0">
-    <textarea ng-if="!isFormPropertyDisabled(item)"
+    <textarea ng-if="!isFormPropertyDisabled(item) && isDocumentWritable(item)"
               ng-readonly="isFormPropertyDisabled(item)"
               name="{{item.id}}"
               ng-required="isRequired(item)"
@@ -13,7 +13,7 @@
     </textarea>
     <span class="task-form-written-right-sight"
           style="white-space: pre-line"
-          ng-if="isFormPropertyDisabled(item) && item.value"
+          ng-if="showReadableField(item)"
           name="{{item.id}}"
           ng-model="item.value">{{item.value}}
     </span>

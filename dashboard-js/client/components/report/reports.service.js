@@ -13,7 +13,7 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
       'sFileName': 'dohody.dat',
       'bHeader': false, // есть/нет хеадера
       'saFieldsCalc': '', // поля для калькуляций
-      'saFieldSummary': '' // поля для агрегатов      
+      'saFieldSummary': '' // поля для агрегатов
     };
     return dataArray;
   }
@@ -21,14 +21,24 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
   function getExportUrl(dataArray) {
     var exportUrl = './api/reports/export?';
     for (var key in dataArray) {
-      exportUrl = exportUrl + key + '=' + dataArray[key] + '&';
+      if (key === 'sDateAt' || key === 'sDateTo'){
+        var sd = dataArray[key] + '';
+        if (sd.search(new RegExp(/\d\d.\d\d.\d\d\d\d/)) == 0) {
+          var s = sd.substr(6, 4) + '-' + sd.substr(3, 2) + '-' + sd.substr(0, 2);
+          exportUrl = exportUrl + key + '=' + s + '&';
+        } else {
+          exportUrl = exportUrl + key + '=' + dataArray[key] + '&';
+        }
+      } else {
+        exportUrl = exportUrl + key + '=' + dataArray[key] + '&';
+      }
     }
     return exportUrl;
   }
 
   function defaultHandler(exportParams, callback) {
     var dataArray = getDefaultDataArray(exportParams);
-    var exportUrl = getExportUrl(dataArray); 
+    var exportUrl = getExportUrl(dataArray);
 
     //return export URL to client's reports.controller
     callback(exportUrl);
@@ -38,8 +48,8 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
 
     exportLink: function (exportParams, callback) {
       var dataArray = getDefaultDataArray(exportParams);
-      
-      //loading properties from .properties file for a selected Business Process      
+
+      //loading properties from .properties file for a selected Business Process
       var getReportParametersUrl = '/api/reports/template?sPathFile=/export/' + exportParams.sBP + '.properties';
 
       $http.get(getReportParametersUrl).then(function (result) {
@@ -70,20 +80,6 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
       })
 
     },
-
-    statisticLink: function (statisticParams, callback) {
-      var data = {
-        'sID_BP': statisticParams.sBP,
-        'sDateAt': statisticParams.from,
-        'sDateTo': statisticParams.to
-      };
-      var statUrl = './api/reports/statistic?' +
-        'sID_BP_Name=' + data.sID_BP + '&' +
-        'sDateAt=' + data.sDateAt + '&' +
-        'sDateTo=' + data.sDateTo;
-
-      callback(statUrl);
-    }
 
   }
 });

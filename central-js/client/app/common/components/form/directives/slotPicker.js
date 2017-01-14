@@ -62,7 +62,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               sSubjectFamily: scope.formData.params.bankIdlastName.value,
               sSubjectName: scope.formData.params.bankIdfirstName.value,
               sSubjectSurname: scope.formData.params.bankIdmiddleName.value || '',
-              sSubjectPassport: getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value),
+              sSubjectPassport: scope.formData.params.bankIdPassport.value ? getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value) : '',
               sSubjectPhone: scope.formData.params.phone.value || ''
             };
             $http.post('/api/service/flow/DMS/setSlotHold', data).
@@ -131,8 +131,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         if (isQueueDataType.DMS){
           return this.$parent.$parent.$parent.$parent.$parent.form.phone.$invalid ||
             (!scope.formData.params.bankIdlastName || scope.formData.params.bankIdlastName.value === '') ||
-            (!scope.formData.params.bankIdfirstName || scope.formData.params.bankIdfirstName.value === '') ||
-            (getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value).length != 4);
+            (!scope.formData.params.bankIdfirstName || scope.formData.params.bankIdfirstName.value === ''); //||
+            //(getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value).length != 4);
         } else {
           return false;
         }
@@ -184,7 +184,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           scope.slotsLoading = false;
           ErrorsFactory.push({
             type: 'danger',
-            text: 'В полі ' + sID_Type_ID + ' прописаний непыдтримуэмий тип для поля queueData: ' + scope.formData.params[sID_Type_ID].value
+            text: 'В полі ' + sID_Type_ID + ' прописаний непідтримуваний тип для поля queueData: ' + scope.formData.params[sID_Type_ID].value
           });
           console.error('slotsData for field id [' + this.property.id + '] not loading');
           return;

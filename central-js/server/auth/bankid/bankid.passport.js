@@ -30,7 +30,9 @@ exports.setup = function (config, authProviderRegistry) {
     } else if (options.mpbds) {
       return {bank: 'mpbds'};
     } else {
-      return {};
+      return {
+        bank: options.bank
+      };
     }
   };
 

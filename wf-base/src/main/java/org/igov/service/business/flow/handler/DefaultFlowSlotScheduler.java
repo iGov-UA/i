@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * User: goodg_000
@@ -20,6 +22,8 @@ import java.util.Set;
  * Time: 18:57
  */
 public class DefaultFlowSlotScheduler extends BaseFlowSlotScheduler {
+    
+    protected static final Logger LOG = LoggerFactory.getLogger(DefaultFlowSlotGenerator.class);
 
     protected int maxGeneratedSlotsCount;
 
@@ -84,15 +88,18 @@ public class DefaultFlowSlotScheduler extends BaseFlowSlotScheduler {
 
             if (!slots.isEmpty()) {
                 Set<DateTime> existingDates = flowSlotDao.findFlowSlotsDates(flow.getId(), minDateTime, maxDateTime);
-
+                for(DateTime startDateTime : existingDates){
+                    LOG.info("Date already exist startDateTime: " + startDateTime);
+                }
                 for (FlowSlot slot : slots) {
                     if (!existingDates.contains(slot.getsDate())) {
                         slot.setFlow(flow);
                         slot = flowSlotDao.saveOrUpdate(slot);
-
                         res.add(slot);
+                        LOG.info("createNewSlot: slot.getId={} flow.getId={} getsDate={} getsDuration={}", slot.getId(), flow.getId(), slot.getsDate(), slot.getsDuration());
                     } else {
                         datesToUpdateSlotsIn.add(slot.getsDate());
+                        LOG.info("datesToUpdateSlotsIn: slot.getId={} flow.getId={} getsDate={} getsDuration={}", slot.getId(), flow.getId(), slot.getsDate(), slot.getsDuration());
                     }
                 }
 

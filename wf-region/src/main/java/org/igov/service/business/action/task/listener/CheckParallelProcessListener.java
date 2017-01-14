@@ -1,31 +1,27 @@
 package org.igov.service.business.action.task.listener;
 
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.RuntimeService;
+//import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.DelegateTask;
+//import org.activiti.engine.delegate.DelegateTask;
+import org.activiti.engine.delegate.ExecutionListener;
 import org.activiti.engine.delegate.Expression;
-import org.activiti.engine.delegate.TaskListener;
+//import org.activiti.engine.delegate.TaskListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.igov.service.exception.TaskAlreadyUnboundException;
 
 @Component("chekForCompleteParallelProcess")
-public class CheckParallelProcessListener implements TaskListener {
+public class CheckParallelProcessListener implements ExecutionListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(CheckParallelProcessListener.class);
     private Expression paramName;
     private Expression checkValue;
-    private Expression sErrorMessage;
-    
-    @Autowired
-    private RuntimeService runtimeService;
+    private Expression sErrorMessage;      
 
     @Override
-    public void notify(DelegateTask delegateTask) {
-        DelegateExecution oExecution = delegateTask.getExecution();
+    public void notify(DelegateExecution oExecution) throws TaskAlreadyUnboundException{        
 
         String paramName = getStringFromFieldExpression(this.paramName, oExecution);
         LOG.info("paramName: " + paramName);
@@ -33,12 +29,12 @@ public class CheckParallelProcessListener implements TaskListener {
         LOG.info("checkValue: " + checkValue);
         String sErrorMessage = getStringFromFieldExpression(this.sErrorMessage, oExecution);
         LOG.info("sErrorMessage: " + sErrorMessage);
-        String sValFromProcess = (String) runtimeService.getVariable(oExecution.getProcessInstanceId(), paramName);
+        //String sValFromProcess = (String) runtimeService.getVariable(oExecution.getProcessInstanceId(), paramName);
+        String sValFromProcess = (String) oExecution.getVariable(paramName);
         LOG.info("sValFromProcess: " + sValFromProcess);
 
         if (!checkValue.trim().equals(sValFromProcess.trim())) {
-            LOG.warn("Previous process isn't complete");
-            throw new ActivitiIllegalArgumentException(sErrorMessage);
+            throw new TaskAlreadyUnboundException("errMsg=" + sErrorMessage);
         }
     }
 
