@@ -41,7 +41,7 @@ public class ManagerSMS {
             .append("<body content-type=\"text/plain\" encoding=\"plain\">").append("%s")
             .append("</body>")
             .append("</message>").toString();*/
-    public String sendSms(String phone, String message, String sID_Order, boolean oldApiFlag) throws Exception {
+    public String sendSms(String phone, String message, String sID_Order, boolean bTest) throws Exception {//, boolean bOldAPI
         
         String resp = "[none]";
 
@@ -51,15 +51,18 @@ public class ManagerSMS {
 
             phone = phone.replace("+", "").trim();
 
-            if (oldApiFlag) {
-                resp = SendSenderSms(sID_Order, phone, message);
-            } else if (regexpLifeCell.matcher(phone).matches()) {
-                resp = SendLifeCellSms(phone, message);
-            } /*else if(regexKyivStar.matcher(phone).matches())
-                {
-                    SendKyivStarSms(phone, message);
-            }*/ else {
-                resp = SendSenderSms(sID_Order, phone, message);
+            if(!bTest){
+                Boolean bOldAPI = !bTest;
+                if (bOldAPI) {
+                    resp = SendSenderSms(sID_Order, phone, message);
+                } else if (regexpLifeCell.matcher(phone).matches()) {
+                    resp = SendLifeCellSms(phone, message);
+                } /*else if(regexKyivStar.matcher(phone).matches())
+                    {
+                        SendKyivStarSms(phone, message);
+                }*/ else {
+                    resp = SendSenderSms(sID_Order, phone, message);
+                }
             }
         }
         catch (Exception ex){
@@ -68,7 +71,7 @@ public class ManagerSMS {
             
         return resp;
     }
-
+    
     private String SendLifeCellSms(String phone, String message) throws Exception {
         String bodyResult = String.format(LIFEBODY, "+" + phone, message);
         String response = oHttpRequester.postInside(generalConfig.getLifeURL(), null, bodyResult, "text/xml; charset=utf-8",
