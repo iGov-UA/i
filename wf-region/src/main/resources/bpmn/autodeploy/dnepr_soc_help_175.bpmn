@@ -25,42 +25,23 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="asTypeHelp" name="Оберіть тип допомоги" type="enum" required="true">
-          <activiti:value id="one_a" name="на догляд за інвалідом з дитинства підгрупи А I групи"></activiti:value>
-          <activiti:value id="one_b" name="на догляд за інвалідом з дитинства підгрупи Б I групи"></activiti:value>
-          <activiti:value id="one_two" name="одиноким інвалідам з дитинства II і III груп, які за висновком ЛКК закладу охорони здоров’я потребують постійного стороннього догляду"></activiti:value>
-          <activiti:value id="do_6" name="догляд за дитиною-інвалідом віком до 6 років"></activiti:value>
-          <activiti:value id="vid_6_do_18" name="догляд за дитиною-інвалідом віком від 6 до 18 років"></activiti:value>
-        </activiti:formProperty>
-        
-        <activiti:formProperty id="asTogether" name="Чи проживаєте Ви разом з дитиною?" type="enum" required="true">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="nFileNotRegisterAsRecipient" name="довідка про те, що другий із законних представників не отримує державну соціальну допомогу на дитину-інваліда за місцем свого проживання" type="file"></activiti:formProperty>
-
         
         <activiti:formProperty id="asCustomerService" name="Оберіть категорію споживачів послуги" type="enum" required="true">
           <activiti:value id="invalid_1" name="Інвалід з дитинства І групи"></activiti:value>
           <activiti:value id="invalid_23" name="Одинокий інвалід з дитинства II і III групи; які потребують постійного стороннього догляду"></activiti:value>
           <activiti:value id="invalid_child" name="Дитина-інвалід"></activiti:value>
         </activiti:formProperty>
-        
-        <activiti:formProperty id="asSinglePerson" name="Чи маєте Ви статус одинокої особи?" type="enum" required="true">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+
+        <activiti:formProperty id="asTypeHelpOne" name="Оберіть тип допомоги" type="enum" required="true">
+          <activiti:value id="one_a" name="на догляд за інвалідом з дитинства підгрупи А I групи"></activiti:value>
+          <activiti:value id="one_b" name="на догляд за інвалідом з дитинства підгрупи Б I групи"></activiti:value>
+        </activiti:formProperty>        
+        <activiti:formProperty id="asTypeHelpChild" name="Оберіть тип допомоги" type="enum" required="true">
+          <activiti:value id="do_6" name="догляд за дитиною-інвалідом віком до 6 років"></activiti:value>
+          <activiti:value id="vid_6_do_18" name="догляд за дитиною-інвалідом віком від 6 до 18 років"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFileSinglePerson" name="оригінал довідки про перебування (не перебування) на обліку як одинокої особи" type="file"></activiti:formProperty>
-        
-        
-        <activiti:formProperty id="asTypeParenthood" name="Ким Ви доводитесь дитині?" type="enum" required="true">
-          <activiti:value id="parents" name="батько (мати)"></activiti:value>
-          <activiti:value id="adopter" name="усиновитель"></activiti:value>
-          <activiti:value id="guardians" name="опікун чи піклувальник (прийомні батьки, батьки-вихователі, патронатні вихователі)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="nFileGuardian" name="копія рішення про встановлення опіки чи піклування" type="file"></activiti:formProperty>        
-        <activiti:formProperty id="nFileAdopter" name="рішення про усиновлення" type="file"></activiti:formProperty>
-        
+
+                
         
         <activiti:formProperty id="asEmployment" name="Ви працевлаштовані?" type="enum" required="true">
           <activiti:value id="no" name="не працюю - фактично здійснюю догляд за дитиною-інвалідом"></activiti:value>
@@ -72,13 +53,51 @@
         <activiti:formProperty id="nFileUr" name="довідка державного реєстратора про проведення (відсутність) державної реєстрації особи" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFileEmploymentHistory" name="Копія трудової книжки" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFileCentreJob" name="довідка з центру зайнятості про те, що особа не перебуває на обліку як безробітна" type="file"></activiti:formProperty>
+                
         
+        
+		<!-- ***********         Дорослі        ***************** -->        
+        <activiti:formProperty id="asSinglePerson" name="Чи маєте Ви статус одинокої особи?" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFileSinglePerson" name="оригінал довідки про перебування (не перебування) на обліку як одинокої особи" type="file"></activiti:formProperty>
+		<!-- **************************************************** -->
+
+
+
+		<!-- ***********         Діти           ***************** -->
         <activiti:formProperty id="asVacation" name="Чи перебуваєте на данний момент у довгостроковій відпустці?" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFileMedical2" name="довідка лікарсько-консультативної комісії лікувально-профілактичного закладу; в якій зазначено, що дитина-інвалід потребує домашнього догляду." type="file"></activiti:formProperty>
         
+        <activiti:formProperty id="asTogether" name="Чи проживаєте Ви разом з дитиною?" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFileNotRegisterAsRecipient" name="довідка про те, що другий із законних представників не отримує державну соціальну допомогу на дитину-інваліда за місцем свого проживання" type="file"></activiti:formProperty>
+        
+        <activiti:formProperty id="asTypeParenthood" name="Ким Ви доводитесь дитині?" type="enum" required="true">
+          <activiti:value id="parents" name="батько (мати)"></activiti:value>
+          <activiti:value id="adopter" name="усиновитель"></activiti:value>
+          <activiti:value id="guardians" name="опікун чи піклувальник (прийомні батьки, батьки-вихователі, патронатні вихователі)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFileGuardian" name="копія рішення про встановлення опіки чи піклування" type="file"></activiti:formProperty>        
+        <activiti:formProperty id="nFileAdopter" name="рішення про усиновлення" type="file"></activiti:formProperty>
+        
+        <activiti:formProperty id="asEducation" name="Чи перебуває дитина на повному державному утриманні за місцем навчання?" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFileEducation" name="довідка з місця навчання; із зазначенням факту перебування на повному  державному утриманні" type="file"></activiti:formProperty>
+		<!-- **************************************************** -->                
+        
+
+
+
+
         <activiti:formProperty id="asNationality" name="Чи маєте Ви українське громадянство?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -91,13 +110,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFileAttestat" name="довідка-атестат про припинення виплати раніше призначеної пенсії" type="file"></activiti:formProperty>
             
-        
-        <activiti:formProperty id="asEducation" name="Чи перебуває дитина на повному державному утриманні за місцем навчання?" type="enum" required="true">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="nFileEducation" name="довідка з місця навчання; із зазначенням факту перебування на повному  державному утриманні" type="file"></activiti:formProperty>
-        
+
         <activiti:formProperty id="asNumberApplication" name="Чи отримували Ви ці виплати раніше?" type="enum" required="true">
           <activiti:value id="sFirst" name="ні"></activiti:value>
           <activiti:value id="sSecond" name="так"></activiti:value>
@@ -113,10 +126,16 @@
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р)" type="string" default=" "></activiti:formProperty>
 
+
+		<!-- ***********         Діти           ***************** -->
         <activiti:formProperty id="nFileBirthCertificate" name="сканована копія свідоцтва про народження дитини-інваліда" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileResidence" name="довідка про місце проживання дитини-інваліда (або копія паспорта)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileFamily" name="Довідка про склад сім'ї; із зазначенням прізвищ, (крім сім'ї опікуна, піклувальника) імен та по батькові, родинних зв'язків членів сім'ї;" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFileTogether" name="довідка про спільне проживання з дитиною-інвалідом; видана уповноваженим органом за місцем проживання" type="file"></activiti:formProperty>
+		<!-- **************************************************** -->
+
+
+        <activiti:formProperty id="nFileFamily" name="Довідка про склад сім'ї; із зазначенням прізвищ, (крім сім'ї опікуна, піклувальника) імен та по батькові, родинних зв'язків членів сім'ї;" type="file"></activiti:formProperty>
+
 
         <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
@@ -152,21 +171,25 @@
                 
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTypeHelp" name="Оберіть тип допомоги; ;writable=false" type="enum">
-          <activiti:value id="one_a" name="на догляд за інвалідом з дитинства підгрупи А I групи"></activiti:value>
-          <activiti:value id="one_b" name="на догляд за інвалідом з дитинства підгрупи Б I групи"></activiti:value>
-          <activiti:value id="one_two" name="одиноким інвалідам з дитинства II і III груп, які за висновком ЛКК закладу охорони здоров’я потребують постійного стороннього догляду"></activiti:value>
-          <activiti:value id="do_6" name="догляд за дитиною-інвалідом віком до 6 років"></activiti:value>
-          <activiti:value id="vid_6_do_18" name="догляд за дитиною-інвалідом віком від 6 до 18 років"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTogether" name="Чи проживаєте Ви разом з дитиною?; ;writable=false" type="enum">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="asCustomerService" name="Оберіть категорію споживачів послуги; ;writable=false" type="enum">
           <activiti:value id="invalid_1" name="Інвалід з дитинства І групи"></activiti:value>
           <activiti:value id="invalid_23" name="Одинокий інвалід з дитинства II і III групи; які за висновком лікарсько-консультативної комісії лікувально-профілактичного закладу потребують постійного стороннього догляду"></activiti:value>
           <activiti:value id="invalid_child" name="Дитина-інвалід"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="asTypeHelpOne" name="Оберіть тип допомоги" type="enum" writable="false">
+          <activiti:value id="one_a" name="на догляд за інвалідом з дитинства підгрупи А I групи"></activiti:value>
+          <activiti:value id="one_b" name="на догляд за інвалідом з дитинства підгрупи Б I групи"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTypeHelpChild" name="Оберіть тип допомоги" type="enum" writable="false">
+          <activiti:value id="do_6" name="догляд за дитиною-інвалідом віком до 6 років"></activiti:value>
+          <activiti:value id="vid_6_do_18" name="догляд за дитиною-інвалідом віком від 6 до 18 років"></activiti:value>
+        </activiti:formProperty>   
+        
+        <activiti:formProperty id="asTogether" name="Чи проживаєте Ви разом з дитиною?; ;writable=false" type="enum">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSinglePerson" name="Чи маєте Ви статус одинокої особи?; ;writable=false" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -243,21 +266,25 @@
                 
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTypeHelp" name="Оберіть тип допомоги; ;writable=false" type="enum">
-          <activiti:value id="one_a" name="на догляд за інвалідом з дитинства підгрупи А I групи"></activiti:value>
-          <activiti:value id="one_b" name="на догляд за інвалідом з дитинства підгрупи Б I групи"></activiti:value>
-          <activiti:value id="one_two" name="одиноким інвалідам з дитинства II і III груп, які за висновком ЛКК закладу охорони здоров’я потребують постійного стороннього догляду"></activiti:value>
-          <activiti:value id="do_6" name="догляд за дитиною-інвалідом віком до 6 років"></activiti:value>
-          <activiti:value id="vid_6_do_18" name="догляд за дитиною-інвалідом віком від 6 до 18 років"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTogether" name="Чи проживаєте Ви разом з дитиною?; ;writable=false" type="enum">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
+        
         <activiti:formProperty id="asCustomerService" name="Оберіть категорію споживачів послуги; ;writable=false" type="enum">
           <activiti:value id="invalid_1" name="Інвалід з дитинства І групи"></activiti:value>
           <activiti:value id="invalid_23" name="Одинокий інвалід з дитинства II і III групи; які за висновком лікарсько-консультативної комісії лікувально-профілактичного закладу потребують постійного стороннього догляду"></activiti:value>
           <activiti:value id="invalid_child" name="Дитина-інвалід"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="asTypeHelpOne" name="Оберіть тип допомоги" type="enum" writable="false">
+          <activiti:value id="one_a" name="на догляд за інвалідом з дитинства підгрупи А I групи"></activiti:value>
+          <activiti:value id="one_b" name="на догляд за інвалідом з дитинства підгрупи Б I групи"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTypeHelpChild" name="Оберіть тип допомоги" type="enum" writable="false">
+          <activiti:value id="do_6" name="догляд за дитиною-інвалідом віком до 6 років"></activiti:value>
+          <activiti:value id="vid_6_do_18" name="догляд за дитиною-інвалідом віком від 6 до 18 років"></activiti:value>
+        </activiti:formProperty>   
+        
+        <activiti:formProperty id="asTogether" name="Чи проживаєте Ви разом з дитиною?; ;writable=false" type="enum">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSinglePerson" name="Чи маєте Ви статус одинокої особи?; ;writable=false" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>

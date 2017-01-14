@@ -1,81 +1,114 @@
 {
 	"motion" : {
 		"ShowFieldsOnCondition_1" : {
-			"aField_ID" : ["nFileNotRegisterAsRecipient"], 
+			"aField_ID" : ["asTypeHelpOne"], 
 			"asID_Field" : {
-				"sClient" : "asTogether"
+				"sClient" : "asCustomerService"
 			}, 
-			"sCondition" : "[sClient] == 'no'"
+			"sCondition" : "[sClient] == 'invalid_1'"
 		}, 
 		"ShowFieldsOnCondition_2" : {
 			"aField_ID" : ["nFileFamily"], 
 			"asID_Field" : {
-				"sClient" : "asTypeHelp"
+				"sClient" : "asCustomerService"
 			}, 
-			"sCondition" : "[sClient] == 'one_two'"
+			"sCondition" : "[sClient] == 'invalid_23'"
 		}, 
 		"ShowFieldsOnCondition_3" : {
-			"aField_ID" : ["nFileGuardian"], 
+			"aField_ID" : ["asTypeHelpChild"], 
 			"asID_Field" : {
-				"sClient" : "asTypeParenthood"
+				"sClient" : "asCustomerService"
 			}, 
-			"sCondition" : "[sClient] == 'guardians'"
+			"sCondition" : "[sClient] == 'invalid_child'"
 		}, 
 		"ShowFieldsOnCondition_4" : {
-			"aField_ID" : ["nFileSinglePerson", "nFileTogether"], 
+			"aField_ID" : ["asSinglePerson"], 
 			"asID_Field" : {
-				"sClient" : "asSinglePerson"
+				"sClient" : "asCustomerService"
 			}, 
-			"sCondition" : "[sClient] == 'yes'"
+			"sCondition" : "[sClient] == 'invalid_1' || [sClient] == 'invalid_23'"
 		}, 
 		"ShowFieldsOnCondition_5" : {
-			"aField_ID" : ["nFileAdopter"], 
+			"aField_ID" : ["nFileSinglePerson", "nFileTogether"], 
 			"asID_Field" : {
-				"sType" : "asTypeParenthood", 
-				"sPerson" : "asSinglePerson"
+				"sClient" : "asCustomerService", 
+				"sClient_2" : "asSinglePerson"
 			}, 
-			"sCondition" : "[sType] == 'adopter' && [sPerson] == 'yes'"
+			"sCondition" : "([sClient] == 'invalid_1' || [sClient] == 'invalid_23') && [sClient2] == 'yes'"
 		}, 
 		"ShowFieldsOnCondition_6" : {
+			"aField_ID" : ["asTogether", "asTypeParenthood", "asVacation", "asEducation", "nFileBirthCertificate", "nFileResidence", "nFileTogether"], 
+			"asID_Field" : {
+				"sClient" : "asCustomerService"
+			}, 
+			"sCondition" : "[sClient] == 'invalid_child'"
+		}, 
+		"ShowFieldsOnCondition_7" : {
+			"aField_ID" : ["nFileNotRegisterAsRecipient"], 
+			"asID_Field" : {
+				"sClient" : "asCustomerService", 
+				"sClient_2" : "asTogether"
+			}, 
+			"sCondition" : "[sClient] == 'invalid_child' && [sClient_2] == 'no'"
+		}, 
+		"ShowFieldsOnCondition_8" : {
+			"aField_ID" : ["nFileGuardian"], 
+			"asID_Field" : {
+				"sClient" : "asCustomerService", 
+				"sClient_2" : "asTogether"
+			}, 
+			"sCondition" : "[sClient] == 'invalid_child' && [sClient_2] == 'guardians'"
+		}, 
+		"ShowFieldsOnCondition_9" : {
 			"aField_ID" : ["nFileFamily", "nFileFOP", "nFileUr", "nFileTogether", "nFileEmploymentHistory", "nFileCentreJob"], 
 			"asID_Field" : {
 				"sClient" : "asEmployment"
 			}, 
 			"sCondition" : "[sClient] == 'no'"
 		}, 
-		"ShowFieldsOnCondition_7" : {
+		"ShowFieldsOnCondition_10" : {
 			"aField_ID" : ["asVacation"], 
 			"asID_Field" : {
-				"sClient" : "asEmployment"
+				"sClient" : "asCustomerService", 
+				"sClient_2" : "asEmployment"
+			}, 
+			"sCondition" : "[sClient] == 'invalid_child' && [sClient_2] == 'yes'"
+		}, 
+		"ShowFieldsOnCondition_11" : {
+			"aField_ID" : ["nFileMedical2"], 
+			"asID_Field" : {
+				"sClient" : "asCustomerService", 
+				"sClient_2" : "asEmployment", 
+				"sClient_3" : "asVacation"
+			}, 
+			"sCondition" : "[sClient] == 'invalid_child' && [sClient_2] == 'no' && [sClient_3] == 'yes'"
+		}, 
+		"ShowFieldsOnCondition_12" : {
+			"aField_ID" : ["nFileEducation"], 
+			"asID_Field" : {
+				"sClient" : "asEducation"
 			}, 
 			"sCondition" : "[sClient] == 'yes'"
 		}, 
-		"ShowFieldsOnCondition_8" : {
-			"aField_ID" : ["nFileMedical2"], 
+		"ShowFieldsOnCondition_13" : {
+			"aField_ID" : ["nFileAdopter"], 
 			"asID_Field" : {
-				"sClient" : "asVacation",
-				"sClient_2" : "asEmployment"
+				"sClient" : "asTypeParenthood", 
+				"sClient_2" : "asSinglePerson"
 			}, 
-			"sCondition" : "[sClient] == 'yes' && [sClient_2] == 'no'"
+			"sCondition" : "[sClient] == 'adopter' && [sClient_2] == 'yes'"
 		}, 
-		"ShowFieldsOnCondition_9" : {
+		"ShowFieldsOnCondition_14" : {
 			"aField_ID" : ["nFileForeigner"], 
 			"asID_Field" : {
 				"sClient" : "asNationality"
 			}, 
 			"sCondition" : "[sClient] == 'no'"
 		}, 
-		"ShowFieldsOnCondition_12" : {
+		"ShowFieldsOnCondition_15" : {
 			"aField_ID" : ["nFileAttestat"], 
 			"asID_Field" : {
 				"sClient" : "asAttestat"
-			}, 
-			"sCondition" : "[sClient] == 'yes'"
-		}, 
-		"ShowFieldsOnCondition_13" : {
-			"aField_ID" : ["nFileEducation"], 
-			"asID_Field" : {
-				"sClient" : "asEducation"
 			}, 
 			"sCondition" : "[sClient] == 'yes'"
 		}, 
