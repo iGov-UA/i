@@ -64,6 +64,30 @@
   <div ng-if="tabHistoryAppeal === 'appeal' && !clarify">
     <form name="form" novalidate style="padding-bottom: 70px">
       <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item)">
+        <!-- сепаратор -->
+        <div class="addition-hr" ng-if="insertSeparator(item.id).bShow">
+          <table style="width: 100%; height: auto">
+            <tr ng-if="insertSeparator(item.id).sText.length > 0">
+              <td style="width: 30%; text-align: right">
+                <hr class="hr-divider side-left" style="width: 95%;">
+              </td>
+              <td colspan="2" style="max-width: 40%; text-align: center">
+                <span style="bottom: 0px; padding: 0px">{{insertSeparator(item.id).sText}}</span>
+              </td>
+              <td style="width: 30%; text-align: left">
+                <hr class="hr-divider side-right" style="width: 95%;">
+              </td>
+            </tr>
+            <tr ng-if="insertSeparator(item.id).sText.length == 0">
+              <td style="width: 50%; text-align: right">
+                <hr class="hr-divider side-left" style="width: 97%;">
+              </td>
+              <td style="width: 50%; text-align: left">
+                <hr class="hr-divider side-right" style="width: 97%;">
+              </td>
+            </tr>
+          </table>
+        </div>
 
         <!--поле типа simple-field-->
         <div ng-if="item.value && isFormPropertyDisabled(item)">
@@ -299,13 +323,21 @@
       <div class="control-form-fields" style="position:fixed; bottom: 0; background: white; width: 100%;z-index: 5;">
 
         <div class="main-form-controls" ng-init="checkForEmpty()">
-          <div ng-if="!clarify && inUnassigned()" class="fixed-bottom-menu-buttons">
+          <div ng-if="(!clarify && inUnassigned()) || (!clarify && isDocument())" class="fixed-bottom-menu-buttons">
             <div ng-hide="selectedTask.assignee != null || sSelectedTask == 'all'">
               <button ng-click="assignTask()"
                       class="btn btn-info take-to-work-button"
                       style="background-color: #337ACF; outline: none; border: none"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()"
-                      ng-show="selectedTask.assignee == null">Взяти в роботу
+                      ng-show="selectedTask.assignee == null && !isDocument()">Взяти в роботу
+              </button>
+              <button ng-click="assignAndSubmitDocument(form)"
+                      class="btn btn-info take-to-work-button"
+                      style="background-color: #337ACF; outline: none; border: none"
+                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()"
+                      ng-show="selectedTask.assignee == null && isDocument()">
+                <span ng-if="documentRights.bWrite">Пiдписати</span>
+                <span ng-if="!documentRights.bWrite">Ознайомлений</span>
               </button>
               <label ng-show="isTaskInProcess() && !isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Зачекайте...</label>
               <label ng-show="isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Задачу направлено в роботу.</label>
@@ -336,10 +368,11 @@
                       class="btn btn-info"
                       style="background-color: #337ACF; outline: none; border: none"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">
-                <span ng-if="documentRights.bWrite">Пiдписати</span>
-                <span ng-if="!documentRights.bWrite">Ознайомлений</span>
+                <span ng-if="documentRights.bWrite && !isDocument()">Пiдписати</span>
+                <span ng-if="!documentRights.bWrite && !isDocument()">Ознайомлений</span>
+                <span ng-if="isDocument()">Створити</span>
               </button>
-              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished' || isDocument()"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-info"
                       style="background-color: #337ACF; outline: none; border: none"
@@ -350,7 +383,7 @@
             </div>
           </div>
 
-          <div ng-hide="selectedTask.assignee === null
+          <div ng-hide="(selectedTask.assignee === null && !isDocument())
            || sSelectedTask === 'finished'
            || sSelectedTask === 'all'
            || selectedTask.processDefinitionId.indexOf('system') == 0"
