@@ -1,7 +1,6 @@
 package org.igov.model.core;
 
 import static org.hibernate.criterion.Restrictions.eq;
-import static org.hibernate.criterion.Restrictions.in;
 
 import java.io.Serializable;
 import java.util.List;

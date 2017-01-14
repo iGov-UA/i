@@ -8,15 +8,6 @@ package org.igov.analytic.model.process;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
@@ -28,6 +19,10 @@ import org.igov.model.core.AbstractEntity;
 import org.igov.util.JSON.JsonDateDeserializer;
 import org.igov.util.JSON.JsonDateSerializer;
 import org.joda.time.DateTime;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -66,22 +61,22 @@ public class Process extends AbstractEntity{
     @JsonProperty(value = "aAttribute")
     @OneToMany(mappedBy = "oProcess", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Attribute> aAttribute = new ArrayList();
+    private List<Attribute> aAttribute = new ArrayList<>();
     
     @JsonProperty(value = "aProcessTask")
     @OneToMany(mappedBy = "oProcess", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<ProcessTask> aProcessTask = new ArrayList();
+    private List<ProcessTask> aProcessTask = new ArrayList<>();
     
     @JsonProperty(value = "aAccessGroup")
     @ManyToMany(targetEntity=AccessGroup.class, mappedBy = "aProcess")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<AccessGroup> aAccessGroup = new ArrayList();
+    private List<AccessGroup> aAccessGroup = new ArrayList<>();
     
     @JsonProperty(value = "aAccessUser")
     @ManyToMany(targetEntity=AccessUser.class, mappedBy = "aProcess")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<AccessUser> aAccessUser = new ArrayList();
+    private List<AccessUser> aAccessUser = new ArrayList<>();
 
     public String getsID_() {
         return sID_;

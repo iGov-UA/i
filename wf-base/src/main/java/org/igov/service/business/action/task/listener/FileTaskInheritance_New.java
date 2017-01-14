@@ -17,6 +17,7 @@ import java.util.List;
 import java.text.MessageFormat;
 import org.igov.io.GeneralConfig;
 import org.igov.io.Log;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
 /**
  * @author askosyr

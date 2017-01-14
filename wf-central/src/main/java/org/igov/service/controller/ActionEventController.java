@@ -1,24 +1,24 @@
 package org.igov.service.controller;
 
 import com.google.common.base.Optional;
-
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
 import org.igov.model.action.task.core.entity.ActionProcessCount;
 import org.igov.model.action.task.core.entity.ActionProcessCountDao;
-import org.igov.model.subject.Server;
-import org.igov.model.subject.ServerDao;
+import org.igov.model.subject.*;
+import org.igov.model.subject.message.SubjectMessageFeedback;
+import org.igov.model.subject.message.SubjectMessageFeedbackDao;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
@@ -34,19 +34,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.igov.model.subject.Subject;
-import org.igov.model.subject.SubjectDao;
-import org.igov.model.subject.SubjectHuman;
-import org.igov.model.subject.SubjectHumanDao;
-import org.igov.model.subject.message.SubjectMessageFeedback;
-import org.igov.model.subject.message.SubjectMessageFeedbackDao;
-import org.joda.time.format.DateTimeFormatter;
 
 @Controller
 @Api(tags = {"ActionEventController -- События по действиям и статистика"})
@@ -590,8 +582,11 @@ public class ActionEventController implements ControllerConstants {
             HttpServletResponse oHttpServletResponse) {
         LOG.info("{Enter into function}");
         DateTimeFormatter oDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        LOG.info("oDateFormat" + oDateFormat.toString());
         DateTime oDateAt = oDateFormat.parseDateTime(sDateAt);
+        LOG.info("oDateAt" + oDateAt.toString());
         DateTime oDateTo = oDateFormat.parseDateTime(sDateTo);
+        LOG.info("oDateTo" + oDateTo.toString());
         Charset charset = Charset.availableCharsets().getOrDefault(sCodepage, Charset.forName("windows-1251"));
         List<HistoryEvent_Service> aHistoryEvent_Service = new ArrayList<>();
 
@@ -639,21 +634,11 @@ public class ActionEventController implements ControllerConstants {
                     anID_HistoryEvent_Service.add(oHistoryEvent_Service.getId());
                 }
                 LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service);
-
-                //               List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
-//                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
-//                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
-//                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessage) {
-////                    if (oSubjectMessage.getSubjectMessageType().getId() == 2) {
-//                        mSubjectMessageFeedback.put(oHistoryEvent_Service.getId(), oSubjectMessageFeedback);
-////                    }
-//                }
+                    
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
-                    LOG.info("1sID_Order: " + aHistoryEvent_Service.get(0).getsID_Order());
                     List<String> asCell = new LinkedList<>();
                     // sID_Order
                     asCell.add(oHistoryEvent_Service.getsID_Order());
-                    LOG.info("2sID_Order: " + oHistoryEvent_Service.getsID_Order());
                     // nID_Server
                     asCell.add(oHistoryEvent_Service.getnID_Server() != null ? oHistoryEvent_Service.getnID_Server().toString() : "");
                     // nID_Service
@@ -665,16 +650,45 @@ public class ActionEventController implements ControllerConstants {
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
                     String sTextFeedback;
-                    LOG.info("SubjectMessageFeedback get by orderSubjectMessageFeedback get by order " + oHistoryEvent_Service.getsID_Order() + "!");
+                    LOG.info("SubjectMessageFeedback get by order SubjectMessageFeedback get by order " + oHistoryEvent_Service.getsID_Order() + "!");
                     SubjectMessageFeedback oSubjectMessageFeedback
                             = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
                     LOG.info("found oSubjectMessageFeedback: " + oSubjectMessageFeedback);
+                    
                     if (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage() != null
                             && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) {
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
-                    } else {
-                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getsBody() != null) ? oSubjectMessageFeedback.getsBody() + "." : "";
-                    }
+                        } else {
+                        sTextFeedback = (oSubjectMessageFeedback != null && oSubjectMessageFeedback.getoSubjectMessage().getBody() != null) ? oSubjectMessageFeedback.getoSubjectMessage().getBody() + "." : "";
+                        }
+                        
+                    // Кусок кода для теста. После тестирования будет убрано.
+                       /*  sTextFeedback = "";                  
+                        if (oSubjectMessageFeedback != null) {
+                            LOG.info("!!!!!oSubjectMessageFeedback.getsBody(): " + oSubjectMessageFeedback.getsBody());
+                            LOG.info("!!!!!oSubjectMessageFeedback.getsHead(): " + oSubjectMessageFeedback.getsHead());
+                            LOG.info("!!!!!oSubjectMessageFeedback.getsMail(): " + oSubjectMessageFeedback.getsMail());
+                            if (oSubjectMessageFeedback.getoSubjectMessage() != null) {
+                                if (oSubjectMessageFeedback.getoSubjectMessage().getoMail() != null) {
+                                  LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage().getoMail().getsValue(): " + oSubjectMessageFeedback.getoSubjectMessage().getoMail().getsValue());  
+                                } else {
+                                LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getoMail() = null");
+                                }
+                            
+                            sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
+                            LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage().getBody(): " + sTextFeedback);
+                            LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage().getHead(): " + oSubjectMessageFeedback.getoSubjectMessage().getHead());
+                            LOG.info("!!!!!oSubjectMessageFeedback.getoSubjectMessage().getMail(): " + oSubjectMessageFeedback.getoSubjectMessage().getMail());
+                            
+                            }
+                        else {
+                        LOG.info("SubjectMessage() = null");
+                        } 
+                        } 
+                        else {
+                        LOG.info("SubjectMessageFeedback() = null");
+                        } */
+                        
                     // sTextFeedback
                     asCell.add(sTextFeedback);
                     // sUserTaskName
@@ -712,7 +726,7 @@ public class ActionEventController implements ControllerConstants {
 
                     asCell.add(oHistoryEvent_Service.getnID_ServiceData() != null ? oHistoryEvent_Service.getnID_ServiceData().toString() : "");
                     //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
+                        
                     sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order()
                             + "&bIncludeGroups=false&bIncludeStartForm=false&bIncludeAttachments=false&bIncludeMessages=false";
 
@@ -720,7 +734,7 @@ public class ActionEventController implements ControllerConstants {
                     DateTime sDateClose = oHistoryEvent_Service.getsDateClose();
 
                     SimpleDateFormat uDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+                        
                     if ((sDateCreate == null || sDateClose == null) && (oHistoryEvent_Service.getnID_StatusType() != HistoryEvent_Service_StatusType.ABSENT.getnID())) {
                         try {
 
@@ -751,7 +765,7 @@ public class ActionEventController implements ControllerConstants {
 
                     asCell.add(sDateCreate != null ?  uDateFormat.format(sDateCreate.toDate()) : "");
                     asCell.add(sDateClose != null ? uDateFormat.format(sDateClose.toDate()) : "");
-
+                   
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
             }

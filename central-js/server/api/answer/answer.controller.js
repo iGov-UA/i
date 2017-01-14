@@ -64,12 +64,19 @@ module.exports.getJSON = function(req, res){
 };
 
 function clarifyXML(xml){
-  var firstRe = /<?xml/mg;
-  var lastRe = /<\/DECLAR>/m;
+  var result = null;
 
-  var firstIndex = xml.search(firstRe);
-  var lastIndex = xml.match(lastRe);
-  var lastStrip = xml.substr(lastIndex.index + lastIndex[0].length, xml.length);
+  try{
+    var firstRe = /<?xml/mg;
+    var lastRe = /<\/DECLAR>/m;
+    var firstIndex = xml.search(firstRe) || {};
+    var lastIndex = xml.match(lastRe) || {};
+    var lastStrip = xml.substr(lastIndex.index + lastIndex[0].length, xml.length);
 
-  return xml.replace(xml.substr(0, firstIndex-2), '').replace(lastStrip, '');
+    result = xml.replace(xml.substr(0, firstIndex-2), '').replace(lastStrip, '');
+  }catch (e){
+    result = '';
+  }
+
+  return result;
 }

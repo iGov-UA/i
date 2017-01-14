@@ -1,23 +1,23 @@
 <div ng-if="['string', 'long', 'double'].indexOf(item.type) > -1" class="row form-field">
-  <div class="col-sm-12">
+  <div class="col-sm-12" ng-if="showField(item)">
     <span class="col-sm-6 task-form-title">
-    <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && item.writable" style="color: red">*</span></label>
-  </span>
+      <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && item.writable" style="color: red">*</span></label>
+    </span>
     <div class="col-sm-6">
-      <input ng-if="!isFormPropertyDisabled(item)"
+      <input ng-if="!isFormPropertyDisabled(item) && isDocumentWritable(item)"
              name="{{item.id}}"
              style="width:100%;"
              ng-readonly="isFormPropertyDisabled(item)"
              ng-required="isRequired(item)"
              ng-model="item.value"
              ng-class="{submitted: isRequired(item) && isTaskSubmitted()}"/>
-      <div ng-if="isFormPropertyDisabled(item)">
-      <span class="task-form-written-right-sight"
-            style="white-space: pre-line"
-            name="{{item.id}}"
-            ng-readonly="isFormPropertyDisabled(item)"
-            ng-required="isRequired(item)">{{item.value}}
-      </span>
+
+      <div ng-if="showReadableField(item)">
+        <span class="task-form-written-right-sight"
+              style="white-space: pre-line"
+              name="{{item.id}}"
+              ng-readonly="isFormPropertyDisabled(item)">{{item.value}}
+        </span>
       </div>
 
       <span class="validation-message" ng-messages="isFormInvalid && isRequired(item) && form[item.id].$error">

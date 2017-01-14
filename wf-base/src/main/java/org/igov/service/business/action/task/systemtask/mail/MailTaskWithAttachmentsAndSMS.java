@@ -49,12 +49,13 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     //sReturn = oManagerSMS.sendSMS(generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))),
                     //        sPhone_SMS_Value, sText_SMS_Value);
                     
-                    //sReturn = "DISABLED!";
-                    //
-                    sReturn = ManagerSMS.sendSms(sPhone_SMS_Value, sText_SMS_Value, 
-                            generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))), generalConfig.isTest_LiqPay());//, generalConfig.isSelfTest()
-                            //generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))), generalConfig.isTest_LiqPay(), !generalConfig.isSelfTest());//, generalConfig.isSelfTest()
-                    
+                    if (generalConfig.isSelfTest()) {
+                        sReturn = "DISABLED!";
+                    } else {
+                        sReturn = ManagerSMS.sendSms(sPhone_SMS_Value, sText_SMS_Value, 
+                            generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))), !generalConfig.isSelfTest());
+                    } 
+
                     LOG.info("(sReturn={})", sReturn);
                 }
             }

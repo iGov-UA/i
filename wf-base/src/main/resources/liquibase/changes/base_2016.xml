@@ -476,5 +476,21 @@
     <changeSet id="issue-1404-AlterTable_SubjectGroup" author="olga">
         <modifyDataType tableName="SubjectGroup" columnName="sName" newDataType="varchar(225)" />
     </changeSet>
+    
+    <changeSet id="issue-ProcessSubjectStatus-AddColum" author="Olga">
+        <addColumn tableName="ProcessSubjectStatus">
+            <column name="sID" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-ProcessSubject-AddColum" author="Kovilin Yegor">
+        <addColumn tableName="ProcessSubject">
+            <column name="sReport" type="varchar(5000)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

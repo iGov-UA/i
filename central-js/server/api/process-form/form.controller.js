@@ -87,8 +87,7 @@ module.exports.submit = function (req, res) {
   }
 
   for(var key in formData.params) {
-    if(Array.isArray(formData.params[key])) {
-      formData.params[key].push(key);
+    if(formData.params[key] !== null && typeof formData.params[key] === 'object') {
       keys.push(key);
     }
   }
@@ -97,7 +96,7 @@ module.exports.submit = function (req, res) {
     async.forEach(keys, function (key, next) {
         function putTableToRedis (table, callback) {
           var url = '/object/file/upload_file_to_redis';
-          activiti.upload(url, {}, 'tableField.json', JSON.stringify(table), callback);
+          activiti.upload(url, {}, table.id + '.json', JSON.stringify(table), callback);
         }
         putTableToRedis(formData.params[key], function (error, response, data) {
           formData.params[key] = data;
@@ -533,6 +532,7 @@ module.exports.signForm = function (req, res) {
   var type = req.session.type;
   var userService = authProviderRegistry.getUserService(type);
   var nID_Server = req.query.nID_Server;
+  var bConvertToPDF = req.query.bConvertToPDF ? req.query.bConvertToPDF : false;
 
   if(!userService.signHtmlForm){
     res.status(400).send(errors.createError(errors.codes.LOGIC_SERVICE_ERROR,
@@ -623,13 +623,23 @@ module.exports.signForm = function (req, res) {
       function (formData, callback) {
         var accessToken = req.session.access.accessToken;
         createHtml(formData, function (formToUpload) {
-          userService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
-            if (error) {
-              callback(error, null);
-            } else {
-              callback(null, result)
-            }
-          });
+          if(bConvertToPDF === 'true' || bConvertToPDF == true){
+            userService.signPdfForm(accessToken, callbackURL, formToUpload, function (error, result) {
+              if (error) {
+                callback(error, null);
+              } else {
+                callback(null, result)
+              }
+            });
+          } else {
+            userService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
+              if (error) {
+                callback(error, null);
+              } else {
+                callback(null, result)
+              }
+            });
+          }
         });
       }
     ], function (error, result) {

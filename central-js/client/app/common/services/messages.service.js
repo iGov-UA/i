@@ -36,6 +36,31 @@ angular.module('app').service('MessagesService', function($http, $q) {
     })
   };
 
+  this.getMessageFile = function (nID) {
+    var deferred = $q.defer();
+    var oReq = new XMLHttpRequest();
+
+    oReq.open("GET", "/api/messages/getMessageFile?nID="+nID, true);
+    oReq.responseType = "arraybuffer";
+
+    oReq.onload = function (oEvent) {
+      var arrayBuffer = oReq.response;
+
+      if (arrayBuffer) {
+        var byteArray = new Uint8Array(arrayBuffer);
+
+        deferred.resolve(byteArray);
+
+      }else {
+        deferred.reject({err: 'error: XMLHttpRequest something wrong'})
+      }
+    };
+
+    oReq.send(null);
+
+    return deferred.promise;
+  };
+
   this.postServiceMessage = function(sID_Order,sComment,sToken,file) {
     var oData = {
       "sID_Order": sID_Order,

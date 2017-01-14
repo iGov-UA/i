@@ -1,9 +1,7 @@
 package org.igov.model.process;
 
-import java.util.List;
-import org.hibernate.Criteria;
+import java.util.Date;
 import org.hibernate.HibernateException;
-import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -22,36 +20,44 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
 
     @Transactional
     @Override
-    public Long setProcessSubject(String snID_Process_Activiti_Parent, String sLogin, DateTime sDatePlan, Long nOrder) {
-        ProcessSubject processSubject = new ProcessSubject();
-        processSubject.setSnID_Process_Activiti(snID_Process_Activiti_Parent);
-        processSubject.setsLogin(sLogin);
+    public ProcessSubject setProcessSubject(String snID_Process_Activiti, String sLogin, DateTime sDatePlan,
+            Long nOrder, ProcessSubjectStatus processSubjectStatus) {
+        ProcessSubject processSubject = null;
+        try {
+            processSubject = new ProcessSubject();
+            processSubject.setSnID_Process_Activiti(snID_Process_Activiti);
+            processSubject.setsLogin(sLogin);
+            processSubject.setsDateEdit(new DateTime(new Date()));
+            processSubject.setProcessSubjectStatus(processSubjectStatus);
 
-        if (sDatePlan != null) {
-            processSubject.setsDatePlan(sDatePlan);
+            if (sDatePlan != null) {
+                processSubject.setsDatePlan(sDatePlan);
+            }
+            if (nOrder != null) {
+                processSubject.setnOrder(nOrder);
+            }
+            LOG.info(String.format("The new instance of ProcessSubject with "
+                    + "snID_Process_Activiti=%s, sLogin=%s, sDatePlan=%s, nOrder=%s was created",
+                    snID_Process_Activiti, sLogin, sDatePlan.toString("D"), nOrder));
+            processSubject = saveOrUpdate(processSubject);
+            LOG.info(String.format("Entity was added with id=%s", processSubject.getId()));
+        } catch (Exception e) {
+            LOG.warn("(Fail set process {})", e.getMessage());
         }
-        if (nOrder != null) {
-            processSubject.setnOrder(nOrder);
-        }
-        LOG.info(String.format("The new instance of ProcessSubject with "
-                + "snID_Process_Activiti=%s, sLogin=%s, sDatePlan=%s, nOrder=%s was created",
-                snID_Process_Activiti_Parent, sLogin, sDatePlan.toString("D"), nOrder));
-        Long idEntity = saveOrUpdate(processSubject).getId();
-        LOG.info(String.format("Entity was added with id=%s", idEntity));
-        return idEntity;
+        return processSubject;
     }
 
     @Transactional
     @Override
-    public ProcessSubject setProcessSubjectLogin(String snID_Process_Activiti, String sLogin) {        
-        ProcessSubject processSubject = getCriteriaByProcessActiviti(snID_Process_Activiti);
+    public ProcessSubject setProcessSubjectLogin(String snID_Process_Activiti, String sLogin) {
+        ProcessSubject processSubject = findByProcessActiviti(snID_Process_Activiti);
         if (processSubject != null) {
             processSubject.setsLogin(sLogin);
             processSubject = saveOrUpdate(processSubject);
             LOG.info(String.format("Login=%s to entity with snID_Process_Activiti=%s was added",
                     sLogin, snID_Process_Activiti));
         } else {
-            LOG.warn(String.format("Entity with snID_Process_Activiti = %s is absent!", 
+            LOG.warn(String.format("Entity with snID_Process_Activiti = %s is absent!",
                     snID_Process_Activiti));
         }
         return processSubject;
@@ -60,7 +66,7 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
     @Transactional
     @Override
     public ProcessSubject setProcessSubjectOrder(String snID_Process_Activiti, Long nOrder) {
-        ProcessSubject processSubject = getCriteriaByProcessActiviti(snID_Process_Activiti);
+        ProcessSubject processSubject = findByProcessActiviti(snID_Process_Activiti);
         if (processSubject != null) {
             processSubject.setnOrder(nOrder);
             processSubject = saveOrUpdate(processSubject);
@@ -75,23 +81,32 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
 
     @Transactional
     @Override
-    public ProcessSubject setProcessSubjectStatus(String snID_Process_Activiti, Long nID_ProcessSubjectStatus) {
-        ProcessSubject processSubject = getCriteriaByProcessActiviti(snID_Process_Activiti);
+    public ProcessSubject setProcessSubjectStatus(String snID_Process_Activiti, ProcessSubjectStatus processSubjectStatus) {
+        ProcessSubject processSubject = findByProcessActiviti(snID_Process_Activiti);
         if (processSubject != null) {
-            ProcessSubjectStatus processSubjectStatus = null;
-            Criteria criteria = getSession().createCriteria(ProcessSubjectStatus.class);
-            criteria.add(Restrictions.eq("nID", nID_ProcessSubjectStatus));
-            List<ProcessSubjectStatus> list = (List<ProcessSubjectStatus>) criteria.list();
-            if (list.size() > 0) {
-                processSubjectStatus = list.get(0);
-            } else {
-                processSubjectStatus = new ProcessSubjectStatus();
-                processSubjectStatus.setId(nID_ProcessSubjectStatus);
-            }
             processSubject.setProcessSubjectStatus(processSubjectStatus);
+            processSubject.setsDateEdit(new DateTime(new Date()));
             processSubject = saveOrUpdate(processSubject);
             LOG.info(String.format("ProcessSubjectStatus=%s to entity with snID_Process_Activiti=%s was added",
-                    nID_ProcessSubjectStatus, snID_Process_Activiti));
+                    processSubjectStatus.getId(), snID_Process_Activiti));
+        } else {
+            LOG.warn(String.format("Entity with snID_Process_Activiti = %s is absent!",
+                    snID_Process_Activiti));
+        }
+        return processSubject;
+    }
+    
+    @Transactional
+    @Override
+    public ProcessSubject setProcessSubjectStatusAndReport(String snID_Process_Activiti, ProcessSubjectStatus processSubjectStatus, String sReport) {
+        ProcessSubject processSubject = findByProcessActiviti(snID_Process_Activiti);
+        if (processSubject != null) {
+            processSubject.setProcessSubjectStatus(processSubjectStatus);
+            processSubject.setsReport(sReport);
+            processSubject.setsDateEdit(new DateTime(new Date()));
+            processSubject = saveOrUpdate(processSubject);
+            LOG.info(String.format("ProcessSubjectStatus=%s to entity with snID_Process_Activiti=%s  and sReport=%s was added",
+                    processSubjectStatus.getId(), snID_Process_Activiti, sReport));
         } else {
             LOG.warn(String.format("Entity with snID_Process_Activiti = %s is absent!",
                     snID_Process_Activiti));
@@ -102,7 +117,7 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
     @Transactional
     @Override
     public ProcessSubject setProcessSubjectDatePlan(String snID_Process_Activiti, DateTime sDatePlan) {
-        ProcessSubject processSubject = getCriteriaByProcessActiviti(snID_Process_Activiti);
+        ProcessSubject processSubject = findByProcessActiviti(snID_Process_Activiti);
         if (processSubject != null) {
             processSubject.setsDatePlan(sDatePlan);
             processSubject = saveOrUpdate(processSubject);
@@ -114,15 +129,14 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
         }
         return processSubject;
     }
-    
-    private ProcessSubject getCriteriaByProcessActiviti(String snID_Process_Activiti) throws HibernateException {
-        Criteria criteria = getSession().createCriteria(ProcessSubject.class);
-        if (snID_Process_Activiti != null) {
-            criteria.add(Restrictions.eq("snID_Process_Activiti", snID_Process_Activiti));
-        }
-        ProcessSubject processSubject = (ProcessSubject) criteria.uniqueResult();
-        return processSubject;
+
+    private ProcessSubject findByProcessActiviti(String snID_Process_Activiti) throws HibernateException {
+        return findByExpected("snID_Process_Activiti", snID_Process_Activiti);
     }
-
-
+    
+    //whitout exception
+    @Override
+    public ProcessSubject findByProcessActivitiId(String snID_Process_Activiti){
+        return findBy("snID_Process_Activiti", snID_Process_Activiti).orNull();
+    }
 }

@@ -171,9 +171,9 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     });
   };
 
-  this.getSignFormPath = function (oServiceData, formID, oService, formDataParams) {
+  this.getSignFormPath = function (oServiceData, formID, oService, formDataParams, bConvertToPDF) {
     if(formDataParams.hasOwnProperty('form_signed')){
-      return '/api/process-form/sign?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName;
+      return '/api/process-form/sign?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName + '&bConvertToPDF=' + bConvertToPDF;
     } else if (formDataParams.hasOwnProperty('form_signed_all')) {
       return '/api/process-form/signMultiple?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName;
     }

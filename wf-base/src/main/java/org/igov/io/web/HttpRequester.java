@@ -91,6 +91,7 @@ public class HttpRequester {
                 String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
                 oConnection.setRequestProperty("authorization", "Basic " + sAuth);
             }
+
             oConnection.setRequestMethod(RequestMethod.POST.name());
             if(contentType != null){
                 oConnection.setRequestProperty("Content-Type", contentType);

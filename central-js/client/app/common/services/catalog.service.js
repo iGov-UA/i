@@ -1,9 +1,9 @@
 angular.module('app')
-  .service('CatalogService', ['$http', '$q', function ($http, $q) {
+  .service('CatalogService', ['$http', '$q', '$rootScope', function ($http, $q, $rootScope) {
 
   var servicesCache = {};
 
-  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, category, subcat, situation, filter) {
+  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, category, subcat, situation, filter, sID_SubjectOwner) {
     var asIDPlaceUA = asIDPlacesUA && asIDPlacesUA.length > 0 ? asIDPlacesUA.reduce(function (ids, current, index) {
       return ids + ',' + current;
     }) : null;
@@ -14,19 +14,20 @@ angular.module('app')
       sFind = null;
     }
 
-    if(!category
+    if((!category
         && !subcat
         || category
-        && !subcat && category !== 'business') {
+        && !subcat && category !== 'business') && !$rootScope.isOldStyleView) {
       // пока есть параметр bNew ввожу доп проверку, после нужно будет убрать
       // пока не реализованы теги нового бизнеса, вернул в проверку старый.
-      if(sFind || filter) {
+      if(sFind || filter/* || sID_SubjectOwner*/) {
         var data = {
           asIDPlaceUA: asIDPlaceUA,
           sFind: sFind || null,
           bShowEmptyFolders: bShowEmptyFolders,
           nID_Category: nID_Category,
-          bNew: true
+          bNew: true,
+          sID_SubjectOwner : sID_SubjectOwner
         };
         return $http.get('./api/catalog/getCatalogTree', {
           params: data,
@@ -40,7 +41,8 @@ angular.module('app')
           asIDPlaceUA: asIDPlaceUA,
           sFind: sFind || null,
           bShowEmptyFolders: bShowEmptyFolders,
-          nID_Category: nID_Category
+          nID_Category: nID_Category,
+          sID_SubjectOwner : sID_SubjectOwner
         };
         return $http.get('./api/catalog/getCatalogTree', {
           params: data,
@@ -50,7 +52,7 @@ angular.module('app')
           return response.data;
         });
       }
-    } else if(nID_Category === 'business'){
+    } else if (nID_Category === 'business' || $rootScope.isOldStyleView){
       var data = {
         asIDPlaceUA: asIDPlaceUA,
         sFind: sFind || null,
@@ -121,6 +123,7 @@ angular.module('app')
   };
 
   this.getServiceTags = function (sFind) {
+    if($rootScope.isOldStyleView) return this.getServiceBusiness(sFind);
     var data = {
       sFind: sFind,
       nID_Category: 1
@@ -146,6 +149,7 @@ angular.module('app')
   };
 
   this.getCatalogTreeTag = function (nID_Category, sFind) {
+    if($rootScope.isOldStyleView) return this.getServiceBusiness(sFind);
     var data = {
       nID_Category: nID_Category,
       sFind: sFind || null

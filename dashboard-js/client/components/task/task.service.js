@@ -23,6 +23,7 @@ angular.module('dashboardJsApp')
       filterTypes: {
         selfAssigned: 'selfAssigned',
         unassigned: 'unassigned',
+        documents: 'documents',
         finished: 'finished',
         tickets: 'tickets',
         all: 'all'
@@ -119,6 +120,48 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
+      getDocumentStepRights: function (nID_Process) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getDocumentStepRights',
+          params: {
+            nID_Process: nID_Process
+          }
+        })
+      },
+
+      getDocumentStepLogins: function (nID_Process) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getDocumentStepLogins',
+          params: {
+            nID_Process: nID_Process
+          }
+        })
+      },
+
+      getProcessSubject: function (id) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getProcessSubject',
+          params: {
+            snID_Process_Activiti: id,
+            nDeepLevel: 1
+          }
+        })
+      },
+
+      getProcessSubjectTree: function (id) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getProcessSubjectTree',
+          params: {
+            snID_Process_Activiti: id,
+            nDeepLevel: 0
+          }
+        })
+      },
+
       getTableAttachment: function (taskId, attachId) {
         return simpleHttpPromise({
           method: 'GET',
@@ -140,8 +183,9 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
-      submitTaskForm: function (taskId, formProperties, task) {
+      submitTaskForm: function (taskId, formProperties, task, attachments) {
         var self = this;
+        var promises = [];
         var createProperties = function (formProperties) {
           var properties = new Array();
           for (var i = 0; i < formProperties.length; i++) {
@@ -156,10 +200,43 @@ angular.module('dashboardJsApp')
           return properties;
         };
 
+        var tableFields = $filter('filter')(formProperties, function(prop){
+          return prop.type == 'table';
+        });
+
+        if(tableFields.length > 0) {
+          angular.forEach(tableFields, function (table) {
+            if(attachments.length > 0) {
+              var theSameAttachments = attachments.filter(function (item) {
+                var matchTableId = item.description.match(/(\[id=(\w+)\])/);
+                var x = item.description.indexOf('[table]') !== -1 && matchTableId !== null;
+                if(x) {
+                  var name = matchTableId[2];
+                  return name.toLowerCase() === table.id.toLowerCase()
+                }
+              });
+
+              if(theSameAttachments.length !== 0) {
+                theSameAttachments.map(function (a) {
+                  var description = a.description.split('[')[0];
+                  promises.push(self.uploadTable(table, taskId, a.id, description));
+                });
+              } else {
+                var name = table.name.split(';')[0];
+                promises.push(self.uploadTable(table, taskId, null, name));
+              }
+            } else {
+              var tableName = table.name.split(';')[0];
+              promises.push(self.uploadTable(table, taskId, null, tableName));
+            }
+          })
+        }
         var deferred = $q.defer();
 
         // upload files before form submitting
-        this.uploadTaskFiles(formProperties, task, taskId).then(function () {
+        promises.push(this.uploadTaskFiles(formProperties, task, taskId));
+
+        $q.all(promises).then(function () {
           var submitTaskFormData = {
             'taskId': taskId,
             'properties': createProperties(formProperties)
@@ -173,12 +250,102 @@ angular.module('dashboardJsApp')
 
           simpleHttpPromise(req).then(function (result) {
             deferred.resolve(result);
+          },
+            function(result) {
+              deferred.resolve(result);
           });
         });
 
         return deferred.promise;
       },
-      upload: function (files, taskId, sID_Field) {
+
+      uploadTable: function(files, taskId, attachmentID, description) {
+        var deferred = $q.defer();
+        var tableId = files.id;
+        var stringifyTable = JSON.stringify(files);
+        var data = {
+          sDescription: description + '[table][id='+ tableId +']',
+          sFileName: tableId + '.json',
+          sContent: stringifyTable,
+          nID_Attach: attachmentID
+        };
+
+        $http.post('/api/tasks/' + taskId + '/setTaskAttachment', data).success(function(uploadResult){
+          files.value = JSON.parse(uploadResult).id;
+          deferred.resolve();
+        });
+
+        return deferred.promise;
+      },
+
+      saveChangesTaskForm: function (taskId, formProperties, task, attachments) {
+        var self = this;
+        var promises = [];
+        var createProperties = function (formProperties) {
+          var properties = new Array();
+          for (var i = 0; i < formProperties.length; i++) {
+            var formProperty = formProperties[i];
+            if (formProperty && formProperty.writable) {
+              properties.push({
+                id: formProperty.id,
+                value: formProperty.value
+              });
+            }
+          }
+          return properties;
+        };
+
+        var tableFields = $filter('filter')(formProperties, function(prop){
+          return prop.type == 'table';
+        });
+
+        if(tableFields.length > 0) {
+          angular.forEach(tableFields, function (table) {
+            if(attachments.length > 0) {
+              angular.forEach(attachments, function (attachment) {
+                var matchTableId = attachment.description.match(/(\[id=(\w+)\])/);
+                if(attachment.description.indexOf('[table]') !== -1 && matchTableId !== null){
+                  var name = matchTableId[2];
+                  if(name.toLowerCase() === table.id.toLowerCase()) {
+                    var description = attachment.description.split('[')[0];
+                    promises.push(self.uploadTable(table, taskId, attachment.id, description));
+                  }
+                }
+              });
+            } else {
+              var name = table.name.split(';')[0];
+              promises.push(self.uploadTable(table, taskId, null, name));
+            }
+          })
+        }
+        var deferred = $q.defer();
+
+        // upload files before form submitting
+        promises.push(this.uploadTaskFiles(formProperties, task, taskId));
+
+        $q.all(promises).then(function () {
+          var submitTaskFormData = {
+            'taskId': taskId,
+            'properties': createProperties(formProperties)
+          };
+
+          var req = {
+            method: 'POST',
+            url: '/api/tasks/action/task/saveForm',
+            data: submitTaskFormData
+          };
+
+          simpleHttpPromise(req).then(function (result) {
+              deferred.resolve(result);
+            },
+            function(result) {
+              deferred.resolve(result);
+            });
+        });
+
+        return deferred.promise;
+      },
+      upload: function(files, taskId, sID_Field) {
         var deferred = $q.defer();
 
         var self = this;
@@ -357,11 +524,11 @@ angular.module('dashboardJsApp')
 
               sFileFieldID = templateResult.fileField.id;
             }
-
+            var description = templateResult.fileField.name.split(";")[0];
             $timeout(function () {
               var html = '<html><head><meta charset="utf-8"></head><body>' + compiled.find('.print-modal-content').html() + '</body></html>';
               var data = {
-                sDescription: 'User form',
+                sDescription: description, //'User form',
                 sFileName: fileName || 'User form.html',
                 sID_Field: sFileFieldID,
                 sContent: html
@@ -515,6 +682,24 @@ angular.module('dashboardJsApp')
           return true;
         }
         return false;
+      },
+      isUserHasDocuments: function (login) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getBPs',
+          params: {
+            sLogin: login
+          }
+        })
+      },
+      createNewDocument: function (bpID) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: 'api/documents/setDocument',
+          params: {
+            sID_BP: bpID
+          }
+        })
       }
     };
   });

@@ -4,7 +4,9 @@ var url = require('url')
   , authProviderRegistry = require('../../auth/auth.provider.registry')
   , activiti = require('../../components/activiti')
   , uploadFileService = require('../uploadfile/uploadfile.service')
-  , errors = require('../../components/errors');
+  , errors = require('../../components/errors')
+  , logger = require('../../components/logger').createLogger(module)
+  , config = require('../../config/environment');
 
 
 /**
@@ -20,7 +22,11 @@ module.exports.decryptContent = function (req, res) {
     , type = req.session.type || req.query.action
     , userService = authProviderRegistry.getUserService(type)
     , fileName = req.query.sName
-    , restoreUrl = req.query.restoreUrl;
+    , restoreUrl = req.query.restoreUrl
+    , id = req.query.nID;
+
+  var serverId = req.query.nID_Server || req.body.nID_Server;
+  var nID_Server = (!serverId || serverId < 0) && serverId !== 0 ? config.activiti.nID_Server : serverId;
 
 
   /**
@@ -60,30 +66,35 @@ module.exports.decryptContent = function (req, res) {
    */
   function decryptContentAsync(result, callbackAsync) {
 
-    var mail = result.loadedContent.formData ? result.loadedContent.formData.params.email : 'in.lermin@gmail.com';
-    var formInn = result.loadedContent.formData ? result.loadedContent.formData.params.bankIdinn : '2943209693';
+    var mail = result.loadedContent.formData ? result.loadedContent.formData.params.email : '';
+    var formInn = result.loadedContent.formData ? result.loadedContent.formData.params.bankIdinn : '';
     var fiscalHeader = JSON.stringify({
       "customerType":"physical",
       "fiscalClaimAction": "decrypt",
       "customerInn": formInn ? formInn : req.session.subject.sID,
       "email":mail
     });
-    userService.signFiles(
-      req.session.access.accessToken,
-      url.resolve(
-        originalURL(req, {}),
-        '/api/sign-content/decrypt/callback?nID_Server=' + req.query.nID_Server + '&restoreUrl='+restoreUrl + '&fileName='+fileName
-      ),
-      objectsToSign,
-      function (error, signResult) {
-        if (error) {
-          callbackAsync(error, result);
-        } else {
-          result.signResult = signResult;
-          callbackAsync(null, result);
-        }
-      },
-      fiscalHeader);
+
+    try {
+      userService.signFiles(
+        req.session.access.accessToken,
+        url.resolve(
+          originalURL(req, {}),
+          '/api/sign-content/decrypt/callback?nID_Server=' + nID_Server  + '&fileName=' + fileName + '&nID=' + id + '&restoreUrl=' + restoreUrl
+        ),
+        objectsToSign,
+        function (error, signResult) {
+          if (error) {
+            callbackAsync(error, result);
+          } else {
+            result.signResult = signResult;
+            callbackAsync(null, result);
+          }
+        },
+        fiscalHeader);
+    } catch (e) {
+      callbackAsync(e, result);
+    }
 
     function originalURL(req, options) {
       options = options || {};
@@ -109,9 +120,9 @@ module.exports.decryptContent = function (req, res) {
     decryptContentAsync
   ], function (error, result) {
     if (error) {
-      res.redirect(restoreUrl
-        + '?formID=' + formID
-        + '&error=' + JSON.stringify(error));
+      req.session = null;
+      logger.error(error);
+      res.redirect(restoreUrl);
     } else {
       res.redirect(result.signResult.desc);
     }
@@ -133,7 +144,8 @@ module.exports.callback = function (req, res) {
     , type = req.session.type
     , userService = authProviderRegistry.getUserService(type)
     , restoreUrl = req.query.restoreUrl
-    , fileName = req.query.fileName;
+    , fileName = req.query.fileName
+    , id = req.query.nID;
 
   if (!codeValue) {
     codeValue = req.query['amp;code'];
@@ -189,7 +201,8 @@ module.exports.callback = function (req, res) {
     if (err) {
       res.redirect(restoreUrl+ '&error=' + JSON.stringify(err));
     } else {
-      res.redirect(restoreUrl + '?signedFileID=' + result.signedFileID + '&fileName=' + fileName);
+      var sign = restoreUrl.search(/\?/mg) >= 0 ? '&' : '?';
+      res.redirect(restoreUrl + sign +'signedFileID=' + result.signedFileID + '&fileName=' + fileName + '&nID='+id);
     }
   }
 
