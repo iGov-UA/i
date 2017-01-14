@@ -4,30 +4,32 @@
     <documentation>https://github.com/e-government-ua/i/issues/1353</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sFileCentral" name="Це файл bNew (централ); ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sFileOldCentral" name="Це файл старий (централ)" type="file"></activiti:formProperty>
-        </extensionElements>
+
+        <activiti:formProperty id="sFile" name="Це файл" type="file"></activiti:formProperty>
+       <activiti:formProperty id="sNazvanie" name="Таблиця; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+         </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="крок 1" activiti:candidateGroups="sales">
       <extensionElements>
-       <activiti:formProperty id="sFileCentral" name="Це файл bNew (централ); ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sFileRegion" name="Це файл bNew (регіон); ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sFileOldRegion" name="Це файл старий (регіон)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sNazvanie" name="Таблиця; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-       </extensionElements>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${sNazvanie},${sFile}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
     </userTask>
     <userTask id="usertask2" name="крок 2" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="sInfo" name="на цьому кроці всі чотири файли повинні бути" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sFileCentral" name="Це файл bNew (централ); ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sFileRegion" name="Це файл bNew (регіон); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sNazvanie" name="Таблиця; ;nRowsLimit=5" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;Стринг&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile0&quot;,&quot;name&quot;:&quot;стринговое поле&quot;,&quot;type&quot;:&quot;string&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sFileOldCentral},${sFileOldRegion}]]></activiti:expression>
+            <activiti:expression><![CDATA[${sNazvanie},${sFile}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
