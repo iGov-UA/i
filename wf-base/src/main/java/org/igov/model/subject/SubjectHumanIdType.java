@@ -9,7 +9,7 @@ public enum SubjectHumanIdType {
     INN,            // 0
     Passport,       // 1
     Email,          // 2
-    Phone;          // 3
+    Phone;          // 3// 3
 
     public static SubjectHumanIdType fromId(int id) {
         if (id < 0 || id > values().length - 1) {

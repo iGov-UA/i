@@ -342,6 +342,7 @@ public class ProcessSubjectService {
      * Задать статус и отчет
      *
      * @param snID_Process_Activiti
+     * 
      * @param sID_ProcessSubjectStatus
      * @return
      */
@@ -637,5 +638,52 @@ public class ProcessSubjectService {
             oDateReturn = df_StartProcess.parse(sDate);
         }
         return oDateReturn;
+    }
+
+    
+
+      
+    /**
+     * По ид процесса активити вынимаем всех детей. Если статус отличен от
+     * статусов: executed;notExecuted;closed проставляем в статус сущности
+     * ProcessSubject unactual и закрываем процесс-задачу с причиной unactual.
+     */
+    public void UpdateStatusTaskTreeAndCloseProcess(String snID_Process_Activiti, String sID_ProcessSubjectStatus) {
+
+	ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snID_Process_Activiti, 0L, null);
+
+	if (processSubjectResult != null) {
+	    List<ProcessSubject> aProcessSubject_Child = processSubjectResult.getaProcessSubject();
+   
+	    ProcessSubjectStatus oProcessSubjectStatusUnactual = processSubjectStatusDao.findByIdExpected(4L);
+	    DateFormat df_ProcessSubjectSafe = new SimpleDateFormat("dd/MM/yyyy");
+
+	    for (ProcessSubject oProcessSubject_Сhild : aProcessSubject_Child) {
+  
+		String sProcessSubjectStatus = oProcessSubject_Сhild.getProcessSubjectStatus().getsID();
+
+		if (!(sProcessSubjectStatus.equals("executed") || sProcessSubjectStatus.equals("notExecuted")
+			|| sProcessSubjectStatus.equals("unactual") || sProcessSubjectStatus.equals("closed"))) {
+
+		    oProcessSubject_Сhild.setProcessSubjectStatus(oProcessSubjectStatusUnactual);
+		    try {
+			oProcessSubject_Сhild.setsDateEdit(
+				new DateTime(df_ProcessSubjectSafe.parse(df_ProcessSubjectSafe.format(new Date()))));
+		    } catch (ParseException e) {
+			throw new RuntimeException(e);
+		    }
+
+		    processSubjectDao.saveOrUpdate(oProcessSubject_Сhild);
+
+		    ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+			    .processInstanceId(oProcessSubject_Сhild.getSnID_Process_Activiti()).singleResult();
+		    if (processInstance != null) {
+			runtimeService.deleteProcessInstance(oProcessSubject_Сhild.getSnID_Process_Activiti(),
+				oProcessSubjectStatusUnactual.getsID());
+		    }
+
+		}
+	    }
+	}
     }
 }
