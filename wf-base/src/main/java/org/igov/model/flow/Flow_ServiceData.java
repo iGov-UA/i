@@ -37,7 +37,10 @@ public class Flow_ServiceData extends NamedEntity {
      */
     @Column
     private String sID_BP;
-
+    
+    @Column
+    private String sGroup;
+    
     @Column
     private Long nCountAutoGenerate;
 
@@ -84,4 +87,13 @@ public class Flow_ServiceData extends NamedEntity {
     public void setFlowProperties(List<FlowProperty> flowProperties) {
         this.flowProperties = flowProperties;
     }
+
+    public String getsGroup() {
+        return sGroup;
+    }
+
+    public void setsGroup(String sGroup) {
+        this.sGroup = sGroup;
+    }
+    
 }
