@@ -1252,7 +1252,7 @@
             })
             .catch(defaultErrorHandler);
         };
-
+        console.log($scope);
         $rootScope.$broadcast("update-search-counter");
       }
     ])
