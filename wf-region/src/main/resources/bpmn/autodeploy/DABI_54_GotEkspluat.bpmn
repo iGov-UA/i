@@ -7,6 +7,18 @@
         <activiti:formProperty id="sTextZaiInfo" name=" " type="label" default="Інформація про особу що подає заяву"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         
+        <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
+          <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
+          <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTextPost" name="Увага!" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
+        <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asLust" name="Оберіть тип поштового відправлення" type="enum" required="true">
+          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 15.50"></activiti:value>
+          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 35.50"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
         
         
         
@@ -42,33 +54,40 @@
         <activiti:formProperty id="KerINN" name="ІПН керівника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="KerAddress" name="Адреса реєстрації керівника" type="string" required="true"></activiti:formProperty>
         
+        <activiti:formProperty id="markersLine_4" name="Інформація про інженера з технічного нагляду" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;TexIngPos&quot;],&quot;sValue&quot;:&quot;Інформація про інженера з технічного нагляду&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="TexIngPos" name="Повне найменування посади інженера" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="TexInglastName" name="Прізвище інженера" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="TexIngfirstName" name="Ім`я інженера" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="TexIngmiddleName" name="По батькові інженера" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="TexIngTel" name="Телефон інженера" type="string"></activiti:formProperty>
+        <activiti:formProperty id="TexIngDoc" name="Документ що підтверджує повноваження інженера" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="TexIngNomDat" name="Номер та дата документу що підтверджує повноваження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="TexIngKvalSer" name="Серія і номер кваліфікаційного сертифіката" type="string" required="true"></activiti:formProperty>
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
-          <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
-          <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
+        <activiti:formProperty id="markersLine_5" name="Інформація про генерального підрядника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;asGPodrOsoba&quot;],&quot;sValue&quot;:&quot;Інформація про генерального підрядника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asGPodrOsoba" name="Статус генпідрядника" type="enum" required="true">
+          <activiti:value id="sEnamGPodrFiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="sEnamGPodrUr" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTextPost" name="Увага!" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
-        <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asLust" name="Оберіть тип поштового відправлення" type="enum" required="true">
-          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 15.50"></activiti:value>
-          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 35.50"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
+        <activiti:formProperty id="GPodrlastName" name="Прізвище Генпідрядника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="GPodrfirstName" name="Ім`я Генпідрядника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="GPodrmiddleName" name="По батькові Генпідрядника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="GPodrPassport" name="Паспортні дані Генпідрядника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="GPodrIdinn" name="ІПН Генпідрядника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="GPodrNAzva" name="Повна назва юридичної особи Генпідрядника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sGPodrEDRPOU" name="Код ЄДРПОУ Генпідрядника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="GPodrsAddres" name="Адреса реєстрації Генпідрядника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markerGPodrOsoba" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekGPodr.json')}"></activiti:formProperty>
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sClerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
