@@ -31,7 +31,8 @@ exports.setup = function (config, authProviderRegistry) {
       return {bank: 'mpbds'};
     } else {
       return {
-        bank: options.bank
+        // #1412 temporary reverted
+        // bank: options.bank
       };
     }
   };
