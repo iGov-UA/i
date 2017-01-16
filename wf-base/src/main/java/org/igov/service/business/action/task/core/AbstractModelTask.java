@@ -347,7 +347,7 @@ public abstract class AbstractModelTask {
         try {
             oMultipartFile = oAttachmetService
                     .getAttachment(oExecution.getProcessInstanceId(), sFieldID, null, null);
-        } catch (ParseException | RecordInmemoryException | IOException | ClassNotFoundException ex) {
+        } catch (ParseException | RecordInmemoryException | IOException | ClassNotFoundException|CRCInvalidException|RecordNotFoundException ex) {
             LOG.info("getAttachment has some errors: " + ex);
         }
 
@@ -569,7 +569,7 @@ public abstract class AbstractModelTask {
                                                                 try {
                                                                     oMultipartFile = oAttachmetService
                                                                             .getAttachment(null, null, (String)oJsonTableTaskAttachVO.get("sKey"), "Redis");
-                                                                } catch (ParseException | RecordInmemoryException | IOException | ClassNotFoundException ex) {
+                                                                } catch (ParseException | RecordInmemoryException | IOException | ClassNotFoundException | CRCInvalidException | RecordNotFoundException ex) {
                                                                     LOG.info("getAttachment has some errors: " + ex);
                                                                 }
                                                                 
@@ -634,7 +634,7 @@ public abstract class AbstractModelTask {
                 n++;
             }
         }
-        scanExecutionOnQueueTickets(oExecution, oFormData);
+        //scanExecutionOnQueueTickets(oExecution, oFormData);
         //return aAttachemet;
         return new LinkedList<Attachment>();
 

@@ -121,7 +121,7 @@ public class AttachmetService {
     
     public MultipartFile getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
     //    byte[] getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
-            throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException {
+            throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
         MultipartFile oMultipartFile = null;
         
         byte [] aResultArray = null;
@@ -132,7 +132,8 @@ public class AttachmetService {
         
         if(nID_Process != null && sID_Field != null){
             
-            Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
+            //Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
+            Map<String, Object> variables = oTaskService.getVariables(Long.toString(oActionTaskService.getTaskIDbyProcess(Long.parseLong(nID_Process), null, true)));
             
             LOG.info("VariableMap: " + variables);
 
