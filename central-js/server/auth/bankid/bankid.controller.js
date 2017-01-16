@@ -7,7 +7,8 @@ module.exports.authenticate = function (req, res, next) {
   logger.info('authenticate bankid request', { query : req.query });
   passport.authenticate('oauth2', {
     callbackURL: '/auth/bankID/callback?link=' + req.query.link,
-    bank: req.query.bank
+    // #1412 temporary reverted
+    // bank: req.query.bank
   })(req, res, next);
 };
 
