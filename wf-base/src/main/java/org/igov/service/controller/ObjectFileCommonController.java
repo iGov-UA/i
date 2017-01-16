@@ -194,7 +194,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "название и расширение файла", required = false) @RequestParam(value = "sFileNameAndExt", required = false) String sFileNameAndExt,
             @ApiParam(value = "ид процесса", required = false) @RequestParam(value = "sID_Process", required =  false) String sID_Process,
             @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required =  false) String sID_Field,
-            @ApiParam(value = "ключ в базе данных", required = false)@RequestParam(value = "sKey", required =  false) String sKey) throws IOException, ParseException, RecordInmemoryException, ClassNotFoundException {
+            @ApiParam(value = "ключ в базе данных", required = false)@RequestParam(value = "sKey", required =  false) String sKey) throws IOException, ParseException, RecordInmemoryException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
         
             MultipartFile multipartFile = attachmetService.getAttachment(sID_Process, sID_Field, sKey, sID_StorageType);
             
