@@ -1222,6 +1222,7 @@
 
         // отображать поле в зависимости от доступности к чтению/записи документа.
         $scope.showField = function (field) {
+          if(isJSONinHistory(field)) return false;
           if(documentRights) {
             if($scope.isDocumentReadable(field) || $scope.isDocumentWritable(field)) return true;
             else if(!$scope.isDocumentReadable(field) && !$scope.isDocumentWritable(field)) return false;
@@ -1231,6 +1232,12 @@
             return true
           }
         };
+
+        function isJSONinHistory (field) {
+          return $scope.sSelectedTask === 'finished' && angular.isString(field.value) && field.value.length > 0 && (
+            (field.value.charAt(0) === '{' && field.value.charAt(field.value.length - 1) === '}') ||
+            (field.value.charAt(0) === '[' && field.value.charAt(field.value.length - 1) === ']'));
+        }
 
         $scope.openUsersHierarchy = function () {
           $scope.attachIsLoading = true;
