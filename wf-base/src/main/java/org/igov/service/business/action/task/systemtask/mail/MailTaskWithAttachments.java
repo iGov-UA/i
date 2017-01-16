@@ -35,9 +35,9 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
         Mail oMail = Mail_BaseFromTask(oExecution);
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
-        /*sAttachmentsForSend = sAttachmentsForSend == null ? "" : sAttachmentsForSend;
+        sAttachmentsForSend = sAttachmentsForSend == null ? "" : sAttachmentsForSend;
         LOG.info("(sAttachmentsForSend={})", sAttachmentsForSend);
-        List<Attachment> aAttachment = new ArrayList<>();
+        /*List<Attachment> aAttachment = new ArrayList<>();
         String[] asID_Attachment = sAttachmentsForSend.split(",");
         for (String sID_Attachment : asID_Attachment) {
             //log.info("sID_Attachment=" + sID_Attachment);
