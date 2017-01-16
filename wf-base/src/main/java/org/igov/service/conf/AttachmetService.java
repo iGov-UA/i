@@ -25,6 +25,9 @@ import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.vo.TaskAttachVO;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.RecordNotFoundException;
 import static org.igov.util.Tool.sTextTranslit;
 import org.json.simple.JSONObject;
 import org.igov.util.JSON.JsonRestUtils;
@@ -52,12 +55,15 @@ public class AttachmetService {
     @Autowired
     private IBytesDataStorage oBytesDataStaticStorage;
         
+    @Autowired
+    private ActionTaskService oActionTaskService;
+        
     private final Logger LOG = LoggerFactory.getLogger(AttachmetService.class);
 	
     
     public String createAttachment (String nID_Process, String sID_Field, String sFileNameAndExt,
         	boolean bSigned, String sID_StorageType, String sContentType, List<Map<String, Object>> saAttribute_JSON,
-		byte[] aContent, boolean bSetVariable) throws JsonProcessingException{
+		byte[] aContent, boolean bSetVariable) throws JsonProcessingException, CRCInvalidException, RecordNotFoundException{
             
         LOG.info("createAttachment nID_Process: " + nID_Process);
         LOG.info("createAttachment sFileNameAndExt: " + sFileNameAndExt);
@@ -105,7 +111,9 @@ public class AttachmetService {
         String sID_Field_Value = JsonRestUtils.toJson((Object)oTaskAttachVO);
         
         if(nID_Process != null && bSetVariable == true){
-            oRuntimeService.setVariable(nID_Process, sID_Field, sID_Field_Value);
+            oTaskService.setVariable(Long.toString(oActionTaskService.getTaskIDbyProcess(Long.parseLong(nID_Process), null, true)), 
+                    sID_Field, sID_Field_Value);
+            //oRuntimeService.setVariable(nID_Process, sID_Field, sID_Field_Value);
         }
 	
         return sID_Field_Value;

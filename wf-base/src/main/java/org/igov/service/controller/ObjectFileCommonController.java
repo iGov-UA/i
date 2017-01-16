@@ -60,6 +60,8 @@ import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.io.web.HttpRequester;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import org.igov.service.controller.interceptor.ActionProcessCountUtils;
+import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.RecordNotFoundException;
 import static org.igov.util.Tool.sTextTranslit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -888,7 +890,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "файл для сохранения в БД", required = true)@RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
-            ) throws JsonProcessingException, IOException
+            ) throws JsonProcessingException, IOException, CRCInvalidException, RecordNotFoundException
             {
         
             LOG.info("setAttachment nID_Process: " + nID_Process);
@@ -933,7 +935,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
-            @ApiParam(value = "контент файла в виде строки", required = true)@RequestBody String sData) throws IOException {        
+            @ApiParam(value = "контент файла в виде строки", required = true)@RequestBody String sData) throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException {        
             
             LOG.info("setAttachment nID_Process: " + nID_Process);
             LOG.info("setAttachment bSigned: " + bSigned);
