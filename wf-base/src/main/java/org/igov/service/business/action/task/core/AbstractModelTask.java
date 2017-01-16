@@ -617,8 +617,8 @@ public abstract class AbstractModelTask {
                                     }
                                 }
                                 oJSONObject.replace("aRow", aJsonRow);
-                                oRuntimeService.setVariable(oExecution.getProcessInstanceId(), sCurrFieldID, oJSONObject.toJSONString());
-                                
+                                //oRuntimeService.setVariable(oExecution.getProcessInstanceId(), sCurrFieldID, oJSONObject.toJSONString());
+                                taskService.setVariable(oTask.getId(), sCurrFieldID, oJSONObject.toJSONString());
                             } catch (ParseException ex) {
                                 LOG.info("Some error during table parsing : ", ex);
                             }
