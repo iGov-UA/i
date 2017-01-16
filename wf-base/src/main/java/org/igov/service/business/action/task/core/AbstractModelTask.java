@@ -634,7 +634,7 @@ public abstract class AbstractModelTask {
                 n++;
             }
         }
-        //scanExecutionOnQueueTickets(oExecution, oFormData);
+        scanExecutionOnQueueTickets(oExecution, oFormData);
         //return aAttachemet;
         return new LinkedList<Attachment>();
 
