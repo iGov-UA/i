@@ -254,8 +254,8 @@ public class ServiceTagService {
             final ServiceTag serviceTag = link.getServiceTag();
             final Service service = link.getService();
 
-            if (isExcludeTestEntity(includeTestEntities, serviceTag) 
-            //|| isExcludeTestEntity(includeTestEntities, service)
+            if (//isExcludeTestEntity(includeTestEntities, serviceTag) || 
+            isExcludeTestEntity(includeTestEntities, service)
             ) {
                 continue;
             }
