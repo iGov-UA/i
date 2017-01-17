@@ -889,10 +889,11 @@ public class FlowService implements ApplicationContextAware {
         LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}",
                 nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
         
-        List<FlowProperty> aExcludeFlowProperty = flow.getFlowProperties();
+        List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
         
         for (FlowProperty flowProperty : flow.getFlowProperties()){
             if(flowProperty.getbExclude()){
+                
                 if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
                   ||(flow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())){
                     aExcludeFlowProperty.add(flowProperty);
