@@ -289,13 +289,17 @@ public class FlowService implements ApplicationContextAware {
         LOG.info("buildFlowSlots starting...");
         Flow_ServiceData flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
         
+        LOG.info("flow.getId: " + flow.getId());
+        LOG.info("flow.getnID_ServiceData: " + flow.getnID_ServiceData());
+        LOG.info("flow.getsGroup: " + flow.getsGroup());
+        
         List<FlowSlotVO> res = new ArrayList<>();
         
-        List<FlowProperty> aExcludeFlowProperty = flow.getFlowProperties();
+        List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
         
         for (FlowProperty flowProperty : flow.getFlowProperties()){
             if(flowProperty.getbExclude()){
-                LOG.info("flow.getnID_ServiceData: " + flow.getnID_ServiceData());
+                LOG.info("flowProperty.getoFlow_ServiceData().getnID_ServiceData: " + flowProperty.getoFlow_ServiceData().getnID_ServiceData());
                 LOG.info("flowProperty.getId: " + flowProperty.getId());
                 
                 if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
@@ -885,10 +889,11 @@ public class FlowService implements ApplicationContextAware {
         LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}",
                 nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
         
-        List<FlowProperty> aExcludeFlowProperty = flow.getFlowProperties();
+        List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
         
         for (FlowProperty flowProperty : flow.getFlowProperties()){
             if(flowProperty.getbExclude()){
+                
                 if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
                   ||(flow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())){
                     aExcludeFlowProperty.add(flowProperty);
