@@ -51,8 +51,9 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     //if (generalConfig.isSelfTest()) {
                     //    sReturn = "DISABLED!";
                     //} else {
-                        sReturn = ManagerSMS.sendSms(sPhone_SMS_Value, sText_SMS_Value, 
-                            generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))), !generalConfig.isSelfTest());
+                    sReturn = ManagerSMS.sendSms(sPhone_SMS_Value, sText_SMS_Value, 
+                         generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))), generalConfig.isTest_LiqPay());//, generalConfig.isSelfTest()
+     
                     //} 
                     LOG.info("(sReturn={})", sReturn);
                 }
