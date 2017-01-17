@@ -67,6 +67,7 @@
         <activiti:formProperty id="sKab89" name="Номер кабінету" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік додатків файлів-додатков" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_SpisokDocs_Another_Person" name="Перелік додатків файлів-додатков для довіреної особи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sStringInZayava" name="Формування строки в заяві" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="Флаг" type="invisible"></activiti:formProperty>
@@ -515,34 +516,45 @@
     <scriptTask id="scripttask3" name="Script Task (JavaScript)" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = ''
+var per11 = ''
 var per2 = 0
+var per21 = 0
 
 if (execution.getVariable('nFile_CopyPassportZ') != null ) {
 	per2 = per2 + 1
 	per1 = per1 + per2.toString() + '. Копія паспорта (іншого документу), що посвідчує заявника.' + "&lt;br&gt;"
+	per21 = per21 + 1
+	per11 = per11 + per21.toString() + '. Копія паспорта (іншого документу), що посвідчує заявника.' + "&lt;br&gt;"
 }
 if (execution.getVariable('nFile_DocPredstavnika') != null ) {
-	per2 = per2 + 1
-	per1 = per1 + per2.toString() + '. Копія документу, що підтверджує статус законного представника особи.' + "&lt;br&gt;"
+	per21 = per21 + 1
+	per11 = per11 + per21.toString() + '. Копія документу, що підтверджує статус законного представника особи.' + "&lt;br&gt;"
 }
 if (execution.getVariable('nFile_CopyPassport') != null ) {
-	per2 = per2 + 1
-	per1 = per1 + per2.toString() + '. Копія паспорта (іншого документу), що посвідчує особу.' + "&lt;br&gt;"
+	per21 = per21 + 1
+	per11 = per11 + per21.toString() + '. Копія паспорта (іншого документу), що посвідчує особу.' + "&lt;br&gt;"
 }
 if (execution.getVariable('nFile_SvidoztvoNarodzennya') != null ) {
 	per2 = per2 + 1
 	per1 = per1 + per2.toString() + '. Копія свідоцтва про народження.' + "&lt;br&gt;"
+	per21 = per21 + 1
+	per11 = per11 + per21.toString() + '. Копія свідоцтва про народження.' + "&lt;br&gt;"
 }
 if (execution.getVariable('nFile_ReeCard') != null ) {
 	per2 = per2 + 1
 	per1 = per1 + per2.toString() + '. Копія картки реєстрації особи або будинковоої книги.' + "&lt;br&gt;"
+	per21 = per21 + 1
+	per11 = per11 + per21.toString() + '. Копія картки реєстрації особи або будинковоої книги.' + "&lt;br&gt;"
 }
 if (execution.getVariable('nFile_Other') != null) {
 	per2 = per2 + 1
 	per1 = per1 + per2.toString() + '. Інші документи.' + "&lt;br&gt;"
+	per21 = per21 + 1
+	per11 = per11 + per21.toString() + '. Інші документи.' + "&lt;br&gt;"
 }
 
 execution.setVariable('sAdd_SpisokDocs', per1)
+execution.setVariable('sAdd_SpisokDocs_Another_Person', per11)
 
 var per3 = "Прошу видати довідку про реєстрацію " 
 
