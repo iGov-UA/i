@@ -2,7 +2,6 @@ package org.igov.service.business.promin;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.ConnectException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,37 +46,21 @@ public class ProminSession_Singleton {
     HttpRequester httpRequester;
     
     public String getSid_Auth_UkrDoc_SED() {
-        try {
-			checkAndUpdateSid();
-		} catch (ConnectException e) {
-			LOG.error("Connection timed out ", e);
-			return sid_Auth_UkrDoc_SED="";
-			
-		}        
+        checkAndUpdateSid();        
         return sid_Auth_UkrDoc_SED;
     }
     
     public String getSid_Auth_Receipt_PB_Bank() {
-        try {
-			checkAndUpdateSid();
-		} catch (ConnectException e) {
-			LOG.error("Connection timed out ", e);
-			return sid_Auth_Receipt_PB_Bank="";
-		}
+        checkAndUpdateSid();
         return sid_Auth_Receipt_PB_Bank;
     }
     
     public String getSID_Auth_PB_SMS() {
-        try {
-			checkAndUpdateSid();
-		} catch (ConnectException e) {
-			LOG.error("Connection timed out ", e);
-			return aSID_Auth_PB_SMS="";
-		}
+        checkAndUpdateSid();
         return aSID_Auth_PB_SMS;
     }
     
-    private void checkAndUpdateSid() throws ConnectException {
+    private void checkAndUpdateSid() {
         LOG.info("getSID ... " + toString());
         if (sid_Auth_UkrDoc_SED == null || (System.currentTimeMillis() - nTimeCreatedMS) > nTimeLiveLimitMS) {
             nTimeCreatedMS = System.currentTimeMillis();
