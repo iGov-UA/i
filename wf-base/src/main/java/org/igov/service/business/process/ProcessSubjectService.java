@@ -457,7 +457,7 @@ public class ProcessSubjectService {
         }
     }
 
-    public void setProcessSubjects(Map<String, String> mParam, String snProcess_ID) {
+    public void setProcessSubjects(Map<String, Object> mParam, String snProcess_ID) {
 
         try {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
@@ -473,19 +473,19 @@ public class ProcessSubjectService {
             LOG.info("oDateExecution: " + oDateExecution);
 
             if ((mParam.get("sDateExecution") != null) && (!mParam.get("sDateExecution").equals(""))) {
-                oDateExecution = parseDate(mParam.get("sDateExecution"));
+                oDateExecution = parseDate((String)mParam.get("sDateExecution"));
                 sFormatDateExecution = df_StartProcess.format(oDateExecution);
                 LOG.info("oDateExecution: " + oDateExecution);
                 LOG.info("sFormatDateExecution: " + sFormatDateExecution);
             }
             if ((mParam.get("sDateRegistration") != null) && (!mParam.get("sDateRegistration").equals(""))) {
-                Date oDateRegistration = parseDate(mParam.get("sDateRegistration"));
+                Date oDateRegistration = parseDate((String)mParam.get("sDateRegistration"));
                 sFormatDateRegistration = df_StartProcess.format(oDateRegistration);
                 LOG.info("oDateRegistration: " + oDateRegistration);
                 LOG.info("sFormatDateRegistration: " + sFormatDateRegistration);
             }
             if ((mParam.get("sDateDoc") != null) && (!mParam.get("sDateDoc").equals(""))) {
-                Date oDateDoc = parseDate(mParam.get("sDateDoc"));
+                Date oDateDoc = parseDate((String)mParam.get("sDateDoc"));
                 sFormatDateDoc = df_StartProcess.format(oDateDoc);
                 LOG.info("oDateDoc: " + oDateDoc);
                 LOG.info("sFormatDateDoc: " + sFormatDateDoc);
@@ -494,7 +494,9 @@ public class ProcessSubjectService {
             ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
 
             Map<String, Object> mParamDocument = new HashMap<>();
-
+            mParamDocument.putAll(mParam);
+            
+            /*
             mParamDocument.put("sTaskProcessDefinition", mParam.get("sTaskProcessDefinition"));
             mParamDocument.put("sID_Attachment", mParam.get("sID_Attachment"));
             mParamDocument.put("sContent", mParam.get("sContent"));
@@ -512,19 +514,20 @@ public class ProcessSubjectService {
             mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
             mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
             mParamDocument.put("sDoc1", mParam.get("sDoc1"));
+            */
 
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             //иначе проверяем на необходимость редактирования
             if (oProcessSubjectParent == null) {
                 oProcessSubjectParent = processSubjectDao
-                        .setProcessSubject(snProcess_ID, mParam.get("sName_SubjectRole"),
+                        .setProcessSubject(snProcess_ID, (String)mParam.get("sName_SubjectRole"),
                                 new DateTime(oDateExecution), 0L, processSubjectStatus);
             } else {
                 editProcessSubject(oProcessSubjectParent, mParamDocument);
             }
 
             List<ProcessSubjectTree> aProcessSubjectTreeChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
-            InputStream attachmentContent = taskService.getAttachmentContent(mParam.get("sID_Attachment"));
+            InputStream attachmentContent = taskService.getAttachmentContent((String)mParam.get("sID_Attachment"));
 
             List<ProcessSubject> aProcessSubjectChild = getCatalogProcessSubject(snProcess_ID, 1L, null).getaProcessSubject();
             List<String> aProcessSubjectLoginToDelete = new ArrayList<>();
