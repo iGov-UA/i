@@ -286,7 +286,7 @@ public class FlowService implements ApplicationContextAware {
      * @return generated slots.
      */
     public List<FlowSlotVO> buildFlowSlots(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate) {
-
+        LOG.info("buildFlowSlots starting...");
         Flow_ServiceData flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
         
         List<FlowSlotVO> res = new ArrayList<>();
@@ -295,6 +295,9 @@ public class FlowService implements ApplicationContextAware {
         
         for (FlowProperty flowProperty : flow.getFlowProperties()){
             if(flowProperty.getbExclude()){
+                LOG.info("flow.getnID_ServiceData: " + flow.getnID_ServiceData());
+                LOG.info("flowProperty.getId: " + flowProperty.getId());
+                
                 if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
                   ||(flow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())){
                     aExcludeFlowProperty.add(flowProperty);
