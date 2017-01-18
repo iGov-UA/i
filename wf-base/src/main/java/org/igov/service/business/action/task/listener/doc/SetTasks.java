@@ -172,6 +172,7 @@ public class SetTasks implements TaskListener {
         }catch(Exception ex){}
         
         
+        LOG.info("SetTasks start with soData..." + soData_Value);
         
         Map<String, Object> mParam = new HashMap<>();
         
