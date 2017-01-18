@@ -57,6 +57,17 @@ public class UsersService {
 		return amsUsers;
 
     }
-
+	
+    public List<String> getUsersLoginByGroup(String sID_Group) {
+    	
+    	List<String> aUsers = new ArrayList<>(); // для возвращения результата, ибо возникает JsonMappingException и NullPointerException при записи картинки
+        List<User> aoUsers = sID_Group != null ?
+                identityService.createUserQuery().memberOfGroup(sID_Group).list() :
+                identityService.createUserQuery().list();
+        for (User oUser : aoUsers) {
+            aUsers.add(oUser.getId());
+        }
+        return aUsers;
+    }
 
 }
