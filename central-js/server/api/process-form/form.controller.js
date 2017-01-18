@@ -680,20 +680,46 @@ module.exports.signFormCallback = function (req, res) {
     sURL = '';
   }
 
-  if (!userService.prepareSignedContentRequest) {
+  if(!userService.prepareSignedContentRequest){
     res.status(400).send(errors.createError(errors.codes.LOGIC_SERVICE_ERROR,
       'type of authorization doesn\'t support html forms signing'));
     return;
   }
 
-  logger.info('preparing signed contents request');
-  var signedFormForUpload = userService
-    .prepareSignedContentRequest(req.session.access.accessToken, codeValue);
+  var accessToken = req.session.access.accessToken;
+  function downloadSignedContent(formData, callback) {
+    logger.info('[signFormCallback] downloading signed content....', {accessToken: accessToken, codeValue: codeValue});
+    userService.downloadSignedContent(accessToken, codeValue, function (error, result) {
+      logger.info('[signFormCallback] ....downloaded signed content', { error: error, contentType: result.contentType, fileName: result.fileName });
+      callback(error, {signedContent : result, formData: formData});
+    });
+  }
+
+  function uploadSignedForm(downloadResult, callback) {
+    logger.info('[signFormCallback] uploading signed content to redis....');
+    uploadFileService.upload([{
+      name: 'file',
+      options: {
+        filename: 'signedForm.pdf'
+      },
+      buffer: downloadResult.signedContent.buffer
+    }], function (error, response, body) {
+      logger.info('[signFormCallback] ....uploaded signed content to redis', {result: body});
+      if (!body) {
+        callback(errors.createExternalServiceError('Can\'t save signed content to storage. Unknown error', error), null);
+      } else if (body.code && body.message) {
+        callback(errors.createExternalServiceError('Can\'t save signed content to storage. ' + body.message, body), null);
+      } else if (body.fileID) {
+        downloadResult.signedFormID = body.fileID;
+        callback(null, downloadResult);
+      }
+    }, sHost);
+  }
 
   async.waterfall([
     function (callback) {
       loadForm(formID, sURL, function (error, response, body) {
-        logger.info('form is loaded');
+        logger.info('[signFormCallback] ..... form is loaded');
         if (error) {
           callback(error, null);
         } else {
@@ -701,29 +727,8 @@ module.exports.signFormCallback = function (req, res) {
         }
       });
     },
-    function (formData, callback) {
-      var signedFormUpload = sURL + 'service/object/file/upload_file_to_redis';
-      var form = new FormData();
-      form.append('file', signedFormForUpload, {
-        filename: 'signedForm.pdf'
-      });
-
-      var requestOptionsForUploadContent = {
-        url: signedFormUpload,
-        auth: getAuth(),
-        headers: form.getHeaders()
-      };
-
-      logger.info('uploading file to redis');
-      pipeFormDataToRequest(form, requestOptionsForUploadContent, function (error, result) {
-        logger.info('[signFormCallback]: result from redis', {redisanswer: result, error: error});
-        if (error) {
-          callback(error, {formData: formData});
-        } else {
-          callback(null, {formData: formData, signedFormID: result.data});
-        }
-      });
-    }
+    downloadSignedContent,
+    uploadSignedForm
   ], function (err, result) {
     if (err) {
       logger.error('error. go back to initial page', {error: err});
