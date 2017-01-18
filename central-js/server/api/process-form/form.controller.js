@@ -727,7 +727,7 @@ module.exports.signFormCallback = function (req, res) {
         + '?formID=' + formID
         + '&error=' + JSON.stringify(err));
     } else {
-      logger.into('cool go back to initial page');
+      logger.info('cool go back to initial page');
       res.redirect(result.formData.restoreFormUrl
         + '?formID=' + formID
         + '&signedFileID=' + result.signedFormID);
