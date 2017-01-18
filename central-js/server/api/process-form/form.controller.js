@@ -787,7 +787,10 @@ function pipeFormDataToRequest(form, requestOptionsForUploadContent, callback) {
   var result = {};
   form.pipe(request.post(requestOptionsForUploadContent))
     .on('response', function (response) {
-      logger.info("[pipeFormDataToRequest] response", {loading_from: requestOptionsForUploadContent, res : response});
+      logger.info("[pipeFormDataToRequest] response", {
+        loading_from: requestOptionsForUploadContent,
+        res_status : response.statusCode,
+        res_headers: response.headers});
       result.statusCode = response.statusCode;
     }).on('data', function (chunk) {
       if (result.data) {
