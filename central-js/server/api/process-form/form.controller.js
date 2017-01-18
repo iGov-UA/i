@@ -801,20 +801,31 @@ function loadForm(formID, sURL, callback) {
 function pipeFormDataToRequest(form, requestOptionsForUploadContent, callback) {
   var decoder = new StringDecoder('utf8');
   var result = {};
-  form.pipe(request.post(requestOptionsForUploadContent))
-    .on('response', function (response) {
-      logger.info("[pipeFormDataToRequest] response", {
-        loading_from: requestOptionsForUploadContent,
-        res_status : response.statusCode,
-        res_headers: response.headers});
-      result.statusCode = response.statusCode;
-    }).on('data', function (chunk) {
-      if (result.data) {
-        result.data += decoder.write(chunk);
-      } else {
-        result.data = decoder.write(chunk);
-      }
-  }).on('error', function(e){
+  form.pipe(
+    request.post(requestOptionsForUploadContent)
+      .on('response', function (response) {
+        logger.info("[requestForUploadContent] response", {
+          loading_from: requestOptionsForUploadContent,
+          res_status: response.statusCode,
+          res_headers: response.headers
+        });
+      })
+      .on('error', function (e) {
+        callback(e, null)
+      })
+  ).on('response', function (response) {
+    logger.info("[pipeFormDataToRequest] response", {
+      res_status: response.statusCode,
+      res_headers: response.headers
+    });
+    result.statusCode = response.statusCode;
+  }).on('data', function (chunk) {
+    if (result.data) {
+      result.data += decoder.write(chunk);
+    } else {
+      result.data = decoder.write(chunk);
+    }
+  }).on('error', function (e) {
     callback(e, null)
   }).on('end', function () {
     callback(null, result);
