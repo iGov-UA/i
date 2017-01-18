@@ -730,7 +730,7 @@ module.exports.signFormCallback = function (req, res) {
     }
   ], function (err, result) {
     if (err) {
-      logger.warn('error go back to initial page');
+      logger.warning('error go back to initial page');
       res.redirect(result.formData.restoreFormUrl
         + '?formID=' + formID
         + '&error=' + JSON.stringify(err));
