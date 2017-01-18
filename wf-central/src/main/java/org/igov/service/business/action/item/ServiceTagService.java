@@ -14,6 +14,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * User: goodg_000
  * Date: 10.07.2016
@@ -21,6 +24,7 @@ import java.util.stream.Stream;
  */
 @org.springframework.stereotype.Service
 public class ServiceTagService {
+    static final Logger LOG = LoggerFactory.getLogger(ServiceTagService.class);
     private static final long FAKE_ROOT_TAG_ID  = 0;
     private static final String GET_SERVICE_TAG_TREE_CACHE_KEY = "ServiceTagService.getServiceTagTree";
     private static final String GET_TAG_ID_TO_SERVICES_CACHE_KEY = "ServiceTagService.getTagIdToServicesMap";
@@ -45,7 +49,9 @@ public class ServiceTagService {
         boolean hasChildIdFilter = nID_ServiceTag_Child != null;
 
         ServiceTagTree tree = getServiceTagTreeCached(includeTestEntities);
+        LOG.info("!!! tree.rootTagNodes.size: " + (tree != null ? tree.rootTagNodes.size() : 0));
         Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMapCached(includeTestEntities);
+        LOG.info("!!! tagIdToServices.size: " + tagIdToServices.size());
 
         for (ServiceTagTreeNode rootTagNode : tree.getRootTagNodes()) {
             final ServiceTag parentTag = rootTagNode.getTag();
