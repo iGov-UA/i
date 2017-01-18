@@ -20,11 +20,11 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDocBase" name="Дозвіл на проведення археологічних розвідок, розкопок" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocAkt" name="Копія кваліфікаційного документу (відкритого листа) - для проведення археологічних досліджень" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocProject" name="Копія Програми археологічних досліджень" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканована копія паспорту" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
@@ -35,9 +35,10 @@
         <activiti:formProperty id="sArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_632_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="requiredFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_632_2.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="kultura_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Прийняття рішення про надання послуги" activiti:candidateGroups="kultura_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -47,7 +48,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності; ;writable=false" type="enum">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юридична особа"></activiti:value>
+          <activiti:value id="ur" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSubekt_2" name="Звернення подаю; ;writable=false" type="enum">
           <activiti:value id="personally" name="особисто"></activiti:value>
@@ -73,7 +74,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="kultura_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Надання адміністративної послуги" activiti:candidateGroups="kultura_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -81,15 +82,15 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності; ;writable=false" type="enum" required="true">
+        <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSubekt_2" name="Звернення подаю; ;writable=false" type="enum" required="true">
+        <activiti:formProperty id="asSubekt_2" name="Звернення подаю" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
