@@ -38,9 +38,45 @@
             DELETE FROM "SubjectAccount" where "nID" < 20000;
             DELETE FROM "SubjectContact" where "nID" < 20000;
             DELETE FROM "Subject" where "nID" < 20000;
+            DELETE FROM "Service";
+            DELETE FROM "ServiceData";
+            DELETE FROM "ServiceType";
+            DELETE FROM "Region";
+            DELETE FROM "City";
+            DELETE FROM "Category";
+            DELETE FROM "Subcategory";
         ]]></sql>
 
         <delete tableName="SubjectOrganDepartment"/>
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Region.csv" tableName="Region" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sID_UA" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/City.csv" tableName="City" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="nID_Region" type="NUMERIC"/>
+            <column name="sID_UA" type="STRING"/>
+        </loadUpdateData>
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Category.csv" tableName="Category" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="sName" type="STRING"/>
+            <column name="nOrder" type="NUMERIC"/>
+            <column name="nID_Category" type="NUMERIC"/>
+        </loadUpdateData>
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Subcategory.csv" tableName="Subcategory" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="sName" type="STRING"/>
+            <column name="nOrder" type="NUMERIC"/>
+        </loadUpdateData>
+        
         <loadData encoding="UTF-8" file="data/SubjectOrganDepartment.csv"
                         tableName="SubjectOrganDepartment" separator=";">
             <column name="nID" type="NUMERIC"/>
@@ -352,6 +388,80 @@
             <column name="nID_Server"     type="NUMERIC"/>
             <column name="nID_Subject"    type="NUMERIC"/>
         </loadData>
+        
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ServiceType.csv" tableName="ServiceType" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sNote" type="STRING"/>
+        </loadUpdateData>
+
+        <!-- 5 связанных таблиц ServiceTag, ServiceTagLink, ServiceTagRelation, Service, ServiceData  перезагружаются каждый раз -->
+        <loadData encoding="UTF-8" file="data/Service.csv" tableName="Service" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="nOrder" type="NUMERIC"/>
+            <column name="nID_Subcategory" type="NUMERIC"/>
+            <column name="sInfo" type="STRING"/>
+            <column name="sFAQ" type="STRING"/>
+            <column name="sLaw" type="STRING"/>
+            <column name="nOpenedLimit" type="NUMERIC"/>
+            <column name="sSubjectOperatorName" type="STRING"/>
+        </loadData>
+        
+        <loadUpdateData primaryKey  = "nID"
+                        encoding    = "UTF-8"
+                        file        = "data/PlaceType.csv"
+                        tableName   = "PlaceType"
+                        separator   = ";">
+            <column name="nID"      type="NUMERIC"/>
+            <column name="sName"    type="STRING"/>
+            <column name="nOrder"   type="NUMERIC"/>
+            <column name="bArea"    type="BOOLEAN"/>
+            <column name="bRoot"    type="BOOLEAN"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey  = "nID"
+                        encoding    = "UTF-8"
+                        file        = "data/Place.csv"
+                        tableName   = "Place"
+                        separator   = ";">
+            <column name="nID"           type="NUMERIC"/>
+            <column name="sName"         type="STRING"/>
+            <column name="nID_PlaceType" type="NUMERIC"/>
+            <column name="sID_UA"        type="STRING"/>
+            <column name="sNameOriginal" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey  = "nID"
+                        encoding    = "UTF-8"
+                        file        = "data/PlaceTree.csv"
+                        tableName   = "PlaceTree"
+                        separator   = ";">
+            <column name="nID"              type="NUMERIC"/>
+            <column name="nID_Place"        type="NUMERIC"/>
+            <column name="nID_Place_Root"   type="NUMERIC"/>
+            <column name="nID_Place_Area"   type="NUMERIC"/>
+            <column name="nID_Place_Parent" type="NUMERIC"/>
+        </loadUpdateData>
+        
+        <loadData encoding="UTF-8" file="data/ServiceData.csv" tableName="ServiceData" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_Service" type="NUMERIC"/>
+            <column name="nID_Place"    type="NUMERIC"/>
+            <column name="nID_City" type="NUMERIC"/>
+            <column name="nID_Region" type="NUMERIC"/>
+            <column name="nID_ServiceType" type="NUMERIC"/>
+            <column name="oData" type="STRING"/>
+            <column name="sURL" type="STRING"/>
+            <column name="bHidden" type="BOOLEAN"/>
+            <column name="nID_Subject_Operator" type="NUMERIC"/>
+            <column name="bTest" type="BOOLEAN"/>
+            <column name="sNote" type="STRING"/>
+            <column name="asAuth" type="STRING"/>
+            <column name="nID_Server" type="NUMERIC"/>
+        </loadData>
+        
 
     </changeSet>
     
