@@ -12,7 +12,9 @@ var url = require('url')
   , formService = require('./form.service')
   , activiti = require('../../components/activiti')
   , admZip = require('adm-zip')
-  , errors = require('../../components/errors');
+  , errors = require('../../components/errors')
+  , loggerFactory = require('../../components/logger')
+  , logger = loggerFactory.createLogger(module);
 
   var createError = function (error, error_description, response) {
     return {
@@ -678,12 +680,14 @@ module.exports.signFormCallback = function (req, res) {
     return;
   }
 
+  logger.info('preparing signed contents request');
   var signedFormForUpload = userService
     .prepareSignedContentRequest(req.session.access.accessToken, codeValue);
 
   async.waterfall([
     function (callback) {
       loadForm(formID, sURL, function (error, response, body) {
+        logger.info('form is loaded');
         if (error) {
           callback(error, null);
         } else {
@@ -704,16 +708,20 @@ module.exports.signFormCallback = function (req, res) {
         headers: form.getHeaders()
       };
 
+      logger.info('uploading file to redis');
       pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
+        logger.info('result from redis', { redisanswer: result });
         callback(null, {formData: formData, signedFormID: result.data});
       });
     }
   ], function (err, result) {
     if (err) {
+      logger.warn('error go back to initial page');
       res.redirect(result.formData.restoreFormUrl
         + '?formID=' + formID
         + '&error=' + JSON.stringify(err));
     } else {
+      logger.info('cool go back to initial page');
       res.redirect(result.formData.restoreFormUrl
         + '?formID=' + formID
         + '&signedFileID=' + result.signedFormID);
