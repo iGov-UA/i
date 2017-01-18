@@ -109,8 +109,8 @@
                          ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                          on-select="onSelectDataList($item, tableName, rowIndex, field)">
 
-                <ui-select-match>
-                  {{selectedValue(field, $select.selected[autocompleteData.titleProperty])}}
+                <ui-select-match title="{{$select.selected}}">
+                  {{selectedValue(field, $select.selected[autocompleteData.titleProperty]) || field.value}}
                 </ui-select-match>
                 <ui-select-choices refresh="refreshList(field.autocompleteData.titleProperty, $select.search, field.name)"
                                    refresh-delay="300"

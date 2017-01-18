@@ -187,7 +187,7 @@ angular.module('autocompleteService')
                             }
                         }
                         if(nameWithPostFix && nameWithPostFix[1]) {
-                            if(nameWithPostFix[1] === field.id.split('_')[1]) {
+                            if(isNaN(parseInt(nameWithPostFix[1])) && nameWithPostFix[1] === field.id.split('_')[1]) {
                                 obj[key].value = item[field.id.split('_')[0]];
                             }
                         }

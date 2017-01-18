@@ -229,7 +229,7 @@
       </div>
 
       <!--атачи-->
-      <div class="control-form-fields" ng-if="taskData.aAttachment.length > 0">
+      <div class="control-form-fields" ng-if="taskData.aAttachment.length > 0 || taskData.aNewAttachment.length > 0">
         <div class="addition-hr">
           <hr class="hr-divider side-left"><span>Додатки</span><hr class="hr-divider side-right">
         </div>
@@ -263,6 +263,39 @@
                     title="{{item.description | tableButtonFilter}}">
                     <!--ng-click="openModalWindow($event)">-->
               {{item.description | cut : true : 25 | tableButtonFilter}}
+            </button>
+          </div>
+
+          <div class="dropup"
+               ng-repeat="item in taskData.aNewAttachment"
+               style="display: inline-block; position:relative;">
+
+            <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
+              <p>{{item.sFieldLabel | tableButtonFilter}}</p>
+              <a href="/api/tasks/download/{{taskData.oProcess.nID}}/attachment/{{item.id}}"
+                 target="_blank"
+                 ng-if="!isTableAttachment(item)"
+                 class="btn btn-info">Завантажити
+              </a>
+              <button
+                class="btn btn-info"
+                ng-disabled="checkSignState.inProcess"
+                ng-click="checkAttachmentSign(taskData.oProcess.nID, item.id, item.name, true)"
+                ng-if="sSelectedTask=='selfAssigned' && !isTableAttachment(item)">Перевірити ЕЦП
+              </button>
+              <a ng-click="openTableAttachment(item.id, taskData.oProcess.nID, true)"
+                 ng-if="isTableAttachment(item)"
+                 class="btn btn-info">Переглянути
+              </a>
+            </div>
+            <button style="position:relative;"
+                    ng-if="item.name !== ' '"
+                    type="button"
+                    class="btn btn-link attach-btn dropdown-toggle"
+                    data-toggle="dropdown"
+                    ng-model="some"
+                    title="{{item.sFieldLabel | tableButtonFilter}}">
+              {{item.sFieldLabel | cut : true : 25 | tableButtonFilter}}
             </button>
           </div>
         </div>
