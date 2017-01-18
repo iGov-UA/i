@@ -55,7 +55,7 @@ module.exports.createLogger = function (module) {
       }
     },
     warning: function (message, metadata) {
-      logger.log('warning', message, createMetadata(module, metadata));
+      logger.log('warn', message, createMetadata(module, metadata));
     },
     error: function (message, metadata) {
       logger.log('error', message, createMetadata(module, metadata));

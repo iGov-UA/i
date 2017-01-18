@@ -10,9 +10,9 @@
     <callActivity id="callactivity1" name="Call activity" calledElement="_testSimpleSubProces">
       <extensionElements>
         <activiti:in source="test" target="test"></activiti:in>
-        <activiti:out source="testSub" target="testSub"></activiti:out>
+        <activiti:in source="sLogin" target="sLogin"></activiti:in>
       </extensionElements>
-      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${resolveUsersForTask.getUsers()}" activiti:elementVariable="assignee"></multiInstanceLoopCharacteristics>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${usersService.getUsersByGroup('admin')}" activiti:elementVariable="sLogin"></multiInstanceLoopCharacteristics>
     </callActivity>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="callactivity1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="callactivity1" targetRef="endevent1"></sequenceFlow>
@@ -23,7 +23,7 @@
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="390.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="350.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="callactivity1" id="BPMNShape_callactivity1">
         <omgdc:Bounds height="55.0" width="105.0" x="170.0" y="20.0"></omgdc:Bounds>
@@ -34,7 +34,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="275.0" y="47.0"></omgdi:waypoint>
-        <omgdi:waypoint x="390.0" y="47.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="47.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

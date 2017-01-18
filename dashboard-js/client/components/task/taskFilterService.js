@@ -142,7 +142,7 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
         });
       } else {
         var documents = tasks.filter(function (task) {
-          return !(task.processDefinitionId.charAt(0) === '_' && task.processDefinitionId.split('_')[1] === 'doc');
+          return !(task.processDefinitionId && task.processDefinitionId.charAt(0) === '_' && task.processDefinitionId.split('_')[1] === 'doc');
         });
       }
       return documents;

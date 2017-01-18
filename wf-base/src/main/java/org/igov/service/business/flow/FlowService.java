@@ -286,16 +286,37 @@ public class FlowService implements ApplicationContextAware {
      * @return generated slots.
      */
     public List<FlowSlotVO> buildFlowSlots(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate) {
-
+        LOG.info("buildFlowSlots starting...");
         Flow_ServiceData flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
-
+        
+        LOG.info("flow.getId: " + flow.getId());
+        LOG.info("flow.getnID_ServiceData: " + flow.getnID_ServiceData());
+        LOG.info("flow.getsGroup: " + flow.getsGroup());
+        
         List<FlowSlotVO> res = new ArrayList<>();
-
+        
+        List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
+        
+        for (FlowProperty flowProperty : flow.getFlowProperties()){
+            if(flowProperty.getbExclude()){
+                LOG.info("flowProperty.getoFlow_ServiceData().getnID_ServiceData: " + flowProperty.getoFlow_ServiceData().getnID_ServiceData());
+                LOG.info("flowProperty.getId: " + flowProperty.getId());
+                
+                if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
+                  ||(flow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())){
+                    aExcludeFlowProperty.add(flowProperty);
+                    LOG.info("flowProperty.getsData: " + flowProperty.getsData());
+                    LOG.info("flowProperty.getsDateTimeAt: " + flowProperty.getsDateTimeAt());
+                    LOG.info("flowProperty.getsDateTimeTo: " + flowProperty.getsDateTimeTo());
+                }
+            }
+        }
+        
         for (FlowProperty flowProperty : flow.getFlowProperties()) {
             if (flowProperty.getbExclude() == null || !flowProperty.getbExclude()) {
                 Class<FlowPropertyHandler> flowPropertyHandlerClass = getFlowPropertyHandlerClass(flowProperty);
                 if (BaseFlowSlotScheduler.class.isAssignableFrom(flowPropertyHandlerClass)) {
-
+                        
                     BaseFlowSlotScheduler handler = getFlowPropertyHandlerInstance(
                             flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
                     handler.setStartDate(startDate);
@@ -867,7 +888,19 @@ public class FlowService implements ApplicationContextAware {
         Long nID_SubjectOrganDepartment = flow.getnID_SubjectOrganDepartment();
         LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}",
                 nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
-
+        
+        List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
+        
+        for (FlowProperty flowProperty : flow.getFlowProperties()){
+            if(flowProperty.getbExclude()){
+                
+                if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
+                  ||(flow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())){
+                    aExcludeFlowProperty.add(flowProperty);
+                }
+            }
+        }
+        
         int nStartDay = 0;
         DateTime dateStart;// = oDateStart.plusDays(0); //maxline: todo удалить комментарий после тестирования
         DateTime dateEnd;

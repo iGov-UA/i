@@ -155,7 +155,14 @@ angular.module('autocompleteService')
                 // $timeout(function () {
                 //   $scope.$select.items = items;
                 // }, 0, !angular.equals(queryParams.params[queryKey], queryValue));
-                $scope.$select.items = items;
+                var filtered = null;
+                if(queryValue && isNaN(queryValue)){
+                   filtered = items.filter(function(i){
+                        var name = i.sName_UA ? i.sName_UA : i.sNameShort_UA;
+                        return name.toLowerCase().indexOf(queryValue.toLowerCase()) !== -1;
+                    });  
+                }
+                $scope.$select.items = filtered ? filtered : items;
                 !angular.equals(queryParams.params[queryKey], queryValue);
             });
         } else {

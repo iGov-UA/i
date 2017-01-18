@@ -31,19 +31,28 @@ public class FlowProperty extends AbstractEntity {
 
     @Column
     private String sData;
+    
     @Column(nullable = true)
     private Boolean bExclude;
+    
     @Column(nullable = true)
     private String sName;
+    
     @Column(nullable = true)
     private String sRegionTime;
+    
     @Column(nullable = true)
     private String saRegionWeekDay;
+    
     @Column(nullable = true)
     private String sDateTimeAt;
+    
     @Column(nullable = true)
     private String sDateTimeTo;
-
+    
+    @Column
+    private String sGroup;
+        
     @JsonProperty(value = "nLen")
     @Column(nullable = true)
     private Integer nLen;
@@ -141,4 +150,14 @@ public class FlowProperty extends AbstractEntity {
     public void setsDateTimeTo(String sDateTimeTo) {
         this.sDateTimeTo = sDateTimeTo;
     }
+
+    public String getsGroup() {
+        return sGroup;
+    }
+
+    public void setsGroup(String sGroup) {
+        this.sGroup = sGroup;
+    }
+    
+    
 }
