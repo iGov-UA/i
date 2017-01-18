@@ -286,6 +286,7 @@
         $scope.tableIsInvalid = false;
         $scope.taskData.aTable = [];
         $scope.usersHierarchyOpened = false;
+        $scope.taskData.aNewAttachment = [];
 
         // todo соеденить с isUnasigned
         $scope.isDocument = function () {
@@ -369,6 +370,31 @@
             }
           });
         }
+
+        function fillArrayWithNewAttaches() {
+          angular.forEach($scope.taskForm, function (item) {
+            if(item.type === 'file' || item.type === 'table') {
+              try {
+                var parsedValue = JSON.parse(item.value);
+                if(parsedValue && parsedValue.sKey) {
+                  var sFieldName = item.name || '';
+                  var aNameParts = sFieldName.split(';');
+                  var sFieldNotes = aNameParts[0].trim();
+                  item.sFieldLabel = sFieldNotes;
+                  sFieldNotes = null;
+                  if (aNameParts.length > 1) {
+                    sFieldNotes = aNameParts[1].trim();
+                    if (sFieldNotes === '') {
+                      sFieldNotes = null;
+                    }
+                  }
+                  item.sFieldNotes = sFieldNotes;
+                  $scope.taskData.aNewAttachment.push(item);
+                }
+              }catch(e){}
+            }
+          })
+        }fillArrayWithNewAttaches();
 
         function getAdaptedFormData(taskForm) {
           var oAdaptFormData = {};
@@ -514,9 +540,16 @@
 
         $scope.checkSignState = {inProcess: false, show: false, signInfo: null, attachmentName: null};
 
-        $scope.checkAttachmentSign = function (nID_Task, nID_Attach, attachmentName) {
+        /*
+        * проверка наличия эцп. поддерживается старый и новый сервис, разделение по 4му параметру
+        * @param nID_Task - ид таски (если новый серивс - ид процесса);
+        * @param nID_Attach - ид аттача;
+        * @param attachmentName - для старого сервиса передаеться sDescription, для нового - name;
+        * @param {boolean} isNewAttachment - если true используеться новый сервис checkProcessAttach, иначе check_attachment_sign
+        */
+        $scope.checkAttachmentSign = function (nID_Task, nID_Attach, attachmentName, isNewAttach) {
           $scope.checkSignState.inProcess = true;
-          tasks.checkAttachmentSign(nID_Task, nID_Attach).then(function (signInfo) {
+          tasks.checkAttachmentSign(nID_Task, nID_Attach, isNewAttach).then(function (signInfo) {
             if (signInfo.customer) {
               $scope.checkSignState.show = !$scope.checkSignState.show;
               $scope.checkSignState.signInfo = signInfo;
@@ -845,14 +878,33 @@
         };
 
         $scope.upload = function (files, propertyID) {
-          tasks.upload(files, $scope.taskId, propertyID).then(function (result) {
+          var isNewAttachmentService = false;
+          var taskID = $scope.taskId;
+          for(var i=0; i<$scope.taskForm.length; i++) {
+            var item = $scope.taskForm[i];
+            var splitNameForOptions = item.name.split(';');
+            if(item.id === propertyID && splitNameForOptions.length === 3){
+              if(splitNameForOptions[2].indexOf('bNew=true') !== -1) {
+                isNewAttachmentService = true;
+                taskID = $scope.taskData.oProcess.nID;
+                break
+              }
+            }
+          }
+          tasks.upload(files, taskID, propertyID, isNewAttachmentService).then(function (result) {
             var filterResult = $scope.taskForm.filter(function (property) {
               return property.id === propertyID;
             });
             if (filterResult && filterResult.length === 1) {
-              filterResult[0].value = result.response.id;
-              filterResult[0].fileName = result.response.name;
-              filterResult[0].signInfo = result.signInfo;
+              if(result.response.sKey) {
+                filterResult[0].value = JSON.stringify(result.response);
+                filterResult[0].fileName = result.response.sFileNameAndExt;
+                filterResult[0].signInfo = result.signInfo;
+              } else{
+                filterResult[0].value = result.response.id;
+                filterResult[0].fileName = result.response.name;
+                filterResult[0].signInfo = result.signInfo;
+              }
             }
           }).catch(function (err) {
             Modal.inform.error()('Помилка. ' + err.code + ' ' + err.message);
@@ -1044,18 +1096,22 @@
         };
 
         $scope.isTableAttachment = function (item) {
-          return item.indexOf('[table]') > -1;
+          if(typeof item === 'object') {
+            return item.type === 'table';
+          } else {
+            return item.indexOf('[table]') > -1;
+          }
         };
 
         $scope.isUnDisabledFields = function () {
           return activeFieldsList.length > 0;
         };
 
-        $scope.openTableAttachment = function (id, taskId) {
+        $scope.openTableAttachment = function (id, taskId, isNew) {
           $scope.attachIsLoading = true;
 
-          tasks.getTableAttachment(taskId, id).then(function (res) {
-            $scope.openedAttachTable = JSON.parse(res);
+          tasks.getTableAttachment(taskId, id, isNew).then(function (res) {
+            $scope.openedAttachTable = typeof res === 'object' ? res : JSON.parse(res);
             fixFieldsForTable($scope.openedAttachTable);
             $scope.attachIsLoading = false;
           });
@@ -1115,7 +1171,8 @@
 
         TableService.init($scope.taskForm);
 
-        var idMatch = function () {
+        //old service where we need to check the same id from form field and attachment to load it. remove it in a future.
+        var idMatchInAttach = function () {
           angular.forEach($scope.taskForm, function (item, key, obj) {
             angular.forEach($scope.taskData.aAttachment, function (attachment) {
               var reg = /(\[id=(\w+)\])/;
@@ -1129,7 +1186,34 @@
             })
           });
         };
-        idMatch();
+
+        var newServiceExistedTableDownload = function () {
+          angular.forEach($scope.taskForm, function (item, key, obj) {
+            if(item.type === "table") {
+              try {
+                var isDBJSON = JSON.parse(item.value);
+                if(isDBJSON && isDBJSON.sKey && isDBJSON.sID_StorageType) {
+                  tasks.getTableAttachment($scope.taskData.oProcess.nID, item.id, true).then(function (res) {
+                    if(res && res.id){
+                      for(var t=0; t<$scope.taskData.aField.length; t++) {
+                        var table = $scope.taskData.aField[t];
+                        if(table.sID === res.id) {
+                          res.writable = table.bWritable;
+                          res.readable = table.bReadable;
+                          res.required = table.bRequired;
+                        }
+                      }
+                    }
+                    obj[key] = res;
+                  })
+                }
+              } catch (e){}
+            }
+          })
+        };
+
+        idMatchInAttach();
+        newServiceExistedTableDownload();
 
         $scope.addRow = function (form, id, index) {
           ValidationService.validateByMarkers(form, null, true, null, true);

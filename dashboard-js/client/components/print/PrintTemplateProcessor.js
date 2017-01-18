@@ -83,7 +83,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         var comment = template.match(/<!--[\s\S]*?-->/g);
         if(Array.isArray(comment)) {
           for(var i=0; i<comment.length; i++) {
-            comment[i] = comment[i].match(/[a-zA-Z1-9]+/)[0];
+            comment[i] = comment[i].match(/\w+/)[0];
           }
         }
         if(comment) matchesIds.push(comment);
@@ -117,6 +117,41 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
                 _printTemplate = _printTemplate.replace(template, withAddedRowsTemplate);
               }
             })
+          }
+        });
+        angular.forEach(form, function (item) {
+          if(item.type === 'table') {
+            if(item.id === id[0]) {
+              angular.forEach(templates, function (template) {
+                var commentedField = template.match(/<!--.*?-->/)[0];
+                var uncommentedField = commentedField.split('--')[1];
+                var result = uncommentedField.slice(1);
+                if(result == id[0]){
+                  var withAddedRowsTemplate = template.repeat(item.aRow.length);
+                  angular.forEach(item.aRow, function (row) {
+                    angular.forEach(row.aField, function (field) {
+                      var fieldId = function () {
+                        if(field.type !== 'enum' && field.value) {
+                          return field.value;
+                        } else if(field.type !== 'enum' && !field.value && field.default) {
+                          return field.default;
+                        } else if(field.type === 'enum') {
+                          for(var j = 0; j<field.a.length; j++) {
+                            if(field.a[j].id === field.value) {
+                              return field.a[j].name;
+                            }
+                          }
+                        } else {
+                          return '';
+                        }
+                      };
+                      withAddedRowsTemplate = self.populateSystemTag(withAddedRowsTemplate, '['+ field.id +']', fieldId, true);
+                    })
+                  });
+                  _printTemplate = _printTemplate.replace(template, withAddedRowsTemplate);
+                }
+              })
+            }
           }
         })
       });
@@ -200,16 +235,6 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       printTemplate = this.populateSystemTag(printTemplate, "[sCurrentDateTime]", $filter('date')(new Date(), 'yyyy-MM-dd HH:mm'));
       printTemplate = this.populateSystemTag(printTemplate, "[sDateCreate]", $filter('date')(task.createTime.replace(' ', 'T'), 'yyyy-MM-dd HH:mm'));
 
-      // наполнение принтформы данными из типа "table".
-      var that = this;
-      angular.forEach(form.taskData.aTable, function (table) {
-        angular.forEach(table.content, function (row) {
-          angular.forEach(row.aField, function (field) {
-            printTemplate = that.populateSystemTag(printTemplate, "[" + field.id + "]",
-              field.value ? field.value : (field.default ? field.default : field.props.value))
-          })
-        });
-      });
       //№{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
       //$scope.lunaService = lunaService;
       //lunaService.getLunaValue(

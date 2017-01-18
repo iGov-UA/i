@@ -17,6 +17,7 @@ router.get('/:taskId/attachments', controller.getAttachments);
 router.post('/action/task/saveForm', controller.saveChangesTask);
 router.get('/:nID_Process/getOrderMessages', controller.getOrderMessages);
 router.get('/:taskId/attachments/:attachmentId/content/:nFile', controller.getAttachmentContent);
+router.get('/download/:processID/attachment/:attachID', controller.getAttachmentFile);
 router.get('/:taskId/attachments/:attachmentId/table', controller.getAttachmentContentTable);
 router.post('/:taskId/attachments/:field/upload',controller.uploadFile);
 router.post('/:taskId/form', controller.submitForm);
@@ -28,9 +29,11 @@ router.get('/search/byText/:text/type/:sType', controller.getTasksByText);
 router.post('/:taskId/upload_content_as_attachment', controller.upload_content_as_attachment);
 router.post('/setTaskQuestions', controller.setTaskQuestions);
 router.get('/:taskId/attachments/:attachmentId/checkAttachmentSign', controller.checkAttachmentSign);
+router.get('/sign/checkAttachmentSignNew', controller.checkAttachmentSignNew);
 router.get('/:taskId/getMessageFile/:messageId/:fileName', controller.getMessageFile);
 router.post('/postServiceMessages', controller.postServiceMessage);
 router.post('/:taskId/setTaskAttachment', controller.setTaskAttachment);
+router.post('/:taskId/setTaskAttachmentNew', controller.setTaskAttachmentNew);
 
 
 module.exports = router;
