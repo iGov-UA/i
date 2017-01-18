@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_184_pereoformlennya" name="Переоформлення дозволу на розміщення зовнішньої реклами" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 16.09.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 18.01.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -59,6 +59,7 @@
         <activiti:formProperty id="nFile_Roztashuvannya" name="Завантажте письмове узгодження власника місця розташування рекламного засобу або уповноваженого ним органу (особи)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/chZaSy&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; щодо переоформлення дозволу на розміщення зовнішньої реклами"></activiti:formProperty>
         <activiti:formProperty id="nFile_Zayava_EZP" name="Заява про переоформлення дозволу на розміщення зовнішньої реклами; Файл повинен бути підписано ЕЦП" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_ActVzaymorozrahunkiv" name="Акт звірки взаєморозрахунків, який підтверджує відсутність заборгованості рекламоносія" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="invisible" default="Начальнику управління архітектури та містобудування – головному архітектору міста"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -141,7 +142,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_Roztashuvannya},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_PravoVlasnistReklama},${nFile_Original_Dozvolu},${form_signed},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_PlacePhotoZP},${nFile_AdvertZP},${nFile_Original_DozvoluZP}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_Roztashuvannya},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_PravoVlasnistReklama},${nFile_Original_Dozvolu},${form_signed},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_PlacePhotoZP},${nFile_AdvertZP},${nFile_Original_DozvoluZP},${nFile_ActVzaymorozrahunkiv}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -211,7 +212,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_Roztashuvannya},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_PravoVlasnistReklama},${nFile_Original_Dozvolu},${form_signed},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_PlacePhotoZP},${nFile_AdvertZP},${nFile_Original_DozvoluZP}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_Roztashuvannya},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_PravoVlasnistReklama},${nFile_Original_Dozvolu},${form_signed},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_PlacePhotoZP},${nFile_AdvertZP},${nFile_Original_DozvoluZP},${nFile_ActVzaymorozrahunkiv}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -283,7 +284,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_Roztashuvannya},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_PravoVlasnistReklama},${nFile_Original_Dozvolu},${form_signed},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_PlacePhotoZP},${nFile_AdvertZP},${nFile_Original_DozvoluZP}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_Roztashuvannya},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_PravoVlasnistReklama},${nFile_Original_Dozvolu},${form_signed},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_PlacePhotoZP},${nFile_AdvertZP},${nFile_Original_DozvoluZP},${nFile_ActVzaymorozrahunkiv}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -546,6 +547,15 @@ if (execution.getVariable('nFile_Prioritet') != null)
 					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
 		per1 = per1 + 1
 }
+if (execution.getVariable('nFile_ActVzaymorozrahunkiv') != null)
+{
+		per2 = per2 + per1.toString()+". Акт звірки взаєморозрахунків. &lt;br&gt;"
+		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
+					"Акт звірки взаєморозрахунків."
+					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
+		per1 = per1 + 1
+}
+
 
 execution.setVariable('sAdd_doc', per2)
 execution.setVariable('sAdd_doc_table', per2_table)
