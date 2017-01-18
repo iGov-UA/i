@@ -14,7 +14,7 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sContent" name="Короткий зміст документа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа" type="file"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecute&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFirstName_isExecute&quot;,&quot;name&quot;:&quot;First Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLastName_isExecute&quot;,&quot;name&quot;:&quot;Last Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_isExecute&quot;,&quot;name&quot;:&quot;Login&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
@@ -48,20 +48,26 @@
           <activiti:field name="sID_Attachment">
             <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
+          <activiti:field name="sContent">
+            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
+          </activiti:field>
           <activiti:field name="sDateRegistration">
             <activiti:expression><![CDATA[${sDateRegistration}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="sDateDoc">
-            <activiti:expression><![CDATA[${sDateDoc}]]></activiti:expression>
+          <activiti:field name="sAutorResolution">
+            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateExecution">
             <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
           </activiti:field>
+          <activiti:field name="asTypeResolution">
+            <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sTextResolution">
+            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
+          </activiti:field>
           <activiti:field name="sName_SubjectRole">
             <activiti:expression><![CDATA[${sName_SubjectRole}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="soData">
-            <activiti:string><![CDATA[sContent::value{[sContent]};;asTypeResolution::value{[asTypeResolution]};;sTextResolution::value{[sTextResolution]}]]></activiti:string>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -74,7 +80,18 @@
     <sequenceFlow id="flow17" sourceRef="exclusivegateway1" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asCreateOutcomingLetter=='sEnumNotCreateOutcomingLetter'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
+    <endEvent id="endevent1" name="End">
+      <extensionElements>
+        <activiti:executionListener event="end" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
+          <activiti:field name="snID_Process_Activiti">
+            <activiti:expression><![CDATA[${processInstanceId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:string><![CDATA[unactual]]></activiti:string>
+          </activiti:field>
+        </activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var processInstanceId= execution.getProcessInstanceId()
