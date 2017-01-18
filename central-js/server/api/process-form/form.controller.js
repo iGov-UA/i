@@ -730,7 +730,7 @@ module.exports.signFormCallback = function (req, res) {
     }
   ], function (err, result) {
     if (err) {
-      logger.warning('error go back to initial page');
+      logger.error('error. go back to initial page', {error: err});
       res.redirect(result.formData.restoreFormUrl
         + '?formID=' + formID
         + '&error=' + JSON.stringify(err));
@@ -793,6 +793,7 @@ function pipeFormDataToRequest(form, requestOptionsForUploadContent, callback) {
   var result = {};
   form.pipe(request.post(requestOptionsForUploadContent))
     .on('response', function (response) {
+      logger.info("[pipeFormDataToRequest] response", {loading_from: requestOptionsForUploadContent, res : response});
       result.statusCode = response.statusCode;
     }).on('data', function (chunk) {
       if (result.data) {
