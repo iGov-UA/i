@@ -12,7 +12,7 @@
         <activiti:in source="test" target="test"></activiti:in>
         <activiti:in source="sLogin" target="sLogin"></activiti:in>
       </extensionElements>
-      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${resolveUsersForTask.getUsers()}" activiti:elementVariable="sLogin"></multiInstanceLoopCharacteristics>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${usersService.getUsersByGroup('admin')}" activiti:elementVariable="sLogin"></multiInstanceLoopCharacteristics>
     </callActivity>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="callactivity1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="callactivity1" targetRef="endevent1"></sequenceFlow>
