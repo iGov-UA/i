@@ -154,13 +154,17 @@ module.exports.scanUpload = function (req, res) {
           headers: form.getHeaders()
         };
 
-        pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
-          console.log('[scanUpload]:scan redis id ' + result.data);
-          uploadResults.push({
-            fileID: result.data,
-            scanField: documentScan
-          });
-          callback();
+        pipeFormDataToRequest(form, requestOptionsForUploadContent, function (error, result) {
+          logger.info('[scanUpload]: scan redis id ', {redisanswer: result, error : error});
+          if(error){
+            callback(error);
+          } else {
+            uploadResults.push({
+              fileID: result.data,
+              scanField: documentScan
+            });
+            callback();
+          }
         });
       }
     });
@@ -715,9 +719,13 @@ module.exports.signFormCallback = function (req, res) {
       };
 
       logger.info('uploading file to redis');
-      pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
-        logger.info('result from redis', { redisanswer: result });
-        callback(null, {formData: formData, signedFormID: result.data});
+      pipeFormDataToRequest(form, requestOptionsForUploadContent, function (error, result) {
+        logger.info('[signFormCallback]: result from redis', { redisanswer: result, error : error });
+        if(error){
+          callback(error, {formData: formData});
+        } else {
+          callback(null, {formData: formData, signedFormID: result.data});
+        }
       });
     }
   ], function (err, result) {
@@ -787,13 +795,15 @@ function pipeFormDataToRequest(form, requestOptionsForUploadContent, callback) {
     .on('response', function (response) {
       result.statusCode = response.statusCode;
     }).on('data', function (chunk) {
-    if (result.data) {
-      result.data += decoder.write(chunk);
-    } else {
-      result.data = decoder.write(chunk);
-    }
+      if (result.data) {
+        result.data += decoder.write(chunk);
+      } else {
+        result.data = decoder.write(chunk);
+      }
+  }).on('error', function(e){
+    callback(e, null)
   }).on('end', function () {
-    callback(result);
+    callback(null, result);
   });
 }
 
