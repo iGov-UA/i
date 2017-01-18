@@ -16,12 +16,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 /**
  * Сервис получения списка пользователей, если указан id групы
  *
  * @author inna
  */
+@Component("usersService")
 @Service
 public class UsersService {
 
