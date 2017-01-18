@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="_test_Assignee" name="_test_Assignee" isExecutable="true">
-    <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
+<!--    <startEvent id="startevent1" name="Start" activiti:initiator="initiator">-->
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="email" name="Вкажіть Вашу E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+      </extensionElements>
 	</startEvent>
     <userTask id="usertask1" name="User Task1" activiti:candidateGroups="Sales">
+      <extensionElements>
+        <activiti:formProperty id="email" name="Вкажіть Вашу E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur_1497_"></activiti:formProperty>
+        <activiti:taskListener event="complete" delegateExpression="${FindGroup}"></activiti:taskListener>
+      </extensionElements>
 	</userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask2" name="User Task2" activiti:assignee="${initiator}" activiti:candidateGroups="Sales">
+    <userTask id="usertask2" name="User Task2" activiti:assignee="${user_last}">
+      <extensionElements>
+        <activiti:formProperty id="email" name="Вкажіть Вашу E-Mail адресу для зворотнього зв'язку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="group_found" name="Найденная группа по префиксу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="user_last" name="Найденный пользователь" type="string"></activiti:formProperty>
+      </extensionElements>
 	</userTask>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
