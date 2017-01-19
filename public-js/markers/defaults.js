@@ -78,14 +78,14 @@ angular.module('iGovMarkers')
           aField_ID: ['long'],
           aField_Type: ['long'],
           nMin: 1,
-          nMax: 10000000000,
+          nMax: 1000000000000000,
           sMessage: 'Повинно бути цілим числом.'
         }
         ,DoubleNumber: { // Подільне число
           aField_ID: ['double'],
           aField_Type: ['double'],
           nMin: 1,
-          nMax: 10000000000,
+          nMax: 1000000000000000,
           //sSeparator: '.',
           sMessage: 'Повинно бути подільним числом та розділене ",".'
         }
