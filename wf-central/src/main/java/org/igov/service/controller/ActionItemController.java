@@ -1055,9 +1055,9 @@ public class ActionItemController {
 
 //    @Autowired
 //        GeneralConfig generalConfig;        
+        List<ServiceTagTreeNodeVO> aNode_Return = new LinkedList();
         boolean bTest = generalConfig.isSelfTest();
         if(!bTest){
-            List<ServiceTagTreeNodeVO> aNode_Return = new LinkedList();
             for (ServiceTagTreeNodeVO node : nodes) {
                 if (node.getoServiceTag_Root() != null && node.getoServiceTag_Root().getsName_UA()!=null && !node.getoServiceTag_Root().getsName_UA().startsWith("_")) {
                     aNode_Return.add(node);
