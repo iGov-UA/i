@@ -47,7 +47,7 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
         // получить User группы 
         List<User> aUser = null;
         
-        try{
+        //try{
             if(identityLink != null){
                 LOG.info("identityLink size " + identityLink.size());
                 LOG.info("identityLink groupID " + identityLink.iterator().next().getGroupId());
@@ -56,9 +56,9 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
                     .memberOfGroup(identityLink.iterator().next().getGroupId())
                     .list();
             }
-        }catch(Exception ex){
-            LOG.info("Exception while getting of usergroup: " + ex);
-        }
+        //}catch(Exception ex){
+        //    LOG.info("Exception while getting of usergroup: " + ex);
+        //}
         
         
         LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
