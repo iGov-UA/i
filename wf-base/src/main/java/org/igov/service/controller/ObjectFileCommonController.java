@@ -154,6 +154,7 @@ public class ObjectFileCommonController {
     public @ResponseBody
     byte[] getAttachmentsFromRedisBytes(
             @RequestParam("key") String key) throws FileServiceIOException {
+        LOG.info("download_file_from_redis_bytes is starting now...");
         byte[] upload = null;
         try {
             byte[] aByteFile = oBytesDataInmemoryStorage.getBytes(key);
