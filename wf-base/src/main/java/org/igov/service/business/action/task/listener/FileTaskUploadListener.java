@@ -23,7 +23,7 @@ import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
  */
 @Component("fileTaskUploadListener")
 public class FileTaskUploadListener extends AbstractModelTask implements TaskListener {
-
+    
     static final transient Logger LOG = LoggerFactory.getLogger(FileTaskUploadListener.class);
 
     private static final long serialVersionUID = 1L;
@@ -33,6 +33,7 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
     @Override
     public void notify(DelegateTask oTask) {
     	List<Attachment> attachments = taskService.getProcessInstanceAttachments(oTask.getProcessInstanceId());
+                LOG.info("FileTaskUploadListener is started....");
 		LOG.info("Found attachments for the process {}", attachments != null ? attachments.size() : 0);
 		if (attachments != null && attachments.size() > 0){
 			LOG.info("Returning from listener as there are {} attachments already assigned to the task", attachments.size());
