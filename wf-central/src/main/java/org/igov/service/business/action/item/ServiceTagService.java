@@ -206,11 +206,11 @@ public class ServiceTagService {
             final ServiceTag child = relation.getServiceTag_Child();
 
             LOG.info("parent: " + parent.getsID() + " child: " + child.getsID());
-            if (//isExcludeTestEntity(includeTestEntities, parent) || 
+            /*if (isExcludeTestEntity(includeTestEntities, parent) || 
             isExcludeTestEntity(includeTestEntities, child)) {
                 LOG.info("parent: " + parent.getsID() + " child: " + child.getsID() + " continue!!!");
                 continue;
-            }
+            }*/
 
             ServiceTagTreeNode parentNode = null;
             if (parent.getId() != FAKE_ROOT_TAG_ID) {
