@@ -47,13 +47,18 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
         // получить User группы 
         List<User> aUser = null;
         
-        if(identityLink != null){
-            LOG.info("identityLink.iterator: " + identityLink.iterator());
-            aUser = oExecution.getEngineServices().getIdentityService()
-                .createUserQuery()
-                .memberOfGroup(identityLink.iterator().next().getGroupId())
-                .list();
+        try{
+            if(identityLink != null){
+                LOG.info("identityLink.iterator: " + identityLink.iterator());
+                aUser = oExecution.getEngineServices().getIdentityService()
+                    .createUserQuery()
+                    .memberOfGroup(identityLink.iterator().next().getGroupId())
+                    .list();
+            }
+        }catch(Exception ex){
+            LOG.info("Exception while getting of usergroup: " + ex);
         }
+        
         
         LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
         if (aUser == null || aUser.isEmpty() || aUser.get(0) == null || aUser.get(0).getId() == null) {
