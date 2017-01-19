@@ -49,7 +49,8 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
         
         try{
             if(identityLink != null){
-                LOG.info("identityLink.iterator: " + identityLink.iterator());
+                LOG.info("identityLink size " + identityLink.size());
+                LOG.info("identityLink groupID " + identityLink.iterator().next().getGroupId());
                 aUser = oExecution.getEngineServices().getIdentityService()
                     .createUserQuery()
                     .memberOfGroup(identityLink.iterator().next().getGroupId())
