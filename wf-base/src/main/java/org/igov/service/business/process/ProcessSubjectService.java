@@ -650,6 +650,7 @@ public class ProcessSubjectService {
      * По ид процесса активити вынимаем всех детей. Если статус отличен от
      * статусов: executed;notExecuted;closed проставляем в статус сущности
      * ProcessSubject unactual и закрываем процесс-задачу с причиной unactual.
+     * 
      */
     public void UpdateStatusTaskTreeAndCloseProcess(String snID_Process_Activiti, String sID_ProcessSubjectStatus) {
 
