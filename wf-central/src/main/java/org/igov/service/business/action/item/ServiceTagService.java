@@ -205,7 +205,8 @@ public class ServiceTagService {
             final ServiceTag parent = relation.getServiceTag_Parent();
             final ServiceTag child = relation.getServiceTag_Child();
 
-            if (isExcludeTestEntity(includeTestEntities, parent) || isExcludeTestEntity(includeTestEntities, child)) {
+            if (//isExcludeTestEntity(includeTestEntities, parent) || 
+            isExcludeTestEntity(includeTestEntities, child)) {
                 continue;
             }
 
