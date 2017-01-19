@@ -324,11 +324,18 @@ module.exports.downloadSignedContent = function (accessToken, codeValue, callbac
   };
 
   request.get(r, function (error, response, buffer) {
-    callback(null, {
-      buffer: buffer,
-      contentType: response.headers['content-type'],
-      fileName: response.headers['content-disposition'].split('filename=')[1]
-    });
+    if(error){
+      callback(error, null);
+    } if(!response.headers['content-disposition']){
+      callback(errors.createExternalServiceError('uknown response, no content-disposition',
+                new StringDecoder('utf8').write(buffer)));
+    } else {
+      callback(null, {
+        buffer: buffer,
+        contentType: response.headers['content-type'],
+        fileName: response.headers['content-disposition'].split('filename=')[1]
+      });
+    }
   })
 };
 /**
