@@ -498,15 +498,15 @@ public abstract class AbstractModelTask {
         
         DelegateExecution oExecution = oTask.getExecution();
         List<Attachment> aAttachment = new LinkedList<>();
-        LOG.info("Start FileTaskUploadListener");
+        LOG.info("Start FileTaskUploadListener...");
         LOG.info("SCAN:file");
         List<String> asFieldID = getListFieldCastomTypeFile(oFormData);
         LOG.info("[addAttachmentsToTask]");
-        LOG.info("(asFieldID={})", asFieldID);
+        LOG.info("(asFieldID in new schema={})", asFieldID);
         List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
-        LOG.info("(asFieldValue={})", asFieldValue);
+        LOG.info("(asFieldValue in new schema ={})", asFieldValue);
         List<String> asFieldName = getListCastomFieldName(oFormData);
-        LOG.info("(asFieldName={})", asFieldName);
+        LOG.info("(asFieldName in new schema ={})", asFieldName);
 
         if (!asFieldValue.isEmpty()) {
             int n = 0;
@@ -530,7 +530,7 @@ public abstract class AbstractModelTask {
                         }
                         
                         if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null){ //try to process field with new logic
-                        
+                            LOG.info("It is new JSON object");
                             addNewAttachmentToTask(oExecution, oJsonTaskAttachVO, sCurrFieldID);
                             
                         }else if (oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("aRow") != null){ //try to process table
@@ -618,12 +618,14 @@ public abstract class AbstractModelTask {
                                 }
                                 oJSONObject.replace("aRow", aJsonRow);
                                 //oRuntimeService.setVariable(oExecution.getProcessInstanceId(), sCurrFieldID, oJSONObject.toJSONString());
+                                //LOG.info()
                                 taskService.setVariable(oTask.getId(), sCurrFieldID, oJSONObject.toJSONString());
                             } catch (ParseException ex) {
                                 LOG.info("Some error during table parsing : ", ex);
                             }
                         }
                         else{ //Old logic
+                            LOG.info("It is old object");
                             addOldAttachmentToTask(oTask, oExecution, oFormData, sFieldValue, aAttachment, sCurrFieldID, sCurrFieldName);
                     
                         }
