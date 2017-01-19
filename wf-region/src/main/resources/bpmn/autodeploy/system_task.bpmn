@@ -6,6 +6,7 @@
         <activiti:formProperty id="sID_Attachment" name="sTable3 - таблица с исполнителями" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Вхідний номер" type="string"></activiti:formProperty>
@@ -30,6 +31,7 @@
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_Top1"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина!" type="invisible" default="3"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -78,27 +80,12 @@
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+      <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
             <activiti:string><![CDATA[system_task]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
             <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sContent">
-            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sAutorResolution">
-            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sDateExecution">
-            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sTypeDoc">
-            <activiti:expression><![CDATA[${sTypeDoc}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sID_Order_GovPublic">
-            <activiti:expression><![CDATA[${sID_Order_GovPublic}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateRegistration">
             <activiti:expression><![CDATA[${sDateRegistration}]]></activiti:expression>
@@ -106,29 +93,17 @@
           <activiti:field name="sDateDoc">
             <activiti:expression><![CDATA[${sDateDoc}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="sApplicant">
-            <activiti:expression><![CDATA[${sApplicant}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="nCountAttach">
-            <activiti:expression><![CDATA[${nCountAttach}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sNote">
-            <activiti:expression><![CDATA[${sNote}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="asUrgently">
-            <activiti:expression><![CDATA[${asUrgently}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="asTypeResolution">
-            <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sTextResolution">
-            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sDoc1">
-            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
-          </activiti:field>
           <activiti:field name="sName_SubjectRole">
             <activiti:expression><![CDATA[${sName_SubjectRole}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sDateExecution">
+            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="processDefinitionId">
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+          </activiti:field>
+           <activiti:field name="soData">
+            <activiti:expression><![CDATA[sContent::${sContent};;sAutorResolution::${sAutorResolution};;sTypeDoc::${sTypeDoc};;sID_Order_GovPublic::${sID_Order_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
@@ -138,7 +113,6 @@
           <activiti:field name="sReport">
             <activiti:expression><![CDATA[${sReport}]]></activiti:expression>
           </activiti:field>
-         
         </activiti:taskListener>
       </extensionElements>
     </userTask>
