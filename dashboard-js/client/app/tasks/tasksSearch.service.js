@@ -112,8 +112,14 @@
     var searchTypes = ['unassigned','selfAssigned'];
 
     var searchSuccess = function (taskId, tab, onlyThisTab) {
-      if (tab) {
-        searchTaskInType(taskId, tab, onlyThisTab);
+      if (!onlyThisTab)
+        onlyThisTab = false;
+      if (onlyThisTab) {
+        if (tab) {
+          searchTaskInType(taskId, tab, onlyThisTab);
+        } else {
+          searchTaskInType(taskId, searchTypes[0], onlyThisTab);
+        }
       } else {
         searchTaskInType(taskId, searchTypes[0], onlyThisTab);
       }
