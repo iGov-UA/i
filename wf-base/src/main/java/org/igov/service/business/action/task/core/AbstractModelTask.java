@@ -43,6 +43,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.igov.service.business.object.ObjectFileService;
 import org.igov.service.conf.AttachmetService;
+import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.RecordNotFoundException;
 import org.json.simple.JSONArray;
 import static org.igov.util.Tool.sTextTranslit;
 
@@ -345,7 +347,7 @@ public abstract class AbstractModelTask {
         try {
             oMultipartFile = oAttachmetService
                     .getAttachment(oExecution.getProcessInstanceId(), sFieldID, null, null);
-        } catch (ParseException | RecordInmemoryException | IOException | ClassNotFoundException ex) {
+        } catch (ParseException | RecordInmemoryException | IOException | ClassNotFoundException|CRCInvalidException|RecordNotFoundException ex) {
             LOG.info("getAttachment has some errors: " + ex);
         }
 
@@ -363,11 +365,12 @@ public abstract class AbstractModelTask {
                 }
 
                 byte[] aByteFile = oMultipartFile.getBytes();
-                oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), sFieldID,
-                        (String) oJsonTaskAttachVO.get("sFileNameAndExt"),
-                        (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html",
-                        aAttribute, aByteFile, true);
-            } catch (IOException ex) {
+                    oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), sFieldID,
+                            (String) oJsonTaskAttachVO.get("sFileNameAndExt"),
+                            (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html",
+                            aAttribute, aByteFile, true);
+
+            } catch (IOException|CRCInvalidException|RecordNotFoundException ex) {
                 LOG.info("createAttachment has some errors: " + ex);
             }
         } else {
@@ -566,7 +569,7 @@ public abstract class AbstractModelTask {
                                                                 try {
                                                                     oMultipartFile = oAttachmetService
                                                                             .getAttachment(null, null, (String)oJsonTableTaskAttachVO.get("sKey"), "Redis");
-                                                                } catch (ParseException | RecordInmemoryException | IOException | ClassNotFoundException ex) {
+                                                                } catch (ParseException | RecordInmemoryException | IOException | ClassNotFoundException | CRCInvalidException | RecordNotFoundException ex) {
                                                                     LOG.info("getAttachment has some errors: " + ex);
                                                                 }
                                                                 
@@ -589,10 +592,9 @@ public abstract class AbstractModelTask {
                                                                                 (String) oJsonTaskAttachVO.get("sFileNameAndExt"),
                                                                                 (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html",
                                                                                 aAttribute, aByteFile, false);
-                                                                        
                                                                         oJsonMap.replace("value", sNewTableElemValue);
                                                                     
-                                                                    } catch (IOException ex) {
+                                                                    } catch (IOException|CRCInvalidException|RecordNotFoundException ex) {
                                                                         LOG.info("createAttachment has some errors: " + ex);
                                                                     }
                                                                 } else {

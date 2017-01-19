@@ -25,6 +25,9 @@ import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.vo.TaskAttachVO;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.RecordNotFoundException;
 import static org.igov.util.Tool.sTextTranslit;
 import org.json.simple.JSONObject;
 import org.igov.util.JSON.JsonRestUtils;
@@ -52,12 +55,15 @@ public class AttachmetService {
     @Autowired
     private IBytesDataStorage oBytesDataStaticStorage;
         
+    @Autowired
+    private ActionTaskService oActionTaskService;
+        
     private final Logger LOG = LoggerFactory.getLogger(AttachmetService.class);
 	
     
     public String createAttachment (String nID_Process, String sID_Field, String sFileNameAndExt,
         	boolean bSigned, String sID_StorageType, String sContentType, List<Map<String, Object>> saAttribute_JSON,
-		byte[] aContent, boolean bSetVariable) throws JsonProcessingException{
+		byte[] aContent, boolean bSetVariable) throws JsonProcessingException, CRCInvalidException, RecordNotFoundException{
             
         LOG.info("createAttachment nID_Process: " + nID_Process);
         LOG.info("createAttachment sFileNameAndExt: " + sFileNameAndExt);
@@ -105,7 +111,15 @@ public class AttachmetService {
         String sID_Field_Value = JsonRestUtils.toJson((Object)oTaskAttachVO);
         
         if(nID_Process != null && bSetVariable == true){
-            oRuntimeService.setVariable(nID_Process, sID_Field, sID_Field_Value);
+            String taskId = Long.toString(oActionTaskService.getTaskIDbyProcess(Long.parseLong(nID_Process), null, true));
+            
+            LOG.info("UserTask id is:" + taskId);
+            LOG.info("UserTask sID_Field is:" + sID_Field);
+            LOG.info("UserTask sID_Field_Value is:" + sID_Field_Value);
+            
+            oTaskService.setVariable(taskId, sID_Field, sID_Field_Value);
+            
+            //oRuntimeService.setVariable(nID_Process, sID_Field, sID_Field_Value);
         }
 	
         return sID_Field_Value;
@@ -113,7 +127,7 @@ public class AttachmetService {
     
     public MultipartFile getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
     //    byte[] getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
-            throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException {
+            throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
         MultipartFile oMultipartFile = null;
         
         byte [] aResultArray = null;
@@ -124,7 +138,8 @@ public class AttachmetService {
         
         if(nID_Process != null && sID_Field != null){
             
-            Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
+            //Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
+            Map<String, Object> variables = oTaskService.getVariables(Long.toString(oActionTaskService.getTaskIDbyProcess(Long.parseLong(nID_Process), null, true)));
             
             LOG.info("VariableMap: " + variables);
 
