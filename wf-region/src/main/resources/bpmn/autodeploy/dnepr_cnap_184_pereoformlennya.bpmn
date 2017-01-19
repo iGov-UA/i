@@ -135,7 +135,7 @@
         <activiti:formProperty id="sAdd_doc_table" name="Реестр Файлов-додатків у вигляді таблиці" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_pereoformlennya_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_pereoformlennya_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_184_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_184_opis_docs_print.html]" type="invisible" default="Опис документів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
@@ -453,10 +453,10 @@ execution.setVariable('sPf_Part', per3)
 var per1=1
 var per2=' '
 var per2_table=' '
-var table_td1='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman" color="#000000"&gt;'
-var table_td2='&lt;td style="border:1px solid #000000" colspan="3" height="40" align="LEFT" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman" color="#000000"&gt;'
-var table_td3='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman" color="#000000"&gt;'
-var table_td4='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman" color="#000000"&gt;'
+var table_td1='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman"&gt;'
+var table_td2='&lt;td style="border:1px solid #000000" colspan="3" height="40" align="LEFT" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman"&gt;'
+var table_td3='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman"&gt;'
+var table_td4='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman"&gt;'
 var table_td_close='&lt;/font&gt;&lt;/td&gt;'
 
 if (execution.getVariable('nFile_PlacePhoto') != null)
@@ -533,9 +533,9 @@ if (execution.getVariable('nFile_Dogovor') != null)
 }
 if (execution.getVariable('nFile_Rekvizity') != null)
 {
-		per2 = per2 + per1.toString()+". Рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету. &lt;br&gt;"
+		per2 = per2 + per1.toString()+". Рахунок на оплату за тимчасове користування місцем розташування.&lt;br&gt;"
 		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
-					"Рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету."
+					"Рахунок на оплату за тимчасове користування місцем розташування."
 					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
 		per1 = per1 + 1
 }
