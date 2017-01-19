@@ -1053,7 +1053,20 @@ public class ActionItemController {
             }
         }
 
-        res.setaNode(nodes);
+//    @Autowired
+//        GeneralConfig generalConfig;        
+        boolean bTest = generalConfig.isSelfTest();
+        if(!bTest){
+            List<ServiceTagTreeNodeVO> aNode_Return = new LinkedList();
+            for (ServiceTagTreeNodeVO node : nodes) {
+                if (node.getoServiceTag_Root() != null && node.getoServiceTag_Root().getsName_UA()!=null && !node.getoServiceTag_Root().getsName_UA().startsWith("_")) {
+                    aNode_Return.add(node);
+                }
+            }
+        }
+        
+        //res.setaNode(nodes);
+        res.setaNode(aNode_Return);
         res.setaService(new ArrayList<>(uniqueServices));
 
         return res;
