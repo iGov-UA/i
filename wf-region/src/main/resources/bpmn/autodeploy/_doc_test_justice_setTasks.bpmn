@@ -10,6 +10,7 @@
     <userTask id="usertask1" name="крок 1" activiti:candidateGroups="justice_common">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="5"></activiti:formProperty>
@@ -48,26 +49,23 @@
           <activiti:field name="sID_Attachment">
             <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="sContent">
-            <activiti:expression><![CDATA[${sContent}]]></activiti:expression>
-          </activiti:field>
           <activiti:field name="sDateRegistration">
             <activiti:expression><![CDATA[${sDateRegistration}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="sAutorResolution">
-            <activiti:expression><![CDATA[${sAutorResolution}]]></activiti:expression>
+          <activiti:field name="sDateDoc">
+            <activiti:expression><![CDATA[${sDateDoc}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sName_SubjectRole">
+            <activiti:expression><![CDATA[${sName_SubjectRole}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateExecution">
             <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="asTypeResolution">
-            <activiti:expression><![CDATA[${asTypeResolution}]]></activiti:expression>
+          <activiti:field name="processDefinitionId">
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="sTextResolution">
-            <activiti:expression><![CDATA[${sTextResolution}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sName_SubjectRole">
-            <activiti:expression><![CDATA[${sName_SubjectRole}]]></activiti:expression>
+          <activiti:field name="soData">
+            <activiti:expression><![CDATA[sContent::${sContent};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
