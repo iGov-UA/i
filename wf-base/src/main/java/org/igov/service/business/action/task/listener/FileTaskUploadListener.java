@@ -42,7 +42,9 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
         DelegateExecution oExecution = oTask.getExecution();
         // получить группу бп
         Set<IdentityLink> identityLink = oTask.getCandidates();
-        // получить User группы
+        LOG.info("identityLink is: + " + identityLink);
+        
+        // получить User группы 
         List<User> aUser = oExecution.getEngineServices().getIdentityService()
                 .createUserQuery()
                 .memberOfGroup(identityLink.iterator().next().getGroupId())
