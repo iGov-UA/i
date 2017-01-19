@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_184_otrimannya" name="Отримання дозволу на розміщення зовнішньої реклами" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 16.09.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 19.01.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -58,6 +58,7 @@
         <activiti:formProperty id="nFile_Rekvizity" name="Завантажте рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_SchemePlace" name="Схема розміщення рекламного засобу" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_Prioritet" name="Пріоритет на розміщення зовнішньої реклами" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_AgreementOwner" name="Письмове узгодження власника місця розташування рекламного засобу або уповноваженого ним органу (особи); У разі розміщення реклами на об'єктах приватної власності" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/6RU4HV&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; щодо отримання дозволу на розміщення зовнішньої реклами"></activiti:formProperty>
         <activiti:formProperty id="nFile_Zayava_EZP" name="Заява про надання дозволу на розміщення зовнішньої реклами; Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
@@ -145,7 +146,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed},${nFile_SchemePlace},${nFile_Prioritet},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_PlacePhotoZP},${nFile_AdvertZP}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed},${nFile_SchemePlace},${nFile_Prioritet},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_PlacePhotoZP},${nFile_AdvertZP},${nFile_AgreementOwner}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -220,7 +221,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed},${nFile_SchemePlace},${nFile_Prioritet},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_PlacePhotoZP},${nFile_AdvertZP},${nFile_Opis}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed},${nFile_SchemePlace},${nFile_Prioritet},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_PlacePhotoZP},${nFile_AdvertZP},${nFile_Opis},${nFile_AgreementOwner}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -390,10 +391,10 @@ execution.setVariable('sPf_Part', per3)
 var per1=1
 var per2=' '
 var per2_table=' '
-var table_td1='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman" color="#000000"&gt;'
-var table_td2='&lt;td style="border:1px solid #000000" colspan="3" height="40" align="LEFT" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman" color="#000000"&gt;'
-var table_td3='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman" color="#000000"&gt;'
-var table_td4='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman" color="#000000"&gt;'
+var table_td1='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman"&gt;'
+var table_td2='&lt;td style="border:1px solid #000000" colspan="3" height="40" align="LEFT" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman"&gt;'
+var table_td3='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman"&gt;'
+var table_td4='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman"&gt;'
 var table_td_close='&lt;/font&gt;&lt;/td&gt;'
 
 if (execution.getVariable('nFile_PlacePhoto') != null)
@@ -465,6 +466,14 @@ if (execution.getVariable('nFile_Prioritet') != null)
 		per2 = per2 + per1.toString()+". Пріоритет на розміщення зовнішньої реклами. &lt;br&gt;"
 		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
 					"Пріоритет на розміщення зовнішньої реклами."
+					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
+		per1 = per1 + 1
+}
+if (execution.getVariable('nFile_AgreementOwner') != null)
+{
+		per2 = per2 + per1.toString()+". Письмове узгодження власника місця розташування рекламного засобу. &lt;br&gt;"
+		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
+					"Письмове узгодження власника місця розташування рекламного засобу."
 					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
 		per1 = per1 + 1
 }
