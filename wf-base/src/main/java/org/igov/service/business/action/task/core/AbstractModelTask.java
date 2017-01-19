@@ -498,7 +498,7 @@ public abstract class AbstractModelTask {
         
         DelegateExecution oExecution = oTask.getExecution();
         List<Attachment> aAttachment = new LinkedList<>();
-        LOG.info("Start FileTaskUploadListener...");
+        LOG.info("addAttachmentsToTask is used...");
         LOG.info("SCAN:file");
         List<String> asFieldID = getListFieldCastomTypeFile(oFormData);
         LOG.info("[addAttachmentsToTask]");
