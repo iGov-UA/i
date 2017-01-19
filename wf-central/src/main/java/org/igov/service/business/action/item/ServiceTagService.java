@@ -54,6 +54,7 @@ public class ServiceTagService {
         LOG.info("!!! tagIdToServices.size: " + tagIdToServices.size());
 
         for (ServiceTagTreeNode rootTagNode : tree.getRootTagNodes()) {
+            LOG.info("!!! rootTagNode: " + rootTagNode.getTag().getsID() + " " + rootTagNode.getTag().getsName_RU());
             final ServiceTag parentTag = rootTagNode.getTag();
 
             final Long rootTagId = rootTagNode.getTag().getId();
