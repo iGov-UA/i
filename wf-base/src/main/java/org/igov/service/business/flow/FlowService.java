@@ -37,6 +37,7 @@ import org.activiti.engine.form.FormProperty;
 import org.igov.service.business.action.task.form.QueueDataFormType;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
+import org.igov.util.JSON.JsonRestUtils;
 
 /**
  * User: goodg_000
@@ -308,9 +309,17 @@ public class FlowService implements ApplicationContextAware {
                     LOG.info("flowProperty.getsData: " + flowProperty.getsData());
                     LOG.info("flowProperty.getsDateTimeAt: " + flowProperty.getsDateTimeAt());
                     LOG.info("flowProperty.getsDateTimeTo: " + flowProperty.getsDateTimeTo());
+                    
+                    /*while (startDate.isBefore(stopDate)) {
+                            if (stopDate.compareTo(startDate) <= 0) {
+                            break;
+                        }
+                    }*/
                 }
             }
         }
+        
+
         
         for (FlowProperty flowProperty : flow.getFlowProperties()) {
             if (flowProperty.getbExclude() == null || !flowProperty.getbExclude()) {
@@ -318,7 +327,7 @@ public class FlowService implements ApplicationContextAware {
                 if (BaseFlowSlotScheduler.class.isAssignableFrom(flowPropertyHandlerClass)) {
                         
                     BaseFlowSlotScheduler handler = getFlowPropertyHandlerInstance(
-                            flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
+                    flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
                     handler.setStartDate(startDate);
                     handler.setEndDate(stopDate);
                     handler.setFlow(flow);

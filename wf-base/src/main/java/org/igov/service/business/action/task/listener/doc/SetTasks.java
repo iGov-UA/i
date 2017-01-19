@@ -40,8 +40,9 @@ public class SetTasks implements TaskListener {
 //    private Expression asTypeResolution;
 //    private Expression sTextResolution;
     private Expression sDateExecution;
+    private Expression processDefinitionId;
     private Expression soData;
-    
+
     
     @Autowired
     private ProcessSubjectService processSubjectService;
@@ -165,6 +166,11 @@ public class SetTasks implements TaskListener {
             sName_SubjectRole_Value = (this.sName_SubjectRole != null) ? getStringFromFieldExpression(this.sName_SubjectRole, delegateTask.getExecution()) : "";
         }catch(Exception ex){}
         
+        String sProcessDefinitionId_Value = "";
+        try{
+            sProcessDefinitionId_Value = (this.processDefinitionId != null) ? getStringFromFieldExpression(this.processDefinitionId, delegateTask.getExecution()) : "";
+        }catch(Exception ex){}
+        
         String soData_Value = "";
         
         try{
@@ -193,6 +199,7 @@ public class SetTasks implements TaskListener {
 //        mParam.put("asTypeResolution", sAsTypeResolution_Value);
 //        mParam.put("sTextResolution", sTextResolution_Value);
 //        mParam.put("sDoc1", sDoc1_Value);
+        mParam.put("processDefinitionId", sProcessDefinitionId_Value);
         mParam.put("soData", soData_Value);
         mParam.putAll(Tool.parseData(soData_Value));
 
