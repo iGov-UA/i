@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_soc_help_150" name="Призначення допомоги інвалідам з дитинства та дітям-інвалідам" isExecutable="true">
+  <process id="dnepr_soc_help_150" name="Призначення державної соціальної допомоги інвалідам з дитинства та дітям-інвалідам віком до 18 років" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/150</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -95,6 +95,10 @@
         <activiti:formProperty id="cc_3_3" name="інвалідам з дитинства III групи" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="cc_3_4" name="на дітей-інвалідів віком до 18 років" type="invisible" default="false"></activiti:formProperty>
 
+        <activiti:formProperty id="nameService" name="Название услуги" type="invisible" default=" "></activiti:formProperty>
+
+
+
         <activiti:formProperty id="markersStart" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_150_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersStartCheck" name="Маркер логика галочек категорий инвалидов" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_150_start_check.json')}"></activiti:formProperty>
 
@@ -168,8 +172,7 @@
         <activiti:formProperty id="cc_3_3" name="інвалідам з дитинства III групи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="cc_3_4" name="на дітей-інвалідів віком до 18 років" type="invisible"></activiti:formProperty>
 
-		<activiti:formProperty id="markersUser1_1" name="якщо відхилити" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;sComment1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDecision1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markersUser1_2" name="якщо запросити" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;sDateVisit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDecision1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept_but'||[sReason] == 'Запросити громадянина для надання оригіналу документу'&quot;}}}"></activiti:formProperty>
+		<activiti:formProperty id="markersU!" name="Маркер UT1" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_150_user.json')}"></activiti:formProperty>
 
         <activiti:formProperty id="sBody_2" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -253,11 +256,11 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Призначення допомоги інвалідам з дитинства та дітям-інвалідам]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Призначення ${nameService}]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify_head.html]
-			Послуга: Призначення допомоги інвалідам з дитинства та дітям-інвалідам.<br />
+			Послуга: Призначення ${nameService}.<br />
 			Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
 			[pattern/mail/new_design/_common_employee_notify_footer.html]]]>
 		  </activiti:expression>
@@ -273,13 +276,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Призначення допомоги інвалідам з дитинства та дітям-інвалідам. Реєстрація]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Призначення ${nameService}. Реєстрація]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення, щодо призначення допомоги інвалідам з дитинства та дітям-інвалідам,
+				Ваше звернення, щодо призначення ${nameService},
 				передано на розгляд в управління праці та соціального захисту населення і буде опрацьовано протягом 10 робочих днів.
 			</p><br>
 			<p>
@@ -291,7 +294,7 @@
 			${sPhoneOrgan}
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]>
 		  </activiti:expression>
@@ -316,7 +319,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Призначення допомоги інвалідам з дитинства та дітям-інвалідам. Призначено дату]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Призначення ${nameService}. Призначено дату]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -325,7 +328,7 @@
 				Згідно Вашого звернення, призначено дату та час візиту для надання оригіналу документу: ${sDateVisit}
 			</p><br>
 			<br>
-			За наявності питань можете звернутись за наступними контактами<br>
+			За наявності питань можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}
@@ -356,13 +359,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Призначення допомоги інвалідам з дитинства та дітям-інвалідам. Відмовлено]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Призначення ${nameService}. Відмовлено]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				На жаль, Ваше звернення, щодо призначення допомоги інвалідам з дитинства та дітям-інвалідам,
+				На жаль, Ваше звернення, щодо призначення ${nameService},
 				відхилено через недостатню або неправильну інформацію.
 			</p>
 			<p>
@@ -403,7 +406,7 @@
           <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Призначення допомоги інвалідам з дитинства та дітям-інвалідам. Схвалено]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Призначення ${nameService}. Схвалено]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA["${rishen}"]]></activiti:expression>
@@ -413,7 +416,7 @@
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
 				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було оброблено і 
-				ви отримали схвалення щодо призначення допомоги інвалідам з дитинства та дітям-інвалідам.
+				ви отримали схвалення щодо призначення ${nameService}.
 			</p>
 			<p>
 				Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.
@@ -447,14 +450,14 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Призначення допомоги інвалідам з дитинства та дітям-інвалідам. Відмовлено]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Призначення ${nameService}. Відмовлено]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
 				Ваше звернення було оброблено.
-				На жаль, Вам відмовлено у призначенні допомоги інвалідам з дитинства та дітям-інвалідам.
+				На жаль, Вам відмовлено у призначенні ${nameService}.
 			</p>
 			<p>
 				Причина: ${sComment2}
