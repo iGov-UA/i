@@ -12,7 +12,9 @@ var url = require('url')
   , formService = require('./form.service')
   , activiti = require('../../components/activiti')
   , admZip = require('adm-zip')
-  , errors = require('../../components/errors');
+  , errors = require('../../components/errors')
+  , loggerFactory = require('../../components/logger')
+  , logger = loggerFactory.createLogger(module);
 
   var createError = function (error, error_description, response) {
     return {
@@ -95,13 +97,23 @@ module.exports.submit = function (req, res) {
   if(keys.length > 0) {
     async.forEach(keys, function (key, next) {
         function putTableToRedis (table, callback) {
-          var url = '/object/file/setProcessAttach';
-          var nameAndExt = table.id + '.json';
-          var  params = {
-            sID_StorageType:'Redis',
-            sID_Field:table.id,
-            sFileNameAndExt:nameAndExt
-          };
+          var url,
+              params = {},
+              nameAndExt = table.id + '.json',
+              checkForNewService = table.name.split(';');
+
+          // now we have two services for saving table, so we checking what service is needed;
+          if(checkForNewService.length === 3 && checkForNewService[2].indexOf('bNew=true') > -1) {
+            url = '/object/file/setProcessAttach';
+            params = {
+              sID_StorageType:'Redis',
+              sID_Field:table.id,
+              sFileNameAndExt:nameAndExt
+            }
+          } else {
+            url = '/object/file/upload_file_to_redis';
+          }
+
           activiti.upload(url, params, nameAndExt, JSON.stringify(table), callback);
         }
         putTableToRedis(formData.params[key], function (error, response, data) {
@@ -152,13 +164,17 @@ module.exports.scanUpload = function (req, res) {
           headers: form.getHeaders()
         };
 
-        pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
-          console.log('[scanUpload]:scan redis id ' + result.data);
-          uploadResults.push({
-            fileID: result.data,
-            scanField: documentScan
-          });
-          callback();
+        pipeFormDataToRequest(form, requestOptionsForUploadContent, function (error, result) {
+          logger.info('[scanUpload]: scan redis id ', {redisanswer: result, error : error});
+          if(error){
+            callback(error);
+          } else {
+            uploadResults.push({
+              fileID: result.data,
+              scanField: documentScan
+            });
+            callback();
+          }
         });
       }
     });
@@ -729,10 +745,12 @@ module.exports.signFormCallback = function (req, res) {
     uploadSignedForm
   ], function (err, result) {
     if (err) {
+      logger.error('error. go back to initial page', {error: err});
       res.redirect(result.formData.restoreFormUrl
         + '?formID=' + formID
         + '&error=' + JSON.stringify(err));
     } else {
+      logger.info('cool go back to initial page');
       res.redirect(result.formData.restoreFormUrl
         + '?formID=' + formID
         + '&signedFileID=' + result.signedFormID);
@@ -815,7 +833,7 @@ function pipeFormDataToRequest(form, requestOptionsForUploadContent, callback) {
   }).on('error', function (e) {
     callback(e, null)
   }).on('end', function () {
-    callback(result);
+    callback(null, result);
   });
 }
 

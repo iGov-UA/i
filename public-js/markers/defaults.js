@@ -165,6 +165,9 @@ angular.module('iGovMarkers')
           sID_Element_sValue: "registration-service"
         },
 
+        /* 
+         * Demo PrintForm   
+         *  
         PrintForm_Table12: {
           aField_ID: ["tbl1", "oPrescription1"],
           sPatternPath: "/print/kiev/kiev_mda_273_print.html",
@@ -176,13 +179,8 @@ angular.module('iGovMarkers')
           sTitleField: "sPrescriptionName",
           sPatternPath: "/print/kiev/kiev_mda_273_print.html",
           sName: "Звіт за сектором"
-        },
-
-        PrintForm_Table4: {
-          aField_ID: ["oPrescription2"],
-          sPatternPath: "/print/kiev/kiev_mda_273_print.html",
-          sName: "Звіт за блоком"
-        }
+        }, 
+        */ 
 
       }
     };

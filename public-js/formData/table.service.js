@@ -59,9 +59,11 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
     var checkRowsLimit = function (formProps) {
         angular.forEach(formProps, function(item, key, obj) {
             if(item.type === 'table') {
-                var isRowLimit = item.name.split(';');
-                if(isRowLimit.length === 3 && isRowLimit[2].indexOf('nRowsLimit') !== -1) {
-                    obj[key].nRowsLimit = isRowLimit[2].split('=')[1];
+                var hasOptions = item.name.split(';');
+                if(hasOptions.length === 3) {
+                    var hasLimit = hasOptions[2].match(/\b(nRowsLimit=(\d+))\b/);
+                    if(hasLimit !== null)
+                        obj[key].nRowsLimit = hasLimit[2];
                 }
             }
         })

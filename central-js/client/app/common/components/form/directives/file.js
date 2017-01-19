@@ -10,7 +10,7 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
       //for new upload service
       angular.forEach(scope.activitiForm.formProperties, function (item) {
         if(item.id === ngModel.$name && item.name.split(';').length === 3) {
-          if(item.name.split(';')[2] === "bNew=true") {
+          if(item.name.split(';')[2].indexOf("bNew=true") > -1) {
             oFileField = {
               id:item.id,
               isNew:true

@@ -23,7 +23,13 @@ angular.module('dashboardJsApp').directive('printDialog', [
               }
               $scope.processedPrintTemplate = 'Завантаження форми. Зачекайте, будь ласка.';
               //var templatePromise = PrintTemplateService.getPrintTemplate($scope.selectedTask, $scope.taskForm, $scope.model.printTemplate.id, $scope.lunaService);
-              var templatePromise = PrintTemplateService.getPrintTemplate($scope.selectedTask, $scope.taskForm, $scope.model.printTemplate.id);
+              var templatePromise = null;   
+              if( $scope.model.printTemplate.type !== "prints" ) { 
+                 templatePromise = PrintTemplateService.getPrintTemplate($scope.selectedTask, $scope.taskForm, $scope.model.printTemplate.id);
+              } 
+              else { 
+                 templatePromise = PrintTemplateService.getPrintTemplateByObject($scope.selectedTask, $scope.taskForm, $scope.model.printTemplate.value ); 
+              } 
               templatePromise.then(function(template){
                 $scope.processedPrintTemplate = template;
               }, function(error) {
