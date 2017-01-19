@@ -1010,6 +1010,18 @@ public class ActionItemController {
             return JsonRestUtils.toJsonResponse(toNewFormat(res));
         }
         
+        List<ServiceTagTreeNodeVO> aNode_Return = new LinkedList();
+        boolean bTest = generalConfig.isSelfTest();
+        if(!bTest){
+            for (ServiceTagTreeNodeVO node : res) {
+                if (node.getoServiceTag_Root() != null && node.getoServiceTag_Root().getsName_UA()!=null && !node.getoServiceTag_Root().getsName_UA().startsWith("_")) {
+                    aNode_Return.add(node);
+                }
+            }
+        }else{
+            aNode_Return.addAll(res);
+        }
+        
         return JsonRestUtils.toJsonResponse(res);
     }
 
