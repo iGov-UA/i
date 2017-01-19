@@ -1022,7 +1022,9 @@ public class ActionItemController {
             aNode_Return.addAll(res);
         }
         
-        return JsonRestUtils.toJsonResponse(res);
+        
+        return JsonRestUtils.toJsonResponse(aNode_Return);
+        //return JsonRestUtils.toJsonResponse(res);
     }
 
     @ApiOperation(value = "Получение дерева тегов и услуг", notes = "Дополнительно:\n" + "")
