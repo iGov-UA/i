@@ -12,17 +12,19 @@ var url = require('url')
   , formService = require('./form.service')
   , activiti = require('../../components/activiti')
   , admZip = require('adm-zip')
-  , errors = require('../../components/errors');
+  , errors = require('../../components/errors')
+  , loggerFactory = require('../../components/logger')
+  , logger = loggerFactory.createLogger(module);
 
-  var createError = function (error, error_description, response) {
-    return {
-      code: response ? response.statusCode : 500,
-      err: {
-        error: error,
-        error_description: error_description
-      }
-    };
+var createError = function (error, error_description, response) {
+  return {
+    code: response ? response.statusCode : 500,
+    err: {
+      error: error,
+      error_description: error_description
+    }
   };
+};
 
 module.exports.index = function (req, res) {
   var sHost = req.region.sHost;
@@ -86,24 +88,25 @@ module.exports.submit = function (req, res) {
     activiti.post('/service/form/form-data', qs, body, callback, sHost);
   }
 
-  for(var key in formData.params) {
-    if(formData.params[key] !== null && typeof formData.params[key] === 'object') {
+  for (var key in formData.params) {
+    if (formData.params[key] !== null && typeof formData.params[key] === 'object') {
       keys.push(key);
     }
   }
 
-  if(keys.length > 0) {
+  if (keys.length > 0) {
     async.forEach(keys, function (key, next) {
-        function putTableToRedis (table, callback) {
+        function putTableToRedis(table, callback) {
           var url = '/object/file/upload_file_to_redis';
           activiti.upload(url, {}, table.id + '.json', JSON.stringify(table), callback);
         }
+
         putTableToRedis(formData.params[key], function (error, response, data) {
           formData.params[key] = data;
           next()
         })
       },
-      function(err) {
+      function (err) {
         formSubmit();
       });
   } else {
@@ -123,7 +126,7 @@ module.exports.scanUpload = function (req, res) {
   var documentScans = data.scanFields;
   console.log("[scanUpload]:data.scanFields=" + data.scanFields);
 
-  if(!userService.scanContentRequest){
+  if (!userService.scanContentRequest) {
     res.status(400).send(errors.createError(errors.codes.LOGIC_SERVICE_ERROR,
       'type of authorization doesn\'t support documents and scan-copies'));
     return;
@@ -146,13 +149,17 @@ module.exports.scanUpload = function (req, res) {
           headers: form.getHeaders()
         };
 
-        pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
-          console.log('[scanUpload]:scan redis id ' + result.data);
-          uploadResults.push({
-            fileID: result.data,
-            scanField: documentScan
-          });
-          callback();
+        pipeFormDataToRequest(form, requestOptionsForUploadContent, function (error, result) {
+          logger.info('[scanUpload]: scan redis id ', {redisanswer: result, error: error});
+          if (error) {
+            callback(error);
+          } else {
+            uploadResults.push({
+              fileID: result.data,
+              scanField: documentScan
+            });
+            callback();
+          }
         });
       }
     });
@@ -233,6 +240,7 @@ module.exports.signFormMultiple = function (req, res) {
   }
 
   var callbackURL = url.resolve(originalURL(req, {}), '/api/process-form/signMultiple/callback?nID_Server=' + nID_Server);
+
   function findFileFields(formData) {
     var fileFields = formData.activitiForm.formProperties.filter(function (property) {
       return property.type === 'file';
@@ -294,7 +302,7 @@ module.exports.signFormMultiple = function (req, res) {
       if (error) {
         callbackAsync(error, null);
       } else {
-        callbackAsync(null, {loadedForm : body});
+        callbackAsync(null, {loadedForm: body});
       }
     });
   }
@@ -395,7 +403,7 @@ module.exports.signFormMultipleCallback = function (req, res) {
 
   function downloadSignedContent(formData, callback) {
     userService.downloadSignedContent(accessToken, codeValue, function (error, result) {
-      callback(error, {signedContent : result, formData: formData});
+      callback(error, {signedContent: result, formData: formData});
     });
   }
 
@@ -433,29 +441,29 @@ module.exports.signFormMultipleCallback = function (req, res) {
     }
 
     function populateFormDataWithNewIDs(error) {
-      if(error){
+      if (error) {
         callback(error, null);
       } else {
         console.log(JSON.stringify(uploadedFiles));
         console.log(JSON.stringify(result.formData));
 
         var savedForm = result.formData;
-        for(var formFieldKey in savedForm.formData.files){
-          if(savedForm.formData.files.hasOwnProperty(formFieldKey)){
-            if(uploadedFiles.hasOwnProperty(formFieldKey)){
+        for (var formFieldKey in savedForm.formData.files) {
+          if (savedForm.formData.files.hasOwnProperty(formFieldKey)) {
+            if (uploadedFiles.hasOwnProperty(formFieldKey)) {
               var oldID = savedForm.formData.params[formFieldKey];
               var newID = uploadedFiles[formFieldKey];
               savedForm.formData.params[formFieldKey] = newID;
-              console.log('[sign multiple callback] update fileids. was : ' + oldID +'now : ' + newID);
+              console.log('[sign multiple callback] update fileids. was : ' + oldID + 'now : ' + newID);
             }
           }
         }
 
-        for(var uploadedFileKey in uploadedFiles){
-          if(uploadedFiles.hasOwnProperty(uploadedFileKey) && uploadedFileKey.indexOf('signedForm') > -1){
+        for (var uploadedFileKey in uploadedFiles) {
+          if (uploadedFiles.hasOwnProperty(uploadedFileKey) && uploadedFileKey.indexOf('signedForm') > -1) {
             var newID = uploadedFiles[uploadedFileKey];
             savedForm.formData.params['form_signed_all'] = newID;
-            console.log('[sign multiple callback] update form_signed_all. was : ' + undefined +'now : ' + newID);
+            console.log('[sign multiple callback] update form_signed_all. was : ' + undefined + 'now : ' + newID);
           }
         }
 
@@ -468,7 +476,7 @@ module.exports.signFormMultipleCallback = function (req, res) {
             var oldFormID = formID;
             req.session.formID = body.fileID;
             formID = body.fileID;
-            console.log('[sign multiple callback] update form id. was : ' + oldFormID +'now : ' + formID);
+            console.log('[sign multiple callback] update form id. was : ' + oldFormID + 'now : ' + formID);
             callback(null, result);
           } else {
             callback(errors.createExternalServiceError('Can\'t rewrite form. Unknown response', {}), null);
@@ -500,7 +508,7 @@ module.exports.signFormMultipleCallback = function (req, res) {
   }
 
   function processSignedContent(result, callback) {
-    if(result.signedContent.fileName.indexOf('.zip') > -1){
+    if (result.signedContent.fileName.indexOf('.zip') > -1) {
       processZipWithSignedContent(result, callback);
     } else {
       processSingleFileWithSignedContent(result, callback);
@@ -534,7 +542,7 @@ module.exports.signForm = function (req, res) {
   var nID_Server = req.query.nID_Server;
   var bConvertToPDF = req.query.bConvertToPDF ? req.query.bConvertToPDF : false;
 
-  if(!userService.signHtmlForm){
+  if (!userService.signHtmlForm) {
     res.status(400).send(errors.createError(errors.codes.LOGIC_SERVICE_ERROR,
       'type of authorization doesn\'t support html forms signing'));
     return;
@@ -623,7 +631,7 @@ module.exports.signForm = function (req, res) {
       function (formData, callback) {
         var accessToken = req.session.access.accessToken;
         createHtml(formData, function (formToUpload) {
-          if(bConvertToPDF === 'true' || bConvertToPDF == true){
+          if (bConvertToPDF === 'true' || bConvertToPDF == true) {
             userService.signPdfForm(accessToken, callbackURL, formToUpload, function (error, result) {
               if (error) {
                 callback(error, null);
@@ -678,12 +686,40 @@ module.exports.signFormCallback = function (req, res) {
     return;
   }
 
-  var signedFormForUpload = userService
-    .prepareSignedContentRequest(req.session.access.accessToken, codeValue);
+  var accessToken = req.session.access.accessToken;
+  function downloadSignedContent(formData, callback) {
+    logger.info('[signFormCallback] downloading signed content....', {accessToken: accessToken, codeValue: codeValue});
+    userService.downloadSignedContent(accessToken, codeValue, function (error, result) {
+      logger.info('[signFormCallback] ....downloaded signed content', { error: error, contentType: result.contentType, fileName: result.fileName });
+      callback(error, {signedContent : result, formData: formData});
+    });
+  }
+
+  function uploadSignedForm(downloadResult, callback) {
+    logger.info('[signFormCallback] uploading signed content to redis....');
+    uploadFileService.upload([{
+      name: 'file',
+      options: {
+        filename: 'signedForm.pdf'
+      },
+      buffer: downloadResult.signedContent.buffer
+    }], function (error, response, body) {
+      logger.info('[signFormCallback] ....uploaded signed content to redis', {result: body});
+      if (!body) {
+        callback(errors.createExternalServiceError('Can\'t save signed content to storage. Unknown error', error), null);
+      } else if (body.code && body.message) {
+        callback(errors.createExternalServiceError('Can\'t save signed content to storage. ' + body.message, body), null);
+      } else if (body.fileID) {
+        downloadResult.signedFormID = body.fileID;
+        callback(null, downloadResult);
+      }
+    }, sHost);
+  }
 
   async.waterfall([
     function (callback) {
       loadForm(formID, sURL, function (error, response, body) {
+        logger.info('[signFormCallback] ..... form is loaded');
         if (error) {
           callback(error, null);
         } else {
@@ -691,29 +727,16 @@ module.exports.signFormCallback = function (req, res) {
         }
       });
     },
-    function (formData, callback) {
-      var signedFormUpload = sURL + 'service/object/file/upload_file_to_redis';
-      var form = new FormData();
-      form.append('file', signedFormForUpload, {
-        filename: 'signedForm.pdf'
-      });
-
-      var requestOptionsForUploadContent = {
-        url: signedFormUpload,
-        auth: getAuth(),
-        headers: form.getHeaders()
-      };
-
-      pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
-        callback(null, {formData: formData, signedFormID: result.data});
-      });
-    }
+    downloadSignedContent,
+    uploadSignedForm
   ], function (err, result) {
     if (err) {
+      logger.error('error. go back to initial page', {error: err});
       res.redirect(result.formData.restoreFormUrl
         + '?formID=' + formID
         + '&error=' + JSON.stringify(err));
     } else {
+      logger.info('cool go back to initial page');
       res.redirect(result.formData.restoreFormUrl
         + '?formID=' + formID
         + '&signedFileID=' + result.signedFormID);
@@ -769,17 +792,34 @@ function loadForm(formID, sURL, callback) {
 function pipeFormDataToRequest(form, requestOptionsForUploadContent, callback) {
   var decoder = new StringDecoder('utf8');
   var result = {};
-  form.pipe(request.post(requestOptionsForUploadContent))
-    .on('response', function (response) {
-      result.statusCode = response.statusCode;
-    }).on('data', function (chunk) {
+  form.pipe(
+    request.post(requestOptionsForUploadContent)
+      .on('response', function (response) {
+        logger.info("[requestForUploadContent] response", {
+          loading_from: requestOptionsForUploadContent,
+          res_status: response.statusCode,
+          res_headers: response.headers
+        });
+      })
+      .on('error', function (e) {
+        callback(e, null)
+      })
+  ).on('response', function (response) {
+    logger.info("[pipeFormDataToRequest] response", {
+      res_status: response.statusCode,
+      res_headers: response.headers
+    });
+    result.statusCode = response.statusCode;
+  }).on('data', function (chunk) {
     if (result.data) {
       result.data += decoder.write(chunk);
     } else {
       result.data = decoder.write(chunk);
     }
+  }).on('error', function (e) {
+    callback(e, null)
   }).on('end', function () {
-    callback(result);
+    callback(null, result);
   });
 }
 
