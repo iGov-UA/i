@@ -63,9 +63,9 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
         
         LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
         if (aUser == null || aUser.isEmpty() || aUser.get(0) == null || aUser.get(0).getId() == null) {
-            oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId(aUser.get(0).getId());
-        } else {
             oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId("kermit");
+        } else {
+            oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId(aUser.get(0).getId());
         }    // setAuthenticatedUserId первого попавщегося
             //TODO Shall we implement some logic for user selection.
             
