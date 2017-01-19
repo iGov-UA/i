@@ -45,11 +45,16 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
         LOG.info("identityLink is: + " + identityLink);
         
         // получить User группы 
-        List<User> aUser = oExecution.getEngineServices().getIdentityService()
+        List<User> aUser = null;
+        
+        if(identityLink != null){
+            LOG.info("identityLink.iterator: " + identityLink.iterator());
+            aUser = oExecution.getEngineServices().getIdentityService()
                 .createUserQuery()
                 .memberOfGroup(identityLink.iterator().next().getGroupId())
                 .list();
-
+        }
+        
         LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
         if (aUser == null || aUser.isEmpty() || aUser.get(0) == null || aUser.get(0).getId() == null) {
             //TODO  what to do if no user?
