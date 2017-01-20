@@ -27,7 +27,7 @@ public class DoWorkOnCloseTaskEvent implements TaskListener {
 	private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(DoWorkOnCloseTaskEvent.class);
 
     
-    private Expression snClosedTaskId;    
+    private Expression snID_Task;    
      
     
    
@@ -42,16 +42,16 @@ public class DoWorkOnCloseTaskEvent implements TaskListener {
         LOG.info("DoWorkOnCloseTaskEvent start..." + delegateTask.getProcessInstanceId());
         
         
-        String snClosedTaskId_Value = "";
+        String snID_Task_Value = "";
         try{
-        	snClosedTaskId_Value 
-                = (this.snClosedTaskId != null)?getStringFromFieldExpression(this.snClosedTaskId, delegateTask.getExecution()) : "";
+        	snID_Task_Value 
+                = (this.snID_Task != null)?getStringFromFieldExpression(this.snID_Task, delegateTask.getExecution()) : "";
         }catch(Exception ex){}
         
                
-        LOG.info("snClosedTaskId_Value is" + snClosedTaskId_Value);
+        LOG.info("snClosedTaskId_Value is" + snID_Task_Value);
             try {
-                closeTaskEvent.doWorkOnCloseTaskEvent(true, snClosedTaskId_Value, null);
+                closeTaskEvent.doWorkOnCloseTaskEvent(true, snID_Task_Value, null);
             } catch (ParseException e) {
                 LOG.info("DoWorkOnCloseTaskEvent throws an errorrrrrrrrrrrrr", e);
                 throw new RuntimeException(e);
