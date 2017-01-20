@@ -1,7 +1,9 @@
 angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerService'])
     .service('TableService',
-        ['autocompletesDataFactory', 'ValidationService', 'DatepickerFactory',
-        function (autocompletesDataFactory, ValidationService, DatepickerFactory) {
+        ['autocompletesDataFactory', 'ValidationService', 'DatepickerFactory', '$injector',
+        function (autocompletesDataFactory, ValidationService, DatepickerFactory, $injector) {
+
+        var factory = $injector.has('FileFactory') ? $injector.get('FileFactory') : null;
 
         var addTableFieldsProperties = function (formProps) {
         angular.forEach(formProps, function(prop) {
@@ -27,6 +29,10 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
 
                         if (item.type === 'date') {
                             obj[key].props = DatepickerFactory.prototype.createFactory();
+                        }else if(item.type === 'file' && factory !== null) {
+                            var temp = obj[key];
+                            obj[key] = new factory();
+                            for(var k in temp) obj[key][k]=temp[k];
                         }else if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
                             var match;
                             if (((match = item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/)))
