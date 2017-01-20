@@ -112,7 +112,7 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Prin
       if (markerExists){
           templates = form.filter(function (item) {
           var result = false;
-          if (item.id && item.id.indexOf('sBody') >= 0
+          if (item.id && item.id.indexOf('sBody') >= 0 && FieldMotionService.FieldMentioned
             && (!FieldMotionService.FieldMentioned.inShow(item.id)
             || (FieldMotionService.FieldMentioned.inShow(item.id)
             && FieldMotionService.isFieldVisible(item.id, form)))) {
