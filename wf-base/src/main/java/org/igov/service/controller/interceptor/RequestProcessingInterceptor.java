@@ -512,7 +512,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         closeTaskEvent.closeEscalationProcessIfExists(sID_Process);
     }
 
-
     private void saveActionExecute(String sRequestBody) {
         LOG.info("Started saveActionExecute method");
         try{

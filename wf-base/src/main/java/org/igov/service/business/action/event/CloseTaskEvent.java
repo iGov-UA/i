@@ -70,6 +70,7 @@ public class CloseTaskEvent {
 	public void doWorkOnCloseTaskEvent(boolean bSaveHistory, String snID_Task, JSONObject omRequestBody)
 			throws ParseException {
             LOG.info("Method doWorkOnCloseTaskEvent started");
+            
              Map<String, String> mParam = new HashMap<>();
              mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
 	 HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
