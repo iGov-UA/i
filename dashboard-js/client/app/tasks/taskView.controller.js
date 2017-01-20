@@ -871,16 +871,34 @@
         };
 
         $scope.upload = function (files, propertyID) {
+          $rootScope.switchProcessUploadingState();
           var isNewAttachmentService = false;
           var taskID = $scope.taskId;
           for(var i=0; i<$scope.taskForm.length; i++) {
             var item = $scope.taskForm[i];
             var splitNameForOptions = item.name.split(';');
-            if(item.id === propertyID && splitNameForOptions.length === 3){
+            if(item.type !== 'table' && item.id === propertyID && splitNameForOptions.length === 3){
               if(splitNameForOptions[2].indexOf('bNew=true') !== -1) {
                 isNewAttachmentService = true;
                 taskID = $scope.taskData.oProcess.nID;
                 break
+              }
+            } else if(item.type === 'table') {
+              if(item.aRow.length !== 0) {
+                for(var t=0; t<item.aRow.length; t++) {
+                  var row = item.aRow[t];
+                  for(var f=0; f<row.aField.length; f++) {
+                    var field = row.aField[f];
+                    var fieldOptions = field.name.split(';');
+                    if(field.id === propertyID && fieldOptions.length === 3){
+                      if(fieldOptions[2].indexOf('bNew=true') !== -1) {
+                        isNewAttachmentService = true;
+                        taskID = $scope.taskData.oProcess.nID;
+                        break
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -888,6 +906,24 @@
             var filterResult = $scope.taskForm.filter(function (property) {
               return property.id === propertyID;
             });
+
+            // if filterResult === 0 => check file in table
+            if(filterResult.length === 0) {
+              for(var j=0; j<$scope.taskForm.length; j++) {
+                if($scope.taskForm[j].type === 'table') {
+                  for(var c=0; c<$scope.taskForm[j].aRow.length; c++) {
+                    var row = $scope.taskForm[j].aRow[c];
+                    for(var i=0; i<row.aField.length; i++) {
+                      if (row.aField[i].id === propertyID) {
+                        filterResult.push(row.aField[i]);
+                        break
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
             if (filterResult && filterResult.length === 1) {
               if(result.response.sKey) {
                 filterResult[0].value = JSON.stringify(result.response);
@@ -899,6 +935,7 @@
                 filterResult[0].signInfo = result.signInfo;
               }
             }
+            $rootScope.switchProcessUploadingState();
           }).catch(function (err) {
             Modal.inform.error()('Помилка. ' + err.code + ' ' + err.message);
           });
@@ -1345,6 +1382,17 @@
             })
             .catch(defaultErrorHandler);
         };
+
+        // блокировка кнопок выбора файлов на время выполнения процесса загрузки ранее выбранного файла
+        $rootScope.isFileProcessUploading = {
+          bState: false
+        };
+
+        $rootScope.switchProcessUploadingState = function () {
+          $rootScope.isFileProcessUploading.bState = !$rootScope.isFileProcessUploading.bState;
+          console.log("Switch $rootScope.isFileProcessUploading to " + $rootScope.isFileProcessUploading.bState);
+        };
+
         $rootScope.$broadcast("update-search-counter");
       }
     ])

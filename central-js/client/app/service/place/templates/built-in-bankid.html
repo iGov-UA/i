@@ -247,6 +247,30 @@
                           </select>
                         </div>
 
+                        <div ng-if="item.type == 'file'">
+                          <div dropdown class="dropup" style="display: inline-block; position:relative;">
+                            <div class="like-modal dropdown-menu" role="menu">
+                              <file-field style="text-align: center"
+                                          name="{{item.id}}"
+                                          ng-model="item.value"
+                                          ng-required="isFieldRequired(item)"
+                                          ng-class="getBpAndFieldID(item)"
+                                          ng-if="item.upload">Add File</file-field>
+                            </div>
+                            <button style="position:relative;"
+                                    ng-disabled="isFormPropertyDisabled(item) || isFileProcessUploading.bState"
+                                    ng-if="item.fileName"
+                                    type="button"
+                                    dropdown-toggle
+                                    class="btn btn-default dropdown-toggle">{{item.fileName}}</button>
+                            <file-field name="{{item.id}}"
+                                        ng-model="item.value"
+                                        ng-required="isFieldRequired(item)"
+                                        ng-class="getBpAndFieldID(item)"
+                                        ng-if="item.upload && !item.fileName">Add File</file-field>
+                          </div>
+                        </div>
+
                         <div ng-if="item.type == 'long'">
                           <input name="{{item.id + rowIndex}}"
                                  ng-if="item.hasOwnProperty('default') || !item.hasOwnProperty('default') && !item.hasOwnProperty('value')"

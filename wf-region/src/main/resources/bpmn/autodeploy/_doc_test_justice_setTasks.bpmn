@@ -68,7 +68,6 @@
             <activiti:expression><![CDATA[sContent::${sContent};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -81,7 +80,7 @@
     </sequenceFlow>
     <endEvent id="endevent1" name="End">
       <extensionElements>
-        <activiti:executionListener event="end" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
+        <activiti:executionListener event="complete" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
           <activiti:field name="snID_Process_Activiti">
             <activiti:expression><![CDATA[${processInstanceId}]]></activiti:expression>
           </activiti:field>
