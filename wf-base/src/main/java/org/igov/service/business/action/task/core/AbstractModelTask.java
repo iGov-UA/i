@@ -540,7 +540,7 @@ public abstract class AbstractModelTask {
                                 LOG.info("it is a table type");
                                 MultipartFile oTableMultipartfile = null;
                                 try{       
-                                    oTableMultipartfile = oAttachmetService.getAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n), (String)oJsonTaskAttachVO.get("sID_StorageType"), (String)oJsonTaskAttachVO.get("sKey"));
+                                    oTableMultipartfile = oAttachmetService.getAttachment(null, null, (String)oJsonTaskAttachVO.get("sID_StorageType"), (String)oJsonTaskAttachVO.get("sKey"));
                                     if (oTableMultipartfile != null){
                                         LOG.info("oTableMultipartfile content is: " + IOUtils.toString(oTableMultipartfile.getInputStream()));
                                     }
