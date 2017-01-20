@@ -93,12 +93,8 @@ execution.setVariable('sEndDay', timerEnd)</script>
           <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-							    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-							    <p>
-							    Ваш запит успішно зареєстровано у нашій системі.<br>
-							    Номер Вашого звернення: <a href="https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">[sID_Order].</a><br>
-								</p>
+          <activiti:expression><![CDATA[[p[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 								<p>
 								Для того щоб закінчити процедуру необхідно:
 								<ul>
@@ -133,10 +129,12 @@ execution.setVariable('sEndDay', timerEnd)</script>
 								<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
 								<p>Якщо Вам потрібно скасувати заявку,  зверніться,  будь ласка, за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
 								При цьому потрібно буде вказати код талону = ${sTicketCode}.
-								[pattern/mail/_common_signature_start.html]
-								${sNameOrgan},<br>
- 								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer.html]]]></activiti:expression>
+								
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -163,7 +161,11 @@ execution.setVariable('sEndDay', timerEnd)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <endEvent id="endevent2" name="End"></endEvent>
+    <endEvent id="endevent2" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <scriptTask id="scripttask3" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var delta='10';
 var unixdate= Math.round((new Date()).getTime());

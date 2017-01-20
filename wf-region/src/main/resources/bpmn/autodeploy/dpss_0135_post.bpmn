@@ -79,7 +79,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Повідомлення заявника" activiti:async="true" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask3" name="Лист заявнику" activiti:async="true" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -100,16 +100,18 @@
           <activiti:string><![CDATA[Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-								<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+								
 								<p> Ваше звернення №[sID_Order] щодо ${substance_3} дозволу на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання зареєстроване у системі.<br/>
 								Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>Спеціалісти повинні дати відповідь протягом ${term} з дня реєстрації заяви.<br /> 
 								<br />
 							
-								[pattern/mail/_common_signature_start.html]
+								[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
 								${sNameOrganDPSS}<br />
-								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer.html]]]></activiti:expression>
+								[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -125,11 +127,11 @@
           <activiti:string><![CDATA[Нове звернення. Дозвіл на проведення  робіт на підприємствах, діяльність яких пов`язана з джерелами неіонізуючого випромінювання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Первинна обробка даних ДПСС" activiti:candidateGroups="dpss_dnepr">
+    <userTask id="usertask1" name="Обробка даних ДПСС" activiti:candidateGroups="dpss_dnepr">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
@@ -182,6 +184,7 @@
           <activiti:value id="sMyself" name="особисто в ЦНАП"></activiti:value>
           <activiti:value id="sPost" name="Поштовим відправленням"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="ЦНАП що оброблятиме звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -207,17 +210,18 @@
           <activiti:string><![CDATA[Звернення на тему: Дозвіл на проведення  робіт на підприємствах, діяльність яких пов`язана з джерелами неіонізуючого випромінювання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header_with_payment.html]
-							    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-							    <p>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+							    
 							    Ваше звернення №[sID_Order] пройшло первинну перевірку фахівцями управління Держпродспоживслужби.<br>
 								Для того щоб закінчити процедуру необхідно протягом доби сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)<br>
 								[paymentButton_LiqPay]
 								</p>
 У разі відсутності своєчасної оплати поштової доставки, Ви отримаєте запрошення до ЦНАП отримати документи особисто після їх готовності.<br>
-								[pattern/mail/_common_signature_start.html]
-								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer_with_payment.html]]]></activiti:expression>
+								[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+								[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -242,18 +246,19 @@
           <activiti:string><![CDATA[Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-							<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html] 
+          [pattern/mail/new_design/_common_content_start.html]
 							<p>Ваше звернення щодо ${substance_3} дозволу на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання - відправлене в ЦНАП.<br />
 							
 							
 							</p>
 							<br />
 							${sPhoneOrgan}<br />
-							[pattern/mail/_common_signature_start.html]
+							[pattern/mail/new_design/_common_content_end.html]
+							[pattern/mail/new_design/_common_signature_start.html]
 							${sNameOrgan}<br />
-							[pattern/mail/_common_signature_end.html]
-							[pattern/mail/_common_footer.html]]]></activiti:expression>
+							[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -278,18 +283,17 @@
           <activiti:string><![CDATA[Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-						<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html] [pattern/mail/new_design/_common_content_start.html]
 						На жаль, Ваше звернення щодо ${substance_3} дозволу на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання було відхилено.</p>
 						<p>Причина в наступному:</p>
 						<p>${decisionComment}</p>
 						<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
 						<br />
-						${sPhoneOrgan}<br />
-						[pattern/mail/_common_signature_start.html]
-						${sNameOrgan}<br />
-						[pattern/mail/_common_signature_end.html]
-						[pattern/mail/_common_footer.html]]]></activiti:expression>
+						<br />
+						[pattern/mail/new_design/_common_content_end.html][pattern/mail/new_design/_common_signature_start.html]
+						${sNameOrganDPSS}<br />
+						[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -305,16 +309,15 @@
           <activiti:string><![CDATA[Звернення на тему: Дозвіл на проведення  робіт на підприємствах, діяльність яких пов`язана з джерелами неіонізуючого випромінювання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-									  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-	                                    <p>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html] [pattern/mail/new_design/_common_content_start.html]
+									  
 	                              		На жаль, Ви не сплатили за послугу, тому не зможемо надіслати Вам листа з Дозволом на проведення  робіт на підприємствах, діяльність яких пов`язана з джерелами неіонізуючого випромінювання<br> 
 	                              		Документи стосовно Дозволу Ви зможете отримати  особисто після додаткового запрошення (очікуйте на емейл)
 	                              		</p>
-	                              		[pattern/mail/_common_signature_start.html]
+	                              		[pattern/mail/new_design/_common_content_end.html][pattern/mail/new_design/_common_signature_start.html]
 										${sNameOrgan}<br>
-										[pattern/mail/_common_signature_end.html]   
-										[pattern/mail/_common_footer.html]]]></activiti:expression>
+										[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -368,6 +371,8 @@
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Дата реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар ДПСС" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Маркер поля адреса" type="markers" default="${markerService.loadFromFile('dneprCnap/dpss_post2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNoPay" name="Відправлення не оплачене!" type="string" default="Запрошуємо заявника до отримання документів в ЦНАП!" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask11" name="Відправлено поштою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -388,8 +393,7 @@
           <activiti:string><![CDATA[Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-								<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html] [pattern/mail/new_design/_common_content_start.html]
 								<p>
 								${substance_2}.<br />
 								</p>
@@ -397,11 +401,12 @@
 								Оригінал дозвільного документу направлено Вам обраним способом доставки поштовою службою.
 								</p>
 																<br />
-								[pattern/mail/_common_signature_start.html]
+								[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
 								${sNameOrgan}<br />
-								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_feedback.html]
-								[pattern/mail/_common_footer.html]]]></activiti:expression>
+								[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${file10},${PrintForm_1}]]></activiti:expression>
@@ -426,8 +431,7 @@
           <activiti:string><![CDATA[Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-								<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html] [pattern/mail/new_design/_common_content_start.html]
 								<p>
 								${substance_2}.<br />
 								</p>
@@ -446,11 +450,12 @@
 								${sWorkTime}<br />
 								${sAddress}<br />
 								<br />
-								[pattern/mail/_common_signature_start.html]
+								[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
 								${sNameOrgan}<br />
-								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_feedback.html]
-								[pattern/mail/_common_footer.html]]]></activiti:expression>
+								[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${file10},${PrintForm_1}]]></activiti:expression>
@@ -611,7 +616,6 @@ var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
 execution.setVariable('sNotification_day', timer)
 </script>
     </scriptTask>
-    <sequenceFlow id="flow51" sourceRef="scripttask4" targetRef="servicetask9"></sequenceFlow>
     <sequenceFlow id="flow52" sourceRef="exclusivegateway1" targetRef="exclusivegateway7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
@@ -622,6 +626,7 @@ execution.setVariable('sNotification_day', timer)
     <sequenceFlow id="flow54" sourceRef="exclusivegateway7" targetRef="scripttask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType=='sPost'}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow55" sourceRef="scripttask4" targetRef="servicetask9"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dpss_0135_post">
     <bpmndi:BPMNPlane bpmnElement="dpss_0135_post" id="BPMNPlane_dpss_0135_post">
@@ -638,7 +643,7 @@ execution.setVariable('sNotification_day', timer)
         <omgdc:Bounds height="35.0" width="35.0" x="167.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="71.0" width="105.0" x="216.0" y="107.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="216.0" y="115.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="61.0" width="105.0" x="335.0" y="112.0"></omgdc:Bounds>
@@ -723,7 +728,7 @@ execution.setVariable('sNotification_day', timer)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="616.0" y="122.0"></omgdi:waypoint>
-        <omgdi:waypoint x="616.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="616.0" y="70.0"></omgdi:waypoint>
         <omgdi:waypoint x="861.0" y="71.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="653.0" y="25.0"></omgdc:Bounds>
@@ -735,7 +740,7 @@ execution.setVariable('sNotification_day', timer)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="966.0" y="71.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1248.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1250.0" y="70.0"></omgdi:waypoint>
         <omgdi:waypoint x="1250.0" y="393.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -792,7 +797,7 @@ execution.setVariable('sNotification_day', timer)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
         <omgdi:waypoint x="268.0" y="89.0"></omgdi:waypoint>
-        <omgdi:waypoint x="268.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="268.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="963.0" y="475.0"></omgdi:waypoint>
@@ -831,10 +836,6 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="722.0" y="568.0"></omgdi:waypoint>
         <omgdi:waypoint x="770.0" y="568.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="458.0" y="302.0"></omgdi:waypoint>
-        <omgdi:waypoint x="475.0" y="301.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
         <omgdi:waypoint x="616.0" y="162.0"></omgdi:waypoint>
         <omgdi:waypoint x="616.0" y="220.0"></omgdi:waypoint>
@@ -846,8 +847,12 @@ execution.setVariable('sNotification_day', timer)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
         <omgdi:waypoint x="596.0" y="240.0"></omgdi:waypoint>
-        <omgdi:waypoint x="404.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="404.0" y="239.0"></omgdi:waypoint>
         <omgdi:waypoint x="405.0" y="275.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
+        <omgdi:waypoint x="458.0" y="302.0"></omgdi:waypoint>
+        <omgdi:waypoint x="475.0" y="301.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

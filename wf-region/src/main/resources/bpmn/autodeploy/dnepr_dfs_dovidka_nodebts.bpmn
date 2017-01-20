@@ -90,8 +90,7 @@
           <activiti:expression><![CDATA[Нове  звернення. Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Звернення № [sID_Order]<br>
-          	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -114,24 +113,26 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Довідка про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Довідка про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів. Реєстрація.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]  
 			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> на отримання довідки про відсутність заборгованості з платежів до бюджету, 
+				Ваше звернення щодо отримання довідки про відсутність заборгованості з платежів до бюджету, 
 				що контролюються органами державної фіскальної служби, передана в роботу.
 			</p>			
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
-			${sPhoneOrgan}<br>
-			${sWorkTime}<br><br>
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			${sWorkTime}<br>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -182,11 +183,7 @@
         <activiti:formProperty id="sAdresECP" name="адрес" type="invisible"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${form_signed}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -212,13 +209,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів. Опрацьовано]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-          	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]  
           	<p>
-          		Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> на отримання довідки про відсутність заборгованості з платежів до бюджету, 
+          		Ваше звернення на отримання довідки про відсутність заборгованості з платежів до бюджету, 
           		що контролюються органами державної фіскальної служби, опрацьована.
           	</p>          	
           	<p>
@@ -233,14 +230,15 @@
 			<p>
 				Щоб отримати витяг, при візиті до відділення фіскальної служби,<br> 
 				Вам необхідно мати при собі оригінал паспорта громадянина України<br> 
-				та назвати номер запиту №[sID_Order]
+				та назвати номер запиту <b>№[sID_Order]</b>
 			</p>			
-			<br><br>			
-			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_signature_start.html]
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_feedback.html]   	
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -266,11 +264,11 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів. Відмовлено]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>                                    
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]                                     
 			<p>
 				Вам відмовлено у наданні довідки про відсутність заборгованості з платежів до бюджету, 
 				що контролюються органами державної фіскальної служби.<br/>
@@ -283,12 +281,14 @@
 			<br><br>
 			Перевірити стан Вашої заборгованості Ви можете звернувшися до Вашого відділення фіскальної служби за наступними контактами<br>
 			${sAddress}<br>
-			${sPhoneOrgan}<br>
-			${sWorkTime}<br><br>
-			[pattern/mail/_common_signature_start.html]
+			${sWorkTime}<br>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

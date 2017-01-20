@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-89" name="Реєстрація місця проживання особи (із опцією одночасного зняття з реєстрації з попереднього місця)" isExecutable="true">
-    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 13.12.2016</documentation>
+    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 11.01.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -51,6 +51,7 @@
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Якщо Ви маєте дітей до 14 років, та другий з батьків зареєстрований за іншою адресою, то дітей потрібно зняти з реєстрації разом з Вами"></activiti:formProperty>
         <activiti:formProperty id="sWhenCome" name="Дата зняття з попереднього місця реєстрації; у форматі - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="warning_Drogobich" name="Зверніть увагу" type="label" default="&lt;b&gt;УВАГА!&lt;/b&gt; При необхідності (під час перевірки документів) у Вас можуть бути запрошені скан-копії документів, що підтверджують стару адресу реєстрації"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
@@ -65,7 +66,7 @@
         <activiti:formProperty id="sKab89" name="Номер кабінету" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFlag" name="Флаг" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFlag" name="Флаг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIsCancellCustomeVizite" name="Прапор скасованої заявки громадянином" type="invisible" default="False"></activiti:formProperty>
         <activiti:formProperty id="nMilit" name="Завантажте копію військового квитка, свідоцтва про приписку або документу що їм відповідають;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable" name="В залежності від підстави для реєстрації, будь ласка, завантажте" type="label" default=" "></activiti:formProperty>
@@ -92,12 +93,15 @@ var year=src.substr(0,4)
 var month=src.substr(5,2)
 var day=src.substr(8,2)
 
-minpay='13,60'
-maxpay='40,80'
+var minpay='13,60'
+var maxpay='40,80'
 
 if (year=='2017') {
 	minpay='27,20'
     maxpay='81,60'
+
+	minpay='13,60'
+    maxpay='40,80'
 }
     
 execution.setVariable('sMinPay', minpay)
@@ -127,19 +131,19 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Нове звернення на тему: Реєстрація нового місця проживання особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто.  
-								    &lt;/p&gt;
-									&lt;p&gt;
-										Спеціалісти ${sOrganType} оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час. 
-									&lt;/p&gt;
-									&lt;p&gt;[cancelTask]&lt;/p&gt; 
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Спеціалісти ${sOrganType} оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час. 
+				&lt;/p&gt;
+				&lt;p&gt;[cancelTask]&lt;/p&gt; 
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},&lt;br&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -165,7 +169,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Нове звернення на тему: Реєстрація місця проживання особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -221,6 +225,8 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для сплати адмінсбору" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dms/1zajava_regFr.html]" type="invisible" default="Заява для реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_regBk.html]" type="invisible" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_10" name="[pattern/print/dms/1zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
@@ -255,22 +261,27 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Відхилено звернення на тему: Реєстрація нового місця проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										На жаль, Вам відмовлено у надані послуги [sID_Order] або Ви скасували заявку.&lt;br&gt;
-										При необхідності реєстрації нового місця проживання Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-									&lt;/p&gt; 
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br&gt;
-											&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-									&lt;/p&gt;
-									[pattern/mail/_common_signature_start.html]
-                                    ${sNameOrgan}.&lt;/p&gt;
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+          	[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					На жаль, Вам відмовлено у надані послуги [sID_Order] або Ви скасували заявку.&lt;br&gt;
+					При необхідності реєстрації нового місця проживання Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+				&lt;/p&gt; 
+				&lt;p&gt;
+					Коментар Державного службовця:&lt;br&gt;
+					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan},&lt;br/&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]                    
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -302,62 +313,66 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Реєстрація нового місця проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Спеціалісти ${sOrganType} успішно опрацювали Вашу заяву [sID_Order].&lt;br&gt;
-										Для того щоб закінчити процедуру реєстрації необхідно:&lt;br&gt;
-										&lt;ul&gt;
-										&lt;li&gt;У будь-якому банку сплатити адміністративний збір і отримати квитанцію про сплату.&lt;/li&gt;
-											&lt;ul&gt;
-											&lt;li&gt;у розмірі ${sMinPay} грн, якщо Ви звертаєтесь для реєстрації у термін до 30 календарних днів після зняття з попереднього місця реєстрації&lt;/li&gt;
-											&lt;li&gt;у розмірі ${sMaxPay} грн, якщо Ви звертаєтесь для реєстрації після 30 календарних днів після зняття з попереднього місця реєстрації&lt;/li&gt; 
-											&lt;/ul&gt;
-										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.&lt;/li&gt;
-										&lt;li&gt;Підписати необхідні документи та отримати печатку у громадянський паспорт або паспортний документ.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
-										&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
-										Призначення платежу: адмін. збір за реєстрацію місця проживання ...вказати П.І.Б...&lt;/i&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
-										День та час - ${date_of_visit}
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при реєстраціі місця проживання:&lt;/b&gt;&lt;br&gt;
-										&lt;ul&gt;
-										&lt;li&gt;оригінал та копію документа, до якого вносяться відомості про місце проживання;&lt;/li&gt;
-										&lt;li&gt;квитанцію про сплату адміністративного збору;&lt;/li&gt;
-										&lt;li&gt;оригінал та копію одного з трьох документів, який підтверджує право на проживання за новим місцем реєстрації:
-										&lt;ul&gt;
-											&lt;li&gt;право на проживання в житлі (ордер, свідоцтво про право власності, договір найму (піднайму, оренди) або інші документи. У разі відсутності зазначених документів реєстрація здійснюється за згодою власника/співвласників житла, наймача та членів його сім’ї на реєстрацію місця проживання&lt;/li&gt;
-											&lt;li&gt;перебування або взяття на облік у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту (довідка про прийняття на обслуговування в спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту особи, копія посвідчення про взяття на облік бездомної особи),&lt;/li&gt;
-											&lt;li&gt;проходження служби у військовій частині (довідка про проходження служби у військовій частині, видана командиром військової частини),&lt;/li&gt; 
-										&lt;/ul&gt;
-										&lt;li&gt;оригінал та копію військового квитка або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;	
-										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
-										&lt;ul&gt;
-										&lt;li&gt;У разі здійснення реєстрації за згодою власника/співвласників житла, наймача та членів його сім’ї, власник або власники житла повинні прийти до ${sOrganType} разом із Вами, та принести з собою паспорт та оригінали документів, які підтверджують право властності.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br&gt;
-										&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-									&lt;/p&gt;
-									&lt;p&gt;[cancelTask]&lt;/p&gt; 
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+          	[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+                	Спеціалісти ${sOrganType} успішно опрацювали Вашу заяву [sID_Order].&lt;br&gt;
+					Для того щоб закінчити процедуру реєстрації необхідно:&lt;br&gt;
+					&lt;ul&gt;
+						&lt;li&gt;У будь-якому банку сплатити адміністративний збір і отримати квитанцію про сплату.&lt;/li&gt;
+						&lt;ul&gt;
+							&lt;li&gt;у розмірі ${sMinPay} грн, якщо Ви звертаєтесь для реєстрації у термін до 30 календарних днів після зняття з попереднього місця реєстрації&lt;/li&gt;
+							&lt;li&gt;у розмірі ${sMaxPay} грн, якщо Ви звертаєтесь для реєстрації після 30 календарних днів після зняття з попереднього місця реєстрації&lt;/li&gt; 
+						&lt;/ul&gt;
+						&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.&lt;/li&gt;
+						&lt;li&gt;Підписати необхідні документи та отримати печатку у громадянський паспорт або паспортний документ.&lt;/li&gt;
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
+					&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
+					Призначення платежу: адмін. збір за реєстрацію місця проживання ...вказати П.І.Б...&lt;/i&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
+					День та час - ${date_of_visit}
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при реєстраціі місця проживання:&lt;/b&gt;&lt;br&gt;
+					&lt;ul&gt;
+						&lt;li&gt;оригінал та копію документа, до якого вносяться відомості про місце проживання;&lt;/li&gt;
+						&lt;li&gt;квитанцію про сплату адміністративного збору;&lt;/li&gt;
+						&lt;li&gt;оригінал та копію одного з трьох документів, який підтверджує право на проживання за новим місцем реєстрації:
+						&lt;ul&gt;
+							&lt;li&gt;право на проживання в житлі (ордер, свідоцтво про право власності, договір найму (піднайму, оренди) або інші документи. У разі відсутності зазначених документів реєстрація здійснюється за згодою власника/співвласників житла, наймача та членів його сім’ї на реєстрацію місця проживання&lt;/li&gt;
+							&lt;li&gt;перебування або взяття на облік у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту (довідка про прийняття на обслуговування в спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту особи, копія посвідчення про взяття на облік бездомної особи),&lt;/li&gt;
+							&lt;li&gt;проходження служби у військовій частині (довідка про проходження служби у військовій частині, видана командиром військової частини),&lt;/li&gt; 
+						&lt;/ul&gt;
+						&lt;li&gt;оригінал та копію військового квитка або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;	
+					&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
+					&lt;ul&gt;
+						&lt;li&gt;У разі здійснення реєстрації за згодою власника/співвласників житла, наймача та членів його сім’ї, власник або власники житла повинні прийти до ${sOrganType} разом із Вами, та принести з собою паспорт та оригінали документів, які підтверджують право властності.&lt;/li&gt;
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					Коментар Державного службовця:&lt;br&gt;
+					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
+				&lt;/p&gt;
+				&lt;p&gt;[cancelTask]&lt;/p&gt; 
+
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -386,66 +401,69 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Реєстрація нового місця проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву [sID_Order].&lt;br&gt;
-										Для того щоб закінчити процедуру реєстрації необхідно:&lt;br&gt;
-										&lt;ul&gt;
-										&lt;li&gt;У будь-якому банку сплатити адміністративний збір і отримати квитанцію про сплату.&lt;/li&gt;
-											&lt;ul&gt;
-											&lt;li&gt;у розмірі ${sMinPay} грн, якщо Ви звертаєтесь для реєстрації у термін до 30 календарних днів після зняття з попереднього місця реєстрації&lt;/li&gt;
-											&lt;li&gt;у розмірі ${sMaxPay} грн, якщо Ви звертаєтесь для реєстрації після 30 календарних днів після зняття з попереднього місця реєстрації&lt;/li&gt; 
-											&lt;/ul&gt;
-										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.&lt;/li&gt;
-										&lt;li&gt;Підписати необхідні документи та отримати печатку у громадянський паспорт або паспортний документ.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
-										&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
-										Призначення платежу: адмін. збір за реєстрацію місця проживання​ ...вказати П.І.Б...&lt;/i&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
-										День та час - ${date_of_visit}
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при реєстраціі місця проживання:&lt;/b&gt;&lt;br&gt;
-										&lt;ul&gt;
-										&lt;li&gt;оригінал та копію документа, до якого вносяться відомості про місце проживання;&lt;/li&gt;
-										&lt;li&gt;квитанцію про сплату адміністративного збору з мокрою печаткою банку;&lt;/li&gt;
-										&lt;li&gt;оригінал та копію одного з трьох документів, який підтверджує право на проживання за новим місцем реєстрації:
-										&lt;ul&gt;
-											&lt;li&gt;право на проживання в житлі (ордер, свідоцтво про право власності, договір найму (піднайму, оренди) або інші документи. У разі відсутності зазначених документів реєстрація здійснюється за згодою власника/співвласників житла, наймача та членів його сім’ї на реєстрацію місця проживання&lt;/li&gt;
-											&lt;li&gt;перебування або взяття на облік у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту (довідка про прийняття на обслуговування в спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту особи, копія посвідчення про взяття на облік бездомної особи),&lt;/li&gt;
-											&lt;li&gt;проходження служби у військовій частині (довідка про проходження служби у військовій частині, видана командиром військової частини),&lt;/li&gt; 
-										&lt;/ul&gt;
-										&lt;li&gt;оригінал та копію військового квитка або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
-										&lt;li&gt;заяву про реєстрацію місця проживання, що знаходиться у додатках до листа (розрукуйте на одному аркуші);&lt;/li&gt;
-										&lt;li&gt;якщо Ви реєструєте нове місце проживання з одночасним зняттям з попередньго, то заяву про зняття з реєстрації (знаходиться у додатках до листа, розрукуйте на одному аркуші);&lt;/li&gt;
-										&lt;li&gt;якщо Ви реєструєте нове місце проживання з одночасним зняттям з попередньго, то будинкову книгу або Форму А з ЖЕКу (ОСББ) з попереднього місця проживання;&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;	
-										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
-										&lt;ul&gt;
-										&lt;li&gt;У разі здійснення реєстрації за згодою власника/співвласників житла, наймача та членів його сім’ї, власник або власники житла повинні прийти до ${sOrganType} разом із Вами, та принести з собою паспорт та оригінали документів, які підтверджують право властності.&lt;/li&gt;
-										&lt;li&gt;Після візиту до до ${sOrganType} для завершення процесу реєстрації військовозобов'язані повинні встати на військовіий облік до військомату.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br&gt;
-										&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-									&lt;/p&gt;
-									&lt;p&gt;[cancelTask]&lt;/p&gt; 
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву [sID_Order].&lt;br&gt;
+					Для того щоб закінчити процедуру реєстрації необхідно:&lt;br&gt;
+					&lt;ul&gt;
+						&lt;li&gt;У будь-якому банку сплатити адміністративний збір і отримати квитанцію про сплату.&lt;/li&gt;
+						&lt;ul&gt;
+							&lt;li&gt;у розмірі ${sMinPay} грн, якщо Ви звертаєтесь для реєстрації у термін до 30 календарних днів після зняття з попереднього місця реєстрації&lt;/li&gt;
+							&lt;li&gt;у розмірі ${sMaxPay} грн, якщо Ви звертаєтесь для реєстрації після 30 календарних днів після зняття з попереднього місця реєстрації&lt;/li&gt; 
+						&lt;/ul&gt;
+						&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.&lt;/li&gt;
+						&lt;li&gt;Підписати необхідні документи та отримати печатку у громадянський паспорт або паспортний документ.&lt;/li&gt;
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
+					&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
+					Призначення платежу: адмін. збір за реєстрацію місця проживання​ ...вказати П.І.Б...&lt;/i&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
+					День та час - ${date_of_visit}
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при реєстраціі місця проживання:&lt;/b&gt;&lt;br&gt;
+					&lt;ul&gt;
+						&lt;li&gt;оригінал та копію документа, до якого вносяться відомості про місце проживання;&lt;/li&gt;
+						&lt;li&gt;квитанцію про сплату адміністративного збору з мокрою печаткою банку;&lt;/li&gt;
+						&lt;li&gt;оригінал та копію одного з трьох документів, який підтверджує право на проживання за новим місцем реєстрації:
+						&lt;ul&gt;
+							&lt;li&gt;право на проживання в житлі (ордер, свідоцтво про право власності, договір найму (піднайму, оренди) або інші документи. У разі відсутності зазначених документів реєстрація здійснюється за згодою власника/співвласників житла, наймача та членів його сім’ї на реєстрацію місця проживання&lt;/li&gt;
+							&lt;li&gt;перебування або взяття на облік у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту (довідка про прийняття на обслуговування в спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту особи, копія посвідчення про взяття на облік бездомної особи),&lt;/li&gt;
+							&lt;li&gt;проходження служби у військовій частині (довідка про проходження служби у військовій частині, видана командиром військової частини),&lt;/li&gt; 
+						&lt;/ul&gt;
+						&lt;li&gt;оригінал та копію військового квитка або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
+						&lt;li&gt;заяву про реєстрацію місця проживання, що знаходиться у додатках до листа (розрукуйте на одному аркуші);&lt;/li&gt;
+						&lt;li&gt;якщо Ви реєструєте нове місце проживання з одночасним зняттям з попередньго, то заяву про зняття з реєстрації (знаходиться у додатках до листа, розрукуйте на одному аркуші);&lt;/li&gt;
+						&lt;li&gt;якщо Ви реєструєте нове місце проживання з одночасним зняттям з попередньго, то будинкову книгу або Форму А з ЖЕКу (ОСББ) з попереднього місця проживання;&lt;/li&gt;
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;	
+					&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
+					&lt;ul&gt;
+						&lt;li&gt;У разі здійснення реєстрації за згодою власника/співвласників житла, наймача та членів його сім’ї, власник або власники житла повинні прийти до ${sOrganType} разом із Вами, та принести з собою паспорт та оригінали документів, які підтверджують право властності.&lt;/li&gt;
+						&lt;li&gt;Після візиту до до ${sOrganType} для завершення процесу реєстрації військовозобов'язані повинні встати на військовіий облік до військомату.&lt;/li&gt;
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					Коментар Державного службовця:&lt;br&gt;
+					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
+				&lt;/p&gt;
+				&lt;p&gt;[cancelTask]&lt;/p&gt; 
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${PrintForm_1},${PrintForm_2},${PrintForm_3},${PrintForm_4}</activiti:expression>
@@ -508,6 +526,8 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:value id="sReestr" name="Громадянин зареєстрований"></activiti:value>
           <activiti:value id="sNejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dms/1zajava_regFr.html]" type="invisible" default="Заява для реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_regBk.html]" type="invisible" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_10" name="[pattern/print/dms/1zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
@@ -549,18 +569,21 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Опрацьовано звернення на тему: Реєстрація місця проживання особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		Ви отримали послугу "Реєстрація місця проживання особи (із опцією одночасного зняття з реєстрації з попереднього місця)", звернення [sID_Order].&lt;br&gt;
-                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
-                              		Дякуємо.
-									&lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+          	[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+                	Ви отримали послугу "Реєстрація місця проживання особи (із опцією одночасного зняття з реєстрації з попереднього місця)", звернення [sID_Order].&lt;br&gt;
+                    Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
+                    Дякуємо.
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

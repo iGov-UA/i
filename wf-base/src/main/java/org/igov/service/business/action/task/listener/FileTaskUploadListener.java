@@ -63,18 +63,19 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
         
         LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
         if (aUser == null || aUser.isEmpty() || aUser.get(0) == null || aUser.get(0).getId() == null) {
-            //TODO  what to do if no user?
+            oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId("kermit");
         } else {
-            // setAuthenticatedUserId первого попавщегося
-            //TODO Shall we implement some logic for user selection.
             oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId(aUser.get(0).getId());
+        }    // setAuthenticatedUserId первого попавщегося
+            //TODO Shall we implement some logic for user selection.
+            
             // получить информацию по стартовой форме бп
-            FormData oStartFormData = oExecution.getEngineServices().getFormService()
-                    .getStartFormData(oExecution.getProcessDefinitionId());
-            LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
-                    oExecution.getProcessDefinitionId());
-            aAttachment = addAttachmentsToTask(oStartFormData, oTask);
-        }
+        FormData oStartFormData = oExecution.getEngineServices().getFormService()
+            .getStartFormData(oExecution.getProcessDefinitionId());
+        LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
+                oExecution.getProcessDefinitionId());
+        aAttachment = addAttachmentsToTask(oStartFormData, oTask);
+        
     }
 
     public List<Attachment> getaAttachment() {

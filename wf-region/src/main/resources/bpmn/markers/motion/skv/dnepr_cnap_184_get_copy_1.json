@@ -1,0 +1,78 @@
+{
+	"motion":
+	{
+		"ShowFieldsOnCondition_0":
+		{
+			"sNote":				["For Hide Invisible"],
+			"aField_ID":			["asPurpose", "sAddress","sNameOrgan", "sPhoneOrgan","sWorkTime", "sRdozvil", "sPf_Part", "sLetter", "sForTracert", "sShapka_dozvil_na_reklamu_184", "nFile_Rekvizity", "nFile_Dogovor","date_today","sAdd_doc","sAdd_doc_table","markers11","markers12","markers13","markers14"],
+			"asID_Field":			{"sClient":"asSubect"},
+			"sCondition":			"[sClient] == 'Not_Correct'"
+		},
+		"ShowFieldsOnCondition_1":
+		{
+			"sNote":				["For Hide Invisible"],
+			"aField_ID":			["sMailClerk"],
+			"asID_Field":			{"sClient":"email"},
+			"sCondition":			"([sClient] == 'smoktii.igov@gmail.com' || [sClient] == 'autotestbeta@gmail.com')"
+		},
+		"ShowFieldsOnCondition_2":
+		{
+			"sNote":				["Ur-osoba"],
+			"aField_ID":			["sName_ur","edrpou","sPib_ur", "sAdres_1","workPhone"],
+			"asID_Field":			{"sClient":"asSubect"},
+			"sCondition":			"[sClient] == 'ur'"
+		},
+		"RequiredFieldsOnCondition_2": 
+		{
+			"aField_ID":	["sName_ur","edrpou","sPib_ur", "sAdres_1","workPhone"],
+			"asID_Field":	{"sClient":"asSubect"},
+			"sCondition":	"[sClient] == 'ur'"
+		},
+		"ShowFieldsOnCondition_3":
+		{
+			"sNote":		["Fiz-osoba"],
+			"aField_ID":	["sAdres_0","sPib_fiz","sINN_fiz","bankId_scan_passport"],
+			"asID_Field":	{"sClient":"asSubect"},
+			"sCondition":	"[sClient] == 'fiz'"
+		},
+		"RequiredFieldsOnCondition_3": 
+		{
+			"aField_ID":	["sAdres_0","sPib_fiz","sINN_fiz","bankId_scan_passport"],
+			"asID_Field":	{"sClient":"asSubect"},
+			"sCondition":	"[sClient] == 'fiz'"
+		},
+		"ShowFieldsOnCondition_4":
+		{
+			"sNote":		["Hide choice dovirenu osobu"],
+			"aField_ID":	["asHow"],
+			"asID_Field":	{"sPerson":"asSubect"},
+			"sCondition":	"[sPerson] == 'not_correct'"
+		},
+		"ShowFieldsOnCondition_5":
+		{
+			"sNote":		["Cherez dovirenu osobu"],
+			"aField_ID":	["sConfidant_pib","sConfidant_passport","nFile_authorizedDocsZP"],
+			"asID_Field":	{"sPerson":"asHow"},
+			"sCondition":	"[sPerson] == 'confidant'"
+		},
+		"RequiredFieldsOnCondition_5": 
+		{
+			"aField_ID":	["sConfidant_pib","sConfidant_passport","nFile_authorizedDocsZP"],
+			"asID_Field":	{"sPerson":"asHow"},
+			"sCondition":	"[sPerson] == 'confidant'"
+		},
+		"ShowFieldsOnCondition_6":
+		{
+			"sNote":		["Якщо дозвіл непригодний"],
+			"aField_ID":	["nFile_Original_Dozvolu"],
+			"asID_Field":	{"sPerson":"asReasonGetCopy","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sPerson] == 'damage'"
+		},
+		"RequiredFieldsOnCondition_6": 
+		{
+			"aField_ID":	["nFile_Original_Dozvolu"],
+			"asID_Field":	{"sPerson":"asReasonGetCopy","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sPerson] == 'damage'"
+		}
+	}
+}
