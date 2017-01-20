@@ -1,0 +1,839 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="dpss_0134_post" name="Дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст (в т.ч. приватним лабораторіям)" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП, з яким Вам буде зручніше взаємодіяти" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="vibor_service" name="Оберіть суть звернення" type="enum" required="true">
+          <activiti:value id="issue" name="Видача дозволу"></activiti:value>
+          <activiti:value id="restructuring" name="Переоформлення дозволу"></activiti:value>
+          <activiti:value id="duplicate" name="Видача дублікату дозволу"></activiti:value>
+          <activiti:value id="cansel" name="Анулювання дозволу"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adress2" name="Адреса об'єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="name_company" name="У давальному відмінку повне найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ (для юридичних осіб) або ідентифікаційний номер фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="trusted_person" name="П.І.Б. керівника юридичної особи / фізичної особи - підприємця/уповноваженої особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Клопотання керівника установи (підприємства) на проведення діагностичних досліджень або експериментальних робіт" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Акти комісії з контролю біологічної безпеки установи та територіальної режимної комісії щодо дотримання та виконання вимог техніки безпеки, протиепідемічного режиму, особистої гігієни, тощо з додаванням план-схеми лабораторії з зазначенням руху заразного або підозрілого на його вміст матеріалу (патогенних мікроорганізмів) в процесі дослідження та переліку мікроорганізмів, з якими проводяться роботи в лабораторії, відомостей про підготовку персоналу і щеплення, наявності та порядок використання засобів індивідуального захисту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Висновок головного державного санітарного лікаря території щодо наявності умов для проведення даного виду робіт та можливості видачі дозволу на роботу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file6" name="Документ дозвільного характеру, який підлягає переоформленню" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по батькові фізичної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file8" name="Бланк документу дозвільного характеру, який непридатний для використання" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file9" name="Документ дозвільного характеру, який підлягає анулюванню" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="PostShowFields" type="markers" default="${markerService.loadFromFile('dneprCnap/dpss_post.json')}"></activiti:formProperty>
+        <activiti:formProperty id="asResultType" name="Оберіть варіант отримання результату" type="enum" required="true">
+          <activiti:value id="sMyself" name="особисто"></activiti:value>
+          <activiti:value id="sPost" name="поштовим відправленням (послуга сплачується онлайн)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTypeMail" name="Оберіть тип поштового відправлення" type="enum" required="true">
+          <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
+          <activiti:value id="sRekPrior" name="рекомендований лист з кур'єрською доставкою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWarning0" name="Вартість послуги Укрпошти" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст"></activiti:formProperty>
+        <activiti:formProperty id="sPostAddress" name="Поштова адреса; куди направити листа з відповіддю" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrganDPSS" name="sNameOrganDPSS" type="invisible" default="Головне управління Держпродспоживслужби в Дніпропетровській області"></activiti:formProperty>
+        <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerkSES" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka220" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="anVibor_performer" name="Техническая переменная, для работы sShapka220, не удалять!" type="invisible" default="1"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="Запуск таймера напоминания" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i75116857714"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="16.09"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Видача дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;file1&quot;,&quot;file2&quot;,&quot;file3&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'issue'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file6&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;file9&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'cansel'&quot; }}}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="#{fileTaskUpload}" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <userTask id="usertask1" name="Обробка даних ДПСС" activiti:candidateGroups="dpss_dnepr">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="16.09"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
+        <activiti:formProperty id="asResultType" name="Обраний спосіб отримання результату" type="enum" writable="false">
+          <activiti:value id="sMyself" name="особисто в ЦНАП"></activiti:value>
+          <activiti:value id="sPost" name="Поштовим відправленням"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTypeMail" name="Обраний тип поштового відправлення" type="enum" writable="false">
+          <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
+          <activiti:value id="sPrior" name="пріоритетний простий лист"></activiti:value>
+          <activiti:value id="sRekPrior" name="пріоритетний рекомендований лист"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="vibor_service" name="Суть звернення" type="enum" writable="false">
+          <activiti:value id="issue" name="Видача дозволу"></activiti:value>
+          <activiti:value id="restructuring" name="Переоформлення дозволу"></activiti:value>
+          <activiti:value id="duplicate" name="Видача дублікату дозволу"></activiti:value>
+          <activiti:value id="cansel" name="Анулювання дозволу"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачи заяви; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="adress2" name="Адреса об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="name_company" name="У давальному відмінку повне найменовання юридичної особи/П.І.Б. фізичної особи - підприємця; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ (для юридичних осіб) або ідентифікаційний номер фізичної особи - підприємця; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="trusted_person" name="П.І.Б. керівника юридичної особи / фізичної особи - підприємця/уповноваженої особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShapka220" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="document" name="Назва документу" type="invisible" default="дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="status" name="Обробка заяви" type="enum">
+          <activiti:value id="attr1_wait" name="Дозвіл (санітарний паспорт) або рішення про анулювання або про відмову готове до передачі в ЦНАП"></activiti:value>
+          <activiti:value id="attr2_finish" name="Відмова громадянину у видачі дозволу"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="file10" name="Дозвіл (або рішення) держпродспоживслужби" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="ЦНАП що оброблятиме звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Per3" name="Перевірте подані громадянином дані, заповніть всі необхідні поля (П.І.Б адміністратора, дату реєстрації, реєстраційний номер та рішення про надання послуги) - потім роздрукуйте форму заяви." type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]" type="invisible" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${file1},${file2},${file3},${file6},${file7},${file8},${file9}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="scripttask3" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var delta='1';
+var unixdate= Math.round((new Date()).getTime());
+var unixdate=unixdate+86400*1000*delta;
+var new_src = new Date(unixdate);
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
+var new_year = new_src.getFullYear();
+var new_hour = new_src.getHours();
+var new_minutes = new_src.getMinutes();
+var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
+execution.setVariable('sNotification_day', timer)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow7" name="status == 'attr2_finish'" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr2_finish'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow8" name="status == 'attr1_wait'" sourceRef="exclusivegateway1" targetRef="exclusivegateway3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr1_wait'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask2" name="Підготовка рішення в ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vibor_service" name="Суть звернення" type="enum" writable="false">
+          <activiti:value id="issue" name="Видача дозволу"></activiti:value>
+          <activiti:value id="restructuring" name="Переоформлення дозволу"></activiti:value>
+          <activiti:value id="duplicate" name="Видача дублікату дозволу"></activiti:value>
+          <activiti:value id="cansel" name="Анулювання дозволу"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTypeMail" name="Обраний тип поштового відправлення" type="enum" writable="false">
+          <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
+          <activiti:value id="sPrior" name="пріоритетний простий лист"></activiti:value>
+          <activiti:value id="sRekPrior" name="пріоритетний рекомендований лист"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPostAddress" name="Поштова адреса; куди направити листа з відповіддю" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="Номер транзакції платежу" type="string" default="${sID_Payment}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress2" name="Адреса об'єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="name_company" name="У давальному відмінку повне найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ (для юридичних осіб) або ідентифікаційний номер фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="trusted_person" name="П.І.Б. керівника юридичної особи / фізичної особи - підприємця/уповноваженої особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="status2" name="Статус дозволу (санітарного паспорту)" type="enum">
+          <activiti:value id="attr3_finish" name="Дозвіл (санітарний паспорт) або рішення про анулювання готове, запросити громадянина"></activiti:value>
+          <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбой"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Маркер поля адреса" type="markers" default="${markerService.loadFromFile('dneprCnap/dpss_post2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNoPay" name="Відправлення не оплачене!" type="string" default="Запрошуємо заявника до отримання документів в ЦНАП!" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask2" name="Лист в ДПСС" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. Дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask3" name="Лист заявнику" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Дозвіл на всі види досліджень з мікроорганізмами ІІ групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст (за винятком установ медичного профілю).]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення №[sID_Order] щодо ${substance_3} дозволу на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст зареєстроване у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrganDPSS}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask4" name="Лист відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо ${substance_3} дозволу на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст було відхилено.</p>
+<p>Причина в наступному: 
+                                    </p>
+<p>${decisionComment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+<br />
+<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrganDPSS}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask7" name="оплата пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+							    
+							    Ваше звернення №[sID_Order] пройшло первинну перевірку фахівцями управління Держпродспоживслужби.<br>
+								Для того щоб закінчити процедуру необхідно протягом доби сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)<br>
+								[paymentButton_LiqPay]
+								</p>
+У разі відсутності своєчасної оплати поштової доставки, Ви отримаєте запрошення до ЦНАП отримати документи особисто після їх готовності.<br>
+								[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+								[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano, ochikuetsya oplata. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask8" name="Несплата" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+           [pattern/mail/new_design/_common_content_start.html]
+									  
+	                              		На жаль, Ви не сплатили за послугу, тому не зможемо надіслати Вам листа з Дозволом на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст поштою<br> 
+	                              		Документи стосовно Дозволу Ви зможете отримати  особисто після додаткового запрошення (очікуйте на емейл)
+	                              		</p>
+	                              		[pattern/mail/new_design/_common_content_end.html]
+	                              		[pattern/mail/new_design/_common_signature_start.html]
+										${sNameOrgan}<br>
+										[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask5" name="лист про успішне замовлення послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] peredano v SES.
+Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення щодо ${substance_3} дозволу на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст - відправлене в держсанепідслужбу.<br />
+Спеціалісти повинні дати відповідь протягом ${term} з дня реєстрації заяви.<br /> 
+<p>Номер Вашого замовлення: ${number_cnap}</p>.
+</p>
+<br />
+${sPhoneOrgan}<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask6" name="Лист Запрошення" activiti:async="true" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+${substance_2}.<br />
+</p>
+<p>
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис у ЦНАП.<br/> 
+При собі треба мати:<br/> 
+1. Документ, що посвідчує особу.<br/> 
+2. Для уповоноваженої особи - довіренність.<br/>
+3. Оригінали документів, що були завантажені при подачі заяви на сайті.<br/>
+4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.
+</p>
+${sPhoneOrgan}<br />
+<br />
+<br />
+${sWorkTime}<br />
+${sAddress}<br />
+<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${file10},${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask9" name="Відправлено поштою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html] [pattern/mail/new_design/_common_content_start.html]
+								<p>
+								${substance_2}.<br />
+								</p>
+								<p>
+								Оригінал дозвільного документу направлено Вам обраним способом доставки поштовою службою.
+								</p>
+																<br />
+								[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
+								${sNameOrgan}<br />
+								[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${file10},${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow11" name="status2 == 'attr4_finish'" sourceRef="exclusivegateway2" targetRef="servicetask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment != ''}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow12" name="status2 == 'attr3_finish'" sourceRef="exclusivegateway2" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment == ''} || ${asResultType=='sMyself'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow13" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="scripttask4"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Edit Email" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var typeMail = execution.getVariable('asTypeMail');
+var sum = 16;
+if (typeMail === 'sRekPrior') {
+	execution.setVariable('sSum', '36.45');
+}
+if (typeMail != 'sRekPrior') {
+execution.setVariable('sSum', '16.09');
+}
+
+var per4 = 'substance'
+var per5 = 'substance_2'
+var per6 = 'substance_3'
+var per7 ='term'
+if (execution.getVariable('vibor_service') == 'issue'){
+per4 = 'видати'
+per5 = 'Ваш дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст - готовий'
+per6 = 'видачі'
+per7 = 'десяти робочих днів'
+}
+if (execution.getVariable('vibor_service') == 'restructuring'){
+per4 = 'переоформити'
+per5 = 'Ваш переоформлений дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст - готовий'
+per6 = 'переоформлення'
+per7 = 'двох робочих днів'
+}
+if (execution.getVariable('vibor_service') == 'duplicate'){
+per4 = 'видати дублікат'
+per5 = 'Ваш дублікат дозволу на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст - готовий'
+per6 = 'видачі дублікату'
+per7 = 'двох робочих днів'
+}
+if (execution.getVariable('vibor_service') == 'cansel'){
+per4 = 'анулювати'
+per5 = 'Рішення про анулювання документа дозвільного характеру - готове'
+per6 = 'анулювання'
+per7 = 'п`яти робочих днів'
+}
+execution.setVariable('substance', per4)
+execution.setVariable('substance_2', per5)
+execution.setVariable('substance_3', per6)
+execution.setVariable('term', per7)</script>
+    </scriptTask>
+    <scriptTask id="scripttask2" name="List Documents" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var per1 = ' '
+var per2 = ' '
+var per3 = ' '
+var res = 'res'
+if (execution.getVariable('vibor_service') == 'issue') {
+per1 = '&lt;li&gt;Клопотання керівника установи (підприємства) на проведення діагностичних досліджень або експериментальних робіт.&lt;/li&gt;'
+per2 = "&lt;li&gt;Акти комісії з контролю біологічної безпеки установи та територіальної режимної комісії щодо дотримання та виконання вимог техніки безпеки, протиепідемічного режиму, особистої гігієни, тощо з додаванням план-схеми лабораторії з зазначенням руху заразного або підозрілого на його вміст матеріалу (патогенних мікроорганізмів) в процесі дослідження та переліку мікроорганізмів, з якими проводяться роботи в лабораторії, відомостей про підготовку персоналу і щеплення, наявності та порядок використання засобів індивідуального захисту.&lt;/li&gt;"
+per3 = "&lt;li&gt;Висновок головного державного санітарного лікаря території щодо наявності умов для проведення даного виду робіт та можливості видачі дозволу на роботу.&lt;/li&gt;"
+res = '&lt;ol&gt;'+per1+per2+per3+'&lt;/ol&gt;'
+}
+if (execution.getVariable('vibor_service') == 'restructuring') {
+per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає переоформленню.&lt;/li&gt;'
+per2 = '&lt;li&gt;Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру.&lt;/li&gt;'
+res = '&lt;ol&gt;'+per1+per2+'&lt;/ol&gt;'
+}
+if (execution.getVariable('vibor_service') == 'duplicate') {
+per1 = '&lt;li&gt;Бланк документу дозвільного характеру, який непридатний для використання.&lt;/li&gt;'
+res = '&lt;ol&gt;'+per1+'&lt;/ol&gt;'
+}
+if (execution.getVariable('vibor_service') == 'cansel') {
+per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає анулюванню.&lt;/li&gt;'
+res = '&lt;ol&gt;'+per1+'&lt;/ol&gt;'
+}
+execution.setVariable('list_documents', res)</script>
+    </scriptTask>
+    <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="scripttask2" targetRef="servicetask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDate>${sNotification_day}</timeDate>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow18" sourceRef="exclusivegateway3" targetRef="scripttask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType=='sPost'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="servicetask7" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway4"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="exclusivegateway4" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment == ''}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="servicetask8" targetRef="usertask2"></sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow24" sourceRef="exclusivegateway4" targetRef="parallelgateway1"></sequenceFlow>
+    <userTask id="usertask3" name="Укрпошта" activiti:candidateGroups="UkrPost_prav">
+      <extensionElements>
+        <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPostAddress" name="Адреса, на яку надіслати листа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeMail" name="Тип поштового відправлення" type="enum" required="true">
+          <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
+          <activiti:value id="sRekPrior" name="рекомендований лист з кур'єрською доставкою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow25" sourceRef="parallelgateway1" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
+    <scriptTask id="scripttask4" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var x = 1;</script>
+    </scriptTask>
+    <sequenceFlow id="flow27" sourceRef="servicetask9" targetRef="scripttask4"></sequenceFlow>
+    <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow28" sourceRef="usertask3" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow29" sourceRef="scripttask4" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="parallelgateway2" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow31" sourceRef="exclusivegateway3" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType=='sMyself'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="scripttask3" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment != ''}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dpss_0134_post">
+    <bpmndi:BPMNPlane bpmnElement="dpss_0134_post" id="BPMNPlane_dpss_0134_post">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="21.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="170.0" y="134.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="167.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="237.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="631.0" y="117.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="672.0" y="490.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="741.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="490.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="672.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="910.0" y="436.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="910.0" y="540.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="827.0" y="497.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="1173.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="631.0" y="244.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="535.0" y="388.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="532.0" y="430.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="604.0" y="600.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="680.0" y="590.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="1030.0" y="490.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="1170.0" y="497.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="56.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="335.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="185.0" y="164.0"></omgdi:waypoint>
+        <omgdi:waypoint x="184.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="465.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="605.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="631.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="671.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="741.0" y="137.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="660.0" y="85.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="651.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="651.0" y="244.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="612.0" y="156.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="724.0" y="375.0"></omgdi:waypoint>
+        <omgdi:waypoint x="724.0" y="490.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="777.0" y="517.0"></omgdi:waypoint>
+        <omgdi:waypoint x="827.0" y="517.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="867.0" y="517.0"></omgdi:waypoint>
+        <omgdi:waypoint x="962.0" y="540.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="831.0" y="472.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="867.0" y="517.0"></omgdi:waypoint>
+        <omgdi:waypoint x="962.0" y="491.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="859.0" y="518.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="846.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1173.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="1015.0" y="463.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1082.0" y="490.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="152.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="152.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="205.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="282.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="282.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="631.0" y="264.0"></omgdi:waypoint>
+        <omgdi:waypoint x="605.0" y="264.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="552.0" y="375.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="388.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="535.0" y="405.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="430.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="552.0" y="470.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="490.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="605.0" y="517.0"></omgdi:waypoint>
+        <omgdi:waypoint x="672.0" y="517.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="532.0" y="450.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="449.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="620.0"></omgdi:waypoint>
+        <omgdi:waypoint x="604.0" y="620.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="644.0" y="620.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="617.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="624.0" y="600.0"></omgdi:waypoint>
+        <omgdi:waypoint x="624.0" y="517.0"></omgdi:waypoint>
+        <omgdi:waypoint x="672.0" y="517.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="1015.0" y="567.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1082.0" y="545.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="785.0" y="617.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1190.0" y="617.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1190.0" y="537.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="1135.0" y="517.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1170.0" y="517.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="1190.0" y="497.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1190.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="671.0" y="264.0"></omgdi:waypoint>
+        <omgdi:waypoint x="721.0" y="264.0"></omgdi:waypoint>
+        <omgdi:waypoint x="724.0" y="320.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="552.0" y="292.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="320.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

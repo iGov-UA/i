@@ -51,7 +51,7 @@ public class ManagerSMS {
 
             phone = phone.replace("+", "").trim();
 
-           if(!bTest){
+            if(!bTest){
                 Boolean bOldAPI = !bTest;
                 if (bOldAPI) {
                     resp = SendSenderSms(sID_Order, phone, message);
@@ -71,7 +71,7 @@ public class ManagerSMS {
             
         return resp;
     }
-
+    
     private String SendLifeCellSms(String phone, String message) throws Exception {
         String bodyResult = String.format(LIFEBODY, "+" + phone, message);
         String response = oHttpRequester.postInside(generalConfig.getLifeURL(), null, bodyResult, "text/xml; charset=utf-8",

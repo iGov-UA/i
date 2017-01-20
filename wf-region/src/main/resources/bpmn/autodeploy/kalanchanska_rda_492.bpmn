@@ -135,8 +135,7 @@
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Звернення № [sID_Order]<br>
-          	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -159,24 +158,26 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи. Реєстрація]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]  
 			<p> 
-				Звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>.<br>
-				Ваші дані були передані для  подальшої обробки
+				Звернення щодо Видачі довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи. 
+				Ваші дані були передані на подальшу обробку.
 			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -327,13 +328,13 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи. Відмова]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]  
 			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було оброблено.<br>
+				Ваше звернення було оброблено.<br>
 				За даними держоргану Вам ВІДМОВЛЕНО у наданні довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи.
 			</p>
 			<p>
@@ -347,11 +348,13 @@
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -378,14 +381,13 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи. Схвалено]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]  
 			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було оброблено.<br>
-				Вам НАДАНО довідку постраждалого внаслідок Чорнобильської катастрофи.
+				Ваше звернення було оброблено і Вам НАДАНО довідку постраждалого внаслідок Чорнобильської катастрофи.
 			</p>
 			<p>
 				Коментар Державного службовця:<br>
@@ -395,12 +397,14 @@
 			Довідку можна отримати за:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br><br>			
-			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_feedback.html]   	
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

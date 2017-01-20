@@ -24,7 +24,7 @@
         function getRegexContains(str, splitBy, part) {
           var as = str.split(splitBy);
           for (var i = 0; i < as.length; i++) {
-            if (as[i].includes(part)) {
+            if (as[i].indexOf(part) >= 0) {
               return as[i];
             }
           }
@@ -586,7 +586,7 @@
         function getValueById(id) {
           for(var i = 0; i < taskForm.length;i++) {
             var item = taskForm[i];
-            if (item.id.includes(id)) {
+            if (item.id.indexOf(id) >= 0) {
               return item.value;
             }
           }
@@ -681,7 +681,7 @@
              */
             if(asNameField){
               for (var i = 0; i < asNameField.length; i++) {
-                if(asNameField[i].includes("PrintFormFormula")) {
+                if(asNameField[i].indexOf("PrintFormFormula") >= 0) {
                   executeFormula(oMotion[asNameField[i]]);
                 }
               }
@@ -775,7 +775,7 @@
               .then(function (result) {
                 if(result.status == 500){
                   var message = result.data.message;
-                  var errMsg = (message.includes("errMsg")) ? message.split(":")[1].split("=")[1] : message;
+                  var errMsg = (message.indexOf("errMsg") >= 0) ? message.split(":")[1].split("=")[1] : message;
                   $scope.taskForm.isInProcess = false;
                   $scope.convertDisabledEnumFiedsToReadonlySimpleText();
                   Modal.inform.error(function (result) {
@@ -823,7 +823,7 @@
                 $scope.taskForm.isInProcess = false;
                 if(result.status == 500 || result.status == 403){
                   var message = result.data.message;
-                  var errMsg = (message.includes("errMsg")) ? message.split(":")[1].split("=")[1] : message;
+                  var errMsg = (message.indexOf("errMsg") >= 0) ? message.split(":")[1].split("=")[1] : message;
 
                   $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
@@ -1033,7 +1033,7 @@
         //Asignee user.
         $scope.choiceUser = function(login) {
           for (var i = 0; i < taskData.aField.length; i++) {
-            if (taskData.aField[i].sID.includes(sLoginAsignee)) {
+            if (taskData.aField[i].sID.indexOf(sLoginAsignee) >= 0) {
               taskData.aField[i].sValue = login;
               break;
             }

@@ -85,7 +85,7 @@ angular.module('iGovMarkers')
           aField_ID: ['double'],
           aField_Type: ['double'],
           nMin: 1,
-          nMax: 10000000,
+          nMax: 1000000000000000,
           //sSeparator: '.',
           sMessage: 'Повинно бути подільним числом та розділене ",".'
         }
