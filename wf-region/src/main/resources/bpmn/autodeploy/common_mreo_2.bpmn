@@ -20,11 +20,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="reqJur" name="Оберіть тип пошуку юридичної особи (власника транспортного засобу)" type="enum">
           <activiti:value id="0" name=" "></activiti:value>
-          <activiti:value id="1" name="пошук за ЭДРПОУ"></activiti:value>
+          <activiti:value id="1" name="пошук за ЄДРПОУ"></activiti:value>
           <activiti:value id="2" name="пошук за найменуванням юридичної особи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="ownerLegalName" name="Повна назва юрдичної особи (власника); вводити ПРОПИСНИМИ літерами" type="string"></activiti:formProperty>
-        <activiti:formProperty id="ownerEDRPOU" name="ЭДРПОУ юридичної особи ( власника)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerEDRPOU" name="ЄДРПОУ юридичної особи ( власника)" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerLastName" name="Прізвище власника транспортного засобу (укр.); вводити ПРОПИСНИМИ літерами" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerFirstName" name="Ім'я власника (укр.); вводити ПРОПИСНИМИ літерами" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerMiddleName" name="По батькові власника (укр.); вводити ПРОПИСНИМИ літерами" type="string"></activiti:formProperty>
@@ -54,7 +54,7 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="reqDetail" name="reqDetail" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerLegalName" name="Повна назва юрдичної особи (власника)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="ownerEDRPOU" name="ЭДРПОУ юридичної особи ( власника)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerEDRPOU" name="ЄДРПОУ юридичної особи ( власника)" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerInn" name="Індивидуальний податковий номер власника транспортного засобу" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerFirstName" name="Ім'я власника" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerLastName" name="Прізвище власника" type="string"></activiti:formProperty>
@@ -77,21 +77,28 @@
           <activiti:string><![CDATA[Надання витягу з Єдиного державного реєстру МВС України]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>  [pattern/mail/mvd/_common_header.html]
- &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
- &lt;p&gt;                                   
+          <activiti:expression>  
+		  [pattern/mail/mvd/new_design/_common_header.html]
+<!--		[pattern/mail/new_design/_common_header.html]-->
+		[pattern/mail/new_design/_common_content_start.html]
+
+<!-- &lt;p&gt;                                   -->
 Ваше звернення успішно оброблено. &lt;br/&gt;
 Запит ${searchDetail} &lt;br/&gt;
 &lt;b&gt;Звертаємо Вашу увагу! Послуга працює поки що в тестовому режимі. База містить записи здебільшого за останні кілька років та постійно наповнюється.&lt;/b&gt;&lt;br/&gt;
 
 Результат обробки: &lt;br/&gt;
-&lt;table cellspacing="0" cellpadding="7" bordercolor="#5CA3CB" border="1" style="color:#5CA3CB;"&gt;
+&lt;table cellspacing="0" cellpadding="7" bordercolor="#449DCD" border="1" style="color:#449DCD;"&gt;
 ${resultData} 
 &lt;/table&gt;
 
-[pattern/mail/mvd/_common_signature.html]
-[pattern/mail/mvd/_common_feedback.html]
-[pattern/mail/mvd/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+<!--[pattern/mail/mvd/_common_feedback.html] -->
+<!--[pattern/mail/mvd/_common_footer.html] -->
+[pattern/mail/mvd/new_design/_common_signature.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -115,7 +122,7 @@ info = 'по фізичній особі: '+execution.getVariable('ownerLastName
 if (req=='LegalName'){
 info ='по юридичній особі: '+execution.getVariable('ownerLegalName')}
 if (req=='EDRPOU'){
-info ='по юридичній особі з ЭДРПОУ '+execution.getVariable('ownerEDRPOU')}
+info ='по юридичній особі з ЄДРПОУ '+execution.getVariable('ownerEDRPOU')}
 execution.setVariable('searchDetail', info)
       </script>
     </scriptTask>

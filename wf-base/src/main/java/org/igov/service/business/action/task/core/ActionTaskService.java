@@ -10,6 +10,8 @@ import static org.igov.util.Tool.sO;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -475,15 +477,24 @@ public class ActionTaskService {
         }
         for (String queueData : queueDataList) {
             Map<String, Object> m = QueueDataFormType.parseQueueData(queueData);
-            long nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
-            LOG.info("(nID_Order={},nID_FlowSlotTicket={})", nID_Order, nID_FlowSlotTicket);
-            if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
-                throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
+            Long nID_FlowSlotTicket = null;
+            try{
+                nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
+            }catch (Exception ex){
+                LOG.info("QueueDataFormType throw an error: " + ex);
+            }
+            if (nID_FlowSlotTicket != null){
+                LOG.info("(nID_Order={},nID_FlowSlotTicket={})", nID_Order, nID_FlowSlotTicket);
+                if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
+                    throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
+                }
             }
         }
+        DateFormat df_StartProcess = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        
         oRuntimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
                 "[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s",
-                DateTime.now(), sInfo == null ? "" : sInfo));
+                df_StartProcess.format(new Date()), sInfo == null ? "" : sInfo));
     }
 
 

@@ -3,19 +3,28 @@
   <process id="justice_0087_FOPclose" name="Державна реєстрація припинення підприємницької діяльності ФОП за її рішенням" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-<!--        <activiti:formProperty id="markers_ext" name="КВЕДы" type="markers" default="${markerService.loadFromFile('justice_0087_FOPclose.json')}"></activiti:formProperty> -->
 <!--        <activiti:formProperty id="markers_ext_00" name="внешние маркеры 00" type="markers" default="${markerService.loadFromFile('jur/justice_0087_FOPclose_00.json')}"></activiti:formProperty> -->
-<!--        <activiti:formProperty id="markers_ext_01" name="внешние маркеры 01" type="markers" default="${markerService.loadFromFile('jur/justice_0087_FOPclose_01.json')}"></activiti:formProperty> -->
 
+        <activiti:formProperty id="InfoStart000" name="УВАГА" type="label" default="&lt;b&gt;Ваше звернення після подання надійде до загальної черги на опрацювання реєстраторам, очікування в ній може значно перевищувати 1 добу. Якщо Ви згодні на очікування, будь ласка, заповніть нижченаведені поля.&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
         <activiti:formProperty id="InfoStart" name="Для замовлення цієї послуги Вам потрібно скористатися електронно-цифровим підписом (ЕЦП) (наприклад податкової або банку, що Вас обслуговує)." type="label" default="Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="asSelectFIOCheck" name="Перевірте чи вірно українською зазначено Ваші прізвище, ім'я та по батькові?;позначте галочкою - якщо все вірно;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="markers_Hide_01_01" name="показать строки если ФИО правильно   " type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_01&quot;:{&quot;aField_ID&quot;:[&quot;phone&quot;,&quot;email&quot;,&quot;bankIdinn&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_01_02" name="показать строки если ФИО не правильно" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_02&quot;:{&quot;aField_ID&quot;:[&quot;InfoStart001&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'&quot;}}}"></activiti:formProperty>
+
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="InfoStart001" name="УВАГА" type="label" default="&lt;b&gt;Оскільки на підставі Ваших, зазначених вище, ПІБ формується заява для отримання послуги, вони повинні бути українською мовою та відповідати дійсності. Для їх зміни на коректні - зверніться до установи (або його відділення) яка отримувала Ваші дані. Якщо замовите послугу - Вам буде відмовлено на цих підставах.&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
 
 
 <!--  Вставка автоподписания ЭЦП начало -->
@@ -34,7 +43,8 @@
     
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
 
-    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="jur_all_0087,jur_${sID_UA}_0087">
+<!--    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="jur_all_0087,jur_${sID_UA}_0087"> -->
+    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="jur_${sID_UA}_0087">
 	<extensionElements>
 
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
@@ -96,16 +106,21 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression>
+		  [pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
 У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.&lt;br /&gt;&lt;br /&gt;
-Вам направлена копія рішення (додаток до листа).&lt;br /&gt;&lt;br /&gt; 
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+Вам направлена копія рішення (додаток до листа).
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${fDecisionDoc}</activiti:expression>
@@ -124,16 +139,21 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression>
+		  [pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
 У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.&lt;br /&gt;&lt;br /&gt;
-Вам направлена копія рішення (додаток до листа).&lt;br /&gt;&lt;br /&gt; 
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+Вам направлена копія рішення (додаток до листа).
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${fDecisionDoc}</activiti:expression>
@@ -154,7 +174,7 @@
           <activiti:expression>iGov - Нове звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;strong&gt;№[sID_Order]&lt;/strong&gt; [pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -171,15 +191,21 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.&lt;br /&gt;&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -195,15 +221,21 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.&lt;br /&gt;&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -220,13 +252,19 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
-Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+Коментар держслужбовця (${sComment})
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -242,14 +280,20 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
-Вам направлена копія рішення (додаток до листа).&lt;br /&gt;&lt;br /&gt; 
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+Вам направлена копія рішення (додаток до листа).
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${fDecisionDoc}</activiti:expression>
@@ -268,14 +312,20 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
-Вам направлена копія рішення (додаток до листа).&lt;br /&gt;&lt;br /&gt; 
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+Вам направлена копія рішення (додаток до листа).
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${fDecisionDoc}</activiti:expression>
@@ -294,13 +344,19 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію припинення підприємницької діяльності.
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

@@ -117,19 +117,20 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України по досягненні 16-річного віку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    <p>
-										Ваш запит був успішно зареєстрований у нашій системі [sID_Order]. 
-								    </p>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+
 									<p>
 										Спеціалісти ${sOrganType} оброблять Вашу заявку та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час. 
 									</p>
                                     <p>[cancelTask]</p>
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+                                 [pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+
+]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -206,8 +207,9 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України по досягненні 16-річного віку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+
                                     <p>
 										На жаль, Вам відмовлено у надані послуги або Ви скасували заявку.<br>
                                         При необхідності оформлення паспорта громадянина України по досягненні 16-річного віку Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
@@ -216,9 +218,12 @@ execution.setVariable('Registrationservice', per4)
 										Коментар Державного службовця:<br />
 											<b><i>${decisionComment}</i></b>
 									</p>
-									[pattern/mail/_common_signature_start.html]
-                                    ${sNameOrgan}.</p>
-                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -250,11 +255,12 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України по досягненні 16-річного віку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+
                                     <p>
                                         Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.<br>
-										Для того щоб закінчити процедуру оформлення паспорта громадянина України по досягненні 16-річного віку необхідно:<br>
+										Для того щоб закінчити процедуру оформлення паспорта громадянина України по досягненні 14-річного віку необхідно:<br>
 										<ul>
 										<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab205}.</li>
 										<li>Заповнити та підписати заяву для видачі паспорту згідно зразка.</li>
@@ -265,7 +271,7 @@ execution.setVariable('Registrationservice', per4)
 										День та час - ${date_of_visit}
 									</p>
 									<p>
-										<b>Необхідні документи, які треба принести до ${sOrganType} при оформленні паспорта громадянина України по досягненні 16-річного віку:</b><br>
+										<b>Необхідні документи, які треба принести до ${sOrganType} при оформленні паспорта громадянина України по досягненні 14-річного віку:</b><br>
 										<ul>
 										<li>свідоцтво про народження;</li>
 										<li>оригінали паспортів батьків;</li>
@@ -278,10 +284,13 @@ execution.setVariable('Registrationservice', per4)
 										<b><i>${decisionComment}</i></b>
 									</p>
 									<p>[cancelTask]</p>
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+                                    [pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+
+]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -378,18 +387,16 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України по досягненні 16-річного віку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
                                     <p>
-                              		Ви отримали послугу "Оформлення паспорта громадянина України по досягненні 16-річного віку".<br>
-                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
-                              		Дякуємо.
-									</p>
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+                              		Ви отримали послугу "Оформлення паспорта громадянина України по досягненні 14-річного віку".<br>
+                              		[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>      
+[pattern/mail/new_design/_common_signature_end.html]  
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

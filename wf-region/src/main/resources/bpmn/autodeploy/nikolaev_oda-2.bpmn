@@ -300,13 +300,10 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>       
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення громадян на тему:
-          	Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
+          <activiti:expression><![CDATA[Нова заявка: Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-          	Звернення № [sID_Order]<br>
-          	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -329,23 +326,25 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Взяття на облік громадян, які потребують поліпшення житлових умов. Реєстрація]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваш запит № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> був успішно зареєстрований у нашій системі.
+				Ваш запит був успішно зареєстрований у нашій системі.
 			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
-			[pattern/mail/_common_signature_start.html]
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -509,14 +508,13 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
           <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Взяття на облік громадян, які потребують поліпшення житлових умов. Відмова]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>		    		    
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]	    		    
 		    <p>
-				Оброблено звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>.<br>
-				На жаль, Вам відмовлено в наданні послуги.
+				Ваше звернення було оброблено. На жаль, Вам відмовлено в наданні послуги.
 			</p>
 			<p>
 		    	Причина в наступному:<br>
@@ -529,11 +527,13 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br />
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -558,22 +558,26 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[iGov: Взяття на облік громадян, які потребують поліпшення житлових умов. Перевірка документів]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 			<p> 
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було перевірено.<br>
-				Будь ласка, роздрукуйте та підпишіть у всіх понолітніх членів вашої сім'ї, прикріплену до листа заяву.
+				Ваше звернення було перевірено. Будь ласка, роздрукуйте та підпишіть у всіх понолітніх членів вашої сім'ї, прикріплену до листа заяву.
 			</p>
 			<br>
 			За додатковими питаннями Ви можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br />
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -738,16 +742,16 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Взяття на облік громадян, які потребують поліпшення житлових умов. Схвалено]]></activiti:expression>
         </activiti:field>      
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${PrintForm_2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 			<p> 
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> виконано.<br>
+				Ваше звернення виконано.<br>
 				Для отмання документу, будь ласка, не забудьте з собою взяти, підписану Вами та всіма понолітніми членами Вашої сім'ї, заяву.<br> 
 				Бланк прикріплений до листа.
 			</p>
@@ -755,12 +759,14 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
 			Ви можете отримати результат за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br><br>			
-			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_signature_start.html]
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_feedback.html]   	
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

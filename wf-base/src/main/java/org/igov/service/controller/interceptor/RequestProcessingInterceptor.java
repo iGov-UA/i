@@ -4,6 +4,19 @@
  */
 package org.igov.service.controller.interceptor;
 
+import static org.igov.util.Tool.sCut;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -11,40 +24,25 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
 import org.igov.io.Log;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.service.business.action.event.CloseTaskEvent;
 import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.service.business.action.execute.ActionExecuteService;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.escalation.EscalationHistoryService;
-import org.igov.service.business.feedback.FeedBackService;
 import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.joda.time.DateTime;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.*;
-import java.util.regex.Pattern;
-import org.igov.service.business.action.event.CloseTaskEvent;
-
-import static org.igov.util.Tool.sCut;
 
 /**
  * @author olya
@@ -55,15 +53,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private static final String asID_BP_SkipSendMail = "dnepr_mvk_291_common";
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
-    //private static final Logger LOG_BIG = LoggerFactory.getLogger('APP');
     private boolean bFinish = false;
 
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
     private static final Pattern SREQUESTBODY_PATTERN = Pattern.compile("\"assignee\":\"[а-яА-Яa-z_A-z0-9]+\"");
-    private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
-    private static final Long SubjectMessageType_CommentEscalation = 11L;
-    private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
-    private static final String URI_COUNT_CLAIM_HISTORY = "/wf/service/action/event/getCountClaimHistory";
 
     @Autowired
     protected RuntimeService runtimeService;
@@ -82,13 +75,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private HistoryEventService historyEventService;
     @Autowired
-    private BpServiceHandler bpHandler;
-    @Autowired
     private EscalationHistoryService escalationHistoryService;
-    @Autowired
-    private FeedBackService feedBackService;
-    @Autowired
-    private ActionExecuteService actionExecuteService;
     @Autowired
     private CloseTaskEvent closeTaskEvent;
 
@@ -131,7 +118,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         int nLen = generalConfig.isSelfTest() ? 300 : 200;
 
         Map<String, String> mRequestParam = new HashMap<>();
-        Enumeration paramsName = oRequest.getParameterNames();
+        Enumeration<String> paramsName = oRequest.getParameterNames();
         while (paramsName.hasMoreElements()) {
             String sKey = (String) paramsName.nextElement();
             mRequestParam.put(sKey, oRequest.getParameter(sKey));
@@ -144,15 +131,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             while ((line = oReader.readLine()) != null) {
                 osRequestBody.append(line);
             }
-            //mParamRequest.put("requestBody", buffer.toString()); 
-            //TODO temp
         }
         String sURL = oRequest.getRequestURL().toString();
         LOG.info("sURL: " + sURL);
         String snTaskId = null;
         //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
         String sRequestBody = osRequestBody.toString();
-        //LOG.info("sRequestBody: " + sRequestBody + " oRequest.getRequestURL(): " + oRequest.getRequestURL() + " oRequest.getMethod(): " + oRequest.getMethod());
         LOG.info("oRequest.getRequestURL(): " + oRequest.getRequestURL() + " oRequest.getMethod(): " + oRequest.getMethod());
         if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()) {
             snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
@@ -184,7 +168,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sResponseBody = !bFinish ? null : oResponse.toString();
         if (bFinish) {
             LOG.info("(sResponseBody={})", sCut(nLen, sResponseBody));
-            //https://region.igov.org.ua/wf/service/form/form-data
             if (sURL.endsWith("/service/action/item/getService")
                     || sURL.endsWith("/service/action/item/getServicesTree")
                     || (sURL.endsWith("/service/form/form-data")
@@ -221,7 +204,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (!bSaveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
                     && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
                 LOG.info("returning from protocolize block: bSaveHistory:{} oResponse.getStatus():{}", bSaveHistory, oResponse.getStatus());
-//                return;
             }
             if (isSaveTask(oRequest, sResponseBody)) {
                 sType = "Save";
@@ -293,7 +275,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
-        //LOG.info("(is save task sResponseBody {}, '/form/form-data' {}. Method {} )", sResponseBody, oRequest.getRequestURL().toString().indexOf("/form/form-data"),oRequest.getMethod());
         return (bFinish && sResponseBody != null && !"".equals(sResponseBody))
                 && oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0
                 && "POST".equalsIgnoreCase(oRequest.getMethod().trim());
@@ -382,11 +363,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     mParamSync.put("sPhone", sPhone);
                     LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {}, sPhone {})", sMailTo, snID_Subject,
                             sPhone);
-                    String sURL = generalConfig.getSelfHostCentral() + URI_SYNC_CONTACTS;
-                    LOG.info("(Подключаемся к центральному порталу)");
-                    String sResponse = httpRequester.getInside(sURL, mParamSync);
-                    LOG.info("(Подключение осуществлено)");
-
                 } catch (Exception ex) {
                     LOG.warn("(isSaveTask exception {})", ex.getMessage());
                 }
@@ -394,7 +370,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             }
 
             historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
-            //LOG.info("ok!");
             LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
             if (oProcessDefinition.getKey().startsWith("_doc_") || DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())) {
                 ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
@@ -403,47 +378,26 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
 
-    /*
-     *  Сохранение комментария эскалации. Как определяется что это комментарий эскалации:
-     *  
-     *  В historic-task-instances для этой заявки есть значение вида:
-     *   "processDefinitionId":"system_escalation:16:23595004" здесь ключевое слово system_escalation
-     *  
-     *  Тело запроса имеет вид:
-     *  {
-     *    "taskId": "23737517",
-     *    "properties": [
-     *  {
-     *       "id": "comment",			// В теле запроса присутствует комментарий
-     *        "value": "zaqxsw2222"
-     *      },
-     *      {
-     *        "id": "nCountDays",
-     *        "value": "1"
-     *      }
-     *    ]
-     *  } 
-     */
-    private void saveCommentSystemEscalation(String sID_Order, JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
-        closeTaskEvent.saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance);
-    }
 
-    //(#1234) added additional parameter snClosedTaskId
-    private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId, boolean bSaveHistory) throws Exception {
-        LOG.info("Method saveClosedTaskInfo started");
-        LOG.info("snClosedTaskId is: "+  snClosedTaskId);
-        JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+     //(#1234) added additional parameter snClosedTaskId
+     private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId, boolean bSaveHistory) throws Exception {
+         LOG.info("Method saveClosedTaskInfo started");
+       
+         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+ 
+        
 
-        String snID_Task = (String) omRequestBody.get("taskId");
-        if ((snID_Task == null) && (snClosedTaskId != null)) {
-            snID_Task = snClosedTaskId.trim();
-            LOG.info("Task id from requestbody is null, so using task id from url - " + snID_Task);
-        }
-        LOG.info("Task id is - " + snID_Task);
-        if (snID_Task != null) {
-           closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory, snClosedTaskId, omRequestBody);
-        }
-    }
+         String snID_Task = (String) omRequestBody.get("taskId");
+         if ((snID_Task == null) && (snClosedTaskId != null)) {
+             snID_Task = snClosedTaskId.trim();
+             LOG.info("Task id from requestbody is null, so using task id from url - " + snID_Task);
+         }
+         LOG.info("Task id is - " + snID_Task);
+		if (snID_Task != null) {
+			closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory, snID_Task, omRequestBody);
+		}
+        LOG.info("Method saveClosedTaskInfo END");
+     }
 
     private void saveUpdatedTaskInfo(String sResponseBody, Map<String, String> mRequestParam) throws Exception {
         Map<String, String> mParam = new HashMap<>();
@@ -502,32 +456,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
     }
 
-    protected String getTotalTimeOfExecution(String sID_Process) {
-        return closeTaskEvent.getTotalTimeOfExecution(sID_Process);
-    }
 
     protected void closeEscalationProcessIfExists(String sID_Process) {
         closeTaskEvent.closeEscalationProcessIfExists(sID_Process);
     }
 
-
-    private void saveActionExecute(String sRequestBody) {
-        LOG.info("Started saveActionExecute method");
-        try{
-            JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
-            Long nID_ActionExecuteStatus = (Long) omRequestBody.get("nID_ActionExecuteStatus");
-            DateTime oDateMake = (DateTime) omRequestBody.get("oDateMake");
-            DateTime oDateEdit = (DateTime) omRequestBody.get("oDateEdit");
-            String sObject = (String) omRequestBody.get("sObject");
-            String sMethod = (String) omRequestBody.get("sMethod");
-            String smParam = (String) omRequestBody.get("smParam");
-            String sReturn = (String) omRequestBody.get("sReturn");
-            Integer nTry = (Integer) omRequestBody.get("nTry");
-            byte[] soRequest = (byte[]) omRequestBody.get("soRequest");
-            actionExecuteService.setActionExecute(nID_ActionExecuteStatus,oDateMake,oDateEdit,nTry,sObject,sMethod,soRequest,smParam,sReturn);
-        }
-        catch(ParseException oParseException) {
-
-        }
-    }
 }
