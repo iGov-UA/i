@@ -10,16 +10,16 @@
         </activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask3_yellow" name="статус 1 - перед этим был висящий таймер (ЮТ без таймера)" activiti:assignee="kermit">
-      <extensionElements>
-        <activiti:formProperty id="opracuvati" name="жмите опрацювати" type="label"></activiti:formProperty>
-      </extensionElements>
-    </userTask>
+    <userTask id="usertask3_yellow" name="статус 1 - перед этим был висящий таймер (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
-    <endEvent id="endevent5" name="End"></endEvent>
+    <endEvent id="endevent5" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <userTask id="usertask6" name="статус 1 (ЮТ с таймером)" activiti:assignee="kermit">
       <extensionElements>
-        <activiti:formProperty id="opracuvati" name="жмите опрацювати" type="label"></activiti:formProperty>
+        <activiti:taskListener event="complete" delegateExpression="${DoWorkOnCloseTaskEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <intermediateCatchEvent id="timerintermediatecatchevent2" name="TimerCatchEvent">
@@ -40,23 +40,11 @@
     <sequenceFlow id="flow166" sourceRef="exclusivegateway6" targetRef="usertask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saChangeName == 'yes'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask7" name="статус 2 (ЮТ без таймера)" activiti:assignee="kermit">
-      <extensionElements>
-        <activiti:formProperty id="opracuvati" name="жмите опрацювати" type="label"></activiti:formProperty>
-      </extensionElements>
-    </userTask>
+    <userTask id="usertask7" name="статус 2 (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
     <sequenceFlow id="flow167" sourceRef="escalationTimer2" targetRef="usertask7"></sequenceFlow>
-    <userTask id="usertask8" name="статус 3 (ЮТ без таймера)" activiti:assignee="kermit">
-      <extensionElements>
-        <activiti:formProperty id="opracuvati" name="жмите опрацювати" type="label"></activiti:formProperty>
-      </extensionElements>
-    </userTask>
+    <userTask id="usertask8" name="статус 3 (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
     <sequenceFlow id="flow168" sourceRef="usertask8" targetRef="endevent5"></sequenceFlow>
-    <userTask id="usertask9" name="статус 2 - перед этим был висящий таймер (ЮТ без таймера)" activiti:assignee="kermit">
-      <extensionElements>
-        <activiti:formProperty id="opracuvati" name="жмите опрацювати" type="label"></activiti:formProperty>
-      </extensionElements>
-    </userTask>
+    <userTask id="usertask9" name="статус 2 - перед этим был висящий таймер (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
     <sequenceFlow id="flow169" sourceRef="usertask9" targetRef="endevent5"></sequenceFlow>
     <sequenceFlow id="flow170" sourceRef="usertask3_yellow" targetRef="usertask9"></sequenceFlow>
     <sequenceFlow id="flow171" sourceRef="usertask7" targetRef="usertask8"></sequenceFlow>
