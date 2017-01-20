@@ -34,7 +34,8 @@
           <activiti:value id="sEnumPerson" name="особисто"></activiti:value>
           <activiti:value id="sEnumTrust" name="законним представником"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTrust" name="Прізвище, ім’я, по батькові клієнта, законним представником якого є особа-заявник" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTrust" name="Прізвище, ім’я, по батькові громадянина, законним представником якого є особа-заявник" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileTrust" name="Документ, що підтверджує право заявника представляти інтереси іншого громадянина" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nPassport" name="Паспорт або інший документ, що посвідчує особу заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnumRefrence" name="Чи маєте довідку про отримання соціальної допомоги?" type="enum" required="true">
           <activiti:value id="sEnumYes" name="Так, маю довідку про соц.допомогу "></activiti:value>
@@ -171,7 +172,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nPassport},${nFamily},${nIncome},${nEmployee},${nTax},${nPensioner},${nPensionSum},${nPowers},${nOrphan},${nViolence},${nRecord},${nCertificate},${nWork},${nNazi},${nRehabilit},${nPassportRight},${nGuardian},${nCourt},${nDecree},${nPasspRefugee},${nProtect},${nDenyRefugee}</activiti:expression>
+            <activiti:expression>${nPassport},${nFamily},${nIncome},${nEmployee},${nTax},${nPensioner},${nPensionSum},${nPowers},${nOrphan},${nViolence},${nRecord},${nCertificate},${nWork},${nNazi},${nRehabilit},${nPassportRight},${nGuardian},${nCourt},${nDecree},${nPasspRefugee},${nProtect},${nDenyRefugee},${nFileTrust}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
