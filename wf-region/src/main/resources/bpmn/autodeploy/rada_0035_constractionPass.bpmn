@@ -50,7 +50,6 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <userTask id="usertask1" name="Крок 1. Прийняття рішення щодо розгляду звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані (серия, номер паспорту); ;writable=false" type="string"></activiti:formProperty>
@@ -58,7 +57,7 @@
         <activiti:formProperty id="email" name="Контактний e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberOwnership" name="Номер документу, що посвідчує право власності на земельну ділянку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Місце знаходження земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressArea" name="Місце знаходження земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressArea" name="Площа планованого будинку, м.кв; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -166,7 +165,6 @@ ${sNameOrgan}<br>
     <sequenceFlow id="flow7" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask2" name="Крок 2. Кінцева обробка звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані (серия, номер паспорту)" type="string" writable="false"></activiti:formProperty>
@@ -253,7 +251,8 @@ ${sNameOrgan}<br>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 Ваше звернення щодо згоди на виготовлення будівельного паспорта на житловий або садовий будинок схвалено департаментом архітектури.<br>
-Для отримання згоди Вам або уповноваженой Вами особи (при наявності довіреності) необхідно підійти в ЦНАП за адресою: ${sAddress}.<br><br>
+Для отримання згоди Вам або уповноваженой Вами особи (при наявності довіреності) необхідно підійти до ЦНАПу:<br>
+${sAddress}.<br><br>
 При собі треба мати оригінали всіх документів, які були завантажені при подачі звернення.<br><br>
 Графік роботи:<br>
 ${sWorkTime}
