@@ -569,7 +569,19 @@ public abstract class AbstractModelTask {
                                                                 
                                                                 Object oValue = oJsonMap.get("type");
                                                                 if ("file".equals((String)oValue)){
-                                                                    //to do work with a file
+                                                                    
+                                                                    String oFileValue = (String)oJsonMap.get("value");
+                                                                    
+                                                                    LOG.info("Current file value in the table is: " + oFileValue);
+                                                                    /*JSONObject oJsonTableFile = null;
+
+                                                                    try {
+                                                                        oJsonTableFile = (JSONObject)parser.parse(oFileValue);
+                                                                    } catch (ParseException ex) {
+                                                                        LOG.info("There aren't TaskAttachVO objects in sFieldValue in table - JSON parsing error: ", ex);
+                                                                    }*/
+                                                                    
+                                                                    
                                                                 }
                                                                 else{
                                                                     LOG.info("new table element type is: " + oJsonMap.get("type"));
