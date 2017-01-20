@@ -1131,7 +1131,7 @@
                              referencedColumnNames  = "nID"
                              deleteCascade          = "true" />
             </column>
-            <column name="nID_Server" type="int">
+            <column name="nID_Server" type="bigint">
                 <constraints nullable="true"/>
             </column>
             
@@ -1199,5 +1199,17 @@
         <addAutoIncrement tableName="ServiceData" columnName="nID" startWith="1000" columnDataType="bigint"/>
         
         
+    </changeSet>
+    
+    <changeSet id="subjectGroupAlter" author="olga">
+        <addColumn tableName="SubjectGroup">
+            <column name="nID_Subject" type="bigint">
+                <constraints nullable               = "true"
+                             foreignKeyName         = "FK_SubjectGroup_Subject"
+                             referencedTableName    = "Subject"
+                             referencedColumnNames  = "nID"
+                             deleteCascade          = "true" />
+            </column>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>
