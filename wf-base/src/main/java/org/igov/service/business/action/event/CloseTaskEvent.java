@@ -67,133 +67,134 @@ public class CloseTaskEvent {
 
 	private JSONParser oJSONParser = new JSONParser();
 
-	public void doWorkOnCloseTaskEvent(boolean bSaveHistory, String snClosedTaskId, JSONObject omRequestBody)
+	public void doWorkOnCloseTaskEvent(boolean bSaveHistory, String snID_Task, JSONObject omRequestBody)
 			throws ParseException {
             LOG.info("Method doWorkOnCloseTaskEvent started");
-		HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(snClosedTaskId)
-				.singleResult();
+             Map<String, String> mParam = new HashMap<>();
+             mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
+	 HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                    .taskId(snID_Task).singleResult();
 
-		Map<String, String> mParam = new HashMap<>();
-		//JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+            String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
+            closeEscalationProcessIfExists(snID_Process);
+            if (snID_Process != null) {
+                LOG.info("Parsing snID_Process: " + snID_Process + " to long");
+                Long nID_Process = Long.valueOf(snID_Process);
+                String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
 
-		mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
+                //------------
+                HistoricTaskInstance taskDetails = historyService
+                        .createHistoricTaskInstanceQuery()
+                        .includeProcessVariables().taskId(snID_Task)
+                        .singleResult();
+                LOG_BIG.debug("taskDetails = {}", taskDetails);
+                if (taskDetails != null) {
+                    Map<String, Object> processVariables = taskDetails.getProcessVariables();
+                    if (processVariables != null) {
+                        String sProcessID = (String) processVariables.get("processID");
+                        LOG.info("sProcessID ={}", sProcessID);
+                        if (sProcessID != null) {
+                            Long nID_ProcessV = Long.valueOf(sProcessID);
+                            LOG.info("nID_ProcessV={}", nID_ProcessV);
+                            sID_Order = generalConfig.getOrderId_ByProcess(nID_ProcessV);
+                            LOG.info("sID_Order={}", sID_Order);
+                        }
+                    }
+                }
+                //--------------
+                String snMinutesDurationProcess = getTotalTimeOfExecution(snID_Process);
+                mParam.put("nTimeMinutes", snMinutesDurationProcess);
+                LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
+                List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
 
-		String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-		closeEscalationProcessIfExists(snID_Process);
-		if (snID_Process != null) {
-			LOG.info("Parsing snID_Process: " + snID_Process + " to long");
-			Long nID_Process = Long.valueOf(snID_Process);
-			String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
+                boolean bProcessClosed = (aTask == null || aTask.isEmpty());
+                String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+                LOG.info("11111sUserTaskName: " + sUserTaskName);
+                String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
+                LOG.info("sProcessName: " + sProcessName);
+                try {
+                    if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
+                        LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
+                        /*                       if (!generalConfig.isSelfTest()) {
+                            String snID_Proccess_Feedback = bpHandler
+                                    .startFeedbackProcessNew(snID_Process);*/
+                        String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
+                        JSONObject ojsonHistoryEvent = (JSONObject) oJSONParser.parse(jsonHistoryEvent);
+                        LOG.info("ojsonHistoryEventmmmmmmmmmmmmmmmmmmmm = {}", ojsonHistoryEvent);
+                        Long nID_Service = (Long) ojsonHistoryEvent.get("nID_Service");
+                        String sID_UA = (String) ojsonHistoryEvent.get("sID_UA");
+                        Map<String, String> mParamforcountClaim = new HashMap<>();
+                        mParamforcountClaim.put("sID_UA", sID_UA);
+                        mParamforcountClaim.put("nID_Service", String.valueOf(nID_Service));
+                        mParamforcountClaim.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
 
-			// ------------
-			HistoricTaskInstance taskDetails = historyService.createHistoricTaskInstanceQuery()
-					.includeProcessVariables().taskId(snClosedTaskId).singleResult();
-			LOG_BIG.debug("taskDetails = {}", taskDetails);
-			if (taskDetails != null) {
-				Map<String, Object> processVariables = taskDetails.getProcessVariables();
-				if (processVariables != null) {
-					String sProcessID = (String) processVariables.get("processID");
-					LOG.info("sProcessID ={}", sProcessID);
-					if (sProcessID != null) {
-						Long nID_ProcessV = Long.valueOf(sProcessID);
-						LOG.info("nID_ProcessV={}", nID_ProcessV);
-						sID_Order = generalConfig.getOrderId_ByProcess(nID_ProcessV);
-						LOG.info("sID_Order={}", sID_Order);
-					}
-				}
-			}
-			// --------------
-			String snMinutesDurationProcess = getTotalTimeOfExecution(snID_Process);
-			mParam.put("nTimeMinutes", snMinutesDurationProcess);
-			LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
-			List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
+                        String sURL = generalConfig.getSelfHostCentral() + URI_COUNT_CLAIM_HISTORY;
 
-			boolean bProcessClosed = (aTask == null || aTask.isEmpty());
-			String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
-			LOG.info("11111sUserTaskName: " + sUserTaskName);
-			String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
-			LOG.info("sProcessName: " + sProcessName);
-			try {
-				if (bProcessClosed && sProcessName.indexOf("system") != 0) {// issue
-																			// 962
-					LOG_BIG.debug(
-							String.format("start process feedback for process with snID_Process=%s", snID_Process));
-					/*
-					 * if (!generalConfig.isSelfTest()) { String
-					 * snID_Proccess_Feedback = bpHandler
-					 * .startFeedbackProcessNew(snID_Process);
-					 */
-					String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
-					JSONObject ojsonHistoryEvent = (JSONObject) oJSONParser.parse(jsonHistoryEvent);
-					LOG.info("ojsonHistoryEventmmmmmmmmmmmmmmmmmmmm = {}", ojsonHistoryEvent);
-					Long nID_Service = (Long) ojsonHistoryEvent.get("nID_Service");
-					String sID_UA = (String) ojsonHistoryEvent.get("sID_UA");
-					Map<String, String> mParamforcountClaim = new HashMap<>();
-					mParamforcountClaim.put("sID_UA", sID_UA);
-					mParamforcountClaim.put("nID_Service", String.valueOf(nID_Service));
-					mParamforcountClaim.put("nID_StatusType",
-							HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
+                        try {
+                            String sResponse = httpRequester.getInside(sURL, mParamforcountClaim);
+                            LOG.info("mParamforcountClaimmmmmmmmmmmmmmmmmmmm = {}", sResponse);
 
-					String sURL = generalConfig.getSelfHostCentral() + URI_COUNT_CLAIM_HISTORY;
+                            LOG_BIG.debug("sResponse = {}", sResponse);
 
-					try {
-						String sResponse = httpRequester.getInside(sURL, mParamforcountClaim);
-						LOG.info("mParamforcountClaimmmmmmmmmmmmmmmmmmmm = {}", sResponse);
+                            Long countClaim = Long.valueOf(sResponse);
+                            LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
+                            if (countClaim.compareTo(50L) > 0) {
+                                String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Task);
 
-						LOG_BIG.debug("sResponse = {}", sResponse);
+                                /* String snID_Proccess_Feedback = bpHandler
+                                                              .startFeedbackProcess(snID_Task, snID_Process, sProcessName);*/
+                                if (snID_Proccess_Feedback != null) {
+                                    mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
+                                    LOG.info("Create Feedback process! (sProcessName={}, nID_Proccess_Feedback={})",
+                                            sProcessName,
+                                            snID_Proccess_Feedback);
+                                } else {
+                                    LOG.info("Feedback process not start! (sProcessName={}, nID_Proccess_Feedback={})",
+                                            sProcessName,
+                                            snID_Proccess_Feedback);
+                                }
+                            }
 
-						Long countClaim = Long.valueOf(sResponse);
-						LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
-						if (countClaim.compareTo(50L) > 0) {
-							String snID_Proccess_Feedback = feedBackService.runFeedBack(snClosedTaskId);
+                        } catch (Exception e) {
+                            LOG.error("Ошибка при добавлении коммменатирия эскалации:", e);
+                        }
 
-							/*
-							 * String snID_Proccess_Feedback = bpHandler
-							 * .startFeedbackProcess(snID_Task, snID_Process,
-							 * sProcessName);
-							 */
-							if (snID_Proccess_Feedback != null) {
-								mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
-								LOG.info("Create Feedback process! (sProcessName={}, nID_Proccess_Feedback={})",
-										sProcessName, snID_Proccess_Feedback);
-							} else {
-								LOG.info("Feedback process not start! (sProcessName={}, nID_Proccess_Feedback={})",
-										sProcessName, snID_Proccess_Feedback);
-							}
-						}
+                        //     } 
+//                       else {
+//                            LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
+//                        }
+                    }
+                } catch (Exception oException) {
+                    new Log(oException, LOG)//this.getClass()
+                            ._Case("IC_CreateEscalation")
+                            ._Status(Log.LogStatus.ERROR)
+                            ._Head("Can't create escalation process")
+                            ._Param("nID_Process", nID_Process)
+                            ._LogTrace()
+                            .save();
+                }
 
-					} catch (Exception e) {
-						LOG.error("Ошибка при добавлении коммменатирия эскалации:", e);
-					}
-				}
-			} catch (Exception oException) {
-				new Log(oException, LOG)// this.getClass()
-						._Case("IC_CreateEscalation")._Status(Log.LogStatus.ERROR)
-						._Head("Can't create escalation process")._Param("nID_Process", nID_Process)._LogTrace().save();
-			}
+                // Сохраняем только после выполнения запроса afterCompletion 
+                if (bSaveHistory) {
+                    // Cохранение нового события для задачи
+                    HistoryEvent_Service_StatusType status;
+                    if (bProcessClosed) {
+                        status = HistoryEvent_Service_StatusType.CLOSED;
+                    } else {
+                        status = HistoryEvent_Service_StatusType.OPENED;
+                    }
+                    LOG.info("Saving closed task");
+                    mParam.put("sUserTaskName", sUserTaskName);
+                    try {
+                        if (!(sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && status == HistoryEvent_Service_StatusType.CLOSED)) {
+                            historyEventService.updateHistoryEvent(sID_Order, status, mParam);
+                        }
+                    } catch (Exception oException) {
+                        new Log(oException, LOG)._Case("IC_SaveTaskHistoryEvent")._Status(Log.LogStatus.ERROR)
+                                ._Head("Can't save history event for task")._Param("nID_Process", nID_Process).save();
+                    }
 
-			// Сохраняем только после выполнения запроса afterCompletion
-			if (bSaveHistory) {
-				// Cохранение нового события для задачи
-				HistoryEvent_Service_StatusType status;
-				if (bProcessClosed) {
-					status = HistoryEvent_Service_StatusType.CLOSED;
-				} else {
-					status = HistoryEvent_Service_StatusType.OPENED;
-				}
-				LOG.info("Saving closed task");
-				mParam.put("sUserTaskName", sUserTaskName);
-				try {
-					if (!(sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION)
-							&& status == HistoryEvent_Service_StatusType.CLOSED)) {
-						historyEventService.updateHistoryEvent(sID_Order, status, mParam);
-					}
-				} catch (Exception oException) {
-					new Log(oException, LOG)._Case("IC_SaveTaskHistoryEvent")._Status(Log.LogStatus.ERROR)
-							._Head("Can't save history event for task")._Param("nID_Process", nID_Process).save();
-				}
-
-				// Сохранение комментария эскалации
+                    // Сохранение комментария эскалации
 				if (sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION)) {
 					try {
 						escalationHistoryService.updateStatus(nID_Process, bProcessClosed
@@ -213,10 +214,11 @@ public class CloseTaskEvent {
 								._Head("Can't save volunteer's comment")._Param("nID_Process", nID_Process).save();
 					}
 				}
-			}
-			LOG.info("Method saveClosedTaskInfo finished");
-		}
-	}
+                }
+                LOG.info("Method saveClosedTaskInfo finished");
+            }
+         
+         }
 
 	public void closeEscalationProcessIfExists(String sID_Process) {
 		LOG.info("Looking for escalation processes for process {}", sID_Process);
