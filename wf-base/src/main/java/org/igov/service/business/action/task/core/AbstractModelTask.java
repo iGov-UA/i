@@ -496,9 +496,12 @@ public abstract class AbstractModelTask {
      */
     public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask){
         
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        
         DelegateExecution oExecution = oTask.getExecution();
         List<Attachment> aAttachment = new LinkedList<>();
-        LOG.info("addAttachmentsToTask is used...");
+        LOG.info("addAttachmentsToTask is used... " + dateFormat.format(date));
         LOG.info("SCAN:file");
         List<String> asFieldID = getListFieldCastomTypeFile(oFormData);
         LOG.info("[addAttachmentsToTask]");
@@ -511,7 +514,7 @@ public abstract class AbstractModelTask {
         if (!asFieldValue.isEmpty()) {
             int n = 0;
             for (String sFieldValue : asFieldValue) {
-                LOG.info("(sFieldValue={})", sFieldValue);
+                LOG.info(dateFormat.format(date) + "(sFieldValue={})", sFieldValue);
                 
                 String sCurrFieldID = asFieldID.get(n);
                 String sCurrFieldName = asFieldID.get(n);
@@ -524,6 +527,7 @@ public abstract class AbstractModelTask {
                         JSONParser parser = new JSONParser(); 
                         
                         try {
+                            LOG.info("Parsing value + " + sFiledValue + " time: " + dateFormat.format(date))
                             oJsonTaskAttachVO = (JSONObject)parser.parse(sFieldValue);
                         } catch (ParseException ex) {
                             LOG.info("There aren't TaskAttachVO objects in sFieldValue - JSON parsing error: ", ex);
