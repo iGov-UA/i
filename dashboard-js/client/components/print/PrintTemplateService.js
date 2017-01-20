@@ -26,7 +26,7 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Prin
       var markerExists = false;
 
       for(var i = 0; i < form.length; i++) {
-        if (form[i].id && form[i].id.includes('marker') && form[i].value.includes('ShowFieldsOn')){
+        if (form[i].id && form[i].id.indexOf('marker') >= 0 && form[i].value.indexOf('ShowFieldsOn') >= 0){
           markerExists = true;
           break;
         }
@@ -38,68 +38,68 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Prin
 
            if( form[i].type === 'table' && form[i].aRow && typeof form[i].aRow[0] !== 'number') {
 
-			    	  var prints = FieldMotionService.getPrintForms(); // form[i].id 
+			    	  var prints = FieldMotionService.getPrintForms(); // form[i].id
 
-			    	  angular.forEach ( prints, function(printsItem, printsKey, printsObj ) { 
+			    	  angular.forEach ( prints, function(printsItem, printsKey, printsObj ) {
 
-                 if( _.contains(printsItem.aField_ID, form[i].id) ) { 
+                 if( _.contains(printsItem.aField_ID, form[i].id) ) {
 
-		                  angular.forEach( form[i].aRow, function( item, key, obj ) { 
-		
-		                    var itemObject = { 
-		
+		                  angular.forEach( form[i].aRow, function( item, key, obj ) {
+
+		                    var itemObject = {
+
 		                      oPrintForm: printsItem,
-		                      sPrintFormKey: printsKey, 
-		                      sPatternPath: printsItem.sPatternPath, 
-		                      sTableName: form[i].id, 
-		                      nRowIndex: key, 
-		                      oRow: item, 
-		                      oField: null, 
-		                      sLabel: "", 
-		                      
+		                      sPrintFormKey: printsKey,
+		                      sPatternPath: printsItem.sPatternPath,
+		                      sTableName: form[i].id,
+		                      nRowIndex: key,
+		                      oRow: item,
+		                      oField: null,
+		                      sLabel: "",
+
 		                    };
-		
-		
-		                    if( printsItem.sTitleField ) { 
-		                      angular.forEach( item.aField, function( field, fieldKey ) { 
-		
-			                      if( field.id === printsItem.sTitleField )  { 
-		
-		                          itemObject.oField = field; 
-		                          itemObject.sLabel = field.value; 
-		
-		                          return; 
-			                      } 
-		
-		                      } ); 
-		                    } 
-		
-		                    if( itemObject.sLabel === "" ) { 
-		                      
-		                      itemObject.oField = item.aField[0]; 
+
+
+		                    if( printsItem.sTitleField ) {
+		                      angular.forEach( item.aField, function( field, fieldKey ) {
+
+			                      if( field.id === printsItem.sTitleField )  {
+
+		                          itemObject.oField = field;
+		                          itemObject.sLabel = field.value;
+
+		                          return;
+			                      }
+
+		                      } );
+		                    }
+
+		                    if( itemObject.sLabel === "" ) {
+
+		                      itemObject.oField = item.aField[0];
 		                      itemObject.sLabel = item.aField[0].value;
-		                      console.log( " #1438 '" + form[i].id + "'=" + itemObject.sLabel ); 
-		
-		                    } 
-		                    
-		                    if( itemObject.sLabel ) { 
+		                      console.log( " #1438 '" + form[i].id + "'=" + itemObject.sLabel );
+
+		                    }
+
+		                    if( itemObject.sLabel ) {
 		                      var item = {
-		
+
 		                        id: form[i].id,
 		                        displayTemplate: printsItem.sName + ' (' + itemObject.sLabel + ')',
 		                        type: "prints",
 		                        value: itemObject,
-		
+
 		                      };
-		
+
 		                      topItems.unshift( item );
-		
+
 		                      console.log( "Top item added " + printsItem.sName + " count:" + topItems.length);
 		                    }
-		                  
-		                } ); 
+
+		                } );
                  }
-            } ); 
+            } );
 
           }
         }
@@ -112,7 +112,7 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Prin
       if (markerExists){
           templates = form.filter(function (item) {
           var result = false;
-          if (item.id && item.id.includes('sBody')
+          if (item.id && item.id.indexOf('sBody') >= 0
             && (!FieldMotionService.FieldMentioned.inShow(item.id)
             || (FieldMotionService.FieldMentioned.inShow(item.id)
             && FieldMotionService.isFieldVisible(item.id, form)))) {
@@ -154,43 +154,43 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Prin
 
       return templates;
     },
-    
-    /** 
-     * function getPrintTemplateByObject 
-     *  Returns template for PrintForm object combined with tables value 
-     * 
-     * @returns loaded template 
-     * @author Sysprog 
-     */ 
 
-    getPrintTemplateByObject: function( task, form, printTemplateObject ) { 
-      var deferred = $q.defer(); 
-      if(!printTemplateObject.sPatternPath) { 
-        deferred.reject('Неможливо завантажити форму: "' + printTemplateObject.sPatternPath + '"'); 
-        return deferred.promise; 
+    /**
+     * function getPrintTemplateByObject
+     *  Returns template for PrintForm object combined with tables value
+     *
+     * @returns loaded template
+     * @author Sysprog
+     */
+
+    getPrintTemplateByObject: function( task, form, printTemplateObject ) {
+      var deferred = $q.defer();
+      if(!printTemplateObject.sPatternPath) {
+        deferred.reject('Неможливо завантажити форму: "' + printTemplateObject.sPatternPath + '"');
+        return deferred.promise;
       }
 
-      var parsedForm; 
-      if(!angular.isDefined(loadedTemplates[printTemplateObject.sPatternPath])) { 
-         tasks.getPatternFile(printTemplateObject.sPatternPath).then(function(originalTemplate) { 
+      var parsedForm;
+      if(!angular.isDefined(loadedTemplates[printTemplateObject.sPatternPath])) {
+         tasks.getPatternFile(printTemplateObject.sPatternPath).then(function(originalTemplate) {
 
-           loadedTemplates[printTemplateObject.sPatternPath] = originalTemplate; 
-           parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, originalTemplate); 
-           parsedForm = PrintTemplateProcessor.populateTableField( parsedForm , printTemplateObject ); 
+           loadedTemplates[printTemplateObject.sPatternPath] = originalTemplate;
+           parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, originalTemplate);
+           parsedForm = PrintTemplateProcessor.populateTableField( parsedForm , printTemplateObject );
            deferred.resolve(parsedForm);
 
-         }, function() { 
-           deferred.reject('Помилка завантаження форми "' + printTemplateObject.sPatternPath + '"'); 
+         }, function() {
+           deferred.reject('Помилка завантаження форми "' + printTemplateObject.sPatternPath + '"');
          });
       }
-      else { 
-        parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, loadedTemplates[printTemplateObject.sPatternPath]); 
+      else {
+        parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, loadedTemplates[printTemplateObject.sPatternPath]);
         parsedForm = PrintTemplateProcessor.populateTableField( parsedForm, printTemplateObject );
         deferred.resolve(parsedForm);
       }
       return deferred.promise;
     },
-    
+
     // method to get parsed template
     getPrintTemplate: function(task, form, printTemplateName) {
       var deferred = $q.defer();
