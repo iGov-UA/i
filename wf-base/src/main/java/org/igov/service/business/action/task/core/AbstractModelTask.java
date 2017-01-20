@@ -379,7 +379,7 @@ public abstract class AbstractModelTask {
         }
     }
 
-    public void addOldAttachmentToTask(DelegateTask oTask, DelegateExecution oExecution, FormData oFormData, String sFieldValue,
+    public List<Attachment> addOldAttachmentToTask(DelegateTask oTask, DelegateExecution oExecution, FormData oFormData, String sFieldValue,
             List<Attachment> aAttachment, String sCurrFieldID, String sCurrFieldName) {
 
         String sID_Field = sCurrFieldID;
@@ -486,6 +486,7 @@ public abstract class AbstractModelTask {
                         .save();
             }
         }
+        return aAttachment;
     }
 
     /**
@@ -496,7 +497,6 @@ public abstract class AbstractModelTask {
      * @return list of Attachment
      */
     public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask){
-        
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         
@@ -689,7 +689,7 @@ public abstract class AbstractModelTask {
                         }
                         else{ //Old logic
                             LOG.info("It is old object");
-                            addOldAttachmentToTask(oTask, oExecution, oFormData, sFieldValue, aAttachment, sCurrFieldID, sCurrFieldName);
+                            aAttachment = addOldAttachmentToTask(oTask, oExecution, oFormData, sFieldValue, aAttachment, sCurrFieldID, sCurrFieldName);
                     
                         }
                     } else {
@@ -701,7 +701,7 @@ public abstract class AbstractModelTask {
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
         //return aAttachemet;
-        return new LinkedList<Attachment>();
+        return aAttachment;
 
     }
 
