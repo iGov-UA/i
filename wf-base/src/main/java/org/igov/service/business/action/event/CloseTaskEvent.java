@@ -160,10 +160,6 @@ public class CloseTaskEvent {
                             LOG.error("Ошибка при добавлении коммменатирия эскалации:", e);
                         }
 
-                        //     } 
-//                       else {
-//                            LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
-//                        }
                     }
                 } catch (Exception oException) {
                     new Log(oException, LOG)//this.getClass()
