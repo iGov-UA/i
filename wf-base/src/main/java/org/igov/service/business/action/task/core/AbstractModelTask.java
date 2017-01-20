@@ -571,8 +571,10 @@ public abstract class AbstractModelTask {
                                                                 if ("file".equals((String)oValue)){
                                                                     
                                                                     String oFileValue = (String)oJsonMap.get("value");
-                                                                    
                                                                     LOG.info("Current file value in the table is: " + oFileValue);
+                                                                    String oFixedFileValue = oFileValue.replace("\\", "");
+                                                                    LOG.info("Current file fixed value in the table is: " + oFixedFileValue);
+                                                                    
                                                                     /*JSONObject oJsonTableFile = null;
 
                                                                     try {
