@@ -1,7 +1,7 @@
 'use strict';
 
 //angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'PrintTemplateProcessor', '$q', '$templateRequest', '$lunaService', function(tasks, PrintTemplateProcessor, $q, $templateRequest, lunaService) {
-angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'PrintTemplateProcessor', '$q', '$templateRequest', function(tasks, PrintTemplateProcessor, $q, $templateRequest) {
+angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'FieldMotionService', 'PrintTemplateProcessor', '$q', '$templateRequest', function(tasks, FieldMotionService, PrintTemplateProcessor, $q, $templateRequest) {
   // TODO: move code from PrintTemplateProcessor here
   // helper function to get path to a print template based on it's ID
   function findPrintTemplate (form, sCustomFieldID) {
@@ -112,7 +112,7 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Prin
       if (markerExists){
           templates = form.filter(function (item) {
           var result = false;
-          if (item.id && item.id.indexOf('sBody') >= 0 && FieldMotionService.FieldMentioned
+          if (item.id && item.id.indexOf('sBody') >= 0
             && (!FieldMotionService.FieldMentioned.inShow(item.id)
             || (FieldMotionService.FieldMentioned.inShow(item.id)
             && FieldMotionService.isFieldVisible(item.id, form)))) {
