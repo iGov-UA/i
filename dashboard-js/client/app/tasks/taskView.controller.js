@@ -40,9 +40,12 @@
         function getObjFromTaskFormById(id) {
           if(id == null) return null;
           for (var i = 0; i < taskForm.length; i++) {
-             if (taskForm[i].id && taskForm[i].id.includes && taskForm[i].id.includes(id)) {
-               return taskForm[i];
-             }
+//             if (taskForm[i].id && taskForm[i].id.includes && taskForm[i].id.includes(id)) {
+//               return taskForm[i];
+//             }
+            if (taskForm[i].id && taskForm[i].id.indexOf(id) >= 0) {
+              return taskForm[i];
+            }
           }
           return null;
         }
