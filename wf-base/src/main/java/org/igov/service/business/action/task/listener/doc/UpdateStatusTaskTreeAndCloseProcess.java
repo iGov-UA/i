@@ -22,7 +22,7 @@ import org.igov.service.business.process.ProcessSubjectService;
 public class UpdateStatusTaskTreeAndCloseProcess implements TaskListener {
 
 
-	private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(SetTasks.class);
+	private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(UpdateStatusTaskTreeAndCloseProcess.class);
 
     
     private Expression snID_Process_Activiti;    
