@@ -379,7 +379,7 @@ public abstract class AbstractModelTask {
         }
     }
 
-    public void addOldAttachmentToTask(DelegateTask oTask, DelegateExecution oExecution, FormData oFormData, String sFieldValue,
+    public List<Attachment> addOldAttachmentToTask(DelegateTask oTask, DelegateExecution oExecution, FormData oFormData, String sFieldValue,
             List<Attachment> aAttachment, String sCurrFieldID, String sCurrFieldName) {
 
         String sID_Field = sCurrFieldID;
@@ -486,6 +486,7 @@ public abstract class AbstractModelTask {
                         .save();
             }
         }
+        return aAttachment;
     }
 
     /**
@@ -496,7 +497,6 @@ public abstract class AbstractModelTask {
      * @return list of Attachment
      */
     public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask){
-        
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         
@@ -536,6 +536,7 @@ public abstract class AbstractModelTask {
                         
                         if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null){ //try to process field with new logic
                             LOG.info("It is new JSON object: " + oJsonTaskAttachVO.toJSONString());
+                            
                             if (getField(oFormData, asFieldID.get(n)).getType() instanceof TableFormType) {
                                 LOG.info("it is a table type");
                                 MultipartFile oTableMultipartfile = null;
@@ -543,6 +544,44 @@ public abstract class AbstractModelTask {
                                     oTableMultipartfile = oAttachmetService.getAttachment(null, null, (String)oJsonTaskAttachVO.get("sKey"), (String)oJsonTaskAttachVO.get("sID_StorageType"));
                                     if (oTableMultipartfile != null){
                                         LOG.info("oTableMultipartfile content is: " + IOUtils.toString(oTableMultipartfile.getInputStream()));
+                                            //oTableMultipartfileContent
+                                            JSONObject oTableJSONObject = null;
+                                            try {
+                                                oTableJSONObject = (JSONObject) parser.parse(IOUtils.toString(oTableMultipartfile.getInputStream()));
+                                            } 
+                                            catch (ParseException ex) {
+                                                LOG.info("Some error during table parsing : ", ex);
+                                            }
+                                            
+                                            if (oTableJSONObject != null && oTableJSONObject.get("aRow") != null){ //try to process table
+                                            {
+                                                JSONArray aJsonRow = (JSONArray) oTableJSONObject.get("aRow");
+                                                for(int i = 0; i < aJsonRow.size(); i++){
+                                                    
+                                                    JSONObject oJsonField = (JSONObject) aJsonRow.get(i);
+                                                    
+                                                    if (oJsonField != null) {
+                                                        JSONArray aJsonField = (JSONArray) oJsonField.get("aField");
+                                                    
+                                                        if (aJsonField != null) {
+                                                            for (int j = 0; j < aJsonField.size(); j++) {
+                                                                JSONObject oJsonMap = (JSONObject) aJsonField.get(j);
+                                                                
+                                                                Object oValue = oJsonMap.get("type");
+                                                                if ("file".equals((String)oValue)){
+                                                                    //to do work with a file
+                                                                }
+                                                                else{
+                                                                    LOG.info("new table element type is: " + oJsonMap.get("type"));
+                                                                    LOG.info("new table element id is: " + oJsonMap.get("id"));
+                                                                    LOG.info("new table element value is: " + oJsonMap.get("value"));
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                     else{
                                         LOG.info("oTableMultipartfile is null");
@@ -644,11 +683,13 @@ public abstract class AbstractModelTask {
                                     }
                                     addNewAttachmentToTask(oExecution, oJsonTaskAttachVO, sCurrFieldID);
                                 }*/
-                        }
+                            }
+                            
+                            addNewAttachmentToTask(oExecution, oJsonTaskAttachVO, sCurrFieldID);
                         }
                         else{ //Old logic
                             LOG.info("It is old object");
-                            addOldAttachmentToTask(oTask, oExecution, oFormData, sFieldValue, aAttachment, sCurrFieldID, sCurrFieldName);
+                            aAttachment = addOldAttachmentToTask(oTask, oExecution, oFormData, sFieldValue, aAttachment, sCurrFieldID, sCurrFieldName);
                     
                         }
                     } else {
@@ -660,7 +701,7 @@ public abstract class AbstractModelTask {
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
         //return aAttachemet;
-        return new LinkedList<Attachment>();
+        return aAttachment;
 
     }
 
