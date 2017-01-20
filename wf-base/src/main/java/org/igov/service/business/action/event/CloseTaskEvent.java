@@ -176,15 +176,22 @@ public class CloseTaskEvent {
                     // Cохранение нового события для задачи
                     HistoryEvent_Service_StatusType status;
                     if (bProcessClosed) {
+                      
                         status = HistoryEvent_Service_StatusType.CLOSED;
+                          LOG.info("HistoryEvent_Service_StatusType is CLOSED + ", status); 
                     } else {
                         status = HistoryEvent_Service_StatusType.OPENED;
+                          LOG.info("HistoryEvent_Service_StatusType is OPENED + ", status); 
                     }
-                    LOG.info("Saving closed task");
+                    LOG.info("Saving closed task", status);
                     mParam.put("sUserTaskName", sUserTaskName);
                     try {
                         if (!(sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && status == HistoryEvent_Service_StatusType.CLOSED)) {
                             historyEventService.updateHistoryEvent(sID_Order, status, mParam);
+                            
+                            
+                    
+                    LOG.info(" historyEventService.updateHistoryEvent", sID_Order, status);    
                         }
                     } catch (Exception oException) {
                         new Log(oException, LOG)._Case("IC_SaveTaskHistoryEvent")._Status(Log.LogStatus.ERROR)
@@ -196,6 +203,8 @@ public class CloseTaskEvent {
 					try {
 						escalationHistoryService.updateStatus(nID_Process, bProcessClosed
 								? EscalationHistoryService.STATUS_CLOSED : EscalationHistoryService.STATUS_IN_WORK);
+                                                
+                                                
 					} catch (Exception oException) {
 						new Log(oException, LOG)// this.getClass()
 								._Case("IC_SaveEscalation")._Status(Log.LogStatus.ERROR)
