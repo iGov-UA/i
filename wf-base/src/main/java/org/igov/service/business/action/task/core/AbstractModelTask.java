@@ -535,12 +535,12 @@ public abstract class AbstractModelTask {
                         }
                         
                         if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null){ //try to process field with new logic
-                            LOG.info("It is new JSON object");
+                            LOG.info("It is new JSON object: " + oJsonTaskAttachVO.toJSONString());
                             if (getField(oFormData, asFieldID.get(n)).getType() instanceof TableFormType) {
                                 LOG.info("it is a table type");
                                 MultipartFile oTableMultipartfile = null;
-                                try{                                
-                                    oTableMultipartfile = oAttachmetService.getAttachment(oExecution.getProcessInstanceId(), asFieldID.get(n), null, null);
+                                try{       
+                                    oTableMultipartfile = oAttachmetService.getAttachment(null, null, (String)oJsonTaskAttachVO.get("sKey"), (String)oJsonTaskAttachVO.get("sID_StorageType"));
                                     if (oTableMultipartfile != null){
                                         LOG.info("oTableMultipartfile content is: " + IOUtils.toString(oTableMultipartfile.getInputStream()));
                                     }
