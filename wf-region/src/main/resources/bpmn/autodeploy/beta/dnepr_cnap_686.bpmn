@@ -6,6 +6,8 @@
         <activiti:formProperty id="markers_ext_01" name="extra_required_fields" type="markers" default="${markerService.loadFromFile('dnepr_cnap_686.json')}"></activiti:formProperty>
         <activiti:formProperty id="InfoStart" name="Для замовлення цієї послуги Вам потрібно скористатися електронно-цифровим підписом (ЕЦП) (наприклад податкової або банку, що Вас обслуговує)." type="label" default="Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
 
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -175,16 +177,16 @@
         <activiti:formProperty id="markers_Hide03_0002_01" name="спрятать маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide03_0002_01&quot;:{&quot;aField_ID&quot;:[&quot;markers1600&quot;,&quot;markers1601&quot;,&quot;markers1602&quot;,&quot;markers1603&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_0002_1601" name="відкрити 5 КВЕДів для вводу " type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0002_1601&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_0002_02&quot;,&quot;sKVED_0002_03&quot;,&quot;sKVED_0002_04&quot;,&quot;sKVED_0002_05&quot;],&quot;asID_Field&quot;:{&quot;sClient_1&quot;:&quot;asSelectNumKVED_0002_01&quot;,&quot;sClient_2&quot;:&quot;asSelectIzmKVED_0002_02&quot;},&quot;sCondition&quot;:&quot;[sClient_1] == 'tf1601' &amp;&amp; [sClient_2] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_0002_1602" name="відкрити 10 КВЕДів для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0002_1602&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_0002_02&quot;,&quot;sKVED_0002_03&quot;,&quot;sKVED_0002_04&quot;,&quot;sKVED_0002_05&quot;,&quot;sKVED_0002_06&quot;,&quot;sKVED_0002_07&quot;,&quot;sKVED_0002_08&quot;,&quot;sKVED_0002_09&quot;,&quot;sKVED_0002_10&quot;],&quot;asID_Field&quot;:{&quot;sClient_1&quot;:&quot;asSelectNumKVED_0002_01&quot;,&quot;sClient_2&quot;:&quot;asSelectIzmKVED_0002_02&quot;},&quot;sCondition&quot;:&quot;[sClient_1] == 'tf1602' &amp;&amp; [sClient_2] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0002_01" name="Код виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0002_02" name="Код другого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0002_03" name="Код третього виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0002_04" name="Код четвертого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0002_05" name="Код п'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0002_06" name="Код шостого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0002_07" name="Код сьомого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0002_08" name="Код восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0002_09" name="Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0002_10" name="Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_01" name="Код виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_02" name="Код другого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_03" name="Код третього виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_04" name="Код четвертого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_05" name="Код п'ятого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_06" name="Код шостого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_07" name="Код сьомого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_08" name="Код восьмого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_09" name="Код дев'ятого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_10" name="Код десятого виду діяльності" type="string" default=""></activiti:formProperty>
         <activiti:formProperty id="Lblminus_0002_01" name="----------------------------------------------------" type="label" default="----------------------------------------------"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0002_01_1" name="поставити + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_01_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_01&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0002_01_2" name="убрать + для нового виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_01_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_01&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
@@ -231,16 +233,16 @@
         <activiti:formProperty id="markers_Hide03_0003_01" name="спрятать маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide03_0003_01&quot;:{&quot;aField_ID&quot;:[&quot;markers1600&quot;,&quot;markers1601&quot;,&quot;markers1602&quot;,&quot;markers1603&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_0003_1601" name="відкрити 5 КВЕДів для вводу " type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0003_1601&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_0003_02&quot;,&quot;sKVED_0003_03&quot;,&quot;sKVED_0003_04&quot;,&quot;sKVED_0003_05&quot;],&quot;asID_Field&quot;:{&quot;sClient_1&quot;:&quot;asSelectNumKVED_0003_01&quot;,&quot;sClient_2&quot;:&quot;asSelectIzmKVED_0003_02&quot;},&quot;sCondition&quot;:&quot;[sClient_1] == 'tf1601' &amp;&amp; [sClient_2] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_0003_1602" name="відкрити 10 КВЕДів для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0003_1602&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_0003_02&quot;,&quot;sKVED_0003_03&quot;,&quot;sKVED_0003_04&quot;,&quot;sKVED_0003_05&quot;,&quot;sKVED_0003_06&quot;,&quot;sKVED_0003_07&quot;,&quot;sKVED_0003_08&quot;,&quot;sKVED_0003_09&quot;,&quot;sKVED_0003_10&quot;],&quot;asID_Field&quot;:{&quot;sClient_1&quot;:&quot;asSelectNumKVED_0003_01&quot;,&quot;sClient_2&quot;:&quot;asSelectIzmKVED_0003_02&quot;},&quot;sCondition&quot;:&quot;[sClient_1] == 'tf1602' &amp;&amp; [sClient_2] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_01" name="Код виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_02" name="Код другого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_03" name="Код третього виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_04" name="Код четвертого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_05" name="Код п'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_06" name="Код шостого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_07" name="Код сьомого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_08" name="Код восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_09" name="Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_10" name="Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_01" name="Код виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_02" name="Код другого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_03" name="Код третього виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_04" name="Код четвертого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_05" name="Код п'ятого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_06" name="Код шостого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_07" name="Код сьомого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_08" name="Код восьмого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_09" name="Код дев'ятого виду діяльності" type="string" default=""></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_10" name="Код десятого виду діяльності" type="string" default=""></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_01_1" name="поставити + для старого виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_01_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_01&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_01&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_01_2" name="убрать + для старого виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_01_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_01&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_02_1" name="поставити + для старого виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_02_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_02&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_02&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
@@ -335,10 +337,15 @@
         <activiti:formProperty id="sNameService" type="invisible" default="Державна реєстрація змін до відомостей про фізичну особу – підприємця"></activiti:formProperty>
       </extensionElements>
     </startEvent>
+
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_all_pay">
+
+    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_${sID_UA}_1497,jur_all_1497,jur_all_pay">
       <extensionElements>
-        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur_"></activiti:formProperty>
+        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur_1497_"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версия" type="string" default="003"></activiti:formProperty>
+
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
 
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -456,7 +463,7 @@
         <activiti:formProperty id="sIzm_06_Plus" name="+ Изменения 06" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_07_Plus" name="+ Изменения 07" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_08_Plus" name="+ Изменения 08" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asChoiceCNAP" name="ВИКОНУВАЧ ПОСЛУГИ (важливо обирати свій район, оскільки саме на його рахунок буде надходити оплата за послугу)" type="enum" default=" " required="true">
+<!--        <activiti:formProperty id="asChoiceCNAP" name="ВИКОНУВАЧ ПОСЛУГИ (важливо обирати свій район, оскільки саме на його рахунок буде надходити оплата за послугу)" type="enum" default=" " required="true">
           <activiti:value id="vasil" name="Васильківський ЦНАП"></activiti:value>
           <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
           <activiti:value id="vilnogirskT" name="ЦНАП м.Вільногірськ"></activiti:value>
@@ -471,7 +478,7 @@
           <activiti:value id="nikopolT" name="ЦНАП м.Нікополь"></activiti:value>
           <activiti:value id="dndz" name="ЦНАП м.Дніпродзержинськ"></activiti:value>
           <activiti:value id="persotravT" name="ЦНАП м.Першотравенськ"></activiti:value>
-        </activiti:formProperty>
+        </activiti:formProperty> -->
         <activiti:formProperty id="sVarBankOplata" name="Банк отримувача" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarBankMFO" name="МФО банк" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarPayCode" name="Код платежу" type="invisible" default=" "></activiti:formProperty>
@@ -481,7 +488,7 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (Васильковка)" type="invisible" default="i5516072613"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="142.57"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="162.93"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="101;${bankIdinn};22010300 Адміністративний збір за держреєстрацію змін ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="asDecisionFirst_01" name="Результат аналізу звернення" type="enum" required="true">
@@ -490,42 +497,40 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur_1497_"></activiti:formProperty>
+        <activiti:taskListener event="complete" delegateExpression="${FindGroup}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
+	
     <scriptTask id="scripttask1" name="Выбор магазина Ликпей" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>          
-      	  var sVarCNAP=execution.getVariable('asChoiceCNAP')
-          if (sVarCNAP=='vasil')
+      	  var sVarCNAP=execution.getVariable('group_found')
+          if (sVarCNAP=='jur_1499_vasil' || sVarCNAP=='many')
           	{
           		execution.setVariable('sID_Merchant','i5516072613')
-				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
-				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
-				execution.setVariable('sVarBankMFO','805012')          			
-				execution.setVariable('sVarPayCode','22010300')          			
-				execution.setVariable('sVarWhoPayGetCode','37870848')          			
-				execution.setVariable('sVarWhoPayGet','ВАСИЛЬКІВСЬКЕ УК (ВАСИЛЬКІВСЬКОГО РАЙОНУ)')          			
-				execution.setVariable('sVarPayGetSchet','31419501700049')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')
+				execution.setVariable('sVarBankMFO','805012')
+				execution.setVariable('sVarPayCode','22010300')
+				execution.setVariable('sVarWhoPayGetCode','37870848')
+				execution.setVariable('sVarWhoPayGet','ВАСИЛЬКІВСЬКЕ УК (ВАСИЛЬКІВСЬКОГО РАЙОНУ)')
+				execution.setVariable('sVarPayGetSchet','31419501700049')
+				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='charichanka')
+          if (sVarCNAP=='jur_1499_charichanka')
           	{
           		execution.setVariable('sID_Merchant','i76592566863')
-				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
-				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
-				execution.setVariable('sVarBankMFO','805012')          			
-				execution.setVariable('sVarPayCode','22010300')          			
-				execution.setVariable('sVarWhoPayGetCode','37901650')          			
-				execution.setVariable('sVarWhoPayGet','ЦАРИЧАНСЬКЕ УК (ЦАРИЧАНСЬКОГО РАЙОНУ)')          			
-				execution.setVariable('sVarPayGetSchet','31417501700353')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')
+				execution.setVariable('sVarBankMFO','805012')
+				execution.setVariable('sVarPayCode','22010300')
+				execution.setVariable('sVarWhoPayGetCode','37901650')
+				execution.setVariable('sVarWhoPayGet','ЦАРИЧАНСЬКЕ УК (ЦАРИЧАНСЬКОГО РАЙОНУ)')
+				execution.setVariable('sVarPayGetSchet','31417501700353')
+				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='vilnogirskT')
+          if (sVarCNAP=='jur_1499_vilnogirskT')
           	{
           		execution.setVariable('sID_Merchant','i30965470376')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -535,9 +540,9 @@
 				execution.setVariable('sVarWhoPayGetCode','37996805')          			
 				execution.setVariable('sVarWhoPayGet','УДКСУ у м.Вільногірську')          			
 				execution.setVariable('sVarPayGetSchet','31413501700012')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarSumPay','160.00')
           	}
-		  if (sVarCNAP=='tomak')
+		  if (sVarCNAP=='jur_1499_tomak')
           	{
           		execution.setVariable('sID_Merchant','i24385779871')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -547,9 +552,9 @@
 				execution.setVariable('sVarWhoPayGetCode','36729802')          			
 				execution.setVariable('sVarWhoPayGet','Томаківське УК (Томаківський р-н)')          			
 				execution.setVariable('sVarPayGetSchet','31118170700339')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='krinichki')
+          if (sVarCNAP=='jur_1499_krinichki')
           	{
           		execution.setVariable('sID_Merchant','i6466363679')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -559,9 +564,9 @@
 				execution.setVariable('sVarWhoPayGetCode','38052097')          			
 				execution.setVariable('sVarWhoPayGet','УДКСУ у Криничанському районі(місцевий)')          			
 				execution.setVariable('sVarPayGetSchet','31114170700117')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='ordzonikT')
+          if (sVarCNAP=='jur_1499_ordzonikT')
           	{
           		execution.setVariable('sID_Merchant','i29422825028')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -571,9 +576,9 @@
 				execution.setVariable('sVarWhoPayGetCode','37691430')          			
 				execution.setVariable('sVarWhoPayGet','УК у м.Орджонiкiдзе(м.Орджон)')          			
 				execution.setVariable('sVarPayGetSchet','31416501700031')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='meziv')
+          if (sVarCNAP=='jur_1499_meziv')
           	{
           		execution.setVariable('sID_Merchant','i98768677701')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -583,9 +588,9 @@
 				execution.setVariable('sVarWhoPayGetCode','37909010')          			
 				execution.setVariable('sVarWhoPayGet','УДКСУ у Межівському районі(місцевий)')          			
 				execution.setVariable('sVarPayGetSchet','31415501700162')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='zhvodT')
+          if (sVarCNAP=='jur_1499_zhvodT')
           	{
           		execution.setVariable('sID_Merchant','i10871377634')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -595,9 +600,9 @@
 				execution.setVariable('sVarWhoPayGetCode','36916755')          			
 				execution.setVariable('sVarWhoPayGet','УК у м.Жовтих Водах (місцевий бюджет м.Жовті Води)')          			
 				execution.setVariable('sVarPayGetSchet','31417501700018')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='ternopil')
+          if (sVarCNAP=='jur_1499_ternopil')
           	{
           		execution.setVariable('sID_Merchant','i13991491434')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -607,9 +612,9 @@
 				execution.setVariable('sVarWhoPayGetCode','38038156')          			
 				execution.setVariable('sVarWhoPayGet','УК у Терноп.р-ні(Тернопіл.р-н)')          			
 				execution.setVariable('sVarPayGetSchet','31417501700513')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='petropavl')
+          if (sVarCNAP=='jur_1499_petropavl')
           	{
           		execution.setVariable('sID_Merchant','i85416673717')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -619,9 +624,9 @@
 				execution.setVariable('sVarWhoPayGetCode','36725512')          			
 				execution.setVariable('sVarWhoPayGet','Петропавлівське УК/Петро.р-н/')          			
 				execution.setVariable('sVarPayGetSchet','31416501700235')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='nikopol')
+          if (sVarCNAP=='jur_1499_nikopol')
           	{
           		execution.setVariable('sID_Merchant','i9597582078')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -631,9 +636,9 @@
 				execution.setVariable('sVarWhoPayGetCode','38055606')          			
 				execution.setVariable('sVarWhoPayGet','Нікопольське УК/ Нікопольський р-н/')          			
 				execution.setVariable('sVarPayGetSchet','31414501700174')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='nikopolT')
+          if (sVarCNAP=='jur_1499_nikopolT')
           	{
           		execution.setVariable('sID_Merchant','i65350712368')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -643,9 +648,9 @@
 				execution.setVariable('sVarWhoPayGetCode','38033121')          			
 				execution.setVariable('sVarWhoPayGet','УК у м. Нікополі/ м. Нікополь/')          			
 				execution.setVariable('sVarPayGetSchet','31417501700029')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='dndz')
+          if (sVarCNAP=='jur_1499_dndz')
           	{
           		execution.setVariable('sID_Merchant','i53978776110')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -655,9 +660,9 @@
 				execution.setVariable('sVarWhoPayGetCode','38028588')          			
 				execution.setVariable('sVarWhoPayGet','УДКСУ у м. Дніпродзержинську')          			
 				execution.setVariable('sVarPayGetSchet','31412501700013')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='persotravT')
+          if (sVarCNAP=='jur_1499_persotravT')
           	{
           		execution.setVariable('sID_Merchant','i24795480631')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -667,15 +672,31 @@
 				execution.setVariable('sVarWhoPayGetCode','37804890')          			
 				execution.setVariable('sVarWhoPayGet','УК у м.Першотравенськ')          			
 				execution.setVariable('sVarPayGetSchet','31412501700013')          			
-				execution.setVariable('sVarSumPay','140.00')          			
+				execution.setVariable('sVarSumPay','160.00')
+          	}
+
+			if (sVarCNAP=='jur_1499_ternopil_test')
+          	{
+          		execution.setVariable('sID_Merchant','i24795480631')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','37804890')          			
+				execution.setVariable('sVarWhoPayGet','УК у м.Першотравенськ')          			
+				execution.setVariable('sVarPayGetSchet','31412501700013')          			
+				execution.setVariable('sVarSumPay','160.00')
           	}
 		</script>
     </scriptTask>
-    <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateGroups="jur_${asChoiceCNAP}">
+
+    <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateGroups="group_found,jur_all_1497,jur_${sID_UA}_1497">
       <extensionElements>
         <activiti:formProperty id="group_found" name="Найденная группа по префиксу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версия" type="string" default="003"></activiti:formProperty>
 
-        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+<!--        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asChoiceCNAP" name="Виконувач послуги" type="enum" writable="false">
           <activiti:value id="vasil" name="Васильківський ЦНАП"></activiti:value>
           <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
@@ -691,7 +712,7 @@
           <activiti:value id="nikopolT" name="ЦНАП м.Нікополь"></activiti:value>
           <activiti:value id="dndz" name="ЦНАП м.Дніпродзержинськ"></activiti:value>
           <activiti:value id="persotravT" name="ЦНАП м.Першотравенськ"></activiti:value>
-        </activiti:formProperty>
+        </activiti:formProperty> -->
         <activiti:formProperty id="sID_Payment" name="ID платежу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>
@@ -831,16 +852,18 @@
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print_pay.html]" type="invisible" default="Квитанція про сплату за послугу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask4" name="Надання послуги" activiti:candidateGroups="jur_all">
+    <userTask id="usertask4" name="Надання послуги" activiti:candidateGroups="jur_all_1497,jur_${sID_UA}_1497,jur_all">
       <extensionElements>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версия" type="string" default="003"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>
@@ -969,12 +992,12 @@
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -996,16 +1019,21 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено рішення про відмову в реєстрації змін.&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression>
+		  [pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено рішення про відмову в реєстрації змін.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
 У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг".&lt;br /&gt;&lt;br /&gt;
-Вам направлена копія рішення (додаток до листа).&lt;br /&gt;&lt;br /&gt; 
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+Вам направлена копія рішення (додаток до листа).
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${fDecisionDoc}</activiti:expression>
@@ -1024,16 +1052,21 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено позитивне рішення про реєстрацію змін.&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression>
+		  [pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено позитивне рішення про реєстрацію змін.&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
 У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг".&lt;br /&gt;&lt;br /&gt;
-Вам направлена копія рішення (додаток до листа).&lt;br /&gt;&lt;br /&gt; 
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+Вам направлена копія рішення (додаток до листа).
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${fDecisionDoc}</activiti:expression>
@@ -1054,7 +1087,7 @@
           <activiti:expression>iGov - Нове звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;strong&gt;№[sID_Order]&lt;/strong&gt; [pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1071,15 +1104,21 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено позитивне рішення про реєстрацію змін.&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression>
+		  [pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено позитивне рішення про реєстрацію змін.&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг".&lt;br /&gt;&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг".
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1095,15 +1134,21 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено рішення про відмову в реєстрації змін.&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено рішення про відмову в реєстрації змін.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг".&lt;br /&gt;&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг".
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1119,13 +1164,19 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено рішення про відмову в реєстрації змін.&lt;br /&gt;&lt;br /&gt;
-Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено рішення про відмову в реєстрації змін.&lt;br /&gt;&lt;br /&gt;
+Коментар держслужбовця (${sComment})
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1141,14 +1192,20 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено рішення про відмову в реєстрації змін.&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено рішення про відмову в реєстрації змін.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
-Вам направлена копія рішення (додаток до листа).&lt;br /&gt;&lt;br /&gt; 
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+Вам направлена копія рішення (додаток до листа).
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${fDecisionDoc}</activiti:expression>
@@ -1167,14 +1224,20 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено позитивне рішення про реєстрацію змін.&lt;br /&gt;&lt;br /&gt;
-Вам направлена копія рішення (додаток до листа).&lt;br /&gt;&lt;br /&gt; 
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено позитивне рішення про реєстрацію змін.&lt;br /&gt;&lt;br /&gt;
+Вам направлена копія рішення (додаток до листа).
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${fDecisionDoc}</activiti:expression>
@@ -1193,13 +1256,19 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено позитивне рішення про реєстрацію змін.&lt;br /&gt;&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" опрацьовано і по ньому винесено позитивне рішення про реєстрацію змін.
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1240,12 +1309,18 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" прийнято до розгляду. Якщо з'являться зауваження або уточнення Вам будуть надходити відповідні листи, просимо перевіряти пошту.&lt;br /&gt;&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" прийнято до розгляду. Якщо з'являться зауваження або уточнення Вам будуть надходити відповідні листи, просимо перевіряти пошту.
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1261,14 +1336,18 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" пройшло перевірку.&lt;br /&gt; 
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" пройшло перевірку.&lt;br /&gt; 
 Для отримання послуги просимо її оплатити.&lt;br /&gt;&lt;br /&gt;
 [paymentButton_LiqPay]
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1293,13 +1372,19 @@
           <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" не пройшло перевірку.&lt;br /&gt; 
-Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+		[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" не пройшло перевірку.&lt;br /&gt; 
+Коментар держслужбовця (${sComment})
+<!--&lt;br /&gt;&lt;br /&gt;-->
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

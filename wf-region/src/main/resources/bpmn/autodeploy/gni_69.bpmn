@@ -83,7 +83,7 @@
           <activiti:string><![CDATA[Нове звернення: Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -106,23 +106,26 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Запит про отримання витягу з реєстру платників єдиного податку. Реєстрація]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header2.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]  
 			<p>
-				Ваша заява № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> на отримання витягу з реєстру платників єдиного податку, передана в роботу.
+				Ваша заява на отримання витягу з реєстру платників єдиного податку, передана в роботу.
 			</p>			
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
-			${sPhoneOrgan}<br>
-			${sWorkTime}<br><br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_feedback.html]   	
 			[pattern/mail/new_design/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -202,13 +205,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Запит про отримання витягу з реєстру платників єдиного податку. Відмовлено]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>                                    
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]                                     
 			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було оброблено.<br>
+				Ваше звернення було оброблено.<br>
 				На жаль, Вам відмовлено у наданні витягу з реєстру платників єдиного податку.<br/>
 				Підстава: enum{[decision_reject]}<br/>
 				<b>${comment_1}</b>
@@ -219,12 +222,14 @@
 			<br><br>
 			Для уточнення причини відказу скористуйтесь наступними контактами<br>
 			${sAddress}<br>
-			${sPhoneOrgan}<br>
-			${sWorkTime}<br><br>
-			[pattern/mail/_common_signature_start.html]
+			${sWorkTime}<br>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -250,13 +255,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Запит про отримання витягу з реєстру платників єдиного податку. Схвалено]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-          	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]  
           	<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> на отримання витягу з реєстру платників єдиного податку опрацьована. 
+				Ваше звернення на отримання витягу з реєстру платників єдиного податку опрацьоване. 
           	</p>			
 			<br><br>
 				Отримати витяг Ви зможете за наступними контактами:<br>
@@ -267,13 +272,14 @@
 				Щоб отримати витяг, при візиті до відділення фіскальної служби,<br> 
 				Вам необхідно мати при собі оригінал паспорта громадянина України<br> 
 				та назвати номер запиту №[sID_Order]
-			</p>			
-			<br><br>
-			[pattern/mail/_common_signature_start.html]
+			</p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_feedback.html]   	
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
-			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

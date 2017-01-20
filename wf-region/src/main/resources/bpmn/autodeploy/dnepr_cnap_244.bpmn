@@ -16,8 +16,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (в розмірі 40,89грн. без ПДВ за один висновок державної санітарно-епідеміологічної експертизи), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати. Ви можете завантажити єлектронну квітанцію, сформовану в інтернет-банку, або платіжне доручення з відміткою банку." type="label" default="Детальні реквізити для оплати знаходяться за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/1aEcQdKrWD2RxOb-gjqBpvEwE1BuO0LsRf7tGd6gYVZA/edit#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="anVibor_performer" name="Оберіть виконавця" type="enum" required="true">
-          <activiti:value id="1" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
-          <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
+          <activiti:value id="1" name="Головне управління Держпродспоживслужби у Дніпропетровській області"></activiti:value>
+          <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держпродспоживслужби на залізничному транспорті"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -137,8 +137,8 @@ execution.setVariable('term', per7)
           <activiti:value id="cansel" name="Анулювання дозволу (санітарного паспорту)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="anVibor_performer" name="Виконавець" type="enum" writable="false">
-          <activiti:value id="1" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
-          <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
+          <activiti:value id="1" name="Головне управління Держпродспоживслужби у Дніпропетровській області"></activiti:value>
+          <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держпродспоживслужби на залізничному транспорті"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачи заяви; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
@@ -158,7 +158,7 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
+          <activiti:value id="attr1_wait" name="Документи передані в держпродспоживслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
@@ -182,7 +182,7 @@ execution.setVariable('term', per7)
     <sequenceFlow id="flow8" name="status == 'attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Підготовка відповіді після рішення держсанепідслужби (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Підготовка відповіді після рішення держпродспоживслужби (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
@@ -196,8 +196,8 @@ execution.setVariable('term', per7)
           <activiti:value id="cansel" name="Анулювання дозволу (санітарного паспорту)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="anVibor_performer" name="Виконавець" type="enum" writable="false">
-          <activiti:value id="1" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
-          <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
+          <activiti:value id="1" name="Головне управління Держпродспоживслужби у Дніпропетровській області"></activiti:value>
+          <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держпродспоживслужби на залізничному транспорті"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
@@ -215,10 +215,10 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="status2" name="Статус дозволу (санітарного паспорту)" type="enum" required="true">
           <activiti:value id="attr3_finish" name="Дозвіл (санітарний паспорт) або рішення про анулювання готове, запросити громадянина"></activiti:value>
-          <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбой"></activiti:value>
+          <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держпродспоживслужбой"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFile_10" name="Завантажте скановану копію дозволу (або рішення) держсанепідслужби" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_10" name="Завантажте скановану копію дозволу (або рішення) держпродспоживслужби" type="file" default=" " required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Повідомлення адміністратора ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -332,7 +332,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p>Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - відправлене в держсанепідслужбу.<br />
+<p>Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - відправлене в держпродспоживслужбу.<br />
 Спеціалісти повинні дати відповідь протягом ${term} .<br /> 
 <p>Номер Вашого замовлення: ${number_cnap}</p>
 </p>

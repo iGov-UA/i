@@ -360,6 +360,7 @@ public class ActionItemControllerScenario {
     }
 
 
+    @Ignore
     @Test
     public void shouldSuccessfullyGetCatalogTreeTag() throws Exception {
         dbManager.recreateDb();
