@@ -572,28 +572,77 @@ public abstract class AbstractModelTask {
                                                                     
                                                                     String oFileValue = (String)oJsonMap.get("value");
                                                                     LOG.info("Current file value in the table is: " + oFileValue);
-                                                                    String oFixedFileValue = oFileValue.replace("\\", "");
-                                                                    LOG.info("Current file fixed value in the table is: " + oFixedFileValue);
                                                                     
-                                                                    /*JSONObject oJsonTableFile = null;
+                                                                    JSONObject oJsonTableFile = null;
 
                                                                     try {
                                                                         oJsonTableFile = (JSONObject)parser.parse(oFileValue);
                                                                     } catch (ParseException ex) {
                                                                         LOG.info("There aren't TaskAttachVO objects in sFieldValue in table - JSON parsing error: ", ex);
-                                                                    }*/
+                                                                    }
                                                                     
-                                                                    
-                                                                }
+                                                                    if(oJsonTableFile != null && oJsonTableFile.get("sID_StorageType") != null){
+
+                                                                        MultipartFile oMultipartFile = null;
+
+                                                                        try {
+                                                                            oMultipartFile = oAttachmetService
+                                                                                    .getAttachment(null, null, (String)oJsonTableFile.get("sKey"), "Redis");
+                                                                        } catch (ParseException | RecordInmemoryException | IOException | ClassNotFoundException | CRCInvalidException | RecordNotFoundException ex) {
+                                                                            LOG.info("getAttachment has some errors: " + ex);
+                                                                        }
+                                                                        
+                                                                        if (oMultipartFile != null) {
+                                                                            try {
+                                                                                JSONArray aJSONAttribute = (JSONArray) oJsonTaskAttachVO.get("aAttribute");
+                                                                                List<Map<String, Object>> aAttribute = new ArrayList<>();
+
+                                                                                if (!aJSONAttribute.isEmpty()) {
+                                                                                    for (Object oAttributeElem : aJSONAttribute) {
+                                                                                        Map<String, Object> mParam = new HashMap<>();
+                                                                                        mParam.put((String) ((JSONObject) oAttributeElem).get("sID"), ((JSONObject) oAttributeElem).get("sValue"));
+                                                                                        aAttribute.add(mParam);
+                                                                                    }
+                                                                                }
+
+                                                                                byte[] aByteFile = oMultipartFile.getBytes();
+
+                                                                                String sNewTableElemValue = oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), null,
+                                                                                        (String) oJsonTaskAttachVO.get("sFileNameAndExt"),
+                                                                                        (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html",
+                                                                                        aAttribute, aByteFile, false);
+                                                                                oJsonMap.replace("value", sNewTableElemValue);
+
+                                                                            } catch (IOException|CRCInvalidException|RecordNotFoundException ex) {
+                                                                                LOG.info("createAttachment has some errors: " + ex);
+                                                                            }
+                                                                        } 
+                                                                        else {
+                                                                            LOG.info("oVariableMultipartFile is null");
+                                                                        }
+                                                                    }
+                                                               }
                                                                 else{
                                                                     LOG.info("new table element type is: " + oJsonMap.get("type"));
                                                                     LOG.info("new table element id is: " + oJsonMap.get("id"));
                                                                     LOG.info("new table element value is: " + oJsonMap.get("value"));
                                                                 }
+                                                                LOG.info("aJsonField before setting: " + aJsonField.toJSONString());
+                                                                aJsonField.set(j, oJsonMap);
+                                                                LOG.info("aJsonField after setting: " + aJsonField.toJSONString());
                                                             }
                                                         }
+                                                        LOG.info("oJsonField before setting: " + oJsonField.toJSONString());
+                                                        oJsonField.replace("aField", aJsonField);
+                                                        LOG.info("oJsonField after setting: " + oJsonField.toJSONString());
+                                                        LOG.info("aJsonRow before setting: " + oJsonField.toJSONString());
+                                                        aJsonRow.set(i, oJsonField);
+                                                        LOG.info("aJsonRow after setting: " + oJsonField.toJSONString());
                                                     }
                                                 }
+                                                LOG.info("oTableJSONObject before setting: " + oTableJSONObject.toJSONString());
+                                                oTableJSONObject.replace("aRow", aJsonRow);
+                                                LOG.info("oTableJSONObject after setting: " + oTableJSONObject.toJSONString());
                                             }
                                         }
                                     }
