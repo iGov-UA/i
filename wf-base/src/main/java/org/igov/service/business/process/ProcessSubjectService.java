@@ -651,6 +651,7 @@ public class ProcessSubjectService {
      * статусов: executed;notExecuted;closed проставляем в статус сущности
      * ProcessSubject unactual и закрываем процесс-задачу с причиной unactual.
      * 
+     * @param snID_Process_Activiti
      */
     public void UpdateStatusTaskTreeAndCloseProcess(String snID_Process_Activiti, String sID_ProcessSubjectStatus) {
 
