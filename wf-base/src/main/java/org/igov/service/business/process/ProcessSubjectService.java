@@ -667,10 +667,11 @@ public class ProcessSubjectService {
 		String sProcessSubjectStatus = oProcessSubject_Сhild.getProcessSubjectStatus().getsID();
 		LOG.info("String sProcessSubjectStatus is....... = " + sProcessSubjectStatus);
 
-		if ((sProcessSubjectStatus.equals("executed") || sProcessSubjectStatus.equals("notExecuted")
+		if (!(sProcessSubjectStatus.equals("executed") || sProcessSubjectStatus.equals("notExecuted")
 			|| sProcessSubjectStatus.equals("unactual") || sProcessSubjectStatus.equals("closed")))	{
 
 		    oProcessSubject_Сhild.setProcessSubjectStatus(oProcessSubjectStatusUnactual);
+		    LOG.info("String sProcessSubjectStatus is   now....... = " + sProcessSubjectStatus);
 		    try {
 			oProcessSubject_Сhild.setsDateEdit(
 				new DateTime(df_ProcessSubjectSafe.parse(df_ProcessSubjectSafe.format(new Date()))));
