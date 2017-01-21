@@ -467,6 +467,7 @@ public class ProcessSubjectService {
             String sFormatDateRegistration = "";
             String sFormatDateDoc = "";
             Date oDateExecution = null;
+            
             LOG.info("sFormatDateExecution: " + sFormatDateExecution);
             LOG.info("sFormatDateRegistration: " + sFormatDateRegistration);
             LOG.info("sFormatDateDoc: " + sFormatDateDoc);
@@ -477,18 +478,21 @@ public class ProcessSubjectService {
                 sFormatDateExecution = df_StartProcess.format(oDateExecution);
                 LOG.info("oDateExecution: " + oDateExecution);
                 LOG.info("sFormatDateExecution: " + sFormatDateExecution);
+                mParam.replace("sDateExecution", sFormatDateExecution);
             }
             if ((mParam.get("sDateRegistration") != null) && (!mParam.get("sDateRegistration").equals(""))) {
                 Date oDateRegistration = parseDate((String)mParam.get("sDateRegistration"));
                 sFormatDateRegistration = df_StartProcess.format(oDateRegistration);
                 LOG.info("oDateRegistration: " + oDateRegistration);
                 LOG.info("sFormatDateRegistration: " + sFormatDateRegistration);
+                mParam.replace("sDateRegistration", sFormatDateRegistration);
             }
             if ((mParam.get("sDateDoc") != null) && (!mParam.get("sDateDoc").equals(""))) {
                 Date oDateDoc = parseDate((String)mParam.get("sDateDoc"));
                 sFormatDateDoc = df_StartProcess.format(oDateDoc);
                 LOG.info("oDateDoc: " + oDateDoc);
                 LOG.info("sFormatDateDoc: " + sFormatDateDoc);
+                mParam.replace("sDateDoc", sFormatDateDoc);
             }
 
             ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
