@@ -611,7 +611,7 @@ public abstract class AbstractModelTask {
                                                                                 String sNewTableElemValue = oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), (String)oJsonMap.get("id"),
                                                                                         (String) oJsonTableFile.get("sFileNameAndExt"),
                                                                                         (boolean) oJsonTableFile.get("bSigned"), "Mongo", "text/html",
-                                                                                        aAttribute, aByteFile, false);
+                                                                                        aAttribute, aByteFile, true);
                                                                                 
                                                                                 oJsonMap.replace("value", sNewTableElemValue);
 
