@@ -115,13 +115,13 @@ public class AttachmetService {
         String sID_Field_Value = JsonRestUtils.toJson((Object)oTaskAttachVO);
         
         if(nID_Process != null && bSetVariable == true){
-            //String taskId = Long.toString(oActionTaskService.getTaskIDbyProcess(Long.parseLong(nID_Process), null, true));
             
+            //String taskId = Long.toString(oActionTaskService.getTaskIDbyProcess(Long.parseLong(nID_Process), null, true));
             //LOG.info("UserTask id is:" + taskId);
             //LOG.info("UserTask sID_Field is:" + sID_Field);
             //LOG.info("UserTask sID_Field_Value is:" + sID_Field_Value);
-            
             //oTaskService.setVariable(taskId, sID_Field, sID_Field_Value);
+            
             oRuntimeService.setVariable(nID_Process, sID_Field, sID_Field_Value);
         }
 	
@@ -141,8 +141,8 @@ public class AttachmetService {
         
         if(nID_Process != null && sID_Field != null){
             
-            //Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
-            Map<String, Object> variables = oTaskService.getVariables(Long.toString(oActionTaskService.getTaskIDbyProcess(Long.parseLong(nID_Process), null, true)));
+            Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
+            //Map<String, Object> variables = oTaskService.getVariables(Long.toString(oActionTaskService.getTaskIDbyProcess(Long.parseLong(nID_Process), null, true)));
             
             LOG.info("VariableMap: " + variables);
 
