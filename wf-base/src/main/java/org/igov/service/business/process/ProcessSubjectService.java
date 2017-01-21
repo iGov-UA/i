@@ -686,6 +686,7 @@ public class ProcessSubjectService {
 		    if (processInstance != null) {
 			runtimeService.deleteProcessInstance(oProcessSubject_Сhild.getSnID_Process_Activiti(),
 				oProcessSubjectStatusUnactual.getsID());
+			
 		    }
 
 		}
