@@ -608,7 +608,7 @@ public abstract class AbstractModelTask {
 
                                                                                 byte[] aByteFile = oMultipartFile.getBytes();
 
-                                                                                String sNewTableElemValue = oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), oValue.get("id"),
+                                                                                String sNewTableElemValue = oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), (String)oJsonMap.get("id"),
                                                                                         (String) oJsonTableFile.get("sFileNameAndExt"),
                                                                                         (boolean) oJsonTableFile.get("bSigned"), "Mongo", "text/html",
                                                                                         aAttribute, aByteFile, false);
