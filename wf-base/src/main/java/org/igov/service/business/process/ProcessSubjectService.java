@@ -667,9 +667,8 @@ public class ProcessSubjectService {
 		String sProcessSubjectStatus = oProcessSubject_Сhild.getProcessSubjectStatus().getsID();
 		LOG.info("String sProcessSubjectStatus is....... = " + sProcessSubjectStatus);
 
-		if (sProcessSubjectStatus.equals("executed") || sProcessSubjectStatus.equals("notExecuted")
-			|| sProcessSubjectStatus.equals("unactual") || sProcessSubjectStatus.equals("closed"))// убрала не, потому что выбирает статусы кроме обозначенных в условии и присваивает им статус неактуально
-			{
+		if (!(sProcessSubjectStatus.equals("executed") || sProcessSubjectStatus.equals("notExecuted")
+			|| sProcessSubjectStatus.equals("unactual") || sProcessSubjectStatus.equals("closed")))	{
 
 		    oProcessSubject_Сhild.setProcessSubjectStatus(oProcessSubjectStatusUnactual);
 		    try {
