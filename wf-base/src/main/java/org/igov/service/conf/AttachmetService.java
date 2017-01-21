@@ -143,7 +143,8 @@ public class AttachmetService {
             
             Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
             //Map<String, Object> variables = oTaskService.getVariables(Long.toString(oActionTaskService.getTaskIDbyProcess(Long.parseLong(nID_Process), null, true)));
-            
+            SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            LOG.info("getAttachment started in " + dtf.format(new Date()));
             LOG.info("VariableMap: " + variables);
 
             if (variables != null) {
@@ -159,7 +160,12 @@ public class AttachmetService {
                     sFileName = (String)result.get("sFileNameAndExt");
                     sVersion = (String)result.get("sVersion");
                     sContentType = (String)result.get("sContentType");      
-
+                    
+                    LOG.info("getProcessAttach sID_StorageType: " + sID_StorageType);
+                    LOG.info("getProcessAttach sKey: " + sKey);
+                    LOG.info("getProcessAttach sFileName: " + sFileName);
+                    LOG.info("getProcessAttach sVersion: " + sVersion);
+                    LOG.info("getProcessAttach sContentType: " + sContentType);
                 }
             }
 
