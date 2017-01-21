@@ -660,12 +660,12 @@ public abstract class AbstractModelTask {
                                                 }
                                             }
 
-                                            byte[] aByteFile = oTableJSONObject.toJSONString().getBytes(Charsets.UTF_8);
+                                            byte[] aByteContent = oTableJSONObject.toJSONString().getBytes(Charsets.UTF_8);
 
                                             oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), sCurrFieldID,
                                                         (String) oJsonTaskAttachVO.get("sFileNameAndExt"),
                                                         (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html",
-                                                        aAttribute, aByteFile, true);
+                                                        aAttribute, aByteContent, true);
                                         }
                                     }
                                     else{

@@ -64,15 +64,21 @@ public class AttachmetService {
     public String createAttachment (String nID_Process, String sID_Field, String sFileNameAndExt,
         	boolean bSigned, String sID_StorageType, String sContentType, List<Map<String, Object>> saAttribute_JSON,
 		byte[] aContent, boolean bSetVariable) throws JsonProcessingException, CRCInvalidException, RecordNotFoundException{
-            
+        
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        
+        LOG.info(" ----------- " + dtf.format(new Date()) + " ----------- ");
         LOG.info("createAttachment nID_Process: " + nID_Process);
+        LOG.info("createAttachment sID_Field: " + sID_Field);
         LOG.info("createAttachment sFileNameAndExt: " + sFileNameAndExt);
         LOG.info("createAttachment bSigned: " + bSigned);
         LOG.info("createAttachment sID_StorageType: " + sID_StorageType);
         LOG.info("createAttachment sContentType: " + sContentType);
         LOG.info("createAttachment saAttribute_JSON size: " + saAttribute_JSON.size());
         LOG.info("createAttachment aContent: " + new String(aContent));
-
+        LOG.info("----------------------------------------------------");
+        
         TaskAttachVO oTaskAttachVO = new TaskAttachVO();
             
         String sKey = null;
@@ -94,8 +100,6 @@ public class AttachmetService {
             
         LOG.info("database sKey: " + sKey);
             
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
            
         oTaskAttachVO.setsID_StorageType(sID_StorageType);
         oTaskAttachVO.setsKey(sKey);
