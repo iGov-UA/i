@@ -665,6 +665,7 @@ public class ProcessSubjectService {
 	    for (ProcessSubject oProcessSubject_Сhild : aProcessSubject_Child) {
   
 		String sProcessSubjectStatus = oProcessSubject_Сhild.getProcessSubjectStatus().getsID();
+		LOG.info("String sProcessSubjectStatus is....... = " + sProcessSubjectStatus);
 
 		if (!(sProcessSubjectStatus.equals("executed") || sProcessSubjectStatus.equals("notExecuted")
 			|| sProcessSubjectStatus.equals("unactual") || sProcessSubjectStatus.equals("closed"))) {
