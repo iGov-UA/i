@@ -239,14 +239,6 @@
         
         <delete tableName="SubjectGroup"/>
         
-        <loadData encoding="UTF-8" file="data/SubjectGroup.csv" tableName="SubjectGroup" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="sID_Group_Activiti" type="STRING"/>
-            <column name="sChain" type="STRING"/>
-            <column name="nID_Subject" type="NUMERIC"/>
-        </loadData>
-        
         <delete tableName="SubjectGroupTree"/>
         
         <loadData encoding="UTF-8" file="data/SubjectGroupTree.csv" tableName="SubjectGroupTree" separator=";">
@@ -307,7 +299,14 @@
             <column name="sName" type="STRING"/>
             <column name="sNameFull" type="STRING"/>
         </loadUpdateData>
-
+        
+        <loadData encoding="UTF-8" file="data/SubjectGroup.csv" tableName="SubjectGroup" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sID_Group_Activiti" type="STRING"/>
+            <column name="sChain" type="STRING"/>
+            <column name="nID_Subject" type="NUMERIC"/>
+        </loadData>
         
         <!-- 3 связанные таблицы SubjectOrganJoin, SubjectOrganJoinAttribute
         перезагружаются каждый раз -->
