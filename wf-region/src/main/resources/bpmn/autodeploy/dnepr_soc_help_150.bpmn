@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_soc_help_150" name="Призначення державної соціальної допомоги інвалідам з дитинства та дітям-інвалідам віком до 18 років" isExecutable="true">
+  <process id="dnepr_soc_help_150" name="УПСЗН - Призначення державної соціальної допомоги інвалідам з дитинства та дітям-інвалідам віком до 18 років" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/150</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -244,7 +244,7 @@
           <activiti:value id="accept" name="схвалено призначення допомоги"></activiti:value>
           <activiti:value id="reject" name="відмовлено у призначенні допомоги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment2" name="У разі відмови внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment2" name="Будь ласка, причину відмови" type="textArea" required="true"></activiti:formProperty>
        	<activiti:formProperty id="markers22" name="якщо відхилити" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;sComment2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDecision2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відмовлено у призначенні допомоги'&quot;}}}"></activiti:formProperty>
 
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
@@ -335,7 +335,7 @@
 			</p>
 			<p>
 				В звязку з вищесказаним Вам призначено дату та час візиту для надання оригіналів документу: 
-				${dDateVisit}  ${dTimeVisit} <br>
+				 value{[dVisit]}  ${dTimeVisit} <br>
 				Кабінет №: ${sRoom}
 			</p>
 			<p>			
