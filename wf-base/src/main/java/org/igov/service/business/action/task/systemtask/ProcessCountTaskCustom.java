@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+import static org.igov.service.business.action.task.systemtask.ProcessCountTask.S_ID_ORDER_GOV_PUBLIC;
 import org.igov.service.controller.interceptor.ActionProcessCountUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,9 +73,19 @@ public class ProcessCountTaskCustom implements JavaDelegate, TaskListener {
 		LOG.info("Retrieved snCount={}", snCount);
 		
 		if (snCount != null) {
-                    runtimeService.setVariable(oExecution.getProcessInstanceId(), sID_Field_Result, snCount);
-                    LOG.info("Set variable to runtime snCount={}", snCount);
-
+                    
+                    String sReturn=sPattern; //snCount
+                    //${sID_Order_GovPublic}/${sID_Custom_GovPublic}
+                    
+                    if(sReturn.contains("[sID_Order_GovPublic]")){
+                        String s=runtimeService.getVariable(oExecution.getProcessInstanceId(), S_ID_ORDER_GOV_PUBLIC, String.class);
+                        sReturn=sReturn.replace("[sID_Order_GovPublic]", s);
+                    }
+                    sReturn=sReturn.replace("[sID_Custom_GovPublic]", snCount);
+                    
+                    runtimeService.setVariable(oExecution.getProcessInstanceId(), sID_Field_Result, sReturn);
+                    LOG.info("Set variable to runtime sReturn={}", sReturn);
+                    
                     LOG.info("Looking for a new task to set form properties");
                     List<Task> aTask = taskService.createTaskQuery().processInstanceId(oExecution.getId()).active().list();
                     LOG.info("Get {} active tasks for the process", aTask);
@@ -82,22 +93,25 @@ public class ProcessCountTaskCustom implements JavaDelegate, TaskListener {
                         TaskFormData oTaskFormData = formService.getTaskFormData(oTask.getId());
                         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
                             if (oFormProperty.getId().equals(sID_Field_Result)) {
-                                LOG.info("Found form property with the id " + sID_Field_Result + ". Setting value {}", snCount);
+                                LOG.info("Found form property with the id " + sID_Field_Result + ". Setting sReturn={}", sReturn);
                                 if (oFormProperty instanceof FormPropertyImpl) {
-                                    ((FormPropertyImpl) oFormProperty).setValue(snCount);
+                                    ((FormPropertyImpl) oFormProperty).setValue(sReturn);
                                 }
                             }
                         }
                         StartFormData oStartFormData = formService.getStartFormData(oExecution.getProcessDefinitionId());
                         for (FormProperty oFormProperty : oStartFormData.getFormProperties()) {
                             if (oFormProperty.getId().equals(sID_Field_Result)) {
-                                LOG.info("Found start form property with the id " + sID_Field_Result + ". Setting value {}", snCount);
+                                LOG.info("Found start form property with the id " + sID_Field_Result + ". Setting sReturn={}", sReturn);
                                 if (oFormProperty instanceof FormPropertyImpl) {
-                                    ((FormPropertyImpl) oFormProperty).setValue(snCount);
+                                    ((FormPropertyImpl) oFormProperty).setValue(sReturn);
                                 }
                             }
                         }
                     }
+                    
+                    
+                    
                 }
 	}
 
