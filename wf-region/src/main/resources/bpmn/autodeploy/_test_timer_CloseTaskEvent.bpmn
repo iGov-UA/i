@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_timer_CloseTaskEvent" name="тест смены статусов юзертасок с таймером" isExecutable="true">
+    <documentation>https://github.com/e-government-ua/iBP/issues/687</documentation>
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="saChangeName" name="выберите ветку по которой пойдет процесс" type="enum" required="true">
+          <activiti:value id="yes" name="таймер на юзертаске"></activiti:value>
+          <activiti:value id="no" name="висящий таймер"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask3_yellow" name="статус 1 - перед этим был висящий таймер (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
+    <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
+    <endEvent id="endevent5" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
+    <userTask id="usertask6" name="статус 1 (ЮТ с таймером)" activiti:assignee="kermit">
+      <extensionElements>
+        <activiti:taskListener event="complete" delegateExpression="${DoWorkOnCloseTaskEvent}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <intermediateCatchEvent id="timerintermediatecatchevent2" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDuration>PT10S</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask6" cancelActivity="false">
+      <timerEventDefinition>
+        <timeDuration>PT10S</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow163" sourceRef="timerintermediatecatchevent2" targetRef="usertask3_yellow"></sequenceFlow>
+    <sequenceFlow id="flow164" sourceRef="startevent1" targetRef="exclusivegateway6"></sequenceFlow>
+    <sequenceFlow id="flow165" sourceRef="exclusivegateway6" targetRef="timerintermediatecatchevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saChangeName == 'no'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow166" sourceRef="exclusivegateway6" targetRef="usertask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saChangeName == 'yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask7" name="статус 2 (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
+    <sequenceFlow id="flow167" sourceRef="escalationTimer2" targetRef="usertask7"></sequenceFlow>
+    <userTask id="usertask8" name="статус 3 (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
+    <sequenceFlow id="flow168" sourceRef="usertask8" targetRef="endevent5"></sequenceFlow>
+    <userTask id="usertask9" name="статус 2 - перед этим был висящий таймер (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
+    <sequenceFlow id="flow169" sourceRef="usertask9" targetRef="endevent5"></sequenceFlow>
+    <sequenceFlow id="flow170" sourceRef="usertask3_yellow" targetRef="usertask9"></sequenceFlow>
+    <sequenceFlow id="flow171" sourceRef="usertask7" targetRef="usertask8"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_timer_CloseTaskEvent">
+    <bpmndi:BPMNPlane bpmnElement="_test_timer_CloseTaskEvent" id="BPMNPlane__test_timer_CloseTaskEvent">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="61.0" y="98.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3_yellow" id="BPMNShape_usertask3_yellow">
+        <omgdc:Bounds height="71.0" width="121.0" x="420.0" y="136.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
+        <omgdc:Bounds height="40.0" width="40.0" x="130.0" y="95.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
+        <omgdc:Bounds height="35.0" width="35.0" x="780.0" y="98.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
+        <omgdc:Bounds height="71.0" width="121.0" x="240.0" y="20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer2" id="BPMNShape_escalationTimer2">
+        <omgdc:Bounds height="30.0" width="30.0" x="340.0" y="42.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="248.0" y="154.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
+        <omgdc:Bounds height="71.0" width="121.0" x="420.0" y="21.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask8" id="BPMNShape_usertask8">
+        <omgdc:Bounds height="71.0" width="121.0" x="580.0" y="21.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask9" id="BPMNShape_usertask9">
+        <omgdc:Bounds height="71.0" width="121.0" x="580.0" y="136.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow163" id="BPMNEdge_flow163">
+        <omgdi:waypoint x="283.0" y="171.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="171.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow164" id="BPMNEdge_flow164">
+        <omgdi:waypoint x="96.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="130.0" y="115.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow165" id="BPMNEdge_flow165">
+        <omgdi:waypoint x="150.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="150.0" y="171.0"></omgdi:waypoint>
+        <omgdi:waypoint x="248.0" y="171.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow166" id="BPMNEdge_flow166">
+        <omgdi:waypoint x="150.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="150.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="55.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow167" id="BPMNEdge_flow167">
+        <omgdi:waypoint x="370.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="56.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow168" id="BPMNEdge_flow168">
+        <omgdi:waypoint x="701.0" y="56.0"></omgdi:waypoint>
+        <omgdi:waypoint x="797.0" y="56.0"></omgdi:waypoint>
+        <omgdi:waypoint x="797.0" y="98.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow169" id="BPMNEdge_flow169">
+        <omgdi:waypoint x="701.0" y="171.0"></omgdi:waypoint>
+        <omgdi:waypoint x="797.0" y="171.0"></omgdi:waypoint>
+        <omgdi:waypoint x="797.0" y="133.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow170" id="BPMNEdge_flow170">
+        <omgdi:waypoint x="541.0" y="171.0"></omgdi:waypoint>
+        <omgdi:waypoint x="580.0" y="171.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow171" id="BPMNEdge_flow171">
+        <omgdi:waypoint x="541.0" y="56.0"></omgdi:waypoint>
+        <omgdi:waypoint x="580.0" y="56.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

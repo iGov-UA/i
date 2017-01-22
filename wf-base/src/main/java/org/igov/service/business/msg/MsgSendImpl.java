@@ -111,7 +111,8 @@ public class MsgSendImpl implements IMsgSend {
 
     private List<String> asParam = null;
     private String sDate = null;
-
+    private Map<String,Object> mAttribute = new HashMap();
+    
     //private String smDataMisc = null;
 
     /**
@@ -193,10 +194,11 @@ public class MsgSendImpl implements IMsgSend {
     @Override
     public <T> IMsgSend _Params(Map<String, T > mParam) {//HashMap<String, T > mParam
 	if ( mParam != null ) {
+            mAttribute.putAll(mParam);
 	    this.asParam = new LinkedList<String>();
-            mParam.entrySet().stream().forEach((o) -> {
+            /*mParam.entrySet().stream().forEach((o) -> {
                 this.asParam.add(o.getKey() + ": " + (o.getValue()==null?"NULL":o.getValue())+"");
-            });
+            });*/
 	}
 	//LOG.debug("asParam={}", this.asParam);
 	return this;
@@ -347,7 +349,16 @@ public class MsgSendImpl implements IMsgSend {
 	addAttr(mAttrs, "nID_Server", nID_Server);
 	addAttr(mAttrs, "sDate", sDate);
 
-	if (asParam != null) {
+        mAttribute.entrySet().stream().forEach((o) -> {
+            //this.asParam.add(o.getKey() + ": " + (o.getValue()==null?"NULL":o.getValue())+"");
+            String sValue = o.getValue()==null?"NULL":o.getValue()+"";
+            if(sValue.length()>30){
+                sValue=sValue.substring(sValue.length()-30);
+            }
+	    addAttr(mAttrs, "_"+o.getKey(), sValue);
+        });
+        
+	/*if (asParam != null) {
 	    StringBuilder asParamSb = new StringBuilder();
 	    asParamSb.append("[");
 	    boolean isNotFirst = false;
@@ -360,7 +371,7 @@ public class MsgSendImpl implements IMsgSend {
 	    }
 	    asParamSb.append("]");
 	    addAttr(mAttrs, "asParam", asParamSb.toString());
-	}
+	}*/
 	//addAttr(mAttrs, "smDataMisc", smDataMisc);
 
 	MFilter oMFilter = new MFilter();

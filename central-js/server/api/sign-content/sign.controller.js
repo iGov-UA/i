@@ -62,6 +62,7 @@ module.exports.signContent = function (req, res) {
 
     var fiscalData = {
       "customerType":"physical",
+      "fiscalClaimAction":"encrypt",
       "customerInn": formInn ? formInn : req.session.subject.sID,
       "email":mail
     };

@@ -15,8 +15,10 @@ import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
@@ -26,6 +28,7 @@ import org.igov.model.escalation.EscalationHistory;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.bp.BpService;
 import org.igov.service.business.escalation.EscalationHistoryService;
+import org.igov.service.business.place.PlaceService;
 import org.igov.service.exchange.SubjectCover;
 import org.igov.util.ToolLuna;
 import org.igov.util.JSON.JsonRestUtils;
@@ -69,7 +72,8 @@ public class BpServiceHandler {
     SubjectCover subjectCover;
     @Autowired
     private HttpRequester httpRequester;
-    
+    @Autowired
+    private PlaceService placeService;
     /**
      * Текущее количество генерируемых заявок
      */
@@ -83,7 +87,9 @@ public class BpServiceHandler {
         BpServiceHandler.feedBackCount = feedBackCount;
     }
 
-    public String startFeedbackProcess(String sID_task, String snID_Process, String processName) {
+    /* String snID_Proccess_Feedback = bpHandler
+                                  .startFeedbackProcess(snID_Task, snID_Process, sProcessName);*/
+    public String startFeedbackProcess(String sID_task, String snID_Process, String processName) throws Exception {
         Map<String, Object> variables = new HashMap<>();
         variables.put("processName", processName);
         Integer nID_Server = generalConfig.getSelfServerId();
@@ -104,7 +110,7 @@ public class BpServiceHandler {
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
-            variables.put("Place", getPlaceByProcess(snID_Process));
+            variables.put("Place", placeService.getPlaceByProcess(snID_Process));
             variables.put("clfio", processVariables.get("bankIdlastName") + " "+processVariables.get("bankIdfirstName")+ " "+processVariables.get("bankIdmiddleName"));
             variables.put("region", processVariables.get("region"));
             variables.put("info", processVariables.get("info"));
@@ -147,7 +153,7 @@ public class BpServiceHandler {
        
     }
 
-    public String startFeedbackProcessNew(String snID_Process) {
+    public String startFeedbackProcessNew(String snID_Process) throws Exception {
         String feedbackProcessId = null;
             
             Map<String, Object> variables = new HashMap<>();
@@ -161,17 +167,21 @@ public class BpServiceHandler {
             
             if (details != null && details.get(0).getProcessVariables() != null) {
             variables.put("processName", details.get(0).getProcessDefinitionId());
-            
+            	 LOG.info("sProcessNameeeeeeeeeeeee  ", details.get(0).getProcessDefinitionId());
             Map<String, Object> processVariables = details.get(0).getProcessVariables();
-            
+            variables.put("nID_Proccess_Feedback", snID_Process);
+            LOG.info("nID_Proccess_Feedbackkkkkkk ", snID_Process);
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(details.get(0).getProcessInstanceId())));
             variables.put("clfio", processVariables.get("bankIdlastName") + " "+processVariables.get("bankIdfirstName")+ " "+processVariables.get("bankIdmiddleName"));
+            LOG.info("bankIdlastNameeeeeeeeeeee ", processVariables.get("bankIdlastName"));
+            LOG.info("bankIdfirstNameeeeeeeeeeeeeee ", processVariables.get("bankIdfirstName"));
+            LOG.info("bankIdmiddleNameeeeeeeeeeeeeeee ", processVariables.get("bankIdmiddleName"));
             variables.put("phone", "" + processVariables.get("phone") != null ? String.valueOf(processVariables.get("phone")) : null);
             variables.put("email", processVariables.get("email") != null ? String.valueOf(processVariables.get("email")) : null);
-            variables.put("Place", getPlaceByProcess(details.get(0).getProcessInstanceId()));
+            variables.put("Place", placeService.getPlaceByProcess(details.get(0).getProcessInstanceId()));
             variables.put("region", processVariables.get("region")); 
             variables.put("info", processVariables.get("info"));
-            variables.put("nasPunkt", processVariables.get("nasPunkt"));
+            variables.put("nasPunkt", placeService.getPlaceByProcess(details.get(0).getProcessInstanceId()));
             variables.put("sBody", processVariables.get("sBody"));
             variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
             variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly")); 
@@ -196,7 +206,8 @@ public class BpServiceHandler {
                 LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonHistoryEvent);
                 JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
                 variables.put("nID_Rate", historyEvent.get("nRate"));
-                variables.put("sDate_BP", historyEvent.get("sDate"));
+                //variables.put("sDate_BP", historyEvent.get("sDate"));
+                variables.put("sDate_BP", details.get(0).getStartTime());
                 nID_Server = historyEvent.getInt("nID_Server");
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
@@ -207,7 +218,7 @@ public class BpServiceHandler {
             try {
                 String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
                 feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
-                variables.put("nID_Proccess_Feedback", feedbackProcessId);
+              //  variables.put("nID_Proccess_Feedback", feedbackProcessId);
             } catch (Exception oException) {
                 LOG.error("error during starting feedback process!: {}", oException.getMessage());
                 LOG.debug("FAIL:", oException);
@@ -260,7 +271,7 @@ public class BpServiceHandler {
     }
 
     private String startEscalationProcess(final Map<String, Object> mTaskParam, final String sID_Process,
-            final String sProcessName, Integer nID_Server) {
+            final String sProcessName, Integer nID_Server) throws Exception {
         Map<String, Object> mParam = new HashMap<>();
         mParam.put("processID", sID_Process);
         mParam.put("processName", sProcessName);
@@ -281,7 +292,7 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("email", "email");
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-        LOG.info("getPlaceByProcess(sID_Process): " + getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
+        LOG.info("getPlaceByProcess(sID_Process): " + placeService.getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
         mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
@@ -301,7 +312,7 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
         mParam.put("sURL_OrderHistory", mTaskParam.get("sURL_OrderHistory"));
         mGuideTaskParamKey.put("sURL_OrderHistory", "Посилання на первинне звернення");
-        mParam.put("Place", getPlaceByProcess(sID_Process));
+        mParam.put("Place", placeService.getPlaceByProcess(sID_Process));
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
         LOG.info("mParam: " + mParam);
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
@@ -360,7 +371,7 @@ public class BpServiceHandler {
 //    }
 
     //TODO: Допилить и начать использовать PlaceServiceImpl вместо этого
-    private String getPlaceByProcess(String sID_Process) {
+   /* private String getPlaceByProcess(String sID_Process) {
         Map<String, String> mParam = new HashMap<String, String>();
         mParam.put("nID_Process", sID_Process);
         //LOG.info("2sID_Process: " + sID_Process);
@@ -383,7 +394,7 @@ public class BpServiceHandler {
         }
         //LOG.info("(soResponse={})", soResponse);
         return sName;//soResponse
-    }
+    } */
 
     private Set<String> getCurrentCadidateGroup(final String sProcessName) {
         Set<String> asCandidateCroupToCheck = new HashSet<>();

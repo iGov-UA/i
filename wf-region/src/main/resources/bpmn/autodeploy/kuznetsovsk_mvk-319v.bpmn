@@ -20,6 +20,9 @@
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="vik" name="викопіювання з кадастрової карти (плану) або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Письмова згода землекористувача, засвідчена нотаріально;У разі вилучення земельної ділянки, що перебуває у користуванні у інших осіб" type="file"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markersVisit" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('AK/Novopskov/NpscOchered.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
@@ -103,6 +106,8 @@
           <activiti:value id="digital" name="Електронна копія"></activiti:value>
           <activiti:value id="physical" name="Фізична копія"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersVisitDash" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('AK/Novopskov/NpscOcheredDagbord.json')}"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про долю звернення" type="enum" required="true">
           <activiti:value id="accept" name="Передати документи спеціалістам"></activiti:value>
           <activiti:value id="reject" name="Відмовити в реєстрації звернення"></activiti:value>
@@ -451,6 +456,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landShape" name="Площа земельної ділянки (кв. м)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landGoal" name="Цільове призначення земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersVisitDash" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('AK/Novopskov/NpscOcheredDagbord.json')}"></activiti:formProperty>
         <activiti:formProperty id="deliverType" name="Бажаний тип отриманого результату" type="enum" writable="false">
           <activiti:value id="digital" name="Електронна копія"></activiti:value>
           <activiti:value id="physical" name="Фізична копія"></activiti:value>

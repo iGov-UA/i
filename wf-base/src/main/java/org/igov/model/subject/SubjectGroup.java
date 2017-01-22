@@ -5,20 +5,66 @@
  */
 package org.igov.model.subject;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Transient;
+
 import org.igov.model.core.NamedEntity;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
  * @author olga
  */
-public class SubjectGroup extends NamedEntity{
-    
+@javax.persistence.Entity
+public class SubjectGroup extends NamedEntity {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     @JsonProperty(value = "sID_Group_Activiti")
+    @Column
     private String sID_Group_Activiti;
-    
+
     @JsonProperty(value = "sChain")
+    @Column
     private String sChain;
+
+    @JsonProperty(value = "aUser")
+    @Transient
+    private List<SubjectUser> aUser;
+
+    @JsonProperty(value = "aSubjectGroupChilds")
+    @Transient
+    private List<SubjectGroup> aSubjectGroup;
+    
+    @JsonProperty(value = "oSubject")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "nID_Subject")
+    private Subject oSubject;
+
+    public List<SubjectUser> getaUser() {
+        return aUser;
+    }
+
+    public void setaUser(List<SubjectUser> aUser) {
+        this.aUser = aUser;
+    }
+
+    public List<SubjectGroup> getaSubjectGroup() {
+        return aSubjectGroup;
+    }
+
+    public void setaSubjectGroup(List<SubjectGroup> aSubjectGroup) {
+        this.aSubjectGroup = aSubjectGroup;
+    }
 
     public String getsID_Group_Activiti() {
         return sID_Group_Activiti;
@@ -35,5 +81,11 @@ public class SubjectGroup extends NamedEntity{
     public void setsChain(String sChain) {
         this.sChain = sChain;
     }
-    
+
+    @Override
+    public String toString() {
+        return "SubjectGroup [sID_Group_Activiti=" + sID_Group_Activiti + ", sChain=" + sChain + ", getName()="
+                + getName() + ", getId()=" + getId() + "]";
+    }
+
 }

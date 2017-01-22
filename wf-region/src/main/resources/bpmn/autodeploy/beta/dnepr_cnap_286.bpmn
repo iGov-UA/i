@@ -14,7 +14,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Звернення подаю" type="enum" required="true">
           <activiti:value id="personally" name="особисто"></activiti:value>
@@ -41,14 +41,14 @@
         <activiti:formProperty id="sShapka286" name="шапка у принтформу" type="invisible" default="Державному кадастровому реєстратору"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;adres_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="Якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;doverennost&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="Region" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_286.json')}"></activiti:formProperty>
         <activiti:formProperty id="bFlag" name="Перемикач регіонів" type="invisible" default="easy"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="перевірка вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="перевірка вхідних даних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -58,7 +58,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Звернення подаю" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>
@@ -102,7 +102,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Звернення подаю" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>
@@ -381,7 +381,7 @@ execution.setVariable('sListDocumentsPrint', res2)
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Звернення подаю" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>
@@ -483,7 +483,7 @@ execution.setVariable('sListDocumentsPrint', res2)
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Звернення подаю" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>

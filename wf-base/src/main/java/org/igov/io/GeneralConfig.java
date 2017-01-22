@@ -1,21 +1,24 @@
 package org.igov.io;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.igov.util.ToolLuna.getProtectedNumber;
 import javax.annotation.PostConstruct;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.igov.util.ToolLuna.getProtectedNumber;
 
 /**
  * @author bw
  */
 @Component("generalConfig")
+@Scope("prototype")
 public class GeneralConfig {
 
     private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);
@@ -113,6 +116,13 @@ public class GeneralConfig {
     @Value("${general.OTP.sMerchantPassword}")
     private String sMerchantPassword_OTP;
     
+    @Value("${general.SMS.PB.Auth.sLogin}")
+    private String sLogin_Auth_PB_SMS;
+    @Value("${general.SMS.PB.Auth.sPassword}")
+    private String sPassword_Auth_PB_SMS;
+    @Value("${general.SMS.PB.Auth.sURL_GenerateSID}")
+    private String sURL_GenerateSID_Auth_PB_SMS;
+       
     @Value("${general.SMS.sURL_Send}")
     private String sURL_Send_SMS;
     @Value("${general.SMS.sURL_SendNew}")
@@ -129,7 +139,7 @@ public class GeneralConfig {
     private String lifeLogin;
     @Value("${general.SMS.lifePassword}")
     private String lifePassword;
-            
+
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
     @Value("${general.LiqPay.bTest}")
@@ -163,7 +173,12 @@ public class GeneralConfig {
     
     @Value("${general.feedbackCountLimit}")
     private String feedbackCountLimit;
-   
+    
+    @Value("${general.Escalation.bTest}")
+    private String sbTest_Escalation;
+    
+    @Value("${general.DFS.sURL}")
+    private String sURL_DFS;
     
     
     public boolean isSelfTest() {
@@ -274,6 +289,16 @@ public class GeneralConfig {
         return sMerchantPassword_OTP;
     }
     
+    public String getLogin_Auth_PB_SMS()  {
+        return sLogin_Auth_PB_SMS;
+    }
+    public String getPassword_Auth_PB_SMS()  {
+        return sPassword_Auth_PB_SMS;
+    }
+    public String getURL_GenerateSID_Auth_PB_SMS()  {
+        return sURL_GenerateSID_Auth_PB_SMS;
+    }
+       
     public String getURL_Send_SMS()  {
         return sURL_Send_SMS;
     }
@@ -289,7 +314,7 @@ public class GeneralConfig {
     public String getChemaId()  {
         return snID_Shema;
     }
-
+    
     public String getLifeURL() {
         return lifeURL;
     }
@@ -300,6 +325,10 @@ public class GeneralConfig {
 
     public String getLifePassword() {
         return lifePassword;
+    }
+    
+    public String getsURL_DFS() {
+        return sURL_DFS;
     }
     
     public Boolean isEnable_UniSender_Mail() {
@@ -335,7 +364,7 @@ public class GeneralConfig {
         return b;
     }
     
-
+    
     
     public Integer getServerId(Integer nID_Server) {
         if(mServerReplace==null){
@@ -367,6 +396,7 @@ public class GeneralConfig {
                 }
             }
         }
+        //System.out.println("mServerReplace: " + mServerReplace);
         LOG.info("nID_Server={}, mServerReplace={}", nID_Server, mServerReplace);
         Integer nID_Server_Return = nID_Server;
         if(mServerReplace!=null&&!mServerReplace.isEmpty()&&nID_Server!=null){
@@ -411,6 +441,18 @@ public class GeneralConfig {
     }
     public String getOrderId_ByProcess(Integer nID_Server, Long nID_Process) {
         return getOrderId_ByOrder(getSelfServerId(), getProtectedNumber(nID_Process));
+    }
+    public Long getOrderId_ByProcess(String snID_Process) {
+        if(snID_Process==null){
+            return null;
+        }
+        Long nID_Process = null;
+        try{
+            nID_Process = Long.valueOf(snID_Process);
+        }catch(Exception oException){
+            LOG.warn(oException.getMessage());
+        }
+        return nID_Process;
     }
     
     @PostConstruct
@@ -501,6 +543,19 @@ public class GeneralConfig {
 
     public void setsSecretKey_Corezoid_Gorsovet_Exchange(String sSecretKey_Corezoid_Gorsovet_Exchange) {
         this.sSecretKey_Corezoid_Gorsovet_Exchange = sSecretKey_Corezoid_Gorsovet_Exchange;
+    }
+
+    
+    public boolean isTest_Escalation() {
+        boolean b = true;
+        try {
+            b = (sbTest_Escalation == null ? b : Boolean.valueOf(sbTest_Escalation));
+            //LOG.info("(sbTest_LiqPay={})", sbTest_LiqPay);
+        } catch (Exception oException) {
+            LOG.error("Bad: {} (sbTest_Escalation={})", oException.getMessage(), sbTest_Escalation);
+            LOG.debug("FAIL:", oException);
+        }
+        return b;
     }
     
 }

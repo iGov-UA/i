@@ -1,0 +1,30 @@
+{
+	"motion" : {
+		"ValuesFieldsOnCondition_1" : {
+			"aField_ID" : ["slFIO", "sManPassport", "privatePhone", "privateMail"], 
+			"asID_Field_sValue" : ["", "", ""], 
+			"asID_Field" : {
+				"sClient" : "bCopyData", 
+				"sClient_2" : "bWrite"
+			}, 
+			"sCondition" : "[sClient] == 'no' && [sClient_2] == 'yes'"
+		}, 
+		"ValuesFieldsOnCondition_2" : {
+			"aField_ID" : ["slFIO", "sManPassport", "privatePhone", "privateMail"], 
+			"asID_Field_sValue" : ["[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]", "[bankIdPassport]", "[phone]", "[email]"], 
+			"asID_Field" : {
+				"sClient" : "bCopyData", 
+				"sClient_2" : "bWrite"
+			}, 
+			"sCondition" : "[sClient] == 'yes' && [sClient_2] == 'yes'"
+		}, 
+		"ValuesFieldsOnCondition_3" : {
+			"aField_ID" : ["bMailWithout", "bMailWithSMS", "bMailWithFile"], 
+			"asID_Field_sValue" : ["yes", "yes", "yes"], 
+			"asID_Field" : {
+				"sClient" : "bMail"
+			}, 
+			"sCondition" : "[sClient] == 'yes'"
+		}
+	}
+}

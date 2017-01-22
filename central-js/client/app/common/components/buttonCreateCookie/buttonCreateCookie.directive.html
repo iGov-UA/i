@@ -1,7 +1,5 @@
-<div class="btn-group" data-toggle="buttons" ng-if="isVisible()">
-  <label class="btn btn-default" ng-class="{'active': model.enable}">
-    <input type="checkbox" autocomplete="off" ng-model="model.enable" ng-change="onChange(model.enable)">
-    <span>{{ model.enable && 'Off AuthMock' || 'On AuthMock' }}</span>
-  </label>
+<div class="btn-group" data-toggle="buttons" ng-if="vm.isVisible()">
+  <button  class="btn btn-default" ng-class="{'active': vm.enable}" ng-click="vm.onChange()">
+    <span>{{ vm.enable && 'Off AuthMock' || 'On AuthMock' }}</span>
+  </button>
 </div>
-

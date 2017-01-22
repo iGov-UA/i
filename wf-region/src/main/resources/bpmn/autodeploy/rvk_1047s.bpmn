@@ -19,11 +19,11 @@
         <activiti:formProperty id="sArea_1" name="Назва РВК за новим місцем реєстрації" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sNewCountry" name="Назва країни" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="asWorkType" name="Приналежність до роду військ" type="enum" required="true">
-          <activiti:value id="sAirEarth" name="сухопутні або повітряні сили"></activiti:value>
-          <activiti:value id="sSea" name="військово-моські сили"></activiti:value>
+          <activiti:value id="sSergStar" name="сухопутні або повітряні сили"></activiti:value>
+          <activiti:value id="sOfficer" name="військово-моські сили"></activiti:value>
           <activiti:value id="sYong" name="призовник"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asAirEarth" name="Військове звання" type="enum" default="sNo1" required="true">
+        <activiti:formProperty id="asSergStar" name="Військове звання" type="enum" default="sNo1" required="true">
           <activiti:value id="sNo1" name=" "></activiti:value>
           <activiti:value id="sPrivateE1" name="солдат"></activiti:value>
           <activiti:value id="sPrivateE2" name="старший солдат"></activiti:value>
@@ -45,7 +45,7 @@
           <activiti:value id="sColonelGeneral" name="генерал-полковник"></activiti:value>
           <activiti:value id="sGeneral" name="генерал армії"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSea" name="Військове звання" type="enum" default="sNo2" required="true">
+        <activiti:formProperty id="asOfficer" name="Військове звання" type="enum" default="sNo2" required="true">
           <activiti:value id="sNo2" name=" "></activiti:value>
           <activiti:value id="sMatros" name="матрос"></activiti:value>
           <activiti:value id="sStMatros" name="старший матрос"></activiti:value>
@@ -96,13 +96,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[msvidran@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нова заявка про зняття з військового обліку]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -119,8 +119,8 @@
           <activiti:expression><![CDATA[Зняття з військового обліку]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    					<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+		    					[pattern/mail/new_design/_common_content_start.html]
 								<p>
             						Ваша заявка про зняття з військового обліку успішно зареєстрована №[sID_Order].<br>
 									Спеціалісти Вашого РВК повинні дати відповідь найближчим часом.
@@ -128,10 +128,11 @@
                                 <p>
 									При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 								</p>
-								[pattern/mail/_common_signature_start.html]
+								[pattern/mail/new_design/_common_content_end.html]
+								[pattern/mail/new_design/_common_signature_start.html]
 								${sNameOrgan},<br>
-								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer.html]]]></activiti:expression>
+								[pattern/mail/new_design/_common_signature_end.html]
+								[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -160,11 +161,11 @@
         <activiti:formProperty id="sArea_1" name="Назва РВК за новим місцем реєстраіції" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewCountry" name="Назва країни" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asWorkType" name="Приналежність до роду військ" type="enum" writable="false">
-          <activiti:value id="sAirEarth" name="сухопутні або повітряні сили"></activiti:value>
-          <activiti:value id="sSea" name="військово-моські сили"></activiti:value>
+          <activiti:value id="sSergStar" name="сухопутні або повітряні сили"></activiti:value>
+          <activiti:value id="sOfficer" name="військово-моські сили"></activiti:value>
           <activiti:value id="sYong" name="призовник"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asAirEarth" name="Військове звання" type="enum" writable="false">
+        <activiti:formProperty id="asSergStar" name="Військове звання" type="enum" writable="false">
           <activiti:value id="sNo1" name=" "></activiti:value>
           <activiti:value id="sPrivateE1" name="солдат"></activiti:value>
           <activiti:value id="sPrivateE2" name="старший солдат"></activiti:value>
@@ -186,7 +187,7 @@
           <activiti:value id="sColonelGeneral" name="генерал-полковник"></activiti:value>
           <activiti:value id="sGeneral" name="генерал армії"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSea" name="Військове звання" type="enum" writable="false">
+        <activiti:formProperty id="asOfficer" name="Військове звання" type="enum" writable="false">
           <activiti:value id="sNo2" name=" "></activiti:value>
           <activiti:value id="sMatros" name="матрос"></activiti:value>
           <activiti:value id="sStMatros" name="старший матрос"></activiti:value>
@@ -249,8 +250,8 @@
           <activiti:string><![CDATA[Зняття з військового обліку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+		    [pattern/mail/new_design/_common_content_start.html]
 			<p>
 				На жаль, ми змушені відмовити Вам у наданні послуги за заявкою №[sID_Order].
 			</p>
@@ -262,9 +263,11 @@
 			<p>
 			При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 			</p>
-			[pattern/mail/_common_signature_start.html]
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.</p>
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -294,8 +297,8 @@
           <activiti:string><![CDATA[Зняття з військового обліку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 			<p>Дані за Вашою заявкою №[sID_Order] перевірені.<br>
 			Для того щоб закінчити зняття з військового обліку необхідно:<br>
 										<ul>
@@ -321,10 +324,11 @@
 									<p>
 			При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 			</p>
-			[pattern/mail/_common_signature_start.html]
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan},<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -353,8 +357,8 @@
           <activiti:string><![CDATA[Зняття з військового обліку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
 			<p>Дані за Вашою заявкою №[sID_Order] перевірені.<br>
 			Для того щоб закінчити зняття з військового обліку необхідно:<br>
 										<ul>
@@ -384,10 +388,11 @@
 									<p>
 			При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 			</p>
-			[pattern/mail/_common_signature_start.html]
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan},<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -416,11 +421,11 @@
         <activiti:formProperty id="sArea_1" name="Назва РВК за новим місцем реєстраіції" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewCountry" name="Назва країни" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asWorkType" name="Приналежність до роду військ" type="enum" writable="false">
-          <activiti:value id="sAirEarth" name="сухопутні або повітряні сили"></activiti:value>
-          <activiti:value id="sSea" name="військово-моські сили"></activiti:value>
+          <activiti:value id="sSergStar" name="сухопутні або повітряні сили"></activiti:value>
+          <activiti:value id="sOfficer" name="військово-моські сили"></activiti:value>
           <activiti:value id="sYong" name="призовник"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asAirEarth" name="Військове звання" type="enum" writable="false">
+        <activiti:formProperty id="asSergStar" name="Військове звання" type="enum" writable="false">
           <activiti:value id="sNo1" name=" "></activiti:value>
           <activiti:value id="sPrivateE1" name="солдат"></activiti:value>
           <activiti:value id="sPrivateE2" name="старший солдат"></activiti:value>
@@ -442,7 +447,7 @@
           <activiti:value id="sColonelGeneral" name="генерал-полковник"></activiti:value>
           <activiti:value id="sGeneral" name="генерал армії"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSea" name="Військове звання" type="enum" writable="false">
+        <activiti:formProperty id="asOfficer" name="Військове звання" type="enum" writable="false">
           <activiti:value id="sNo2" name=" "></activiti:value>
           <activiti:value id="sMatros" name="матрос"></activiti:value>
           <activiti:value id="sStMatros" name="старший матрос"></activiti:value>
@@ -498,7 +503,7 @@
     <serviceTask id="servicetask7" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -507,18 +512,19 @@
           <activiti:string><![CDATA[Зняття з військового обліку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		Ви отримали послугу "Зняття з військового обліку".&lt;br&gt;
-                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
-                              		Дякуємо.
-									&lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<p>
+Ви отримали послугу "Зняття з військового обліку".<br>
+Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
+Дякуємо.
+</p>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

@@ -5,7 +5,6 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.task.Attachment;
 import org.apache.commons.mail.ByteArrayDataSource;
-import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,6 @@ import org.igov.io.mail.Mail;
 import javax.activation.DataSource;
 import java.io.InputStream;
 import java.util.List;
-import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
@@ -46,7 +44,11 @@ public class MailTaskWithAttachment extends Abstract_MailTaskCustom {
             if(nAt>=0){
                 sExt = sFileName.substring(nAt);
             }
-            sFileName = "Attach_"+oAttachment.getId()+sExt; //
+            
+            if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml") && !sFileName.toLowerCase().endsWith(".rpl")) {
+                sFileName = "Attach_"+oAttachment.getId()+sExt; //
+            }
+            
             sFileExt = oAttachment.getType();
             oInputStream_Attachment = oExecution.getEngineServices().getTaskService()
                     .getAttachmentContent(oAttachment.getId());

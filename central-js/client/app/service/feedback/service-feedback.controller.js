@@ -40,7 +40,7 @@
           type: "denger",
           oData: {
             sHead: 'Послуга не існує!',
-            sBody: 'Виберіть, будьласка, існуючу послугу.'
+            sBody: 'Виберіть, будь ласка, існуючу послугу.'
           }
         });
         return;
@@ -95,11 +95,18 @@
           newMessages = _.filter(newMessages, function (o) {
             var filters = o.sAuthorFIO.trim().match(/null/gi);
 
-            return ((typeof o.sBody) === 'string' ? !!o.sBody.trim() : false)
+            return ((o.oSubjectMessage && (typeof o.oSubjectMessage.sBody) === 'string') ? !!o.oSubjectMessage.sBody.trim() : false)
               && !(Array.isArray(filters) && filters[0] ? filters[0].trim() === 'null' : false);
           });
 
           $scope.feedback.messageList = $scope.feedback.messageList.concat(newMessages);
+          $scope.feedback.messageList.sort(function (a, b) {
+            if(a.oSubjectMessage.sDate && b.oSubjectMessage.sDate) {
+              return Date.parse(b.oSubjectMessage.sDate) - Date.parse(a.oSubjectMessage.sDate);
+            } else {
+              return 0;
+            }
+          })
         }).finally(function () {
           $scope.messagesLoadingProgress = false;
       });

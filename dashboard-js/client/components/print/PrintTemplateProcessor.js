@@ -44,7 +44,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
   return {
     processPrintTemplate: function (task, form, printTemplate, reg, fieldGetter) {
       var _printTemplate = printTemplate;
-      var templates = [], ids = [], found, idArray = [];
+      var templates = [], ids = [], found;
       while (found = reg.exec(_printTemplate)) {
         templates.push(found[1]);
         ids.push(found[2]);
@@ -78,16 +78,18 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         ids.push(found[2]);
       }
       var matchesIds = [];
+      // ищем маркеры что определяют в принтформе таблицы
       angular.forEach(templates, function (template) {
         var comment = template.match(/<!--[\s\S]*?-->/g);
         if(Array.isArray(comment)) {
           for(var i=0; i<comment.length; i++) {
-            comment[i] = comment[i].match(/([a-z][A-Z])\w+/)[0];
+            comment[i] = comment[i].match(/\w+/)[0];
           }
         }
         if(comment) matchesIds.push(comment);
       });
 
+      // формируем массив из ид маркеров таблиц что встретились в принтформе
       angular.forEach(matchesIds, function (ids) {
         var arr = ids.filter(function(item, pos, self) {
           return self.indexOf(item) == pos;
@@ -95,24 +97,61 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         idArray.push(arr);
       });
 
+      // когда ид маркера принтформы совпало с ид таблицы - заменяем теги на поля таблицы. проверяем к-во строк таблицы
+      // если больше одной - клонируем до нужного к-ва, после наполняем таблицей.
       angular.forEach(idArray, function(id) {
-        angular.forEach(form.taskData.aTable, function(table) {
-          if(table.idName === id[0]) {
+        angular.forEach(form.taskData.aTable, function(item) {
+          if(item.id === id[0]) {
             angular.forEach(templates, function (template) {
               var commentedField = template.match(/<!--.*?-->/)[0];
               var uncommentedField = commentedField.split('--')[1];
               var result = uncommentedField.slice(1);
               if(result == id[0]){
-                var withAddedRowsTemplate = template.repeat(table.content.length - 1);
-                angular.forEach(table.content, function (row) {
+                var withAddedRowsTemplate = template.repeat(item.aRow.length);
+                angular.forEach(item.aRow, function (row) {
                   angular.forEach(row.aField, function (field) {
-                    var fieldId = field.value ? field.value : (field.default ? field.default : field.props.value);
+                    var fieldId = field.value ? field.value : (field.default ? field.default : (field.props ? field.props.value : ''));
                     withAddedRowsTemplate = self.populateSystemTag(withAddedRowsTemplate, '['+ field.id +']', fieldId, true);
                   })
                 });
                 _printTemplate = _printTemplate.replace(template, withAddedRowsTemplate);
               }
             })
+          }
+        });
+        angular.forEach(form, function (item) {
+          if(item.type === 'table') {
+            if(item.id === id[0]) {
+              angular.forEach(templates, function (template) {
+                var commentedField = template.match(/<!--.*?-->/)[0];
+                var uncommentedField = commentedField.split('--')[1];
+                var result = uncommentedField.slice(1);
+                if(result == id[0]){
+                  var withAddedRowsTemplate = template.repeat(item.aRow.length);
+                  angular.forEach(item.aRow, function (row) {
+                    angular.forEach(row.aField, function (field) {
+                      var fieldId = function () {
+                        if(field.type !== 'enum' && field.value) {
+                          return field.value;
+                        } else if(field.type !== 'enum' && !field.value && field.default) {
+                          return field.default;
+                        } else if(field.type === 'enum') {
+                          for(var j = 0; j<field.a.length; j++) {
+                            if(field.a[j].id === field.value) {
+                              return field.a[j].name;
+                            }
+                          }
+                        } else {
+                          return '';
+                        }
+                      };
+                      withAddedRowsTemplate = self.populateSystemTag(withAddedRowsTemplate, '['+ field.id +']', fieldId, true);
+                    })
+                  });
+                  _printTemplate = _printTemplate.replace(template, withAddedRowsTemplate);
+                }
+              })
+            }
           }
         })
       });
@@ -130,6 +169,48 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       } else {
         return printTemplate.replace(new RegExp(this.escapeRegExp(tag), 'g'), replacement);
       }
+    },
+
+    /** 
+     * function populateTableField (printTemplate, printFormTableObject) 
+     *  Searches printTemplate for [oTableName.sTableField] and replaces 
+     *   with data of specified row of printFormTableObject.nRowIndex 
+     * 
+     * @returns original template with replaced values   
+     * @author Sysprog   
+     */
+    populateTableField: function( printTemplate, printFormTableObject ) { 
+    	
+      var replacement;
+    	var tag;
+      var templateString = ""; 
+
+      if( printTemplate.length ) { 
+         templateString = printTemplate;
+      }
+      else { 
+         templateString = $sce.getTrustedHtml( printTemplate );
+      } 
+
+      if(printFormTableObject.oRow) {
+
+        for ( var fieldIndex in printFormTableObject.oRow.aField ) { 
+
+          var field = printFormTableObject.oRow.aField[fieldIndex];
+          replacement = field.value;
+    		  tag = "["+ printFormTableObject.sTableName + "." + field.id + "]";
+
+      	  templateString = templateString.replace(new RegExp(this.escapeRegExp(tag)), replacement); 
+
+        }
+      } 
+      
+      if( printTemplate.length ) { 
+         return templateString; 
+      }
+      else { 
+         return $sce.trustAsHtml( templateString ); 
+      } 
     },
     escapeRegExp: function (str) {
       return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
@@ -196,16 +277,6 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       printTemplate = this.populateSystemTag(printTemplate, "[sCurrentDateTime]", $filter('date')(new Date(), 'yyyy-MM-dd HH:mm'));
       printTemplate = this.populateSystemTag(printTemplate, "[sDateCreate]", $filter('date')(task.createTime.replace(' ', 'T'), 'yyyy-MM-dd HH:mm'));
 
-      // наполнение принтформы данными из типа "table".
-      var that = this;
-      angular.forEach(form.taskData.aTable, function (table) {
-        angular.forEach(table.content, function (row) {
-          angular.forEach(row.aField, function (field) {
-            printTemplate = that.populateSystemTag(printTemplate, "[" + field.id + "]",
-              field.value ? field.value : (field.default ? field.default : field.props.value))
-          })
-        });
-      });
       //№{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
       //$scope.lunaService = lunaService;
       //lunaService.getLunaValue(

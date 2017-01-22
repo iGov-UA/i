@@ -37,6 +37,7 @@ import org.activiti.engine.form.FormProperty;
 import org.igov.service.business.action.task.form.QueueDataFormType;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
+import org.igov.util.JSON.JsonRestUtils;
 
 /**
  * User: goodg_000
@@ -286,18 +287,47 @@ public class FlowService implements ApplicationContextAware {
      * @return generated slots.
      */
     public List<FlowSlotVO> buildFlowSlots(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate) {
-
+        LOG.info("buildFlowSlots starting...");
         Flow_ServiceData flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
-
+        
+        LOG.info("flow.getId: " + flow.getId());
+        LOG.info("flow.getnID_ServiceData: " + flow.getnID_ServiceData());
+        LOG.info("flow.getsGroup: " + flow.getsGroup());
+        
         List<FlowSlotVO> res = new ArrayList<>();
+        
+        List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
+        
+        for (FlowProperty flowProperty : flow.getFlowProperties()){
+            if(flowProperty.getbExclude()){
+                LOG.info("flowProperty.getoFlow_ServiceData().getnID_ServiceData: " + flowProperty.getoFlow_ServiceData().getnID_ServiceData());
+                LOG.info("flowProperty.getId: " + flowProperty.getId());
+                
+                if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
+                  ||(flow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())){
+                    aExcludeFlowProperty.add(flowProperty);
+                    LOG.info("flowProperty.getsData: " + flowProperty.getsData());
+                    LOG.info("flowProperty.getsDateTimeAt: " + flowProperty.getsDateTimeAt());
+                    LOG.info("flowProperty.getsDateTimeTo: " + flowProperty.getsDateTimeTo());
+                    
+                    /*while (startDate.isBefore(stopDate)) {
+                            if (stopDate.compareTo(startDate) <= 0) {
+                            break;
+                        }
+                    }*/
+                }
+            }
+        }
+        
 
+        
         for (FlowProperty flowProperty : flow.getFlowProperties()) {
             if (flowProperty.getbExclude() == null || !flowProperty.getbExclude()) {
                 Class<FlowPropertyHandler> flowPropertyHandlerClass = getFlowPropertyHandlerClass(flowProperty);
                 if (BaseFlowSlotScheduler.class.isAssignableFrom(flowPropertyHandlerClass)) {
-
+                        
                     BaseFlowSlotScheduler handler = getFlowPropertyHandlerInstance(
-                            flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
+                    flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
                     handler.setStartDate(startDate);
                     handler.setEndDate(stopDate);
                     handler.setFlow(flow);
@@ -321,25 +351,33 @@ public class FlowService implements ApplicationContextAware {
     public ClearSlotsResult clearFlowSlots(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate,
             boolean bWithTickets) {
 
-        List<FlowSlot> flowSlots = flowSlotDao.findFlowSlotsByFlow(nID_Flow_ServiceData, startDate, stopDate);
+        List<FlowSlot> aFlowSlot = flowSlotDao.findFlowSlotsByFlow(nID_Flow_ServiceData, startDate, stopDate);
         DateTime operationTime = DateTime.now();
 
         ClearSlotsResult res = new ClearSlotsResult();
         List<FlowSlot> flowSlotsToDelete = new ArrayList<>();
-        for (FlowSlot slot : flowSlots) {
-            if (bWithTickets || slot.getFlowSlotTickets().isEmpty()) {
-                flowSlotsToDelete.add(slot);
+        for (FlowSlot oFlowSlot : aFlowSlot) {
+            
+            Boolean bBusy = false;
+            for(FlowSlotTicket oFlowSlotTicket : oFlowSlot.getFlowSlotTickets()){
+                bBusy = bBusy||FlowSlotVO.bBusy(oFlowSlotTicket);
+            }
+            
+            //if (bWithTickets || oFlowSlot.getFlowSlotTickets().isEmpty()) {
+            if (bWithTickets || !bBusy) {
+                flowSlotsToDelete.add(oFlowSlot);
 
                 // detach existing tickets from slots
-                for (FlowSlotTicket oFlowSlotTicket : slot.getFlowSlotTickets()) {
+                for (FlowSlotTicket oFlowSlotTicket : oFlowSlot.getFlowSlotTickets()) {
                     oFlowSlotTicket.getaFlowSlot().clear();
                     oFlowSlotTicket.setsDateEdit(operationTime);
                 }
-                res.getaDeletedSlot().add(new FlowSlotVO(slot));
+                res.getaDeletedSlot().add(new FlowSlotVO(oFlowSlot));
             }
 
-            if (!slot.getFlowSlotTickets().isEmpty()) {
-                res.getaSlotWithTickets().add(new FlowSlotVO(slot));
+            //if (!oFlowSlot.getFlowSlotTickets().isEmpty()) {
+            if (bBusy) {
+                res.getaSlotWithTickets().add(new FlowSlotVO(oFlowSlot));
             }
         }
 
@@ -859,7 +897,19 @@ public class FlowService implements ApplicationContextAware {
         Long nID_SubjectOrganDepartment = flow.getnID_SubjectOrganDepartment();
         LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}",
                 nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
-
+        
+        List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
+        
+        for (FlowProperty flowProperty : flow.getFlowProperties()){
+            if(flowProperty.getbExclude()){
+                
+                if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
+                  ||(flow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())){
+                    aExcludeFlowProperty.add(flowProperty);
+                }
+            }
+        }
+        
         int nStartDay = 0;
         DateTime dateStart;// = oDateStart.plusDays(0); //maxline: todo удалить комментарий после тестирования
         DateTime dateEnd;

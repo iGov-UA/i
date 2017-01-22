@@ -1,4 +1,4 @@
-<div class="list-group">
+﻿<div class="list-group">
   <place></place>
 
   <style>
@@ -158,7 +158,7 @@
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
                 <label style="color: red;"
                        ng-if="isFieldRequired(property)==true">* </label>
-                <span ng-if="property.sFieldLabel">{{property.sFieldLabel}} :</span>
+                <span ng-if="property.sFieldLabel">{{property.sFieldLabel}}:</span>
 
                 <div class="s-field-notes"
                      ng-if="property.sFieldNotes!=null">
@@ -245,6 +245,30 @@
                                   ng-disabled="!isFieldWritable(item.writable)"
                                   class="inputs-in-table">
                           </select>
+                        </div>
+
+                        <div ng-if="item.type == 'file'">
+                          <div dropdown class="dropup" style="display: inline-block; position:relative;">
+                            <div class="like-modal dropdown-menu" role="menu">
+                              <file-field style="text-align: center"
+                                          name="{{item.id}}"
+                                          ng-model="item.value"
+                                          ng-required="isFieldRequired(item)"
+                                          ng-class="getBpAndFieldID(item)"
+                                          ng-if="item.upload">Add File</file-field>
+                            </div>
+                            <button style="position:relative;"
+                                    ng-disabled="isFormPropertyDisabled(item) || isFileProcessUploading.bState"
+                                    ng-if="item.fileName"
+                                    type="button"
+                                    dropdown-toggle
+                                    class="btn btn-default dropdown-toggle">{{item.fileName}}</button>
+                            <file-field name="{{item.id}}"
+                                        ng-model="item.value"
+                                        ng-required="isFieldRequired(item)"
+                                        ng-class="getBpAndFieldID(item)"
+                                        ng-if="item.upload && !item.fileName">Add File</file-field>
+                          </div>
                         </div>
 
                         <div ng-if="item.type == 'long'">
@@ -414,7 +438,7 @@
                               {{$select.selected[autocompleteData.titleProperty] || item.value}}
                             </ui-select-match>
                             <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search)"
-                                               refresh-delay="50"
+                                               refresh-delay="300"
                                                repeat="field[item.autocompleteData.valueProperty] as field in items track by field[item.autocompleteData.orderBy]">
                                <span title="{{field[item.autocompleteData.titleProperty]}}">
                                  {{field[item.autocompleteData.titleProperty]}}
@@ -438,6 +462,9 @@
                           <span ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
                             х-місяців, х-років.
                           </span>
+			              <span ng-message="string">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
+			              <span ng-message="long">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
+			              <span ng-message="double">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
                           <span ng-message="numberbetween">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
                           <div ng-message="numberfractionalbetween">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</div>
                           <span ng-message="numbersaccounts">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
@@ -508,7 +535,15 @@
                        ng-model="data.formData.params[property.id].value"
                        ng-required="isFieldRequired(property)"
                        ng-class="getBpAndFieldID(property)"
-                       ng-pattern="/^\d+$/"
+                       class="form-control"
+                       value="">
+
+                <input ng-switch-when="double"
+                       type="{{!!property.sFieldType?property.sFieldType : 'text'}}"
+                       name="{{property.id}}"
+                       ng-model="data.formData.params[property.id].value"
+                       ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
                        class="form-control"
                        value="">
 
@@ -711,7 +746,7 @@
                     </ui-select-match>
 
                     <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"
-                                       refresh-delay="50"
+                                       refresh-delay="300"
                                        repeat="item[property.autocompleteData.valueProperty] as item in items track by item[property.autocompleteData.orderBy]">
                       <span title="{{item[property.autocompleteData.titleProperty]}}">
                         {{item[property.autocompleteData.titleProperty]}}
@@ -746,6 +781,9 @@
                 <div ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
                   х-місяців, х-років.
                 </div>
+                <div ng-message="string">{{ form[property.id].lastErrorMessage }}</div>
+                <div ng-message="long">{{ form[property.id].lastErrorMessage }}</div>
+                <div ng-message="double">{{ form[property.id].lastErrorMessage }}</div>
                 <div ng-message="numberbetween">{{ form[property.id].lastErrorMessage }}</div>
                 <div ng-message="numberfractionalbetween">{{ form[property.id].lastErrorMessage }}</div>
                 <div ng-message="numbersaccounts">{{ form[property.id].lastErrorMessage }}</div>

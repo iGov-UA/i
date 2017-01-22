@@ -36,4 +36,10 @@ module.exports = function (app) {
   }
 
   logger.setup('server setup', {}, setupServer);
+
+  process.on('uncaughtException', function (err) {
+    logger.error('[uncaughtException] : ' + err.message, {stack: err.stack});
+    process.exit(-1);
+  });
+
 };

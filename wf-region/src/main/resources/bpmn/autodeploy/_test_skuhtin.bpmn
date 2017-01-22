@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_skuhtin" name="_test_skuhtin" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sName" name="Name" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSecondName" name="SecondName" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sThirdName" name="ThirdName" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="marker_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/_test_no_email.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="Check POST" activiti:candidateGroups="sales">
+      <extensionElements>
+        <activiti:formProperty id="tTechSupervisor" name="Таблиця" type="table" default="{&quot;aField&quot;:[             {&quot;id&quot;:&quot;sSupervisorName&quot;,&quot;name&quot;:&quot;Найменування посади, прізвище, ім’я та по батькові, номер телефону&quot;,&quot;type&quot;:&quot;string&quot;},             {&quot;id&quot;:&quot;sSupervisionNumberID&quot;,&quot;name&quot;:&quot;Назва, номер та дата документа, що підтверджує повноваження особи на здійснення технічного нагляду&quot;,&quot;type&quot;:&quot;string&quot;},             {&quot;id&quot;:&quot;sSupervisionCertificate&quot;,&quot;name&quot;:&quot;Серія та номер кваліфікаційного сертифіката&quot;,&quot;type&quot;:&quot;string&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sName" name="Name" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSecondName" name="SecondName" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sThirdName" name="ThirdName" type="string"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[noreply@dabi.gov.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Повідомлення щодо видачі дублікату декларації про початок виконання будівельних робіт]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[Тестове повідомлення]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_skuhtin">
+    <bpmndi:BPMNPlane bpmnElement="_test_skuhtin" id="BPMNPlane__test_skuhtin">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="270.0" y="133.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="570.0" y="123.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="840.0" y="133.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="390.0" y="123.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="675.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="840.0" y="150.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="305.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="150.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="495.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="570.0" y="150.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

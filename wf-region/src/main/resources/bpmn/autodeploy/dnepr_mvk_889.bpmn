@@ -257,7 +257,7 @@
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" required="true" default="sEnumAnsw1">
+        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" default="sEnumAnsw1" required="true">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Особисто"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
@@ -274,6 +274,7 @@
         <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_889_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bOrganization" name="Юридична особа" type="invisible" default="true"></activiti:formProperty>
+        <activiti:formProperty id="test_param" name="test_param" type="invisible" default="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -1380,7 +1381,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentLaw" name="Коментар юриста (причина відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChannelApplicant" name="Канал зв'язку з заявником" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="string"></activiti:formProperty>
         <activiti:formProperty id="asStatusSuper" name="Обрати спеціаліста" type="enum" required="true">
@@ -2206,7 +2207,18 @@ var fullNumber=category+number
 execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
     </scriptTask>
     <sequenceFlow id="flow80" sourceRef="servicetask7" targetRef="scripttask5"></sequenceFlow>
-    <sequenceFlow id="flow81" sourceRef="scripttask5" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow81" sourceRef="scripttask5" targetRef="servicetask8"></sequenceFlow>
+    <serviceTask id="servicetask8" name="Service Task (Corezoid)" activiti:delegateExpression="#{SendObject_Corezoid_New}">
+      <extensionElements>
+        <activiti:field name="sID_Conveyour">
+          <activiti:string><![CDATA[158300]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="soData">
+          <activiti:string><![CDATA[sBankIdlastName::value{[bankIdlastName]};;sBankIdfirstName::value{[bankIdfirstName]};;sBankIdmiddleName::value{[bankIdmiddleName]};;sPhone::value{[phone]};;sEmail::value{[email]};;sZipCode::value{[sZipCode]};;sCity::value{[sCity]};;sAdress::value{[sAdress]};;sAdressProbl::value{[sAdressProbl]};;sBossLastName::value{[sBossLastName]};;sBossFirstName::value{[sBossFirstName]};;sBossMiddleName::value{[sBossMiddleName]};;sHowCategory::enum{[asHowCategory]};;sTypeTr::enum{[asTypeTr]};;sDeliveryMethodDoc::enum{[asDeliveryMethodDoc]};;sTopHead::enum{[asTopHead]};;sTop1::enum{[asTop1]};;sTop2::enum{[asTop2]};;sTop3::enum{[asTop3]};;sTop4::enum{[asTop4]};;sTop5::enum{[asTop5]};;sTop6::enum{[asTop6]};;sTop7::enum{[asTop7]};;sTop8::enum{[asTop8]};;sTop9::enum{[asTop9]};;sTop10::enum{[asTop10]};;sTop11::enum{[asTop11]};;sTop12::enum{[asTop12]};;sTop13::enum{[asTop13]};;sTop14::enum{[asTop14]};;sTop15::enum{[asTop15]};;sTop16::enum{[asTop16]};;sTop17::enum{[asTop17]};;sTop18::enum{[asTop18]};;sTop19::enum{[asTop19]};;sTop20::enum{[asTop20]};;sTop21::enum{[asTop21]};;sTop22::enum{[asTop22]};;sTop23::enum{[asTop23]};;sTop24::enum{[asTop24]};;sReason::value{[sReason]};;sAdditionalInformation::value{[sAdditionalInformation]};;sDateReglament::value{[sDateReglament]};;sAnswerChannel::enum{[asAnswerChannel]};;sNumberDocIncoming::value{[sNumberDocIncoming]};;sDateDocIncoming::value{[sDateDocIncoming]};;sID_Order_GovPublic::value{[sID_Order_GovPublic]};;sDateAppeal::value{[sDateAppeal]};;sID_Order::[sID_Order];;test_param::value{[test_param]}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow82" sourceRef="servicetask8" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_889">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_889" id="BPMNPlane_dnepr_mvk_889">
@@ -2290,6 +2302,9 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
         <omgdc:Bounds height="69.0" width="105.0" x="570.0" y="123.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="630.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="95.0" y="156.0"></omgdi:waypoint>
@@ -2443,8 +2458,14 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="570.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow81" id="BPMNEdge_flow81">
-        <omgdi:waypoint x="675.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="708.0" y="153.0"></omgdi:waypoint>
+        <omgdi:waypoint x="622.0" y="123.0"></omgdi:waypoint>
+        <omgdi:waypoint x="622.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="630.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow82" id="BPMNEdge_flow82">
+        <omgdi:waypoint x="735.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="118.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

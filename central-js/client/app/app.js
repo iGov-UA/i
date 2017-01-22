@@ -17,7 +17,10 @@ angular.module('appBoilerPlate', ['ngCookies',
   'pascalprecht.translate',
   'dialogs.default-translations',
   'textAngular',
-  'iGovMarkers']);
+  'iGovMarkers',
+  'autocompleteService',
+  'datepickerService',
+  'iGovTable']);
 
 angular.module('documents', ['appBoilerPlate']);
 angular.module('auth', ['appBoilerPlate']);

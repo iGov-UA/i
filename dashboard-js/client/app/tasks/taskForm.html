@@ -19,7 +19,6 @@
             </span>
           </span>
           <span ng-if="['date'].indexOf(item.type) > -1">
-            <field-title></field-title>
             <date-field></date-field>
           </span>
 
@@ -29,8 +28,6 @@
 
     <enum-field></enum-field>
 
-    <file-formfield></file-formfield>
-
     <marker-field></marker-field>
 
           <span style="display: none;" ng-if="['invisible'].indexOf(item.type) > -1">
@@ -38,7 +35,6 @@
           </span>
 
           <span ng-if="['label'].indexOf(item.type) > -1">
-            <field-title></field-title>
             <label>{{item.value}}</label>
           </span>
 
@@ -76,11 +72,10 @@
              ng-if="isTableAttachment(item.description)"
              class="btn btn-info">Переглянути
           </a>
-          <button
-            class="btn btn-info"
-            ng-disabled="checkSignState.inProcess"
-            ng-click="checkAttachmentSign(taskId, item.id, item.description)"
-            ng-if="sSelectedTask=='selfAssigned' && !isTableAttachment(item.description)">Перевірити ЕЦП
+          <button class="btn btn-info"
+                  ng-disabled="checkSignState.inProcess"
+                  ng-click="checkAttachmentSign(taskId, item.id, item.description)"
+                  ng-if="sSelectedTask=='selfAssigned' && !isTableAttachment(item.description)">Перевірити ЕЦП
           </button>
         </div>
         <button style="position:relative;"
@@ -88,9 +83,7 @@
                 type="button"
                 class="btn btn-link attach-btn dropdown-toggle"
                 data-toggle="dropdown"
-                ng-model="some"
                 title="{{item.description}}">
-          <!--ng-click="openModalWindow($event)">-->
           {{item.description | cut : true : 25}}
         </button>
       </div>

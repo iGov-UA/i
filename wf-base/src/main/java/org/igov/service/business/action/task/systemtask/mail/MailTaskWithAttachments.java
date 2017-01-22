@@ -14,8 +14,15 @@ import javax.activation.DataSource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import org.json.simple.JSONArray;
 
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author BW
@@ -35,7 +42,8 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
         Mail oMail = Mail_BaseFromTask(oExecution);
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
-        sAttachmentsForSend = sAttachmentsForSend == null ? "" : sAttachmentsForSend;
+        LOG.info("sAttachmentsForSend is: " + sAttachmentsForSend);
+        /*sAttachmentsForSend = sAttachmentsForSend == null ? "" : sAttachmentsForSend;
         LOG.info("(sAttachmentsForSend={})", sAttachmentsForSend);
         List<Attachment> aAttachment = new ArrayList<>();
         String[] asID_Attachment = sAttachmentsForSend.split(",");
@@ -51,8 +59,8 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
             } else {
                 LOG.warn("(sID_Attachment={})", sID_Attachment);
             }
-        }
-
+        }*/
+        List<Attachment> aAttachment = findAttachments(sAttachmentsForSend, oExecution.getId());
         if (!aAttachment.isEmpty()) {
             InputStream oInputStream_Attachment = null;
             String sFileName;
@@ -65,7 +73,11 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                 if(nAt>=0){
                     sExt = sFileName.substring(nAt);
                 }
-                sFileName = "Attach_"+oAttachment.getId()+sExt; //
+
+                if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml") && !sFileName.toLowerCase().endsWith(".rpl")) {
+                    sFileName = "Attach_"+oAttachment.getId()+sExt; //
+                }
+                
                 sFileExt = oAttachment.getType().split(";")[0];
                 sDescription = oAttachment.getDescription();
                 if (sDescription == null || "".equals(sDescription.trim())) {
@@ -85,9 +97,38 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                 oMail._Attach(oDataSource, sFileName, sDescription);
                 LOG.info("oMultiPartEmail.attach: Ok!");
             }
-        } else {
-            LOG.error("aAttachment has nothing!");
-            throw new ActivitiObjectNotFoundException("add the file to send");
+        } 
+        else {
+            
+            JSONObject oJsonTaskAttachVO = null;
+            JSONParser parser = new JSONParser(); 
+                        
+            try {
+                oJsonTaskAttachVO = (JSONObject)parser.parse(sAttachmentsForSend);
+            } catch (ParseException ex) {
+                LOG.info("There aren't TaskAttachVO objects in mail - JSON parsing error: ", ex);
+            }
+            
+            MultipartFile oMultipartFile = null;
+            
+            if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null)
+            {
+                String sFileExt = (String)oJsonTaskAttachVO.get("sFileNameAndExt");
+                oMultipartFile = oAttachmetService
+                    .getAttachment(oExecution.getProcessInstanceId(), (String) oJsonTaskAttachVO.get("sFieldID"), null, null);
+                                
+                InputStream oInputStream_Attachment = oMultipartFile.getInputStream();
+                    
+                DataSource oDataSource = new ByteArrayDataSource(oInputStream_Attachment, sFileExt);
+                oMail._Attach(oDataSource, sFileExt, "");
+                LOG.info("oMultiPartEmail.attach was sending by new schema!");
+                
+            }
+            else
+            {
+                LOG.error("aAttachment has nothing!");
+                throw new ActivitiObjectNotFoundException("add the file to send");
+            }
         }
 
         oMail.send();

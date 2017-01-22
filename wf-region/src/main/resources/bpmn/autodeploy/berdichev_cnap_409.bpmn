@@ -14,7 +14,11 @@
         <activiti:formProperty id="sGoal" name="Довідка потрібна для" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Електронна копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dovidka" name="Довідка з житлово-комунального підприємства/експлуатуючої будинок організації про склад сім’ї та реєстрацію (форма-додаток №2)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="svidotstvo" name="Свідоцтво про народження дітей (оригінал та копії)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="dovirenist" name="Довіреність (доручення) – для уповноваженої особи (оригінал та копія)" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('berdichiv_409.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="lutsk" type="markers" default="${markerService.loadFromFile('berdichiv_409_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="bFlag_region" name="Перемикач регіонів" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
@@ -102,7 +106,7 @@ ${sNameOrgan}<br>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${dovidka},${svidotstvo},${svidotstvo}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -213,7 +217,7 @@ ${sNameOrgan}<br>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${dovidka},${svidotstvo},${svidotstvo}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -346,7 +350,7 @@ ${sNameOrgan}<br>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${dovidka},${svidotstvo},${svidotstvo}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -384,13 +388,13 @@ ${sNameOrgan}<br>
     </userTask>
     <sequenceFlow id="flow24" sourceRef="usertask4" targetRef="exclusivegateway2"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script> &lt;![CDATA[  if(execution.getVariable('sID_Public_SubjectOrganJoin') == 'vol_lutsk' ) { 
-    execution.setVariable('sListDoc', '&amp;lt;li&amp;gt;1.Довідка з житлово-комунального підприємства/експлуатуючої будинок організації про склад сім’ї та реєстрацію (форма-додаток №2)&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt;2.Довідка з житлово-комунального підприємства/експлуатуючої будинок організації про склад сім’ї та реєстрацію (форма-додаток №2)&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt;3.Довіреність (доручення) – для уповноваженої особи (оригінал та копія)&amp;lt;/li&amp;gt;');
+      <script>  if(execution.getVariable('sID_Public_SubjectOrganJoin') == 'vol_lutsk' ) { 
+    execution.setVariable('sListDoc', '&lt;br&gt;1.Довідка з житлово-комунального підприємства/експлуатуючої будинок організації про склад сім’ї та реєстрацію (форма-додаток №2);&lt;br&gt; 2.Свідоцтво про народження дітей (оригінал та копії);&lt;br&gt;3.Довіреність (доручення) – для уповноваженої особи (оригінал та копія).');
 } else {
     execution.setVariable('sListDoc', 'ксерокопія паспорта');
 }
 
- ]]&gt; </script>
+</script>
     </scriptTask>
     <sequenceFlow id="flow26" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow27" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>

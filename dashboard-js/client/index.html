@@ -14,8 +14,9 @@
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
       <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-      <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css" />
       <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+      <link rel="stylesheet" href="bower_components/ui-select/dist/select.css" />
+      <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -33,6 +34,7 @@
       <link rel="stylesheet" href="components/print/PrintModal.css">
       <link rel="stylesheet" href="components/table/style.css">
       <link rel="stylesheet" href="components/todo/todo.css">
+      <link rel="stylesheet" href="components/usersHierarchyModal/tree.style.css">
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
@@ -60,25 +62,36 @@
       <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
       <script src="bower_components/ng-idle/angular-idle.js"></script>
       <script src="bower_components/lodash/dist/lodash.compat.js"></script>
-      <script src="bower_components/moment/moment.js"></script>
+      <script src="bower_components/moment/min/moment.min.js"></script>
+      <script src="bower_components/moment/locale/uk.js"></script>
       <script src="bower_components/angular-moment/angular-moment.js"></script>
       <script src="bower_components/ngstorage/ngStorage.js"></script>
       <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
       <script src="bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
       <script src="bower_components/ng-clip/src/ngClip.js"></script>
-      <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
       <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
       <script src="bower_components/angular-ui-validate/dist/validate.js"></script>
+      <script src="bower_components/ui-select/dist/select.js"></script>
+      <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
-      <script src="bower_components/moment/locale/uk.js"></script>
+
       <script src="bower_components/bootstrap/js/dropdown.js"></script>
 
         <!-- build:js({.tmp,client,..}) app/app.js -->
         <script src="app/app.js"></script>
           <!-- injector:js -->
           <script src="public-js/markers/module.js"></script>
+          <script src="public-js/formData/autocompletesDataFactory.service.js"></script>
+          <script src="public-js/formData/datepicker.module.js"></script>
+          <script src="public-js/formData/datepickerFactory.service.js"></script>
+          <script src="public-js/formData/dropdown.js"></script>
+          <script src="public-js/formData/dropdownAutocomplete.directive.js"></script>
+          <script src="public-js/formData/dropdownAutocompleteCtrl.controller.js"></script>
+          <script src="public-js/formData/organlist.factory.js"></script>
+          <script src="public-js/formData/table.service.js"></script>
+          <script src="public-js/formData/typeahead.js"></script>
           <script src="public-js/markers/defaults.js"></script>
           <script src="public-js/markers/factory.js"></script>
           <script src="public-js/markers/field.attributes.service.js"></script>
@@ -130,7 +143,9 @@
           <script src="app/tasks/form-fields/file.directive.js"></script>
           <script src="app/tasks/form-fields/fileFormField.directive.js"></script>
           <script src="app/tasks/form-fields/marker.directive.js"></script>
+          <script src="app/tasks/form-fields/selectField.directive.js"></script>
           <script src="app/tasks/form-fields/simpleField.directive.js"></script>
+          <script src="app/tasks/form-fields/tableField.directive.js"></script>
           <script src="app/tasks/form-fields/textAreaField.directive.js"></script>
           <script src="app/tasks/form-fields/userField.directive.js"></script>
           <script src="app/tasks/taskView.controller.js"></script>
@@ -154,9 +169,12 @@
           <script src="components/env/env.config.service.js"></script>
           <script src="components/escalations/escalations.service.js"></script>
           <script src="components/filters/splitDate.filter.js"></script>
+          <script src="components/filters/tableButton.filter.js"></script>
           <script src="components/filters/wordCut.filter.js"></script>
           <script src="components/groups/group.service.js"></script>
           <script src="components/igovWhenScrolled/igovWhenScrolled.directive.js"></script>
+          <script src="components/listTreeMin/eaTreeView-tpls.min.js"></script>
+          <script src="components/listTreeMin/eaTreeView.min.js"></script>
           <script src="components/modal/modal.service.js"></script>
           <script src="components/navbar/navbar-helper.service.js"></script>
           <script src="components/navbar/navbar.controller.js"></script>
@@ -173,6 +191,7 @@
           <script src="components/task/taskFilterService.js"></script>
           <script src="components/todo/todo.directive.js"></script>
           <script src="components/users/user.service.js"></script>
+          <script src="components/usersHierarchyModal/usersHierarchy.directive.js"></script>
           <script src="components/validation/validate.equality.directive.js"></script>
           <script src="components/validation/validate.inequality.directive.js"></script>
           <!-- endinjector -->

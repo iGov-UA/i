@@ -327,7 +327,7 @@ public class DebugCommonController {
     public @ResponseBody
     String loadPayments() {
     	paymentProcessorService.loadPaymentInformation();
-        return "successfull";
+        return "successful";
 
     }
 

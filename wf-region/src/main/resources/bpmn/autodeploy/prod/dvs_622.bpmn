@@ -13,17 +13,8 @@
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження даних" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <serviceTask id="servicetask2" name="Лист з реквізитами" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="Лист з реквізитами" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Rekvizity DVS za zvernennyam [sID_Order] napravleno na Vash email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
-        </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>

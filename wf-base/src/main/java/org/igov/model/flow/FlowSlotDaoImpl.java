@@ -60,6 +60,7 @@ public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements
         return criteria.list();
     }
 
+    @Override
     public List<FlowSlot> findFlowSlotsByFlow(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate) {
         Criteria criteria = createCriteria();
         criteria.add(Restrictions.ge("sDate", startDate));
@@ -81,6 +82,7 @@ public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements
         return new TreeSet<>(criteria.list());
     }
 
+    @Override
     public int updateSlots(Long nID_Flow_ServiceData, Collection<DateTime> dates, String newDuration) {
         QueryBuilder qb = new QueryBuilder(getSession(), "update FlowSlot s set ");
         qb.append("s.sDuration = :DURATION ", newDuration);

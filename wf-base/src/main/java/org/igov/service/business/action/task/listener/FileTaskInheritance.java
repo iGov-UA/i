@@ -1,19 +1,21 @@
 package org.igov.service.business.action.task.listener;
 
-import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.task.Attachment;
+import org.igov.io.GeneralConfig;
+import org.igov.io.Log;
+import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.igov.service.business.action.task.core.AbstractModelTask;
 
+import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
-import java.text.MessageFormat;
 
 /**
  * @author askosyr
@@ -27,48 +29,99 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
     private Expression aFieldInheritedAttachmentID;
 
+    @Autowired
+    GeneralConfig generalConfig;
+
+    //Issue #1441
+    @Autowired
+    FileTaskUploadListener fileTaskUploadListener;
+    
     @Override
-    public void notify(DelegateTask task) {
+    public void notify(DelegateTask oTask) {
+        
+        LOG.info("fileTaskInheritance start....");
+        
+        DelegateExecution oExecution = oTask.getExecution();
 
-        DelegateExecution execution = task.getExecution();
-
-        LOG.info("notify");
-
+        List<Attachment> asID_Attachment_ToAdd = null;
         try {
-
-            String sInheritedAttachmentsIds = getStringFromFieldExpression(this.aFieldInheritedAttachmentID, execution);
-            LOG.info("(task.getId()={},sInheritedAttachmentsIds(1)={})", task.getId(), sInheritedAttachmentsIds);
+            LOG.info("Inside fileTaskInheritance; this.aFieldInheritedAttachmentID={}", this.aFieldInheritedAttachmentID);
+            String sInheritedAttachmentsIds = getStringFromFieldExpression(this.aFieldInheritedAttachmentID, oExecution);
+            LOG.info("(task.getId()={},sInheritedAttachmentsIds(1)={})", oTask.getId(), sInheritedAttachmentsIds);
 
             if (sInheritedAttachmentsIds == null || "".equals(sInheritedAttachmentsIds.trim())) {
                 LOG.error("aFieldInheritedAttachmentID field is not specified!");
                 return;
             }
 
-            List<Attachment> attachments = getAttachmentsFromParentTasks(execution);
-
-            List<Attachment> attachmentsToAdd = getInheritedAttachmentIdsFromTask(attachments,
+            /*List<Attachment> attachments = getAttachmentsFromParentTasks(oExecution);
+            asID_Attachment_ToAdd = getInheritedAttachmentIdsFromTask(attachments,
                     sInheritedAttachmentsIds);
+            addAttachmentsToCurrentTask(asID_Attachment_ToAdd, oTask);*/
 
-            addAttachmentsToCurrentTask(attachmentsToAdd, task);
+            //Issue #1441: we need to keep list of attachments to current task in order to properly
+            List<Attachment> currentAttachments = fileTaskUploadListener.getaAttachment();
+            LOG.info("Current attachments size: {}", currentAttachments.size());
+
+            for(Attachment attachment: currentAttachments) {
+                LOG.info("CurrentAttachment: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+            }
+
+            List<Attachment> attachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
+            for(Attachment attachment: attachments) {
+                LOG.info("Attachments: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+            }
+
+
+            for(Attachment attachment: currentAttachments) {
+                if(attachments.contains(attachment)){
+                    boolean deleted = attachments.remove(attachment);
+                    if(deleted) {
+                        LOG.info("Duplicate is successfully deleted");
+                    }
+                }
+
+            }
+
+            LOG.info("Attachments: attachments size={}", attachments.size());
+
+            addAttachmentsToCurrentTask(attachments, oTask);
         } catch (Exception oException) {
             LOG.error("FAIL: {}", oException.getMessage());
             LOG.trace("FAIL:", oException);
+            new Log(oException, LOG)//this.getClass()
+                    ._Case("Activiti_AttachInheritFail")
+                    ._Status(Log.LogStatus.ERROR)
+                    ._Head("Invalid Inherit of Attachment")
+                    ._Body(oException.getMessage())
+                    //._Exception(oException)
+//                    ._Param("n", n)
+//                    ._Param("sID_Field", sID_Field)
+                    ._Param("asID_Attachment_ToAdd", asID_Attachment_ToAdd)
+//                    ._Param("sDescription", sDescription)
+                    ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
+                    //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
+                    ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
+                    ._Param("oTask.getId()", oTask.getId())
+                    ._Param("oTask.getName()", oTask.getName())
+                    .save()
+                    ;
         }
 
     }
+
 
     private void addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd,
             DelegateTask task) {
         final String METHOD_NAME = "addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd, DelegateExecution execution)";
         LOG.trace("Entering method '{}'", METHOD_NAME);
 
-        TaskService taskService = task.getExecution().getEngineServices()
-                .getTaskService();
+        //TaskService taskService = task.getExecution().getEngineServices()
+        //       .getTaskService();
         int n = 0;
         for (Attachment attachment : attachmentsToAdd) {
-            n++;
-            LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getName()={},attachment.getDescription()={})"
-                    , n, task.getId(), task.getExecution().getProcessInstanceId(),attachment.getName(),attachment.getDescription());
+            LOG.info("(n={},task.getId()={},task.getExecution().getProcessInstanceId()={},attachment.getName()={},attachment.getDescription()={},attachment.getId()={})"
+                    ,n++, task.getId(), task.getExecution().getProcessInstanceId(),attachment.getName(),attachment.getDescription(), attachment.getId());
             Attachment newAttachment = taskService.createAttachment(
                     attachment.getType(), task.getId(),
                     task.getExecution().getProcessInstanceId(), attachment.getName(),
@@ -79,15 +132,19 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
                             task.getId(), newAttachment.getId(),
                             attachment.getId()));
         }
+
         LOG.trace("Exiting method '{}'", METHOD_NAME);
     }
 
-    protected List<Attachment> getInheritedAttachmentIdsFromTask(
+
+    
+    @Deprecated
+    private List<Attachment> getInheritedAttachmentIdsFromTask(
             List<Attachment> attachments, String sInheritedAttachmentsIds) {
         final String METHOD_NAME = "getInheritedAttachmentIdsFromTask(List<Attachment> attachments, String sInheritedAttachmentsIds)";
         LOG.trace("Entering method '{}'", METHOD_NAME);
         LOG.info("sInheritedAttachmentsIds={}", sInheritedAttachmentsIds);
-        List<Attachment> res = new LinkedList<Attachment>();
+        List<Attachment> res = new LinkedList<>();
 
         String[] attachIds = sInheritedAttachmentsIds.split(",");
         for (String attachId : attachIds) {
@@ -108,7 +165,8 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
         return res;
     }
 
-    protected List<Attachment> getAttachmentsFromParentTasks(DelegateExecution execution) {
+    @Deprecated
+    private List<Attachment> getAttachmentsFromParentTasks(DelegateExecution execution) {
         final String METHOD_NAME = "getAttachmentsFromParentTasks(DelegateExecution execution)";
         LOG.trace("Entering method '{}'", METHOD_NAME);
 

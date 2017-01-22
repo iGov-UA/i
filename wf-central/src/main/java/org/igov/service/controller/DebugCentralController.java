@@ -1,25 +1,22 @@
 package org.igov.service.controller;
 
-import com.google.common.base.*;
-import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.HistoryService;
-import org.activiti.engine.history.HistoricIdentityLink;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.hibernate.Criteria;
 import org.igov.io.GeneralConfig;
+import org.igov.io.Log;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
+import org.igov.io.sms.ManagerSMS_New;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.business.action.task.bp.BpService;
-//import org.igov.service.business.msg.MsgSend;
-import org.igov.service.business.msg.MsgSendImpl;
 import org.igov.service.business.msg.MsgService;
+import org.igov.service.business.msg.MsgType;
 import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
@@ -32,20 +29,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.pb.ksv.msgcore.data.IMsgObjR;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
-import org.igov.io.Log;
-import org.igov.io.sms.ManagerSMS_New;
-import org.igov.service.business.msg.MsgType;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
-import org.igov.service.business.msg.IMsgSend;
+
+//import org.igov.service.business.msg.MsgSend;
 
 /**
  * @author BW
@@ -367,7 +360,7 @@ public class DebugCentralController {
         HistoryEvent_Service obj = historyEventServiceDao.getOrgerByID(sID_Order);
 
         result.put("sID_Order", obj.getsID_Order());
-        result.put("nID_Task", obj.getnID_Task());
+        result.put("nID_Task", obj.getnID_Process());
         result.put("nID_Service", obj.getnID_Service());
         result.put("nID_Subject", obj.getnID_Subject());
         result.put("sID_UA", obj.getsID_UA());
@@ -376,7 +369,7 @@ public class DebugCentralController {
 
         try{
             HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
-                    .taskId(obj.getnID_Task().toString()).singleResult();
+                    .taskId(obj.getnID_Process().toString()).singleResult();
 
             historicTaskInstance.getDeleteReason();
             result.put("TASK_HisoricTaskInstance", historicTaskInstance.getDeleteReason());
@@ -388,7 +381,7 @@ public class DebugCentralController {
 
         try {
             HistoricTaskInstance historicTaskInstanceQuery = oHistoryService
-                    .createHistoricTaskInstanceQuery().taskId(obj.getnID_Task().toString())
+                    .createHistoricTaskInstanceQuery().taskId(obj.getnID_Process().toString())
                     .singleResult();
             processInstanceId = historicTaskInstanceQuery
                     .getProcessInstanceId();

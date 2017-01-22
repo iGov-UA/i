@@ -2,7 +2,6 @@ package org.igov.model.action.event;
 
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -53,7 +52,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     public HistoryEvent_Service addHistoryEvent_Service(HistoryEvent_Service historyEventService) {
 
         try {//check on duplicates
-            HistoryEvent_Service duplicateEvent = getHistoryEvent_service(historyEventService.getnID_Task(),
+            HistoryEvent_Service duplicateEvent = getHistoryEvent_service(historyEventService.getnID_Process(),
                     historyEventService.getnID_Server());
             if (duplicateEvent != null) {
                 throw new IllegalArgumentException(
@@ -64,7 +63,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         }
         historyEventService.setsDate(new DateTime());
         historyEventService.setsDateCreate(new DateTime());
-        Long nID_Protected = ToolLuna.getProtectedNumber(historyEventService.getnID_Task());
+        Long nID_Protected = ToolLuna.getProtectedNumber(historyEventService.getnID_Process());
         historyEventService.setnID_Protected(nID_Protected);
         historyEventService.setsID_Order(historyEventService.getnID_Server() + DASH + nID_Protected);
         Session session = getSession();
@@ -213,7 +212,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
         criteria.addOrder(
                 Order.desc("sDate").nulls(NullPrecedence.LAST));//todo remove after fix dublicates. todo uniqueResult
-        criteria.add(Restrictions.eq("nID_Task", nID_Process));
+        criteria.add(Restrictions.eq("nID_Process", nID_Process));
         Integer serverId = nID_Server != null ? nID_Server : 0;
         criteria.add(Restrictions.eq("nID_Server", serverId));
         List<HistoryEvent_Service> list = (List<HistoryEvent_Service>) criteria.list();
@@ -238,7 +237,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         criteria.setMaxResults(1);
         HistoryEvent_Service event_service = (HistoryEvent_Service) criteria.uniqueResult();
         if (event_service != null) {
-            event_service.setnID_Protected(ToolLuna.getProtectedNumber(event_service.getnID_Task()));
+            event_service.setnID_Protected(ToolLuna.getProtectedNumber(event_service.getnID_Process()));
         }
         return event_service;
     }
@@ -354,5 +353,30 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         countClaim = (Long) oCriteria.uniqueResult();
         LOG.info("countClaim size = " + countClaim);
         return countClaim;
+    }
+    
+    @Override
+    public List<HistoryEvent_Service> getHistoryEvent_Service(String sID_UA, Long nID_Service, Long nID_StatusType) {
+        LOG.info(String.format("Start get getHistoryEvent_Service with parameters nID_StatusType = %s, nID_Service = %s, sID_UA = %s", nID_StatusType, nID_Service, sID_UA));
+
+        Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
+        
+        if (nID_StatusType == null && nID_Service == null && sID_UA == null) {
+            return null;
+        }
+
+        if (sID_UA != null && !"".equals(sID_UA)) {
+            oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
+        }
+
+        if (nID_Service != null) {
+            oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
+        }
+
+        if (nID_StatusType != null) {
+            oCriteria.add(Restrictions.eq("nID_StatusType", nID_StatusType));
+        }
+
+        return oCriteria.list();
     }
 }

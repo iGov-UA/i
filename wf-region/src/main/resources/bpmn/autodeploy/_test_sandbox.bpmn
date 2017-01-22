@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_sandbox" name="_test_sandbox" isExecutable="true">
+    <documentation>https://github.com/e-government-ua/i/issues/1353</documentation>
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sTableFiles" name="Таблица с файлами; ;nRowsLimit=5,bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sString1&quot;,&quot;name&quot;:&quot;string1&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile01&quot;,&quot;name&quot;:&quot;file1; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="крок 1" activiti:candidateUsers="quotes">
+      <extensionElements>
+        <activiti:formProperty id="sTableFiles" writable="false" name="Таблица с файлами; ;nRowsLimit=5,bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sString1&quot;,&quot;name&quot;:&quot;string1&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile01&quot;,&quot;name&quot;:&quot;file1; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTableWithFiles" name="Таблица с дашбордовскими файлами; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sString2&quot;,&quot;name&quot;:&quot;string2&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile02&quot;,&quot;name&quot;:&quot;file2; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask2" name="крок 2" activiti:candidateUsers="quotes">
+      <extensionElements>
+        <activiti:formProperty id="sTableFiles" writable="false" name="Таблица с файлами; ;nRowsLimit=5,bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sString1&quot;,&quot;name&quot;:&quot;string1&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile01&quot;,&quot;name&quot;:&quot;file1; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTableWithFiles" writable="false" name="Таблица с дашбордовскими файлами; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sString2&quot;,&quot;name&quot;:&quot;string2&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile02&quot;,&quot;name&quot;:&quot;file2; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow61" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow62" sourceRef="usertask2" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow63" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_sandbox">
+    <bpmndi:BPMNPlane bpmnElement="_test_sandbox" id="BPMNPlane__test_sandbox">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="52.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="137.0" x="130.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="137.0" x="330.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="500.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+        <omgdi:waypoint x="267.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="87.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
+        <omgdi:waypoint x="467.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="87.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+        <omgdi:waypoint x="87.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="130.0" y="87.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

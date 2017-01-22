@@ -5,8 +5,10 @@
     .module('dashboardJsApp')
     .controller('NavbarCtrl', navbarCtrl);
 
-  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService', '$state', 'tasks'];
-  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService, $state, tasks) {
+  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService',
+                        '$state', 'tasks', 'lunaService', 'Modal', '$stateParams'];
+  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService,
+                      $state, tasks, lunaService, Modal, $stateParams) {
     $scope.menu = [{
       'title': 'Задачі',
       'link': '/tasks'
@@ -84,6 +86,7 @@
     };
 
     $scope.tasksSearch = iGovNavbarHelper.tasksSearch;
+    var tempCountValue = 0;
 
     $scope.searchInputKeyup = function ($event) {
       if ($event.keyCode === 13 && $scope.tasksSearch.value) {
@@ -94,13 +97,27 @@
           tasks.getProcesses($scope.tasksSearch.value).then(function (res) {
             var response = JSON.parse(res);
             $scope.archive = response[0];
+            $scope.archive.aVisibleAttributes = [];
+            angular.forEach($scope.archive.aAttribute, function (oAttribute) {
+              if (oAttribute.oAttributeName.nOrder !== -1){
+                $scope.archive.aVisibleAttributes.push(oAttribute);
+              }
+            });
+            $scope.archive.aVisibleAttributes.sort(function (a, b) {
+              return a.oAttributeName.nOrder - b.oAttributeName.nOrder;
+            });
             $scope.switchArchive = true;
           })
         } else {
-          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.tasksSearch.archive)
-            .then(function(res, aIds) {
-              // $scope.tasksSearch.count = aIds.length;
-              $scope.tasksSearch.count = res.length;
+          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.iGovNavbarHelper.currentTab)
+            .then(function(res) {
+              if(res.aIDs.length > 1){
+                tempCountValue = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;
+                $scope.tasksSearch.count = '... / ' + res.aIDs.length;
+              } else {
+                tempCountValue = res.aIDs.length;
+                $scope.tasksSearch.count = res.aIDs.length;
+              }
             })
             .finally(function(res) {
               $scope.tasksSearch.loading=false;
@@ -112,6 +129,10 @@
       }
     };
 
+    $scope.$on('update-search-counter', function () {
+      $scope.tasksSearch.count = tempCountValue;
+    });
+
     $scope.closeArchive = function () {
       $scope.switchArchive = false;
     };
@@ -122,6 +143,64 @@
 
     $scope.isSelectedInstrumentsMenu = function(menuItem) {
       return menuItem.state==$state.current.name;
+    };
+
+    $scope.assignTask = function (id) {
+
+      tasks.assignTask(id, Auth.getCurrentUser().id)
+        .then(function (result) {
+          Modal.assignDocument(function (event) {
+
+          }, 'Документ успiшно створено');
+        })
+        .catch(function (e) {
+          Modal.assignDocument(function (event) {
+
+          }, 'Документ успiшно створено');
+        });
+    };
+
+    $scope.usersDocumentsBPs = [];
+    $scope.showOrHideSelect = false;
+    $scope.hasDocuments = function () {
+      var user = Auth.getCurrentUser().id;
+      if(user) {
+        tasks.isUserHasDocuments(user).then(function (res) {
+          if(Array.isArray(res) && res.length > 0) {
+            $scope.usersDocumentsBPs = res.filter(function (item) {
+              return item.sID.charAt(0) === '_' && item.sID.split('_')[1] === 'doc';
+            })
+          }
+        })
+      }
+    };
+    $scope.hasDocuments();
+
+    $scope.document = {};
+    $scope.openCloseUsersSelect = function () {
+      $scope.showOrHideSelect = !$scope.showOrHideSelect;
+    };
+
+    $scope.showCreateDocButton = function () {
+      return $stateParams.type === "unassigned" || $stateParams.type === "selfAssigned" || $stateParams.type === 'documents';
+    };
+
+    $scope.hideNaviWhenLoginPage = function () {
+      return $location.path() === '/';
+    };
+
+    $scope.onSelectDocList = function (item) {
+      tasks.createNewDocument(item.sID).then(function (res) {
+        if(res.snID_Process) {
+          tempCountValue = 0;
+          var val = res.snID_Process + lunaService.getLunaValue(res.snID_Process);
+          tasksSearchService.searchTaskByUserInput(val, 'documents')
+            .then(function(res) {
+              $scope.assignTask(res.aIDs[0], val)
+            });
+          $scope.showOrHideSelect = false;
+        }
+      });
     };
   }
 })();

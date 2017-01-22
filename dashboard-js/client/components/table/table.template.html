@@ -5,17 +5,48 @@
       <div class='table-ng-modal-close' ng-click='tableContentShow=false'>X</div>
     </div>
     <div class='col-md-12 table-ng-modal-dialog-content-view' ng-style='dialogStyle'>
+      <div class='table-ng-modal-dialog-content' ng-if="attachIsLoading">Завантаження таблицi...</div>
       <div class='table-ng-modal-dialog-content' ng-if="!attachIsLoading">
-        <h1>{{openedAttachTable.name}}</h1>
+        <h1>{{openedAttachTable.sFieldLabel || openedAttachTable.name}}</h1>
         <table>
           <thead>
           <tr>
-            <th ng-repeat="item in openedAttachTable.content[0].aField">{{item.name}}</th>
+            <th ng-if="openedAttachTable.content" ng-repeat="item in openedAttachTable.content[0].aField">{{item.sFieldLabel || item.name}}</th>
+            <th ng-if="!openedAttachTable.content" ng-repeat="item in openedAttachTable.aRow[0].aField">{{item.sFieldLabel || item.name}}</th>
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="row in openedAttachTable.content">
+          <tr ng-if="openedAttachTable.content" ng-repeat="row in openedAttachTable.content">
             <td ng-repeat="item in row.aField">{{item.value ? item.value : (item.default? item.default : item.props.value)}}</td>
+          </tr>
+          <tr ng-if="!openedAttachTable.content" ng-repeat="row in openedAttachTable.aRow">
+            <td ng-repeat="item in row.aField">
+              <span ng-if="item.type !== 'file'">{{item.value ? item.value : (item.default? item.default : item.props.value)}}</span>
+
+              <div ng-if="item.type === 'file'">
+                <div class="dropup no-print" style="display: inline-block; position:relative;">
+                  <div class="file-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
+                    <p style="padding-top: 10px;">Файл: {{item.fileName | tableButtonFilter}}</p>
+                    <a href="/api/tasks/download/{{taskData.oProcess.nID}}/attachment/{{item.id}}"
+                       target="_blank"
+                       class="btn btn-igov">Завантажити</a>
+                    <button class="btn btn-igov"
+                            ng-disabled="checkSignState.inProcess"
+                            ng-click="checkAttachmentSign(taskData.oProcess.nID, item.id, item.name, true)"
+                            ng-if="sSelectedTask=='selfAssigned'">Перевірити ЕЦП</button>
+                  </div>
+                  <button style="position:relative;"
+                          type="button"
+                          class="btn btn-default dropdown-toggle"
+                          data-toggle="dropdown"
+                          title="{{item.sFieldLabel | tableButtonFilter}}">
+                    {{item.fileName | cut : true : 25 | tableButtonFilter}}
+                  </button>
+                </div>
+                <span class="for-print">Файл додано</span>
+
+              </div>
+            </td>
           </tr>
           </tbody>
         </table>

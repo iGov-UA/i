@@ -21,6 +21,7 @@ angular.module('journal').controller('JournalSearchController', function (
 ) {
 
   $scope.getOrderStatusString = JournalHelperService.getOrderStatusString;
+  $scope.getDocumentLink = ServiceService.getAttachmentLink;
 
   $scope.aOrderMessages = [];
   $scope.sServerReturnOnAnswer = '';
@@ -328,9 +329,8 @@ angular.module('journal').controller('JournalSearchController', function (
           animation: true,
           size: 'lg',
           templateUrl: 'app/journal/letterModal.html',
-          controller: function ($scope, $modalInstance, message) {
-            $scope.message = message;
-
+          controller: function ($scope, $modalInstance, message, $sce) {
+            $scope.message = $sce.trustAsHtml(message);
             $scope.close = function () {
               $modalInstance.close();
             }
@@ -347,5 +347,4 @@ angular.module('journal').controller('JournalSearchController', function (
       }
     })
   };
-
 });

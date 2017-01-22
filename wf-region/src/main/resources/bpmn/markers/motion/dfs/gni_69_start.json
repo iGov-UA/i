@@ -8,7 +8,7 @@
 			"sCondition" : "[sClient] == 'ur'"
 		}, 
 		"ShowFieldsOnCondition_2" : {
-			"aField_ID" : ["bankIdlastName", "bankIdfirstName", "bankIdmiddleName", "bankIdPassport", "bankIdAddressFactual", "asAdress", "bankIdinn"], 
+			"aField_ID" : ["bankIdlastName", "bankIdfirstName", "bankIdmiddleName", "bankIdPassport", "bankIdinn"], 
 			"asID_Field" : {
 				"sClient" : "subekt"
 			}, 
@@ -18,16 +18,51 @@
 			"aField_ID" : ["sAddressFactual"], 
 			"asID_Field" : {
 				"sClient" : "subekt", 
-				"sClient1" : "asAdress"
+				"sClient_2" : "sID_Public_SubjectOrganJoin"
 			}, 
-			"sCondition" : "[sClient] == 'fiz' && [sClient1] == 'no'"
+			"sCondition" : "[sClient] == 'fiz' && [sClient_2] != '0'"
+		}, 
+		"ValuesFieldsOnCondition_1" : {
+			"aField_ID" : ["sAddressFactual"], 
+			"asID_Field_sValue" : ["[bankIdAddressFactual]"], 
+			"asID_Field" : {
+				"sClient" : "sID_Public_SubjectOrganJoin"
+			}, 
+			"sCondition" : "[sClient] == '0'"
+		}, 
+		"ValuesFieldsOnCondition_2" : {
+			"aField_ID" : ["sInn", "sAvtor", "sAdresECP", "sVf", "sVu"], 
+			"asID_Field_sValue" : ["[edrpou]", "[sNameUr]", "[sAddressFactualUr]", "  ", "V"], 
+			"asID_Field" : {
+				"sClient" : "subekt"
+			}, 
+			"sCondition" : "[sClient] == 'ur'"
+		}, 
+		"ValuesFieldsOnCondition_3" : {
+			"aField_ID" : ["sInn", "sAvtor", "sAdresECP", "sVf", "sVu"], 
+			"asID_Field_sValue" : ["[bankIdinn]", "[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]", "[sAddressFactual]", "V", " "], 
+			"asID_Field" : {
+				"sClient" : "subekt"
+			}, 
+			"sCondition" : "[sClient] == 'fiz'"
 		}, 
 		"ShowFieldsOnCondition_inv01" : {
-			"aField_ID" : ["sNameOrgan", "sMailClerkGni69", "sPhoneOrgan", "sWorkTime", "sAddress", "nCodeTaxOrgan", "nEGRPOU", "markersStart"], 
+			"aField_ID" : ["sNameOrgan", "sMailClerk", "sPhoneOrgan", "sWorkTime", "sAddress", "nCodeTaxOrgan", "nEGRPOU", "markersStart", "sV", "sAvtor", "sInn", "bankIdAddressFactual", "sAdresECP", "form_signed", "PrintFormAutoSign_1"], 
 			"asID_Field" : {
 				
 			}, 
 			"sCondition" : "false"
+		}
+	}, 
+	"validate" : {
+		"FileSign_1" : {
+			"aField_ID" : ["zapit"]
+		}
+	}, 
+	"attributes" : {
+		"Line_1" : {
+			"aElement_ID" : ["info_1"], 
+			"sValue" : "Обовязково підпишіть заяву ЕЦП"
 		}
 	}
 }

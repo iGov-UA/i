@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="common_zags_death" name="Попередній запис на прийом щодо державної реєстрації смерті" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sTable1" name="інфо; ;nRowsLimit=0" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;info_1&quot;,&quot;name&quot;:&quot;Зверніть увагу: Заява про державну реєстрацію смерті подається не пізніше трьох днів з дня настання смерті чи виявлення трупа, а в разі неможливості одержання лікарського свідоцтва про смерть, фельдшерської довідки про смерть - не пізніше п'яти днів. Державна реєстрація смерті проводиться за останнім місцем проживання померлого, за місцем настання смерті чи виявлення трупа або за місцем поховання&quot;,&quot;type&quot;:&quot;label&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть відповідний відділ ДРАЦС" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPIB" name="Прізвище, ім'я та по батькові померлої людини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateDeath" name="Дата смерті" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDate1" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації смерті" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saReasonDeathRegistration" name="Оберіть документ, який є підставою для державної реєстрації смерті" type="enum" required="true">
+          <activiti:value id="sEnumMedical106" name="лікарське свідоцтво про смерть форми N 106/о"></activiti:value>
+          <activiti:value id="sEnumMedical1061" name="фельдшерська довідка про смерть форми N 106-1/о"></activiti:value>
+          <activiti:value id="sEnumMedical1062" name="лікарське свідоцтво про перинатальну смерть форми N 106-2/о"></activiti:value>
+          <activiti:value id="sEnumJudgment1" name="рішення суду про оголошення особи померлою"></activiti:value>
+          <activiti:value id="sEnumJudgment2" name="рішення суду про встановлення факту смерті особи в певний час"></activiti:value>
+          <activiti:value id="sEnumRepression" name="повідомлення державного архіву або органів Служби безпеки України"></activiti:value>
+          <activiti:value id="sEnumPrison" name="повідомлення установи виконання покарань або слідчого ізолятору"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDocReason" name="Завантажте вищевказаний документ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="response" name="Ваша заявка прийнята" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDate1" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers25" name="заховати маркери" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;bankIdfirstName&quot;,&quot;bankIdlastName&quot;,&quot;bankIdmiddleName&quot;,&quot;bankIdPassport&quot;,&quot;sNameOrgan&quot;,&quot;sWorkTime&quot;,&quot;sPhoneOrgan&quot;,&quot;sAddress&quot;,&quot;sMailClerk&quot;,&quot;sShapka&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sWork4&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'картошечка'&quot;}}}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="результат візиту" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані автора звернення; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPIB" name="Прізвище, ім'я та по батькові померлої людини; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateDeath" name="Дата смерті; ;writable=false" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDate1" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації смерті?" type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="saReasonDeathRegistration" name="Оберіть документ, який є підставою для державної реєстрації смерті" type="enum" writable="false">
+          <activiti:value id="sEnumMedical106" name="лікарське свідоцтво про смерть форми N 106/о"></activiti:value>
+          <activiti:value id="sEnumMedical1061" name="фельдшерська довідка про смерть форми N 106-1/о"></activiti:value>
+          <activiti:value id="sEnumMedical1062" name="лікарське свідоцтво про перинатальну смерть форми N 106-2/о"></activiti:value>
+          <activiti:value id="sEnumJudgment1" name="рішення суду про оголошення особи померлою"></activiti:value>
+          <activiti:value id="sEnumJudgment2" name="рішення суду про встановлення факту смерті особи в певний час"></activiti:value>
+          <activiti:value id="sEnumRepression" name="повідомлення державного архіву або органів Служби безпеки України"></activiti:value>
+          <activiti:value id="sEnumPrison" name="повідомлення установи виконання покарань або слідчого ізолятору"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Причина закриття заявки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="результат" type="enum" required="true">
+          <activiti:value id="accept" name="послуга надана"></activiti:value>
+          <activiti:value id="reject" name="заявник не з'явився"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${sDocReason}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask2" name="Лист-запрошення до візиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення: Попередній запис на прийом щодо державної реєстрації смерті]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!</strong><br /><br />
+Ваше звернення передано у ${sNameOrgan}.<br />
+Приходьте ${date_of_visit} за адресою ${sAddress}<br />
+При собі треба мати:<br />
+1. Документ, що посвідчує особу.<br />
+2. Документ, який є підставою для державної реєстрації смерті (enum{[saReasonDeathRegistration]}).<br />
+3. Військово-облікові та пільгові документи померлої людини (якщо є).<br />
+4. Оригінал паспорту або паспортного документу померлої людини. Зверніть увагу - цей документ у ДРАЦСі буде вилучено.<br />
+<br />
+<br />
+<p>[cancelTask]</p>
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[darja.grek@gmail.com]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення: Попередній запис на прийом щодо державної реєстрації смерті]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName} обрав дату та час візиту: ${date_of_visit}.<br />
+У призначену дату та час запросіть, будь ласка, громадянина до кабінету для реєстрації.<br />
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask6" name="послуга не була надана " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Попередній запис на прийом щодо державної реєстрації смерті]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}</strong><br />
+На жаль, Ваше звернення щодо державної реєстрації смерті відхилено (або Ви самостійно скасували заявку).<br />
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
+Телефон для довідок: ${sPhoneOrgan}<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />	   
+[pattern/mail/_common_signature_end.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask7" name="послуга надана - фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Попередній запис на прийом щодо державної реєстрації смерті]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</strong><br /><br />
+Ваше звернення щодо державної реєстрації смерті опрацьовано.<br />
+<br />
+[pattern/mail/_common_feedback.html]<br>
+Дякуємо!<br>
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />	   
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow30" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow31" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="exclusivegateway1" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
+    <serviceTask id="servicetask8" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <sequenceFlow id="flow38" sourceRef="startevent1" targetRef="servicetask8"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="servicetask8" targetRef="servicetask2"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask8">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow40" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_death">
+    <bpmndi:BPMNPlane bpmnElement="common_zags_death" id="BPMNPlane_common_zags_death">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="87.0" y="29.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="69.0" width="148.0" x="397.0" y="166.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="140.0" x="401.0" y="17.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="57.0" width="148.0" x="397.0" y="89.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="69.0" width="140.0" x="160.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="69.0" width="140.0" x="160.0" y="211.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="87.0" y="183.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="330.0" y="183.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="137.0" x="163.0" y="19.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="47.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="397.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="203.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="350.0" y="183.0"></omgdi:waypoint>
+        <omgdi:waypoint x="348.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="154.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="350.0" y="223.0"></omgdi:waypoint>
+        <omgdi:waypoint x="349.0" y="244.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="245.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="160.0" y="154.0"></omgdi:waypoint>
+        <omgdi:waypoint x="104.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="104.0" y="183.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="471.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="471.0" y="166.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="160.0" y="245.0"></omgdi:waypoint>
+        <omgdi:waypoint x="104.0" y="244.0"></omgdi:waypoint>
+        <omgdi:waypoint x="104.0" y="218.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="471.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="471.0" y="89.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="122.0" y="46.0"></omgdi:waypoint>
+        <omgdi:waypoint x="163.0" y="46.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="300.0" y="46.0"></omgdi:waypoint>
+        <omgdi:waypoint x="401.0" y="44.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="165.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="104.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="104.0" y="183.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

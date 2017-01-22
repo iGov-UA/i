@@ -103,7 +103,7 @@
         <activiti:formProperty id="sPostOnCHAES" name="На посаді" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWorkOnCHAES" name="Виконував роботи; через кому" type="textArea" required="true"></activiti:formProperty>
 		
-		
+        <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
 		<activiti:formProperty id="sAreaRod" name="адрес органа" type="invisible"></activiti:formProperty>
 		<activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
@@ -141,7 +141,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask6"></sequenceFlow>
-        <serviceTask id="servicetask6" name="Документи відповідають" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask6" name="Документи відповідають" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
@@ -183,7 +183,7 @@
     
     <sequenceFlow id="flow12" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
     
-    <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="upszn_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
