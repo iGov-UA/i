@@ -48,6 +48,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import org.igov.service.conf.AttachmetService;
 
 /**
  *
@@ -79,6 +80,9 @@ public class ProcessSubjectService {
 
     @Autowired
     private ProcessSubjectStatusDao processSubjectStatusDao;
+    
+    @Autowired
+    private AttachmetService oAttachmetService;
 
     public ProcessSubjectResult getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel, String sFind) {
 
@@ -531,18 +535,30 @@ public class ProcessSubjectService {
             }
 
             List<ProcessSubjectTree> aProcessSubjectTreeChild = processSubjectTreeDao.findChildren(oProcessSubjectParent.getSnID_Process_Activiti()); // Find all children for document
-            InputStream attachmentContent = taskService.getAttachmentContent((String)mParam.get("sID_Attachment"));
-
+            
             List<ProcessSubject> aProcessSubjectChild = getCatalogProcessSubject(snProcess_ID, 1L, null).getaProcessSubject();
             List<String> aProcessSubjectLoginToDelete = new ArrayList<>();
-
+            
+            
+            
             for (ProcessSubject oProcessSubject : aProcessSubjectChild) {
                 aProcessSubjectLoginToDelete.add(oProcessSubject.getsLogin());
             }
-
+            
             JSONParser parser = new JSONParser();
-            JSONObject oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
-            LOG.info("JSON String: " + oJSONObject.toJSONString());
+            InputStream attachmentContent = taskService.getAttachmentContent((String)mParam.get("sID_Attachment"));
+            JSONObject oJSONObject = null;
+            
+            if(attachmentContent == null){
+                JSONObject oTableJSONObject = (JSONObject) parser.parse((String)mParam.get("sID_Attachment"));
+                oJSONObject = (JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
+                    (String)oTableJSONObject.get("sKey"), (String)oTableJSONObject.get("sID_StorageType")).getInputStream(), "UTF-8"));
+            }
+            else{
+                oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
+            }
+            
+            LOG.info("JSON table String: " + oJSONObject.toJSONString());
             JSONArray aJsonRow = (JSONArray) oJSONObject.get("aRow");
 
             List<String> aProcessSubjectLoginNew = new ArrayList<>();
