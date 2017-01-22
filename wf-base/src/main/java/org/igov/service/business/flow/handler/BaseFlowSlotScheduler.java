@@ -6,6 +6,8 @@ import org.springframework.util.Assert;
 import org.igov.model.flow.FlowSlot;
 import org.igov.model.flow.Flow_ServiceData;
 
+import java.util.List;
+
 /**
  * User: goodg_000
  * Date: 29.06.2015
@@ -17,7 +19,8 @@ public abstract class BaseFlowSlotScheduler implements FlowPropertyHandler<FlowS
     protected DateTime endDate;
     protected int defaultIntervalDaysLength;
     protected Flow_ServiceData flow;
-
+    protected List<DateTime> aDateRange_Exclude;
+    
     public DateTime getStartDate() {
         return startDate;
     }
@@ -56,6 +59,14 @@ public abstract class BaseFlowSlotScheduler implements FlowPropertyHandler<FlowS
         return FlowSlot.class;
     }
 
+    public List<DateTime> getaDateRange_Exclude() {
+        return aDateRange_Exclude;
+    }
+
+    public void setaDateRange_Exclude(List<DateTime> aDateRange_Exclude) {
+        this.aDateRange_Exclude = aDateRange_Exclude;
+    }
+    
     protected void prepareInterval() {
         if (startDate == null) {
             startDate = DateTime.now();

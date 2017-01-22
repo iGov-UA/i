@@ -298,6 +298,7 @@ public class FlowService implements ApplicationContextAware {
         List<FlowSlotVO> res = new ArrayList<>();
         
         List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
+        List<DateTime> aDateRange_Exclude = new ArrayList<>();
         CronExpression cronExpression;
         
         for (FlowProperty flowProperty : flow.getFlowProperties()){
@@ -324,12 +325,14 @@ public class FlowService implements ApplicationContextAware {
                             throw new RuntimeException(e);
                         }
                         
-                        while (startDate.isBefore(stopDate)) {
+                        while (currDateTime.isBefore(stopDate)) {
                             currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
                             
                             if (stopDate.compareTo(startDate) <= 0) {
                                 break;
                             }
+                            
+                            aDateRange_Exclude.add(currDateTime);
                             
                             LOG.info("currDateTime for exclude is : " + currDateTime.toString());
                         }
@@ -337,8 +340,6 @@ public class FlowService implements ApplicationContextAware {
                 }
             }
         }
-        
-
         
         for (FlowProperty flowProperty : flow.getFlowProperties()) {
             if (flowProperty.getbExclude() == null || !flowProperty.getbExclude()) {
@@ -350,7 +351,7 @@ public class FlowService implements ApplicationContextAware {
                     handler.setStartDate(startDate);
                     handler.setEndDate(stopDate);
                     handler.setFlow(flow);
-
+                    handler.setaDateRange_Exclude(aDateRange_Exclude);
                     LOG.info("(startDate={}, stopDate={}, flowProperty.getsData()={})",
                             startDate, stopDate, flowProperty.getsData());
                     
