@@ -143,7 +143,16 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
         angular.forEach(form, function (item, key, obj) {
             if(item.id === id) {
                 var defaultCopy = angular.copy(obj[key].aRow[0]);
-                angular.forEach(defaultCopy.aField, function (field) {
+                angular.forEach(defaultCopy.aField, function (field, k, o) {
+                    if(field.type === 'file') {
+                        var copy = field;
+                        factory !== null ? o[k] = new factory() : o[k] = {};
+                        o[k].required = copy.required;
+                        o[k].type = copy.type;
+                        o[k].name = copy.name;
+                        o[k].writable = copy.writable;
+                        o[k].id = copy.id + '_' + obj[key].aRow.length;
+                    }
                     if(field.default) {
                         delete field.default;
                     } else if(field.props) {
