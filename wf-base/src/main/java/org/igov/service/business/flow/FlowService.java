@@ -313,10 +313,25 @@ public class FlowService implements ApplicationContextAware {
                     LOG.info("flowProperty.getsDateTimeAt: " + flowProperty.getsDateTimeAt());
                     LOG.info("flowProperty.getsDateTimeTo: " + flowProperty.getsDateTimeTo());
                     
-                    while (startDate.isBefore(stopDate)) {
+                    Map<String, String> configuration = JsonRestUtils.readObject(flowProperty.getsData(), Map.class);
+                    
+                    for (Map.Entry<String, String> entry : configuration.entrySet()) {
+                        
+                        String cronExpressionString = entry.getKey();
+                        
+                        try {
+                            cronExpression = new CronExpression(cronExpressionString);
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+                        
+                        while (startDate.isBefore(stopDate)) {
                         currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
                             if (stopDate.compareTo(startDate) <= 0) {
-                            break;
+                                break;
+                            }
+                            
+                            LOG.info("currDateTime for exclude is : " + currDateTime.toString());
                         }
                     }
                 }
@@ -338,7 +353,7 @@ public class FlowService implements ApplicationContextAware {
 
                     LOG.info("(startDate={}, stopDate={}, flowProperty.getsData()={})",
                             startDate, stopDate, flowProperty.getsData());
-
+                    
                     if (flowProperty.getsData() != null && !"".equals(flowProperty.getsData().trim())) {
                         List<FlowSlot> generatedSlots = handler.generateObjects(flowProperty.getsData());
                         for (FlowSlot slot : generatedSlots) {
