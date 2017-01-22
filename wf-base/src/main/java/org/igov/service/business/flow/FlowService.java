@@ -38,6 +38,7 @@ import org.igov.service.business.action.task.form.QueueDataFormType;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
 import org.igov.util.JSON.JsonRestUtils;
+import org.quartz.CronExpression;
 
 /**
  * User: goodg_000
@@ -297,7 +298,9 @@ public class FlowService implements ApplicationContextAware {
         List<FlowSlotVO> res = new ArrayList<>();
         
         List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
-        
+        CronExpression cronExpression;
+        DateTime currDateTime = startDate;
+         
         for (FlowProperty flowProperty : flow.getFlowProperties()){
             if(flowProperty.getbExclude()){
                 LOG.info("flowProperty.getoFlow_ServiceData().getnID_ServiceData: " + flowProperty.getoFlow_ServiceData().getnID_ServiceData());
@@ -311,6 +314,7 @@ public class FlowService implements ApplicationContextAware {
                     LOG.info("flowProperty.getsDateTimeTo: " + flowProperty.getsDateTimeTo());
                     
                     while (startDate.isBefore(stopDate)) {
+                        currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
                             if (stopDate.compareTo(startDate) <= 0) {
                             break;
                         }

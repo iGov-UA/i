@@ -546,15 +546,17 @@ public class ProcessSubjectService {
             }
             
             JSONParser parser = new JSONParser();
-            InputStream attachmentContent = taskService.getAttachmentContent((String)mParam.get("sID_Attachment"));
+            
             JSONObject oJSONObject = null;
             
-            if(attachmentContent == null){
+            try{
                 JSONObject oTableJSONObject = (JSONObject) parser.parse((String)mParam.get("sID_Attachment"));
                 oJSONObject = (JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
                     (String)oTableJSONObject.get("sKey"), (String)oTableJSONObject.get("sID_StorageType")).getInputStream(), "UTF-8"));
+                LOG.info("oTableJSONObject in listener: " + oJSONObject.toJSONString());
             }
-            else{
+            catch(Exception ex){
+                InputStream attachmentContent = taskService.getAttachmentContent((String)mParam.get("sID_Attachment"));
                 oJSONObject = (JSONObject) parser.parse(IOUtils.toString(attachmentContent, "UTF-8"));   // (JSONObject) new JSONParser().parse(IOUtils.toString(attachmentContent));
             }
             
@@ -587,7 +589,7 @@ public class ProcessSubjectService {
                                     }
                                 }
                             }
-                            LOG.info("mParamTask: " + mParamTask); //логируем всю мапу
+                            LOG.info("mParamTask in table is: " + mParamTask); //логируем всю мапу
                         } else {
                             continue;
                         }
