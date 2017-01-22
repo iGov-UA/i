@@ -310,11 +310,11 @@ public class FlowService implements ApplicationContextAware {
                     LOG.info("flowProperty.getsDateTimeAt: " + flowProperty.getsDateTimeAt());
                     LOG.info("flowProperty.getsDateTimeTo: " + flowProperty.getsDateTimeTo());
                     
-                    /*while (startDate.isBefore(stopDate)) {
+                    while (startDate.isBefore(stopDate)) {
                             if (stopDate.compareTo(startDate) <= 0) {
                             break;
                         }
-                    }*/
+                    }
                 }
             }
         }
