@@ -34,6 +34,9 @@ public class ServiceTag extends AbstractEntity {
     @Column
     private String sNote;
 
+    @Column
+    private Long nID_Place;
+
     @ManyToOne(targetEntity = ServiceTagType.class)
     @JoinColumn(name="nID_ServiceTagType", nullable = false, updatable = false)
     private ServiceTagType serviceTagType;
@@ -90,5 +93,12 @@ public class ServiceTag extends AbstractEntity {
     public void setsNote(String sNote) {
         this.sNote = sNote;
     }
-    
+
+    public Long getnID_Place() {
+        return nID_Place;
+    }
+
+    public void setnID_Place(Long nID_Place) {
+        this.nID_Place = nID_Place;
+    }
 }

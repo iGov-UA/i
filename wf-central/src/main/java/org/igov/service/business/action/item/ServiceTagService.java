@@ -39,7 +39,8 @@ public class ServiceTagService {
     GeneralConfig generalConfig;
 
     public List<ServiceTagTreeNodeVO> getCatalogTreeTag(Long nID_Category, String sFind,
-                                                        List<String> asID_Place_UA, boolean bShowEmptyFolders,
+                                                        List<String> asID_Place_UA, Long nID_Place_Profile,
+                                                        boolean bShowEmptyFolders,
                                                         boolean includeServices,
                                                         Long nID_ServiceTag_Root, Long nID_ServiceTag_Child) {
         List<ServiceTagTreeNodeVO> res = new ArrayList<>();
@@ -54,11 +55,15 @@ public class ServiceTagService {
         LOG.info("!!! tagIdToServices.size: " + tagIdToServices.size());
 
         for (ServiceTagTreeNode rootTagNode : tree.getRootTagNodes()) {
-            LOG.info("!!! rootTagNode: " + rootTagNode.getTag().getsID() + " " + rootTagNode.getTag().getsName_RU());
             final ServiceTag parentTag = rootTagNode.getTag();
+            LOG.info("!!! rootTagNode: " + parentTag.getsID() + " " + parentTag.getsName_RU());
 
-            final Long rootTagId = rootTagNode.getTag().getId();
+            final Long rootTagId = parentTag.getId();
             if (hasRootIdFilter && !rootTagId.equals(nID_ServiceTag_Root)) {
+                continue;
+            }
+
+            if (nID_Place_Profile != null && !nID_Place_Profile.equals(parentTag.getnID_Place())) {
                 continue;
             }
 
@@ -68,6 +73,10 @@ public class ServiceTagService {
                 final ServiceTag childTag = childNode.getTag();
 
                 if (hasChildIdFilter && !childNode.getTag().getId().equals(nID_ServiceTag_Child)) {
+                    continue;
+                }
+
+                if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
                     continue;
                 }
 
