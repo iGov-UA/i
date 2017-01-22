@@ -1576,25 +1576,16 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="issue-1492_test1" author="brunneng">
+    <changeSet id="issue-1492_1" author="brunneng">
         <addColumn tableName="ServiceTag">
-            <column name="nID_Place " type="bigint">
+            <column name="nID_Place" type="bigint">
                 <constraints nullable="true"/>
             </column>
         </addColumn>
-    </changeSet>
-    <changeSet id="issue-1492_test2" author="brunneng">
-        <addColumn tableName="ServiceTag">
-            <column name="nID_Place " type="bigint">
-                <constraints nullable="true"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet id="issue-1492_2" author="brunneng">
         <addForeignKeyConstraint constraintName="FK_ServiceTag_Place"
                                  baseTableName="ServiceTag" baseColumnNames="nID_Place"
                                  referencedTableName="Place" referencedColumnNames="nID"
                                  onDelete="NO ACTION"/>
     </changeSet>
-    
+
 </databaseChangeLog>
