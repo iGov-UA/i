@@ -299,8 +299,7 @@ public class FlowService implements ApplicationContextAware {
         
         List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
         CronExpression cronExpression;
-        DateTime currDateTime = startDate;
-         
+        
         for (FlowProperty flowProperty : flow.getFlowProperties()){
             if(flowProperty.getbExclude()){
                 LOG.info("flowProperty.getoFlow_ServiceData().getnID_ServiceData: " + flowProperty.getoFlow_ServiceData().getnID_ServiceData());
@@ -316,7 +315,7 @@ public class FlowService implements ApplicationContextAware {
                     Map<String, String> configuration = JsonRestUtils.readObject(flowProperty.getsData(), Map.class);
                     
                     for (Map.Entry<String, String> entry : configuration.entrySet()) {
-                        
+                        DateTime currDateTime = startDate;
                         String cronExpressionString = entry.getKey();
                         
                         try {
@@ -326,7 +325,8 @@ public class FlowService implements ApplicationContextAware {
                         }
                         
                         while (startDate.isBefore(stopDate)) {
-                        currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
+                            currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
+                            
                             if (stopDate.compareTo(startDate) <= 0) {
                                 break;
                             }
