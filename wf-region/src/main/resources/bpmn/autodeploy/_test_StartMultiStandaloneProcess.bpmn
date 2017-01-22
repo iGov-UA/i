@@ -13,6 +13,7 @@
         <activiti:in source="sLogin" target="sLogin"></activiti:in>
         <activiti:out source="testSub" target="testSub"></activiti:out>
       </extensionElements>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${usersService.getUsersByGroup('admin')}" activiti:elementVariable="sLogin"></multiInstanceLoopCharacteristics>
     </callActivity>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="callactivity1"></sequenceFlow>
     <userTask id="usertask1" name="User Task Main proc" activiti:assignee="GrekD">
