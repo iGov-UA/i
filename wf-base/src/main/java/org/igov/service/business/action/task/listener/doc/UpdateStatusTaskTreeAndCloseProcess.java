@@ -1,18 +1,17 @@
 package org.igov.service.business.action.task.listener.doc;
 
-import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+
+import java.lang.invoke.MethodHandles;
+
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
-
-import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+import org.igov.service.business.process.ProcessSubjectService;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.igov.model.process.ProcessSubject;
-import org.igov.service.business.process.ProcessSubjectService;
 
 /**
  *
@@ -22,8 +21,12 @@ import org.igov.service.business.process.ProcessSubjectService;
 public class UpdateStatusTaskTreeAndCloseProcess implements TaskListener {
 
 
-	private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(UpdateStatusTaskTreeAndCloseProcess.class);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	private static final transient Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     
     private Expression snID_Process_Activiti;    
     private Expression sID_ProcessSubjectStatus;
