@@ -505,7 +505,19 @@
     <scriptTask id="scripttask1" name="Выбор магазина Ликпей" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>          
       	  var sVarCNAP=execution.getVariable('user_last')
-          if (sVarCNAP=='temp_test' || sVarCNAP=='vasil_jur' || sVarCNAP=='agerman')
+          if (sVarCNAP=='temp_test')
+          	{
+          		execution.setVariable('sID_Merchant','i5516072613')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')
+				execution.setVariable('sVarBankMFO','805012')
+				execution.setVariable('sVarPayCode','22010300')
+				execution.setVariable('sVarWhoPayGetCode','37870848')
+				execution.setVariable('sVarWhoPayGet','ВАСИЛЬКІВСЬКЕ УК (ВАСИЛЬКІВСЬКОГО РАЙОНУ)')
+				execution.setVariable('sVarPayGetSchet','31419501700049')
+				execution.setVariable('sVarSumPay','160.00')
+          	}
+          if (sVarCNAP=='agerman')
           	{
           		execution.setVariable('sID_Merchant','i5516072613')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
@@ -676,7 +688,8 @@
 		</script>
     </scriptTask>
 
-    <userTask id="usertask2" name="Надання послуги (2)" activiti:assignee="${user_last}">
+   <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateUsers="${user_last}">
+<!--   <userTask id="usertask2" name="Надання послуги (2)" activiti:assignee="${user_last}">-->
 <!--    <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateGroups="group_found,jur_all_1497,jur_${sID_UA}_1497">-->
       <extensionElements>
         <activiti:formProperty id="user_last" name="Найденный пользователь" type="string"></activiti:formProperty>
