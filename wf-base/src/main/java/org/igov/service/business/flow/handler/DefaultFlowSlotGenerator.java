@@ -47,9 +47,11 @@ public class DefaultFlowSlotGenerator {
                 
                 boolean continueFlaf = false;
                 
-                for(DateTime excludeDate : aDateRange_Exclude){
-                    if (currDateTime.compareTo(excludeDate) == 0){
-                        continueFlaf = true;
+                if(aDateRange_Exclude != null){
+                    for(DateTime excludeDate : aDateRange_Exclude){
+                        if (currDateTime.compareTo(excludeDate) == 0){
+                            continueFlaf = true;
+                        }
                     }
                 }
                 
