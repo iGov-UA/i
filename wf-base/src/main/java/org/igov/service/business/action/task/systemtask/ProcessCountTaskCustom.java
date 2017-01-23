@@ -36,8 +36,8 @@ public class ProcessCountTaskCustom implements JavaDelegate, TaskListener {
 
 	private static final String sID_Field_Result = "sID_Custom_GovPublic";
 
-    public Expression osPattern;
-    public Expression osKey;
+    public Expression sPattern;
+    public Expression sKey;
         
 	private final static Logger LOG = LoggerFactory.getLogger(ProcessCountTaskCustom.class);
 	
@@ -63,22 +63,25 @@ public class ProcessCountTaskCustom implements JavaDelegate, TaskListener {
 
 	private void loadProcessCountCustom(DelegateExecution oExecution) {
             
-                String sPattern = getStringFromFieldExpression(osPattern, oExecution);
-                String sKey = getStringFromFieldExpression(osKey, oExecution);
+                String sParamPattern = getStringFromFieldExpression(sPattern, oExecution);
+                String sParamKey = getStringFromFieldExpression(sKey, oExecution);
             
 //		String snCount = getActionProcessCount(execution.getProcessDefinitionId(), null);
 		//int res = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, StringUtils.substringBefore(sID_BP, ":"), nID_Service, null);
-		int nCount = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, sKey, null, null);
+		int nCount = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, sParamKey, null, null);
 		String snCount = String.format("%07d", nCount);
 		LOG.info("Retrieved snCount={}", snCount);
 		
 		if (snCount != null) {
                     
-                    String sReturn=sPattern; //snCount
+                    String sReturn=sParamPattern; //snCount
                     //${sID_Order_GovPublic}/${sID_Custom_GovPublic}
                     
                     if(sReturn.contains("[sID_Order_GovPublic]")){
                         String s=runtimeService.getVariable(oExecution.getProcessInstanceId(), S_ID_ORDER_GOV_PUBLIC, String.class);
+                        if(s==null){
+                            s="";
+                        }
                         sReturn=sReturn.replace("[sID_Order_GovPublic]", s);
                     }
                     sReturn=sReturn.replace("[sID_Custom_GovPublic]", snCount);
