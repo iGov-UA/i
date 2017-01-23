@@ -30,12 +30,12 @@
         <dropTable tableName="Flow_ServiceData_Tmp"/>
     </changeSet>
     
-    <delete tableName="SubjectGroupTree"/>
-        
-    <delete tableName="SubjectGroup"/>
-    
     <changeSet id="Update data" author="brunneng" runOnChange="true">
-
+        
+        <delete tableName="SubjectGroupTree"/>
+        
+        <delete tableName="SubjectGroup"/>
+    
         <sql splitStatements="true" dbms="postgresql"><![CDATA[
             SET CONSTRAINTS ALL DEFERRED;
             DELETE FROM "SubjectOrganJoinAttribute";
