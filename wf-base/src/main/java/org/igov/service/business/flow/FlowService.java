@@ -364,7 +364,32 @@ public class FlowService implements ApplicationContextAware {
                 }
             }
         }
+        
+        if(!aDateRange_Exclude.isEmpty()){
+            List<FlowSlot> aFlowSlot = flowSlotDao.findFlowSlotsByFlow(nID_Flow_ServiceData, startDate, stopDate);
+            List<FlowSlot> flowSlotsToDelete = new ArrayList<>();
 
+            for (FlowSlot oFlowSlot : aFlowSlot) {
+                Boolean bBusy = false;
+
+                for(FlowSlotTicket oFlowSlotTicket : oFlowSlot.getFlowSlotTickets()){
+                    bBusy = bBusy||FlowSlotVO.bBusy(oFlowSlotTicket);
+                }
+
+
+                for(DateTime excludeDate : aDateRange_Exclude){
+                    if ((oFlowSlot.getsDate().compareTo(excludeDate) == 0)&&(!bBusy)){
+                        flowSlotsToDelete.add(oFlowSlot);
+                    }
+                }
+            }
+            
+            if(!flowSlotsToDelete.isEmpty())
+            {
+                flowSlotDao.delete(flowSlotsToDelete);
+            }
+        }
+        
         return res;
     }
 
