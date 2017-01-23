@@ -29,7 +29,11 @@
 
         <dropTable tableName="Flow_ServiceData_Tmp"/>
     </changeSet>
-
+    
+    <delete tableName="SubjectGroupTree"/>
+        
+    <delete tableName="SubjectGroup"/>
+    
     <changeSet id="Update data" author="brunneng" runOnChange="true">
 
         <sql splitStatements="true" dbms="postgresql"><![CDATA[
@@ -236,10 +240,6 @@
             <column name="sLogin" type="STRING"/>
             <column name="nID_AccessServiceRole" type="NUMERIC"/>
         </loadData>
-        
-        <delete tableName="SubjectGroup"/>
-        
-        <delete tableName="SubjectGroupTree"/>
         
         <delete tableName="ProcessSubjectStatus"/>
         
