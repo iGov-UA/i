@@ -166,10 +166,10 @@ exports.post = function (options, onResult, data, json) {
  */
 exports.uploadStream = function (options, onResult) {
   var formData = {
-    taskId: options.taskId,
+    taskId: options.nID_Process,
     file: options.stream,
-    description: options.description,
-    sID_Field: options.sID_Field
+    sID_Field: options.sID_Field,
+    sFileNameAndExt: options.sFileNameAndExt
   }, content = {
     url: getRequestURL(options),
     formData: formData,
