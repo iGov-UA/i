@@ -1233,4 +1233,35 @@
         <modifyDataType tableName="SubjectOrgan" columnName="sName" newDataType="varchar(200)" />
     </changeSet>
     
+    <changeSet id="issue-1462_role" author="HavrylinSerhii">
+        <createTable tableName="SubjectHumanRole">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sName" type="varchar(200)">
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="issue-1462_roleRelation" author="HavrylinSerhii" failOnError="false">
+        <createTable tableName="SubjectHumanRole_SubjectHuman">
+            <column name="nID_SubjectHumanRole" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_SubjectHumanRole"
+                             referencedTableName="SubjectHumanRole" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_SubjectHuman" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_SubjectHuman"
+                             referencedTableName="SubjectHuman" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="issue-1462_roleConstrein" author="HavrylinSerhii" failOnError="false">
+        <addUniqueConstraint constraintName="SubjectHumanRole_SubjectHuman"
+                             columnNames="nID_SubjectHumanRole, nID_SubjectHuman"
+                             tableName="SubjectHumanRole_SubjectHuman"/>
+    </changeSet>
+    
 </databaseChangeLog>
