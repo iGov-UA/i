@@ -97,7 +97,11 @@ public class ServiceTagService {
 
             if (!nodeVO.getaServiceTag_Child().isEmpty() || bShowEmptyFolders) {
                 res.add(nodeVO);
-
+                
+                LOG.info("nodeVO.getaServiceTag_Child: ", nodeVO.getaServiceTag_Child());
+                LOG.info("nodeVO.nodeVO.getaService: ", nodeVO.getaService());
+                LOG.info("nodeVO.getoServiceTag_Root: ", nodeVO.getoServiceTag_Root());
+                
                 if (!includeServices) {
                     continue;
                 }
