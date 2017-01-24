@@ -60,11 +60,11 @@ public class ServiceTagService {
 
             //final Long rootTagId = parentTag.getId();
             final Long rootTagId = rootTagNode.getTag().getId();
-            if (hasRootIdFilter && !rootTagId.equals(nID_ServiceTag_Root)) {
+            /*if (hasRootIdFilter && !rootTagId.equals(nID_ServiceTag_Root)) {
                 continue;
             }
 
-            /*if (nID_Place_Profile != null && !nID_Place_Profile.equals(parentTag.getnID_Place())) {
+            if (nID_Place_Profile != null && !nID_Place_Profile.equals(parentTag.getnID_Place())) {
                 continue;
             }*/
 
@@ -73,28 +73,28 @@ public class ServiceTagService {
             for (ServiceTagTreeNode childNode : rootTagNode.getChildren()) {
                 final ServiceTag childTag = childNode.getTag();
 
-                if (hasChildIdFilter && !childNode.getTag().getId().equals(nID_ServiceTag_Child)) {
+                /*if (hasChildIdFilter && !childNode.getTag().getId().equals(nID_ServiceTag_Child)) {
                     continue;
                 }
 
-                /*if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
+                if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
                     continue;
-                }*/
+                }
 
                 if (!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
                         includeTestEntities)) {
                     continue;
-                }
+                }*/
 
                 nodeVO.addChild(childTag);
             }
 
-            if (nodeVO.getaServiceTag_Child().isEmpty() &&
+            /*if (nodeVO.getaServiceTag_Child().isEmpty() &&
                     !isSuitable(parentTag, tagIdToServices.get(parentTag.getId()), nID_Category, sFind,
                             asID_Place_UA, includeTestEntities)) {
                 continue;
-            }
-
+            }*/
+            
             if (!nodeVO.getaServiceTag_Child().isEmpty() || bShowEmptyFolders) {
                 res.add(nodeVO);
                 
