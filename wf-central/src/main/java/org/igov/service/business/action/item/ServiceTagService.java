@@ -58,17 +58,15 @@ public class ServiceTagService {
             final ServiceTag parentTag = rootTagNode.getTag();
             LOG.info("!!! rootTagNode: " + parentTag.getsID() + " " + parentTag.getsName_RU());
 
-            //final Long rootTagId = parentTag.getId();
-            final Long rootTagId = rootTagNode.getTag().getId();
+            final Long rootTagId = parentTag.getId();
+            //final Long rootTagId = rootTagNode.getTag().getId();
             if (hasRootIdFilter && !rootTagId.equals(nID_ServiceTag_Root)) {
-                LOG.info("hasRootIdFilter" + hasRootIdFilter);
-                 LOG.info("!rootTagId.equals(nID_ServiceTag_Root)" + !rootTagId.equals(nID_ServiceTag_Root));
                 continue;
             }
 
-            /*if (nID_Place_Profile != null && !nID_Place_Profile.equals(parentTag.getnID_Place())) {
+            if (nID_Place_Profile != null && !nID_Place_Profile.equals(parentTag.getnID_Place())) {
                 continue;
-            }*/
+            }
 
             ServiceTagTreeNodeVO nodeVO = new ServiceTagTreeNodeVO();
             nodeVO.setoServiceTag_Root(parentTag);
@@ -76,19 +74,15 @@ public class ServiceTagService {
                 final ServiceTag childTag = childNode.getTag();
                 
                 if (hasChildIdFilter && !childNode.getTag().getId().equals(nID_ServiceTag_Child)) {
-                    LOG.info("hasChildIdFilter: ", hasChildIdFilter);
-                    LOG.info("!childNode.getTag().getId().equals(nID_ServiceTag_Child: " + !childNode.getTag().getId().equals(nID_ServiceTag_Child));
                     continue;
                 }
                  
-                /*if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
+                if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
                     continue;
-                }*/
+                }
 
                 if (!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
                         includeTestEntities)) {
-                    LOG.info("!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA includeTestEntities: " + !isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
-                        includeTestEntities));
                     //continue;
                 }
 
@@ -98,9 +92,6 @@ public class ServiceTagService {
             if (nodeVO.getaServiceTag_Child().isEmpty() &&
                     !isSuitable(parentTag, tagIdToServices.get(parentTag.getId()), nID_Category, sFind,
                             asID_Place_UA, includeTestEntities)) {
-                LOG.info("nodeVO.getaServiceTag_Child().isEmpty(): " + nodeVO.getaServiceTag_Child().isEmpty());
-                LOG.info("!isSuitable(parentTag, tagIdToServices.get(parentTag.getId()), nID_Category, sFind, asID_Place_UA, includeTestEntities): " + !isSuitable(parentTag, tagIdToServices.get(parentTag.getId()), nID_Category, sFind,
-                            asID_Place_UA, includeTestEntities));
                 //continue;
             }
 
