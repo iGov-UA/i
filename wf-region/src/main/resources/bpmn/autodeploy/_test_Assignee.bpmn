@@ -4,20 +4,29 @@
 <!--    <startEvent id="startevent1" name="Start" activiti:initiator="initiator">-->
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Вкажіть Вашу E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
       </extensionElements>
 	</startEvent>
-    <userTask id="usertask1" name="User Task1" activiti:candidateGroups="Sales">
+    <userTask id="usertask1" name="User Task1" activiti:candidateGroups="weapon_insurance">
       <extensionElements>
-        <activiti:formProperty id="email" name="Вкажіть Вашу E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur_1497_"></activiti:formProperty>
+	  <activiti:formProperty id="email" name="Вкажіть Вашу E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="pattern"></activiti:formProperty>
         <activiti:taskListener event="complete" delegateExpression="${FindGroup}"></activiti:taskListener>
       </extensionElements>
 	</userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask2" name="User Task2" activiti:assignee="${user_last}">
       <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Вкажіть Вашу E-Mail адресу для зворотнього зв'язку" type="string"></activiti:formProperty>
         <activiti:formProperty id="group_found" name="Найденная группа по префиксу" type="string"></activiti:formProperty>
         <activiti:formProperty id="user_last" name="Найденный пользователь" type="string"></activiti:formProperty>

@@ -65,7 +65,7 @@
         <activiti:formProperty id="middleName_UA1" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBirthDate1" name="Дата народження" type="date"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace1" name="Місце народження; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFact1" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFact1" name="Місце проживання; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sWithoutCitizenship1" name="Чи є Ви особою без громадянства або біженцем" type="enum">
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
@@ -91,7 +91,7 @@
         <activiti:formProperty id="middleName_UA2" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBirthDate2" name="Дата народження" type="date"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace2" name="Місце народження; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFact2" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFact2" name="Місце проживання; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sWithoutCitizenship2" name="Чи є Ви особою без громадянства або біженцем" type="enum">
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
@@ -137,7 +137,7 @@
         execution.setVariable('sCitizenship1', ' ')};
         if(execution.getVariable('sWithoutCitizenship2') == 'sEnum1')  { 
         execution.setVariable('sCitizenship2', ' ')};
-        
+        execution.setVariable('sDescription', 'державне мито за послугу розірвання шлюбу'); 
         
       </script>
     </scriptTask>
@@ -259,7 +259,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення реєстрації розірвання шлюбу" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата розлучення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDivorceDay" name="Бажана дата розлучення; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDivorceDay" name="Бажана дата розлучення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані чоловіка" type="label" default="_____________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Власне ім'я; ;writable=false" type="string"></activiti:formProperty>
@@ -334,7 +334,7 @@ ${sMail_Signature}<br /><br />
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума державного мита, яку необхідно сплатити" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума державного мита, яку необхідно сплатити" type="string" default="8.50"></activiti:formProperty>
         <activiti:formProperty id="commentTax" name="Коментар до суми сплати (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_divorce_106.html" type="file"></activiti:formProperty>
@@ -342,6 +342,8 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_divorce_107.html]" type="invisible" default="заява громадян_107" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_divorce_court.html]" type="invisible" default="заява громадян_sud" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Required_dash" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_req_dash.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -653,6 +655,8 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -952,6 +956,8 @@ ${sMail_Signature} <br><br>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -1115,6 +1121,8 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

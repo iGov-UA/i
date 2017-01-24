@@ -28,7 +28,7 @@
         
         <activiti:formProperty id="asCustomerService" name="Оберіть категорію споживачів послуги" type="enum" required="true">
           <activiti:value id="invalid_1" name="Інвалід з дитинства І групи"></activiti:value>
-          <activiti:value id="invalid_23" name="Одинокий інвалід з дитинства II і III групи; які потребують постійного стороннього догляду"></activiti:value>
+          <activiti:value id="invalid_23" name="Одинокий інвалід з дитинства II і III групи, які потребують постійного стороннього догляду"></activiti:value>
           <activiti:value id="invalid_child" name="Дитина-інвалід"></activiti:value>
         </activiti:formProperty>
 
@@ -157,6 +157,9 @@
         <activiti:formProperty id="markersStartCheck" name="Маркер логика галочек категорий инвалидов" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_175_start_check.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersAdressTransfer" name="Маркер адреса и выбора типа передачи помощи" type="markers" default="${markerService.loadFromFile('soczah/soc_help_adress_transfer.json')}"></activiti:formProperty>
 
+
+        <activiti:formProperty id="nameService" name="Название услуги" type="invisible" default=" "></activiti:formProperty>
+
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка документів і вхідних даних" activiti:candidateGroups="upszn${nArea}">
@@ -232,10 +235,14 @@
 
         <activiti:formProperty id="asDecision1" name="Перевірка даних" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
-          <activiti:value id="accept_but" name="Дані надані не в повному обсязі - направити громаднину повідомлення (обов'язково впишіть коментар нижче)"></activiti:value>
-          <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
+          <activiti:value id="accept_but" name="Дані надані не в повному обсязі - направити громадянину повідомлення"></activiti:value>
+          <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+
+        <activiti:formProperty id="dDateVisit" name="Внесіть дату візиту громадянки для надання довідки про вагітність" type="date"></activiti:formProperty>
+        <activiti:formProperty id="dTimeVisit" name="Внесіть час візиту громадянки для надання довідки про вагітність" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRoom" name="укажіть кабінет - куди прийти громадянці" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Будь ласка, укажіть причину Вашого рішення" type="textArea" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="cc_3_5" name="на догляд за інвалідом з дитинства підгрупи А I групи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="cc_3_6" name="на догляд за інвалідом з дитинства підгрупи Б I групи" type="invisible"></activiti:formProperty>
@@ -325,7 +332,7 @@
           <activiti:value id="accept" name="схвалено призначення надбавки"></activiti:value>
           <activiti:value id="reject" name="відмовлено у призначенні надбавки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment2" name="Будь ласка, вкажіть причину відмови" type="textArea"></activiti:formProperty>
 
         <activiti:formProperty id="nFileRishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersUser2" name="Маркер UT2" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_175_user2.json')}"></activiti:formProperty>
@@ -340,11 +347,11 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове  звернення. Призначення надбавки на догляд за інвалідом з дитинства або дитиною-інвалідом]]></activiti:string>
+          <activiti:string><![CDATA[Нове  звернення. Призначення ${nameService}]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify_head.html]
-			Послуга: Призначення надбавки на догляд за інвалідом з дитинства або дитиною-інвалідом
+			Послуга: Призначення  ${nameService}.
 			Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
 			[pattern/mail/new_design/_common_employee_notify_footer.html]]]>
 		  </activiti:expression>
@@ -360,13 +367,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Призначення надбавки на догляд за інвалідом з дитинства або дитиною-інвалідом. Зареєстровано]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Призначення ${nameService}. Зареєстровано]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення, щодо призначення надбавки на догляд за інвалідом з дитинства або дитиною-інвалідом передано 
+				Ваше звернення, щодо призначення  ${nameService} передано 
 				на розгляд в управління праці та соціального захисту населення і буде опрацьовано протягом 10 робочих днів.
 			</p><br>
 			<p>
@@ -403,18 +410,27 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Призначення надбавки на догляд за інвалідом з дитинства або дитиною-інвалідом. Перевірка документів]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Призначення ${nameService}. Перевірка документів]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення, щодо призначення надбавки на догляд за інвалідом з дитинства або дитиною-інвалідом, направлено на доопрацювання.
-			</p><br>
-			<p>
-				Причина: ${sComment1}
+				Ваше звернення, щодо призначення ${nameService} було оброблено.
 			</p>
 			<p>
+				Послугу не може бути надано без орігіналів документі, які ви прикріпили при замовленні послуги.
+			</p>
+			<p>
+				В звязку з вищесказаним Вам призначено дату та час візиту для надання оригіналів документу: 
+				${dDateVisit}  ${dTimeVisit} <br>
+				Кабінет №: ${sRoom}
+			</p>
+			<p>			
+				Коментар держслужбовця: ${sComment1}
+			</p>
+			<p>
+				Також хочемо Вас проінформувати: <br>
 				Якщо Ви працевлаштоавані, але наразі перебуваеєте у довгостроковій відпустці - 
 				Вам впродовж 30 робочіх днів треба надати оригінал довідки лікарсько-консультативної комісії, 
 				в якій зазначено, що дитина-інвалід потребує домашнього догляду			
@@ -450,15 +466,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Призначення надбавки на догляд за інвалідом з дитинства або дитиною-інвалідом. Відхилено]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Призначення ${nameService}. Відхилено]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				На жаль, Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>, 
-				щодо призначення надбавки на догляд за інвалідом з дитинства або дитиною-інвалідом 
-				відхилено через недостатню або неправильну інформацію.
+				На жаль, Ваше звернення, щодо призначення ${nameService} відхилено через недостатню або неправильну інформацію.
 			</p>
 			<p>
 				Причина: ${sComment1}
@@ -498,7 +512,7 @@
           <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Призначення надбавки на догляд за інвалідом з дитинства або дитиною-інвалідом. Схвалено]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Призначення ${nameService}. Схвалено]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA["${nFileRishen}"]]></activiti:expression>
@@ -507,12 +521,12 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення було оброблено і Ви отримали схвалення щодо - призначення надбавки на догляд за інвалідом з дитинства або дитиною-інвалідом.
+				Ваше звернення було оброблено і Ви отримали схвалення щодо - призначення ${nameService}.
 			</p>
 			<p>
 				Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.
 			</p><br>
-			Якщо у Вас є ще якісь питання — Ви можете звернутись за наступними контактами:<br>
+			Отримати оригінал рішення, чи додаткову консультацію ви зможете за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}
@@ -541,13 +555,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Призначення надбавки на догляд за інвалідом з дитинства або дитиною-інвалідом. Відмова]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Призначення ${nameService}. Відмова]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення було оброблено. На жаль, Вам відмовлено у призначенні надбавки на догляд за інвалідом з дитинства або дитиною-інвалідом.
+				Ваше звернення було оброблено. На жаль, Вам відмовлено у призначенні ${nameService}.
 			</p>
 			<p>
 				Причина: ${sComment2}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_soczah_142" name="Щомісячна компенсаційна виплата непрацюючій особі, яка здійснює догляд за інвалідом 1 групи або за особою, яка досягла 80-річного віку" isExecutable="true">
+  <process id="dnepr_soczah_142" name="УПСЗН - Щомісячна компенсаційна виплата непрацюючій особі, яка здійснює догляд за інвалідом 1 групи або за особою, яка досягла 80-річного віку" isExecutable="true">
     <documentation>
     	https://github.com/e-government-ua/iBP/issues/150
 		Рефакторинг: поля с адресом, обновление стилей принтформы, маркера на дашборд, 26.10.16
@@ -107,11 +107,11 @@
 
         <activiti:formProperty id="asDecision1" name="Перевірка даних" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
-          <activiti:value id="accept_but" name="Дані надані не в повному обсязі - направити громадянину повідомлення (обов'язково впишіть коментар нижче)"></activiti:value>
-          <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
+          <activiti:value id="accept_but" name="Дані надані не в повному обсязі - направити громадянину повідомлення"></activiti:value>
+          <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="sComment1" name="Будь ласка, внесіть коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Будь ласка, внесіть коментар" type="textArea" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cc_10" name="Галка на прінтформі" type="invisible"></activiti:formProperty>
@@ -162,7 +162,7 @@
           <activiti:value id="reject" name="відмовлено у призначенні допомоги"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="sComment2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment2" name="Будь ласка, вкажіть причину відмови" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileRishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersUser2" name="Маркер UT2" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_142_user2.json')}"></activiti:formProperty>
         
@@ -197,7 +197,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Щомісячна компенсаційна виплата непрацюючій особі, яка здійснює догляд за ${sCareHuman}. Взято в роботу]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Щомісячна компенсаційна виплата непрацюючій особі, яка здійснює догляд за ${sCareHuman}. Зареєстровано]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -207,7 +207,7 @@
 			</p>
 			<p>
 				Інформування про хід обробки Вашого звернення будуть надходити через смс та Ваш e-mail.
-			</p><br>
+			</p>
 			<br>
 			Якщо у Вас є якісь додаткові питання, Ви можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
@@ -261,7 +261,7 @@
 			<p>
 				Ви отримаєте додаткове повідомлення за результатами розгляду зверення.<br />
 			</p>
-			<br><br>
+			<br>
 			Якщо у Вас є ще якісь питання — Ви можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
@@ -306,7 +306,7 @@
 			</p>
 			<p>
 				Якщо Вам треба додати документи, яких бракує у Вашому першому зверненні - заповніть заявку повторно на порталі <a href="https://igov.org.ua/service/759/general">iGov.org.ua</a>
-			</p><br>
+			</p>
 			<br>
 			За наявності додаткових питань - можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
@@ -344,7 +344,7 @@
 			</p>
 			<p>
 				Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/759/general">iGov.org.ua</a>
-			</p><br>
+			</p>
 			<br>
 			За наявності додаткових питань - можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
@@ -387,10 +387,11 @@
 			[pattern/mail/new_design/_common_content_start.html]  
 			<p>
 				Ви отримали схвалення щодо свого звернення - щомісячна компенсаційна виплата непрацюючій особі, яка здійснює догляд за ${sCareHuman}.<br />
-			</p><br>
+			</p>
 			<p>
 				Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.
-			</p><br><br>			
+			</p>
+			<br>
 			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
@@ -433,13 +434,13 @@
 			</p>
 			<p>
 				Причина: ${sComment2}
-			</p><br>
+			</p>
 			<p>				
 				Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.
 			</p>
 			<p>
 				Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/759/general">iGov.org.ua</a>.
-			</p><br>
+			</p>
 			<br>
 			За наявності додаткових питань - можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
