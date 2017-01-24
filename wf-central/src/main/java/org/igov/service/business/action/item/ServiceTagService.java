@@ -85,11 +85,11 @@ public class ServiceTagService {
                     continue;
                 }*/
 
-                if (isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
+                if (!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
                         includeTestEntities)) {
                     LOG.info("!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA includeTestEntities: " + !isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
                         includeTestEntities));
-                    continue;
+                    //continue;
                 }
 
                 nodeVO.addChild(childTag);
@@ -101,7 +101,7 @@ public class ServiceTagService {
                 LOG.info("nodeVO.getaServiceTag_Child().isEmpty(): " + nodeVO.getaServiceTag_Child().isEmpty());
                 LOG.info("!isSuitable(parentTag, tagIdToServices.get(parentTag.getId()), nID_Category, sFind, asID_Place_UA, includeTestEntities): " + !isSuitable(parentTag, tagIdToServices.get(parentTag.getId()), nID_Category, sFind,
                             asID_Place_UA, includeTestEntities));
-                continue;
+                //continue;
             }
 
             if (!nodeVO.getaServiceTag_Child().isEmpty() || bShowEmptyFolders) {
