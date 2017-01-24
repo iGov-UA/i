@@ -64,9 +64,9 @@ public class ServiceTagService {
                 continue;
             }
 
-            if (nID_Place_Profile != null && !nID_Place_Profile.equals(parentTag.getnID_Place())) {
+            /*if (nID_Place_Profile != null && !nID_Place_Profile.equals(parentTag.getnID_Place())) {
                 continue;
-            }
+            }*/
 
             ServiceTagTreeNodeVO nodeVO = new ServiceTagTreeNodeVO();
             nodeVO.setoServiceTag_Root(parentTag);
