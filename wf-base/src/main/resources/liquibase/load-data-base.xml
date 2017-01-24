@@ -464,6 +464,15 @@
             <column name="nID_Server" type="NUMERIC"/>
         </loadData>
         
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectHumanRole.csv" tableName="SubjectHumanRole" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID_SubjectHumanRole,nID_SubjectHuman" encoding="UTF-8" file="data/SubjectHumanRole_SubjectHuman.csv" tableName="SubjectHumanRole_SubjectHuman" separator=";">
+            <column name="nID_SubjectHumanRole" type="NUMERIC"/>
+            <column name="nID_SubjectHuman" type="NUMERIC"/>
+        </loadUpdateData>
 
     </changeSet>    
 
