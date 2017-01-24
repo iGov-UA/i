@@ -6,7 +6,10 @@
         <activiti:formProperty id="markers_ext_01" name="extra_required_fields" type="markers" default="${markerService.loadFromFile('dnepr_cnap_686.json')}"></activiti:formProperty>
         <activiti:formProperty id="InfoStart" name="Для замовлення цієї послуги Вам потрібно скористатися електронно-цифровим підписом (ЕЦП) (наприклад податкової або банку, що Вас обслуговує)." type="label" default="Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
 
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версия" type="string" default="008"></activiti:formProperty>
+        <activiti:formProperty id="sVarCNAP" name="sVarCNAP" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarUser" name="sVarUser" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -342,9 +345,10 @@
 
     <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_${sID_UA}_1497">
       <extensionElements>
-        <activiti:formProperty id="sVersion" name="Версия" type="string" default="004"></activiti:formProperty>
-
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версия" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarCNAP" name="sVarCNAP" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarUser" name="sVarUser" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -496,7 +500,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur"></activiti:formProperty>
+
+        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="string" default="jur"></activiti:formProperty>
         <activiti:taskListener event="complete" delegateExpression="${FindGroup}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -528,6 +533,7 @@
 				execution.setVariable('sVarWhoPayGet','ВАСИЛЬКІВСЬКЕ УК (ВАСИЛЬКІВСЬКОГО РАЙОНУ)')
 				execution.setVariable('sVarPayGetSchet','31419501700049')
 				execution.setVariable('sVarSumPay','160.00')
+				execution.setVariable('sVarUser','agerman')
           	}
           if (sVarCNAP=='charichanka_jur')
           	{
@@ -688,13 +694,17 @@
 		</script>
     </scriptTask>
 
-<!--   <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateUsers="${user_last}">-->
-   <userTask id="usertask2" name="Надання послуги (2)" activiti:assignee="${sVarCNAP}">
-<!--    <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateGroups="group_found,jur_all_1497,jur_${sID_UA}_1497">-->
+   <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateUsers="${sVarUser}" activiti:candidateGroups="jur_${sID_UA}_1497">
+<!--   <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateUsers="${sVarUser}">-->
+<!--   <userTask id="usertask2" name="Надання послуги (2)" activiti:assignee="${sVarUser}">-->
+<!--   <userTask id="usertask2" name="Надання послуги (2)" activiti:assignee="${sVarCNAP}">-->
+<!--    <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateGroups="jur_${sID_UA}_1497">-->
       <extensionElements>
         <activiti:formProperty id="user_last" name="Найденный пользователь" type="string"></activiti:formProperty>
         <activiti:formProperty id="group_found" name="Найденная группа по префиксу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVersion" name="Версия" type="string" default="004"></activiti:formProperty>
+        <activiti:formProperty id="sVarCNAP" name="sVarCNAP" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarUser" name="sVarUser" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версия" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
 <!--        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
@@ -864,7 +874,7 @@
     <userTask id="usertask4" name="Надання послуги" activiti:candidateGroups="jur_${sID_UA}_1497">
       <extensionElements>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVersion" name="Версия" type="string" default="004"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версия" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>
