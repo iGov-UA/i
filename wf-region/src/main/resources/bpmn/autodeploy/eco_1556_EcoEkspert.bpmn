@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="eco_1565_DozvZabrVuk" name="Видача дозволу на викиди забруднюючих речовин стаціонарними джерелами для об’єктів першої групи" isExecutable="true">
+  <process id="eco_1556_EcoEkspert" name="Видача висновку державної екологічної експертизи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
@@ -20,14 +19,21 @@
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_2" name="Нормативна база, якою встановлюються вимоги для обгрунтування викідів" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sLabelZU&quot;],&quot;sValue&quot;:&quot;Нормативна база якою встановлюються вимоги для обгрунтування викідів&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sLabelZU" name="Закон Про охорону атмосферного повітря" type="label" default="посилання на &lt;a href=&quot;http://zakon2.rada.gov.ua/laws/show/2707-12 &quot; target=&quot;_blank&quot;&gt;Закон&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sLabelKMUPost" name="Постанова Кабінету Міністрів України від 13 березня 2002 р. № 302" type="label" default="посилання на &lt;a href=&quot;http://zakon2.rada.gov.ua/laws/show/z0341-06 &quot; target=&quot;_blank&quot;&gt;Постанову&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sLabelInstr" name="Інструкція про загальні вимоги до оформлення документів, у яких обґрунтовуються обсяги викидів від 09.03.2006 № 108" type="label" default="посилання на &lt;a href=&quot;http://zakon3.rada.gov.ua/laws/show/302-2002-%D0%BF &quot; target=&quot;_blank&quot;&gt;Інструкцію&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Інформація про о'бєкт експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;tNazvObj&quot;],&quot;sValue&quot;:&quot;Інформація про о'бєкт експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="tNazvObj" name="Повна назва об'єкта експертизи;(Наприклад: Розчистка русла р.Самари від алювіальних відкладів біля с.Веселе Трипільського району Полтавської області)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdresObj" name="Місце розташування; (вкажіть повну адресу) " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="tProectInfo" name="Інформація про організацію, що виготовила проект;(Назва, адреса, індентифікаційний код)" type="textArea" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_3" name="Документація для отримання дозволу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;fileObgrunt&quot;],&quot;sValue&quot;:&quot;Документація для отримання дозволу&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="fileObgrunt" name="Обґрунтування обсягів викидів забруднюючих речовин, підготовлених відповідно до Інструкції" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої держадміністрації про наявність або відсутність зауважень ГО" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Документація для експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sDoc1&quot;],&quot;sValue&quot;:&quot;Документація для експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Підтвердження оголошення «Заяви про екологічні наслідки діяльності» в ЗМІ;(відповідно ст. 10 і 35 ЗУ Про екологічну експертизу)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabelDBN2003" name="ДБН А.2.2.-1-2003" type="label" default="посилання на &lt;a href=&quot;http://dbn.at.ua/load/normativy/dbn/1-1-0-242 &quot; target=&quot;_blank&quot;&gt;ДБН А.2.2.-1-2003&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Том (книга, розділ) «Оцінка впливів на навколишнє середовище»;(згідно ДБН А.2.2.-1-2003)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc3" name="Заява про екологічні наслідки діяльності;(згідно п.4 ДБН А.2.2.-1-2003)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc4" name="Заява про наміри;(згідно п.1.6 ДБН А.2.2.-1-2003)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc5" name="Підтвердження публікації заяви про наміри;(згідно п.1.6 ДБН А.2.2.-1-2003)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabelDBN2014" name="ДБН А.2.2-3-2014" type="label" default="посилання на &lt;a href=&quot;http://dbn.at.ua/load/normativy/dbn/dbn_a_2_2_3_2014/1-1-0-1168 &quot; target=&quot;_blank&quot;&gt;ДБН А.2.2-3-2014&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sDoc6" name="Загальна пояснювальна записка та основні креслення (марки ГП, ЗВК, ТХ);(згідно ДБН А.2.2-3-2014)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc7" name="Погодження з іншими органами;(якщо такі є)" type="file"></activiti:formProperty>
         
         <activiti:formProperty id="form_signed_all" name=" " type="file" required="true"></activiti:formProperty>
         
@@ -38,8 +44,8 @@
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача дозволу на викиди забруднюючих речовин стаціонарними джерелами для об’єктів першої групи"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="видачу дозволу на викиди забруднюючих речовин стаціонарними джерелами для об’єктів першої групи"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача висновку державної екологічної експертизи"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="видачу висновку державної екологічної експертизи"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -379,8 +385,8 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow17" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="usertask1" targetRef="usertask4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_eco_1565_DozvZabrVuk">
-    <bpmndi:BPMNPlane bpmnElement="eco_1565_DozvZabrVuk" id="BPMNPlane_eco_1565_DozvZabrVuk">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_eco_1556_EcoEkspert">
+    <bpmndi:BPMNPlane bpmnElement="eco_1556_EcoEkspert" id="BPMNPlane_eco_1556_EcoEkspert">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="-30.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
