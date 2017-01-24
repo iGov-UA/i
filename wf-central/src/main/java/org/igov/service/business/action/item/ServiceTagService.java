@@ -77,9 +77,9 @@ public class ServiceTagService {
                     continue;
                 }
 
-                if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
+                /*if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
                     continue;
-                }
+                }*/
 
                 if (!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
                         includeTestEntities)) {
