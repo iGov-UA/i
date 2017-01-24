@@ -58,14 +58,15 @@ public class ServiceTagService {
             final ServiceTag parentTag = rootTagNode.getTag();
             LOG.info("!!! rootTagNode: " + parentTag.getsID() + " " + parentTag.getsName_RU());
 
-            final Long rootTagId = parentTag.getId();
+            //final Long rootTagId = parentTag.getId();
+            final Long rootTagId = rootTagNode.getTag().getId();
             if (hasRootIdFilter && !rootTagId.equals(nID_ServiceTag_Root)) {
                 continue;
             }
 
-            /*if (nID_Place_Profile != null && !nID_Place_Profile.equals(parentTag.getnID_Place())) {
+            if (nID_Place_Profile != null && !nID_Place_Profile.equals(parentTag.getnID_Place())) {
                 continue;
-            }*/
+            }
 
             ServiceTagTreeNodeVO nodeVO = new ServiceTagTreeNodeVO();
             nodeVO.setoServiceTag_Root(parentTag);
@@ -76,9 +77,9 @@ public class ServiceTagService {
                     continue;
                 }
 
-                /*if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
+                if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
                     continue;
-                }*/
+                }
 
                 if (!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
                         includeTestEntities)) {
