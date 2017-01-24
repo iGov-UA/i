@@ -6,11 +6,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.RuntimeService;
 
@@ -69,8 +71,13 @@ public class AttachmetService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         
-        sFileNameAndExt = (sFileNameAndExt != null)?Charset.forName("UTF-8").encode(getFileName(sFileNameAndExt)) +
-                getFileExtention(sTextTranslit(sFileNameAndExt)):sFileNameAndExt;
+        try {
+            sFileNameAndExt = (sFileNameAndExt != null)?
+                    new String(Charset.forName("UTF-8").encode(getFileName(sFileNameAndExt)).array(), "UTF-8")
+                    + "." + getFileExtention(sTextTranslit(sFileNameAndExt)):sFileNameAndExt;
+        } catch (UnsupportedEncodingException ex) {
+            LOG.info("File name convert error: " + ex);
+        }
         
         LOG.info(" ----------- " + dtf.format(new Date()) + " ----------- ");
         LOG.info("createAttachment nID_Process: " + nID_Process);
