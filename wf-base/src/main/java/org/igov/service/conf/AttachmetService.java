@@ -73,7 +73,8 @@ public class AttachmetService {
         
         try {
             sFileNameAndExt = (sFileNameAndExt != null)?
-                    new String(Charset.forName("UTF-8").encode(getFileName(sFileNameAndExt)).array(), "UTF-8")
+                    //new String(Charset.forName("UTF-8").encode(getFileName(sFileNameAndExt)).array(), "UTF-8")
+                    new String(sFileNameAndExt.getBytes("ASCII"), "UTF-8")
                     + "." + getFileExtention(sTextTranslit(sFileNameAndExt)):sFileNameAndExt;
         } catch (UnsupportedEncodingException ex) {
             LOG.info("File name convert error: " + ex);
