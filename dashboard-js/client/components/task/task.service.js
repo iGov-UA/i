@@ -600,7 +600,6 @@ angular.module('dashboardJsApp')
               return s;
             };
             var compiled = $compile('<print-dialog></print-dialog>')(scope);
-            var defer = $q.defer();
 
             /**
              * https://github.com/e-government-ua/i/issues/1382
@@ -626,9 +625,10 @@ angular.module('dashboardJsApp')
             }
             var description = templateResult.fileField.name.split(";")[0];
 
+            uploadPromises.push($timeout(function(){
             var html = '<html><head><meta charset="utf-8"></head><body>' + compiled.find('.print-modal-content').html() + '</body></html>';
             var data = {
-              sDescription: description, //'User form',
+              sDescription: description,
               sFileNameAndExt: fileName || 'User form.html',
               sID_Field: sFileFieldID,
               sContent: html
@@ -637,24 +637,26 @@ angular.module('dashboardJsApp')
             printDefer[key] = $q.defer();
             printforms[key] = {html:html, data:data};
             printPromises[key] = printDefer[key].promise;
-
+            }));
 
           });
+
           var asyncPrintUpload = function (i, print, defs) {
             if (i < print.length) {
-              $http.post('/api/tasks/' + task.processInstanceId + '/upload_content_as_attachment', print[i].data)
-                .success(function (uploadResult) {
-                  results[i].fileField.value = uploadResult;
-                  printDefer[i].resolve();
-                  ++i;
-                  asyncPrintUpload(i, print, defs);
+              return $http.post('/api/tasks/' + task.processInstanceId + '/upload_content_as_attachment', print[i].data)
+                .then(function (uploadResult) {
+                  results[i].fileField.value = uploadResult.data;
+                  defs[i].resolve();
+                  return asyncPrintUpload(i+1, print, defs);
                 });
             }
           };
 
-          asyncPrintUpload(counter, printforms, printDefer);
+          var first = $q.all(uploadPromises).then(function () {
+            return asyncPrintUpload(counter, printforms, printDefer);
+          });
 
-          $q.all(printPromises).then(function (uploadResults) {
+          $q.all([first, printPromises]).then(function (uploadResults) {
             deferred.resolve();
           });
 
