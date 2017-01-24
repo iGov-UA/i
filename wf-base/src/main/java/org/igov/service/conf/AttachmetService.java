@@ -68,6 +68,8 @@ public class AttachmetService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         
+        sFileNameAndExt = (sFileNameAndExt != null)?sTextTranslit(sFileNameAndExt):sFileNameAndExt;
+        
         LOG.info(" ----------- " + dtf.format(new Date()) + " ----------- ");
         LOG.info("createAttachment nID_Process: " + nID_Process);
         LOG.info("createAttachment sID_Field: " + sID_Field);
