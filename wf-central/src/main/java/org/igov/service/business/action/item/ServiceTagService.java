@@ -63,9 +63,9 @@ public class ServiceTagService {
                 continue;
             }
 
-            /*if (nID_Place_Profile != null && !nID_Place_Profile.equals(parentTag.getnID_Place())) {
+            if (nID_Place_Profile != null && !nID_Place_Profile.equals(parentTag.getnID_Place())) {
                 continue;
-            }*/
+            }
 
             ServiceTagTreeNodeVO nodeVO = new ServiceTagTreeNodeVO();
             nodeVO.setoServiceTag_Root(parentTag);
@@ -76,9 +76,9 @@ public class ServiceTagService {
                     continue;
                 }
 
-                /*if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
+                if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
                     continue;
-                }*/
+                }
 
                 if (!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
                         includeTestEntities)) {
