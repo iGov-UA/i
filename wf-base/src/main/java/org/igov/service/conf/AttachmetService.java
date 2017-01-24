@@ -68,7 +68,8 @@ public class AttachmetService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         
-        sFileNameAndExt = (sFileNameAndExt != null)?getFileExtention(sTextTranslit(sFileNameAndExt)):sFileNameAndExt;
+        sFileNameAndExt = (sFileNameAndExt != null)?Charset.forName("UTF-8").encode(getFileName(sFileNameAndExt)) +
+                getFileExtention(sTextTranslit(sFileNameAndExt)):sFileNameAndExt;
         
         LOG.info(" ----------- " + dtf.format(new Date()) + " ----------- ");
         LOG.info("createAttachment nID_Process: " + nID_Process);
@@ -201,6 +202,15 @@ public class AttachmetService {
         String[] parts = fileName.split("\\.");
         if (parts.length != 0) {
             return parts[parts.length - 1];
+        }
+        return "";
+    }
+    
+    public String getFileName(String fileName) {
+        String[] parts = fileName.split("\\.");
+        
+        if (parts.length != 0) {
+            return parts[0];
         }
         return "";
     }
