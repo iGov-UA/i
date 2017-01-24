@@ -85,7 +85,7 @@ public class ServiceTagService {
                     continue;
                 }*/
 
-                if (!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
+                if (isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
                         includeTestEntities)) {
                     LOG.info("!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA includeTestEntities: " + !isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
                         includeTestEntities));
