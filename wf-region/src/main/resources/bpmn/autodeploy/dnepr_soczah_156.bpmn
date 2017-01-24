@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_soczah_156" name="Щомісячна грошова допомога особі, яка проживає разом з інвалідом I чи II групи внаслідок психічного розладу" isExecutable="true">
+  <process id="dnepr_soczah_156" name="УПСЗН - Щомісячна грошова допомога особі, яка проживає разом з інвалідом I чи II групи внаслідок психічного розладу" isExecutable="true">
     <documentation>
     	https://github.com/e-government-ua/iBP/issues/156
 		Рефакторинг: поля с адресом, обновление стилей принтформы, маркера на дашборд, 26.10.16
@@ -109,10 +109,12 @@
           <activiti:value id="accept_but" name="Дані надані не в повному обсязі - направити громадянину повідомлення (обов'язково впишіть коментар нижче)"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="dVisit" name="Внесіть дату та час візиту громадянки для надання довідки про вагітність" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sRoom" name="укажіть кабінет - куди прийти громадянинові" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sComment1" name="Будь ласка, внесіть коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="dDateVisit" name="Внесіть дату візиту громадянки для надання довідки про вагітність" type="date"></activiti:formProperty>
+        <activiti:formProperty id="dTimeVisit" name="Внесіть час візиту громадянки для надання довідки про вагітність" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRoom" name="укажіть кабінет - куди прийти громадянці" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Будь ласка, укажіть причину Вашого рішення" type="textArea" required="true"></activiti:formProperty>
+        
 
         <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cc_8" name="Галка на прінтформі" type="invisible"></activiti:formProperty>
@@ -164,7 +166,7 @@
           <activiti:value id="reject" name="відмовлено у призначенні допомоги"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="sComment2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment2" name="Будь ласка, вкажіть причину відмови" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersUser2" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_156_user2.json')}"></activiti:formProperty>
 
         <activiti:formProperty id="nFileDecision" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
@@ -262,7 +264,8 @@
 				Ваше звернення, щодо отримання щомісячної грошової допомоги особі, 
 				яка проживає разом з інвалідом I чи II групи внаслідок психічного розладу прийнято в роботу.</p>
 			<p>
-				Вам призначено дату і час візиту для надання оригіналу висновку лікарської комісії медичного закладу щодо необхідності постійного стороннього догляду - value{[dVisit]}.<br>
+				Вам призначено дату і час візиту для надання оригіналу висновку лікарської комісії медичного закладу щодо необхідності постійного стороннього догляду:  <br>
+				 value{[dVisit]}  ${dTimeVisit} <br>
 				Вам необхідно прийти в ${sNameOrgan} <br>
 				${sAddress}, <br>
 				<b>кабінет:</b> ${sRoom}
@@ -313,7 +316,9 @@
 			</p>
 			<p>
 				Вам призначено дату і час візиту для надання оригіналу висновку лікарської комісії медичного закладу
-				щодо необхідності постійного стороннього догляду - value{[dVisit]}.<br>
+				щодо необхідності постійного стороннього догляду: <br>
+				value{[dVisit]}  ${dTimeVisit} <br>
+				
 				Вам необхідно прийти в ${sNameOrgan} <br>
 				${sAddress}, <br>
 				<b>кабінет:</b> ${sRoom}

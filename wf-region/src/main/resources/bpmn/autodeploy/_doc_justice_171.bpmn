@@ -76,7 +76,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1}</activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -124,7 +124,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1}</activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
@@ -132,25 +132,25 @@
             <activiti:string><![CDATA[system_task]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression>${sTable2}</activiti:expression>
+            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateRegistration">
-            <activiti:expression>${sDateRegistration}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateRegistration}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateDoc">
-            <activiti:expression>${sDateDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateDoc}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sName_SubjectRole">
-            <activiti:expression>${sName_SubjectRole}</activiti:expression>
+            <activiti:expression><![CDATA[${sName_SubjectRole}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateExecution">
-            <activiti:expression>${sDateExecution}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="processDefinitionId">
-            <activiti:expression>${processDefinitionId}</activiti:expression>
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression>sContent::${sContent};;sAutorResolution::${sAutorResolution};;sTypeDoc::${sTypeDoc};;sID_Order_GovPublic::${sID_Order_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}</activiti:expression>
+            <activiti:expression><![CDATA[sContent::${sContent};;sAutorResolution::${sAutorResolution};;sTypeDoc::${sTypeDoc};;sID_Order_GovPublic::${sID_Order_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -205,7 +205,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1}</activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -266,7 +266,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1},${sDoc2}</activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1},${sDoc2}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -299,14 +299,6 @@ var executeProcessDefinitionId = execution.getProcessDefinitionId();
 var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
 execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
-</script>
-    </scriptTask>
-    <scriptTask id="scripttask2" name="надання прав наступному виконавцю" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var snID_Process_Activiti = execution.getProcessInstanceId();
-var sKey_GroupPostfix = 'MJU_Dnipro_Top1_Dep1_Exec1'
-var sKey_GroupPostfix_New = execution.getVariable('sName_SubjectRole')
-var cloneDocumentStepSubject = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New)
-execution.setVariable('cloneDocumentStepSubject', cloneDocumentStepSubject)
 </script>
     </scriptTask>
     <scriptTask id="scripttask3" name="перетворення дати энд" scriptFormat="groovy" activiti:autoStoreVariables="false">
@@ -414,9 +406,6 @@ execution.setVariable('sIncomingNumber',sID_Order_GovPublic)</script>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="84.0" width="121.0" x="220.0" y="145.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="83.0" width="131.0" x="650.0" y="21.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
         <omgdc:Bounds height="74.0" width="130.0" x="581.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -470,7 +459,7 @@ execution.setVariable('sIncomingNumber',sID_Order_GovPublic)</script>
         <omgdi:waypoint x="753.0" y="407.0"></omgdi:waypoint>
         <omgdi:waypoint x="800.0" y="407.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="81.0" x="696.0" y="426.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="81.0" x="696.0" y="426.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
@@ -483,7 +472,7 @@ execution.setVariable('sIncomingNumber',sID_Order_GovPublic)</script>
         <omgdi:waypoint x="435.0" y="93.0"></omgdi:waypoint>
         <omgdi:waypoint x="435.0" y="145.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="453.0" y="81.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="453.0" y="81.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
@@ -504,7 +493,7 @@ execution.setVariable('sIncomingNumber',sID_Order_GovPublic)</script>
         <omgdi:waypoint x="645.0" y="206.0"></omgdi:waypoint>
         <omgdi:waypoint x="646.0" y="250.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="78.0" x="650.0" y="216.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="78.0" x="650.0" y="216.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">

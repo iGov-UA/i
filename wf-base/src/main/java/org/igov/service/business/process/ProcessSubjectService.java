@@ -35,6 +35,7 @@ import org.igov.model.process.ProcessSubjectStatusDao;
 import org.igov.model.process.ProcessSubjectTree;
 import org.igov.model.process.ProcessSubjectTreeDao;
 import org.igov.model.process.ProcessUser;
+import org.igov.service.conf.AttachmetService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -48,7 +49,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import org.igov.service.conf.AttachmetService;
 
 /**
  *
@@ -675,7 +675,9 @@ public class ProcessSubjectService {
      * 
      * @param snID_Process_Activiti
      */
-    public void UpdateStatusTaskTreeAndCloseProcess(String snID_Process_Activiti, String sID_ProcessSubjectStatus) {
+    public void updateStatusTaskTreeAndCloseProcess(String snID_Process_Activiti, String sID_ProcessSubjectStatus) {
+    	
+    	LOG.info("sID_ProcessSubjectStatus in updateStatusTaskTreeAndCloseProcess = " + sID_ProcessSubjectStatus);
 
 	ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snID_Process_Activiti, 0L, null);
 
@@ -683,18 +685,20 @@ public class ProcessSubjectService {
 	    List<ProcessSubject> aProcessSubject_Child = processSubjectResult.getaProcessSubject();
    
 	    ProcessSubjectStatus oProcessSubjectStatusUnactual = processSubjectStatusDao.findByIdExpected(4L);
+	    
+	    LOG.info("oProcessSubjectStatusUnactual findByIdExpected = " + oProcessSubjectStatusUnactual);
 	    DateFormat df_ProcessSubjectSafe = new SimpleDateFormat("dd/MM/yyyy");
 
 	    for (ProcessSubject oProcessSubject_Сhild : aProcessSubject_Child) {
   
 		String sProcessSubjectStatus = oProcessSubject_Сhild.getProcessSubjectStatus().getsID();
-		LOG.info("String sProcessSubjectStatus is....... = " + sProcessSubjectStatus);
+		LOG.info("String sProcessSubjectStatus Сhild is....... = " + sProcessSubjectStatus);
 
 		if (!(sProcessSubjectStatus.equals("executed") || sProcessSubjectStatus.equals("notExecuted")
 			|| sProcessSubjectStatus.equals("unactual") || sProcessSubjectStatus.equals("closed")))	{
 
 		    oProcessSubject_Сhild.setProcessSubjectStatus(oProcessSubjectStatusUnactual);
-		    LOG.info("String sProcessSubjectStatus is   now....... = " + sProcessSubjectStatus);
+		    LOG.info("String sProcessSubjectStatus Сhild is   now....... = " + sProcessSubjectStatus);
 		    try {
 			oProcessSubject_Сhild.setsDateEdit(
 				new DateTime(df_ProcessSubjectSafe.parse(df_ProcessSubjectSafe.format(new Date()))));
@@ -706,9 +710,16 @@ public class ProcessSubjectService {
 
 		    ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
 			    .processInstanceId(oProcessSubject_Сhild.getSnID_Process_Activiti()).singleResult();
+		    
+		    LOG.info("ProcessInstance....... = " + processInstance);
+		    
 		    if (processInstance != null) {
+		    	LOG.info("ProcessInstance before delete = " + processInstance);
 			runtimeService.deleteProcessInstance(oProcessSubject_Сhild.getSnID_Process_Activiti(),
 				oProcessSubjectStatusUnactual.getsID());
+			
+			LOG.info("ProcessInstance after delete = " + runtimeService.createProcessInstanceQuery()
+		    .processInstanceId(oProcessSubject_Сhild.getSnID_Process_Activiti()).singleResult());
 			
 		    }
 

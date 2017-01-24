@@ -38,7 +38,7 @@
         </activiti:formProperty>        
               
 		<activiti:formProperty id="asTypeCare" name="Оберіть за ким буде догляд, за" type="enum" required="true">
-          <activiti:value id="careSingle" name="одинокою малозабезпеченою особою, ща потребує постійного догляду (крім інвалідів І групи)"></activiti:value>
+          <activiti:value id="careSingle" name="одинокою малозабезпеченою особою, що потребує постійного догляду (крім інвалідів І групи)"></activiti:value>
           <activiti:value id="careInvalid1A" name="малозабезпеченим інвалідом підгрупи А І групи"></activiti:value>
           <activiti:value id="careInvalid1B" name="малозабезпеченим інвалідом підгрупи Б І групи"></activiti:value>
         </activiti:formProperty>        
@@ -91,6 +91,9 @@
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
 
+        <activiti:formProperty id="nameHelp" name="Державну соціальну допомога для" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nameCareHelp" name="Державну соціальну допомога на догляд за" type="invisible" default=" "></activiti:formProperty>
+
         <activiti:formProperty id="cc_4_1" name="інвалідам І групи" type="invisible" default="false"></activiti:formProperty>
 		<activiti:formProperty id="cc_4_2" name="жінкам, яким присвоєно звання України Мати-героїня" type="invisible" default="false"></activiti:formProperty>
 		<activiti:formProperty id="cc_4_3" name="інвалідам II групи" type="invisible" default="false"></activiti:formProperty>
@@ -103,6 +106,7 @@
 
         <activiti:formProperty id="markersStart" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_160_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersCheck" name="Маркер логіка галок категорій допомоги" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_160_check.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersCheck2" name="Маркер логіка галок категорій допомоги 2" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_160_check2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersAdressTransfer" name="Маркер адреса и выбора типа передачи помощи" type="markers" default="${markerService.loadFromFile('soczah/soc_help_adress_transfer.json')}"></activiti:formProperty>
 
       </extensionElements>
@@ -130,33 +134,10 @@
           <activiti:value id="care" name="допомога на догляд"></activiti:value>
           <activiti:value id="cosCare" name="соціальна допомога + допомога на догляд"></activiti:value>
         </activiti:formProperty>
-        
-		<activiti:formProperty id="asTypeSocGroup" name="Оберіть соціальну группу" type="enum" writable="false">
-          <activiti:value id="one" name="інваліду I групи"></activiti:value>
-          <activiti:value id="two" name="інваліду II групи"></activiti:value>
-          <activiti:value id="three" name="інваліду III групи"></activiti:value>
-          <activiti:value id="motherHero" name="жінці, якій присвоєно звання України &quot;Мати-героїня&quot;"></activiti:value>
-          <activiti:value id="cherch" name="священнослужителям, церковнослужителям"></activiti:value>
-          <activiti:value id="over18" name="особам, які досягли віку, що дає право на призначення допомоги"></activiti:value>
-        </activiti:formProperty>        
-              
-		<activiti:formProperty id="asTypeCare" name="Оберіть за ким буде догляд, за" type="enum" writable="false">
-          <activiti:value id="careSingle" name="одинокою малозабезпеченою особою, ща потребує постійного догляду (крім інвалідів І групи)"></activiti:value>
-          <activiti:value id="careInvalid1A" name="малозабезпеченим інвалідом підгрупи А І групи"></activiti:value>
-          <activiti:value id="careInvalid1B" name="малозабезпеченим інвалідом підгрупи Б І групи"></activiti:value>
-        </activiti:formProperty>        
-                
-		<activiti:formProperty id="asTypeSocGroupForCare" name="Оберіть соціальну группу" type="enum" writable="false">
-          <activiti:value id="one" name="інваліду I групи"></activiti:value>
-          <activiti:value id="two" name="інваліду II групи"></activiti:value>
-          <activiti:value id="three" name="інваліду III групи"></activiti:value>
-        </activiti:formProperty>  
-        
-    	<activiti:formProperty id="asTypeSubgroup" name="Оберіть підгрупу інвалідності" type="enum" writable="false">
-          <activiti:value id="careInvalid1A" name="інвалід підгрупи А І групи"></activiti:value>
-          <activiti:value id="careInvalid1B" name="інвалід підгрупи Б І групи"></activiti:value>
-        </activiti:formProperty>
-        
+
+        <activiti:formProperty id="nameHelp" name="Державна соціальну допомога для; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nameCareHelp" name="Державна соціальну допомога на догляд за; ;writable=false" type="string"></activiti:formProperty>
+
         <activiti:formProperty id="asTransferType" name="спосіб перерахування коштів; ;writable=false" type="enum">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
@@ -227,32 +208,9 @@
           <activiti:value id="cosCare" name="соціальна допомога + допомога на догляд"></activiti:value>
         </activiti:formProperty>
         
-		<activiti:formProperty id="asTypeSocGroup" name="Оберіть соціальну группу" type="enum" writable="false">
-          <activiti:value id="one" name="інваліду I групи"></activiti:value>
-          <activiti:value id="two" name="інваліду II групи"></activiti:value>
-          <activiti:value id="three" name="інваліду III групи"></activiti:value>
-          <activiti:value id="motherHero" name="жінці, якій присвоєно звання України &quot;Мати-героїня&quot;"></activiti:value>
-          <activiti:value id="cherch" name="священнослужителям, церковнослужителям"></activiti:value>
-          <activiti:value id="over18" name="особам, які досягли віку, що дає право на призначення допомоги"></activiti:value>
-        </activiti:formProperty>        
-              
-		<activiti:formProperty id="asTypeCare" name="Оберіть за ким буде догляд, за" type="enum" writable="false">
-          <activiti:value id="careSingle" name="одинокою малозабезпеченою особою, ща потребує постійного догляду (крім інвалідів І групи)"></activiti:value>
-          <activiti:value id="careInvalid1A" name="малозабезпеченим інвалідом підгрупи А І групи"></activiti:value>
-          <activiti:value id="careInvalid1B" name="малозабезпеченим інвалідом підгрупи Б І групи"></activiti:value>
-        </activiti:formProperty>        
-                
-		<activiti:formProperty id="asTypeSocGroupForCare" name="Оберіть соціальну группу" type="enum" writable="false">
-          <activiti:value id="one" name="інваліду I групи"></activiti:value>
-          <activiti:value id="two" name="інваліду II групи"></activiti:value>
-          <activiti:value id="three" name="інваліду III групи"></activiti:value>
-        </activiti:formProperty>  
-        
-    	<activiti:formProperty id="asTypeSubgroup" name="Оберіть підгрупу інвалідності" type="enum" writable="false">
-          <activiti:value id="careInvalid1A" name="інвалід підгрупи А І групи"></activiti:value>
-          <activiti:value id="careInvalid1B" name="інвалід підгрупи Б І групи"></activiti:value>
-        </activiti:formProperty>
-        
+        <activiti:formProperty id="nameHelp" name="Державна соціальну допомога для; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nameCareHelp" name="Державна соціальну допомога на догляд за; ;writable=false" type="string"></activiti:formProperty>
+
         <activiti:formProperty id="asTransferType" name="спосіб перерахування коштів; ;writable=false" type="enum">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
@@ -273,7 +231,7 @@
           <activiti:value id="accept2" name="Зауважень немає, державана допомога буде надана"></activiti:value>
           <activiti:value id="reject2" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment2" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment2" name="Будь ласка вкажіть підставу" type="textArea" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="markersUser2" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_160_user2.json')}"></activiti:formProperty>
         <activiti:formProperty id="nFileDecision" name="Завантажте копію рішення по наданню послуги" type="file" required="true"></activiti:formProperty>
@@ -330,13 +288,13 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення, щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам в очикуванні недостатніх документів.
+				Ваше звернення, щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам в очікуванні недостатніх документів.
 			</p>
 			<p>
 				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.
 			</p><br>
 			<br>
-			Якщо у Вас э якісь додаткові питання, Ви можете звернутись за наступними контактами<br>
+			Якщо у Вас є якісь додаткові питання, Ви можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}
@@ -421,7 +379,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення, щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам в очикуванні недостатніх документів. 
+				Ваше звернення, щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам в очікуванні недостатніх документів. 
 			</p>
 			<p>				
 				Протягом трьох місяців Ви повині донести їх в ${sNameOrgan}.<br>

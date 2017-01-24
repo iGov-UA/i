@@ -1,0 +1,52 @@
+{
+	"motion" : {		
+		"ValuesFieldsOnCondition_7" : {
+			"aField_ID" : ["cc_4_7", "cc_4_8", "cc_4_9", "nameCareHelp"], 
+			"asID_Field_sValue" : ["true", "false", "false", "одинокою малозабезпеченою особою, яка за висновком ЛКК закладу охорони здоров'я потребує постійного стороннього догляду (крім інвалідів І групи)"], 
+			"asID_Field" : {
+				"sClient" : "asTypeHelp", 
+				"sClient_1" : "asTypeCare", 
+				"sClient_2" : "asTypeSocGroupForCare"
+			}, 
+			"sCondition" : "([sClient] == 'care' && [sClient_1] == 'careSingle') || ([sClient] == 'cosCare' && ([sClient_2] == 'two' || [sClient_2] == 'three'))"
+		}, 
+		"ValuesFieldsOnCondition_8" : {
+			"aField_ID" : ["cc_4_7", "cc_4_8", "cc_4_9", "nameCareHelp"], 
+			"asID_Field_sValue" : ["false", "true", "false", "малозабезпеченим інвалідом підгрупи А І групи"], 
+			"asID_Field" : {
+				"sClient" : "asTypeHelp", 
+				"sClient_1" : "asTypeCare", 
+				"sClient_2" : "asTypeSocGroupForCare", 
+				"sClient_3" : "asTypeSubgroup"
+			}, 
+			"sCondition" : "([sClient] == 'care' && [sClient_1] == 'careInvalid1A') || ([sClient] == 'cosCare' && [sClient_2] == 'one' && [sClient_3] == 'careInvalid1A')"
+		}, 
+		"ValuesFieldsOnCondition_9" : {
+			"aField_ID" : ["cc_4_7", "cc_4_8", "cc_4_9", "nameCareHelp"], 
+			"asID_Field_sValue" : ["false", "false", "true", "малозабезпеченим інвалідом підгрупи Б І групи"], 
+			"asID_Field" : {
+				"sClient" : "asTypeHelp", 
+				"sClient_1" : "asTypeCare", 
+				"sClient_2" : "asTypeSocGroupForCare", 
+				"sClient_3" : "asTypeSubgroup"
+			}, 
+			"sCondition" : "([sClient] == 'care' && [sClient_1] == 'careInvalid1B') || ([sClient] == 'cosCare' && [sClient_2] == 'one' && [sClient_3] == 'careInvalid1B')"
+		}, 
+		"ValuesFieldsOnCondition_10" : {
+			"aField_ID" : ["nameCareHelp"], 
+			"asID_Field_sValue" : [""], 
+			"asID_Field" : {
+				"sClient" : "asTypeHelp"
+			}, 
+			"sCondition" : "[sClient] == 'cos'"
+		}, 
+		"ValuesFieldsOnCondition_11" : {
+			"aField_ID" : ["nameHelp"], 
+			"asID_Field_sValue" : [""], 
+			"asID_Field" : {
+				"sClient" : "asTypeHelp"
+			}, 
+			"sCondition" : "[sClient] == 'care'"
+		}
+	}
+}

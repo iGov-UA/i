@@ -340,10 +340,9 @@
 
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
 
-    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_${sID_UA}_1497,jur_all_1497,jur_all_pay">
+    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_${sID_UA}_1497">
       <extensionElements>
-        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur_1497_"></activiti:formProperty>
-        <activiti:formProperty id="sVersion" name="Версия" type="string" default="003"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версия" type="string" default="004"></activiti:formProperty>
 
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
 
@@ -497,7 +496,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur_1497_"></activiti:formProperty>
+        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur"></activiti:formProperty>
         <activiti:taskListener event="complete" delegateExpression="${FindGroup}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -505,8 +504,8 @@
 	
     <scriptTask id="scripttask1" name="Выбор магазина Ликпей" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>          
-      	  var sVarCNAP=execution.getVariable('group_found')
-          if (sVarCNAP=='jur_1499_vasil' || sVarCNAP=='many')
+      	  var sVarCNAP=execution.getVariable('user_last')
+          if (sVarCNAP=='temp_test')
           	{
           		execution.setVariable('sID_Merchant','i5516072613')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
@@ -518,7 +517,19 @@
 				execution.setVariable('sVarPayGetSchet','31419501700049')
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_charichanka')
+          if (sVarCNAP=='agerman')
+          	{
+          		execution.setVariable('sID_Merchant','i5516072613')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')
+				execution.setVariable('sVarBankMFO','805012')
+				execution.setVariable('sVarPayCode','22010300')
+				execution.setVariable('sVarWhoPayGetCode','37870848')
+				execution.setVariable('sVarWhoPayGet','ВАСИЛЬКІВСЬКЕ УК (ВАСИЛЬКІВСЬКОГО РАЙОНУ)')
+				execution.setVariable('sVarPayGetSchet','31419501700049')
+				execution.setVariable('sVarSumPay','160.00')
+          	}
+          if (sVarCNAP=='charichanka_jur')
           	{
           		execution.setVariable('sID_Merchant','i76592566863')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
@@ -530,7 +541,7 @@
 				execution.setVariable('sVarPayGetSchet','31417501700353')
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_vilnogirskT')
+          if (sVarCNAP=='vilnogirskT_jur')
           	{
           		execution.setVariable('sID_Merchant','i30965470376')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -542,7 +553,7 @@
 				execution.setVariable('sVarPayGetSchet','31413501700012')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-		  if (sVarCNAP=='jur_1499_tomak')
+		  if (sVarCNAP=='tomak_jur')
           	{
           		execution.setVariable('sID_Merchant','i24385779871')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -554,7 +565,7 @@
 				execution.setVariable('sVarPayGetSchet','31118170700339')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_krinichki')
+          if (sVarCNAP=='krinichki_jur')
           	{
           		execution.setVariable('sID_Merchant','i6466363679')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -566,7 +577,7 @@
 				execution.setVariable('sVarPayGetSchet','31114170700117')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_ordzonikT')
+          if (sVarCNAP=='ordzonikT_jur')
           	{
           		execution.setVariable('sID_Merchant','i29422825028')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -578,7 +589,7 @@
 				execution.setVariable('sVarPayGetSchet','31416501700031')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_meziv')
+          if (sVarCNAP=='meziv_jur')
           	{
           		execution.setVariable('sID_Merchant','i98768677701')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -590,7 +601,7 @@
 				execution.setVariable('sVarPayGetSchet','31415501700162')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_zhvodT')
+          if (sVarCNAP=='zhvodT_jur')
           	{
           		execution.setVariable('sID_Merchant','i10871377634')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -602,7 +613,7 @@
 				execution.setVariable('sVarPayGetSchet','31417501700018')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_ternopil')
+          if (sVarCNAP=='ternopil_jur')
           	{
           		execution.setVariable('sID_Merchant','i13991491434')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -614,7 +625,7 @@
 				execution.setVariable('sVarPayGetSchet','31417501700513')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_petropavl')
+          if (sVarCNAP=='petropavl_jur')
           	{
           		execution.setVariable('sID_Merchant','i85416673717')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -626,7 +637,7 @@
 				execution.setVariable('sVarPayGetSchet','31416501700235')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_nikopol')
+          if (sVarCNAP=='nikopol_jur')
           	{
           		execution.setVariable('sID_Merchant','i9597582078')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -638,7 +649,7 @@
 				execution.setVariable('sVarPayGetSchet','31414501700174')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_nikopolT')
+          if (sVarCNAP=='nikopolT_jur')
           	{
           		execution.setVariable('sID_Merchant','i65350712368')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -650,7 +661,7 @@
 				execution.setVariable('sVarPayGetSchet','31417501700029')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_dndz')
+          if (sVarCNAP=='dndz_jur')
           	{
           		execution.setVariable('sID_Merchant','i53978776110')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -662,20 +673,7 @@
 				execution.setVariable('sVarPayGetSchet','31412501700013')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_persotravT')
-          	{
-          		execution.setVariable('sID_Merchant','i24795480631')
-				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
-				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
-				execution.setVariable('sVarBankMFO','805012')          			
-				execution.setVariable('sVarPayCode','22010300')          			
-				execution.setVariable('sVarWhoPayGetCode','37804890')          			
-				execution.setVariable('sVarWhoPayGet','УК у м.Першотравенськ')          			
-				execution.setVariable('sVarPayGetSchet','31412501700013')          			
-				execution.setVariable('sVarSumPay','160.00')
-          	}
-
-			if (sVarCNAP=='jur_1499_ternopil_test')
+          if (sVarCNAP=='persotravT_jur')
           	{
           		execution.setVariable('sID_Merchant','i24795480631')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -690,12 +688,13 @@
 		</script>
     </scriptTask>
 
-    <userTask id="usertask2" name="Надання послуги (2)" activiti:assignee="${user_last}">
+   <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateUsers="${user_last}">
+<!--   <userTask id="usertask2" name="Надання послуги (2)" activiti:assignee="${user_last}">-->
 <!--    <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateGroups="group_found,jur_all_1497,jur_${sID_UA}_1497">-->
       <extensionElements>
         <activiti:formProperty id="user_last" name="Найденный пользователь" type="string"></activiti:formProperty>
         <activiti:formProperty id="group_found" name="Найденная группа по префиксу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVersion" name="Версия" type="string" default="003"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версия" type="string" default="004"></activiti:formProperty>
 
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
 <!--        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
@@ -862,10 +861,10 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask4" name="Надання послуги" activiti:candidateGroups="jur_all_1497,jur_${sID_UA}_1497,jur_all">
+    <userTask id="usertask4" name="Надання послуги" activiti:candidateGroups="jur_${sID_UA}_1497">
       <extensionElements>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVersion" name="Версия" type="string" default="003"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версия" type="string" default="004"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>

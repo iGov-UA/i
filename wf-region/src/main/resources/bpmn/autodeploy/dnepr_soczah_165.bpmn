@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_soczah_165" name="Призначення державної допомоги у зв'язку з вагітністю та пологами" isExecutable="true">
+  <process id="dnepr_soczah_165" name="УПСЗН - Призначення державної допомоги у зв'язку з вагітністю та пологами" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/150</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -122,10 +122,12 @@
           <activiti:value id="accept_but" name="Дані надані не в повному обсязі - направити громаднину повідомлення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="dVisit" name="Внесіть дату та час візиту громадянки для надання довідки про вагітність" type="date"></activiti:formProperty>
+
+        <activiti:formProperty id="dDateVisit" name="Внесіть дату візиту громадянки для надання довідки про вагітність" type="date"></activiti:formProperty>
+        <activiti:formProperty id="dTimeVisit" name="Внесіть час візиту громадянки для надання довідки про вагітність" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRoom" name="укажіть кабінет - куди прийти громадянці" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sComment1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Будь ласка, укажіть причину Вашого рішення" type="textArea" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cc_1_1" name="Галка на прінтформі" type="invisible"></activiti:formProperty>
@@ -183,8 +185,9 @@
           <activiti:value id="accept" name="схвалено призначення допомоги"></activiti:value>
           <activiti:value id="reject" name="відмовлено у призначенні допомоги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="markersUser2" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_165_user2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sComment2" name="Будь ласка, причину відмови" type="textArea" required="true"></activiti:formProperty>
+       	
+		<activiti:formProperty id="markersUser2" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_165_user2.json')}"></activiti:formProperty>
         <activiti:formProperty id="nFileDecision" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -201,7 +204,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify_head.html]			
-			Призначення державної допомоги у зв'язку з вагітністю та пологами.<br>
+			Послуга: Призначення державної допомоги у зв'язку з вагітністю та пологами.<br>
 			Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br>
 			[pattern/mail/new_design/_common_employee_notify_footer.html]]]>
 		  </activiti:expression>
@@ -228,7 +231,7 @@
 			</p>
 			<p>
 				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.
-			</p><br>
+			</p>
 			<br>
 			Якщо у Вас є якісь додаткові питання, Ви можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
@@ -272,7 +275,7 @@
 				Ваше звернення, щодо призначення державної допомоги у зв'язку з вагітністю та пологами прийнято в роботу.
 			</p>
 			<p>
-				Вам призначено дату і час візиту для надання оригіналу довідки про вагітнісь - value{[dVisit]}.<br>
+				Вам призначено дату і час візиту для надання оригіналу довідки про вагітнісь - value{[dVisit]}  ${dTimeVisit}.<br>
 				Вам необхідно прийти в ${sNameOrgan} <br>
 				${sAddress}, <br>
 				<b>кабінет:</b> ${sRoom}
@@ -321,7 +324,7 @@
 				Ваше звернення, щодо Призначення державної допомоги у зв'язку з вагітністю та пологами направлено на доопрацювання.
 			</p>
 			<p>
-				Вам призначено дату і час візиту для надання оригіналу довідки про вагітнісь - value{[dVisit]}.<br>
+				Вам призначено дату і час візиту для надання оригіналу довідки про вагітнісь - value{[dVisit]}  ${dTimeVisit}.<br>
 				Вам необхідно прийти в ${sNameOrgan} <br>
 				${sAddress}, <br>
 				<b>кабінет:</b> ${sRoom}
@@ -334,7 +337,7 @@
 			</p>
 			<p>
 				Якщо Вам треба додати документи, яких бракує у Вашому першому зверненні - заповніть заявку повторно на порталі <a href="https://igov.org.ua/service/779/general">iGov.org.ua</a>
-			</p><br>
+			</p>
 			<br>
 			За наявності додаткових питань - можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
@@ -380,7 +383,7 @@
 			</p>
 			<p>
 				Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/779/general">iGov.org.ua</a>
-			</p><br>
+			</p>
 			<br>
 			За наявності додаткових питань - можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
@@ -424,14 +427,14 @@
 			<p>
 				Ви отримали схвалення щодо свого звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>,
 				про призначення державної допомоги у зв'язку з вагітністю та пологами.
-			</p><br>
+			</p>
 			<p>
 				Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.
-			</p><br><br>			
+			</p>		
 			<p>
 				Зверніть увагу, що після народження дитини на порталі iGov.org.ua, 
 				Ви можете подати звернення щодо <a href="https://igov.org.ua/service/752/general" target="_blank">призначення соціальної допомоги при народженні дитини</a>.
-			</p><br><br>
+			</p><br>
 			Якщо у Вас є додаткові питання, ви можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
@@ -474,13 +477,13 @@
 			</p>
 			<p>
 				Причина: ${sComment2}
-			</p><br>
+			</p>
 			<p>				
 				Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.
 			</p>
 			<p>
 				Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/779/general">iGov.org.ua</a>.
-			</p><br>
+			</p>
 			<br>
 			За наявності додаткових питань - можете звернутись за наступними контактами:<br>
 			${sAddress}<br>

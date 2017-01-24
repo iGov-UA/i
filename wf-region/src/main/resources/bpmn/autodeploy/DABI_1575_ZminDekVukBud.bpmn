@@ -3,9 +3,22 @@
   <process id="DABI_1575_ZminDekVukBud" name="Внесення змін до зареєстрованої декларації про початок виконання будівельних робіт" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="markersLine_1" name="Отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sID_Public_SubjectOrganJoin&quot;],&quot;sValue&quot;:&quot;Отримання відповіді&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган який надасть вам відповідь" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTextZaiInfo" name=" " type="label" default="Інформація про заявника"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
+          <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
+          <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTextPost" name="Увага!" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
+        <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asLust" name="Оберіть тип поштового відправлення" type="enum" required="true">
+          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 15.50"></activiti:value>
+          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 35.50"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище завника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я завника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові завника" type="string" required="true"></activiti:formProperty>
@@ -21,33 +34,38 @@
         <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdresBud" name="Адреса бідівництва" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="sDekDate" name="Дата видачі Декларації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDekNumber" name="Номер Декларації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Інформація про будівництво" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNameBud&quot;],&quot;sValue&quot;:&quot;Інформація про будівництво&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNameBud" name="Найменування об'экта будівництва;(згідно з будівельним паспортом або проектною документацією )" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdresBud" name="Будівельна адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTipeBud" name="Вид будівництва" type="enum" required="true">
+          <activiti:value id="sEnamTipeBud1" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnamTipeBud2" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnamTipeBud3" name="Технічне переоснащення"></activiti:value>
+          <activiti:value id="sEnamTipeBud4" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnamTipeBud5" name="Капітальний ремонт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sKodeBud" name="Код об'єкта;(згідно з Державним класифікатором будівель та споруд ДК 018-2000)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabelKodeBud"  name="Коди ДК 018-2000" type="label" default="посилання на &lt;a href=&quot;http://zakon2.rada.gov.ua/rada/show/va507565-00 &quot; target=&quot;_blank&quot;&gt;ДЕРЖАВНИЙ КЛАСИФІКАТОР&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asKatSklBud" name="Категорія складності будівництва" type="enum" required="true">
+          <activiti:value id="sEnamKatSklBud1" name="1 категорія"></activiti:value>
+          <activiti:value id="sEnamKatSklBud2" name="2 категорія"></activiti:value>
+          <activiti:value id="sEnamKatSklBud3" name="3 категорія"></activiti:value>
+          <activiti:value id="sEnamKatSklBud4" name="4 категорія"></activiti:value>
+          <activiti:value id="sEnamKatSklBud5" name="5 категорія"></activiti:value>
+        </activiti:formProperty>
         
-        <activiti:formProperty id="sDekDateBud" name="Дата початку будівельних робіт" type="string" required="true"></activiti:formProperty>
-        
-        <activiti:formProperty id="sZminu" name="Які зміни необхідно внести до декларації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_4" name="Документ, що є підставою для змін" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sDokZmName&quot;],&quot;sValue&quot;:&quot;Документи, що є підставою для змін&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDokZmName" name="Найменування документа, що є підставою для зміни даних" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDokZmDat" name="Дата прийняття документа" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDokZmNum" name="Номер документа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDokZmOrgVud" name="Орган що видав документ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="tZminu" name="Які зміни необхідно внести до декларації" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocZmin" name="Документ що підтверджує факт змін;(якщо файлів кілька завантажте ZIP архівом)" type="file" required="true"></activiti:formProperty>
         
         
-        <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
-          <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
-          <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sTextPost" name="Увага!" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
-        <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asLust" name="Оберіть тип поштового відправлення" type="enum" required="true">
-          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 15.50"></activiti:value>
-          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 35.50"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
-        <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sClerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk_dabi" name="Пошта ДЗК" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_dabi" name="Пошта Дабі" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>

@@ -42,8 +42,8 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailCnap" name="пошта співробітника ЦНАП" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailCnap" name="пошта співробітника ЦНАП" type="invisible" default="msvidran@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="msvidran@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_629_1.json')}"></activiti:formProperty>
@@ -92,6 +92,9 @@
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailCnap" name="пошта співробітника ЦНАП" type="invisible" default="msvidran@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="msvidran@gmail.com"></activiti:formProperty>
+        
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_629_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;shapka_ur&quot;,&quot;zagolovok&quot;,&quot;telo_ur&quot;,&quot;spisok_doc&quot;,&quot;data_ur&quot;,&quot;obrobka&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;telo_fiz&quot;,&quot;spisok_doc&quot;,&quot;data_fiz&quot;,&quot;obrobka&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
@@ -115,7 +118,7 @@
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSubekt_2" name="Звернення подаю" type="enum" writable="false" required="true">
+        <activiti:formProperty id="asSubekt_2" name="Звернення подаю" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
@@ -141,15 +144,19 @@
           <activiti:value id="accept" name="надано дозвіл"></activiti:value>
           <activiti:value id="reject" name="відмовлено у видачі дозволу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію дозволу, або рішення про відмову у видачі дозволу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRishen" name="Завантажте копію рішення про відмову у видачі дозволу" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nPermission" name="Завантажте копію дозволу" type="file"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailCnap" name="пошта співробітника ЦНАП" type="invisible" default="msvidran@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="msvidran@gmail.com"></activiti:formProperty>
+        
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;shapka_ur&quot;,&quot;zagolovok&quot;,&quot;telo_ur&quot;,&quot;spisok_doc&quot;,&quot;data_ur&quot;,&quot;obrobka&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;telo_fiz&quot;,&quot;spisok_doc&quot;,&quot;data_fiz&quot;,&quot;obrobka&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dneprOblSnap/dnepr_cnap_629_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_629_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_629_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="requiredFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_629_2.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -230,7 +237,7 @@ ${sNameOrgan}<br />
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-         <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -241,26 +248,25 @@ ${sNameOrgan}<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask4" name="повідомлення про рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask4" name="повідомлення про позитивне рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Дозвіл на внесення суб’єкта кінематографії до державного реєстру виробників, розповсюджувачів і демонстраторів фільмів]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${rishen}",${PrintForm_1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${nPermission}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Вам enum{[decision_2]} на внесення суб’єкта кінематографії до державного реєстру виробників, розповсюджувачів і демонстраторів фільмів.<br> 
-${comment_2} <br> 
-Копія рішення знаходиться у додатку до листа.<br>
+Дозвіл на внесення суб’єкта кінематографії до державного реєстру виробників, розповсюджувачів і демонстраторів фільмів готов.<br>  
+Копія дозволу знаходиться у додатку до листа.<br>
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.<br><br>
 При собі треба мати:<br>
 ${sListDocumentsLetter}<br>
@@ -276,7 +282,7 @@ ${sNameOrgan}<br>
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-         <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -370,9 +376,59 @@ execution.setVariable('sListDocumentsPrint', per4)
     <sequenceFlow id="flow59" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow61" sourceRef="servicetask2" targetRef="servicetask10"></sequenceFlow>
-    <sequenceFlow id="flow62" sourceRef="usertask2" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow62" sourceRef="usertask2" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow63" sourceRef="servicetask4" targetRef="servicetask11"></sequenceFlow>
-    <sequenceFlow id="flow64" sourceRef="servicetask11" targetRef="endevent2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow65" sourceRef="exclusivegateway3" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask12" name="повідомлення про негативне рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Дозвіл на внесення суб’єкта кінематографії до державного реєстру виробників, розповсюджувачів і демонстраторів фільмів]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+На жаль, Вам відмовлено у видачі дозволу на внесення суб’єкта кінематографії до державного реєстру виробників, розповсюджувачів і демонстраторів фільмів.<br> 
+${comment_2} <br> 
+Копія рішення знаходиться у додатку до листа.<br>
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.<br><br>
+При собі треба мати паспорт або документ, що посвідчує особу.<br><br>
+${sPhoneOrgan}<br>
+<br>
+${sWorkTime}<br>
+${sAddress}<br>
+<br>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${nRishen}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow66" sourceRef="exclusivegateway3" targetRef="servicetask12">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow67" sourceRef="servicetask12" targetRef="servicetask11"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow68" sourceRef="servicetask11" targetRef="endevent3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_629">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_629" id="BPMNPlane_dnepr_cnap_629">
@@ -383,7 +439,7 @@ execution.setVariable('sListDocumentsPrint', per4)
         <omgdc:Bounds height="55.0" width="137.0" x="610.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="141.0" x="420.0" y="300.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="608.0" y="380.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="141.0" x="440.0" y="60.0"></omgdc:Bounds>
@@ -395,13 +451,13 @@ execution.setVariable('sListDocumentsPrint', per4)
         <omgdc:Bounds height="55.0" width="141.0" x="242.0" y="132.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="56.0" width="146.0" x="418.0" y="216.0"></omgdc:Bounds>
+        <omgdc:Bounds height="56.0" width="146.0" x="461.0" y="530.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="55.0" width="141.0" x="608.0" y="300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
-        <omgdc:Bounds height="55.0" width="146.0" x="240.0" y="216.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="146.0" x="606.0" y="640.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="296.0" y="60.0"></omgdc:Bounds>
@@ -418,6 +474,15 @@ execution.setVariable('sListDocumentsPrint', per4)
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="658.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="658.0" y="460.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
+        <omgdc:Bounds height="55.0" width="148.0" x="746.0" y="530.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="661.0" y="730.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="105.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="119.0" y="87.0"></omgdi:waypoint>
@@ -430,8 +495,8 @@ execution.setVariable('sListDocumentsPrint', per4)
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="608.0" y="327.0"></omgdi:waypoint>
-        <omgdi:waypoint x="561.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="355.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="380.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="658.0" y="159.0"></omgdi:waypoint>
@@ -469,17 +534,32 @@ execution.setVariable('sListDocumentsPrint', per4)
         <omgdi:waypoint x="678.0" y="300.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
-        <omgdi:waypoint x="490.0" y="300.0"></omgdi:waypoint>
-        <omgdi:waypoint x="491.0" y="272.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="435.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="460.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
-        <omgdi:waypoint x="418.0" y="244.0"></omgdi:waypoint>
-        <omgdi:waypoint x="386.0" y="243.0"></omgdi:waypoint>
+        <omgdi:waypoint x="534.0" y="586.0"></omgdi:waypoint>
+        <omgdi:waypoint x="533.0" y="667.0"></omgdi:waypoint>
+        <omgdi:waypoint x="606.0" y="667.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="240.0" y="243.0"></omgdi:waypoint>
-        <omgdi:waypoint x="177.0" y="242.0"></omgdi:waypoint>
-        <omgdi:waypoint x="177.0" y="177.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="658.0" y="480.0"></omgdi:waypoint>
+        <omgdi:waypoint x="533.0" y="479.0"></omgdi:waypoint>
+        <omgdi:waypoint x="534.0" y="530.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
+        <omgdi:waypoint x="698.0" y="480.0"></omgdi:waypoint>
+        <omgdi:waypoint x="819.0" y="479.0"></omgdi:waypoint>
+        <omgdi:waypoint x="820.0" y="530.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow67" id="BPMNEdge_flow67">
+        <omgdi:waypoint x="820.0" y="585.0"></omgdi:waypoint>
+        <omgdi:waypoint x="819.0" y="666.0"></omgdi:waypoint>
+        <omgdi:waypoint x="752.0" y="667.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
+        <omgdi:waypoint x="679.0" y="695.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="730.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
