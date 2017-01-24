@@ -9,29 +9,21 @@
     </startEvent>
     <userTask id="usertask1" name="крок 1" activiti:candidateUsers="quotes">
       <extensionElements>
-        <activiti:formProperty id="sTableFiles" writable="false" name="Таблица с файлами; ;nRowsLimit=5,bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sString1&quot;,&quot;name&quot;:&quot;string1&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile01&quot;,&quot;name&quot;:&quot;file1; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTableFiles" name="Таблица с файлами; ;nRowsLimit=5,bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTableWithFiles" name="Таблица с дашбордовскими файлами; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sString2&quot;,&quot;name&quot;:&quot;string2&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile02&quot;,&quot;name&quot;:&quot;file2; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="крок 2" activiti:candidateUsers="quotes">
       <extensionElements>
-        <activiti:formProperty id="sTableFiles" writable="false" name="Таблица с файлами; ;nRowsLimit=5,bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sString1&quot;,&quot;name&quot;:&quot;string1&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile01&quot;,&quot;name&quot;:&quot;file1; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sTableWithFiles" writable="false" name="Таблица с дашбордовскими файлами; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sString2&quot;,&quot;name&quot;:&quot;string2&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile02&quot;,&quot;name&quot;:&quot;file2; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTableFiles" name="Таблица с файлами; ;nRowsLimit=5,bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTableWithFiles" name="Таблица с дашбордовскими файлами; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sString2&quot;,&quot;name&quot;:&quot;string2&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFile02&quot;,&quot;name&quot;:&quot;file2; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent2" name="End"></endEvent>
