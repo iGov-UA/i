@@ -677,7 +677,7 @@ public class ProcessSubjectService {
      */
     public void updateStatusTaskTreeAndCloseProcess(String snID_Process_Activiti, String sID_ProcessSubjectStatus) {
     	
-    	LOG.info("sID_ProcessSubjectStatus in updateStatusTaskTreeAndCloseProcess = " + sID_ProcessSubjectStatus);
+    	LOG.info("sID_ProcessSubjectStatus in updateStatusTaskTreeAndCloseProcess..." + sID_ProcessSubjectStatus);
 
 	ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(snID_Process_Activiti, 0L, null);
 
