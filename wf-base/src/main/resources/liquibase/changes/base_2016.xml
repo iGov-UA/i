@@ -1233,7 +1233,7 @@
         <modifyDataType tableName="SubjectOrgan" columnName="sName" newDataType="varchar(200)" />
     </changeSet>
     
-    <changeSet id="issue-1462" author="HavrylinSerhii">
+    <changeSet id="issue-1462_role" author="HavrylinSerhii">
         <createTable tableName="SubjectHumanRole">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
@@ -1241,6 +1241,9 @@
             <column name="sName" type="varchar(200)">
             </column>
         </createTable>
+    </changeSet>
+    
+    <changeSet id="issue-1462_roleRelation" author="HavrylinSerhii">
         <createTable tableName="SubjectHumanRole_SubjectHuman">
             <column name="nID_SubjectHumanRole" type="bigint">
                 <constraints nullable="false"
