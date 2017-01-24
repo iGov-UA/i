@@ -1002,6 +1002,8 @@ public class ActionItemController {
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
                 nID_Place_Profile, bShowEmptyFolders, includeServices, null, null);
         
+        LOG.info("List<ServiceTagTreeNodeVO> res: ", res);
+        
         // (asID_Place_UA!=null&&asID_Place_UA.size()>0&&asID_Place_UA.get(0).trim().length()>0)
         if (includeServices) {
             res.forEach(n -> n.setaService(n.getaService().stream().map(
