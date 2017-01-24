@@ -684,7 +684,7 @@ public class ProcessSubjectService {
 	if (processSubjectResult != null) {
 	    List<ProcessSubject> aProcessSubject_Child = processSubjectResult.getaProcessSubject();
    
-	    ProcessSubjectStatus oProcessSubjectStatusUnactual = processSubjectStatusDao.findByIdExpected(4L);
+	    ProcessSubjectStatus oProcessSubjectStatusUnactual = processSubjectStatusDao.findByIdExpected(Long.parseLong(sID_ProcessSubjectStatus));
 	    
 	    LOG.info("oProcessSubjectStatusUnactual findByIdExpected = " + oProcessSubjectStatusUnactual);
 	    DateFormat df_ProcessSubjectSafe = new SimpleDateFormat("dd/MM/yyyy");
