@@ -59,9 +59,11 @@ public class UpdateStatusTaskTreeAndCloseProcess implements TaskListener {
         
       
         LOG.info("snID_Process_Activiti_Value is" + snID_Process_Activiti_Value);
-        processSubjectService.UpdateStatusTaskTreeAndCloseProcess(snID_Process_Activiti_Value,sID_ProcessSubjectStatus_Value );
+        LOG.info("sID_ProcessSubjectStatus_Value before updateStatusTaskTreeAndCloseProcess...." + sID_ProcessSubjectStatus_Value);
         
-        LOG.info("sID_ProcessSubjectStatus_Value is" + sID_ProcessSubjectStatus_Value);
+        processSubjectService.updateStatusTaskTreeAndCloseProcess(snID_Process_Activiti_Value,sID_ProcessSubjectStatus_Value );
+        
+        LOG.info("sID_ProcessSubjectStatus_Value after updateStatusTaskTreeAndCloseProcess...." + sID_ProcessSubjectStatus_Value);
     }
 }
 
