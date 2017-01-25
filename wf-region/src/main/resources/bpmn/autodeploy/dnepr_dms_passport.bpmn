@@ -258,7 +258,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow43" sourceRef="escalationTimer" targetRef="scripttask3"></sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="usertask2" targetRef="scripttask3"></sequenceFlow>
     <scriptTask id="scripttask3" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var delta='10';
+      <script>var delta='20';
 var unixdate= Math.round((new Date()).getTime());
 var unixdate=unixdate+86400*1000*delta;
 var new_src = new Date(unixdate);
@@ -324,7 +324,8 @@ execution.setVariable('sCustom', custom)</script>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Ви отримали послугу "Отримання паспорта громадянина України для виїзду за кордон". ${sNotification_day}<br>
+Ви скористалися  послугою "Отримання паспорта громадянина України для виїзду за кордон". 
+<p>Нагадуємо Вам, що Ви можете перевірити готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p> 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
