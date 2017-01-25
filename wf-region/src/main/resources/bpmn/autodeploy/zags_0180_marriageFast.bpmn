@@ -41,8 +41,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sSourceType" name="Обране Джерело надходження звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення обряду" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText4" name=" " type="label" default="Якщо Ви не знайшли в обраному відділі ДРАЦС зручну дату та час, Ви можете обрати будь-який інший відділ ДРАЦС"></activiti:formProperty>
+        <activiti:formProperty id="sDateCeremony" name="Вкажіть бажану дату та час проведення обряду" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sText4" name=" " type="label" default="Для уточнення дати, часу та деталей обряду з Вами зв'яжуться в телефонному режимі"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="лінія Дані нареченого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;lastName_UA1&quot;],&quot;sValue&quot;:&quot;Дані нареченого&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Власне ім'я" type="string"></activiti:formProperty>
@@ -129,9 +129,7 @@
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
-        <activiti:formProperty id="sWeddingDay" name="Бажана дата церемонії; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії" type="string"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPrivileges" name="Наявність пільги; ;writable=false" type="enum">
@@ -241,9 +239,7 @@
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
-        <activiti:formProperty id="sWeddingDay" name="Бажана дата церемонії; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії" type="string"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPrivileges" name="Наявність пільги; ;writable=false" type="enum">
@@ -354,8 +350,7 @@
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
-        <activiti:formProperty id="sWeddingDay" name="Бажана дата церемонії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії (в заяві)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
@@ -548,46 +543,8 @@ ${sMail_Signature}<br>
     </serviceTask>
     <sequenceFlow id="flow38" sourceRef="servicetask10" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow39" sourceRef="usertask2" targetRef="servicetask8"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow48" name="${bReferent == 'false'}" sourceRef="exclusivegateway4" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bReferent == 'false'}]]></conditionExpression>
-    </sequenceFlow>
-    <userTask id="usertask3" name="${sSourceType} - Резервування часу референтом" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
-      <extensionElements>
-        <activiti:formProperty id="asMarriageType" name="бажаний тип церемонії; від цього залежить вартість і тривалість церемонії" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="Скорочений обряд - 15 хвилин"></activiti:value>
-          <activiti:value id="sEnum2" name="Повний обряд - 45 хвилин"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="visitDate1" name="Дату та час проведення обряду" type="queueData"></activiti:formProperty>
-        <activiti:formProperty id="sSourceType" name="Джерело надходження звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="isOk" name="Чи відбулась церемонія?" type="enum" required="true">
-          <activiti:value id="accept" name="Реєстрація відбулась"></activiti:value>
-          <activiti:value id="reject" name="Реєстрацію перенесено або скасовано. Звільнити місце в електронній черзі"></activiti:value>
-        </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <sequenceFlow id="flow49" name="${bReferent == 'true'}" sourceRef="exclusivegateway4" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bReferent == 'true'}]]></conditionExpression>
-    </sequenceFlow>
-    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow50" sourceRef="usertask3" targetRef="exclusivegateway5"></sequenceFlow>
-    <serviceTask id="servicetask13" name="Звільнення черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
-    <sequenceFlow id="flow51" name="${isOk == 'reject'}" sourceRef="exclusivegateway5" targetRef="servicetask13">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isOk == 'reject'}]]></conditionExpression>
-    </sequenceFlow>
-    <endEvent id="endevent8" name="End"></endEvent>
-    <sequenceFlow id="flow52" name="${isOk == 'accept'}" sourceRef="exclusivegateway5" targetRef="endevent8">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isOk == 'accept'}]]></conditionExpression>
-    </sequenceFlow>
-    <endEvent id="endevent9" name="End"></endEvent>
-    <sequenceFlow id="flow53" sourceRef="servicetask13" targetRef="endevent9"></sequenceFlow>
-    <serviceTask id="servicetask14" name="Звільнення черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
-    <sequenceFlow id="flow54" sourceRef="servicetask6" targetRef="servicetask14"></sequenceFlow>
     <endEvent id="endevent10" name="End"></endEvent>
-    <sequenceFlow id="flow55" sourceRef="servicetask14" targetRef="endevent10"></sequenceFlow>
-    <sequenceFlow id="flow69" sourceRef="servicetask1" targetRef="scripttask3"></sequenceFlow>
+    <sequenceFlow id="flow69" sourceRef="servicetask1" targetRef="servicetask10"></sequenceFlow>
     <scriptTask id="scripttask2" name="Script Task CreateDate" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
@@ -670,21 +627,6 @@ ${sMail_Signature} <br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow76" sourceRef="servicetask20" targetRef="usertask2"></sequenceFlow>
-    <scriptTask id="scripttask3" name="Script Task Transform Date" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('date_of_visit')
-
-var year=src.substr(0,4)
-var month=src.substr(5,2)
-var day=src.substr(8,2)
-var hour=src.substr(11,2)
-var minutes=src.substr(14,2)
-var seconds='00'
-
-var timeVisit=day+'.'+month+'.'+year+' '+hour+':'+minutes
-
-execution.setVariable('sWeddingDay', timeVisit)</script>
-    </scriptTask>
-    <sequenceFlow id="flow78" sourceRef="scripttask3" targetRef="exclusivegateway4"></sequenceFlow>
     <sequenceFlow id="flow79" sourceRef="usertask5" targetRef="exclusivegateway6"></sequenceFlow>
     <sequenceFlow id="flow80" name="${decide == 'returnApp'}" sourceRef="exclusivegateway1" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'returnApp'}]]></conditionExpression>
@@ -728,27 +670,26 @@ ${sMail_Signature}<br>
     <sequenceFlow id="flow81" sourceRef="exclusivegateway6" targetRef="servicetask21">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnjoyingDRACS == 'reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask22" name="Звільнення черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
-    <sequenceFlow id="flow82" sourceRef="servicetask21" targetRef="servicetask22"></sequenceFlow>
     <endEvent id="endevent11" name="End"></endEvent>
-    <sequenceFlow id="flow83" sourceRef="servicetask22" targetRef="endevent11"></sequenceFlow>
     <sequenceFlow id="flow84" sourceRef="exclusivegateway6" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnjoyingDRACS == '1200000000_2'||asEnjoyingDRACS == '1200000000_3'||asEnjoyingDRACS == '1200000000_4'||asEnjoyingDRACS == '1200000000_5'||asEnjoyingDRACS == '1200000000_6'||asEnjoyingDRACS == '1200000000_7'||asEnjoyingDRACS == '1200000000_8'||asEnjoyingDRACS == '1200000000_9'}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow85" sourceRef="servicetask21" targetRef="endevent11"></sequenceFlow>
+    <sequenceFlow id="flow86" sourceRef="servicetask6" targetRef="endevent10"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zags_0180_marriageFast">
     <bpmndi:BPMNPlane bpmnElement="zags_0180_marriageFast" id="BPMNPlane_zags_0180_marriageFast">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="94.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="235.0" y="94.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="151.0" x="273.0" y="84.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="151.0" x="586.0" y="84.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="275.0" y="122.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="707.0" y="111.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="272.0" y="170.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="800.0" y="112.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
         <omgdc:Bounds height="55.0" width="185.0" x="569.0" y="280.0"></omgdc:Bounds>
@@ -774,38 +715,14 @@ ${sMail_Signature}<br>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="61.0" width="185.0" x="569.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
-        <omgdc:Bounds height="40.0" width="40.0" x="641.0" y="91.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="153.0" x="737.0" y="84.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="944.0" y="91.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
-        <omgdc:Bounds height="55.0" width="149.0" x="1093.0" y="84.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent8" id="BPMNShape_endevent8">
-        <omgdc:Bounds height="35.0" width="35.0" x="947.0" y="10.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent9" id="BPMNShape_endevent9">
-        <omgdc:Bounds height="35.0" width="35.0" x="1278.0" y="94.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask14" id="BPMNShape_servicetask14">
-        <omgdc:Bounds height="62.0" width="202.0" x="561.0" y="800.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent10" id="BPMNShape_endevent10">
-        <omgdc:Bounds height="35.0" width="35.0" x="644.0" y="890.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="644.0" y="800.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="156.0" x="81.0" y="84.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="156.0" x="331.0" y="84.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask20" id="BPMNShape_servicetask20">
         <omgdc:Bounds height="63.0" width="213.0" x="270.0" y="679.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="55.0" width="143.0" x="463.0" y="84.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
         <omgdc:Bounds height="40.0" width="40.0" x="641.0" y="360.0"></omgdc:Bounds>
@@ -813,19 +730,16 @@ ${sMail_Signature}<br>
       <bpmndi:BPMNShape bpmnElement="servicetask21" id="BPMNShape_servicetask21">
         <omgdc:Bounds height="63.0" width="202.0" x="880.0" y="349.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask22" id="BPMNShape_servicetask22">
-        <omgdc:Bounds height="62.0" width="202.0" x="880.0" y="466.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent11" id="BPMNShape_endevent11">
-        <omgdc:Bounds height="35.0" width="35.0" x="964.0" y="549.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="964.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="36.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="81.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="331.0" y="111.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="290.0" y="152.0"></omgdi:waypoint>
-        <omgdi:waypoint x="289.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="737.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="800.0" y="129.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="661.0" y="495.0"></omgdi:waypoint>
@@ -859,65 +773,17 @@ ${sMail_Signature}<br>
         <omgdi:waypoint x="377.0" y="861.0"></omgdi:waypoint>
         <omgdi:waypoint x="377.0" y="899.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
-        <omgdi:waypoint x="661.0" y="131.0"></omgdi:waypoint>
-        <omgdi:waypoint x="661.0" y="190.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="614.0" y="150.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="681.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="737.0" y="111.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="687.0" y="62.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
-        <omgdi:waypoint x="890.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="944.0" y="111.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="984.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1093.0" y="111.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="84.0" x="971.0" y="49.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="964.0" y="91.0"></omgdi:waypoint>
-        <omgdi:waypoint x="964.0" y="45.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="90.0" x="977.0" y="124.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
-        <omgdi:waypoint x="1242.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1278.0" y="111.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
-        <omgdi:waypoint x="662.0" y="742.0"></omgdi:waypoint>
-        <omgdi:waypoint x="662.0" y="800.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
-        <omgdi:waypoint x="662.0" y="862.0"></omgdi:waypoint>
-        <omgdi:waypoint x="661.0" y="890.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
-        <omgdi:waypoint x="424.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="463.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="661.0" y="139.0"></omgdi:waypoint>
+        <omgdi:waypoint x="661.0" y="190.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow73" id="BPMNEdge_flow73">
-        <omgdi:waypoint x="237.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="273.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="487.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="586.0" y="111.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
         <omgdi:waypoint x="376.0" y="742.0"></omgdi:waypoint>
         <omgdi:waypoint x="377.0" y="800.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
-        <omgdi:waypoint x="606.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="641.0" y="111.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow79" id="BPMNEdge_flow79">
         <omgdi:waypoint x="661.0" y="335.0"></omgdi:waypoint>
@@ -936,17 +802,17 @@ ${sMail_Signature}<br>
         <omgdi:waypoint x="681.0" y="380.0"></omgdi:waypoint>
         <omgdi:waypoint x="880.0" y="380.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow82" id="BPMNEdge_flow82">
-        <omgdi:waypoint x="981.0" y="412.0"></omgdi:waypoint>
-        <omgdi:waypoint x="981.0" y="466.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
-        <omgdi:waypoint x="981.0" y="528.0"></omgdi:waypoint>
-        <omgdi:waypoint x="981.0" y="549.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow84" id="BPMNEdge_flow84">
         <omgdi:waypoint x="661.0" y="400.0"></omgdi:waypoint>
         <omgdi:waypoint x="661.0" y="440.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow85" id="BPMNEdge_flow85">
+        <omgdi:waypoint x="981.0" y="412.0"></omgdi:waypoint>
+        <omgdi:waypoint x="981.0" y="440.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow86" id="BPMNEdge_flow86">
+        <omgdi:waypoint x="662.0" y="742.0"></omgdi:waypoint>
+        <omgdi:waypoint x="661.0" y="800.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
