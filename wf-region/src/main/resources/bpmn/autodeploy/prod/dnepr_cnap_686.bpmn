@@ -6,6 +6,7 @@
         <activiti:formProperty id="markers_ext_01" name="extra_required_fields" type="markers" default="${markerService.loadFromFile('dnepr_cnap_686.json')}"></activiti:formProperty>
         <activiti:formProperty id="InfoStart" name="Для замовлення цієї послуги Вам потрібно скористатися електронно-цифровим підписом (ЕЦП) (наприклад податкової або банку, що Вас обслуговує)." type="label" default="Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
 
+        <activiti:formProperty id="sVersion" name="Версия" type="invisible" default="011"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -340,11 +341,9 @@
 
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
 
-    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_${sID_UA}_1497,jur_all_1497,jur_all_pay">
+    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_${sID_UA}_1497">
       <extensionElements>
-        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur_1497_"></activiti:formProperty>
-        <activiti:formProperty id="sVersion" name="Версия" type="string" default="003"></activiti:formProperty>
-
+        <activiti:formProperty id="sVersion" name="Версия" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
 
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
@@ -463,22 +462,7 @@
         <activiti:formProperty id="sIzm_06_Plus" name="+ Изменения 06" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_07_Plus" name="+ Изменения 07" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_08_Plus" name="+ Изменения 08" type="invisible"></activiti:formProperty>
-<!--        <activiti:formProperty id="asChoiceCNAP" name="ВИКОНУВАЧ ПОСЛУГИ (важливо обирати свій район, оскільки саме на його рахунок буде надходити оплата за послугу)" type="enum" default=" " required="true">
-          <activiti:value id="vasil" name="Васильківський ЦНАП"></activiti:value>
-          <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
-          <activiti:value id="vilnogirskT" name="ЦНАП м.Вільногірськ"></activiti:value>
-          <activiti:value id="tomak" name="Томаківський ЦНАП"></activiti:value>
-          <activiti:value id="krinichki" name="Криничанський ЦНАП"></activiti:value>
-          <activiti:value id="ordzonikT" name="ЦНАП м.Орджонікідзе"></activiti:value>
-          <activiti:value id="meziv" name="Межівський ЦНАП"></activiti:value>
-          <activiti:value id="zhvodT" name="ЦНАП м.Жовті Води"></activiti:value>
-          <activiti:value id="petropavl" name="Петропавлівський ЦНАП"></activiti:value>
-          <activiti:value id="nikopol" name="Нікопольский райЦНАП"></activiti:value>
-          <activiti:value id="ternopil" name="Тернопільський"></activiti:value>
-          <activiti:value id="nikopolT" name="ЦНАП м.Нікополь"></activiti:value>
-          <activiti:value id="dndz" name="ЦНАП м.Дніпродзержинськ"></activiti:value>
-          <activiti:value id="persotravT" name="ЦНАП м.Першотравенськ"></activiti:value>
-        </activiti:formProperty> -->
+
         <activiti:formProperty id="sVarBankOplata" name="Банк отримувача" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarBankMFO" name="МФО банк" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarPayCode" name="Код платежу" type="invisible" default=" "></activiti:formProperty>
@@ -497,7 +481,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur_1497_"></activiti:formProperty>
+
+        <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur"></activiti:formProperty>
         <activiti:taskListener event="complete" delegateExpression="${FindGroup}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -505,8 +490,8 @@
 	
     <scriptTask id="scripttask1" name="Выбор магазина Ликпей" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>          
-      	  var sVarCNAP=execution.getVariable('group_found')
-          if (sVarCNAP=='jur_1499_vasil' || sVarCNAP=='many')
+      	  var sVarCNAP=execution.getVariable('user_last')
+          if (sVarCNAP=='agerman')
           	{
           		execution.setVariable('sID_Merchant','i5516072613')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
@@ -518,7 +503,19 @@
 				execution.setVariable('sVarPayGetSchet','31419501700049')
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_charichanka')
+          if (sVarCNAP=='temp_test')
+          	{
+          		execution.setVariable('sID_Merchant','i5516072613')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')
+				execution.setVariable('sVarBankMFO','805012')
+				execution.setVariable('sVarPayCode','22010300')
+				execution.setVariable('sVarWhoPayGetCode','37870848')
+				execution.setVariable('sVarWhoPayGet','ВАСИЛЬКІВСЬКЕ УК (ВАСИЛЬКІВСЬКОГО РАЙОНУ)')
+				execution.setVariable('sVarPayGetSchet','31419501700049')
+				execution.setVariable('sVarSumPay','160.00')
+          	}
+          if (sVarCNAP=='charichanka_jur')
           	{
           		execution.setVariable('sID_Merchant','i76592566863')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
@@ -530,7 +527,7 @@
 				execution.setVariable('sVarPayGetSchet','31417501700353')
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_vilnogirskT')
+          if (sVarCNAP=='vilnogirskT_jur')
           	{
           		execution.setVariable('sID_Merchant','i30965470376')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -542,7 +539,7 @@
 				execution.setVariable('sVarPayGetSchet','31413501700012')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-		  if (sVarCNAP=='jur_1499_tomak')
+		  if (sVarCNAP=='tomak_jur')
           	{
           		execution.setVariable('sID_Merchant','i24385779871')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -554,7 +551,7 @@
 				execution.setVariable('sVarPayGetSchet','31118170700339')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_krinichki')
+          if (sVarCNAP=='krinichki_jur')
           	{
           		execution.setVariable('sID_Merchant','i6466363679')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -566,7 +563,7 @@
 				execution.setVariable('sVarPayGetSchet','31114170700117')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_ordzonikT')
+          if (sVarCNAP=='ordzonikT_jur')
           	{
           		execution.setVariable('sID_Merchant','i29422825028')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -578,7 +575,7 @@
 				execution.setVariable('sVarPayGetSchet','31416501700031')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_meziv')
+          if (sVarCNAP=='meziv_jur')
           	{
           		execution.setVariable('sID_Merchant','i98768677701')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -590,7 +587,7 @@
 				execution.setVariable('sVarPayGetSchet','31415501700162')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_zhvodT')
+          if (sVarCNAP=='zhvodT_jur')
           	{
           		execution.setVariable('sID_Merchant','i10871377634')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -602,7 +599,7 @@
 				execution.setVariable('sVarPayGetSchet','31417501700018')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_ternopil')
+          if (sVarCNAP=='ternopil_jur')
           	{
           		execution.setVariable('sID_Merchant','i13991491434')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -614,7 +611,7 @@
 				execution.setVariable('sVarPayGetSchet','31417501700513')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_petropavl')
+          if (sVarCNAP=='petropavl_jur')
           	{
           		execution.setVariable('sID_Merchant','i85416673717')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -626,7 +623,7 @@
 				execution.setVariable('sVarPayGetSchet','31416501700235')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_nikopol')
+          if (sVarCNAP=='nikopol_jur')
           	{
           		execution.setVariable('sID_Merchant','i9597582078')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -638,7 +635,7 @@
 				execution.setVariable('sVarPayGetSchet','31414501700174')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_nikopolT')
+          if (sVarCNAP=='nikopolT_jur')
           	{
           		execution.setVariable('sID_Merchant','i65350712368')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -650,7 +647,7 @@
 				execution.setVariable('sVarPayGetSchet','31417501700029')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_dndz')
+          if (sVarCNAP=='dndz_jur')
           	{
           		execution.setVariable('sID_Merchant','i53978776110')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -662,7 +659,7 @@
 				execution.setVariable('sVarPayGetSchet','31412501700013')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-          if (sVarCNAP=='jur_1499_persotravT')
+          if (sVarCNAP=='persotravT_jur')
           	{
           		execution.setVariable('sID_Merchant','i24795480631')
 				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
@@ -674,45 +671,198 @@
 				execution.setVariable('sVarPayGetSchet','31412501700013')          			
 				execution.setVariable('sVarSumPay','160.00')
           	}
-
-			if (sVarCNAP=='jur_1499_ternopil_test')
-          	{
-          		execution.setVariable('sID_Merchant','i24795480631')
-				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
-				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
-				execution.setVariable('sVarBankMFO','805012')          			
-				execution.setVariable('sVarPayCode','22010300')          			
-				execution.setVariable('sVarWhoPayGetCode','37804890')          			
-				execution.setVariable('sVarWhoPayGet','УК у м.Першотравенськ')          			
-				execution.setVariable('sVarPayGetSchet','31412501700013')          			
+		  if (sVarCNAP=='cnap_buch_1')
+           {
+				execution.setVariable('sID_Merchant','i24760261420')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','38038030')             
+				execution.setVariable('sVarWhoPayGet','УК у Бучацькому районі')             
+				execution.setVariable('sVarPayGetSchet','31415501700076')             
 				execution.setVariable('sVarSumPay','160.00')
-          	}
+			}
+		  if (sVarCNAP=='cnap_gus_1')
+			{
+				execution.setVariable('sID_Merchant','i63541408580')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37373001')             
+				execution.setVariable('sVarWhoPayGet','УК у Гусятин.  р-н')             
+				execution.setVariable('sVarPayGetSchet','31416501700116')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='zal_re')
+			{
+				execution.setVariable('sID_Merchant','i57306053066')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37888326')             
+				execution.setVariable('sVarWhoPayGet','УК у Заліщиц.р-ні')             
+				execution.setVariable('sVarPayGetSchet','31417501700160')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='zbar_re')
+			{
+				execution.setVariable('sID_Merchant','i52386972498')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37373001')             
+				execution.setVariable('sVarWhoPayGet','УДКСУ у Збаразькому районі')             
+				execution.setVariable('sVarPayGetSchet','31416501700116')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='cnap_zbor_1')
+			{
+				execution.setVariable('sID_Merchant','i49511269493')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37943418')             
+				execution.setVariable('sVarWhoPayGet','УК у Зборівському. р-ні/Зборів. р-н')             
+				execution.setVariable('sVarPayGetSchet','31414501700237')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='cnap_koziv_1')
+			{
+				execution.setVariable('sID_Merchant','i62083820452')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37822731')             
+				execution.setVariable('sVarWhoPayGet','УК у Козівському р-ні/ Козівський р-н')             
+				execution.setVariable('sVarPayGetSchet','31414501700282')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='cnap_krem_1')
+			{
+				execution.setVariable('sID_Merchant','i68813248504')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37766394')             
+				execution.setVariable('sVarWhoPayGet','УК у Кременецькому районі')             
+				execution.setVariable('sVarPayGetSchet','31410501700316')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='cnap_lanov_1')
+			{
+				execution.setVariable('sID_Merchant','i72355870620')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37377870')             
+				execution.setVariable('sVarWhoPayGet','УК у Лановецькому районі')             
+				execution.setVariable('sVarPayGetSchet','31412501700347')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='cnap_monas_1')
+			{
+				execution.setVariable('sID_Merchant','i57326261192')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37382571')             
+				execution.setVariable('sVarWhoPayGet','УК у Монастириському р-ні/Монаст.р-н')             
+				execution.setVariable('sVarPayGetSchet','31417501700375')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='pidvol_re')
+			{
+				execution.setVariable('sID_Merchant','i26148600733')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37863778')             
+				execution.setVariable('sVarWhoPayGet','УК у Підволочиському районі')             
+				execution.setVariable('sVarPayGetSchet','31414501700408')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='cnap_pidgai_1')
+			{
+				execution.setVariable('sID_Merchant','i57362488254')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','36084944')             
+				execution.setVariable('sVarWhoPayGet','УК у Підгаєцькому р-ні/Підг.р-н')             
+				execution.setVariable('sVarPayGetSchet','31411501700445')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='cnap_tereb_1')
+			{
+				execution.setVariable('sID_Merchant','i22534509788')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37625079')             
+				execution.setVariable('sVarWhoPayGet','УК в Теребовл. районі')             
+				execution.setVariable('sVarPayGetSchet','31410501700468')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='cnap_chortR_1')
+			{
+				execution.setVariable('sID_Merchant','i13354870867')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37938481')             
+				execution.setVariable('sVarWhoPayGet','УК у Чорткiвському районі/Чортківський р-н')             
+				execution.setVariable('sVarPayGetSchet','31410501700554')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='cnap_shum_1')
+			{
+				execution.setVariable('sID_Merchant','i31097729858')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','36488038')             
+				execution.setVariable('sVarWhoPayGet','УК у Шумському р-ні/Шумський р-н')             
+				execution.setVariable('sVarPayGetSchet','31416501700600')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
+		  if (sVarCNAP=='cnap_chortT_1')
+			{
+				execution.setVariable('sID_Merchant','i86818690152')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37938481')             
+				execution.setVariable('sVarWhoPayGet','УДКСУ у Чортківському районі/Чортківський район')             
+				execution.setVariable('sVarPayGetSchet','31419501700555')             
+				execution.setVariable('sVarSumPay','160.00')
+			}
 		</script>
     </scriptTask>
 
-    <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateGroups="group_found,jur_all_1497,jur_${sID_UA}_1497">
+   <userTask id="usertask2" name="Надання послуги (2)" activiti:assignee="${user_last}">
       <extensionElements>
-        <activiti:formProperty id="group_found" name="Найденная группа по префиксу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVersion" name="Версия" type="string" default="003"></activiti:formProperty>
-
+        <activiti:formProperty id="user_last" name="user_last" type="string"></activiti:formProperty>
+        <activiti:formProperty id="group_found" name="group_found" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarCNAP" name="sVarCNAP" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarUser" name="sVarUser" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версия" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
-<!--        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asChoiceCNAP" name="Виконувач послуги" type="enum" writable="false">
-          <activiti:value id="vasil" name="Васильківський ЦНАП"></activiti:value>
-          <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
-          <activiti:value id="vilnogirskT" name="ЦНАП м.Вільногірськ"></activiti:value>
-          <activiti:value id="tomak" name="Томаківський ЦНАП"></activiti:value>
-          <activiti:value id="krinichki" name="Криничанський ЦНАП"></activiti:value>
-          <activiti:value id="ordzonikT" name="ЦНАП м.Орджонікідзе"></activiti:value>
-          <activiti:value id="meziv" name="Межівський ЦНАП"></activiti:value>
-          <activiti:value id="zhvodT" name="ЦНАП м.Жовті Води"></activiti:value>
-          <activiti:value id="petropavl" name="Петропавлівський ЦНАП"></activiti:value>
-          <activiti:value id="nikopol" name="Нікопольский райЦНАП"></activiti:value>
-          <activiti:value id="ternopil" name="Тернопільський"></activiti:value>
-          <activiti:value id="nikopolT" name="ЦНАП м.Нікополь"></activiti:value>
-          <activiti:value id="dndz" name="ЦНАП м.Дніпродзержинськ"></activiti:value>
-          <activiti:value id="persotravT" name="ЦНАП м.Першотравенськ"></activiti:value>
-        </activiti:formProperty> -->
+
         <activiti:formProperty id="sID_Payment" name="ID платежу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>
@@ -857,14 +1007,14 @@
             <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask4" name="Надання послуги" activiti:candidateGroups="jur_all_1497,jur_${sID_UA}_1497,jur_all">
+    <userTask id="usertask4" name="Надання послуги" activiti:candidateGroups="jur_${sID_UA}_1497">
       <extensionElements>
+        <activiti:formProperty id="sVersion" name="Версия" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVersion" name="Версия" type="string" default="003"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible" required="true"></activiti:formProperty>
@@ -997,7 +1147,6 @@
             <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
