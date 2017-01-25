@@ -341,7 +341,7 @@
 
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
 
-    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_${sID_UA}_1497">
+    <userTask id="usertask1" name="Очікування в черзі" activiti:candidateGroups="jur_${sID_UA}_1497">
       <extensionElements>
         <activiti:formProperty id="sVersion" name="Версия" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
@@ -854,7 +854,7 @@
 		</script>
     </scriptTask>
 
-   <userTask id="usertask2" name="Надання послуги (2)" activiti:assignee="${user_last}">
+   <userTask id="usertask2" name="Надання платної послуги" activiti:assignee="${user_last}">
       <extensionElements>
         <activiti:formProperty id="user_last" name="user_last" type="string"></activiti:formProperty>
         <activiti:formProperty id="group_found" name="group_found" type="string"></activiti:formProperty>
@@ -1009,7 +1009,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask4" name="Надання послуги" activiti:candidateGroups="jur_${sID_UA}_1497">
+    <userTask id="usertask4" name="Очікування в черзі" activiti:candidateGroups="jur_${sID_UA}_1497">
       <extensionElements>
         <activiti:formProperty id="sVersion" name="Версия" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
