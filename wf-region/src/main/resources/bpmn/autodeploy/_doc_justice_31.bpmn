@@ -6,6 +6,7 @@
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Наказ з основної діяльності"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -13,12 +14,14 @@
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Наказ з основної діяльності" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер наказу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameDoc" name="Назва наказу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateDoc" name="Дата которую удалить" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
@@ -26,7 +29,7 @@
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sExecutor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPrepareted" name="Підготував; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSupervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
@@ -39,6 +42,8 @@
           <activiti:value id="sEnumNotActualtDoc" name="той що втратив чинність"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_31.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="asRegular" name="регулярний документ; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum" default="sEnumNotRegularDoc">
           <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
           <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
@@ -59,35 +64,35 @@
             <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-      <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
             <activiti:string><![CDATA[system_task]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression>${sTable2}</activiti:expression>
+            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateRegistration">
-            <activiti:expression>${sDateRegistration}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateRegistration}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateDoc">
-            <activiti:expression>${sDateDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateDoc}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sName_SubjectRole">
-            <activiti:expression>${sName_SubjectRole}</activiti:expression>
+            <activiti:expression><![CDATA[${sName_SubjectRole}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateExecution">
-            <activiti:expression>${sDateExecution}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="processDefinitionId">
-            <activiti:expression>${processDefinitionId}</activiti:expression>
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression>sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sID_Order_GovPublic::${sID_Order_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sChangeDoc::${sChangeDoc};;sDateChangeDoc::${sDateChangeDoc};;sCancelDoc::${sCancelDoc};;sDateCancelDoc::${sDateCancelDoc};;asActualDoc::${asActualDoc}</activiti:expression>
+            <activiti:expression><![CDATA[sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sID_Order_GovPublic::${sID_Order_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sChangeDoc::${sChangeDoc};;sDateChangeDoc::${sDateChangeDoc};;sCancelDoc::${sCancelDoc};;sDateCancelDoc::${sDateCancelDoc};;asActualDoc::${asActualDoc}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask5" name="ознайомлення відповідальних" activiti:candidateGroups="justice_common">
+    <userTask id="usertask5" name="ознайомлення відповідальних" activiti:assignee="${sLogin}">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Наказ з основної діяльності" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
@@ -136,6 +141,7 @@
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${usersService.getUsersByGroup('GrekD')}" activiti:elementVariable="sLogin"></multiInstanceLoopCharacteristics>
     </userTask>
     <scriptTask id="scripttask1" name="2 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
@@ -158,6 +164,11 @@ execution.setVariable('sDateExecution', sNewDate)
 //3. получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
+
+//4. получение ИД БП
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 </script>
     </scriptTask>
     <scriptTask id="scripttask3" name="превращение даты энд" scriptFormat="groovy" activiti:autoStoreVariables="false">
