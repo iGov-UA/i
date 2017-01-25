@@ -3,23 +3,39 @@
   <process id="eco_1564_DozvDocVukid" name="Внесення організації до Переліку установ, організацій та закладів, яким надається право на розробку документів, що обґрунтовують обсяги викидів для підприємств, установ, організацій та громадян - суб’єктів підприємницької діяльності " isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressBud" name="Місцезнаходження юридичної особи" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress1" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileObgrunt" name="Документи, в яких обґрунтовуються обсяги викидів забруднюючих речовин, підготовлених відповідно до Інструкції " type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої держадміністрації про наявність або відсутність зауважень громадських організацій" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
+        
+        
+        <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
+          <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
+          <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="nWorkersTable" name="Дані про професійний і кваліфікаційний рівні керівника та працівників організації" type="table" default="${markerService.loadFromFile('table/eco/eco_1565_Workers_table.json')}"></activiti:formProperty>
+        
+        
+        
+        
+        
+        
+        <activiti:formProperty id="form_signed_all" name=" " type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;sNameOrgan&quot;,&quot;sMailClerk&quot;,&quot;sAddress&quot;,&quot;sWorkTime&quot;,&quot;sPhoneOrgan&quot;,&quot;sShapka&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible" default=" "></activiti:formProperty>
