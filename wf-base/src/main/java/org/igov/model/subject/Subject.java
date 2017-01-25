@@ -23,6 +23,8 @@ public class Subject extends AbstractEntity {
 
     @JsonProperty(value = "aSubjectAccountContact")
     private transient List<SubjectContact> aSubjectAccountContact;
+    
+    
 
     public String getsID() {
         return sID;

@@ -7,9 +7,13 @@ module.exports.getSubjectGroups = function (req, res) {
     res.send(body);
     res.end();
   };
+
+  var updatedQuery = req.query;
+  updatedQuery.sSubjectType = 'Human';
+
   var options = {
     path: 'subject/group/getSubjectGroupsTree',
-    query: req.query
+    query: updatedQuery
   };
   activiti.get(options, callback)
 };
