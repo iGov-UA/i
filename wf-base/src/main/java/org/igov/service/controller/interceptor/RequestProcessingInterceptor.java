@@ -156,10 +156,46 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             mRequestParam.put("taskId", snTaskId);
         }
 
-        sRequestBody = checkRequestBody(nLen, mRequestParam, sURL, sRequestBody);
+        if (!bFinish) {
+            LOG.info("(mRequestParam={})", mRequestParam);
+            LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
+            if (sURL.endsWith("/service/document/setDocumentFile")
+                    || sURL.contains("/service/object/file/")) {
+            } else {
+                LOG_BIG.debug("(sRequestBody={})", sRequestBody);
+            }
+        }
 
-        String sResponseBody = checkResponseBody(oRequest, oResponse, nLen, sURL);
-
+		String sResponseBody = !bFinish ? null : oResponse.toString();
+        if (bFinish) {
+        	LOG.info("(sResponseBody={})", sCut(nLen, sResponseBody));
+            if (sURL.endsWith(SERVICE_ACTION_ITEM_GET_SERVICE)
+                    || sURL.endsWith(SERVICE_ACTION_ITEM_GET_SERVICES_TREE)
+                    || (sURL.endsWith(SERVICE_FORM_FORM_DATA)
+                    && "GET".equalsIgnoreCase(oRequest.getMethod().trim()))
+                    || sURL.endsWith(SERVICE_REPOSITORY_PROCESS_DEFINITIONS)
+                    || sURL.endsWith(SERVICE_ACTION_TASK_GET_START_FORM_DATA)
+                    || sURL.endsWith(SERVICE_ACTION_TASK_GET_ORDER_MESSAGES_LOCAL)
+                    || sURL.endsWith(SERVICE_ACTION_FLOW_GET_FLOW_SLOTS_SERVICE_DATA)
+                    || sURL.contains(SERVICE_RUNTIME_TASKS)
+                    || sURL.endsWith(SERVICE_HISTORY_HISTORIC_TASK_INSTANCES)
+                    || sURL.endsWith(SERVICE_ACTION_TASK_GET_LOGIN_B_PS)
+                    || sURL.endsWith(SERVICE_SUBJECT_MESSAGE_GET_MESSAGES)
+                    || sURL.endsWith(SERVICE_SUBJECT_MESSAGE_GET_SERVICE_MESSAGES)
+                    || sURL.endsWith(SERVICE_OBJECT_PLACE_GET_PLACES_TREE)
+                    || sURL.endsWith(SERVICE_ACTION_EVENT_GET_LAST_TASK_HISTORY)
+                    || sURL.endsWith(SERVICE_ACTION_EVENT_GET_HISTORY_EVENTS_SERVICE)
+                    || sURL.endsWith(SERVICE_ACTION_EVENT_GET_HISTORY_EVENTS)
+                    || sURL.endsWith(SERVICE_DOCUMENT_GET_DOCUMENT_CONTENT)
+                    || sURL.endsWith(SERVICE_DOCUMENT_GET_DOCUMENT_FILE)
+                    || sURL.endsWith(SERVICE_DOCUMENT_GET_DOCUMENTS)
+                    || sURL.endsWith(SERVICE_DOCUMENT_SET_DOCUMENT_FILE)
+                    || sURL.contains(SERVICE_OBJECT_FILE)
+                    || sURL.contains(SERVICE_DOCUMENT_GET_DOCUMENT_ABSTRACT)) {
+            } else {
+                LOG_BIG.debug("(sResponseBody={})", sResponseBody);
+            }
+        }
         String sType = "";
         try {
             LOG.info("URL: {} method: {}", oRequest.getRequestURL(), oRequest.getMethod());
@@ -450,74 +486,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 	}
 	
 	
-	/**
-	 * проверка sResponseBody на длину
-	 * @param oRequest
-	 * @param oResponse
-	 * @param nLen
-	 * @param sURL
-	 * @return
-	 */
-	public String checkResponseBody(HttpServletRequest oRequest, HttpServletResponse oResponse, int nLen, String sURL) {
-		String sResponseBody = !bFinish ? null : oResponse.toString();
-        if (bFinish) {
-        	sResponseBody = sCut(nLen, sResponseBody);
-            LOG.info("(sResponseBody={})", sResponseBody);
-            if (sURL.endsWith(SERVICE_ACTION_ITEM_GET_SERVICE)
-                    || sURL.endsWith(SERVICE_ACTION_ITEM_GET_SERVICES_TREE)
-                    || (sURL.endsWith(SERVICE_FORM_FORM_DATA)
-                    && "GET".equalsIgnoreCase(oRequest.getMethod().trim()))
-                    || sURL.endsWith(SERVICE_REPOSITORY_PROCESS_DEFINITIONS)
-                    || sURL.endsWith(SERVICE_ACTION_TASK_GET_START_FORM_DATA)
-                    || sURL.endsWith(SERVICE_ACTION_TASK_GET_ORDER_MESSAGES_LOCAL)
-                    || sURL.endsWith(SERVICE_ACTION_FLOW_GET_FLOW_SLOTS_SERVICE_DATA)
-                    || sURL.contains(SERVICE_RUNTIME_TASKS)
-                    || sURL.endsWith(SERVICE_HISTORY_HISTORIC_TASK_INSTANCES)
-                    || sURL.endsWith(SERVICE_ACTION_TASK_GET_LOGIN_B_PS)
-                    || sURL.endsWith(SERVICE_SUBJECT_MESSAGE_GET_MESSAGES)
-                    || sURL.endsWith(SERVICE_SUBJECT_MESSAGE_GET_SERVICE_MESSAGES)
-                    || sURL.endsWith(SERVICE_OBJECT_PLACE_GET_PLACES_TREE)
-                    || sURL.endsWith(SERVICE_ACTION_EVENT_GET_LAST_TASK_HISTORY)
-                    || sURL.endsWith(SERVICE_ACTION_EVENT_GET_HISTORY_EVENTS_SERVICE)
-                    || sURL.endsWith(SERVICE_ACTION_EVENT_GET_HISTORY_EVENTS)
-                    || sURL.endsWith(SERVICE_DOCUMENT_GET_DOCUMENT_CONTENT)
-                    || sURL.endsWith(SERVICE_DOCUMENT_GET_DOCUMENT_FILE)
-                    || sURL.endsWith(SERVICE_DOCUMENT_GET_DOCUMENTS)
-                    || sURL.endsWith(SERVICE_DOCUMENT_SET_DOCUMENT_FILE)
-                    || sURL.contains(SERVICE_OBJECT_FILE)
-                    || sURL.contains(SERVICE_DOCUMENT_GET_DOCUMENT_ABSTRACT)) {
-            } else {
-                LOG_BIG.debug("(sResponseBody={})", sResponseBody);
-            }
-        }
-		return sResponseBody;
-	}
-
-    
-    /**
-     * проверка длины урла
-     * @param nLen
-     * @param mRequestParam
-     * @param sURL
-     * @param sRequestBody
-     * @param bFinishFlag
-     * @return
-     */
-	public String checkRequestBody(int nLen, Map<String, String> mRequestParam, String sURL, String sRequestBody) {
-		if (!bFinish) {
-        	sRequestBody = sCut(nLen, sRequestBody);
-            LOG.info("(mRequestParam={})", mRequestParam);
-            LOG.info("(sRequestBody={})", sRequestBody);
-            if (sURL.endsWith(SERVICE_DOCUMENT_SET_DOCUMENT_FILE)
-                    || sURL.contains(SERVICE_OBJECT_FILE)) {
-            	 LOG.info("sURL ", sURL);
-            } else {
-                LOG_BIG.debug("(sRequestBody={})", sRequestBody);
-            }
-        }
-		return sRequestBody;
-	}
-
     private boolean isUpdateTask(HttpServletRequest oRequest) {
         return oRequest.getRequestURL().toString().indexOf(RUNTIME_TASKS) > 0
                 && PUT.equalsIgnoreCase(oRequest.getMethod().trim());
