@@ -309,6 +309,7 @@ public class FlowService implements ApplicationContextAware {
                 if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
                   ||(flow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())){
                     aExcludeFlowProperty.add(flowProperty);
+                    
                     LOG.info("flowProperty.getsData: " + flowProperty.getsData());
                     LOG.info("flowProperty.getsDateTimeAt: " + flowProperty.getsDateTimeAt());
                     LOG.info("flowProperty.getsDateTimeTo: " + flowProperty.getsDateTimeTo());
@@ -319,13 +320,16 @@ public class FlowService implements ApplicationContextAware {
                         DateTime currDateTime = startDate;
                         String cronExpressionString = entry.getKey();
                         
+                        LOG.info("cronExpressionString is: " + cronExpressionString);
+                        
                         try {
                             cronExpression = new CronExpression(cronExpressionString);
                         } catch (ParseException e) {
                             throw new RuntimeException(e);
                         }
                         
-                        while (currDateTime.isBefore(stopDate)) {
+                        
+                        while (startDate.isBefore(stopDate)) {
                             currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
                             
                             if (stopDate.compareTo(startDate) <= 0) {
