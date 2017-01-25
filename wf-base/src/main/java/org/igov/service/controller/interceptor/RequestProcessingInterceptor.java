@@ -362,7 +362,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         }
         LOG.info("Task id is - " + snID_Task);
 		if (snID_Task != null) {
-			closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory, snClosedTaskId, omRequestBody);
+			closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory, snID_Task, omRequestBody);
 		}
        LOG.info("Method saveClosedTaskInfo END");
     }
