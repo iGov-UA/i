@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="eco_1565_DozvZabrVuk" name="Видача дозволу на викиди забруднюючих речовин стаціонарними джерелами для об’єктів першої групи" isExecutable="true">
+  <process id="eco_1556_EcoEkspert" name="Видача висновку державної екологічної експертизи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
@@ -11,7 +11,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи;(статутна назва з реєстру)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Місцезнаходження юридичної особи;(вкажіть повну адресу з індексом)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи;(вкажіть повну адресу з індексом)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
@@ -19,30 +19,33 @@
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_4" name="Інформація про викиди" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sMisceVuk&quot;],&quot;sValue&quot;:&quot;Інформація про викиди&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sMisceVuk" name="Місце розташування об'єкту на якому будуть здійснюватись викиди;(вкажіть повну адресу з індексом)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nVukidTable" name="Викиди яких забруднюючих речовин плануэться здійснювати" type="table" default="${markerService.loadFromFile('table/eco/eco_1565_Zabrud_table.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Інформація про о'бєкт експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;tNazvObj&quot;],&quot;sValue&quot;:&quot;Інформація про о'бєкт експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="tNazvObj" name="Повна назва об'єкта експертизи;(наприклад: Розчистка русла р.Самари від алювіальних відкладів біля с.Веселе Трипільського району Полтавської області)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdresObj" name="Місце розташування; (вкажіть повну адресу) " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="tProectInfo" name="Інформація про організацію, що виготовила проект;(назва, адреса, індентифікаційний код)" type="textArea" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_2" name="Нормативна база, якою встановлюються вимоги для обгрунтування викідів" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sLabelZU&quot;],&quot;sValue&quot;:&quot;Нормативна база якою встановлюються вимоги для обгрунтування викідів&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sLabelZU" name="Закон Про охорону атмосферного повітря" type="label" default="посилання на &lt;a href=&quot;http://zakon2.rada.gov.ua/laws/show/2707-12 &quot; target=&quot;_blank&quot;&gt;Закон&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sLabelKMUPost" name="Постанова Кабінету Міністрів України від 13 березня 2002 р. № 302" type="label" default="посилання на &lt;a href=&quot;http://zakon2.rada.gov.ua/laws/show/z0341-06 &quot; target=&quot;_blank&quot;&gt;Постанову&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sLabelInstr" name="Інструкція про загальні вимоги до оформлення документів, у яких обґрунтовуються обсяги викидів від 09.03.2006 № 108" type="label" default="посилання на &lt;a href=&quot;http://zakon3.rada.gov.ua/laws/show/302-2002-%D0%BF &quot; target=&quot;_blank&quot;&gt;Інструкцію&lt;/a&gt;"></activiti:formProperty>
-        
-        <activiti:formProperty id="markersLine_3" name="Документація для отримання дозволу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;fileObgrunt&quot;],&quot;sValue&quot;:&quot;Документація для отримання дозволу&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="fileObgrunt" name="Обґрунтування обсягів викидів забруднюючих речовин, підготовлених відповідно до Інструкції;(завантажте ZIP архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої з держадміністрації про наявність або відсутність зауважень ГО;(лист який надсилає адміністрація через 30 днів після публікації про викиди в ЗМІ)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Документація для експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sLabelDBN2003&quot;],&quot;sValue&quot;:&quot;Документація для експертизи виготовляється відповідно до державних будівельних норм&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sLabelDBN2003" name=" " type="label" default="посилання на &lt;a href=&quot;http://dbn.at.ua/load/normativy/dbn/1-1-0-242 &quot; target=&quot;_blank&quot;&gt;Державні Будівельні Норми А.2.2.-1-2003&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Том (книга, розділ) «Оцінка впливів на навколишнє середовище»;(інформація, як проект вплине на серидовище згідно ДБН А.2.2.-1-2003)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Заява про наміри;(публікація в друкованих ЗМІ про намір реалізувати проект згідно п.1.6 ДБН А.2.2.-1-2003)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc3" name="Підтвердження публікації «заяви про наміри»;(сканкопія документу що підтверджує публікацію згідно п.1.6 ДБН А.2.2.-1-2003)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc4" name="Заява про екологічні наслідки діяльності;(публікація в друкованих ЗМІ про наслідки реалізації проекту згідно п.4 ДБН А.2.2.-1-2003)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc5" name="Підтвердження публікації «заяви про екологічні наслідки діяльності» в ЗМІ;(сканкопія документу що підтверджує публікацію відповідно ст. 10 і 35 ЗУ Про екологічну експертизу)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabelDBN2014" name=" " type="label" default="посилання на &lt;a href=&quot;http://dbn.at.ua/load/normativy/dbn/dbn_a_2_2_3_2014/1-1-0-1168 &quot; target=&quot;_blank&quot;&gt;Державні Будівельні Норми А.2.2-3-2014&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sDoc6" name="Загальна пояснювальна записка та основні креслення (марки ГП, ЗВК, ТХ);(план або схема проекту з поясненням згідно ДБН А.2.2-3-2014)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc7" name="Погодження з іншими органами (якщо такі є);(наприклад відповідь з державного агенства водних ресурсів, що вони не мають заперечень проти проекту)" type="file"></activiti:formProperty>
         
         <activiti:formProperty id="form_signed_all" name=" " type="file" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="markerPust" name="Маркер пустоты" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;sNameOrgan&quot;,&quot;sMailClerk&quot;,&quot;sAddress&quot;,&quot;sWorkTime&quot;,&quot;sPhoneOrgan&quot;,&quot;sShapka&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;sNameOrgan&quot;,&quot;sMailClerk&quot;,&quot;sAddress&quot;,&quot;sWorkTime&quot;,&quot;sPhoneOrgan&quot;,&quot;sShapka&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Міністерство екології та природних ресурсів України"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible" default="м. Київ, вул. Митрополита Василя Липківського, 35"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" default="ЧАС РОБОТИ"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default="ТЕЛЕФОН"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default="Міністерство екології та природних ресурсів України "></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача дозволу на викиди забруднюючих речовин стаціонарними джерелами для об’єктів першої групи"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="видачу дозволу на викиди забруднюючих речовин стаціонарними джерелами для об’єктів першої групи"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача висновку державної екологічної експертизи"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="видачу висновку державної екологічної експертизи"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -56,7 +59,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Лист в мінстерство" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Лист в міністерство" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -90,7 +93,9 @@
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
 Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.&lt;br /&gt;
-Ви отримаєте відповідь протягом 30 днів.
+Граничні строки проведення державної  екологічної  експертизи об'єктів:&lt;br /&gt;
+1. до 45 календарних днів, з продовженням у разі потреби до 60 днів, а у виняткових  випадках, залежно від складності проблеми, -до 120 днів;&lt;br /&gt;
+2. за доопрацьованими матеріалами відповідно до висновків попередньої екологічної експертизи - до 30 календарних днів.&lt;br /&gt;
 &lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -124,13 +129,18 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMisceVuk" name="Місце розташування об'єкту на якому будуть здійснюватись викиди; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про о'бєкт експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;tNazvObj&quot;],&quot;sValue&quot;:&quot;Інформація про о'бєкт експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="tNazvObj" name="Повна назва об'єкта експертизи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sAdresObj" name="Місце розташування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="tProectInfo" name="Інформація про організацію, що виготовила проект; ;writable=false" type="textArea"></activiti:formProperty>
         
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/eco/eco_1556_EcoEkspert_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fileObgrunt},${fileMDA_Povid}</activiti:expression>
+            <activiti:expression>${sDoc1},${sDoc2},${sDoc3},${sDoc4},${sDoc5},${sDoc6},${sDoc7}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -151,7 +161,11 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMisceVuk" name="Місце розташування об'єкту на якому будуть здійснюватись викиди; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про о'бєкт експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;tNazvObj&quot;],&quot;sValue&quot;:&quot;Інформація про о'бєкт експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="tNazvObj" name="Повна назва об'єкта експертизи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sAdresObj" name="Місце розташування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="tProectInfo" name="Інформація про організацію, що виготовила проект; ;writable=false" type="textArea"></activiti:formProperty>
         
         <activiti:formProperty id="asSotrudik" name="Оберіть співробітника якому буде надано заявку в роботу" type="enum" required="true">
           <activiti:value id="sEnamS1" name="Працівник №1"></activiti:value>
@@ -160,10 +174,11 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="sEnamS4" name="Працівник №4"></activiti:value>
           <activiti:value id="sEnamS5" name="Працівник №5"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/eco/eco_1556_EcoEkspert_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fileObgrunt},${fileMDA_Povid}</activiti:expression>
+            <activiti:expression>${sDoc1},${sDoc2},${sDoc3},${sDoc4},${sDoc5},${sDoc6},${sDoc7}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -171,6 +186,8 @@ ${sNameOrgan}&lt;br /&gt;
     <userTask id="usertask2" name="ОПРАЦЮВАННЯ" activiti:candidateGroups="test_ECO">
       <extensionElements>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sNameUrOsob&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
@@ -183,17 +200,21 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMisceVuk" name="Місце розташування об'єкту на якому будуть здійснюватись викиди; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про о'бєкт експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;tNazvObj&quot;],&quot;sValue&quot;:&quot;Інформація про о'бєкт експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="tNazvObj" name="Повна назва об'єкта експертизи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sAdresObj" name="Місце розташування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="tProectInfo" name="Інформація про організацію, що виготовила проект; ;writable=false" type="textArea"></activiti:formProperty>
         
         <activiti:formProperty id="decide" name="Рішення про надання дозволу" type="enum" required="true">
-          <activiti:value id="accept" name="Дозвіл надано"></activiti:value>
-          <activiti:value id="reject" name="Відмова в наданні дозволу"></activiti:value>
+          <activiti:value id="accept" name="Документи пройшли експертизу"></activiti:value>
+          <activiti:value id="reject" name="Експертизу не пройдено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fileObgrunt},${fileMDA_Povid}</activiti:expression>
+            <activiti:expression>${sDoc1},${sDoc2},${sDoc3},${sDoc4},${sDoc5},${sDoc6},${sDoc7}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -201,7 +222,7 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow7" sourceRef="usertask4" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow8" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Про видачу дозволу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask4" name="Про проходження експертизи" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -216,7 +237,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Заяву оброблено. Дозвіл надано.&lt;/p&gt;
+&lt;p&gt;Заяву оброблено. Документи пройшли експертизу.&lt;/p&gt;
 Відповідь передано до канцелярії. Ви можете прийти і отримати дозвіл.&lt;br /&gt;
 Якщо ви обрали отримати відповідь поштою, Вам буде надіслано лист.&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
@@ -256,7 +277,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;На жаль, вам відмовлено у наданні дозволу. &lt;/p&gt;
+&lt;p&gt;На жаль, надані Вами документи не пройшли експертизу. &lt;/p&gt;
 &lt;p&gt;Причина: ${comment}&lt;/p&gt;
 Відповідь з відмовою передана до канцелярії, можете прийти і забрати її. Якщо Ви замовили відповідь поштою, то буде надіслано лист.&lt;br /&gt;&lt;br /&gt;
 За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
@@ -298,8 +319,8 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання дозволу" type="enum" writable="false">
-          <activiti:value id="accept" name="Дозвіл надано"></activiti:value>
-          <activiti:value id="reject" name="Відмова в наданні дозволу"></activiti:value>
+          <activiti:value id="accept" name="Документи пройшли експертизу"></activiti:value>
+          <activiti:value id="reject" name="Експертизу не пройдено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asVudacha" name="Як заявнику надано відповідь" type="enum" required="true">
           <activiti:value id="sEnamNarochno" name="Відповідь надано нарочно"></activiti:value>
@@ -326,7 +347,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Запрошення в ЦНАП. ${sPosluga_name}</activiti:expression>
+          <activiti:expression>${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
@@ -365,7 +386,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Запрошення в ЦНАП. ${sPosluga_name}</activiti:expression>
+          <activiti:expression>${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
@@ -396,8 +417,8 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow17" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="usertask1" targetRef="usertask4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_eco_1565_DozvZabrVuk">
-    <bpmndi:BPMNPlane bpmnElement="eco_1565_DozvZabrVuk" id="BPMNPlane_eco_1565_DozvZabrVuk">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_eco_1556_EcoEkspert">
+    <bpmndi:BPMNPlane bpmnElement="eco_1556_EcoEkspert" id="BPMNPlane_eco_1556_EcoEkspert">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="-30.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
