@@ -5,7 +5,7 @@
       <extensionElements>
         <activiti:formProperty id="info" name="Звернення, що подані до 16 години 00 хвилин, будуть невідкладно опрацьовані працівником служби діловодства в день надходження звернення у продовж робочого часу" type="label" default="а ті звернення, які подані після 16 години 00 хвилин, будуть невідкладно опрацьовані на наступний робочий день"></activiti:formProperty>
          <activiti:formProperty id="saCourt" name="Оберіть відповідний апеляційний суд" type="enum" required="true" default="sEnumCourtKiiv">
-          <activiti:value id="sEnumCourtKiiv" name="Київський апеляційний суд"></activiti:value>
+          <activiti:value id="sEnumCourtKiiv" name="Київський апеляційний господарський суд"></activiti:value>
          </activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище особи, яка внесла дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я особи, яка внесла дані" type="string"></activiti:formProperty>
@@ -281,7 +281,7 @@
     <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Appeal">
       <extensionElements>
         <activiti:formProperty id="saCourt" name="Оберіть відповідний апеляційний суд" type="enum" writable="false">
-          <activiti:value id="sEnumCourtKiiv" name="Київський апеляційний суд"></activiti:value>
+          <activiti:value id="sEnumCourtKiiv" name="Київський апеляційний господарський суд"></activiti:value>
          </activiti:formProperty>
         <activiti:formProperty id="fio" name="ПІБ особи, яка внесла дані" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPositionAplicant" name="Посада особи, яка внесла дані; ;writable=false" type="string"></activiti:formProperty>
@@ -600,10 +600,10 @@
 Супроводний лист щодо отриманих документів знаходиться у додатку до листа.<br />
 Реєстраційний номер ${sNumberAplication}<br />
 Дата та час ознайомлення зі справою ${sDateAplication}<br />
-Телефон для довідок:(044) 536-18-01 та (044) 536-18-23
+Телефон для довідок:(044) ///
 <br />
 [pattern/mail/_common_signature_start.html]
-Вищий господарський суд України<br />
+enum{[saCourt]}<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
@@ -638,10 +638,10 @@ ${sListDocumentsLetter}
 Причина: enum{[reject_1]} ${sComment}<br/>
 Cканкопія відповідного акту Суду знаходиться у додатку до листа.<br/>
 Номер справи ${sNumberCase}.<br/>
-Телефон для довідок:(044) 536-18-01 та (044) 536-18-23
+Телефон для довідок:(044) \\\
 <br />
 [pattern/mail/_common_signature_start.html]
-Вищий господарський суд України<br />
+enum{[saCourt]}<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>

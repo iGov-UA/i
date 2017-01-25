@@ -255,7 +255,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow4" sourceRef="usertask1_green" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="escalationTimer" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var delta='10';
+      <script>var delta='20';
 var unixdate= Math.round((new Date()).getTime());
 var unixdate=unixdate+86400*1000*delta;
 var new_src = new Date(unixdate);
@@ -317,8 +317,10 @@ execution.setVariable('sCustom', custom)</script>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
                                     <p>
-                              		Ви отримали послугу "Видача паспорта громадянина України замість утраченого або викраденого".
-                              		Якщо для замовлення послуги Ви використовували BankID, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
+                              		
+Ви скористалися  послугою "Видача паспорта громадянина України замість утраченого або викраденого".</p>
+<p>Нагадуємо Вам, що Ви можете перевірити готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p> 
+                              	  <p>	Якщо для замовлення послуги Ви використовували BankID, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
                               		</p>
                               		[pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
@@ -440,8 +442,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
