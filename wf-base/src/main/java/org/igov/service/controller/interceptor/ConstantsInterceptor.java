@@ -2,6 +2,12 @@ package org.igov.service.controller.interceptor;
 
 import java.util.regex.Pattern;
 
+
+/**
+ * интерфейс для объявления статических переменных, используемых в интерсепторе
+ * @author inna
+ *
+ */
 public interface ConstantsInterceptor {
 	static final String SYSTEM_ERR = "SYSTEM_ERR";
 	static final String SERVICE_DOCUMENT_GET_DOCUMENT_ABSTRACT = "/service/document/getDocumentAbstract";
