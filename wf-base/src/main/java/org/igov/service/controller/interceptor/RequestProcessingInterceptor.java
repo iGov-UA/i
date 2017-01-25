@@ -367,7 +367,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {}, sPhone {})", sMailTo, snID_Subject,
                             sPhone);
                     String sURL = generalConfig.getSelfHostCentral() + URI_SYNC_CONTACTS;
-                    LOG.info("Подключаемся к центральному порталу for sURL: "+sURL);
+                    LOG.info("Подключаемся к центральному порталу by sURL: "+sURL);
                     String sResponse = httpRequester.getInside(sURL, mParamSync);
                     LOG.info("Подключение осуществлено.. sResponse is: "+sResponse);
                 } catch (Exception ex) {
