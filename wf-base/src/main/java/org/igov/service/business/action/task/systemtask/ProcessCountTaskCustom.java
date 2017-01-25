@@ -68,7 +68,9 @@ public class ProcessCountTaskCustom implements JavaDelegate, TaskListener {
             
 //		String snCount = getActionProcessCount(execution.getProcessDefinitionId(), null);
 		//int res = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, StringUtils.substringBefore(sID_BP, ":"), nID_Service, null);
-		int nCount = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, sParamKey, null, null);
+                
+                int nCount = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, sParamKey, null);
+		//int nCount = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, sParamKey, null, null);
 		String snCount = String.format("%07d", nCount);
 		LOG.info("Retrieved snCount={}", snCount);
 		
