@@ -717,9 +717,6 @@ public class ProcessSubjectService {
 			runtimeService.deleteProcessInstance(oProcessSubject_Сhild.getSnID_Process_Activiti(),
 				oProcessSubjectStatusUnactual.getsID());
 			
-			LOG.info("ProcessInstance after delete = " + runtimeService.createProcessInstanceQuery()
-		    .processInstanceId(oProcessSubject_Сhild.getSnID_Process_Activiti()).singleResult());
-			
 		    }
 
 		}
