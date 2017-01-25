@@ -57,6 +57,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
     private static final Pattern SREQUESTBODY_PATTERN = Pattern.compile("\"assignee\":\"[а-яА-Яa-z_A-z0-9]+\"");
+    private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
 
     @Autowired
     protected RuntimeService runtimeService;
@@ -279,6 +280,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 && oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0
                 && "POST".equalsIgnoreCase(oRequest.getMethod().trim());
     }
+    
+    
 
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
             throws Exception {
@@ -363,6 +366,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     mParamSync.put("sPhone", sPhone);
                     LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {}, sPhone {})", sMailTo, snID_Subject,
                             sPhone);
+                    String sURL = generalConfig.getSelfHostCentral() + URI_SYNC_CONTACTS;
+                    LOG.info("Подключаемся к центральному порталу for sURL: "+sURL);
+                    String sResponse = httpRequester.getInside(sURL, mParamSync);
+                    LOG.info("Подключение осуществлено.. sResponse is: "+sResponse);
                 } catch (Exception ex) {
                     LOG.warn("(isSaveTask exception {})", ex.getMessage());
                 }
@@ -411,11 +418,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         LOG.info("Looking for a task with ID {}", snID_Task);
 
-        if (snID_Task == null && mRequestParam.containsKey("taskId")) {
-            snID_Task = (String) mRequestParam.get("taskId");
-            LOG.info("Found taskId in mRequestParam {}", snID_Task);
-        }
-
         HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task)
                 .singleResult();
 
@@ -456,9 +458,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
     }
 
-
     protected void closeEscalationProcessIfExists(String sID_Process) {
         closeTaskEvent.closeEscalationProcessIfExists(sID_Process);
     }
-
+    
 }
