@@ -204,7 +204,7 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingDRACS" name="Рішення про надання послуги" type="enum" required="true">
+        <activiti:formProperty id="asEnjoyingDRACS" name="Оберіть відділ ДРАЦС або відправити відмову" type="enum" required="true">
           <activiti:value id="1200000000_2" name="Амур-Нижньодніпровський районний відділ (пр. Слобожанський, 15)"></activiti:value>
           <activiti:value id="1200000000_3" name="Шевченківський районний відділ (пр. Гагаріна, 112)"></activiti:value>
           <activiti:value id="1200000000_4" name="Соборний районний відділ (вул. Володимира Вернадського, 15)"></activiti:value>
@@ -224,11 +224,7 @@
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_5_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Шнші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_FeePay},${Scan_MarriageTerm},${Scan_MarriageDoc1},${Scan_Passport1},${Scan_MarriageDoc2},${Scan_Passport2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <userTask id="usertask1" name="${sSourceType} - Перевірка інформації ДРАЦС" activiti:candidateGroups="common_zags_${asEnjoyingDRACS}">
@@ -327,6 +323,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/zags_0180_marriageFast.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_5_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Шнші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_FeePay},${Scan_MarriageTerm},${Scan_MarriageDoc1},${Scan_Passport1},${Scan_MarriageDoc2},${Scan_Passport2}]]></activiti:expression>
@@ -442,8 +439,13 @@
           <activiti:value id="accept2" name="Підтверджую, що заявники отримали послугу"></activiti:value>
           <activiti:value id="reject2" name="Громадяни не з'явилися для отримання послуги. Закрити заявку."></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+        <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_FeePay},${Scan_MarriageTerm},${Scan_MarriageDoc1},${Scan_Passport1},${Scan_MarriageDoc2},${Scan_Passport2}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
@@ -628,7 +630,7 @@ ${sMail_Signature} <br>
     </serviceTask>
     <sequenceFlow id="flow76" sourceRef="servicetask20" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow79" sourceRef="usertask5" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow80" name="${decide == 'returnApp'}" sourceRef="exclusivegateway1" targetRef="usertask1">
+    <sequenceFlow id="flow80" name="${decide == 'returnApp'}" sourceRef="exclusivegateway1" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'returnApp'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
@@ -728,10 +730,10 @@ ${sMail_Signature}<br>
         <omgdc:Bounds height="40.0" width="40.0" x="641.0" y="360.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask21" id="BPMNShape_servicetask21">
-        <omgdc:Bounds height="63.0" width="202.0" x="880.0" y="349.0"></omgdc:Bounds>
+        <omgdc:Bounds height="63.0" width="202.0" x="340.0" y="349.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent11" id="BPMNShape_endevent11">
-        <omgdc:Bounds height="35.0" width="35.0" x="964.0" y="440.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="254.0" y="363.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="270.0" y="111.0"></omgdi:waypoint>
@@ -792,23 +794,23 @@ ${sMail_Signature}<br>
       <bpmndi:BPMNEdge bpmnElement="flow80" id="BPMNEdge_flow80">
         <omgdi:waypoint x="681.0" y="580.0"></omgdi:waypoint>
         <omgdi:waypoint x="850.0" y="579.0"></omgdi:waypoint>
-        <omgdi:waypoint x="850.0" y="467.0"></omgdi:waypoint>
-        <omgdi:waypoint x="754.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="307.0"></omgdi:waypoint>
+        <omgdi:waypoint x="754.0" y="307.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="712.0" y="540.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow81" id="BPMNEdge_flow81">
-        <omgdi:waypoint x="681.0" y="380.0"></omgdi:waypoint>
-        <omgdi:waypoint x="880.0" y="380.0"></omgdi:waypoint>
+        <omgdi:waypoint x="641.0" y="380.0"></omgdi:waypoint>
+        <omgdi:waypoint x="542.0" y="380.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow84" id="BPMNEdge_flow84">
         <omgdi:waypoint x="661.0" y="400.0"></omgdi:waypoint>
         <omgdi:waypoint x="661.0" y="440.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow85" id="BPMNEdge_flow85">
-        <omgdi:waypoint x="981.0" y="412.0"></omgdi:waypoint>
-        <omgdi:waypoint x="981.0" y="440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="380.0"></omgdi:waypoint>
+        <omgdi:waypoint x="289.0" y="380.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow86" id="BPMNEdge_flow86">
         <omgdi:waypoint x="662.0" y="742.0"></omgdi:waypoint>
