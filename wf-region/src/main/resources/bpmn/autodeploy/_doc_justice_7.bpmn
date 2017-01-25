@@ -25,14 +25,7 @@
        
       
       
-        <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
-       
-         <activiti:formProperty id="markers2" name="заховати asTypeResolution" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;asTypeResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sTextResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'картошечка'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Електронна форма документа" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
-        
+            
         <activiti:formProperty id="sNumberPrevious" name="Вхідний № попереднього звернення" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="asTypeDelivery" name="Вид доставки" type="enum" required="true">
@@ -145,7 +138,10 @@
           <activiti:value id="sEnumYesControl" name="взяти на особливий контроль"></activiti:value>
           <activiti:value id="sEnumNoControl" name="не брати на особливий контроль"></activiti:value>
         </activiti:formProperty>
-        
+        <activiti:formProperty id="asJustified" name="Обґрунтовано; ;sID_CheckboxTrue=sEnumJustified" type="enum" default="sEnumNotJustified">
+          <activiti:value id="sEnumJustified" name="Обґрунтовано"></activiti:value>
+          <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
+        </activiti:formProperty>
          <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" required="true"></activiti:formProperty>
          
          <activiti:formProperty id="asPlace" name="Місто/район" type="enum">
@@ -215,32 +211,27 @@
           <activiti:value id="sEnum24" name="Інші"></activiti:value>
         </activiti:formProperty>
         
+ 		<activiti:formProperty id="sNumberRegistration" name="Лист № (вихідний номер кореспондента)" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sDateDoc" name="Дата (вихідна дата кореспондента)" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="string"></activiti:formProperty>
+
+ 		<activiti:formProperty id="sTable1" name="Структурний підрозділ, що здійснює розгляд" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_4.json')}"></activiti:formProperty>
+       
+ 		<activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea"></activiti:formProperty>
+  		<activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
+   
+  	    <activiti:formProperty id="sDateAnswer" name="Дата зняття з контролю" type="date"></activiti:formProperty>
+  	    <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateAnswer" name="Дата списання до справи" type="date"></activiti:formProperty>
+      
+        <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Електронна форма документа" type="file"></activiti:formProperty>
+       
+        <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+      
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
-Лист № (вихідний номер кореспондента)
-Дата (вихідна дата кореспондента)
-Обґрунтовано
-Структурний підрозділ, що здійснює розгляд
-Дата направлення відповіді
-Дата зняття з контролю
-Дата списання до справи
-Результати розгляду
-Хід виконання
- -->        
         
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_4_print.html]" type="invisible" default="РКК" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_4_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
@@ -456,7 +447,7 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)
 
 //2. назначение даты исполнения - по умолчанию + 30 дней к текущей даты и перевод даты в нужный формат дд/мм/гггг
 var updatedDate = new Date();
-var days = 30;
+var days = 15;
 updatedDate.setDate(new Date().getDate() + days);
 var d = updatedDate.getDate();
 if (d &lt; 10) d = "0"+d;
