@@ -59,6 +59,7 @@ public class ServiceTagService {
             LOG.info("!!! rootTagNode: " + parentTag.getsID() + " " + parentTag.getsName_RU());
 
             final Long rootTagId = parentTag.getId();
+            //final Long rootTagId = rootTagNode.getTag().getId();
             if (hasRootIdFilter && !rootTagId.equals(nID_ServiceTag_Root)) {
                 continue;
             }
@@ -71,18 +72,18 @@ public class ServiceTagService {
             nodeVO.setoServiceTag_Root(parentTag);
             for (ServiceTagTreeNode childNode : rootTagNode.getChildren()) {
                 final ServiceTag childTag = childNode.getTag();
-
+                
                 if (hasChildIdFilter && !childNode.getTag().getId().equals(nID_ServiceTag_Child)) {
                     continue;
                 }
-
+                 
                 if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
                     continue;
                 }
 
                 if (!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
                         includeTestEntities)) {
-                    continue;
+                    //continue;
                 }
 
                 nodeVO.addChild(childTag);
@@ -91,12 +92,16 @@ public class ServiceTagService {
             if (nodeVO.getaServiceTag_Child().isEmpty() &&
                     !isSuitable(parentTag, tagIdToServices.get(parentTag.getId()), nID_Category, sFind,
                             asID_Place_UA, includeTestEntities)) {
-                continue;
+                //continue;
             }
 
             if (!nodeVO.getaServiceTag_Child().isEmpty() || bShowEmptyFolders) {
                 res.add(nodeVO);
-
+                
+                LOG.info("nodeVO.getaServiceTag_Child: ", nodeVO.getaServiceTag_Child());
+                LOG.info("nodeVO.nodeVO.getaService: ", nodeVO.getaService());
+                LOG.info("nodeVO.getoServiceTag_Root: ", nodeVO.getoServiceTag_Root());
+                
                 if (!includeServices) {
                     continue;
                 }
