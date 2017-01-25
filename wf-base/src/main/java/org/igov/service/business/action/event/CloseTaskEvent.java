@@ -67,14 +67,14 @@ public class CloseTaskEvent {
 
 	private JSONParser oJSONParser = new JSONParser();
 
-	public void doWorkOnCloseTaskEvent(boolean bSaveHistory, String snID_Task, JSONObject omRequestBody)
+	public void doWorkOnCloseTaskEvent(boolean bSaveHistory, String snClosedTaskId, JSONObject omRequestBody)
 			throws ParseException {
             LOG.info("Method doWorkOnCloseTaskEvent started");
             
              Map<String, String> mParam = new HashMap<>();
              mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
 	 HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
-                    .taskId(snID_Task).singleResult();
+                    .taskId(snClosedTaskId).singleResult();
 
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
             closeEscalationProcessIfExists(snID_Process);
@@ -86,7 +86,7 @@ public class CloseTaskEvent {
                 //------------
                 HistoricTaskInstance taskDetails = historyService
                         .createHistoricTaskInstanceQuery()
-                        .includeProcessVariables().taskId(snID_Task)
+                        .includeProcessVariables().taskId(snClosedTaskId)
                         .singleResult();
                 LOG_BIG.debug("taskDetails = {}", taskDetails);
                 if (taskDetails != null) {
@@ -141,7 +141,7 @@ public class CloseTaskEvent {
                             Long countClaim = Long.valueOf(sResponse);
                             LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
                             if (countClaim.compareTo(50L) > 0) {
-                                String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Task);
+                                String snID_Proccess_Feedback = feedBackService.runFeedBack(snClosedTaskId);
 
                                 /* String snID_Proccess_Feedback = bpHandler
                                                               .startFeedbackProcess(snID_Task, snID_Process, sProcessName);*/
