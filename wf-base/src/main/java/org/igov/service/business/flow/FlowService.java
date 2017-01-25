@@ -299,7 +299,7 @@ public class FlowService implements ApplicationContextAware {
         
         List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
         List<DateTime> aDateRange_Exclude = new ArrayList<>();
-        CronExpression cronExpression;
+        CronExpression cronExpression = null;
         
         for (FlowProperty flowProperty : flow.getFlowProperties()){
             if(flowProperty.getbExclude()){
@@ -325,22 +325,25 @@ public class FlowService implements ApplicationContextAware {
                         try {
                             cronExpression = new CronExpression(cronExpressionString);
                         } catch (ParseException e) {
-                            throw new RuntimeException(e);
+                            //throw new RuntimeException(e);
                         }
                         
-                        
-                        while (startDate.isBefore(stopDate)) {
-                            currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
-                            
-                            if (stopDate.compareTo(startDate) <= 0) {
-                                break;
+                        if(cronExpression != null){
+                            while (startDate.isBefore(stopDate)) {
+                                currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
+
+                                if (stopDate.compareTo(startDate) <= 0) {
+                                    break;
+                                }
+
+                                aDateRange_Exclude.add(currDateTime);
+
+                                LOG.info("currDateTime for exclude is : " + currDateTime.toString());
                             }
-                            
-                            aDateRange_Exclude.add(currDateTime);
-                            
-                            LOG.info("currDateTime for exclude is : " + currDateTime.toString());
                         }
                     }
+                    
+                    LOG.info("aDateRange_Exclude is: ", aDateRange_Exclude);
                 }
             }
         }
