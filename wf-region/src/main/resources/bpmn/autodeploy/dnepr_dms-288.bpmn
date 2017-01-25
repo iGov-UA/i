@@ -156,8 +156,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -222,8 +221,7 @@ ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -268,7 +266,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow42" sourceRef="escalationTimer" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var delta='10';
+      <script>var delta='20';
 var unixdate= Math.round((new Date()).getTime());
 var unixdate=unixdate+86400*1000*delta;
 var new_src = new Date(unixdate);
@@ -329,9 +327,11 @@ execution.setVariable('sCustom', custom)</script>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
+<p>
+Ви скористалися  послугою "Отримання паспорта громадянина України для виїзду за кордон для дитини".
+</p>
+<p>Нагадуємо Вам, що Ви можете перевірити готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p> 
 
-                              		Ви отримали послугу "Отримання паспорта громадянина України для виїзду за кордон для дитини".
-                              		</p>
                               		[pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -457,8 +457,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
