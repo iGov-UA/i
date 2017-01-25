@@ -11,22 +11,43 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи;(Статутна назва з реєстру)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Місцезнаходження юридичної особи;(Вкажіть повну адресу з індексом)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
+          <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
+          <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
+        </activiti:formProperty
+        
+        
+        <activiti:formProperty id="markersLine_2" name="Відомості відповідно до Порядку внесення установ до переліку Мінприроди України (коди КОАТУУ, КОДУ, КВЕД)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sLabelKOATU&quot;],&quot;sValue&quot;:&quot;Відомості відповідно до Порядку внесення установ до переліку Мінприроди України (коди КОАТУУ, КОДУ, КВЕД)&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sLabelKOATU" name=" " type="label" default="посилання на &lt;a href=&quot;http://dovidnyk.in.ua/directories &quot; target=&quot;_blank&quot;&gt;класифікатор об'єктів адміністративно-територіального устрою України(КОАТУУ)&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sKOATUObl" name="Назва області" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lKOATUObl" name="Код області за КОАТУУ" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sKOATURn" name="Назва району" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lKOATURn" name="Код області за КОАТУУ" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sKOATUTown" name="Назва населеного пункту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lKOATUTown" name="Код населеного пункту за КОАТУУ" type="long" required="true"></activiti:formProperty>
+                        
+        <activiti:formProperty id="sLabelKODU" name=" " type="label" default="посилання на &lt;a href=&quot;http://dovidnyk.in.ua/documents/kodu &quot; target=&quot;_blank&quot;&gt;класифікація органів державного управління (КОДУ)&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sKODU" name="Відомча підпорядкованість;(назва органу якому підпорядковується)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lKODU" name="Код органу за КОДУ" type="long" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabelKVED" name=" " type="label" default="посилання на &lt;a href=&quot;http://zakon5.rada.gov.ua/rada/show/vb457609-10 &quot; target=&quot;_blank&quot;&gt;класифікатор видів економічної діяльності(КВЕД) &lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sKVED" name="Назва виду економічної діяльності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lKVED" name="Код діяльності за КВЕД" type="long" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Інформація про персонал" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;nWorkersTable&quot;],&quot;sValue&quot;:&quot;Інформація про персонал&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nWorkersTable" name="Дані про професійний і кваліфікаційний рівні керівника та працівників організації" type="table" default="${markerService.loadFromFile('table/eco/eco_1565_Workers_table.json')}"></activiti:formProperty>
+        
         
         <activiti:formProperty id="asPoperDij" name="Чи займалась ваша організація раніше ціэю діяльністю" type="enum" required="true">
           <activiti:value id="sEnamPoperTak" name="Так"></activiti:value>
           <activiti:value id="sEnamPoperNi" name="Ні"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
-          <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
-          <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
-        </activiti:formProperty>
-        
-        
+                
         <activiti:formProperty id="nWorkersTable" name="Дані про професійний і кваліфікаційний рівні керівника та працівників організації" type="table" default="${markerService.loadFromFile('table/eco/eco_1565_Workers_table.json')}"></activiti:formProperty>
         
         
@@ -37,12 +58,12 @@
         <activiti:formProperty id="form_signed_all" name=" " type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;sNameOrgan&quot;,&quot;sMailClerk&quot;,&quot;sAddress&quot;,&quot;sWorkTime&quot;,&quot;sPhoneOrgan&quot;,&quot;sShapka&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Міністерство екології та природних ресурсів України"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible" default="м. Київ, вул. Митрополита Василя Липківського, 35"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" default="ЧАС РОБОТИ"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default="ТЕЛЕФОН"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default="Міністерство екології та природних ресурсів України "></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача дозволу на викиди забруднюючих речовин стаціонарними джерелами для об’єктів першої групи"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="видачу дозволу на викиди забруднюючих речовин стаціонарними джерелами для об’єктів першої групи"></activiti:formProperty>
       </extensionElements>
