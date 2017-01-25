@@ -50,7 +50,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  */
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter implements ConstantsInterceptor {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     private boolean bFinish = false;
     private static final String FORM_FORM_DATA = "/form/form-data";
@@ -362,7 +362,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         }
         LOG.info("Task id is - " + snID_Task);
 		if (snID_Task != null) {
-			closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory, snClosedTaskId, omRequestBody);
+			closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory, snID_Task, omRequestBody);
 		}
        LOG.info("Method saveClosedTaskInfo END");
     }

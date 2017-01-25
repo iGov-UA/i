@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+   
+    <changeSet id="issue-1385-subjectAddColums_1" author="olga" failOnError="false">
+        <addColumn tableName="Subject">
+            <column name="nID_SubjectHuman" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_Subject_SubjectHuman"
+                             referencedTableName="SubjectHuman" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1385-subjectAddColums_2" author="olga" failOnError="false">
+        <addColumn tableName="Subject">
+            <column name="nID_SubjectOrgan" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_Subject_SubjectOrgan"
+                             referencedTableName="SubjectOrgan" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1385-subjectAddColums_3" author="olga">
+        <sql splitStatements="true" dbms="postgresql">
+            update "Subject" s set "nID_SubjectOrgan" = (select so."nID" from "SubjectOrgan" so where so."nID_Subject" = s."nID") ;
+            update "Subject" s set "nID_SubjectHuman" = (select sh."nID" from "SubjectHuman" sh where sh."nID_Subject" = s."nID") ;
+        </sql>
+    </changeSet>
+</databaseChangeLog>
