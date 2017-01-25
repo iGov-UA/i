@@ -37,7 +37,7 @@
         
         <activiti:formProperty id="form_signed_all" name=" " type="file" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="markerPust" name="Маркер пустоты" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;sNameOrgan&quot;,&quot;sMailClerk&quot;,&quot;sAddress&quot;,&quot;sWorkTime&quot;,&quot;sPhoneOrgan&quot;,&quot;sShapka&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;sNameOrgan&quot;,&quot;sMailClerk&quot;,&quot;sAddress&quot;,&quot;sWorkTime&quot;,&quot;sPhoneOrgan&quot;,&quot;sShapka&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Міністерство екології та природних ресурсів України"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible" default="м. Київ, вул. Митрополита Василя Липківського, 35"></activiti:formProperty>
@@ -122,7 +122,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ Заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
@@ -130,6 +130,12 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про о'бєкт експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;tNazvObj&quot;],&quot;sValue&quot;:&quot;Інформація про о'бєкт експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="tNazvObj" name="Повна назва об'єкта експертизи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sAdresObj" name="Місце розташування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="tProectInfo" name="Інформація про організацію, що виготовила проект; ;writable=false" type="textArea"></activiti:formProperty>
+        
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/eco/eco_1556_EcoEkspert_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -144,12 +150,11 @@ ${sNameOrgan}&lt;br /&gt;
     <userTask id="usertask4" name="РОЗПОДІЛ КЕРІВНИКОМ" activiti:candidateGroups="test_ECO">
       <extensionElements>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="tNazvObj" name="Повна назва об'єкта експертизи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ Заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
@@ -157,6 +162,11 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про о'бєкт експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;tNazvObj&quot;],&quot;sValue&quot;:&quot;Інформація про о'бєкт експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="tNazvObj" name="Повна назва об'єкта експертизи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sAdresObj" name="Місце розташування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="tProectInfo" name="Інформація про організацію, що виготовила проект; ;writable=false" type="textArea"></activiti:formProperty>
         
         <activiti:formProperty id="asSotrudik" name="Оберіть співробітника якому буде надано заявку в роботу" type="enum" required="true">
           <activiti:value id="sEnamS1" name="Працівник №1"></activiti:value>
@@ -183,7 +193,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ Заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
@@ -300,7 +310,7 @@ ${sPhoneOrgan}&lt;/p&gt;
         <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ Заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
