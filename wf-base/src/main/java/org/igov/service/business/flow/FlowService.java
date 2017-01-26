@@ -330,7 +330,9 @@ public class FlowService implements ApplicationContextAware {
                     Map<String, String> configuration = JsonRestUtils.readObject(flowProperty.getsData(), Map.class);
                     
                     for (Map.Entry<String, String> entry : configuration.entrySet()) {
-                        DateTime currDateTime = new DateTime(flowProperty.getsDateTimeAt());
+                        DateTime currDateTime = new DateTime(format.parseDateTime(flowProperty.getsDateTimeAt()));
+                        DateTime endDateTime = new DateTime(format.parseDateTime(flowProperty.getsDateTimeTo()));
+                        
                         String cronExpressionString = entry.getKey();
                         
                         LOG.info("cronExpressionString is: " + cronExpressionString);
@@ -342,7 +344,7 @@ public class FlowService implements ApplicationContextAware {
                         }
                         
                         if(cronExpression != null){
-                            while (currDateTime.isBefore(new DateTime(flowProperty.getsDateTimeTo()))) {
+                            while (currDateTime.isBefore(endDateTime)) {
                                 currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
 
                                 if (stopDate.compareTo(startDate) <= 0) {
