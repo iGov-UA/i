@@ -412,22 +412,31 @@ public class ProcessSubjectService {
                         .singleResult();
 
                 if (oProcessInstance != null) {
+                   
                     Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
                     LOG.info("mProcessVariable: " + mProcessVariable);
-                   for(String sProcessVariable: mProcessVariable.keySet()){
-                	   if(mProcessVariable.get(sProcessVariable) != null){
-                	   LOG.info("mProcessVariable class : "+ mProcessVariable.get(sProcessVariable).getClass());
-                	   LOG.info("mProcessVariable value : "+ mProcessVariable.get(sProcessVariable));}
+                   
+                    for(String sProcessVariable: mProcessVariable.keySet()){
+                	   
+                       //if(mProcessVariable.get(sProcessVariable) != null){
+                	   LOG.info("mProcessVariable param : " +
+                        //           "class:" + mProcessVariable.get(sProcessVariable).getClass() +
+                                   " name: " + sProcessVariable + " value: " +  mProcessVariable.get(sProcessVariable));
+                        //   }
                 	/*   if(mProcessVariable.get(sProcessVariable) instanceof Date){
                 		   df_StartProcess.format(mProcessVariable.get(sProcessVariable));
                 	   }*/ 
                    }
-                   for(String sParamDocument: mParamDocument.keySet()){
-                	   if(mParamDocument.get(sParamDocument) != null){
-                 	   LOG.info("mParamDocument class : "+ mParamDocument.get(sParamDocument).getClass());
-                 	   LOG.info("mParamDocument value : "+ mParamDocument.get(sParamDocument));}
-                   }
-                    Map<String, Object> mParamDocumentNew = new HashMap<>();
+                    
+                    for(String sParamDocument: mParamDocument.keySet()){
+                	//if(mParamDocument.get(sParamDocument) != null){
+                 	       LOG.info("mProcessVariable param : " +
+                        //           "class:" + mParamDocument.get(sParamDocument).getClass() +
+                                   " name: " + sParamDocument + " value: " +  mParamDocument.get(sParamDocument));
+                        //}
+                    }
+                   
+                   Map<String, Object> mParamDocumentNew = new HashMap<>();
                     
                    
 
