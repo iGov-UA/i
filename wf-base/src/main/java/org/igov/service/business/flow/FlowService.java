@@ -309,6 +309,12 @@ public class FlowService implements ApplicationContextAware {
         List<FlowProperty> aoFlowPropertyGroup = flowPropertyDao.findAllBy("sGroup", flow.getsGroup());
         
         for (FlowProperty flowProperty : aoFlowPropertyGroup){
+            LOG.info("flowProperty sName: " + flowProperty.getsName());
+            LOG.info("flowProperty sData: " + flowProperty.getsData());
+            LOG.info("flowProperty sGroup: " + flowProperty.getsGroup());
+        }
+        
+        /*for (FlowProperty flowProperty : aoFlowPropertyGroup){
             if(flowProperty.getbExclude()){
                 LOG.info("flowProperty.getoFlow_ServiceData().getnID_ServiceData: " + flowProperty.getoFlow_ServiceData().getnID_ServiceData());
                 LOG.info("flowProperty.getId: " + flowProperty.getId());
@@ -367,7 +373,7 @@ public class FlowService implements ApplicationContextAware {
                     LOG.info("aDateRange_Exclude is: ", aoDateRange_Exclude);
                 }
             }
-        }
+        }*/
         
         for (FlowProperty flowProperty : flow.getFlowProperties()) {
             if (flowProperty.getbExclude() == null || !flowProperty.getbExclude()) {
