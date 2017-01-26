@@ -305,6 +305,7 @@ public class FlowService implements ApplicationContextAware {
         CronExpression cronExpression = null;
         
         DateTimeFormatter format = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
+        SimpleDateFormat rangeformat = new SimpleDateFormat("dd.MM.yyyy");
         
         List<FlowProperty> aoFlowPropertyGroup = flowPropertyDao.findAllBy("sGroup", flow.getsGroup());
         
@@ -350,7 +351,7 @@ public class FlowService implements ApplicationContextAware {
                                 if (stopDate.compareTo(startDate) <= 0) {
                                     break;
                                 }
-
+                                
                                 aCronExcludeRange.add(currDateTime);
 
                                 LOG.info("currDateTime for exclude is : " + currDateTime.toString());
@@ -359,10 +360,22 @@ public class FlowService implements ApplicationContextAware {
                     }
                     
                     if(!aCronExcludeRange.isEmpty()){
-                        ExcludeDateRange oExcludeDateRange = new ExcludeDateRange();
-                        oExcludeDateRange.setsDateTimeAt(aCronExcludeRange.get(0));
-                        oExcludeDateRange.setsDateTimeTo(aCronExcludeRange.get(aCronExcludeRange.size() - 1));
-                        aoDateRange_Exclude.add(oExcludeDateRange);
+                        DateTime excludeStartDate = aCronExcludeRange.get(0);
+                        DateTime excludeEndDate = aCronExcludeRange.get(0);
+                        
+                        for(int i = 0; i < aCronExcludeRange.size(); i++){
+ 
+                            if(!rangeformat.format(excludeStartDate.toDate()).equals(rangeformat.format(aCronExcludeRange.get(i).toDate()))){
+                                
+                                ExcludeDateRange oExcludeDateRange = new ExcludeDateRange();
+                                oExcludeDateRange.setsDateTimeAt(excludeStartDate);
+                                oExcludeDateRange.setsDateTimeTo(excludeEndDate);
+                                aoDateRange_Exclude.add(oExcludeDateRange);
+                                excludeStartDate = aCronExcludeRange.get(i);
+                            }
+                            
+                            excludeEndDate = aCronExcludeRange.get(i);
+                        }
                     }
                     else
                     {
@@ -370,6 +383,14 @@ public class FlowService implements ApplicationContextAware {
                         oExcludeDateRange.setsDateTimeAt(format.parseDateTime(flowProperty.getsDateTimeAt()));
                         oExcludeDateRange.setsDateTimeTo(format.parseDateTime(flowProperty.getsDateTimeTo())); 
                         aoDateRange_Exclude.add(oExcludeDateRange);
+                    }
+                    
+                    for(ExcludeDateRange oExcludeDateRange : aoDateRange_Exclude)
+                    {
+                        LOG.info("---------------");
+                        LOG.info("start cron exclude date: " + oExcludeDateRange.getsDateTimeAt());
+                        LOG.info("stop cron exclude date:: " + oExcludeDateRange.getsDateTimeTo());
+                        LOG.info("---------------");
                     }
                     
                     LOG.info("aDateRange_Exclude is: ", aoDateRange_Exclude);
