@@ -8,7 +8,7 @@
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписаної обома нареченими заяви. Ви матимете можливість підписати заяву за допомогою ЕЦП або в продовж 3 днів з моменту замовлення послуги приїхати особисто до відділу ДРАЦС і підписати паперовий екземпляр заяви."></activiti:formProperty>
         <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організатора державної реєстрації шлюбу" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організатора державної реєстрації шлюбу" type="select" default="youthDnipro"></activiti:formProperty>
         <activiti:formProperty id="sPhoto" name="Фото урочистої зали" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sText6" name="Зверніть увагу" type="label" default="&lt;b&gt;Реквізити для сплати держ. мита та додаткових послуг Ви отримаєте в електронному листі після перевірки даних реєстратором&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPrivileges" name="Маєте пільгу? ; Якщо Ви маєте пільгу, оплата держ. мита не потрібна" type="enum" required="true">
@@ -578,8 +578,11 @@ ${sBankDetails2}<br>
 
 
 <b>Реквізити для сплати послуги організатора:</b><br>
-${sBankDetails1}
-<br>
+Отримувач: <b>МКЗК «ВХА «Юність Дніпра» ДМР</b><br>
+Банк отримувача: <b>ПАТ Приватбанк</b><br>
+МФО: <b>305299</b><br>
+Код ЄДРПОУ: <b>34733424</b><br>
+Розрахунковий рахунок: <b>26003050249899</b><br>
 Вартість послуги: <b> ${sSumOrganizer} грн </b><br>
 <br>
 
@@ -610,7 +613,7 @@ ${sMail_Signature} <br>
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] rozglyanuto. Vam neobhidno pidpysaty zayavu. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] rozglyanuto. Vam neobhidno splatyty za poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
