@@ -37,7 +37,10 @@ import org.activiti.engine.form.FormProperty;
 import org.igov.service.business.action.task.form.QueueDataFormType;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
+import org.igov.service.business.flow.handler.ExcludeDateRange;
 import org.igov.util.JSON.JsonRestUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.quartz.CronExpression;
 
 /**
@@ -298,8 +301,10 @@ public class FlowService implements ApplicationContextAware {
         List<FlowSlotVO> res = new ArrayList<>();
         
         List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
-        List<DateTime> aDateRange_Exclude = new ArrayList<>();
-        CronExpression cronExpression;
+        List<ExcludeDateRange> aoDateRange_Exclude = new ArrayList<>();
+        CronExpression cronExpression = null;
+        
+        DateTimeFormatter format = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
         
         for (FlowProperty flowProperty : flow.getFlowProperties()){
             if(flowProperty.getbExclude()){
@@ -309,34 +314,55 @@ public class FlowService implements ApplicationContextAware {
                 if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
                   ||(flow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())){
                     aExcludeFlowProperty.add(flowProperty);
+                    
                     LOG.info("flowProperty.getsData: " + flowProperty.getsData());
                     LOG.info("flowProperty.getsDateTimeAt: " + flowProperty.getsDateTimeAt());
                     LOG.info("flowProperty.getsDateTimeTo: " + flowProperty.getsDateTimeTo());
-                    
+                    List<DateTime> aCronExcludeRange = new ArrayList<>();
                     Map<String, String> configuration = JsonRestUtils.readObject(flowProperty.getsData(), Map.class);
                     
                     for (Map.Entry<String, String> entry : configuration.entrySet()) {
                         DateTime currDateTime = startDate;
                         String cronExpressionString = entry.getKey();
                         
+                        LOG.info("cronExpressionString is: " + cronExpressionString);
+                        
                         try {
                             cronExpression = new CronExpression(cronExpressionString);
                         } catch (ParseException e) {
-                            throw new RuntimeException(e);
+                            //throw new RuntimeException(e);
                         }
                         
-                        while (currDateTime.isBefore(stopDate)) {
-                            currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
-                            
-                            if (stopDate.compareTo(startDate) <= 0) {
-                                break;
+                        if(cronExpression != null){
+                            while (startDate.isBefore(stopDate)) {
+                                currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
+
+                                if (stopDate.compareTo(startDate) <= 0) {
+                                    break;
+                                }
+
+                                aCronExcludeRange.add(currDateTime);
+
+                                LOG.info("currDateTime for exclude is : " + currDateTime.toString());
                             }
-                            
-                            aDateRange_Exclude.add(currDateTime);
-                            
-                            LOG.info("currDateTime for exclude is : " + currDateTime.toString());
                         }
                     }
+                    
+                    if(!aCronExcludeRange.isEmpty()){
+                        ExcludeDateRange oExcludeDateRange = new ExcludeDateRange();
+                        oExcludeDateRange.setsDateTimeAt(aCronExcludeRange.get(0));
+                        oExcludeDateRange.setsDateTimeTo(aCronExcludeRange.get(aCronExcludeRange.size() - 1));
+                        aoDateRange_Exclude.add(oExcludeDateRange);
+                    }
+                    else
+                    {
+                        ExcludeDateRange oExcludeDateRange = new ExcludeDateRange();
+                        oExcludeDateRange.setsDateTimeAt(format.parseDateTime(flowProperty.getsDateTimeAt()));
+                        oExcludeDateRange.setsDateTimeTo(format.parseDateTime(flowProperty.getsDateTimeTo())); 
+                        aoDateRange_Exclude.add(oExcludeDateRange);
+                    }
+                    
+                    LOG.info("aDateRange_Exclude is: ", aoDateRange_Exclude);
                 }
             }
         }
@@ -351,7 +377,7 @@ public class FlowService implements ApplicationContextAware {
                     handler.setStartDate(startDate);
                     handler.setEndDate(stopDate);
                     handler.setFlow(flow);
-                    handler.setaDateRange_Exclude(aDateRange_Exclude);
+                    handler.setaDateRange_Exclude(aoDateRange_Exclude);
                     LOG.info("(startDate={}, stopDate={}, flowProperty.getsData()={})",
                             startDate, stopDate, flowProperty.getsData());
                     
@@ -365,7 +391,7 @@ public class FlowService implements ApplicationContextAware {
             }
         }
         
-        if(!aDateRange_Exclude.isEmpty()){
+        if(!aoDateRange_Exclude.isEmpty()){
             List<FlowSlot> aFlowSlot = flowSlotDao.findFlowSlotsByFlow(nID_Flow_ServiceData, startDate, stopDate);
             List<FlowSlot> flowSlotsToDelete = new ArrayList<>();
 
@@ -377,8 +403,10 @@ public class FlowService implements ApplicationContextAware {
                 }
 
 
-                for(DateTime excludeDate : aDateRange_Exclude){
-                    if ((oFlowSlot.getsDate().compareTo(excludeDate) == 0)&&(!bBusy)){
+                for(ExcludeDateRange oExcludeRange : aoDateRange_Exclude){
+                    if ((oFlowSlot.getsDate().isAfter(oExcludeRange.getsDateTimeAt())&&
+                        oFlowSlot.getsDate().isBefore(oExcludeRange.getsDateTimeTo()))&&(!bBusy))
+                    {
                         flowSlotsToDelete.add(oFlowSlot);
                     }
                 }

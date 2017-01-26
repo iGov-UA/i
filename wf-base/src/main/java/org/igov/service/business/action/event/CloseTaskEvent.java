@@ -222,7 +222,7 @@ public class CloseTaskEvent {
 					}
 				}
                 }
-                LOG.info("Method saveClosedTaskInfo finished");
+                LOG.info("Method doWorkOnCloseTaskEvent finished");
             }
          
          }
