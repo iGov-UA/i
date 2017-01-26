@@ -20,16 +20,24 @@
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
         
-        
         <activiti:formProperty id="markersLine_2" name="Відомості відповідно до Порядку внесення установ до переліку Мінприроди України (коди КОАТУУ, КОДУ, КВЕД)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sLabelKOATU&quot;],&quot;sValue&quot;:&quot;Відомості відповідно до Порядку внесення установ до переліку Мінприроди України (коди КОАТУУ, КОДУ, КВЕД)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sLabelKOATU" name=" " type="label" default="посилання на &lt;a href=&quot;http://dovidnyk.in.ua/directories &quot; target=&quot;_blank&quot;&gt;класифікатор об'єктів адміністративно-територіального устрою України(КОАТУУ)&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sKOATUObl" name="Назва області" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lKOATUObl" name="Код області за КОАТУУ" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sKOATURn" name="Назва району;(Не вказується якщо населений пункт не входить до складу районів)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="lKOATURn" name="Код району за КОАТУУ;(Не вказується якщо населений пункт не входить до складу районів)" type="long"></activiti:formProperty>
+        
+        <activiti:formProperty id="asChekRaion" name="Чи входить ваш населений  пункт до району?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sKOATURn" name="Назва району" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lKOATURn" name="Код району за КОАТУУ" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sKOATUTown" name="Назва населеного пункту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lKOATUTown" name="Код населеного пункту за КОАТУУ" type="long" required="true"></activiti:formProperty>
                         
+        <activiti:formProperty id="asChekOrgan" name="Чи підпорядковуєтесь ви органу державної або місцевої влади?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sLabelKODU" name=" " type="label" default="посилання на &lt;a href=&quot;http://dovidnyk.in.ua/documents/kodu &quot; target=&quot;_blank&quot;&gt;класифікація органів державного управління (КОДУ)&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sKODU" name="Відомча підпорядкованість;(назва органу якому підпорядковується)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lKODU" name="Код органу за КОДУ" type="long" required="true"></activiti:formProperty>
@@ -39,13 +47,12 @@
         <activiti:formProperty id="lKVED" name="Код діяльності за КВЕД" type="long" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_3" name="Інформація про персонал" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;nWorkersTable&quot;],&quot;sValue&quot;:&quot;Інформація про персонал&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="nWorkersTable" name="Дані про професійний і кваліфікаційний рівні керівника та працівників організації" type="table" default="${markerService.loadFromFile('table/eco/eco_1565_Workers_table.json')}"></activiti:formProperty>
+        <activiti:formProperty id="nWorkersTable" name="Дані про професійний і кваліфікаційний рівні керівника та працівників організації" type="table" default="${markerService.loadFromFile('table/eco/eco_1564_Workers_table.json')}"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="*Примітка1" type="label" default="У графі 7 зазначається інформація про наявність в організації інженерів-технологів, інженерів-хіміків, інженерів з налагодження вентиляційних систем, інженерів-екологів"></activiti:formProperty>
         <activiti:formProperty id="sText2" name="*Примітка2" type="label" default="Кількість працівників, які працюють в організації у відповідній галузі, не може бути менше ніж 5 осіб (без урахування керівників)"></activiti:formProperty>
         
-        
         <activiti:formProperty id="markersLine_4" name="Документація для внесення в перелік" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;asPoperDij&quot;],&quot;sValue&quot;:&quot;Документація для внесення в перелік&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asPoperDij" name="Чи займалась ваша організація раніше розробкою матеріалів, що обґрунтовують обсяги викидів?; ;sID_CheckboxTrue=yes" type="enum" default="no">
+        <activiti:formProperty id="asPoperDij" name="Чи займалась ваша організація раніше розробкою матеріалів, що обґрунтовують обсяги викидів?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -53,14 +60,11 @@
         <activiti:formProperty id="sDoc1" name="Перелік розроблених за останні два роки матеріалів, що обґрунтовують обсяги викидів забруднювальних речовин" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Перелік нормативно-методичної документації, яка використовується при розробці документів, що обґрунтовують обсяги викидів забруднювальних речовин" type="file" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="sDoc3" name="Витяг зі статуту, який підтверджує, що одним із видів діяльності є роботи з розробки документів, що обґрунтовують обсяги викидів;(сканована копія статуту)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDoc4" name="Інформаційна довідка про наявність програм на персональних електронно-обчислювальних машинах, які використовуються при розробці документів, що обґрунтовують обсяги викидів забруднювальних речовин" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDoc5" name="Відомості про систему контролю, управління якістю виробництва (стандарт організації, постанова з якості), які розроблені згідно зі стандартом з управління якістю та забезпечення якості" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDoc6" name="Копія наказу про призначення відповідальних за проведення робіт з обґрунтування обсягів викидів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDoc7" name="Копія свідоцтва та галузь про уповноваження (атестацію) відповідно до ДСТУ ISO 14001:2006." type="file" required="true"></activiti:formProperty>
-        
-        
-        
+        <activiti:formProperty id="sDoc3" name="Витяг зі статуту, який підтверджує, що одним із видів діяльності є роботи з розробки документів, що обґрунтовують обсяги викидів;(можливо завантажити електронну копію статуту)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc4" name="Інформаційна довідка про наявність програм на комп'ютерах, які використовуються при розробці документів, що обґрунтовують обсяги викидів забруднювальних речовин;(завантажде в довільній формі перелік програм якими користуєтесь)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc5" name="Відомості про систему контролю, управління якістю виробництва;(надати опис, яким чином готуються документи і як перевіряється їхня якість)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc6" name="Наказу про призначення відповідальних за проведення робіт з обґрунтування обсягів викидів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc7" name="Свідоцтво про проходження атестації, що дає право обгрунтовувати викиди;(відповідно до Державних стандартів України ISO 14001:2006)" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="form_signed_all" name=" " type="file" required="true"></activiti:formProperty>
         
