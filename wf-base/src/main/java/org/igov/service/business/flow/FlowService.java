@@ -359,6 +359,7 @@ public class FlowService implements ApplicationContextAware {
                         ExcludeDateRange oExcludeDateRange = new ExcludeDateRange();
                         oExcludeDateRange.setsDateTimeAt(format.parseDateTime(flowProperty.getsDateTimeAt()));
                         oExcludeDateRange.setsDateTimeTo(format.parseDateTime(flowProperty.getsDateTimeTo())); 
+                        aoDateRange_Exclude.add(oExcludeDateRange);
                     }
                     
                     LOG.info("aDateRange_Exclude is: ", aoDateRange_Exclude);
