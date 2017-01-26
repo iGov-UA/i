@@ -300,7 +300,7 @@ public class FlowService implements ApplicationContextAware {
         
         List<FlowSlotVO> res = new ArrayList<>();
         
-        List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
+        //List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
         List<ExcludeDateRange> aoDateRange_Exclude = new ArrayList<>();
         CronExpression cronExpression = null;
         
@@ -314,14 +314,14 @@ public class FlowService implements ApplicationContextAware {
             LOG.info("flowProperty sGroup: " + flowProperty.getsGroup());
         }
         
-        /*for (FlowProperty flowProperty : aoFlowPropertyGroup){
+        for (FlowProperty flowProperty : aoFlowPropertyGroup){
             if(flowProperty.getbExclude()){
                 LOG.info("flowProperty.getoFlow_ServiceData().getnID_ServiceData: " + flowProperty.getoFlow_ServiceData().getnID_ServiceData());
                 LOG.info("flowProperty.getId: " + flowProperty.getId());
                 
                 if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
                   ||(flow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())){
-                    aExcludeFlowProperty.add(flowProperty);
+                    //aExcludeFlowProperty.add(flowProperty);
                     
                     LOG.info("flowProperty.getsData: " + flowProperty.getsData());
                     LOG.info("flowProperty.getsDateTimeAt: " + flowProperty.getsDateTimeAt());
@@ -329,7 +329,7 @@ public class FlowService implements ApplicationContextAware {
                     List<DateTime> aCronExcludeRange = new ArrayList<>();
                     Map<String, String> configuration = JsonRestUtils.readObject(flowProperty.getsData(), Map.class);
                     
-                    for (Map.Entry<String, String> entry : configuration.entrySet()) {
+                    /*for (Map.Entry<String, String> entry : configuration.entrySet()) {
                         DateTime currDateTime = startDate;
                         String cronExpressionString = entry.getKey();
                         
@@ -354,7 +354,7 @@ public class FlowService implements ApplicationContextAware {
                                 LOG.info("currDateTime for exclude is : " + currDateTime.toString());
                             }
                         }
-                    }
+                    }*/
                     
                     if(!aCronExcludeRange.isEmpty()){
                         ExcludeDateRange oExcludeDateRange = new ExcludeDateRange();
@@ -373,7 +373,7 @@ public class FlowService implements ApplicationContextAware {
                     LOG.info("aDateRange_Exclude is: ", aoDateRange_Exclude);
                 }
             }
-        }*/
+        }
         
         for (FlowProperty flowProperty : flow.getFlowProperties()) {
             if (flowProperty.getbExclude() == null || !flowProperty.getbExclude()) {
