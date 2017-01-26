@@ -315,7 +315,7 @@ public class FlowService implements ApplicationContextAware {
         }
         
         for (FlowProperty flowProperty : aoFlowPropertyGroup){
-            if(flowProperty.getbExclude()){
+            if(flowProperty.getbExclude() && flowProperty.getsGroup() != null){
                 LOG.info("flowProperty.getoFlow_ServiceData().getnID_ServiceData: " + flowProperty.getoFlow_ServiceData().getnID_ServiceData());
                 LOG.info("flowProperty.getId: " + flowProperty.getId());
                 
