@@ -359,7 +359,7 @@ public class ActionItemControllerScenario {
         Assert.assertTrue(jsonData.contains("success"));
     }
 
-    @Ignore
+    
     @Test
     public void shouldSuccessfullyGetCatalogTreeTag() throws Exception {
         dbManager.recreateDb();
@@ -377,7 +377,7 @@ public class ActionItemControllerScenario {
         Assert.assertTrue(tree.getaService().size() > 0);
     }
 
-    /*@Test
+    @Test
     public void shouldSuccessfullyGetEmptyCatalogTreeTag() throws Exception {
         dbManager.recreateDb();
         String jsonData = mockMvc.perform(get("/action/item/getCatalogTreeTag").
@@ -393,7 +393,7 @@ public class ActionItemControllerScenario {
 
         Assert.assertTrue(tree.getaNode().size() == 0);
         Assert.assertTrue(tree.getaService().size() == 0);
-    }*/
+    }
 
     @Test
     public void shouldSuccessfullyGetCatalogTreeTagService() throws Exception {
