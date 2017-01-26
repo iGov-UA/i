@@ -71,6 +71,9 @@ public class AttachmetService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         
+        String translit = "ололошечка";
+        LOG.info("translit text: " + sTextTranslit(translit));
+        
        // try {
             sFileNameAndExt = (sFileNameAndExt != null)?
                     sTextTranslit(getFileName(sFileNameAndExt.replace(" ", "_")))
