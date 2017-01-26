@@ -1013,22 +1013,8 @@ public class ActionItemController {
         if (BooleanUtils.isTrue(bNew)) {
             return JsonRestUtils.toJsonResponse(toNewFormat(res));
         }
-        
-        List<ServiceTagTreeNodeVO> aNode_Return = new LinkedList();
-        boolean bTest = generalConfig.isSelfTest();
-        if(!bTest){
-            for (ServiceTagTreeNodeVO node : res) {
-                if (node.getoServiceTag_Root() != null && node.getoServiceTag_Root().getsName_UA()!=null && !node.getoServiceTag_Root().getsName_UA().startsWith("_")) {
-                    aNode_Return.add(node);
-                }
-            }
-        }else{
-            aNode_Return.addAll(res);
-        }
-        
-        
-        return JsonRestUtils.toJsonResponse(aNode_Return);
-        //return JsonRestUtils.toJsonResponse(res);
+
+        return JsonRestUtils.toJsonResponse(res);
     }
 
     @ApiOperation(value = "Получение дерева тегов и услуг", notes = "Дополнительно:\n" + "")
@@ -1058,19 +1044,7 @@ public class ActionItemController {
             return JsonRestUtils.toJsonResponse(toNewFormat(res));
         }
 
-        List<ServiceTagTreeNodeVO> aNode_Return = new LinkedList();
-        boolean bTest = generalConfig.isSelfTest();
-        if(!bTest){
-            for (ServiceTagTreeNodeVO node : res) {
-                if (node.getoServiceTag_Root() != null && node.getoServiceTag_Root().getsName_UA()!=null && !node.getoServiceTag_Root().getsName_UA().startsWith("_")) {
-                    aNode_Return.add(node);
-                }
-            }
-        }else{
-            aNode_Return.addAll(res);
-        }
-        
-        return JsonRestUtils.toJsonResponse(aNode_Return);//res
+        return JsonRestUtils.toJsonResponse(res);
     }
 
     private ServiceTagTreeVO toNewFormat(List<ServiceTagTreeNodeVO> nodes) {
@@ -1084,36 +1058,7 @@ public class ActionItemController {
             }
         }
 
-//    @Autowired
-//        GeneralConfig generalConfig;        
-
-        List<ServiceTagTreeNodeVO> aNode_Return = new LinkedList();
-        boolean bTest = generalConfig.isSelfTest();
-        if(!bTest){
-            for (ServiceTagTreeNodeVO node : nodes) {
-                if (node.getoServiceTag_Root() != null && node.getoServiceTag_Root().getsName_UA()!=null && !node.getoServiceTag_Root().getsName_UA().startsWith("_")) {
-                    aNode_Return.add(node);
-                }
-            }
-        }else{
-            aNode_Return.addAll(nodes);
-        }
-  
-        /*if(!bTest){
-            for (ServiceTagTreeNodeVO node : nodes) {
-                if (node.getoServiceTag_Root() != null && node.getoServiceTag_Root().getsName_UA()!=null && node.getoServiceTag_Root().getsName_UA().startsWith("_")) {
-                    nodes.remove(node);
-                }
-                for (ServiceTagTreeNodeVO node : nodes) {
-
-                }
-                
-            }
-        }*/
-        
-        
         res.setaNode(nodes);
-        //res.setaNode(aNode_Return);
         res.setaService(new ArrayList<>(uniqueServices));
 
         return res;

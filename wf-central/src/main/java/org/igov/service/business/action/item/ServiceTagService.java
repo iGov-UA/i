@@ -8,14 +8,13 @@ import org.igov.model.core.BaseEntityDao;
 import org.igov.model.object.place.Place;
 import org.igov.service.controller.ActionItemController;
 import org.igov.util.cache.CachedInvocationBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * User: goodg_000
@@ -83,7 +82,7 @@ public class ServiceTagService {
 
                 if (!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA,
                         includeTestEntities)) {
-                    //continue;
+                    continue;
                 }
 
                 nodeVO.addChild(childTag);
@@ -92,7 +91,7 @@ public class ServiceTagService {
             if (nodeVO.getaServiceTag_Child().isEmpty() &&
                     !isSuitable(parentTag, tagIdToServices.get(parentTag.getId()), nID_Category, sFind,
                             asID_Place_UA, includeTestEntities)) {
-                //continue;
+                continue;
             }
 
             if (!nodeVO.getaServiceTag_Child().isEmpty() || bShowEmptyFolders) {
@@ -220,11 +219,11 @@ public class ServiceTagService {
             final ServiceTag child = relation.getServiceTag_Child();
 
             LOG.info("parent: " + parent.getsID() + " child: " + child.getsID());
-            /*if (isExcludeTestEntity(includeTestEntities, parent) || 
-            isExcludeTestEntity(includeTestEntities, child)) {
+            if (isExcludeTestEntity(includeTestEntities, parent) ||
+                    isExcludeTestEntity(includeTestEntities, child)) {
                 LOG.info("parent: " + parent.getsID() + " child: " + child.getsID() + " continue!!!");
                 continue;
-            }*/
+            }
 
             ServiceTagTreeNode parentNode = null;
             if (parent.getId() != FAKE_ROOT_TAG_ID) {
@@ -278,9 +277,9 @@ public class ServiceTagService {
             final ServiceTag serviceTag = link.getServiceTag();
             final Service service = link.getService();
 
-            if (//isExcludeTestEntity(includeTestEntities, serviceTag) || 
-            isExcludeTestEntity(includeTestEntities, service)
-            ) {
+            if (isExcludeTestEntity(includeTestEntities, serviceTag) ||
+                    isExcludeTestEntity(includeTestEntities, service)
+                    ) {
                 continue;
             }
 
