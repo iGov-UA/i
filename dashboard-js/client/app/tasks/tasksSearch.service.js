@@ -126,13 +126,11 @@
     };
 
     var searchTaskInType = function(taskId, type, onlyThisType, page, bSortReverse) {
-      debugger;
       if (!onlyThisType)
         onlyThisType = false;
       if (!page)
         page = 0;
       tasks.list(type, {page: page}).then(function(response){
-        debugger;
         var taskFound = false;
         var i = 0;
         if(bSortReverse){

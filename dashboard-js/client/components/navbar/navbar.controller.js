@@ -119,7 +119,6 @@
             $scope.switchArchive = true;
           })
         } else {
-          debugger;
           tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.iGovNavbarHelper.currentTab, bSelectedTasksSortReverse)
             .then(function(res) {
               if(res.aIDs.length > 1){
