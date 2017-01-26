@@ -397,7 +397,7 @@ public class ProcessSubjectService {
     public void editProcessSubject(ProcessSubject processSubject, Map<String, Object> mParamDocument) throws ParseException {
 
         ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
-
+        DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
         if (processSubjectResult != null) {
             List<ProcessSubject> aProcessSubject_Child = processSubjectResult.getaProcessSubject();
 
@@ -417,11 +417,20 @@ public class ProcessSubjectService {
                    for(String sProcessVariable: mProcessVariable.keySet()){
                 	   LOG.info("mProcessVariable class : "+ mProcessVariable.get(sProcessVariable).getClass());
                 	   LOG.info("mProcessVariable value : "+ mProcessVariable.get(sProcessVariable));
-                   };
-                   
+                	/*   if(mProcessVariable.get(sProcessVariable) instanceof Date){
+                		   df_StartProcess.format(mProcessVariable.get(sProcessVariable));
+                	   }*/ 
+                   }
+                   for(String sParamDocument: mParamDocument.keySet()){
+                 	   LOG.info("mParamDocument class : "+ mParamDocument.get(sParamDocument).getClass());
+                 	   LOG.info("mParamDocument value : "+ mParamDocument.get(sParamDocument));
+                   }
                     Map<String, Object> mParamDocumentNew = new HashMap<>();
+                    
+                   
 
                     for (String mKey : mParamDocument.keySet()) {
+                   
 
                         Object oParamDocument = mParamDocument.get(mKey);
                         Object oProcessVariable = mProcessVariable.get(mKey);
@@ -440,7 +449,7 @@ public class ProcessSubjectService {
                     }
 
                     LOG.info("mParamDocumentNew: " + mParamDocumentNew);
-                    DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+                    
 
                     if (!mParamDocumentNew.isEmpty()) {
 
