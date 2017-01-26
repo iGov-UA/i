@@ -85,6 +85,16 @@
       $location.path('/profile');
     };
 
+    var bSelectedTasksSortReverse = false;
+
+    $scope.$on('set-sort-order-reverse-true', function () {
+      bSelectedTasksSortReverse = true;
+    });
+
+    $scope.$on('set-sort-order-reverse-false', function () {
+      bSelectedTasksSortReverse = false;
+    });
+
     $scope.tasksSearch = iGovNavbarHelper.tasksSearch;
     var tempCountValue = 0;
 
@@ -109,7 +119,7 @@
             $scope.switchArchive = true;
           })
         } else {
-          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.iGovNavbarHelper.currentTab)
+          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.iGovNavbarHelper.currentTab, bSelectedTasksSortReverse)
             .then(function(res) {
               if(res.aIDs.length > 1){
                 tempCountValue = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;

@@ -397,7 +397,7 @@ public class ProcessSubjectService {
     public void editProcessSubject(ProcessSubject processSubject, Map<String, Object> mParamDocument) throws ParseException {
 
         ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
-
+        DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
         if (processSubjectResult != null) {
             List<ProcessSubject> aProcessSubject_Child = processSubjectResult.getaProcessSubject();
 
@@ -414,10 +414,25 @@ public class ProcessSubjectService {
                 if (oProcessInstance != null) {
                     Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
                     LOG.info("mProcessVariable: " + mProcessVariable);
-
+                   for(String sProcessVariable: mProcessVariable.keySet()){
+                	   if(mProcessVariable.get(sProcessVariable) != null){
+                	   LOG.info("mProcessVariable class : "+ mProcessVariable.get(sProcessVariable).getClass());
+                	   LOG.info("mProcessVariable value : "+ mProcessVariable.get(sProcessVariable));}
+                	/*   if(mProcessVariable.get(sProcessVariable) instanceof Date){
+                		   df_StartProcess.format(mProcessVariable.get(sProcessVariable));
+                	   }*/ 
+                   }
+                   for(String sParamDocument: mParamDocument.keySet()){
+                	   if(mParamDocument.get(sParamDocument) != null){
+                 	   LOG.info("mParamDocument class : "+ mParamDocument.get(sParamDocument).getClass());
+                 	   LOG.info("mParamDocument value : "+ mParamDocument.get(sParamDocument));}
+                   }
                     Map<String, Object> mParamDocumentNew = new HashMap<>();
+                    
+                   
 
                     for (String mKey : mParamDocument.keySet()) {
+                   
 
                         Object oParamDocument = mParamDocument.get(mKey);
                         Object oProcessVariable = mProcessVariable.get(mKey);
@@ -436,7 +451,7 @@ public class ProcessSubjectService {
                     }
 
                     LOG.info("mParamDocumentNew: " + mParamDocumentNew);
-                    DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+                    
 
                     if (!mParamDocumentNew.isEmpty()) {
 
@@ -446,6 +461,7 @@ public class ProcessSubjectService {
                             DateTime datePlan = null;
                             if (mParamDocument.get("sDateExecution") != null) {
                                 datePlan = new DateTime(parseDate((String) mParamDocument.get("sDateExecution")));
+                                
                             }
 
                             oProcessSubject.setsDatePlan(datePlan);

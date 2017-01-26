@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="eco_1564_DozvDocVukid" name="Внесення організації до Переліку установ, організацій та закладів, яким надається право на розробку документів, що обґрунтовують обсяги викидів для підприємств, установ, організацій та громадян - суб’єктів підприємницької діяльності " isExecutable="true">
+  <process id="eco_1565_DozvZabrVuk" name="Видача дозволу на викиди забруднюючих речовин стаціонарними джерелами для об’єктів першої групи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressBud" name="Місцезнаходження юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress1" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи;(статутна назва з реєстру)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Місцезнаходження юридичної особи;(вкажіть повну адресу з індексом)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileObgrunt" name="Документи, в яких обґрунтовуються обсяги викидів забруднюючих речовин, підготовлених відповідно до Інструкції " type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої держадміністрації про наявність або відсутність зауважень громадських організацій" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default=" "></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_4" name="Інформація про викиди" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sMisceVuk&quot;],&quot;sValue&quot;:&quot;Інформація про викиди&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sMisceVuk" name="Місце розташування об'єкту на якому будуть здійснюватись викиди;(вкажіть повну адресу з індексом)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nVukidTable" name="Викиди яких забруднюючих речовин плануэться здійснювати" type="table" default="${markerService.loadFromFile('table/eco/eco_1565_Zabrud_table.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Нормативна база, якою встановлюються вимоги для обгрунтування викідів" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sLabelZU&quot;],&quot;sValue&quot;:&quot;Нормативна база якою встановлюються вимоги для обгрунтування викідів&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sLabelZU" name="Закон Про охорону атмосферного повітря" type="label" default="посилання на &lt;a href=&quot;http://zakon2.rada.gov.ua/laws/show/2707-12 &quot; target=&quot;_blank&quot;&gt;Закон&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabelKMUPost" name="Постанова Кабінету Міністрів України від 13 березня 2002 р. № 302" type="label" default="посилання на &lt;a href=&quot;http://zakon2.rada.gov.ua/laws/show/z0341-06 &quot; target=&quot;_blank&quot;&gt;Постанову&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabelInstr" name="Інструкція про загальні вимоги до оформлення документів, у яких обґрунтовуються обсяги викидів від 09.03.2006 № 108" type="label" default="посилання на &lt;a href=&quot;http://zakon3.rada.gov.ua/laws/show/302-2002-%D0%BF &quot; target=&quot;_blank&quot;&gt;Інструкцію&lt;/a&gt;"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Документація для отримання дозволу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;fileObgrunt&quot;],&quot;sValue&quot;:&quot;Документація для отримання дозволу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="fileObgrunt" name="Обґрунтування обсягів викидів забруднюючих речовин, підготовлених відповідно до Інструкції;(завантажте ZIP архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої з держадміністрації про наявність або відсутність зауважень ГО;(лист який надсилає адміністрація через 30 днів після публікації про викиди в ЗМІ)" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="form_signed_all" name=" " type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markerPust" name="Маркер пустоты" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;sNameOrgan&quot;,&quot;sMailClerk&quot;,&quot;sAddress&quot;,&quot;sWorkTime&quot;,&quot;sPhoneOrgan&quot;,&quot;sShapka&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Міністерство екології та природних ресурсів України"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible" default="м. Київ, вул. Митрополита Василя Липківського, 35"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" default="ЧАС РОБОТИ"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default="ТЕЛЕФОН"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default="Міністерство екології та природних ресурсів України "></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача дозволу на викиди забруднюючих речовин стаціонарними джерелами для об’єктів першої групи"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="видачу дозволу на викиди забруднюючих речовин стаціонарними джерелами для об’єктів першої групи"></activiti:formProperty>
       </extensionElements>
@@ -53,7 +68,7 @@
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -70,16 +85,18 @@
           <activiti:expression>Звернення на тему: ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
-			Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.&lt;br /&gt;
-			Ви отримаєте відповідь протягом трьох робочих днів.
-			&lt;/p&gt;
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;
+Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.&lt;br /&gt;
+Ви отримаєте відповідь протягом 30 днів.
+&lt;/p&gt;
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -96,18 +113,19 @@
     <userTask id="usertask1" name="РЕЄСТРАЦІЯ" activiti:candidateGroups="test_ECO">
       <extensionElements>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdressBud" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ Заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress1" name="Адреса заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sMisceVuk" name="Місце розташування об'єкту на якому будуть здійснюватись викиди; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -122,18 +140,19 @@
       <extensionElements>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdressBud" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ Заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress1" name="Адреса заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sMisceVuk" name="Місце розташування об'єкту на якому будуть здійснюватись викиди; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="asSotrudik" name="Оберіть співробітника якому буде надано заявку в роботу" type="enum" required="true">
           <activiti:value id="sEnamS1" name="Працівник №1"></activiti:value>
           <activiti:value id="sEnamS2" name="Працівник №2"></activiti:value>
@@ -153,18 +172,19 @@
       <extensionElements>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdressBud" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ Заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress1" name="Адреса заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sMisceVuk" name="Місце розташування об'єкту на якому будуть здійснюватись викиди; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="decide" name="Рішення про надання дозволу" type="enum" required="true">
           <activiti:value id="accept" name="Дозвіл надано"></activiti:value>
           <activiti:value id="reject" name="Відмова в наданні дозволу"></activiti:value>
@@ -193,18 +213,20 @@
           <activiti:expression>Позитивна відповідь. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Заяву оброблено. Ваше звернення зодоволено.&lt;/p&gt;
+&lt;p&gt;Заяву оброблено. Дозвіл надано.&lt;/p&gt;
 Відповідь передано до канцелярії. Ви можете прийти і отримати дозвіл.&lt;br /&gt;
-Якщо ви обрали отримати відповідь поштою Вам буде надіслано лист.&lt;br /&gt;
+Якщо ви обрали отримати відповідь поштою, Вам буде надіслано лист.&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -231,19 +253,22 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:expression>Відмова. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;На жаль, вам відмовлено у наданні дозволу. &lt;/p&gt;
-			&lt;p&gt;Причина: ${comment}&lt;/p&gt;
-			Відповідь з відмовою передана до канцелярії, можете прийти і забрати її. Якщо Ви замовили відповідь поштою, то буде надіслано лист.&lt;br /&gt;&lt;br /&gt;
-			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}&lt;br /&gt;
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;На жаль, вам відмовлено у наданні дозволу. &lt;/p&gt;
+&lt;p&gt;Причина: ${comment}&lt;/p&gt;
+Відповідь з відмовою передана до канцелярії, можете прийти і забрати її. Якщо Ви замовили відповідь поштою, то буде надіслано лист.&lt;br /&gt;&lt;br /&gt;
+За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;/p&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -261,12 +286,11 @@ ${sPhoneOrgan}&lt;/p&gt;
       <extensionElements>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdressBud" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ Заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress1" name="Адреса заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
@@ -277,7 +301,7 @@ ${sPhoneOrgan}&lt;/p&gt;
           <activiti:value id="accept" name="Дозвіл надано"></activiti:value>
           <activiti:value id="reject" name="Відмова в наданні дозволу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asVudacha" name="Як заявник хоче отримати відповідь" type="enum" required="true">
+        <activiti:formProperty id="asVudacha" name="Як заявнику надано відповідь" type="enum" required="true">
           <activiti:value id="sEnamNarochno" name="Відповідь надано нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Відповідь надіслано поштою"></activiti:value>
         </activiti:formProperty>
@@ -305,18 +329,20 @@ ${sPhoneOrgan}&lt;/p&gt;
           <activiti:expression>Запрошення в ЦНАП. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Документи по вашому зверненню №[sID_Order] надіслано поштою.&lt;/p&gt;
-В разі виникнення питань звертайтесь за адресою:&lt;br /&gt;
+В разі виникнення питань звертайтесь за контактами:&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html] 
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -342,13 +368,16 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>Запрошення в ЦНАП. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Дякуємо що скористались нашою послугою та сервісом iGov.&lt;/p&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html] 
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -367,8 +396,8 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow17" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="usertask1" targetRef="usertask4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_eco_1564_DozvDocVukid">
-    <bpmndi:BPMNPlane bpmnElement="eco_1564_DozvDocVukid" id="BPMNPlane_eco_1564_DozvDocVukid">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_eco_1565_DozvZabrVuk">
+    <bpmndi:BPMNPlane bpmnElement="eco_1565_DozvZabrVuk" id="BPMNPlane_eco_1565_DozvZabrVuk">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="-30.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

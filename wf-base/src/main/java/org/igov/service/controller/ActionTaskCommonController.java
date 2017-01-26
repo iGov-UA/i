@@ -253,6 +253,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param bAssigned булево значение необязательный параметр. Указывает, что
      * нужно искать по незаассайненным таскам (bAssigned=false) и по
      * заассайненным таскам(bAssigned=true) на пользователя sLogin
+     * @param bSortByStartDate булево значение необязательный параметр.
+     * Если true - будет выполнена сортировка по дате
      */
     @ApiOperation(value = "Поиск заявок по тексту (в значениях полей без учета регистра)", notes = "##### Примеры:\n"
             + "https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=будинк\n"
@@ -275,10 +277,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         @ApiResponse(code = 200, message = "возвращает список ID тасок у которых в полях встречается указанный текст")})
     @RequestMapping(value = "/getTasksByText", method = RequestMethod.GET)
     public @ResponseBody
-    Set<String> getTasksByText(@ApiParam(value = "строка текст для поиска в полях заявки", required = true) @RequestParam(value = "sFind") String sFind,
+    List<String> getTasksByText(@ApiParam(value = "строка текст для поиска в полях заявки", required = true) @RequestParam(value = "sFind") String sFind,
             @ApiParam(value = "строка необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
-            @ApiParam(value = "булево значение необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false) @RequestParam(value = "bAssigned", required = false) String bAssigned) throws CommonServiceException {
-        Set<String> res = new HashSet<>();
+            @ApiParam(value = "булево значение необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false) @RequestParam(value = "bAssigned", required = false) String bAssigned,
+            @ApiParam(value = "булево значение необязательный параметр. Если true - будет выполнена сортировка по дате", required = false) @RequestParam(value = "bSortByStartDate", required = false, defaultValue = "false") Boolean bSortByStartDate) throws CommonServiceException {
+        List<String> res = new ArrayList<>();
+
+        Set<Task> taskSet;
+        if(bSortByStartDate){
+            taskSet = new TreeSet<>((o1, o2) -> o1.getCreateTime().compareTo(o2.getCreateTime()));
+        } else {
+            taskSet = new HashSet<>();
+        }
 
         String searchTeam = sFind.toLowerCase();
         TaskQuery taskQuery = oActionTaskService.buildTaskQuery(sLogin, bAssigned);
@@ -298,13 +308,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     LOG.info("(taskId={}, propertyName={}, sValue={})", currTask.getId(), property.getName(), sValue);
                     if (sValue != null) {
                         if (sValue.toLowerCase().contains(searchTeam)) {
-                            res.add(currTask.getId());
+                            taskSet.add(currTask);
                         }
                     }
                 }
             } else {
                 LOG.info("TaskFormData for task {} is null. Skipping from processing.", currTask.getId());
             }
+        }
+        for(Task currTask : taskSet){
+            res.add(currTask.getId());
         }
 
         return res;
