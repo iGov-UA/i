@@ -38,6 +38,7 @@ public class ProcessCountTaskCustom implements JavaDelegate, TaskListener {
 
     public Expression sPattern;
     public Expression sKey;
+    public Expression nDigits;
         
 	private final static Logger LOG = LoggerFactory.getLogger(ProcessCountTaskCustom.class);
 	
@@ -65,13 +66,17 @@ public class ProcessCountTaskCustom implements JavaDelegate, TaskListener {
             
                 String sParamPattern = getStringFromFieldExpression(sPattern, oExecution);
                 String sParamKey = getStringFromFieldExpression(sKey, oExecution);
+                String nParamDigits = getStringFromFieldExpression(nDigits, oExecution);
+                //nDigits
             
 //		String snCount = getActionProcessCount(execution.getProcessDefinitionId(), null);
 		//int res = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, StringUtils.substringBefore(sID_BP, ":"), nID_Service, null);
                 
                 int nCount = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, sParamKey, null);
 		//int nCount = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, sParamKey, null, null);
-		String snCount = String.format("%07d", nCount);
+		//String snCount = String.format("%07d", nCount);
+                String snCount = String.format("%0"+nParamDigits+"d", nCount);
+                
 		LOG.info("Retrieved snCount={}", snCount);
 		
 		if (snCount != null) {
