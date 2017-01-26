@@ -76,7 +76,7 @@ public class AttachmetService {
         
        // try {
             sFileNameAndExt = (sFileNameAndExt != null)?
-                    sTextTranslit(getFileName(sFileNameAndExt.replace(" ", "_")))
+                    transliterate(getFileName(sFileNameAndExt.replace(" ", "_")))
                     //new String(getFileName(sFileNameAndExt).getBytes("ASCII"), "UTF-8")
                     + "." + getFileExtention(sTextTranslit(sFileNameAndExt)):sFileNameAndExt;
         /*} catch (UnsupportedEncodingException ex) {
