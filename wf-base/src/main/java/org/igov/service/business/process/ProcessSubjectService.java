@@ -414,7 +414,11 @@ public class ProcessSubjectService {
                 if (oProcessInstance != null) {
                     Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
                     LOG.info("mProcessVariable: " + mProcessVariable);
-
+                   for(String sProcessVariable: mProcessVariable.keySet()){
+                	   LOG.info("mProcessVariable class : "+ mProcessVariable.get(sProcessVariable).getClass());
+                	   LOG.info("mProcessVariable value : "+ mProcessVariable.get(sProcessVariable));
+                   };
+                   
                     Map<String, Object> mParamDocumentNew = new HashMap<>();
 
                     for (String mKey : mParamDocument.keySet()) {
