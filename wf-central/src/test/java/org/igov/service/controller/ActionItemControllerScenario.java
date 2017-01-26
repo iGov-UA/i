@@ -407,7 +407,7 @@ public class ActionItemControllerScenario {
                 andReturn().getResponse().getContentAsString();
         ServiceTagTreeNodeVO[] tableDataList = JsonRestUtils.readObject(jsonData, ServiceTagTreeNodeVO[].class);
 
-        Assert.assertTrue(tableDataList.length > 1);
+        Assert.assertTrue(tableDataList.length == 1);
         Assert.assertTrue(tableDataList[0].getaService().size() > 0);
     }
 
