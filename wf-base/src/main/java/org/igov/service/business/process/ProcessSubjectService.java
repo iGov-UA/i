@@ -459,6 +459,7 @@ public class ProcessSubjectService {
                             DateTime datePlan = null;
                             if (mParamDocument.get("sDateExecution") != null) {
                                 datePlan = new DateTime(parseDate((String) mParamDocument.get("sDateExecution")));
+                                
                             }
 
                             oProcessSubject.setsDatePlan(datePlan);
