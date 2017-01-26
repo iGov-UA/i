@@ -51,8 +51,10 @@ public class DefaultFlowSlotGenerator {
                     
                     for(ExcludeDateRange oExcludeRange : aDateRange_Exclude){
                         
-                        if (currDateTime.isAfter(oExcludeRange.getsDateTimeAt()) &&
-                            currDateTime.isBefore(oExcludeRange.getsDateTimeTo()))
+                        if ((currDateTime.isAfter(oExcludeRange.getsDateTimeAt()) &&
+                            currDateTime.isBefore(oExcludeRange.getsDateTimeTo()))||
+                            currDateTime.isEqual(oExcludeRange.getsDateTimeAt())||
+                            currDateTime.isEqual(oExcludeRange.getsDateTimeTo()))
                         {
                             continueFlaf = true;
                             break;

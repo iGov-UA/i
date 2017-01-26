@@ -306,7 +306,9 @@ public class FlowService implements ApplicationContextAware {
         
         DateTimeFormatter format = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
         
-        for (FlowProperty flowProperty : flow.getFlowProperties()){
+        List<FlowProperty> aoFlowPropertyGroup = flowPropertyDao.findAllBy("sGroup", flow.getsGroup());
+        
+        for (FlowProperty flowProperty : aoFlowPropertyGroup){
             if(flowProperty.getbExclude()){
                 LOG.info("flowProperty.getoFlow_ServiceData().getnID_ServiceData: " + flowProperty.getoFlow_ServiceData().getnID_ServiceData());
                 LOG.info("flowProperty.getId: " + flowProperty.getId());
