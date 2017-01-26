@@ -382,7 +382,8 @@ exports.getTasksByText = function (req, res) {
     query: {
       'sFind': req.params.text,
       'sLogin': user.id,//finished,unassigned, selfAssigned
-      'bAssigned': req.params.sType === 'selfAssigned' ? true : req.params.sType === 'unassigned' ? false : null //bAssigned
+      'bAssigned': req.params.sType === 'selfAssigned' ? true : req.params.sType === 'unassigned' ? false : null, //bAssigned
+      'bSortByStartDate': true
     }
   };
   activiti.get(options, function (error, statusCode, result) {
