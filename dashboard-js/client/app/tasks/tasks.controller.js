@@ -7,11 +7,11 @@
 
   tasksCtrl.$inject = [
     '$scope', 'tasks', 'processes', 'Modal', 'identityUser', '$localStorage', '$filter', 'lunaService',
-    'taskFilterService', 'defaultSearchHandlerService',
+    'taskFilterService', 'defaultSearchHandlerService', '$rootScope',
     '$stateParams', '$q', '$timeout', '$state', 'tasksStateModel', 'stateModel', 'Auth'
   ];
   function tasksCtrl($scope, tasks, processes, Modal, identityUser, $localStorage, $filter, lunaService,
-                     taskFilterService, defaultSearchHandlerService,
+                     taskFilterService, defaultSearchHandlerService, $rootScope,
                      $stateParams, $q, $timeout, $state, tasksStateModel, stateModel, Auth) {
 
     $scope.tasks = null;
@@ -205,12 +205,14 @@
           if ($stateParams.type == tasks.filterTypes.finished) $scope.predicate = 'startTime';
           else $scope.predicate = 'createTime';
           $scope.reverse = true;
+          $rootScope.$broadcast("set-sort-order-reverse-true");
           break;
         case 'datetime_desc':
           $scope.selectedSortOrder.selected = "datetime_asc";
           if ($stateParams.type == tasks.filterTypes.finished) $scope.predicate = 'startTime';
           else $scope.predicate = 'createTime';
           $scope.reverse = false;
+          $rootScope.$broadcast("set-sort-order-reverse-false");
           break;
       }
     };

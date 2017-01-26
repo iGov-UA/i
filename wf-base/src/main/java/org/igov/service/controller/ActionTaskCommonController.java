@@ -277,11 +277,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         @ApiResponse(code = 200, message = "возвращает список ID тасок у которых в полях встречается указанный текст")})
     @RequestMapping(value = "/getTasksByText", method = RequestMethod.GET)
     public @ResponseBody
-    Set<String> getTasksByText(@ApiParam(value = "строка текст для поиска в полях заявки", required = true) @RequestParam(value = "sFind") String sFind,
+    List<String> getTasksByText(@ApiParam(value = "строка текст для поиска в полях заявки", required = true) @RequestParam(value = "sFind") String sFind,
             @ApiParam(value = "строка необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
             @ApiParam(value = "булево значение необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false) @RequestParam(value = "bAssigned", required = false) String bAssigned,
             @ApiParam(value = "булево значение необязательный параметр. Если true - будет выполнена сортировка по дате", required = false) @RequestParam(value = "bSortByStartDate", required = false, defaultValue = "false") Boolean bSortByStartDate) throws CommonServiceException {
-        Set<String> res = new HashSet<>();
+        List<String> res = new ArrayList<>();
 
         Set<Task> taskSet;
         if(bSortByStartDate){
