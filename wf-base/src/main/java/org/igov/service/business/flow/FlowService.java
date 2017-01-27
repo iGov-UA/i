@@ -429,14 +429,18 @@ public class FlowService implements ApplicationContextAware {
 
                 for(FlowSlotTicket oFlowSlotTicket : oFlowSlot.getFlowSlotTickets()){
                     bBusy = bBusy||FlowSlotVO.bBusy(oFlowSlotTicket);
+                    LOG.info("flowSlot " + rangeformat.format(oFlowSlotTicket.getsDateStart().toDate())
+                    + " - " + rangeformat.format(oFlowSlotTicket.getsDateFinish().toDate()) + " is busy: " + bBusy);
                 }
 
                 for(ExcludeDateRange oExcludeRange : aoDateRange_Exclude){
+                    LOG.info("oFlowSlot " + rangeformat.format(oFlowSlot.getsDate().toDate()) + " is busy: " + bBusy);
+                    
                     if (((oFlowSlot.getsDate().isAfter(oExcludeRange.getsDateTimeAt())&&
                         oFlowSlot.getsDate().isBefore(oExcludeRange.getsDateTimeTo()))||
                         oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeAt())||
                         oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeTo()))&&(!bBusy))
-                    {
+                    {                       
                         //LOG.info("oFlowSlot to delete: " + oFlowSlot);
                         flowSlotsToDelete.add(oFlowSlot);
                     }
