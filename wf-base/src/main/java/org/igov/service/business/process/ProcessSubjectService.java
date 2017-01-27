@@ -417,32 +417,32 @@ public class ProcessSubjectService {
                     LOG.info("mProcessVariable: " + mProcessVariable);
                    
                     for(String sProcessVariable: mProcessVariable.keySet()){
-                	   
-                       //if(mProcessVariable.get(sProcessVariable) != null){
-                	   LOG.info("mProcessVariable param : " +
-                        //           "class:" + mProcessVariable.get(sProcessVariable).getClass() +
-                                   " name: " + sProcessVariable + " value: " +  mProcessVariable.get(sProcessVariable));
-                        //   }
-                	/*   if(mProcessVariable.get(sProcessVariable) instanceof Date){
-                		   df_StartProcess.format(mProcessVariable.get(sProcessVariable));
-                	   }*/ 
+                	
+                        try{
+                            mProcessVariable.replace(sProcessVariable, df_StartProcess.format(mProcessVariable.get(sProcessVariable)));
+                        }
+                        catch(Exception ex){}
+                        
+                        try{
+                            mProcessVariable.replace(sProcessVariable, 
+                                    df_StartProcess.format(parseDate((String) mProcessVariable.get(sProcessVariable))));
+                        }
+                        catch(Exception ex){}
+                        
                    }
                     
-                    for(String sParamDocument: mParamDocument.keySet()){
+                    for(String sParamDocument: mProcessVariable.keySet()){
                 	//if(mParamDocument.get(sParamDocument) != null){
-                 	       LOG.info("mParamDocument param : " +
+                 	       LOG.info("mProcessVariable param : " +
                         //           "class:" + mParamDocument.get(sParamDocument).getClass() +
-                                   " name: " + sParamDocument + " value: " +  mParamDocument.get(sParamDocument));
+                                   " name: " + sParamDocument + " value: " +  mProcessVariable.get(sParamDocument));
                         //}
                     }
                    
                    Map<String, Object> mParamDocumentNew = new HashMap<>();
-                    
                    
-
                     for (String mKey : mParamDocument.keySet()) {
                    
-
                         Object oParamDocument = mParamDocument.get(mKey);
                         Object oProcessVariable = mProcessVariable.get(mKey);
 
