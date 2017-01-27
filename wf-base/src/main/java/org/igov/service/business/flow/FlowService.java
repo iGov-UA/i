@@ -331,6 +331,7 @@ public class FlowService implements ApplicationContextAware {
                                     break;
                                 }
                                 aCronExcludeRange.add(currDateTime);
+                                LOG.info("currDateTime for exclude is : " + currDateTime.toString());
                             }
                         }
                     }
@@ -366,6 +367,11 @@ public class FlowService implements ApplicationContextAware {
                             oExcludeDateRange.setsDateTimeAt(aDateRange.get(0));
                             oExcludeDateRange.setsDateTimeTo(aDateRange.get(aDateRange.size() - 1));
                             aoDateRange_Exclude.add(oExcludeDateRange);
+                            
+                            LOG.info("sKey cron exclude date: " + sKey);
+                            LOG.info("start cron exclude date: " + oExcludeDateRange.getsDateTimeAt());
+                            LOG.info("stop cron exclude date:: " + oExcludeDateRange.getsDateTimeTo());
+                            LOG.info("---------------");
                         }
                     }
                     else
@@ -379,6 +385,13 @@ public class FlowService implements ApplicationContextAware {
                     LOG.info("aDateRange_Exclude is: ", aoDateRange_Exclude);
                 }
             }
+        }
+        
+        for(ExcludeDateRange oExcludeDateRange : aoDateRange_Exclude){
+            LOG.info("-----");
+            LOG.info("start cron exclude date before apply: " + oExcludeDateRange.getsDateTimeAt());
+            LOG.info("stop cron exclude date before apply: " + oExcludeDateRange.getsDateTimeTo());
+            LOG.info("-----");    
         }
         
         for (FlowProperty flowProperty : flow.getFlowProperties()) {
@@ -422,7 +435,7 @@ public class FlowService implements ApplicationContextAware {
                         oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeAt())||
                         oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeTo()))&&(!bBusy))
                     {
-                        LOG.info("oFlowSlot to delete: " + oFlowSlot);
+                        //LOG.info("oFlowSlot to delete: " + oFlowSlot);
                         flowSlotsToDelete.add(oFlowSlot);
                     }
                 }
