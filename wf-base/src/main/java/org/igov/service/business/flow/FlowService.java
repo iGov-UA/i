@@ -360,7 +360,44 @@ public class FlowService implements ApplicationContextAware {
                     }
                     
                     if(!aCronExcludeRange.isEmpty()){
-                        DateTime excludeStartDate = aCronExcludeRange.get(0);
+                        
+                        List<String> asPointDates = new ArrayList<>();
+                        
+                        for(int i = 0; i < aCronExcludeRange.size(); i++){
+                            asPointDates.add(rangeformat.format(aCronExcludeRange.get(i).toDate()));
+                        }
+                        
+                        Set<String> asUniquePoindDates = new HashSet(asPointDates);
+                        LOG.info("asUniquePoindDates: ", asUniquePoindDates);
+                        
+                        Map<String, List<DateTime>> mDates = new HashMap<>();
+                        
+                        for (Iterator<String> it = asUniquePoindDates.iterator(); it.hasNext();)
+                        {
+                            String sUniqueDate = it.next();
+                            List<DateTime> aDateRange = new ArrayList<>();
+                            for(int i = 0; i < aCronExcludeRange.size(); i++){
+                                if(sUniqueDate.equals(rangeformat.format(aCronExcludeRange.get(i).toDate()))){
+                                    aDateRange.add(aCronExcludeRange.get(i));
+                                }
+                            }
+                            mDates.put(sUniqueDate, aDateRange);
+                        }
+                        
+                        for(String sKey : mDates.keySet()){
+                            List<DateTime> aDateRange = mDates.get(sKey);
+                            ExcludeDateRange oExcludeDateRange = new ExcludeDateRange();
+                            oExcludeDateRange.setsDateTimeAt(aDateRange.get(0));
+                            oExcludeDateRange.setsDateTimeTo(aDateRange.get(aDateRange.size() - 1));
+                            LOG.info("aDateRange list: ", aDateRange);
+                            LOG.info("---------------");
+                            LOG.info("sKey cron exclude date: " + sKey);
+                            LOG.info("start cron exclude date: " + oExcludeDateRange.getsDateTimeAt());
+                            LOG.info("stop cron exclude date:: " + oExcludeDateRange.getsDateTimeTo());
+                            LOG.info("---------------");
+                        }
+                        
+                        /*DateTime excludeStartDate = aCronExcludeRange.get(0);
                         DateTime excludeEndDate = aCronExcludeRange.get(0);
                         
                         for(int i = 0; i < aCronExcludeRange.size(); i++){
@@ -372,10 +409,18 @@ public class FlowService implements ApplicationContextAware {
                                 oExcludeDateRange.setsDateTimeTo(excludeEndDate);
                                 aoDateRange_Exclude.add(oExcludeDateRange);
                                 excludeStartDate = aCronExcludeRange.get(i);
+                                
+                                if(i == aCronExcludeRange.size() - 1){
+                                    
+                                    oExcludeDateRange = new ExcludeDateRange();
+                                    oExcludeDateRange.setsDateTimeAt(excludeStartDate);
+                                    oExcludeDateRange.setsDateTimeTo(excludeStartDate);
+                                    aoDateRange_Exclude.add(oExcludeDateRange);
+                                }
                             }
                             
                             excludeEndDate = aCronExcludeRange.get(i);
-                        }
+                        }*/
                     }
                     else
                     {
@@ -384,15 +429,7 @@ public class FlowService implements ApplicationContextAware {
                         oExcludeDateRange.setsDateTimeTo(format.parseDateTime(flowProperty.getsDateTimeTo())); 
                         aoDateRange_Exclude.add(oExcludeDateRange);
                     }
-                    
-                    for(ExcludeDateRange oExcludeDateRange : aoDateRange_Exclude)
-                    {
-                        LOG.info("---------------");
-                        LOG.info("start cron exclude date: " + oExcludeDateRange.getsDateTimeAt());
-                        LOG.info("stop cron exclude date:: " + oExcludeDateRange.getsDateTimeTo());
-                        LOG.info("---------------");
-                    }
-                    
+
                     LOG.info("aDateRange_Exclude is: ", aoDateRange_Exclude);
                 }
             }
