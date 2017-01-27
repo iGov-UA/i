@@ -326,11 +326,11 @@ public class FlowService implements ApplicationContextAware {
                         if(cronExpression != null){
                             while (currDateTime.isBefore(endDateTime)) {
                                 
+                                currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
+                                
                                 if (endDateTime.compareTo(currDateTime) <= 0) {
                                     break;
                                 }
-                                
-                                currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
                                 
                                 aCronExcludeRange.add(currDateTime);
                                 LOG.info("currDateTime for exclude is : " + currDateTime.toString());
