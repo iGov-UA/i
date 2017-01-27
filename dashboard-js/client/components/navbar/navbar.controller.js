@@ -122,7 +122,11 @@
           tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.iGovNavbarHelper.currentTab, bSelectedTasksSortReverse)
             .then(function(res) {
               if(res.aIDs.length > 1){
-                tempCountValue = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;
+                if(bSelectedTasksSortReverse){
+                  tempCountValue = (res.aIDs.length - res.nCurrentIndex) + ' / ' + res.aIDs.length;
+                } else {
+                  tempCountValue = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;
+                }
                 $scope.tasksSearch.count = '... / ' + res.aIDs.length;
               } else {
                 tempCountValue = res.aIDs.length;

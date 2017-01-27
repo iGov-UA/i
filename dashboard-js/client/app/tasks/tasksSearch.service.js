@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular) {
-  var tasksSearchService = function (tasks, Modal, defaultSearchHandlerService, $location, iGovNavbarHelper, $route, $q) {
+  var tasksSearchService = function (tasks, Modal, defaultSearchHandlerService, $location, $rootScope, iGovNavbarHelper, $route, $q) {
 
     var messageMap = {'CRC Error': 'Неправильний ID', 'Record not found': 'ID не знайдено'};
     var oPreviousTextSearch = {
@@ -9,7 +9,8 @@
       onTab: '',
       cursor : 0,
       aIds : [],
-      result : ''
+      result : '',
+      sortType: ''
     };
 
     var searchTaskByUserInput = function (value, tab, bSortReverse) {
@@ -23,7 +24,14 @@
             cleanPreviousTextSearch();
             var aIds = JSON.parse(result);
             if (angular.isArray(aIds) && aIds.length > 0) {
-              !tab ? searchSuccess(aIds[0]) : searchSuccess(aIds[0], tab);
+              var params = {
+                taskId : aIds[0],
+                bSortReverse: bSortReverse
+              };
+              if (tab) {
+                params.type = tab;
+              }
+              searchSuccess(params);
               defer.resolve({
                 aIDs : aIds,
                 nCurrentIndex : 0
@@ -40,12 +48,15 @@
     };
 
     var searchTaskByText = function (value, tab, bSortReverse, defer) {
+      var oSearchParams = {
+        taskId: null,
+        type: tab,
+        onlyThisType: true,
+        bSortReverse: bSortReverse
+      };
       if (oPreviousTextSearch.value === value && oPreviousTextSearch.onTab === tab){
-        oPreviousTextSearch.cursor++;
-        if(oPreviousTextSearch.cursor == oPreviousTextSearch.aIds.length){
-          oPreviousTextSearch.cursor = 0;
-        }
-        searchSuccess(oPreviousTextSearch.aIds[oPreviousTextSearch.cursor], tab, true, bSortReverse);
+        oSearchParams.taskId = getNextTaskId(oPreviousTextSearch.aIds, bSortReverse, false);
+        searchSuccess(oSearchParams);
         defer.resolve({
           aIDs : oPreviousTextSearch.aIds,
           nCurrentIndex : oPreviousTextSearch.cursor
@@ -63,11 +74,9 @@
                 if (oPreviousTextSearch.result === result) {
                   oPreviousTextSearch.onTab = tab;
                   oPreviousTextSearch.value = value;
-                  oPreviousTextSearch.cursor++;
-                  if(oPreviousTextSearch.cursor == aIds.length){
-                    oPreviousTextSearch.cursor = 0;
-                  }
-                  searchSuccess(aIds[oPreviousTextSearch.cursor], tab, true, bSortReverse);
+
+                  oSearchParams.taskId = getNextTaskId(aIds, bSortReverse, false);
+                  searchSuccess(oSearchParams);
                   defer.resolve({
                     aIDs : aIds,
                     nCurrentIndex : oPreviousTextSearch.cursor
@@ -78,9 +87,11 @@
                     onTab : tab,
                     cursor : 0,
                     aIds: aIds,
-                    result : result
+                    result : result,
+                    sortType: bSortReverse
                   };
-                  searchSuccess(aIds[0], tab, true, bSortReverse);
+                  oSearchParams.taskId = getNextTaskId(aIds, bSortReverse, true);
+                  searchSuccess(oSearchParams);
                   defer.resolve({
                     aIDs : aIds,
                     nCurrentIndex : oPreviousTextSearch.cursor
@@ -99,80 +110,90 @@
       }
     };
 
-    var cleanPreviousTextSearch = function () {
+    function cleanPreviousTextSearch () {
       oPreviousTextSearch = {
         value : '',
         onTab: '',
         cursor : 0,
         aIds : [],
-        result : ''
+        result : '',
+        sortType: ''
       };
-    };
+    }
+
+    function getNextTaskId(aIds, bSortReverse, isTheFirstIteration) {
+      if(bSortReverse){
+        oPreviousTextSearch.cursor--;
+      } else {
+        oPreviousTextSearch.cursor++;
+      }
+      if(oPreviousTextSearch.cursor < 0 || (isTheFirstIteration && bSortReverse)){
+        oPreviousTextSearch.cursor = aIds.length - 1;
+      }
+      if(oPreviousTextSearch.cursor == aIds.length || (isTheFirstIteration && !bSortReverse)){
+        oPreviousTextSearch.cursor = 0;
+      }
+      return aIds[oPreviousTextSearch.cursor];
+    }
 
     var searchTypes = ['unassigned','selfAssigned'];
 
-    var searchSuccess = function (taskId, tab, onlyThisTab, bSortReverse) {
-      if (!onlyThisTab)
-        onlyThisTab = false;
-      if (onlyThisTab) {
-        if (tab) {
-          searchTaskInType(taskId, tab, onlyThisTab, bSortReverse);
+    var searchSuccess = function (params) {
+      if (!params.onlyThisType){
+        params.onlyThisType = false;
+      }
+      if (!params.bSortReverse) {
+        params.bSortReverse = false;
+      }
+
+      if (params.onlyThisType) {
+        if (params.type) {
+          searchTaskInType(params);
         } else {
-          searchTaskInType(taskId, searchTypes[0], onlyThisTab, bSortReverse);
+          params.type = searchTypes[0];
+          searchTaskInType(params);
         }
       } else {
-        searchTaskInType(taskId, searchTypes[0], onlyThisTab, bSortReverse);
+        params.type = searchTypes[0];
+        searchTaskInType(params);
       }
     };
 
-    var searchTaskInType = function(taskId, type, onlyThisType, page, bSortReverse) {
-      if (!onlyThisType)
-        onlyThisType = false;
-      if (!page)
+    var searchTaskInType = function(params, page) {
+
+      if (!page){
         page = 0;
-      tasks.list(type, {page: page}).then(function(response){
+      }
+      tasks.list(params.type, {page: page}).then(function(response){
         var taskFound = false;
-        var i = 0;
-        if(bSortReverse){
-          for (i = response.data.length - 1; i >= 0 ; i--) {
-            if(checkAndGoToTheTask(response.data[i], type, taskId)){
-              taskFound = true;
-              break;
+
+        for (var i = 0; i < response.data.length; i++) {
+          if (response.data[i].id == params.taskId) {
+            var newPath = '/tasks/' + params.type + '/' + params.taskId;
+            if (newPath == $location.$$path){
+              $route.reload();
+              $rootScope.$broadcast("update-search-counter");
+            } else {
+              $location.path(newPath);
             }
-          }
-        } else {
-          for (i = 0; i < response.data.length; i++) {
-            if(checkAndGoToTheTask(response.data[i], type, taskId)){
-              taskFound = true;
-              break;
-            }
+            iGovNavbarHelper.load();
+            taskFound = true;
+            break;
           }
         }
 
-
         if (!taskFound) {
           if ((response.start + response.size) < response.total)
-            searchTaskInType(taskId, type, onlyThisType, page + 1, bSortReverse);
-          else if (searchTypes.indexOf(type) < searchTypes.length - 1) {
-            if (!onlyThisType) searchTaskInType(taskId, searchTypes[searchTypes.indexOf(type) + 1], onlyThisType, 0, bSortReverse);
+            searchTaskInType(params, page + 1);
+          else if (searchTypes.indexOf(params.type) < searchTypes.length - 1) {
+            if (!params.onlyThisType) {
+              params.type = searchTypes[searchTypes.indexOf(params.type) + 1]
+              searchTaskInType(params, 0);
+            }
           }
         }
       })
     };
-
-    function checkAndGoToTheTask(task, type, taskId) {
-      if (task.id == taskId) {
-        var newPath = '/tasks/' + type + '/' + taskId;
-        if (newPath == $location.$$path)
-          $route.reload();
-        else
-          $location.path(newPath);
-        iGovNavbarHelper.load();
-        return true;
-      } else {
-        return false;
-      }
-    }
 
     return {
       searchTaskByUserInput: searchTaskByUserInput,
@@ -181,7 +202,7 @@
     }
   };
 
-  tasksSearchService.$inject = ['tasks', 'Modal', 'defaultSearchHandlerService', '$location', 'iGovNavbarHelper',
+  tasksSearchService.$inject = ['tasks', 'Modal', 'defaultSearchHandlerService', '$location', '$rootScope', 'iGovNavbarHelper',
     '$route', '$q'];
 
   angular
