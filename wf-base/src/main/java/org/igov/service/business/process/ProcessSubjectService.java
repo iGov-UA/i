@@ -430,7 +430,7 @@ public class ProcessSubjectService {
                     
                     for(String sParamDocument: mParamDocument.keySet()){
                 	//if(mParamDocument.get(sParamDocument) != null){
-                 	       LOG.info("mProcessVariable param : " +
+                 	       LOG.info("mParamDocument param : " +
                         //           "class:" + mParamDocument.get(sParamDocument).getClass() +
                                    " name: " + sParamDocument + " value: " +  mParamDocument.get(sParamDocument));
                         //}
