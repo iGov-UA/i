@@ -325,11 +325,13 @@ public class FlowService implements ApplicationContextAware {
                         
                         if(cronExpression != null){
                             while (currDateTime.isBefore(endDateTime)) {
+                                
                                 currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
-
-                                if (stopDate.compareTo(startDate) <= 0) {
+                                
+                                if (endDateTime.compareTo(currDateTime) <= 0) {
                                     break;
                                 }
+                                
                                 aCronExcludeRange.add(currDateTime);
                                 LOG.info("currDateTime for exclude is : " + currDateTime.toString());
                             }
@@ -427,14 +429,18 @@ public class FlowService implements ApplicationContextAware {
 
                 for(FlowSlotTicket oFlowSlotTicket : oFlowSlot.getFlowSlotTickets()){
                     bBusy = bBusy||FlowSlotVO.bBusy(oFlowSlotTicket);
+                    LOG.info("flowSlot " + rangeformat.format(oFlowSlotTicket.getsDateStart().toDate())
+                    + " - " + rangeformat.format(oFlowSlotTicket.getsDateFinish().toDate()) + " is busy: " + bBusy);
                 }
 
                 for(ExcludeDateRange oExcludeRange : aoDateRange_Exclude){
+                    LOG.info("oFlowSlot " + rangeformat.format(oFlowSlot.getsDate().toDate()) + " is busy: " + bBusy);
+                    
                     if (((oFlowSlot.getsDate().isAfter(oExcludeRange.getsDateTimeAt())&&
                         oFlowSlot.getsDate().isBefore(oExcludeRange.getsDateTimeTo()))||
                         oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeAt())||
                         oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeTo()))&&(!bBusy))
-                    {
+                    {                       
                         //LOG.info("oFlowSlot to delete: " + oFlowSlot);
                         flowSlotsToDelete.add(oFlowSlot);
                     }
