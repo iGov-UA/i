@@ -27,8 +27,8 @@ public class SetTasks implements TaskListener {
     private Expression sID_Attachment;
 //    private Expression sTypeDoc;
 //    private Expression sID_Order_GovPublic;
-    private Expression sDateRegistration;
-    private Expression sDateDoc;
+//    private Expression sDateRegistration;
+//    private Expression sDateDoc;
 //    private Expression sApplicant;
 //    private Expression nCountAttach;
 //    private Expression asUrgently;
@@ -36,10 +36,10 @@ public class SetTasks implements TaskListener {
 //    private Expression sNote;
 //    private Expression sDoc1;
 //    private Expression sAutorResolution;
-    private Expression sName_SubjectRole;
+//    private Expression sName_SubjectRole;
 //    private Expression asTypeResolution;
 //    private Expression sTextResolution;
-    private Expression sDateExecution;
+//    private Expression sDateExecution;
     private Expression processDefinitionId;
     private Expression soData;
 
@@ -80,10 +80,10 @@ public class SetTasks implements TaskListener {
 //        }catch(Exception ex){}
         
         
-        String sDateExecution_Value = "";
-        try{
-            sDateExecution_Value = (this.sDateExecution != null) ? getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution()) : "";
-        }catch(Exception ex){}
+//        String sDateExecution_Value = "";
+//        try{
+//            sDateExecution_Value = (this.sDateExecution != null) ? getStringFromFieldExpression(this.sDateExecution, delegateTask.getExecution()) : "";
+//        }catch(Exception ex){} 
         
         
 //        String sTypeDoc_Value = "";
@@ -99,18 +99,18 @@ public class SetTasks implements TaskListener {
 //        }catch(Exception ex){}
         
         
-        String sDateRegistration_Value = "";
-        try{
-            sDateRegistration_Value
-                = (this.sDateRegistration != null) ? getStringFromFieldExpression(this.sDateRegistration, delegateTask.getExecution()) : "";
-        }catch(Exception ex){}
+//        String sDateRegistration_Value = "";
+//        try{
+//            sDateRegistration_Value
+//                = (this.sDateRegistration != null) ? getStringFromFieldExpression(this.sDateRegistration, delegateTask.getExecution()) : "";
+//        }catch(Exception ex){}
         
         
-        String sDateDoc_Value = "";
-        try{
-            sDateDoc_Value
-                = (this.sDateDoc != null) ? getStringFromFieldExpression(this.sDateDoc, delegateTask.getExecution()) : "";
-        }catch(Exception ex){}
+//        String sDateDoc_Value = "";
+//        try{
+//            sDateDoc_Value
+//                = (this.sDateDoc != null) ? getStringFromFieldExpression(this.sDateDoc, delegateTask.getExecution()) : "";
+//        }catch(Exception ex){}
         
         
 //        String sApplicant_Value = "";
@@ -161,10 +161,10 @@ public class SetTasks implements TaskListener {
 //        }catch(Exception ex){}
         
         
-        String sName_SubjectRole_Value = "";
-        try{
-            sName_SubjectRole_Value = (this.sName_SubjectRole != null) ? getStringFromFieldExpression(this.sName_SubjectRole, delegateTask.getExecution()) : "";
-        }catch(Exception ex){}
+//        String sName_SubjectRole_Value = "";
+//        try{
+//            sName_SubjectRole_Value = (this.sName_SubjectRole != null) ? getStringFromFieldExpression(this.sName_SubjectRole, delegateTask.getExecution()) : "";
+//        }catch(Exception ex){}
         
         String sProcessDefinitionId_Value = "";
         try{
@@ -186,12 +186,12 @@ public class SetTasks implements TaskListener {
         mParam.put("sID_Attachment", sID_Attachment_Value);
 //        mParam.put("sContent", sContent_Value);
 //        mParam.put("sAutorResolution", sAutorResolution_Value);
-        mParam.put("sName_SubjectRole", sName_SubjectRole_Value);
-        mParam.put("sDateExecution", sDateExecution_Value);
+//        mParam.put("sName_SubjectRole", sName_SubjectRole_Value);
+//        mParam.put("sDateExecution", sDateExecution_Value);
 //        mParam.put("sTypeDoc", sTypeDoc_Value);
 //        mParam.put("sID_Order_GovPublic", sID_Order_GovPublic_Value);
-        mParam.put("sDateRegistration", sDateRegistration_Value);
-        mParam.put("sDateDoc", sDateDoc_Value);
+//        mParam.put("sDateRegistration", sDateRegistration_Value);
+//        mParam.put("sDateDoc", sDateDoc_Value);
 //        mParam.put("sApplicant", sApplicant_Value);
 //        mParam.put("nCountAttach", snCountAttach_Value);
 //        mParam.put("sNote", sNote_Value);
