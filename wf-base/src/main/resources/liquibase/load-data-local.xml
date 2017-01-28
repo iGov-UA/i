@@ -29,6 +29,10 @@
         <sql splitStatements="true" dbms="postgresql"><![CDATA[
             SET CONSTRAINTS ALL DEFERRED;
 
+            DELETE FROM "SubjectGroupTree";
+            DELETE FROM "SubjectGroup";
+            DELETE FROM "SubjectOrganDepartment";
+
             DELETE FROM "SubjectOrganJoinAttribute";
             DELETE FROM "SubjectOrganJoin";
             DELETE FROM "SubjectAccount" where "nID" < 20000;
@@ -41,10 +45,6 @@
             DELETE FROM "City";
             DELETE FROM "Category";
             DELETE FROM "Subcategory";
-
-            DELETE FROM "SubjectGroupTree";
-            DELETE FROM "SubjectGroup";
-            DELETE FROM "SubjectOrganDepartment";
 
             DELETE FROM "FlowProperty";
             DELETE FROM "FlowPropertyClass";
