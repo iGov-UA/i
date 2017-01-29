@@ -426,7 +426,7 @@ public class FlowService implements ApplicationContextAware {
 
             for (FlowSlot oFlowSlot : aFlowSlot) {
                 
-                LOG.info("oFlowSlot data:" + oFlowSlot.getsData());
+                LOG.info("oFlowSlot data:" + oFlowSlot.getsDate());
                 
                 /*for(ExcludeDateRange oExcludeRange : aoDateRange_Exclude){
                     
