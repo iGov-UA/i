@@ -441,6 +441,14 @@ public class FlowService implements ApplicationContextAware {
                         LOG.info("oFlowSlot to delete date:" + oFlowSlot.getsDate());
                         flowSlotsToDelete.add(oFlowSlot);
                     }
+                    
+                    if (((oFlowSlot.getsDate().isAfter(oExcludeRange.getsDateTimeAt())&&
+                        oFlowSlot.getsDate().isBefore(oExcludeRange.getsDateTimeTo()))||
+                        oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeAt())||
+                        oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeTo()))&&(bBusy))
+                    {
+                        LOG.info("oFlowSlot to delete when it busy:" + oFlowSlot.getsDate());
+                    }
                 }
             }
             
