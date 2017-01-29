@@ -43,6 +43,9 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saChangeName == 'yes'}]]></conditionExpression>
     </sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask6" cancelActivity="true">
+      <extensionElements>
+        <activiti:executionListener event="comlete" delegateExpression="${DoWorkOnCloseTaskEvent}"></activiti:executionListener>
+      </extensionElements>
       <timerEventDefinition>
         <timeDuration>PT10S</timeDuration>
       </timerEventDefinition>
@@ -67,7 +70,7 @@
         <omgdc:Bounds height="71.0" width="121.0" x="191.0" y="21.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="300.0" y="42.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="298.0" y="42.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="248.0" y="154.0"></omgdc:Bounds>
@@ -118,7 +121,7 @@
         <omgdi:waypoint x="191.0" y="56.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow174" id="BPMNEdge_flow174">
-        <omgdi:waypoint x="330.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="328.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="420.0" y="56.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
