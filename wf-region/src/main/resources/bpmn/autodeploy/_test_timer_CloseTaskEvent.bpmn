@@ -17,11 +17,7 @@
         <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
       </extensionElements>
     </endEvent>
-    <userTask id="usertask6" name="статус 1 (ЮТ с таймером)" activiti:assignee="kermit">
-      <extensionElements>
-        <activiti:taskListener event="complete" delegateExpression="${DoWorkOnCloseTaskEvent}"></activiti:taskListener>
-      </extensionElements>
-    </userTask>
+    <userTask id="usertask6" name="статус 1 (ЮТ с таймером)" activiti:assignee="kermit"></userTask>
     <intermediateCatchEvent id="timerintermediatecatchevent2" name="TimerCatchEvent">
       <timerEventDefinition>
         <timeDuration>PT10S</timeDuration>
@@ -47,9 +43,6 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saChangeName == 'yes'}]]></conditionExpression>
     </sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask6" cancelActivity="true">
-      <extensionElements>
-        <activiti:executionListener event="comlete" delegateExpression="${DoWorkOnCloseTaskEvent}"></activiti:executionListener>
-      </extensionElements>
       <timerEventDefinition>
         <timeDuration>PT10S</timeDuration>
       </timerEventDefinition>
