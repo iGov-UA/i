@@ -426,44 +426,28 @@ public class FlowService implements ApplicationContextAware {
 
             for (FlowSlot oFlowSlot : aFlowSlot) {
                 
-                LOG.info("oFlowSlot data:" + oFlowSlot.getsDate());
+                Boolean bBusy = false;
                 
-                /*for(ExcludeDateRange oExcludeRange : aoDateRange_Exclude){
-                    
-                    Boolean bBusy = false;
-                    
-                    for(FlowSlotTicket oFlowSlotTicket : oFlowSlot.getFlowSlotTickets()){
-                        bBusy = bBusy||FlowSlotVO.bBusy(oFlowSlotTicket);
-                        
-                        if(!bBusy){
-                            oFlowSlotTicket.
-                        }
-                    }
-                    
+                for(FlowSlotTicket oFlowSlotTicket : oFlowSlot.getFlowSlotTickets()){
+                    bBusy = bBusy||FlowSlotVO.bBusy(oFlowSlotTicket);
+                }
+                
+                for(ExcludeDateRange oExcludeRange : aoDateRange_Exclude){
                     if (((oFlowSlot.getsDate().isAfter(oExcludeRange.getsDateTimeAt())&&
                         oFlowSlot.getsDate().isBefore(oExcludeRange.getsDateTimeTo()))||
                         oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeAt())||
                         oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeTo()))&&(!bBusy))
-                    {                       
-                        //LOG.info("oFlowSlot to delete: " + oFlowSlot);
+                    {
+                        LOG.info("oFlowSlot to delete date:" + oFlowSlot.getsDate());
                         flowSlotsToDelete.add(oFlowSlot);
                     }
-                }*/
-            }
-            
-            for (FlowSlot oFlowSlot : aFlowSlot) {
-                List<FlowSlotTicket> aFlowSlotTickets = oFlowSlot.getFlowSlotTickets();
-                
-                for(FlowSlotTicket oFlowSlotTicket : aFlowSlotTickets)
-                {
-                    LOG.info("oFlowSlotTicket: " + oFlowSlotTicket.getsDateStart() + " - " + oFlowSlotTicket.getsDateFinish());
                 }
             }
             
-            /*if(!flowSlotsToDelete.isEmpty())
+            if(!flowSlotsToDelete.isEmpty())
             {
                 flowSlotDao.delete(flowSlotsToDelete);
-            }*/
+            }
         }
         
         return res;
