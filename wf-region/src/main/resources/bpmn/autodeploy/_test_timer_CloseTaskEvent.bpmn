@@ -27,11 +27,6 @@
         <timeDuration>PT10S</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
-    <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask6" cancelActivity="true">
-      <timerEventDefinition>
-        <timeDuration>PT10S</timeDuration>
-      </timerEventDefinition>
-    </boundaryEvent>
     <sequenceFlow id="flow163" sourceRef="timerintermediatecatchevent2" targetRef="usertask3_yellow"></sequenceFlow>
     <sequenceFlow id="flow164" sourceRef="startevent1" targetRef="exclusivegateway6"></sequenceFlow>
     <sequenceFlow id="flow165" sourceRef="exclusivegateway6" targetRef="timerintermediatecatchevent2">
@@ -41,13 +36,18 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saChangeName == 'yes'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask7" name="статус 2 (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
-    <sequenceFlow id="flow167" sourceRef="escalationTimer2" targetRef="usertask7"></sequenceFlow>
     <userTask id="usertask8" name="статус 3 (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
     <sequenceFlow id="flow168" sourceRef="usertask8" targetRef="endevent5"></sequenceFlow>
     <userTask id="usertask9" name="статус 2 - перед этим был висящий таймер (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
     <sequenceFlow id="flow169" sourceRef="usertask9" targetRef="endevent5"></sequenceFlow>
     <sequenceFlow id="flow170" sourceRef="usertask3_yellow" targetRef="usertask9"></sequenceFlow>
     <sequenceFlow id="flow171" sourceRef="usertask7" targetRef="usertask8"></sequenceFlow>
+    <sequenceFlow id="flow172" sourceRef="usertask6" targetRef="boundarytimer1"></sequenceFlow>
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask7" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT10S</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_timer_CloseTaskEvent">
     <bpmndi:BPMNPlane bpmnElement="_test_timer_CloseTaskEvent" id="BPMNPlane__test_timer_CloseTaskEvent">
@@ -66,14 +66,14 @@
       <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
         <omgdc:Bounds height="71.0" width="121.0" x="240.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="escalationTimer2" id="BPMNShape_escalationTimer2">
-        <omgdc:Bounds height="30.0" width="30.0" x="340.0" y="42.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="248.0" y="154.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
         <omgdc:Bounds height="71.0" width="121.0" x="420.0" y="21.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="410.0" y="43.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask8" id="BPMNShape_usertask8">
         <omgdc:Bounds height="71.0" width="121.0" x="580.0" y="21.0"></omgdc:Bounds>
@@ -99,10 +99,6 @@
         <omgdi:waypoint x="150.0" y="55.0"></omgdi:waypoint>
         <omgdi:waypoint x="240.0" y="55.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow167" id="BPMNEdge_flow167">
-        <omgdi:waypoint x="370.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="420.0" y="56.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow168" id="BPMNEdge_flow168">
         <omgdi:waypoint x="701.0" y="56.0"></omgdi:waypoint>
         <omgdi:waypoint x="797.0" y="56.0"></omgdi:waypoint>
@@ -120,6 +116,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow171" id="BPMNEdge_flow171">
         <omgdi:waypoint x="541.0" y="56.0"></omgdi:waypoint>
         <omgdi:waypoint x="580.0" y="56.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow172" id="BPMNEdge_flow172">
+        <omgdi:waypoint x="361.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="58.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

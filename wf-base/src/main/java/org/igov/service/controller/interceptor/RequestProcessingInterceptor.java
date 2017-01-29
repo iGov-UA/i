@@ -229,7 +229,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             } else if (isCloseTask(oRequest, sResponseBody)) {
                 sType = "Close";
                 LOG.info("saveClosedTaskInfo block started");
-              //  saveClosedTaskInfo(sRequestBody, snTaskId, bSaveHistory);
+                saveClosedTaskInfo(sRequestBody, snTaskId, bSaveHistory);
                 LOG.info("saveClosedTaskInfo block finished");
             } else if (isUpdateTask(oRequest)) {
                 sType = "Update";
@@ -348,7 +348,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
      * @throws Exception
      */
     //(#1234) added additional parameter snClosedTaskId
-    /*private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId, boolean bSaveHistory) throws Exception {
+    private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId, boolean bSaveHistory) throws Exception {
         LOG.info("Method saveClosedTaskInfo started");
       
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
@@ -366,7 +366,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 			closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory, snID_Task, omRequestBody);
 		}
        LOG.info("Method saveClosedTaskInfo END");
-    }*/
+    }
 
     
     /**
