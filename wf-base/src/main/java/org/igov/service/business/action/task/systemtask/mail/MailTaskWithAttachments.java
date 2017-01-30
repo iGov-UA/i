@@ -110,12 +110,10 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
             Pattern pattern = Pattern.compile("\\{(.*?)\\}");
             Matcher match = pattern.matcher(sAttachmentsForSend);
             
-            int i = 0;
             while(match.find())
             {
-               String sJsonAttach = match.group(i);
-               LOG.info("match.group " + i + " : " + sJsonAttach);
-               i++;
+               String sJsonAttach = match.group(0);
+               LOG.info("match.group : " + sJsonAttach);
                try {
                     oJsonTaskAttachVO = (JSONObject)parser.parse(sJsonAttach);
                     MultipartFile oMultipartFile = null;
