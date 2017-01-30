@@ -42,7 +42,6 @@
         <activiti:formProperty id="sKab89" name="Номер кабінету" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган реєстрації" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible" default=" "></activiti:formProperty>
@@ -52,6 +51,7 @@
         <activiti:formProperty id="sFlag" name="Флаг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nSvidChild" name="Свідоцтво про народження;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_scan_passport" name="Паспорт особи, до якої реєструється дитина; скан-копія всіх заповнених сторінок, у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -128,10 +128,12 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression>
 			[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-					&lt;p&gt;
-					Спеціалісти ${sOrganType} оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час. 
-					&lt;/p&gt;
-					&lt;p&gt;[cancelTask]&lt;/p&gt; 
+				&lt;p&gt;
+					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час ${date_of_visit}, реквізитами та сумою для сплати адміністративного збору, короткою інструкцією щодо процедури реєстрації.&lt;br&gt;
+					Адреса ${sOrganType}: ${sAddress}.&lt;br&gt; 
+					${sPhoneOrgan}&lt;br&gt;
+				&lt;/p&gt;
+				&lt;p&gt;[cancelTask]&lt;/p&gt; 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
 				${sNameOrgan},&lt;br&gt;
@@ -344,7 +346,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Ваше звернення [sID_Order] оброблено, очікуємо Ваш візит. Вам надіслано email з реквізитами та сумою оплати, необхідні документи. Детально igov.org.ua/journal</activiti:expression>
+          <activiti:expression>Ваше звернення [sID_Order] оброблено, очікуємо на Ваш візит. Вам надіслано email з реквізитами та сумою оплати, необхідними документами. Детально igov.org.ua/journal</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -424,7 +426,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Ваше звернення [sID_Order] оброблено, очікуємо Ваш візит. Вам надіслано email з реквізитами та сумою оплати, необхідні документи. Детально igov.org.ua/journal</activiti:expression>
+          <activiti:expression>Ваше звернення [sID_Order] оброблено, очікуємо на Ваш візит. Вам надіслано email з реквізитами та сумою оплати, необхідними документами. Детально igov.org.ua/journal</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
@@ -498,7 +500,7 @@ execution.setVariable('sMaxPay', maxpay)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sNejav'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
-    <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="Фідбек + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -530,7 +532,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Ваше звернення [sID_Order] опрацьовано, оцініть якість надання послуги (форма надіслана в email). Детально igov.org.ua/journal</activiti:expression>
+          <activiti:expression>Ваше звернення [sID_Order] опрацьовано, оцініть якість надання послуги (форму надіслано в email). Детально igov.org.ua/journal</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
