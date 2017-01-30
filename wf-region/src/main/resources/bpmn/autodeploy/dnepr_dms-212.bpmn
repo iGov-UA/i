@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-212" name="Реєстрація місця проживання дитини до чотирнадцяти років" isExecutable="true">
-    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 11.01.2017</documentation>
+    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 30.01.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="warning2" name="Зверніть увагу" type="label" default="&lt;b&gt;Місце проживання дитини віком до 14 років реєструється за місцем проживання одного з батьків (того, який подає заяву)&lt;/b&gt;"></activiti:formProperty>
@@ -33,6 +33,7 @@
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="warning_Drogobich" name="Зверніть увагу" type="label" default="&lt;b&gt;УВАГА!&lt;/b&gt; При необхідності (під час перевірки документів) у Вас можуть бути запрошені скан-копії документів, що підтверджують адресу реєстрації дитини"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+		<activiti:formProperty id="nDiffDays_visitDay" name="Пропуск дней до выбора очереди" type="invisible" default="4"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
@@ -142,7 +143,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Ваше звернення [sID_Order] зареєстровано. Детально на igov.org.ua/journal або у Вашому email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
@@ -249,7 +250,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Ваше звернення [sID_Order] відхилено. Детально на igov.org.ua/journal або у Вашому email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
@@ -343,7 +344,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Ваше звернення [sID_Order] оброблено, очікуємо Ваш візит. Вам надіслано email з реквізитами та сумою оплати, необхідні документи. Детально igov.org.ua/journal</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -423,7 +424,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Ваше звернення [sID_Order] оброблено, очікуємо Ваш візит. Вам надіслано email з реквізитами та сумою оплати, необхідні документи. Детально igov.org.ua/journal</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
@@ -497,7 +498,7 @@ execution.setVariable('sMaxPay', maxpay)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sNejav'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
-    <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -524,6 +525,15 @@ execution.setVariable('sMaxPay', maxpay)
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]
           </activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Ваше звернення [sID_Order] опрацьовано, оцініть якість надання послуги (форма надіслана в email). Детально igov.org.ua/journal</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
