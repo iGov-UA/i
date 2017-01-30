@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import org.json.simple.JSONArray;
 
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
@@ -105,37 +107,43 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
             JSONObject oJsonTaskAttachVO = null;
             JSONParser parser = new JSONParser(); 
             
-            List<String> asJsonAttachements = Arrays.asList(sAttachmentsForSend.split(","));
-           
-            for(String sJsonAttach : asJsonAttachements)
+            Pattern pattern = Pattern.compile("\\{(.*?)\\}");
+            Matcher match = pattern.matcher(sAttachmentsForSend);
+            
+            int i = 0;
+            while(match.find())
             {
+               String sJsonAttach = match.group(i);
+               LOG.info("match.group " + i + " : " + sJsonAttach);
+               i++;
                try {
                     oJsonTaskAttachVO = (JSONObject)parser.parse(sJsonAttach);
+                    MultipartFile oMultipartFile = null;
+
+                    if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null)
+                    {
+                        String sFileExt = (String)oJsonTaskAttachVO.get("sFileNameAndExt");
+                        oMultipartFile = oAttachmetService
+                            .getAttachment(oExecution.getProcessInstanceId(), (String) oJsonTaskAttachVO.get("sFieldID"), null, null);
+
+                        InputStream oInputStream_Attachment = oMultipartFile.getInputStream();
+
+                        DataSource oDataSource = new ByteArrayDataSource(oInputStream_Attachment, sFileExt);
+                        oMail._Attach(oDataSource, sFileExt, "");
+                        LOG.info("oMultiPartEmail.attach was sending by new schema!");
+
+                    }
+                    else
+                    {
+                        LOG.error("aAttachment has nothing!");
+                        throw new ActivitiObjectNotFoundException("add the file to send");
+                    }
+
                 } catch (ParseException ex) {
                     LOG.info("There aren't TaskAttachVO objects in mail - JSON parsing error: ", ex);
                 }
 
-                MultipartFile oMultipartFile = null;
-
-                if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null)
-                {
-                    String sFileExt = (String)oJsonTaskAttachVO.get("sFileNameAndExt");
-                    oMultipartFile = oAttachmetService
-                        .getAttachment(oExecution.getProcessInstanceId(), (String) oJsonTaskAttachVO.get("sFieldID"), null, null);
-
-                    InputStream oInputStream_Attachment = oMultipartFile.getInputStream();
-
-                    DataSource oDataSource = new ByteArrayDataSource(oInputStream_Attachment, sFileExt);
-                    oMail._Attach(oDataSource, sFileExt, "");
-                    LOG.info("oMultiPartEmail.attach was sending by new schema!");
-
-                }
-                else
-                {
-                    LOG.error("aAttachment has nothing!");
-                    throw new ActivitiObjectNotFoundException("add the file to send");
-                }
-            }
+           }
         }
 
         oMail.send();
