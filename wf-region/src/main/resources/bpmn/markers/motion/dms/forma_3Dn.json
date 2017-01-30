@@ -1,146 +1,95 @@
 {
   "motion": {
-    "ShowFieldsOnCondition_1": {
+    "ShowFieldsOnCondition_Sobor": {
       "aField_ID": [
-        "asAND"
+        "sWarningSob",
+        "asBudType",
+        "asGBK"
       ],
       "asID_Field": {
-        "sReason": "asDistrict"
+        "sCondit1": "asDistrict"
       },
-      "sCondition": "[sReason]=='sAND'"
+      "sCondition": "[sCondit1]=='sSobor'"
     },
-    "ShowFieldsOnCondition_2": {
+    "ShowFieldsOnCondition_ShCh": {
       "aField_ID": [
-        "asInd"
+        "sWarningChechShevch",
+        "asBudType",
+        "asGBK"
       ],
       "asID_Field": {
-        "sReason": "asDistrict"
+        "sCondit1": "asDistrict"
       },
-      "sCondition": "[sReason]=='sIndust'"
+      "sCondition": "[sCondit1]=='sChech'||[sCondit1]=='sShev'"
     },
-    "ShowFieldsOnCondition_3": {
+    "ShowFieldsOnCondition_Insh": {
       "aField_ID": [
-        "asChech"
+        "sWarningInshi"
       ],
       "asID_Field": {
-        "sReason": "asDistrict"
+        "sCondit1": "asDistrict"
       },
-      "sCondition": "[sReason]=='sChech'"
+      "sCondition": "[sCondit1]=='sInshi'"
     },
-    "ShowFieldsOnCondition_4": {
+    "ShowFieldsOnCondition_SoborAdr": {
       "aField_ID": [
-        "asShev"
+        "sRegistrationVul",
+        "sRegistrationBud",
+        "asKorp",
+        "lRegistrationKvart",
+        "sWarningZvern"
       ],
       "asID_Field": {
-        "sReason": "asDistrict"
+        "sCondit1": "asDistrict",
+        "sCondit2": "asBudType",
+        "sCondit3": "asGBK"
       },
-      "sCondition": "[sReason]=='sShev'"
+      "sCondition": "[sCondit1]=='sSobor'&&[sCondit2]=='sBagkvatur'&&[sCondit3]=='yes'"
     },
-    "ShowFieldsOnCondition_5": {
+    "ShowFieldsOnCondition_ShChAdr": {
       "aField_ID": [
-        "asDistrict"
+        "sRegistrationVul",
+        "sRegistrationBud",
+        "asKorp",
+        "lRegistrationKvart",
+        "sWarningZvern"
       ],
       "asID_Field": {
-        "sReason": "asResultType"
+        "sCondit1": "asDistrict",
+        "sCondit2": "asBudType",
+        "sCondit3": "asGBK"
       },
-      "sCondition": "[sReason]=='sMyself'"
+      "sCondition": "([sCondit1]=='sChech'||[sCondit1]=='sShev')&&[sCondit2]=='sBagkvatur'&&[sCondit3]=='no'"
     },
-    "ShowFieldsOnCondition_6": {
+    "ShowFieldsOnCondition_Korp": {
       "aField_ID": [
-        "asTypeMail",
-        "asWhere",
-        "sWarning0",
-        "sPostAddress",
-        "sWarning11"
+        "lRegistrationKorp"
       ],
       "asID_Field": {
-        "sReason": "asResultType"
+        "sCondit1": "asDistrict",
+        "sCondit2": "asKorp",
+        "sCondit3": "asGBK",
+        "sCondit4": "asKorp"
       },
-      "sCondition": "[sReason]=='sPost'"
+      "sCondition": "([sCondit1]=='sChech'||[sCondit1]=='sShev'||[sCondit1]=='sSobor')&&[sCondit2]=='sBagkvatur'&&[sCondit3]=='no'&&[sCondit4]=='yes'"
     },
-    "ValuesFieldsOnCondition_7": {
+    "ShowFieldsOnCondition_Privat": {
       "aField_ID": [
-        "sWarning0"
-      ],
-      "asID_Field_sValue": [
-        "15,50 гривень"
+        "sWarningPrivat"
       ],
       "asID_Field": {
-        "sReason": "asTypeMail"
+        "sCondit2": "asBudType"
       },
-      "sCondition": "[sReason] == 'sRek'"
+      "sCondition": "[sCondit2]=='sPrivSector'"
     },
-    "ValuesFieldsOnCondition_9": {
+    "ShowFieldsOnCondition_GBK": {
       "aField_ID": [
-        "sWarning0"
-      ],
-      "asID_Field_sValue": [
-        "35,50 гривень"
+        "sWarningGBK"
       ],
       "asID_Field": {
-        "sReason": "asTypeMail"
+        "sCondit3": "asGBK"
       },
-      "sCondition": "[sReason] == 'sRekPrior'"
-    },
-    "ShowFieldsOnCondition_10": {
-      "aField_ID": [
-        "sAddress",
-        "sWorkDay",
-        "sNotification_day",
-        "sID_Payment",
-        "nID_Subject",
-        "sID_Merchant",
-        "sSum",
-        "sID_Currency",
-        "sDescription"
-      ],
-      "asID_Field": {
-        "sReason": "asResultType"
-      },
-      "sCondition": "[sReason]=='sP'"
-    },
-    "ShowFieldsOnCondition_11": {
-      "aField_ID": [
-        "asDistrict1"
-      ],
-      "asID_Field": {
-        "sReason": "asResultType"
-      },
-      "sCondition": "[sReason]=='sPost'"
-    },
-    "ValuesFieldsOnCondition_sNo": {
-      "aField_ID": [
-        "asDistrict"
-      ],
-      "asID_Field_sValue": [
-        "sNo"
-      ],
-      "asID_Field": {
-        "sReason": "asDistrict1"
-      },
-      "sCondition": "[sReason] == 'sNo1'"
-    },
-    "ValuesFieldsOnCondition_sNo1": {
-      "aField_ID": [
-        "asDistrict1"
-      ],
-      "asID_Field_sValue": [
-        "sNo1"
-      ],
-      "asID_Field": {
-        "sReason": "asDistrict"
-      },
-      "sCondition": "[sReason] == 'sNo'"
-    },
-    "ShowFieldsOnCondition_12": {
-      "aField_ID": [
-        "sWarning2"
-      ],
-      "asID_Field": {
-        "sReason": "asResultType",
-        "sReason1": "asDistrict1"
-      },
-      "sCondition": "[sReason]=='sPost' && ([sReason1]=='sChech' || [sReason1]=='sShev')"
+      "sCondition": "[sCondit3]=='no'"
     }
   }
 }
