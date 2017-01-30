@@ -272,7 +272,12 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    
+    <sequenceFlow id="flow58" name="ВІДМОВА" sourceRef="exclusivegateway2" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject']]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow33" name="ЛИСТ ОПЛАТИ" sourceRef="exclusivegateway2" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
     <serviceTask id="servicetask7" name="Оплата пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
@@ -288,8 +293,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header_with_payment.html]
 							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 							    &lt;p&gt;
-							    Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].&lt;br&gt;
-								Для того щоб закінчити процедуру необхідно протягом доби сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)&lt;br&gt;
+							    Ваш запит №[sID_Order] перевірено, довідку можна надати.&lt;br&gt;
+								Для того щоб закінчити процедуру необхідно протягом двух діб сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)&lt;br&gt;
 								[paymentButton_LiqPay]
 								&lt;/p&gt;
 								[pattern/mail/_common_signature_start.html]
@@ -371,9 +376,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow33" name="Оцінка" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultType == 'sPost'}]]></conditionExpression>
-    </sequenceFlow>
+    
     <serviceTask id="servicetask5" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -492,9 +495,7 @@ execution.setVariable('sCountPayment', src)</script>
     </sequenceFlow>
     <sequenceFlow id="flow56" sourceRef="servicetask10" targetRef="servicetask11"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask11" targetRef="usertask3"></sequenceFlow>
-    <sequenceFlow id="flow58" sourceRef="exclusivegateway2" targetRef="servicetask8">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[ВІДМОВА]]></conditionExpression>
-    </sequenceFlow>
+    
     <intermediateCatchEvent id="timerintermediatecatchevent2" name="TimerCatchEvent">
       <timerEventDefinition>
         <timeDuration>PT1H</timeDuration>
