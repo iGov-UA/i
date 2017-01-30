@@ -62,7 +62,13 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             //Issue #1441: we need to keep list of attachments to current task in order to properly
             List<Attachment> currentAttachments = fileTaskUploadListener.getaAttachment();
             LOG.info("Current attachments size: {}", currentAttachments.size());
-
+            LOG.info("Current attachments in FileTaskInheritance: ");
+            
+            for(Attachment attach : currentAttachments){
+                LOG.info("attach id:" + attach.getId());
+            }
+            
+            
             for(Attachment attachment: currentAttachments) {
                 LOG.info("CurrentAttachment: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
             }
