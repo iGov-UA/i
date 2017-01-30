@@ -18,6 +18,7 @@
           <activiti:value id="sComp" name="Подачі до комунальних підприємств"></activiti:value>
           <activiti:value id="sPlase" name="Постановки на квартирний облік"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_2" name="Район проживання та місце реєстрації" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sWarning1&quot;],&quot;sValue&quot;:&quot;Район проживання та місце реєстрації&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sWarning1" name=" " type="label" default="&lt;font color='#ff0000'&gt;&lt;b&gt;Увага!&lt;/b&gt;&lt;/font&gt; Послуга діє тільки для Соборного, Чечелівського і Шевченківського районів. Будинки по яких видається довідка в переліку за посиланням нижче"></activiti:formProperty>
         <activiti:formProperty id="asDistrict" name="Оберіть район до якого належить Ваш будинок" type="enum" default="sNo1" required="true">
@@ -49,6 +50,7 @@
         <activiti:formProperty id="lRegistrationKorp" name="Номер корпусу" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="lRegistrationKvart" name="Номер квартири" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWarningZvern" name="Зверніть увагу" type="label" default="За довідкою може звернутись лише особа, яка зареєстрована за цією адерсою!"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_3" name="Спосіб отримання довідки заявником" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання довідки заявником&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою (з оплатою доставки)"></activiti:value>
@@ -63,6 +65,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_MarkerNoSOJ.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="ShowFields" type="markers" default="${markerService.loadFromFile('dms/forma_3Dn.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;sAddress&quot;,&quot;sWorkDay&quot;,&quot;sID_Payment&quot;,&quot;sCountPayment&quot;,&quot;nID_Subject&quot;,&quot;sID_Merchant&quot;,&quot;sSum&quot;,&quot;sID_Currency&quot;,&quot;sDescription&quot;,&quot;sPosluga_name&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса підрозділу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkDay" name="Графік роботи" type="invisible"></activiti:formProperty>
@@ -133,14 +136,12 @@ execution.setVariable('sWorkDay', workTime);
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
-			[pattern/mail/new_design/_common_content_start.html]
-							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-							    &lt;p&gt;
-							    Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].&lt;br&gt;
-Для того щоб закінчити процедуру необхідно прийти за адресою: ${sAddress}&lt;br&gt;
-З собою мати документ, що посвідчує особу та підтверджує реєстрацію за вказаною в заявці адресою.&lt;br&gt;
-Графік прийому громадян:&lt;br&gt;
-${sWorkDay}
+[pattern/mail/new_design/_common_content_start.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;
+Ваш запит не буде оброблено так як ваш будинок знаходиться в районі, який не підключено до ситеми.&lt;br&gt;
+Також можливо ваш будинок відноситься до житлово-будівельного кооперативу або приватного сектору.&lt;br&gt;
+Заявку скасовано.&lt;br&gt;&lt;br&gt;
 &lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
