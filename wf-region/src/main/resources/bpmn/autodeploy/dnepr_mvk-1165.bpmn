@@ -18,7 +18,6 @@
           <activiti:value id="sComp" name="Подачі до комунальних підприємств"></activiti:value>
           <activiti:value id="sPlase" name="Постановки на квартирний облік"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_2" name="Район проживання та місце реєстрації" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sWarning1&quot;],&quot;sValue&quot;:&quot;Район проживання та місце реєстрації&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sWarning1" name=" " type="label" default="&lt;font color='#ff0000'&gt;&lt;b&gt;Увага!&lt;/b&gt;&lt;/font&gt; Послуга діє тільки для Соборного, Чечелівського і Шевченківського районів. Будинки по яких видається довідка в переліку за посиланням нижче"></activiti:formProperty>
         <activiti:formProperty id="asDistrict" name="Оберіть район до якого належить Ваш будинок" type="enum" default="sNo1" required="true">
@@ -31,7 +30,6 @@
         <activiti:formProperty id="sWarningChechShevch" name=" " type="label" default="&lt;font color='#458b00'&gt;&lt;b&gt;Чечелівський і Шевченківський (пр. Хмельницького 14) &lt;/b&gt;&lt;/font&gt;&lt;a href=&quot;https://docs.google.com/document/d/1-fPkKwFet9mRBt9IiX11bz5t48DcPcmhxQtZr4mimLw/edit?usp=sharing &quot; target=&quot;_blank&quot;&gt;&lt;br&gt;перелік доступних будинків&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sWarningInshi" name=" " type="label" default="&lt;font color='#63b8ff'&gt;&lt;b&gt;Підрозділи по районах Дніпра &lt;/b&gt;&lt;/font&gt; &lt;a href=&quot;https://docs.google.com/document/d/1ucS5WC6YK2AWg2Yxmpmg8cVgSvoznV_vkLeXi_rjdww/edit?usp=sharing &quot; target=&quot;_blank&quot;&gt;&lt;br&gt;адреси підрозділів&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sWarningInshiNO" name=" " type="label" default="&lt;font color='#63b8ff'&gt;&lt;b&gt;Інші райони не під'єднані до порталу, ви можете звернутись за адресою вказаною вище за посиланням!&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
-        
         <activiti:formProperty id="asBudType" name="Вкажіть тип вашого будинку" type="enum" required="true">
           <activiti:value id="sBagkvatur" name="багатоквартирний"></activiti:value>
           <activiti:value id="sPrivSector" name="приватний"></activiti:value>
@@ -42,7 +40,7 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sWarningGBK" name=" " type="label" default="&lt;font color='#ff0000'&gt;&lt;b&gt;Для житлово-будівельних кооперативів(ЖБК) послуга не надається, зверніться за довідкою до свого ЖБК!&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationVul;(якщо це проспект вкажіть це)" name="Назва вулиці" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationVul" name="Назва вулиці;(якщо це проспект вкажіть це)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationBud" name="Номер будинку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asKorp" name="Чи поділено ваш будинок на корпуса?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -51,7 +49,6 @@
         <activiti:formProperty id="lRegistrationKorp" name="Номер корпусу" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="lRegistrationKvart" name="Номер квартири" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWarningZvern" name="Зверніть увагу" type="label" default="За довідкою може звернутись лише особа, яка зареєстрована за цією адерсою!"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_3" name="Спосіб отримання довідки заявником" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання довідки заявником&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою (з оплатою доставки)"></activiti:value>
@@ -65,8 +62,8 @@
           <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 36.14"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_MarkerNoSOJ.json')}"></activiti:formProperty>
-        
         <activiti:formProperty id="markers2" name="ShowFields" type="markers" default="${markerService.loadFromFile('dms/forma_3Dn.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;sAddress&quot;,&quot;sWorkDay&quot;,&quot;sID_Payment&quot;,&quot;sCountPayment&quot;,&quot;nID_Subject&quot;,&quot;sID_Merchant&quot;,&quot;sSum&quot;,&quot;sID_Currency&quot;,&quot;sDescription&quot;,&quot;sPosluga_name&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса підрозділу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkDay" name="Графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
@@ -120,6 +117,39 @@ execution.setVariable('sWorkDay', workTime);
     <sequenceFlow id="flow59" name="З поштою" sourceRef="exclusivegateway1" targetRef="servicetask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVidpovid == 'sEnamnarochno'}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow60" sourceRef="exclusivegateway1" targetRef="servicetask13">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDistrict == 'sInshi'||asBudType == 'sPrivSector'||asGBK == 'yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask13" name="Не треба було замовляти" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Отримання довідки про склад сім'ї]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+							    &lt;p&gt;
+							    Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].&lt;br&gt;
+Для того щоб закінчити процедуру необхідно прийти за адресою: ${sAddress}&lt;br&gt;
+З собою мати документ, що посвідчує особу та підтверджує реєстрацію за вказаною в заявці адресою.&lt;br&gt;
+Графік прийому громадян:&lt;br&gt;
+${sWorkDay}
+&lt;/p&gt;
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+Дніпропетровська міська рада,&lt;br&gt;
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <serviceTask id="servicetask6" name="особистий візит" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
@@ -389,7 +419,8 @@ execution.setVariable('sCountPayment', src)</script>
         <timeDuration>PT1H</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
-    
+    <endEvent id="endevent5" name="End"></endEvent>
+    <sequenceFlow id="flow61" sourceRef="servicetask13" targetRef="endevent5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk-1165">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk-1165" id="BPMNPlane_dnepr_mvk-1165">
@@ -401,6 +432,9 @@ execution.setVariable('sCountPayment', src)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="190.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
+        <omgdc:Bounds height="55.0" width="105.0" x="158.0" y="0.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="55.0" width="105.0" x="158.0" y="302.0"></omgdc:Bounds>
@@ -462,6 +496,9 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="428.0" y="370.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
+        <omgdc:Bounds height="35.0" width="35.0" x="193.0" y="-60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="51.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="70.0" y="107.0"></omgdi:waypoint>
@@ -476,6 +513,17 @@ execution.setVariable('sCountPayment', src)</script>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="63.0" x="110.0" y="250.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="230.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="267.0" y="107.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="50.0" x="279.0" y="60.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
+        <omgdi:waypoint x="210.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="55.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="445.0" y="357.0"></omgdi:waypoint>
@@ -579,9 +627,9 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="425.0" y="256.0"></omgdi:waypoint>
         <omgdi:waypoint x="372.0" y="256.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="230.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="267.0" y="107.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+        <omgdi:waypoint x="210.0" y="0.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="-25.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
