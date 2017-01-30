@@ -36,6 +36,7 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
+        LOG.info("MailTaskWithAttachments start...");
         System.setProperty("mail.mime.address.strict", "false");
 
         //MultiPartEmail oMultiPartEmail = MultiPartEmail_BaseFromTask(oExecution);
