@@ -3,7 +3,7 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Вихідний лист-відповідь"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber" type="invisible"></activiti:formProperty>
@@ -29,7 +29,7 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="Реєстраційний номер документа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Реєстраційний номер документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" variable="sReportCommon"></activiti:formProperty>
@@ -71,10 +71,10 @@
     </userTask>
     <scriptTask id="scripttask1" name="2 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//1. счетчик добавления номера в поле исходящего номера
-var number=execution.getVariable('sID_Order_GovPublic')
+var number=execution.getVariable('sID_Custom_GovPublic')
 var sIncomingNumber=execution.getVariable('sIncomingNumber')
 var fullNumber=sIncomingNumber+"/"+number
-execution.setVariable('sID_Order_GovPublic', fullNumber)
+execution.setVariable('sID_Custom_GovPublic', fullNumber)
 
 //2. получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
@@ -86,7 +86,19 @@ execution.setVariable('processInstanceId', processInstanceId)
 
       </script>
     </scriptTask>
-    <serviceTask id="servicetask1" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
+   <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}">
+      <extensionElements>
+        <activiti:field name="sKey">
+          <activiti:string><![CDATA[_doc_justice_171]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="sPattern">
+          <activiti:string><![CDATA[[sID_Custom_GovPublic]]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="nDigits">
+          <activiti:string><![CDATA[5]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
