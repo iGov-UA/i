@@ -124,7 +124,7 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                     {
                         String sFileExt = (String)oJsonTaskAttachVO.get("sFileNameAndExt");
                         oMultipartFile = oAttachmetService
-                            .getAttachment(oExecution.getProcessInstanceId(), (String) oJsonTaskAttachVO.get("sFieldID"), null, null);
+                            .getAttachment(null, null, (String)oJsonTaskAttachVO.get("sKey"), (String)oJsonTaskAttachVO.get("sID_StorageType"));
 
                         InputStream oInputStream_Attachment = oMultipartFile.getInputStream();
 
@@ -139,7 +139,7 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                         throw new ActivitiObjectNotFoundException("add the file to send");
                     }
 
-                } catch (ParseException ex) {
+                } catch (Exception ex) {
                     LOG.info("There aren't TaskAttachVO objects in mail - JSON parsing error: ", ex);
                 }
 
