@@ -5,6 +5,7 @@
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="sID_Order_GovPublic" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="крок 1 - призначення виконавців" activiti:candidateGroups="justice_common">
@@ -18,7 +19,7 @@
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecute&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFirstName_isExecute&quot;,&quot;name&quot;:&quot;First Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLastName_isExecute&quot;,&quot;name&quot;:&quot;Last Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_isExecute&quot;,&quot;name&quot;:&quot;Login&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" required="true">
+        <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" required="true">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
           <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
@@ -34,6 +35,7 @@
           <activiti:value id="sEnumCreateOutcomingLetter" name="сформувати"></activiti:value>
           <activiti:value id="sEnumNotCreateOutcomingLetter" name="не треба формувати поки що"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="sID_Order_GovPublic" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
@@ -58,7 +60,6 @@ var processInstanceId= execution.getProcessInstanceId()
 execution.setVariable('processInstanceId', processInstanceId)
 </script>
     </scriptTask>
-    <sequenceFlow id="flow20" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask2" name="крок 2 - закриття процесу" activiti:candidateGroups="justice_common">
       <extensionElements>
@@ -105,6 +106,9 @@ execution.setVariable('processInstanceId', processInstanceId)
     <sequenceFlow id="flow26" name="повернутися на той самий крок" sourceRef="exclusivegateway1" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asCreateOutcomingLetter == 'sEnumCreateOutcomingLetter'}]]></conditionExpression>
     </sequenceFlow>
+    <serviceTask id="servicetask1" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
+    <sequenceFlow id="flow27" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_justice_setTasks">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_justice_setTasks" id="BPMNPlane__doc_test_justice_setTasks">
@@ -126,10 +130,9 @@ execution.setVariable('processInstanceId', processInstanceId)
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="370.0" y="74.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="66.0" y="94.0"></omgdi:waypoint>
-        <omgdi:waypoint x="92.0" y="94.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="56.0" y="152.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="197.0" y="94.0"></omgdi:waypoint>
         <omgdi:waypoint x="220.0" y="94.0"></omgdi:waypoint>
@@ -155,6 +158,14 @@ execution.setVariable('processInstanceId', processInstanceId)
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="291.0" y="11.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="48.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="108.0" y="152.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="108.0" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="144.0" y="122.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
