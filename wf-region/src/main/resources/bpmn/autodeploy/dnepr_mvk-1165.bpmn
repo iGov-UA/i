@@ -139,8 +139,8 @@ execution.setVariable('sWorkDay', workTime);
 [pattern/mail/new_design/_common_content_start.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
-Ваш запит не буде оброблено так як ваш будинок знаходиться в районі, який не підключено до ситеми.&lt;br&gt;
-Також можливо ваш будинок відноситься до житлово-будівельного кооперативу або приватного сектору.&lt;br&gt;
+Ваш запит не буде оброблено, так як ваш будинок знаходиться в районі, який не підключено до системи.&lt;br&gt;
+Також, можливо ваш будинок відноситься до житлово-будівельного кооперативу або приватного сектору.&lt;br&gt;
 Заявку скасовано.&lt;br&gt;&lt;br&gt;
 &lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
@@ -165,10 +165,11 @@ execution.setVariable('sWorkDay', workTime);
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-							    &lt;p&gt;
-							    Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].&lt;br&gt;
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;
+Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].&lt;br&gt;
 Для того щоб закінчити процедуру необхідно прийти за адресою: ${sAddress}&lt;br&gt;
+Заявка через портал дає вам право на позачергове отримання послуги.&lt;br&gt;
 З собою мати документ, що посвідчує особу та підтверджує реєстрацію за вказаною в заявці адресою.&lt;br&gt;
 Графік прийому громадян:&lt;br&gt;
 ${sWorkDay}
@@ -190,6 +191,88 @@ ${sWorkDay}
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <serviceTask id="servicetask10" name="Заяву прийнято" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Заявка про ${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt; Ваше звернення щодо ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
+Повідомлення про результат розгляду буде спрямоване на Ваш e-mail протягом доби.&lt;/p&gt;
+В разі підтвердження можливості надати послугу, Вам буде необхідно оплатити поштову доставку протягом 3х діб.&lt;br /&gt;
+Після цього вам надійде лист з довідкою.&lt;br /&gt;
+&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask11" name="Лист чиновнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <userTask id="usertask3" name="Попередня перевірка" activiti:candidateGroups="dnepr_mvk_form3_${asDistrict}"> 
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asWhere" name="Для чого громадянину потрібна довідка" type="enum" writable="false">
+          <activiti:value id="sSubs" name="Отримання субсидії"></activiti:value>
+          <activiti:value id="sSocHelp" name="Отримання соціальної допомоги"></activiti:value>
+          <activiti:value id="sHeritage" name="Оформлення спадщини"></activiti:value>
+          <activiti:value id="sComp" name="Подачі до комунальних підприємств"></activiti:value>
+          <activiti:value id="sPlase" name="Постановки на квартирний облік"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRegistrationVul" name="Назва вулиці; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationBud" name="Номер будинку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lRegistrationKorp" name="Номер корпусу; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="lRegistrationKvart" name="Номер квартири; ;writable=false" type="long"></activiti:formProperty>
+        
+        <activiti:formProperty id="decide" name="Чи можливо надати заявнику довідку?" type="enum" required="true">
+          <activiti:value id="accept" name="Можливо! Надіслати лист для оплати поштового відправлення"></activiti:value>
+          <activiti:value id="reject" name="Неможливо, надіслати лист з відмовою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="В разі відмови вкажіть причину" type="textArea"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    
     <serviceTask id="servicetask7" name="Оплата пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
@@ -259,7 +342,7 @@ ${sWorkDay}
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow39" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>
-    <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="dnepr_mvk_form3_${asDistrict1}">
+    <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="dnepr_mvk_form3_${asDistrict}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
@@ -384,9 +467,6 @@ ${sWorkDay}
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow42" sourceRef="servicetask12" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="usertask2" targetRef="parallelgateway2"></sequenceFlow>
-    <serviceTask id="servicetask10" name="Заяву прийнято" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <serviceTask id="servicetask11" name="Лист чиновнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
-    <userTask id="usertask3" name="Попередня перевірка"></userTask>
     <sequenceFlow id="flow47" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow48" sourceRef="servicetask6" targetRef="endevent4"></sequenceFlow>
