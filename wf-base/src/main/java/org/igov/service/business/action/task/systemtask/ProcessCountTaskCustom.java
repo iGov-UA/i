@@ -59,7 +59,8 @@ public class ProcessCountTaskCustom implements JavaDelegate, TaskListener {
 	
 	@Override
 	public void execute(DelegateExecution oDelegateExecution) throws Exception {
-		loadProcessCountCustom(oDelegateExecution);
+		LOG.info("ProcessCountTaskCustom start in execute....");
+                loadProcessCountCustom(oDelegateExecution);
 	}
 
 	private void loadProcessCountCustom(DelegateExecution oExecution) {
@@ -127,6 +128,7 @@ public class ProcessCountTaskCustom implements JavaDelegate, TaskListener {
 
 	@Override
 	public void notify(DelegateTask oDelegateTask) {
+                LOG.info("ProcessCountTaskCustom start in notify....");
 		loadProcessCountCustom(oDelegateTask.getExecution());
 	}
 }

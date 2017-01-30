@@ -334,7 +334,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
             LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
             if (oProcessDefinition.getKey().startsWith("_doc_") || DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())) {
-                ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
+                Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
+                LOG.info("RequestProcessInterceptor process count: " + count.intValue());
             }
         }
     }
