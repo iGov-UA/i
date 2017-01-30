@@ -552,9 +552,16 @@ public class ProcessSubjectService {
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             //иначе проверяем на необходимость редактирования
             if (oProcessSubjectParent == null) {
-                oProcessSubjectParent = processSubjectDao
-                        .setProcessSubject(snProcess_ID, (String)mParam.get("sName_SubjectRole"),
-                                new DateTime(oDateExecution), 0L, processSubjectStatus);
+                if(mParam.get("sName_SubjectRole") != null){
+                    oProcessSubjectParent = processSubjectDao
+                            .setProcessSubject(snProcess_ID, (String)mParam.get("sName_SubjectRole"),
+                                    new DateTime(oDateExecution), 0L, processSubjectStatus);
+                }
+                else{
+                     oProcessSubjectParent = processSubjectDao
+                            .setProcessSubject(snProcess_ID, "test_role",
+                                    new DateTime(oDateExecution), 0L, processSubjectStatus);
+                }
             } else {
                 editProcessSubject(oProcessSubjectParent, mParamDocument);
             }
