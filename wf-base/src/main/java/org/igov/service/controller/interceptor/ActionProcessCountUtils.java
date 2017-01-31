@@ -92,7 +92,7 @@ public class ActionProcessCountUtils {
                             }
                         }
                             
-                        LOG.info("sURL:" + sURL);    
+                        LOG.info("sURL callGetActionProcessCount:" + sURL);    
                         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
 
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
@@ -101,7 +101,7 @@ public class ActionProcessCountUtils {
                         LOG.info("Received response for updating ActionProcessCount {}", soResponse);
 			//Map<String, Object> mReturn = (Map<String, Object>) JSONValue.parse(soResponse);
 			//if (mReturn != null && mReturn.containsKey("nCountYear")){
-				return Integer.valueOf(soResponse);
+				return Integer.parseInt(soResponse);//.valueOf(soResponse);
 			//}
 		} catch (Exception e) {
 			LOG.info("Error occured while processing  {}", e.getMessage());
