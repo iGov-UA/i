@@ -1248,11 +1248,11 @@
 
         $scope.print = function (form, isMenuItem) {
 
-          if( !isMenuItem ) { // Click on Button
+          if( isMenuItem !== true ) { // Click on Button 
             $scope.updateTemplateList();
           }
 
-          if ( ( $scope.printTemplateList.length === 0 || isMenuItem ) && $scope.selectedTask && $scope.taskForm) {
+          if ( ( $scope.printTemplateList.length === 0 || isMenuItem === true ) && $scope.selectedTask && $scope.taskForm) {
             rollbackReadonlyEnumFields();
             $scope.printModalState.show = !$scope.printModalState.show;
           }
