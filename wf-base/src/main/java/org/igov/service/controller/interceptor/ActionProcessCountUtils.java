@@ -39,12 +39,16 @@ public class ActionProcessCountUtils {
 	
 	public static Integer callGetActionProcessCount(HttpRequester httpRequester, GeneralConfig generalConfig, String sID_BP, Long nID_Service, Integer nYear){
     	Map<String, String> mParam = new HashMap<String, String>();
+        
     	if (sID_BP != null && sID_BP.contains(":")){
 			sID_BP = StringUtils.substringBefore(sID_BP, ":");
 			LOG.info("Cutting business process definition in order get business process id. sID_BP {}", sID_BP);
-		}
+	}
+        
+        LOG.info("sID_BP before putting in map: " + sID_BP);
     	mParam.put("sID_BP", sID_BP);
-    	if (nID_Service != null){
+    	
+        if (nID_Service != null){
     		mParam.put("nID_Service", nID_Service.toString());
     	}
     	if (nYear != null){
