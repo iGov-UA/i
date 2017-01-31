@@ -34,68 +34,82 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Fiel
 
       try {
 
-        for(var i = 0; i < form.length; i++) {
+        for(var i = 0; i < form.length; i++) { 
 
-           if( form[i].type === 'table' && form[i].aRow && typeof form[i].aRow[0] !== 'number') {
+           if( form[i].type === 'table' && form[i].aRow && typeof form[i].aRow[0] !== 'number') { 
 
-			    	  var prints = FieldMotionService.getPrintForms(); // form[i].id
+			    	  var prints = FieldMotionService.getPrintForms(); // form[i].id 
 
-			    	  angular.forEach ( prints, function(printsItem, printsKey, printsObj ) {
+			    	  angular.forEach ( prints, function(printsItem, printsKey, printsObj ) { 
 
-                 if( _.contains(printsItem.aField_ID, form[i].id) ) {
+                 if( _.contains(printsItem.aField_ID, form[i].id) ) { 
 
-		                  angular.forEach( form[i].aRow, function( item, key, obj ) {
+		                  angular.forEach( form[i].aRow, function( item, key, obj ) { 
 
-		                    var itemObject = {
+                        if( FieldMotionService.isPrintFormVisible(printsItem, form[i], form, item) ) { 
+                        
+                            var itemObject = {
 
-		                      oPrintForm: printsItem,
-		                      sPrintFormKey: printsKey,
-		                      sPatternPath: printsItem.sPatternPath,
-		                      sTableName: form[i].id,
-		                      nRowIndex: key,
-		                      oRow: item,
-		                      oField: null,
-		                      sLabel: "",
+                              oPrintForm: printsItem,
+                              sPrintFormKey: printsKey,
+                              sPatternPath: printsItem.sPatternPath,
+                              sTableName: form[i].id,
+                              nRowIndex: key,
+                              oRow: item,
+                              oField: null,
+                              sLabel: "",
 
-		                    };
+                            };
 
 
-		                    if( printsItem.sTitleField ) {
-		                      angular.forEach( item.aField, function( field, fieldKey ) {
+                            if( printsItem.sTitleField ) { 
+                              angular.forEach( item.aField, function( field, fieldKey ) { 
 
-			                      if( field.id === printsItem.sTitleField )  {
+                                if( field.id === printsItem.sTitleField )  {
 
-		                          itemObject.oField = field;
-		                          itemObject.sLabel = field.value;
+                                  itemObject.oField = field;
+                                  itemObject.sLabel = field.value;
 
-		                          return;
-			                      }
+                                  var enumItem = FieldMotionService.getEnumItemById( itemObject.oField, itemObject.oField.value ); 
+                                  if( enumItem != null ) { 
+                                    itemObject.sLabel = enumItem.name; 
+                                  } 
 
-		                      } );
-		                    }
+                                  return;
+                                }
 
-		                    if( itemObject.sLabel === "" ) {
+                              } );
+                            }
 
-		                      itemObject.oField = item.aField[0];
-		                      itemObject.sLabel = item.aField[0].value;
-		                      console.log( " #1438 '" + form[i].id + "'=" + itemObject.sLabel );
+                            if( itemObject.sLabel === "" && item.aField[0] !== null) { 
 
-		                    }
+                              itemObject.oField = item.aField[0];
+                              itemObject.sLabel = item.aField[0].value;
 
-		                    if( itemObject.sLabel ) {
-		                      var item = {
+                              var enumItem = FieldMotionService.getEnumItemById( itemObject.oField, itemObject.oField.value ); 
+                              if( enumItem != null ) { 
+                                 itemObject.sLabel = enumItem.name;  
+                              } 
 
-		                        id: form[i].id,
-		                        displayTemplate: printsItem.sName + ' (' + itemObject.sLabel + ')',
-		                        type: "prints",
-		                        value: itemObject,
+                              //console.log( " #1438 '" + form[i].id + "'=" + itemObject.sLabel );
 
-		                      };
+                            }
 
-		                      topItems.unshift( item );
+                            if( itemObject.sLabel ) {
+                              var item = {
 
-		                      console.log( "Top item added " + printsItem.sName + " count:" + topItems.length);
-		                    }
+                                id: form[i].id,
+                                displayTemplate: printsItem.sName + ' (' + itemObject.sLabel + ')',
+                                type: "prints",
+                                value: itemObject,
+
+                              };
+
+                              topItems.unshift( item );
+
+                              console.log( "Top item added " + printsItem.sName + " count:" + topItems.length);
+                            }
+                        } 
 
 		                } );
                  }
