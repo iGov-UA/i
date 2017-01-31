@@ -96,6 +96,7 @@ public class ActionProcessCountUtils {
                         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
 
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
+                        LOG.info("oJSONObject ActionProcessCount: " + oJSONObject.toJSONString());
                         String soResponse = oJSONObject.get("nCountYear") != null ? oJSONObject.get("nCountYear").toString() : "0";
                     
                         LOG.info("Received response for updating ActionProcessCount {}", soResponse);
@@ -104,7 +105,7 @@ public class ActionProcessCountUtils {
 				return Integer.parseInt(soResponse);//.valueOf(soResponse);
 			//}
 		} catch (Exception e) {
-			LOG.info("Error occured while processing  {}", e.getMessage());
+			LOG.info("Error occured while processing :" + e);
 		}
     	return 0;
     }
