@@ -94,7 +94,7 @@ public class ActionProcessCountUtils {
                             
                         LOG.info("sURL callGetActionProcessCount:" + sURL);    
                         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
-
+                        LOG.info("osResponseEntityReturn.getBody(): " + osResponseEntityReturn.getBody());
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
                         LOG.info("oJSONObject ActionProcessCount: " + oJSONObject.toJSONString());
                         String soResponse = oJSONObject.get("nCountYear") != null ? oJSONObject.get("nCountYear").toString() : "0";
