@@ -8,7 +8,7 @@
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписаної обома нареченими заяви. Ви матимете можливість підписати заяву за допомогою ЕЦП або в продовж 3 днів з моменту замовлення послуги приїхати особисто до відділу ДРАЦС і підписати паперовий екземпляр заяви."></activiti:formProperty>
         <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організатора державної реєстрації шлюбу" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організатора державної реєстрації шлюбу" type="select" default="youthDnipro"></activiti:formProperty>
         <activiti:formProperty id="sPhoto" name="Фото урочистої зали" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sText6" name="Зверніть увагу" type="label" default="&lt;b&gt;Реквізити для сплати держ. мита та додаткових послуг Ви отримаєте в електронному листі після перевірки даних реєстратором&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPrivileges" name="Маєте пільгу? ; Якщо Ви маєте пільгу, оплата держ. мита не потрібна" type="enum" required="true">
@@ -118,7 +118,7 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask2"></sequenceFlow>
     <userTask id="usertask5" name="${sSourceType} - Перевірка інформації організатором" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="sShapka" type="invisible" variable="asEnjoyingDRACS"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса організатора" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
@@ -214,7 +214,9 @@
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати послуг організатора" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0180_marriageFast.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0180_marriageFast_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/zags_0180_marriageFast.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/zags_0180_marriageFast_1.html]" type="invisible" default="Договір про надання послуги з організатором" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_5_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="comment fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_6.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="setters" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_7.json')}"></activiti:formProperty>
@@ -578,8 +580,11 @@ ${sBankDetails2}<br>
 
 
 <b>Реквізити для сплати послуги організатора:</b><br>
-${sBankDetails1}
-<br>
+Отримувач: <b>МКЗК «ВХА «Юність Дніпра» ДМР</b><br>
+Банк отримувача: <b>ПАТ Приватбанк</b><br>
+МФО: <b>305299</b><br>
+Код ЄДРПОУ: <b>34733424</b><br>
+Розрахунковий рахунок: <b>26003050249899</b><br>
 Вартість послуги: <b> ${sSumOrganizer} грн </b><br>
 <br>
 
@@ -604,13 +609,13 @@ ${sMail_Signature} <br>
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1},${PrintForm_2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] rozglyanuto. Vam neobhidno pidpysaty zayavu. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] rozglyanuto. Vam neobhidno splatyty za poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
