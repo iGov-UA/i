@@ -221,7 +221,7 @@ function FieldMotionService(MarkersFactory) {
             } else { 
               //console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
             }
-          } else if ( item.type === 'table' && tableRow !== null) { // search for table value 
+          } else if ( item.type === 'table' && tableRow !== null && (tableRow && tableRow.aField)) { // search for table value
 		angular.forEach( tableRow.aField, function( rowCell, rowCellKey, rowItem  ) {  
 
 			if( rowCell.id === fId ) { 
