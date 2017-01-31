@@ -52,6 +52,9 @@ public class ActionProcessCountUtils {
     	}
     	 
     	try {
+                        LOG.info("generalConfig.getSelfHostCentral() URI: " + generalConfig.getSelfHostCentral() + URI_GET_ACTION_PROCESS_COUNT);
+                        LOG.info("mParam: ", mParam);
+                        
 			String soResponse = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI_GET_ACTION_PROCESS_COUNT, mParam);
 			LOG.info("Received response for updating ActionProcessCount {}", soResponse);
 			Map<String, Object> mReturn = (Map<String, Object>) JSONValue.parse(soResponse);
