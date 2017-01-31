@@ -197,7 +197,17 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         for ( var fieldIndex in printFormTableObject.oRow.aField ) { 
 
           var field = printFormTableObject.oRow.aField[fieldIndex];
-          replacement = field.value;
+
+          if( field.type === "enum") { 
+             var enumItem = FieldMotionService.getEnumItemById( field, field.value ); 
+             if( enumItem != null) { 
+               replacement = enumItem.name; 
+             } 
+          } 
+          else { 
+            replacement = field.value; 
+          } 
+
     		  tag = "["+ printFormTableObject.sTableName + "." + field.id + "]";
 
       	  templateString = templateString.replace(new RegExp(this.escapeRegExp(tag)), replacement); 
