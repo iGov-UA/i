@@ -5,26 +5,18 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.igov.io.GeneralConfig;
-import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.io.web.HttpRequester;
-import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 
 public class ActionProcessCountUtils {
-    
+
 	private static final Logger LOG = LoggerFactory.getLogger(ActionProcessCountUtils.class);
 	
 	private static final String URI_SET_ACTION_PROCESS_COUNT = "/wf/service/action/event/setActionProcessCount";
 	private static final String URI_GET_ACTION_PROCESS_COUNT = "/wf/service/action/event/getActionProcessCount";
 	
-        @Autowired
-        private static HttpEntityInsedeCover oHttpEntityInsedeCover;   
-        
 	public static Integer callSetActionProcessCount(HttpRequester httpRequester, GeneralConfig generalConfig, String sID_BP, Long nID_Service){
     	Map<String, String> mParam = new HashMap<String, String>();
     	mParam.put("sID_BP", sID_BP);
@@ -65,47 +57,19 @@ public class ActionProcessCountUtils {
     	 
     	try {
                         LOG.info("generalConfig.getSelfHostCentral() URI: " + generalConfig.getSelfHostCentral() + URI_GET_ACTION_PROCESS_COUNT);
-                        LOG.info("mParam: ", mParam);
                         
-			//String soResponse = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI_GET_ACTION_PROCESS_COUNT, mParam);
-			
-                        String sURL = generalConfig.getSelfHostCentral() + URI_GET_ACTION_PROCESS_COUNT + "?";
-                        if(mParam.get("sID_BP") != null){
-                            sURL = sURL + "sID_BP=" + mParam.get("sID_BP");
-                            if(mParam.get("nID_Service") != null)
-                            {
-                                sURL = sURL + "&nID_Service=" + mParam.get("nID_Service"); 
-                            }
-                            if(mParam.get("nYear") != null){
-                                sURL = sURL + "&nYear=" + mParam.get("nYear"); 
-                            }
-                        }else{
-                            if(mParam.get("nID_Service") != null)
-                            {
-                                sURL = sURL + "nID_Service=" + mParam.get("nID_Service"); 
-                                if(mParam.get("nYear") != null){
-                                    sURL = sURL + "&nYear=" + mParam.get("nYear"); 
-                                }
-                            }
-                            else{
-                                sURL = sURL + "nYear=" + mParam.get("nYear");
-                            }
+                        for(String m : mParam.keySet()){
+                            LOG.info("mParam elem: " + mParam.get(m));
                         }
-                            
-                        LOG.info("sURL callGetActionProcessCount:" + sURL);    
-                        ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
-                        LOG.info("osResponseEntityReturn.getBody(): " + osResponseEntityReturn.getBody());
-                        JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
-                        LOG.info("oJSONObject ActionProcessCount: " + oJSONObject.toJSONString());
-                        String soResponse = oJSONObject.get("nCountYear") != null ? oJSONObject.get("nCountYear").toString() : "0";
-                    
-                        LOG.info("Received response for updating ActionProcessCount {}", soResponse);
-			//Map<String, Object> mReturn = (Map<String, Object>) JSONValue.parse(soResponse);
-			//if (mReturn != null && mReturn.containsKey("nCountYear")){
-				return Integer.parseInt(soResponse);//.valueOf(soResponse);
-			//}
+                        
+			String soResponse = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI_GET_ACTION_PROCESS_COUNT, mParam);
+			LOG.info("Received response for updating ActionProcessCount {}", soResponse);
+			Map<String, Object> mReturn = (Map<String, Object>) JSONValue.parse(soResponse);
+			if (mReturn != null && mReturn.containsKey("nCountYear")){
+				return Integer.valueOf(mReturn.get("nCountYear").toString());
+			}
 		} catch (Exception e) {
-			LOG.info("Error occured while processing :" + e);
+			LOG.info("Error occured while processing  {}", e.getMessage());
 		}
     	return 0;
     }
