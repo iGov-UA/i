@@ -10,12 +10,10 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date"></activiti:formProperty>
+    
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecute&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFirstName_isExecute&quot;,&quot;name&quot;:&quot;First Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLastName_isExecute&quot;,&quot;name&quot;:&quot;Last Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_isExecute&quot;,&quot;name&quot;:&quot;Login&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecute&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFirstName_isExecute&quot;,&quot;name&quot;:&quot;First Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLastName_isExecute&quot;,&quot;name&quot;:&quot;Last Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_isExecute&quot;,&quot;name&quot;:&quot;Login&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+       
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Задача" activiti:candidateGroups="${sLogin_isExecute}">
@@ -27,7 +25,7 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date"></activiti:formProperty>
+     
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" required="true">
           <activiti:value id="executed" name="Виконано"></activiti:value>
@@ -35,9 +33,7 @@
           <activiti:value id="unactual" name="Неактуально"></activiti:value>
           <activiti:value id="delegated" name="Делегування іншому виконавцю"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot; }]}"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання; ;bNew=true" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot; }]}"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="asReport" name="Якщо треба додати коментарій до звіту - поставте галочку; ;sID_CheckboxTrue=sEnumRepotYes" type="enum">
           <activiti:value id="sEnumRepotYes" name="потрібно додати коментарій"></activiti:value>
@@ -47,11 +43,7 @@
         <activiti:formProperty id="markers9" name="додати текст звіту" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sReport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asReport&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRepotYes'||[sClient] == 'потрібно додати коментарій'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="Якщо інший виконавець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sTable2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегування іншому виконавцю'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+  
          <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
             <activiti:string><![CDATA[_doc_system_task_justice_setTasks]]></activiti:string>
@@ -59,22 +51,12 @@
           <activiti:field name="sID_Attachment">
             <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="sDateRegistration">
-            <activiti:expression><![CDATA[${sDateRegistration}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sDateDoc">
-            <activiti:expression><![CDATA[${sDateDoc}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sName_SubjectRole">
-            <activiti:expression><![CDATA[${sName_SubjectRole}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sDateExecution">
-            <activiti:expression><![CDATA[${sDateExecution}]]></activiti:expression>
-          </activiti:field>
           <activiti:field name="processDefinitionId">
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
-         
+          <activiti:field name="soData">
+            <activiti:expression><![CDATA[sContent::${sContent};;sDoc1::${sDoc1}]]></activiti:expression>
+          </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
           <activiti:field name="sID_ProcessSubjectStatus">
