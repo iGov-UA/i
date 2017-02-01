@@ -1000,7 +1000,8 @@ public class ActionItemController {
         }
 
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
-                nID_Place_Profile, bShowEmptyFolders, includeServices, null, null);
+                nID_Place_Profile, bShowEmptyFolders, BooleanUtils.isTrue(bNew), includeServices,
+                null, null);
         
         LOG.info("List<ServiceTagTreeNodeVO> res: ", res);
         
@@ -1036,7 +1037,8 @@ public class ActionItemController {
             @RequestParam(value = "bNew", required = false) Boolean bNew
     ) {
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
-                nID_Place_Profile, bShowEmptyFolders, true, nID_ServiceTag_Root, nID_ServiceTag_Child);
+                nID_Place_Profile, bShowEmptyFolders, BooleanUtils.isTrue(bNew),true,
+                nID_ServiceTag_Root, nID_ServiceTag_Child);
         res.forEach(n -> n.setaService(n.getaService().stream().map(
                 s -> prepareServiceToView(s, false)).collect(Collectors.toList())));
 
