@@ -39,9 +39,11 @@
             return rejection;
           }
 
-          if(rejection.status == 401 || (rejection.data && rejection.data.statusCode == 401)) {
+          if(rejection.status == 401) {
             console.log("Unauthorized");
             return rejection;
+          } else if (rejection.data && rejection.data.statusCode == 401) {
+            return $q.reject(rejection);
           }
 
           Modal.inform.error()(rejection.data.message || rejection.data.serverMessage || (rejection.statusText === '' ? 'Виникла помилка: ' + rejection.status : rejection.statusText));
