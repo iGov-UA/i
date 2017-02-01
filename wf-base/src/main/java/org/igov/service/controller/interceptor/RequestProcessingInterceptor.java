@@ -8,6 +8,8 @@ import static org.igov.util.Tool.sCut;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -274,6 +276,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
  */
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
             throws Exception {
+        
+        LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
+        
         if (sResponseBody == null) {
             LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
         }
