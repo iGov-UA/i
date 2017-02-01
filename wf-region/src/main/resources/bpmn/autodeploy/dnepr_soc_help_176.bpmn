@@ -23,6 +23,20 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
 
+
+        <activiti:formProperty id="bFlagForDrohobuch" name="Флаг Дрогобича" type="invisible" default="false"></activiti:formProperty>
+		<activiti:formProperty id="markersDrohobuch" name="Маркер для Дрогобича" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_176_drohobuch.json')}"></activiti:formProperty>
+
+        <activiti:formProperty id="asCategoryInvalid" name="Кому надається посвідчення" type="enum" required="true">
+          <activiti:value id="pension" name="особа, що не має права на пенсію"></activiti:value>
+          <activiti:value id="invalid" name="інвалідам"></activiti:value>
+          <activiti:value id="childInInvalid" name="інваліду з дитинства"></activiti:value>
+          <activiti:value id="child" name="дитині-інваліду"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFileServMCEK" name="Довідка МСЕК про встановлення інвалідності або медичний висновок про дитину-інваліда" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFilePhoto" name="Фотографія" type="file" required="true"></activiti:formProperty>
+
+
         <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
@@ -30,6 +44,7 @@
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
         
+ 
 		<activiti:formProperty id="markersStart" name="Маркер відповіді" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_176_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersAdressTransfer" name="Маркер адреса и выбора типа передачи помощи" type="markers" default="${markerService.loadFromFile('soczah/soc_help_adress_transfer.json')}"></activiti:formProperty>
       </extensionElements>
@@ -121,6 +136,13 @@
                 
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="asCategoryInvalid" name="Кому надається посвідчення" type="enum" writable="false">
+          <activiti:value id="pension" name="особа, що не має права на пенсію"></activiti:value>
+          <activiti:value id="invalid" name="інвалідам"></activiti:value>
+          <activiti:value id="childInInvalid" name="інваліду з дитинства"></activiti:value>
+          <activiti:value id="child" name="дитині-інваліду"></activiti:value>
+        </activiti:formProperty>
         
         <activiti:formProperty id="asDecision1" name="Рішення" type="enum" required="true">
           <activiti:value id="accept1" name="Заповнені дані вірні, запросити громадянина"></activiti:value>
@@ -131,14 +153,14 @@
         <activiti:formProperty id="dTimeVisit" name="Внесіть час візиту громадянки для надання довідки про вагітність" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sRoom" name="Внесіть кабінет, де можна отримати посвідчення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sComment1" name="Будь ласка, укажіть причину Вашого рішення" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Будь ласка, укажіть причину Вашого рішення" type="textArea"></activiti:formProperty>
 		
 		<activiti:formProperty id="markersUser1" name="Маркер відповіді" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_176_user.json')}"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${nFileServMCEK},${nFilePhoto}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -219,7 +241,7 @@
 				При собі треба мати: оригінал паспорту, фотокартка 3х4 заявника та дитини (вразі потреби).
 			</p>
 			<p>
-				Вам призначено дату і час візиту: value{[dVisit]}  ${dTimeVisit}.
+				Вам призначено дату і час візиту: value{[dDateVisit]}  ${dTimeVisit}.
 			</p>
 			<br>
 			Якщо у Вас є ще якісь питання — Ви можете звернутись за наступними контактами:<br>

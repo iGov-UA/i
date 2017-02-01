@@ -8,6 +8,8 @@ import static org.igov.util.Tool.sCut;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +52,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  */
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter implements ConstantsInterceptor {
 
+    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|justice_incoming|_doc_justice_171";
+    private static final String asID_BP_SkipSendMail = "dnepr_mvk_291_common|rada_0676_citizensAppeals|dnepr_dms-212|dnepr_dms-212s|dnepr_dms-89|dnepr_dms-89s|dnepr_dms-89sd";
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     private boolean bFinish = false;
@@ -203,6 +207,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
                 LOG.info("returning from protocolize block: bSaveHistory:{} oResponse.getStatus():{}", bSaveHistory, oResponse.getStatus());
             }
+            
+            LOG.info("isSaveTask(oRequest, sResponseBody): " + isSaveTask(oRequest, sResponseBody));
+            LOG.info("oRequest.getRequestURL: " + oRequest.getRequestURL().toString());
+            LOG.info("sResponseBody before SaveTask: " + sResponseBody);
+            
             if (isSaveTask(oRequest, sResponseBody)) {
                 sType = "Save";
                 LOG.info("saveNewTaskInfo block started");
@@ -272,6 +281,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
  */
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
             throws Exception {
+        
+        LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
+        
         if (sResponseBody == null) {
             LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
         }
