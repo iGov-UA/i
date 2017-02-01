@@ -32,13 +32,11 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення громадянину про реєстрацію звернення"></serviceTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="1. Первинна обробка звернення">
-    
-    </userTask>
+    <userTask id="usertask1" name="1. Первинна обробка звернення"></userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="usertask2_yellow"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Service Task"></serviceTask>
-    <serviceTask id="servicetask4" name="Service Task"></serviceTask>
+    <serviceTask id="servicetask3" name="Відмова у наданні рішення"></serviceTask>
+    <serviceTask id="servicetask4" name="Повідомлення про надання рішення"></serviceTask>
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
