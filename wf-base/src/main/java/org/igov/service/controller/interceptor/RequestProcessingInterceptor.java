@@ -201,7 +201,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             }
         }
         String sType = "";
+        
         try {
+            saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
             LOG.info("URL: {} method: {}", oRequest.getRequestURL(), oRequest.getMethod());
             if (!bSaveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
                     && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
@@ -227,7 +229,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     }
                     return;
                 } else {
-                    saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
+                    //saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
                 }
                 LOG.info("saveNewTaskInfo block finished");
             } else if (isCloseTask(oRequest, sResponseBody)) {
