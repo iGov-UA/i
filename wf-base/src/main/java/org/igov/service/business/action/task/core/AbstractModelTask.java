@@ -531,7 +531,7 @@ public abstract class AbstractModelTask {
                         try {
                             LOG.info("Parsing value + " + sFieldValue + " time: " + dateFormat.format(date));
                             oJsonTaskAttachVO = (JSONObject)parser.parse(sFieldValue);
-                        } catch (ParseException ex) {
+                        } catch (Exception ex) {
                             LOG.info("There aren't TaskAttachVO objects in sFieldValue - JSON parsing error: ", ex);
                         }
                         
