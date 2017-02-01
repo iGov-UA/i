@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="rada_0450_mother_heroine" name="Надання документів на присвоєння звання Мати-героїня України" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressLive" name="Адреса проживання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Ксерокопія паспорта матері (1, 2, 10, 11 сторінок)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Ксерокопії свідоцтв про народження всіх дітей" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Характеристика жінки (матері) з основного місця роботи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Довідки-характеристики з місця навчання кожної дитини (шкільного і студентського віку) та характеристики з місця роботи на кожну дитину (для тих, хто працює), інформація про рід занять, громадську роботу, поведінку з місця проживання" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Ксерокопії про здобуття дітьми освіти (диплом про закінчення навчального закладу або атестат про освіту)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Акт обстеження умов проживання багатодітної сім’ї" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile7" name="Соціальний паспорт багатодітної сім’ї встановленого взірця" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile8" name="Подання (клопотання) підприємства, установи, організації на ім’я міського голови щодо представлення багатодітної матері до присвоєння почесного звання «Мати-героїня»" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile9" name="Протокол підприємства, установи, організації (зборів трудового колективу), які представляють до присвоєння почесного звання «Мати-героїня»" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile10" name="Нагородний лист (5 екземплярів, оригінал) встановленого взірця" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile11" name="Свідоцтва про смерть із зазначенням причини смерті (витяг з Державного реєстру актів цивільного стану громадян про смерть із вказуванням причини смерті або ксерокопія лікарського свідоцтва про смерть (форма 106/0, затверджена наказом МОЗ від 08.08.2006 №545));(Якщо дитина померла у матері внаслідок невиліковної хвороби або за трагічних обставин)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile12" name="Автобіографія багатодітної матері" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile13" name="Автобіографія всіх дітей" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile14" name="Довідка про склад сім’ї" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile15" name="Довідка, що мати народила і виховала до восьмирічного віку п’ятьох і більше дітей (ПІБ, дата народження)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile16" name="Ксерокопія трудової книжки матері та всіх її дітей, що працювали" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile17" name="Довідка про відсутність судимості у батьків та всіх дітей" type="file"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="Повідомлення працівнику відділу про нове звернення"></serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Повідомлення громадянину про реєстрацію звернення"></serviceTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="1. Первинна обробка звернення">
+    
+    </userTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="usertask2_yellow"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Service Task"></serviceTask>
+    <serviceTask id="servicetask4" name="Service Task"></serviceTask>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow7" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>
+    <userTask id="usertask2_yellow" name="2. Кінцева обробка звернення"></userTask>
+    <sequenceFlow id="flow10" sourceRef="usertask2_yellow" targetRef="exclusivegateway1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_rada_0450_mother_heroine">
+    <bpmndi:BPMNPlane bpmnElement="rada_0450_mother_heroine" id="BPMNPlane_rada_0450_mother_heroine">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="490.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="760.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="850.0" y="126.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="850.0" y="240.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1000.0" y="136.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="1000.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2_yellow" id="BPMNShape_usertask2_yellow">
+        <omgdc:Bounds height="55.0" width="105.0" x="630.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="155.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="305.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="595.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="630.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="780.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="780.0" y="153.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="153.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="780.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="780.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="267.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="955.0" y="153.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1000.0" y="153.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="955.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1000.0" y="267.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="455.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="735.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
