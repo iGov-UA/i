@@ -344,7 +344,7 @@
 
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
 
-    <userTask id="usertask1" name="Очікування в черзі" activiti:candidateGroups="jur_${sID_UA}_1497">
+    <userTask id="usertask1_red" name="Очікування в черзі" activiti:candidateGroups="jur_${sID_UA}_1497">
       <extensionElements>
         <activiti:formProperty id="sVersion" name="Версия" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
@@ -486,12 +486,13 @@
           <activiti:value id="sNo" name="Ні - Заява не прийнята для обробки (надіслати листа про відмову)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
-<!--
-        <activiti:formProperty id="asSelectIzm_01" name="1. Прізвище, та/або імені, та/або по батькові; ;writable=false" type="enum">
+
+        <activiti:formProperty id="asSelectIzm_01" name="1. Прізвище, та/або імені, та/або по батькові" type="enum" writable="false">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
         </activiti:formProperty>
 
+<!--
         <activiti:formProperty id="markers_Hide_100_01" name="показать заяву исходную" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_100_01&quot;:{&quot;aField_ID&quot;:[&quot;sBody_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Ні'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Hide_100_02" name="показать заяву со старым ФИО" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_100_02&quot;:{&quot;aField_ID&quot;:[&quot;sBody_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Так'&quot;}}}"></activiti:formProperty>
 -->
@@ -872,11 +873,14 @@
 
    <userTask id="usertask2" name="Надання платної послуги" activiti:assignee="${user_last}">
       <extensionElements>
-        <activiti:formProperty id="user_last" name="user_last" type="string"></activiti:formProperty>
-        <activiti:formProperty id="group_found" name="group_found" type="string"></activiti:formProperty>
+
+		<activiti:formProperty id="user_last" name="user_last" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="group_found" name="group_found" type="invisible"></activiti:formProperty>
+<!--
         <activiti:formProperty id="sVarCNAP" name="sVarCNAP" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarUser" name="sVarUser" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVersion" name="Версия" type="string"></activiti:formProperty>
+-->		
+        <activiti:formProperty id="sVersion" name="Версия" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
 
         <activiti:formProperty id="sID_Payment" name="ID платежу" type="string" writable="false"></activiti:formProperty>
@@ -1021,12 +1025,12 @@
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print_pay.html]" type="invisible" default="Квитанція про сплату за послугу" writable="false"></activiti:formProperty>
 
-<!--
-        <activiti:formProperty id="asSelectIzm_01" name="1. Прізвище, та/або імені, та/або по батькові; ;writable=false" type="enum">
+        <activiti:formProperty id="asSelectIzm_01" name="1. Прізвище, та/або імені, та/або по батькові" type="enum" writable="false">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
         </activiti:formProperty>
 
+<!--
         <activiti:formProperty id="markers_Hide_100_01" name="показать заяву исходную" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_100_01&quot;:{&quot;aField_ID&quot;:[&quot;sBody_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Ні'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Hide_100_02" name="показать заяву со старым ФИО" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_100_02&quot;:{&quot;aField_ID&quot;:[&quot;sBody_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Так'&quot;}}}"></activiti:formProperty>
 -->
@@ -1480,7 +1484,7 @@
     <sequenceFlow id="flow27" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sUniqNum !='_' && asHaveDecisionFile=='noDecisionFile' && asDecisionMain=='rejectMain'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow37" sourceRef="usertask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="usertask1_red" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask11" name="Е-mail додаткове повідомлення заявнику про прийняту заявку (без SMS)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -1578,7 +1582,7 @@
     <sequenceFlow id="flow45" sourceRef="exclusivegateway5" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow46" sourceRef="servicetask11" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow47" name="Потрібна сплата за послугу" sourceRef="exclusivegateway6" targetRef="usertask1">
+    <sequenceFlow id="flow47" name="Потрібна сплата за послугу" sourceRef="exclusivegateway6" targetRef="usertask1_red">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asSelectIzm_01!= 'tf1702_2' || asSelectIzm_05!= 'tf1702_2'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow48" name="Відсутня сплата за послугу" sourceRef="exclusivegateway6" targetRef="usertask4">
@@ -1608,7 +1612,7 @@
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
         <omgdc:Bounds height="30.0" width="30.0" x="-34.0" y="94.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+      <bpmndi:BPMNShape bpmnElement="usertask1_red" id="BPMNShape_usertask1_red">
         <omgdc:Bounds height="55.0" width="105.0" x="315.0" y="-31.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
