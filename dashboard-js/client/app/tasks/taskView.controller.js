@@ -570,7 +570,7 @@
             $scope.checkSignState.show = false;
             $scope.checkSignState.signInfo = null;
             $scope.checkSignState.attachmentName = null;
-            Modal.inform.error()(error.message);
+            //Modal.inform.error()(error.message);
           }).finally(function () {
             $scope.checkSignState.inProcess = false;
           });
@@ -937,7 +937,7 @@
             }
             $rootScope.switchProcessUploadingState();
           }).catch(function (err) {
-            Modal.inform.error()('Помилка. ' + err.code + ' ' + err.message);
+            //Modal.inform.error()('Помилка. ' + err.code + ' ' + err.message);
           });
         };
 
@@ -1248,7 +1248,7 @@
 
         $scope.print = function (form, isMenuItem) {
 
-          if( isMenuItem !== true ) { // Click on Button 
+          if( isMenuItem !== true ) { // Click on Button
             $scope.updateTemplateList();
           }
 
