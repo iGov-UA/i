@@ -590,7 +590,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="TexIngDoc" name="Назва документу що підтверджує повноваження інженера; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="TexIngNom" name="Номер документу що підтверджує повноваження інженера; ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="TexIngDat" name="Дата документу що підтверджує повноваження; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="TexIngKvalSer" name="Серія і номер кваліфікаційного сертифіката;(наприклад ІТ 1111111)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="TexIngKvalSer" name="Серія і номер кваліфікаційного сертифіката; ;writable=false" type="string"></activiti:formProperty>
         
         
         <activiti:formProperty id="markersLine_5" name="Інформація про генерального підрядника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;asGPodrOsoba&quot;],&quot;sValue&quot;:&quot;Інформація про генерального підрядника&quot;}}}"></activiti:formProperty>
@@ -607,7 +607,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="GPodrphone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markerGPodrOsoba" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekGpodr.json')}"></activiti:formProperty>
         
-        <activiti:formProperty id="asStrahova" name="Чи застраховано об'єкт будівництва?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
+        <activiti:formProperty id="asStrahova" name="Чи застраховано об'єкт будівництва?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -861,13 +861,13 @@ ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/new_design/_common_content_start.html]
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p>Заяву оброблено. Декларацію прийнято і зареєстровано.</p>
-Відповідь передано до ЦНАПу. ЦНАП повідомить вас як і коли можна отримати відповідь.<br />
+Відповідь передано до ЦНАПу. ЦНАП повідомить вас як і коли можна отримати відповідь.<br /><br />
 ${sAddress}<br />
 ${sWorkTime}<br />
 ${sPhoneOrgan}<br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -892,7 +892,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[ДГК обробив заяву. Для видачі Вам надіслано відповідь. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression><![CDATA[ГАСК обробив заяву. Для видачі Вам надіслано відповідь. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
