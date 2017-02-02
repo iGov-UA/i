@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="zags_0180_marriageFast" name="Подати заяву про державну реєстрацію шлюбу" isExecutable="true">
+  <process id="zags_0180_marriageFast" name="Заява про державну реєстрацію шлюбу за одну добу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sText16" name=" " type="label" default="Також Ви можете скористатися послугою подачі &lt;a href=&quot;https://igov.org.ua/service/703/general&quot; target=&quot;_blank&quot;&gt;заяви про державну реєстрацію шлюбу за стандартною процедурою (30 днів)&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН референта" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
@@ -118,7 +119,7 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask2"></sequenceFlow>
     <userTask id="usertask5" name="${sSourceType} - Перевірка інформації організатором" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="sShapka" type="invisible" variable="asEnjoyingDRACS"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса організатора" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
