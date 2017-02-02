@@ -57,9 +57,10 @@ public class ProcessCountTask implements JavaDelegate, TaskListener {
 	}
 
 	private void loadProcessCount(DelegateExecution execution) {
+            LOG.info("ProcessCountTask start...");
 		String processCount = getActionProcessCount(execution.getProcessDefinitionId(), null);
 		
-		if (processCount != null) {
+	if (processCount != null) {
             runtimeService.setVariable(execution.getProcessInstanceId(), S_ID_ORDER_GOV_PUBLIC, processCount);
             LOG.info("Set variable to runtime process:{}", processCount);
 

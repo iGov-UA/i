@@ -784,6 +784,11 @@ public class ActionEventController implements ControllerConstants {
             @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Integer nID_Service,
             @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Integer nYear,
             HttpServletResponse httpResponse) {
+        
+        LOG.info("getActionProcessCount sID_BP: " + sID_BP);
+        LOG.info("getActionProcessCount nID_Service: " + nID_Service);
+        LOG.info("getActionProcessCount nYear: " + nYear);
+        
         ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
 
         Map<String, Integer> mReturn = new HashMap<String, Integer>();
@@ -793,6 +798,8 @@ public class ActionEventController implements ControllerConstants {
         } else {
             mReturn.put("nCountYear", 0);
         }
+        
+        LOG.info("getActionProcessCount mReturn:" + JSONValue.toJSONString(mReturn));
         return JSONValue.toJSONString(mReturn);
     }
 

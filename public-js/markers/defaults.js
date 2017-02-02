@@ -178,8 +178,9 @@ angular.module('iGovMarkers')
           aField_ID: ["oPrescription2"],
           sTitleField: "sPrescriptionName",
           sPatternPath: "/print/kiev/kiev_mda_273_print.html",
-          sName: "Звіт за сектором"
-        }, 
+          sName: "Звіт за сектором", 
+          asEnumField_ID: {'sCondition1': "asType"}, 
+          sCondition: " [sCondition1] == 'sEnumPr1' ", 
         */ 
 
       }

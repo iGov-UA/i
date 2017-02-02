@@ -151,7 +151,7 @@
             }
           })
           .catch(function (err) {
-            Modal.inform.error()(err);
+            //Modal.inform.error()(err);
             defer.reject(err);
           })
           .finally(function () {
@@ -281,7 +281,7 @@
           }
         })
         .catch(function (err) {
-          Modal.inform.error()(err);
+          //Modal.inform.error()(err);
           defer.reject(err);
         })
         .finally(function () {

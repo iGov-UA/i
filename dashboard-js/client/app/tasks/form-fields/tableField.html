@@ -54,11 +54,13 @@
 
           <div ng-if="['enum'].indexOf(field.type) > -1">
             <select name="{{field.id + rowIndex}}"
+                    ng-init="field.value = ((field.value || field.default) || '')"
                     ng-required="field.required"
                     ng-model="field.value"
                     ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                     ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in field.a"
                     ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
+                    ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                     class="inputs-in-table">
             </select>
           </div>

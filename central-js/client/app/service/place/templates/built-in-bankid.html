@@ -154,7 +154,7 @@
                 </table>
               </div>
 
-              <div class="col-md-5"
+              <div id="label-{{property.id}}" class="col-md-5"
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
                 <label style="color: red;"
                        ng-if="isFieldRequired(property)==true">* </label>
@@ -167,7 +167,7 @@
               </div>
 
 
-              <div class="col-md-3"
+              <div id="field-{{property.id}}" class="col-md-3"
                    ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table'}"
                    ng-if="showFormField(property)"
                    ng-switch
