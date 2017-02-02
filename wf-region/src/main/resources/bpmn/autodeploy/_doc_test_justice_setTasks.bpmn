@@ -108,12 +108,18 @@ execution.setVariable('processInstanceId', processInstanceId)
     </sequenceFlow>
     <serviceTask id="servicetask1" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
     <sequenceFlow id="flow27" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow28" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="servicetask1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDuration>PT1M</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow29" sourceRef="timerintermediatecatchevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_justice_setTasks">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_justice_setTasks" id="BPMNPlane__doc_test_justice_setTasks">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="31.0" y="77.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="36.0" y="77.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="67.0"></omgdc:Bounds>
@@ -131,7 +137,10 @@ execution.setVariable('processInstanceId', processInstanceId)
         <omgdc:Bounds height="40.0" width="40.0" x="370.0" y="74.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="56.0" y="152.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="127.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="197.0" y="94.0"></omgdi:waypoint>
@@ -160,11 +169,15 @@ execution.setVariable('processInstanceId', processInstanceId)
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="48.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="108.0" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="53.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="53.0" y="140.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="108.0" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="106.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="127.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="144.0" y="150.0"></omgdi:waypoint>
         <omgdi:waypoint x="144.0" y="122.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
