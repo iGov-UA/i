@@ -32,7 +32,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Повна назва юридичної особи;(назва відповідно статутних документів)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації;(повна адреса особи яка подає заяву)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації;(повна адреса особи, яка подає заяву)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         
@@ -50,7 +50,9 @@
         <activiti:formProperty id="sDocDekVtrat" name="Докази розміщення у ЗМІ повідомлення про втрату декларації;(додайте відскановану квитанцію про оплату повідомлення або фото повідомлення)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerDubDek" name="DubDek" type="markers" default="${markerService.loadFromFile('DABI/DubDek.json')}"></activiti:formProperty>
         
-        <activiti:formProperty id="form_signed_all" name=" " type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/DABI/DABI_1573_DubGotEkspluat.html"></activiti:formProperty>
+        
         <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;nRegion&quot;,&quot;sAddress&quot;,&quot;sMailClerk_dabi&quot;,&quot;sMailClerk&quot;,&quot;sPhoneOrgan&quot;,&quot;sNameOrgan&quot;,&quot;sPosluga_name&quot;,&quot;sWorkTime&quot;,&quot;sID_Payment&quot;,&quot;nID_Subject&quot;,&quot;sID_Merchant&quot;,&quot;sSum&quot;,&quot;sShapka&quot;,&quot;sID_Currency&quot;,&quot;sDescription&quot;,&quot;sCountPayment&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
@@ -155,6 +157,7 @@ ${sNameOrgan}&<br /&><br>
     <userTask id="usertask8" name="УКРПОШТА" activiti:candidateGroups="UkrPost_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="В якому органі забрати документи" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
@@ -356,6 +359,7 @@ ${sNameOrgan}<br />
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Куди передати відповідь" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
@@ -434,7 +438,8 @@ ${sNameOrgan}<br />
           <activiti:expression>Позитивна відповідь. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Заяву оброблено. Ваше звернення зодоволено.&lt;/p&gt;
 Відповідь передано до ЦНАПу. ЦНАП повідомить вас як і коли можна отримати відповідь.&lt;br /&gt;
