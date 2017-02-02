@@ -19,6 +19,7 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
 import org.igov.service.controller.interceptor.ActionProcessCountUtils;
+import org.igov.service.controller.interceptor.ConstantsInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,7 @@ public class ProcessCountTask implements JavaDelegate, TaskListener {
 	private void loadProcessCount(DelegateExecution execution) {
             LOG.info("ProcessCountTask start...");
             
-            if (execution.getProcessDefinitionId().startsWith("_doc_")) {
+            if (execution.getProcessDefinitionId().startsWith("_doc_")||ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(execution.getProcessDefinitionId())) {
                 Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, execution.getProcessDefinitionId(), null);
                 LOG.info("SetDocument process count: " + count.intValue());
             }

@@ -78,6 +78,7 @@ import static org.igov.service.business.action.task.core.ActionTaskService.DATE_
 
 import org.igov.service.business.document.DocumentStepService;
 import org.igov.service.controller.interceptor.ActionProcessCountUtils;
+import org.igov.service.controller.interceptor.ConstantsInterceptor;
 
 import static org.igov.util.Tool.sO;
 
@@ -2847,7 +2848,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
         
         LOG.info("SetDocument started...");
         
-        if (sID_BP.startsWith("_doc_")) {
+        if (sID_BP.startsWith("_doc_")||ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(sID_BP)) {
                 Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, sID_BP, null);
                 LOG.info("SetDocument process count: " + count.intValue());
         }
