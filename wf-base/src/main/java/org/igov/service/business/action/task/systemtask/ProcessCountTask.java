@@ -58,10 +58,15 @@ public class ProcessCountTask implements JavaDelegate, TaskListener {
 	}
 
 	private void loadProcessCount(DelegateExecution execution) {
-            LOG.info("ProcessCountTask start...");
             
-            if (execution.getProcessDefinitionId().startsWith("_doc_")||ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(execution.getProcessDefinitionId())) {
-                Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, execution.getProcessDefinitionId(), null);
+            LOG.info("ProcessCountTask start...");
+            LOG.info("execution.getProcessDefinitionId: " + execution.getProcessDefinitionId());
+            
+            if (execution.getProcessDefinitionId().startsWith("_doc_")||
+                    ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(StringUtils.substringBefore(execution.getProcessDefinitionId(), ":"))) 
+            {
+                Integer count = ActionProcessCountUtils
+                        .callSetActionProcessCount(httpRequester, generalConfig, StringUtils.substringBefore(execution.getProcessDefinitionId(), ":"), null);
                 LOG.info("SetDocument process count: " + count.intValue());
             }
             
