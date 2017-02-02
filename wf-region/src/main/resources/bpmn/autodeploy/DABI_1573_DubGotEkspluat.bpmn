@@ -4,6 +4,7 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган який надасть вам відповідь" type="select" default="0" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_1" name="Інформація про замовника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про замовника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я заявника" type="string" required="true"></activiti:formProperty>
@@ -20,10 +21,12 @@
         <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації;(повна адреса особи яка подає заяву)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт та декларацію" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdresBud&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт та декларацію&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sAdresBud" name="Адреса бідівництва;(місто, вулиця, номер)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDekDate" name="Дата реэстрації оригіналу декларації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDekNumber" name="Номер оригіналу документу" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_3" name="Причини отримання дублікату" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;asPrichDub&quot;],&quot;sValue&quot;:&quot;Причини отримання дублікату&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asPrichDub" name="Що трапилося з оригіналом документу?" type="enum" required="true">
           <activiti:value id="sEnamVracheno" name="Документ втрачено"></activiti:value>
@@ -32,6 +35,7 @@
         <activiti:formProperty id="sDocDekPoshkod" name="Фотодоказ пошкодженого оригіналу декларації;(Додайте фото або скан пошкодженої декларації, якщо файлів кілька завантажте ZIP архівом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocDekVtrat" name="Докази розміщення у ЗМІ повідомлення про втрату декларації;(Додайте відскановану квитанцію про оплату повідомлення або фото повідомлення)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerDubDek" name="DubDek" type="markers" default="${markerService.loadFromFile('DABI/DubDek.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_4" name="Спосіб отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання відповіді&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
@@ -45,6 +49,7 @@
           <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 35.50"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="form_signed_all" name=" " type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;nRegion&quot;,&quot;sAddress&quot;,&quot;sMailClerk_dabi&quot;,&quot;sMailClerk&quot;,&quot;sPhoneOrgan&quot;,&quot;sNameOrgan&quot;,&quot;sPosluga_name&quot;,&quot;sWorkTime&quot;,&quot;sID_Payment&quot;,&quot;nID_Subject&quot;,&quot;sID_Merchant&quot;,&quot;sSum&quot;,&quot;sShapka&quot;,&quot;sID_Currency&quot;,&quot;sDescription&quot;,&quot;sCountPayment&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
@@ -92,25 +97,8 @@ execution.setVariable('sSum', sum);
     <userTask id="usertask5" name="Технічна таска" activiti:candidateGroups="DGK_texnik_task">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
-          <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
-          <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="markerOsoba" name="Post" type="markers" default="${markerService.loadFromFile('AK/UrFizOsoba_Nofiles.json')}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdresBud" name="Адреса бідівництва; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asPrichDub" name="Що трапилося з оригіналом документу?" type="enum" writable="false">
-          <activiti:value id="sEnamVracheno" name="Документ втрачено"></activiti:value>
-          <activiti:value id="sEnamPoshkodjeno" name="Документ пошкоджено, що робить неможливим його використання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDekDate" name="Дата видачі оригіналу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDekNumber" name="Номер оригіналу документу; ;writable=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -139,17 +127,19 @@ execution.setVariable('sSum', sum);
           <activiti:expression>Оплата листа. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header_with_payment.html]
-							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-							    &lt;p&gt;
-							    Ваш запит №[sID_Order] був успішно зареєстрований у нашій системі.&lt;br&gt;
-								Для того щоб закінчити процедуру необхідно протягом доби сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)&lt;br&gt;
-								[paymentButton_LiqPay]
-								&lt;/p&gt;
-								[pattern/mail/_common_signature_start.html]
-								${sNameOrgan}&amp;&lt;br /&amp;&gt;&lt;br&gt;
- 								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer_with_payment.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>
+Ваш запит №[sID_Order] був успішно зареєстрований у нашій системі.<br>
+Для того щоб закінчити процедуру необхідно протягом доби сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)<br>
+[paymentButton_LiqPay]
+</p>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}&<br /&><br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -223,16 +213,18 @@ execution.setVariable('sCountPayment', src)
           <activiti:expression>Нема оплати. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо ${sPosluga_nameZV} не прийнято в роботу. &lt;br /&gt;
-Заявка закрита через відсутність оплати.&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення щодо ${sPosluga_nameZV} не прийнято в роботу. <br />
+Заявка закрита через відсутність оплати.</p>
+<br />
+${sPhoneOrgan}.<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}.<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -249,7 +241,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -267,17 +259,19 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>Звернення на тему: ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
-			Оплата проведена успішно.&lt;br /&gt;
-			Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.&lt;br/&gt;
-			Ви отримаєте відповідь протягом п'яти робочих днів.&lt;br/&gt;
-			&lt;/p&gt;
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>
+Оплата проведена успішно.<br />
+Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.<br/>
+Ви отримаєте відповідь протягом 5 робочих днів.<br/>
+</p>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -305,16 +299,18 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>Звернення на тему: ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
-			Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.&lt;br /&gt;
-			Ви отримаєте відповідь протягом п'яти робочих днів.
-			&lt;/p&gt;
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>
+Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.<br />
+Ви отримаєте відповідь протягом 5 робочих днів.
+</p>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -329,6 +325,7 @@ ${sNameOrgan}.&lt;br /&gt;
     </serviceTask>
     <userTask id="usertask6" name="Обробка ДАБІ" activiti:candidateGroups="dabi_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="markersLine_1" name="Інформація про замовника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про замовника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
@@ -342,18 +339,25 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт та декларацію" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdresBud&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт та декларацію&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sAdresBud" name="Адреса бідівництва; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDekDate" name="Дата реєстрації оригіналу декларації; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDekNumber" name="Номер оригіналу документу; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Причини отримання дублікату" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;asPrichDub&quot;],&quot;sValue&quot;:&quot;Причини отримання дублікату&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asPrichDub" name="Що трапилося з оригіналом документу?" type="enum" writable="false">
           <activiti:value id="sEnamVracheno" name="Документ втрачено"></activiti:value>
           <activiti:value id="sEnamPoshkodjeno" name="Документ пошкоджено, що робить неможливим його використання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDekDate" name="Дата видачі оригіналу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDekNumber" name="Номер оригіналу документу; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_4" name="Спосіб отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання відповіді&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хочете отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно, надіслати листи заявнику та в ЦНАП"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
@@ -387,7 +391,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>Відмова. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;На жаль, виконати ваш запит не можливо. &lt;/p&gt;
 			&lt;p&gt;Причина: ${comment}&lt;/p&gt;
@@ -397,9 +402,11 @@ ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;/p&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -434,10 +441,11 @@ ${sPhoneOrgan}&lt;/p&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -463,7 +471,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:expression>ДАБІ обробила заяву. Для видачі Вам надіслано відповідь. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -486,6 +494,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
@@ -519,17 +528,19 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:expression>Запрошення в ЦНАП. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Документи по вашому зверненню №[sID_Order] надійшли в ЦНАП. Ви можете прийти і забрати відповідь.&lt;/p&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html] 
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},&lt;br/&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -557,19 +568,21 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>Позитивна відповідь. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Заяву оброблено. Ваше звернення задоволено.&lt;/p&gt;
 &lt;p&gt;Документи по вашому зверненню №[sID_Order] надійшли в ЦНАП. Відповідь буде надіслано вам поштою.&lt;/p&gt;
 Якщо є питання то звертайтесь до ЦНАПу.&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html] 
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},&lt;br/&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
