@@ -77,6 +77,7 @@ import org.igov.model.document.DocumentStepSubjectRight;
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 
 import org.igov.service.business.document.DocumentStepService;
+import org.igov.service.controller.interceptor.ActionProcessCountUtils;
 
 import static org.igov.util.Tool.sO;
 
@@ -2843,6 +2844,13 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
     Map<String,Object> setDocument(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
     ) throws Exception {
+        
+        LOG.info("SetDocument started...");
+        
+        if (sID_BP.startsWith("_doc_")) {
+                Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, sID_BP, null);
+                LOG.info("SetDocument process count: " + count.intValue());
+        }
         //return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
         Map<String, Object> mParam = new HashMap<>();        
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);

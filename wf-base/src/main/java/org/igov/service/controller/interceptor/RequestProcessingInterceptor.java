@@ -303,6 +303,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             LOG.info("(sID_Order={},nID_Subject={})", sID_Order, snID_Subject);
 
             String snID_Service = mParamRequest.get("nID_Service");
+            LOG.info("nID_Service in RequestProcessingInterceptor: " + snID_Service);
             if (snID_Service != null) {
                 mParam.put("nID_Service", snID_Service);
             }
