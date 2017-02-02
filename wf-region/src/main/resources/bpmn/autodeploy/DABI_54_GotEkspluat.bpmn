@@ -536,13 +536,6 @@ ${sNameOrgan}<br />
     </serviceTask>
     <userTask id="usertask6" name="Обробка ДАБІ" activiti:candidateGroups="dabi_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNameOrgan" name="Куди передати відповідь" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asVidpovid" name="Як заявник хочете отримати відповідь" type="enum" writable="false">
-          <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
-          <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_1" name="Інформація про об’єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sAdresBud&quot;],&quot;sValue&quot;:&quot;Інформація про об’єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sAdresBud" name="Адреса об'єкта; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameBud" name="Найменування об'єкта; ;writable=false" type="string"></activiti:formProperty>
@@ -557,6 +550,10 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sInfoBudBeg" name="Дата початку будівництва; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sInfoBudEnd" name="Дата закінчення будівництва; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sInfoBudEkspluat" name="Строк введення об’єкта в експлуатацію; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="asStrahova" name="Чи застраховано об'єкт будівництва?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
         
         <activiti:formProperty id="markersLine_2" name="Інформація про замовника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про замовника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
@@ -590,7 +587,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="TexIngDat" name="Дата документу що підтверджує повноваження; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="TexIngKvalSer" name="Серія і номер кваліфікаційного сертифіката; ;writable=false" type="string"></activiti:formProperty>
         
-        
         <activiti:formProperty id="markersLine_5" name="Інформація про генерального підрядника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;asGPodrOsoba&quot;],&quot;sValue&quot;:&quot;Інформація про генерального підрядника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asGPodrOsoba" name="Статус генпідрядника" type="enum" writable="false">
           <activiti:value id="sEnamGPodrFiz" name="Фізична особа"></activiti:value>
@@ -605,10 +601,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="GPodrphone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markerGPodrOsoba" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekGpodr.json')}"></activiti:formProperty>
         
-        <activiti:formProperty id="asStrahova" name="Чи застраховано об'єкт будівництва?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="markersLine_6" name="Інформація про страхову організацію (за наявності)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;StrahNAzva&quot;],&quot;sValue&quot;:&quot;Інформація про страхову організацію (за наявності)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="StrahNAzva" name="Повна назва юридичної особи страхової організації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="StrahEDRPOU" name="Код ЄДРПОУ страхової організації; ;writable=false" type="long"></activiti:formProperty>
@@ -786,6 +778,14 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="tPayUchPidt" name="Документи, що підтверджують сплату пайової участі; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="tPayUchZviln" name="Зазначте підставу звільнення від пайової участі; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markerPayUch" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekPayUch.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_15" name="Спосіб отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_15&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання відповіді&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Куди передати відповідь" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asVidpovid" name="Як заявник хочете отримати відповідь" type="enum" writable="false">
+          <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
+          <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно, надіслати листи заявнику та в ЦНАП"></activiti:value>
