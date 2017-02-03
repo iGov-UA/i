@@ -138,7 +138,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "булевое значение, если false то из возвращаемого объекта исключаются элементы, содержащие \"bHasFree\":false \"bFree\":false (опциональный, по умолчанию false)", required = false) @RequestParam(value = "bAll", required = false, defaultValue = "false") boolean bAll,
 	    @ApiParam(value = "число дней со слотами будут включаться в результат пока не наберется указанное кол-во свободных дней (опциональный, по умолчанию 60)", required = false) @RequestParam(value = "nFreeDays", required = false, defaultValue = "60") int nFreeDays,
 	    @ApiParam(value = "число дней от сегодняшего включительно(или sDateStart, если задан), до nDays в будующее за который нужно вернуть слоты (опциональный, по умолчанию 177 - пол года)", required = false) @RequestParam(value = "nDays", required = false, defaultValue = "177") int nDays,
-            @ApiParam(value = "число дней пропуска от сегодняшнего, с которого начинать отображать расписание", required = false) @RequestParam(value = "nDiffDays", required = false, defaultValue = "2") int nDiffDays,
+            @ApiParam(value = "число рабочих дней пропуска от даты начала выборки (если не задана - от текущего), с которой начинать отображать расписание", required = false) @RequestParam(value = "nDiffDays", required = false, defaultValue = "0") int nDiffDays,
 	    @ApiParam(value = "строка параметр, определяющие дату начала в формате \"yyyy-MM-dd\", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays)", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
             @ApiParam(value = "число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук", required = false) @RequestParam(value = "nSlots", defaultValue = "1", required = false) Integer nSlots
     ) throws Exception {
@@ -156,7 +156,6 @@ public class ActionFlowController {
         }*/
         
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
-        //oDateStart = oDateStart.plusDays(nDiffDays);//2
         DateTime oDateEnd = oDateStart.plusDays(nDays);
 
         if (sDateStart != null) {
