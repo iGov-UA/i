@@ -173,9 +173,10 @@ public class ActionFlowController {
         
         List<String> aMissDays = new ArrayList<>();
         int nDiffDaysCounter = nDiffDays;
-                
-        while(aMissDays.size() <= nDiffDays){
+        int stopIteration = 0;
         
+        while(aMissDays.size() <= nDiffDays||stopIteration > 5){
+            
             nDiffDaysCounter = nDiffDaysCounter + (int) Math.ceil(nDiffDaysCounter*0.3d);
             oDateEnd = oDateStart.plusDays(nDiffDaysCounter);
 
@@ -227,10 +228,9 @@ public class ActionFlowController {
             if(oMissStartDate != null){
                 oDateStart = oMissStartDate;
             }
-
+            stopIteration++;
             LOG.info("new oDateStart: " + df_DayTime.format(oDateStart.toDate()));
         }
-        
         
         Days res = new Days();
         
