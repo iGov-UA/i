@@ -224,7 +224,7 @@ public class ActionFlowController {
         
         Days res = new Days();
         
-        if(aMissDays.size() <=  nDiffDays){
+        if(aMissDays.size() >=  nDiffDays){
             res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                     oDateStart, oDateEnd, bAll, nFreeDays, nSlots);
         }

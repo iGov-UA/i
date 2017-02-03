@@ -38,6 +38,7 @@ import org.igov.service.business.action.task.form.QueueDataFormType;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
 import org.igov.service.business.flow.handler.ExcludeDateRange;
+import org.igov.util.JSON.JsonDateSerializer;
 import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -281,7 +282,72 @@ public class FlowService implements ApplicationContextAware {
         LOG.info("(saveOrUpdate oFlowSlotTicket={} ok!)", oFlowSlotTicket.getId());
         return oFlowSlotTicket;
     }
+    
+    public DateTime skipWorkDays(Long nID_Service, Long nID_SubjectOrganDepartment, Long nID_ServiceData,
+            String sID_BP, String sDateStart, int nDays, int nDiffDays){
+        DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
+        DateTime oDateEnd = oDateStart.plusDays(nDays);
 
+        if (sDateStart != null) {
+            oDateStart = JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDateStart);
+            oDateEnd = oDateStart.plusDays(nDays);
+        }
+        
+        SimpleDateFormat df_DayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat df_Day = new SimpleDateFormat("yyyy-MM-dd");
+        
+        LOG.info("getFlowSlots oDateStart : " + df_DayTime.format(oDateStart.toDate()));
+        LOG.info("getFlowSlots oDateEnd : " + df_DayTime.format(oDateEnd.toDate()));
+        
+        List<FlowSlot> aFlowSlot;
+        Flow_ServiceData oFlow = null;
+        
+        if (nID_Service != null) {
+            oFlow = getFlowByLink(nID_Service, nID_SubjectOrganDepartment);
+        }
+        if (oFlow != null) {
+            aFlowSlot = flowSlotDao.findFlowSlotsByFlow(oFlow.getId(), oDateStart, oDateEnd);
+        } else {
+            if (nID_ServiceData != null) {
+                aFlowSlot = flowSlotDao.findFlowSlotsByServiceData(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart, oDateEnd);
+            } else if (sID_BP != null) {
+                aFlowSlot = flowSlotDao.findFlowSlotsByBP(sID_BP, nID_SubjectOrganDepartment, oDateStart, oDateEnd);
+            } else {
+                throw new IllegalArgumentException("nID_Service, nID_ServiceData, sID_BP are null!");
+            }
+        }
+        
+        LOG.info("aFlowSlot size is: " + aFlowSlot.size());
+        
+        DateTime oMissStartDate = null;
+        List<String> aMissDays = new ArrayList<String>();
+        
+        for(int i = 0; i < aFlowSlot.size(); i++){
+            LOG.info("flowslot elem in getFlowSlots " + df_DayTime.format(aFlowSlot.get(i).getsDate().toDate()));
+            
+            boolean addDay = true;
+            
+            for(String sMissDay : aMissDays){
+                if (sMissDay.equals(df_Day.format(aFlowSlot.get(i).getsDate().toDate()))){
+                    addDay = false;
+                    break;
+                }
+            }
+            
+            if(addDay){
+                LOG.info("flowslot elem in getFlowSlots " + df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
+                aMissDays.add(df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
+            }
+            
+            if(aMissDays.size() > nDiffDays){
+                oMissStartDate = aFlowSlot.get(i).getsDate();
+                break;
+            }
+        }
+        
+        return oMissStartDate;
+    }
+    
     /**
      * Generates FlowSlots in given interval for specified flow. Slots will not be generated if they are already exist.
      *
