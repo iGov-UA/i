@@ -175,7 +175,7 @@ public class ActionFlowController {
         int nDiffDaysCounter = nDiffDays;
         int stopIteration = 0;
         
-        while(aMissDays.size() <= nDiffDays||stopIteration > 5){
+        while(aMissDays.size() <= nDiffDays && stopIteration <= 5){
             
             nDiffDaysCounter = nDiffDaysCounter + (int) Math.ceil(nDiffDaysCounter*0.3d);
             oDateEnd = oDateStart.plusDays(nDiffDaysCounter);
