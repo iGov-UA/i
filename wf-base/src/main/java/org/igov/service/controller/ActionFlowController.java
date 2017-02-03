@@ -143,6 +143,8 @@ public class ActionFlowController {
     ) throws Exception {
         //nDiffDays_visitDate1
         
+        LOG.info("getFlowSlots started...")
+        
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         oDateStart = oDateStart.plusDays(nDiffDays);//2
         DateTime oDateEnd = oDateStart.plusDays(nDays);
@@ -170,10 +172,10 @@ public class ActionFlowController {
             }
         }
         
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd HH:mm");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         for(FlowSlot oFlowSlot : aFlowSlot){
             
-            LOG.info("flowslot elem in getFlowSlots" + df.format(oFlowSlot.getsDate().toDate()));
+            LOG.info("flowslot elem in getFlowSlots: " + df.format(oFlowSlot.getsDate().toDate()));
         }
         
         Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
