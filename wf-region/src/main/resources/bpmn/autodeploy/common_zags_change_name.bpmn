@@ -765,13 +765,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDateVisit2" name="Вкажіть дату і час - коли прийти громадянину за документом" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDocDecision" name="Завантажте лист-висновок про надання дозволу на зміну імені" type="file" required="true"></activiti:formProperty>
-         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSumPr" name="сумма платежа чек" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sComPr" name="сумма платежа ком чек" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
-        
         <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
@@ -941,7 +940,7 @@
         <activiti:formProperty id="decision_3" name="Заявник отримав свідоцтво про зміну імені, складено відповідний актовий запис" type="enum" required="true">
           <activiti:value id="accept" name="так"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSumPr" name="сумма платежа чек" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sComPr" name="сумма платежа ком чек" type="invisible"></activiti:formProperty>
@@ -1622,7 +1621,7 @@ execution.setVariable('sCountPayment', src)</script>
     </sequenceFlow>
     <sequenceFlow id="flow153" sourceRef="timerintermediatecatchevent2" targetRef="scripttask3"></sequenceFlow>
     <sequenceFlow id="flow155" sourceRef="scripttask3" targetRef="exclusivegateway5"></sequenceFlow>
-    <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask6" cancelActivity="false">
+    <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask6" cancelActivity="true">
       <timerEventDefinition>
         <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
@@ -1908,7 +1907,7 @@ execution.setVariable('sDescription', des)</script>
         <omgdi:waypoint x="220.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow162" id="BPMNEdge_flow162">
-        <omgdi:waypoint x="52.0" y="73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="52.0" y="94.0"></omgdi:waypoint>
         <omgdi:waypoint x="92.0" y="73.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
