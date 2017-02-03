@@ -2,6 +2,7 @@ package org.igov.service.controller;
 
 import io.swagger.annotations.*;
 import static java.lang.Math.toIntExact;
+import java.text.SimpleDateFormat;
 import org.igov.io.web.integration.queue.cherg.Cherg;
 import org.igov.model.flow.FlowProperty;
 import org.igov.model.flow.FlowSlotTicket;
@@ -36,6 +37,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.igov.model.flow.FlowServiceDataDao;
+import org.igov.model.flow.FlowSlot;
+import org.igov.model.flow.FlowSlotDao;
 import org.igov.model.flow.Flow_ServiceData;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
@@ -64,7 +67,10 @@ public class ActionFlowController {
     @Autowired
     private FlowServiceDataDao flowServiceDataDao;
 
+    @Autowired
+    private FlowSlotDao flowSlotDao;
 
+    
     /**
      * Получение слотов по сервису сгруппированных по дням.
      * 
@@ -135,7 +141,8 @@ public class ActionFlowController {
 	    @ApiParam(value = "строка параметр, определяющие дату начала в формате \"yyyy-MM-dd\", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays)", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
 		@ApiParam(value = "число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук", required = false) @RequestParam(value = "nSlots", defaultValue = "1", required = false) Integer nSlots
     ) throws Exception {
-//nDiffDays_visitDate1
+        //nDiffDays_visitDate1
+        
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         oDateStart = oDateStart.plusDays(nDiffDays);//2
         DateTime oDateEnd = oDateStart.plusDays(nDays);
@@ -144,7 +151,31 @@ public class ActionFlowController {
             oDateStart = JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDateStart);
             oDateEnd = oDateStart.plusDays(nDays);
         }
-
+        
+        List<FlowSlot> aFlowSlot;
+        Flow_ServiceData oFlow = null;
+        
+        if (nID_Service != null) {
+            oFlow = oFlowService.getFlowByLink(nID_Service, nID_SubjectOrganDepartment);
+        }
+        if (oFlow != null) {
+            aFlowSlot = flowSlotDao.findFlowSlotsByFlow(oFlow.getId(), oDateStart, oDateEnd);
+        } else {
+            if (nID_ServiceData != null) {
+                aFlowSlot = flowSlotDao.findFlowSlotsByServiceData(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart, oDateEnd);
+            } else if (sID_BP != null) {
+                aFlowSlot = flowSlotDao.findFlowSlotsByBP(sID_BP, nID_SubjectOrganDepartment, oDateStart, oDateEnd);
+            } else {
+                throw new IllegalArgumentException("nID_Service, nID_ServiceData, sID_BP are null!");
+            }
+        }
+        
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd HH:mm");
+        for(FlowSlot oFlowSlot : aFlowSlot){
+            
+            LOG.info("flowslot elem in getFlowSlots" + df.format(oFlowSlot.getsDate().toDate()));
+        }
+        
         Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 oDateStart, oDateEnd, bAll, nFreeDays, nSlots);
 
