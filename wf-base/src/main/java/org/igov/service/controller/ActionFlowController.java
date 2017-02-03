@@ -222,9 +222,13 @@ public class ActionFlowController {
         
         LOG.info("new oDateStart: " + df_DayTime.format(oDateStart.toDate()));
         
-        Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
-                oDateStart, oDateEnd, bAll, nFreeDays, nSlots);
-
+        Days res = new Days();
+        
+        if(aMissDays.size() <=  nDiffDays){
+            res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+                    oDateStart, oDateEnd, bAll, nFreeDays, nSlots);
+        }
+        
         return JsonRestUtils.toJsonResponse(res);
     }
 
