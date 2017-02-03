@@ -3,6 +3,7 @@ package org.igov.service.controller;
 import io.swagger.annotations.*;
 import static java.lang.Math.toIntExact;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import org.igov.io.web.integration.queue.cherg.Cherg;
 import org.igov.model.flow.FlowProperty;
 import org.igov.model.flow.FlowSlotTicket;
@@ -163,9 +164,11 @@ public class ActionFlowController {
             oDateEnd = oDateStart.plusDays(nDays);
         }
         
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        LOG.info("getFlowSlots oDateStart : " + df.format(oDateStart.toDate()));
-        LOG.info("getFlowSlots oDateEnd : " + df.format(oDateEnd.toDate()));
+        SimpleDateFormat df_DayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat df_Day = new SimpleDateFormat("yyyy-MM-dd");
+        
+        LOG.info("getFlowSlots oDateStart : " + df_DayTime.format(oDateStart.toDate()));
+        LOG.info("getFlowSlots oDateEnd : " + df_DayTime.format(oDateEnd.toDate()));
         
         List<FlowSlot> aFlowSlot;
         Flow_ServiceData oFlow = null;
@@ -188,10 +191,26 @@ public class ActionFlowController {
         LOG.info("aFlowSlot size is: " + aFlowSlot.size());
         
         DateTime oMissStartDate = null;
+        List<String> aMissDays = new ArrayList<String>();
         
         for(int i = 0; i < aFlowSlot.size(); i++){
-            LOG.info("flowslot elem in getFlowSlots " + df.format(aFlowSlot.get(i).getsDate().toDate()));
-            if(i > nDiffDays){
+            LOG.info("flowslot elem in getFlowSlots " + df_DayTime.format(aFlowSlot.get(i).getsDate().toDate()));
+            
+            boolean addDay = true;
+            
+            for(String sMissDay : aMissDays){
+                if (sMissDay.equals(df_Day.format(aFlowSlot.get(i).getsDate().toDate()))){
+                    addDay = false;
+                    break;
+                }
+            }
+            
+            if(addDay){
+                LOG.info("flowslot elem in getFlowSlots " + df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
+                aMissDays.add(df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
+            }
+            
+            if(aMissDays.size() > nDiffDays){
                 oMissStartDate = aFlowSlot.get(i).getsDate();
                 break;
             }
