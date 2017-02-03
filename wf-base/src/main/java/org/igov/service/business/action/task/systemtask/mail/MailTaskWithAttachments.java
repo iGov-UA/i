@@ -79,7 +79,7 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                 }
 
                 if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml") && !sFileName.toLowerCase().endsWith(".rpl")) {
-                    sFileName = "Attach_"+oAttachment.getId()+sExt; //
+                    sFileName = "Attach_" + oAttachment.getId()+sExt; //
                 }
                 
                 sFileExt = oAttachment.getType().split(";")[0];
@@ -120,15 +120,15 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
 
                     if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null)
                     {
-                        String sFileExt = "Attach_" + (String)oJsonTaskAttachVO.get("sFileNameAndExt");
+                        String sFileName = "Attach_" + (String)oJsonTaskAttachVO.get("sFileNameAndExt");
                         
                         oMultipartFile = oAttachmetService
                             .getAttachment(null, null, (String)oJsonTaskAttachVO.get("sKey"), (String)oJsonTaskAttachVO.get("sID_StorageType"));
 
                         InputStream oInputStream_Attachment = oMultipartFile.getInputStream();
 
-                        DataSource oDataSource = new ByteArrayDataSource(oInputStream_Attachment, sFileExt);
-                        oMail._Attach(oDataSource, sFileExt, "");
+                        DataSource oDataSource = new ByteArrayDataSource(oInputStream_Attachment, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                        oMail._Attach(oDataSource, sFileName, "(no description)");
                         LOG.info("oMultiPartEmail.attach was sending by new schema!");
 
                     }
