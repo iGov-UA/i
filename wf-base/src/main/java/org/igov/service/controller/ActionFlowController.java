@@ -161,9 +161,10 @@ public class ActionFlowController {
         SimpleDateFormat df_DayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         SimpleDateFormat df_Day = new SimpleDateFormat("yyyy-MM-dd");
         
+        List<String> aMissDays = new ArrayList<>();
+        
         if(nDiffDays != 0){
             
-        
             Flow_ServiceData oFlow = null;
             if (nID_Service != null) {
                 oFlow = oFlowService.getFlowByLink(nID_Service, nID_SubjectOrganDepartment);
@@ -173,10 +174,10 @@ public class ActionFlowController {
                 oDateStart = JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDateStart);
             }
 
-            List<String> aMissDays = new ArrayList<>();
             int nDiffDaysCounter = nDiffDays;
             int stopIteration = 0;
-
+            DateTime currEndDateTime = oDateEnd;
+            
             while(aMissDays.size() <= nDiffDays){
 
                 if(stopIteration > 5){
@@ -184,15 +185,15 @@ public class ActionFlowController {
                 }
 
                 nDiffDaysCounter = nDiffDaysCounter + (int) Math.ceil(nDiffDaysCounter*0.3d);
-                oDateEnd = oDateStart.plusDays(nDiffDaysCounter);
+                currEndDateTime = oDateStart.plusDays(nDiffDaysCounter);
 
                 LOG.info("getFlowSlots oDateStart : " + df_DayTime.format(oDateStart.toDate()));
-                LOG.info("getFlowSlots oDateEnd : " + df_DayTime.format(oDateEnd.toDate()));
+                LOG.info("getFlowSlots oDateEnd : " + df_DayTime.format(currEndDateTime.toDate()));
 
                 List<FlowSlot> aFlowSlot = new ArrayList<>();
 
                 if (oFlow != null) {
-                    aFlowSlot = flowSlotDao.findFlowSlotsByFlow(oFlow.getId(), oDateStart, oDateEnd);
+                    aFlowSlot = flowSlotDao.findFlowSlotsByFlow(oFlow.getId(), oDateStart, currEndDateTime);
                 } else {
                     if (nID_ServiceData != null) {
                         aFlowSlot = flowSlotDao.findFlowSlotsByServiceData(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart, oDateEnd);
@@ -241,10 +242,8 @@ public class ActionFlowController {
         
         Days res = new Days();
         
-        //if(aMissDays.size() >=  nDiffDays||nDiffDays == 0){
-            res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+        res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                     oDateStart, oDateEnd, bAll, nFreeDays, nSlots);
-        //}
         
         return JsonRestUtils.toJsonResponse(res);
     }
