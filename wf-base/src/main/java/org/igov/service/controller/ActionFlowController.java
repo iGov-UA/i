@@ -220,6 +220,8 @@ public class ActionFlowController {
             oDateStart = oMissStartDate;
         }
         
+        LOG.info("new oDateStart: " + df_DayTime.format(oDateStart.toDate()));
+        
         Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 oDateStart, oDateEnd, bAll, nFreeDays, nSlots);
 
