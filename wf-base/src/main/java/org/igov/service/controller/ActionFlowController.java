@@ -162,6 +162,7 @@ public class ActionFlowController {
         SimpleDateFormat df_Day = new SimpleDateFormat("yyyy-MM-dd");
         
         List<String> aMissDays = new ArrayList<>();
+        boolean isEmptyResult = false;
         
         if(nDiffDays != 0){
             
@@ -181,6 +182,7 @@ public class ActionFlowController {
             while(aMissDays.size() <= nDiffDays){
 
                 if(stopIteration > 5){
+                    isEmptyResult = true;
                     break;
                 }
 
@@ -242,8 +244,10 @@ public class ActionFlowController {
         
         Days res = new Days();
         
-        res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+        if(nDiffDays == 0 || !isEmptyResult){
+            res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                     oDateStart, oDateEnd, bAll, nFreeDays, nSlots);
+        }
         
         return JsonRestUtils.toJsonResponse(res);
     }
