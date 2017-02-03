@@ -193,12 +193,20 @@ public class Mail extends Abstract_Mail {
             LOG.info("oMimeMessage head: " + getHead());
             
             _AttachBody(getBody());
-            //LOG.info("(getBody()={})", getBody());
+            LOG.info("(getBody()={})", getBody());
             oMimeMessage.setContent(oMultiparts);
             LOG.info("oMimeMessage content: " + oMimeMessage.getContent().toString());
             //            oMimeMessage.getRecipients(Message.RecipientType.CC);
             //methodCallRunner.registrateMethod(Transport.class.getName(), "send", new Object[]{oMimeMessage});
-            Transport.send(oMimeMessage);
+            
+            try{
+                
+                Transport.send(oMimeMessage);
+            }
+            catch(Exception ex){
+                LOG.info("There are some eroor during mail transport: " + ex);
+            }
+            
             LOG.info("Mail was transported....");
             LOG.info("Send " + getTo() + "!!!!!!!!!!!!!!!!!!!!!!!!");
         } catch (Exception oException) {
