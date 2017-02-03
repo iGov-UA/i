@@ -173,6 +173,9 @@ public class ActionFlowController {
         }
         
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        
+        LOG.info("aFlowSlot size is: " + aFlowSlot.size());
+        
         for(FlowSlot oFlowSlot : aFlowSlot){
             
             LOG.info("flowslot elem in getFlowSlots " + df.format(oFlowSlot.getsDate().toDate()));
