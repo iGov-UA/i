@@ -241,7 +241,6 @@ execution.setVariable('sNotification_day', timer)</script>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow36" sourceRef="parallelgateway2" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finish=='attr1_ok'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
