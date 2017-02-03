@@ -161,87 +161,90 @@ public class ActionFlowController {
         SimpleDateFormat df_DayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         SimpleDateFormat df_Day = new SimpleDateFormat("yyyy-MM-dd");
         
-        
-        Flow_ServiceData oFlow = null;
-        if (nID_Service != null) {
-            oFlow = oFlowService.getFlowByLink(nID_Service, nID_SubjectOrganDepartment);
-        }
-        
-        if (sDateStart != null) {
-            oDateStart = JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDateStart);
-        }
-        
-        List<String> aMissDays = new ArrayList<>();
-        int nDiffDaysCounter = nDiffDays;
-        int stopIteration = 0;
-        
-        while(aMissDays.size() <= nDiffDays){
+        if(nDiffDays != 0){
             
-            if(stopIteration > 5){
-                break;
+        
+            Flow_ServiceData oFlow = null;
+            if (nID_Service != null) {
+                oFlow = oFlowService.getFlowByLink(nID_Service, nID_SubjectOrganDepartment);
             }
-            
-            nDiffDaysCounter = nDiffDaysCounter + (int) Math.ceil(nDiffDaysCounter*0.3d);
-            oDateEnd = oDateStart.plusDays(nDiffDaysCounter);
 
-            LOG.info("getFlowSlots oDateStart : " + df_DayTime.format(oDateStart.toDate()));
-            LOG.info("getFlowSlots oDateEnd : " + df_DayTime.format(oDateEnd.toDate()));
+            if (sDateStart != null) {
+                oDateStart = JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDateStart);
+            }
 
-            List<FlowSlot> aFlowSlot = new ArrayList<>();
+            List<String> aMissDays = new ArrayList<>();
+            int nDiffDaysCounter = nDiffDays;
+            int stopIteration = 0;
 
-            if (oFlow != null) {
-                aFlowSlot = flowSlotDao.findFlowSlotsByFlow(oFlow.getId(), oDateStart, oDateEnd);
-            } else {
-                if (nID_ServiceData != null) {
-                    aFlowSlot = flowSlotDao.findFlowSlotsByServiceData(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart, oDateEnd);
-                } else if (sID_BP != null) {
-                    aFlowSlot = flowSlotDao.findFlowSlotsByBP(sID_BP, nID_SubjectOrganDepartment, oDateStart, oDateEnd);
-                } else {
-                    throw new IllegalArgumentException("nID_Service, nID_ServiceData, sID_BP are null!");
+            while(aMissDays.size() <= nDiffDays){
+
+                if(stopIteration > 5){
+                    break;
                 }
-            }
 
-            LOG.info("aFlowSlot size is: " + aFlowSlot.size());
+                nDiffDaysCounter = nDiffDaysCounter + (int) Math.ceil(nDiffDaysCounter*0.3d);
+                oDateEnd = oDateStart.plusDays(nDiffDaysCounter);
 
-            DateTime oMissStartDate = null;
+                LOG.info("getFlowSlots oDateStart : " + df_DayTime.format(oDateStart.toDate()));
+                LOG.info("getFlowSlots oDateEnd : " + df_DayTime.format(oDateEnd.toDate()));
+
+                List<FlowSlot> aFlowSlot = new ArrayList<>();
+
+                if (oFlow != null) {
+                    aFlowSlot = flowSlotDao.findFlowSlotsByFlow(oFlow.getId(), oDateStart, oDateEnd);
+                } else {
+                    if (nID_ServiceData != null) {
+                        aFlowSlot = flowSlotDao.findFlowSlotsByServiceData(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart, oDateEnd);
+                    } else if (sID_BP != null) {
+                        aFlowSlot = flowSlotDao.findFlowSlotsByBP(sID_BP, nID_SubjectOrganDepartment, oDateStart, oDateEnd);
+                    } else {
+                        throw new IllegalArgumentException("nID_Service, nID_ServiceData, sID_BP are null!");
+                    }
+                }
+
+                LOG.info("aFlowSlot size is: " + aFlowSlot.size());
+
+                DateTime oMissStartDate = null;
 
 
-            for(int i = 0; i < aFlowSlot.size(); i++){
-                LOG.info("flowslot elem in getFlowSlots " + df_DayTime.format(aFlowSlot.get(i).getsDate().toDate()));
+                for(int i = 0; i < aFlowSlot.size(); i++){
+                    LOG.info("flowslot elem in getFlowSlots " + df_DayTime.format(aFlowSlot.get(i).getsDate().toDate()));
 
-                boolean addDay = true;
+                    boolean addDay = true;
 
-                for(String sMissDay : aMissDays){
-                    if (sMissDay.equals(df_Day.format(aFlowSlot.get(i).getsDate().toDate()))){
-                        addDay = false;
+                    for(String sMissDay : aMissDays){
+                        if (sMissDay.equals(df_Day.format(aFlowSlot.get(i).getsDate().toDate()))){
+                            addDay = false;
+                            break;
+                        }
+                    }
+
+                    if(addDay){
+                        LOG.info("flowslot elem in getFlowSlots " + df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
+                        aMissDays.add(df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
+                    }
+
+                    if(aMissDays.size() > nDiffDays){
+                        oMissStartDate = aFlowSlot.get(i).getsDate();
                         break;
                     }
                 }
 
-                if(addDay){
-                    LOG.info("flowslot elem in getFlowSlots " + df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
-                    aMissDays.add(df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
+                if(oMissStartDate != null){
+                    oDateStart = oMissStartDate;
                 }
-
-                if(aMissDays.size() > nDiffDays){
-                    oMissStartDate = aFlowSlot.get(i).getsDate();
-                    break;
-                }
+                stopIteration++;
+                LOG.info("new oDateStart: " + df_DayTime.format(oDateStart.toDate()));
             }
-            
-            if(oMissStartDate != null){
-                oDateStart = oMissStartDate;
-            }
-            stopIteration++;
-            LOG.info("new oDateStart: " + df_DayTime.format(oDateStart.toDate()));
         }
         
         Days res = new Days();
         
-        if(aMissDays.size() >=  nDiffDays||nDiffDays == 0){
+        //if(aMissDays.size() >=  nDiffDays||nDiffDays == 0){
             res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                     oDateStart, oDateEnd, bAll, nFreeDays, nSlots);
-        }
+        //}
         
         return JsonRestUtils.toJsonResponse(res);
     }
