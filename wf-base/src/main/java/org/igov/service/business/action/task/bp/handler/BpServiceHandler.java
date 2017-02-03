@@ -164,7 +164,7 @@ public class BpServiceHandler {
                     .includeProcessVariables().taskId(snID_Process)
                     .list();
             String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(details.get(0).getProcessInstanceId()));
-            
+            LOG.info("snID_Proccess is =====", snID_Process);
             if (details != null && details.get(0).getProcessVariables() != null) {
             variables.put("processName", details.get(0).getProcessDefinitionId());
             	 LOG.info("sProcessNameeeeeeeeeeeee  ", details.get(0).getProcessDefinitionId());
