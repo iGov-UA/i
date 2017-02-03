@@ -120,7 +120,6 @@
         <activiti:formProperty id="sDateVisit" name="Вкажіть дату та час визиту громадянина" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0450_mother_heroine.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/drogobych/rada_0450_mother_heroine.html" type="file"></activiti:formProperty>
-        
         <activiti:formProperty id="markers1" name="hideShowElements1" type="markers" default="${markerService.loadFromFile('drogobych/rada_0450_mother_heroine_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -188,7 +187,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 <p> 
-Ваше звернення щодо надання документів на присвоєння звання Мати-героїня України опрацьоване.<br>
+Ваше звернення щодо надання документів на присвоєння звання Мати-героїня України опрацьовано.<br>
 Нагородний лист буде підготовлен та направлен до Обласної Державної Адміністрації.
 </p>
 Телефон для довідок: (03244) 2-05-84
@@ -202,10 +201,10 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[decide1=='reject1']]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide1=='reject1'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[decide1=='accept1']]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide1=='accept1'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
@@ -232,7 +231,7 @@
           <activiti:value id="accept1" name="Оригінали документів отримано. Підготувати нагородний лист до ОДА"></activiti:value>
           <activiti:value id="reject1" name="Громадянка не з'явилася в назначений час. Закріті заявуку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/lebedyn/rada_0450_mother_heroine.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0450_mother_heroine.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFile7},${nFile8},${nFile9},${nFile10},${nFile11},${nFile12},${nFile13},${nFile14},${nFile15},${nFile16},${nFile17}]]></activiti:expression>
@@ -243,7 +242,7 @@
     <sequenceFlow id="flow10" sourceRef="usertask2_yellow" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="exclusivegateway2" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[decide=='accept']]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -283,7 +282,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[decide=='reject']]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow13" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
