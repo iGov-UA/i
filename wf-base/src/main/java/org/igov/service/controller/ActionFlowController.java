@@ -180,15 +180,20 @@ public class ActionFlowController {
             DateTime currEndDateTime = oDateEnd;
             
             while(aMissDays.size() <= nDiffDays){
-
+                
                 if(stopIteration > 5){
                     isEmptyResult = true;
                     break;
                 }
-
+                
                 nDiffDaysCounter = nDiffDaysCounter + (int) Math.ceil(nDiffDaysCounter*0.3d);
+                
+                if(nDiffDaysCounter >= nDays){
+                    nDiffDaysCounter = nDays;
+                }
+                
                 currEndDateTime = oDateStart.plusDays(nDiffDaysCounter);
-
+                
                 LOG.info("getFlowSlots oDateStart : " + df_DayTime.format(oDateStart.toDate()));
                 LOG.info("getFlowSlots oDateEnd : " + df_DayTime.format(currEndDateTime.toDate()));
 
@@ -209,7 +214,8 @@ public class ActionFlowController {
                 LOG.info("aFlowSlot size is: " + aFlowSlot.size());
 
                 DateTime oMissStartDate = null;
-
+                boolean isDoubleDateRange = true;
+                
                 for(int i = 0; i < aFlowSlot.size(); i++){
                     LOG.info("flowslot elem in getFlowSlots " + df_DayTime.format(aFlowSlot.get(i).getsDate().toDate()));
 
@@ -225,14 +231,19 @@ public class ActionFlowController {
                     if(addDay){
                         LOG.info("flowslot elem in getFlowSlots " + df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
                         aMissDays.add(df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
+                        isDoubleDateRange = false;
                     }
-
+                    
                     if(aMissDays.size() > nDiffDays){
                         oMissStartDate = aFlowSlot.get(i).getsDate();
                         break;
                     }
                 }
-
+                
+                if(isDoubleDateRange){
+                    nDiffDaysCounter = nDiffDaysCounter*2;
+                }
+                
                 if(oMissStartDate != null){
                     oDateStart = oMissStartDate;
                 }
