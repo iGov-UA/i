@@ -210,7 +210,8 @@ public class ActionFlowController {
 
                 DateTime oMissStartDate = null;
 
-
+                boolean isDoubleDateRange = true;
+                
                 for(int i = 0; i < aFlowSlot.size(); i++){
                     LOG.info("flowslot elem in getFlowSlots " + df_DayTime.format(aFlowSlot.get(i).getsDate().toDate()));
 
@@ -224,6 +225,7 @@ public class ActionFlowController {
                     }
 
                     if(addDay){
+                        isDoubleDateRange = false;
                         LOG.info("flowslot elem in getFlowSlots " + df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
                         aMissDays.add(df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
                     }
@@ -232,11 +234,16 @@ public class ActionFlowController {
                         oMissStartDate = aFlowSlot.get(i).getsDate();
                         break;
                     }
+                    
+                    if(isDoubleDateRange){
+                        nDiffDaysCounter = nDiffDaysCounter + (int) Math.ceil(nDiffDaysCounter*1.5d);
+                    }
                 }
 
                 if(oMissStartDate != null){
                     oDateStart = oMissStartDate;
                 }
+                
                 stopIteration++;
                 LOG.info("new oDateStart: " + df_DayTime.format(oDateStart.toDate()));
             }
