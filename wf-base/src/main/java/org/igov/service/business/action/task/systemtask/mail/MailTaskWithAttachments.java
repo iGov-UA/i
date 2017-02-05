@@ -64,46 +64,62 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                 LOG.warn("(sID_Attachment={})", sID_Attachment);
             }
         }*/
-        List<Attachment> aAttachment = findAttachments(sAttachmentsForSend, oExecution.getId());
-        if (!aAttachment.isEmpty()) {
-            InputStream oInputStream_Attachment = null;
-            String sFileName;
-            String sFileExt;
-            String sDescription;
-            for (Attachment oAttachment : aAttachment) {
-                sFileName = oAttachment.getName();
-                String sExt="";
-                int nAt=sFileName.lastIndexOf(".");
-                if(nAt>=0){
-                    sExt = sFileName.substring(nAt);
-                }
+        
+        try{
 
-                if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml") && !sFileName.toLowerCase().endsWith(".rpl")) {
-                    sFileName = "Attach_" + oAttachment.getId()+sExt; //
-                }
-                
-                sFileExt = oAttachment.getType().split(";")[0];
-                sDescription = oAttachment.getDescription();
-                if (sDescription == null || "".equals(sDescription.trim())) {
-                    sDescription = "(no description)";
-                }
-                LOG.info("(oAttachment.getId()={}, sFileName={}, sFileExt={}, sDescription={})",
-                        oAttachment.getId(), sFileName, sFileExt, sDescription);
-                oInputStream_Attachment = oExecution.getEngineServices().getTaskService()
-                        .getAttachmentContent(oAttachment.getId());
-                if (oInputStream_Attachment == null) {
-                    LOG.error("Attachment with (id={}) doesn't have content associated with it.", oAttachment.getId());
-                    throw new ActivitiObjectNotFoundException(
-                            "Attachment with id '" + oAttachment.getId() + "' doesn't have content associated with it.",
-                            Attachment.class);
-                }
-                DataSource oDataSource = new ByteArrayDataSource(oInputStream_Attachment, sFileExt);
-                oMail._Attach(oDataSource, sFileName, sDescription);
-                LOG.info("oMultiPartEmail.attach: Ok!");
-            }
-        } 
-        else {
+            String sOldAttachmentsForSend = sAttachmentsForSend.replaceAll("\\{(.*?)\\}\\,", "").replaceAll("\\{(.*?)\\}", "");
+            LOG.info("sOldAttachmentsForSend: " + sOldAttachmentsForSend.trim());
             
+            if(!sOldAttachmentsForSend.trim().equals(""))
+            {
+                List<Attachment> aAttachment = findAttachments(sOldAttachmentsForSend.trim(), oExecution.getId());
+                if (!aAttachment.isEmpty()) {
+                    InputStream oInputStream_Attachment = null;
+                    String sFileName;
+                    String sFileExt;
+                    String sDescription;
+                    for (Attachment oAttachment : aAttachment) {
+                        sFileName = oAttachment.getName();
+                        String sExt="";
+                        int nAt=sFileName.lastIndexOf(".");
+                        if(nAt>=0){
+                            sExt = sFileName.substring(nAt);
+                        }
+
+                        if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml") && !sFileName.toLowerCase().endsWith(".rpl")) {
+                            sFileName = "Attach_" + oAttachment.getId()+sExt; //
+                        }
+
+                        sFileExt = oAttachment.getType().split(";")[0];
+                        sDescription = oAttachment.getDescription();
+                        if (sDescription == null || "".equals(sDescription.trim())) {
+                            sDescription = "(no description)";
+                        }
+                        LOG.info("Old attach whith name: " + sFileName + " and with id: " + oAttachment.getId()); 
+
+                        LOG.info("(oAttachment.getId()={}, sFileName={}, sFileExt={}, sDescription={})",
+                                oAttachment.getId(), sFileName, sFileExt, sDescription);
+                        oInputStream_Attachment = oExecution.getEngineServices().getTaskService()
+                                .getAttachmentContent(oAttachment.getId());
+                        if (oInputStream_Attachment == null) {
+                            LOG.error("Attachment with (id={}) doesn't have content associated with it.", oAttachment.getId());
+                            throw new ActivitiObjectNotFoundException(
+                                    "Attachment with id '" + oAttachment.getId() + "' doesn't have content associated with it.",
+                                    Attachment.class);
+                        }
+                        DataSource oDataSource = new ByteArrayDataSource(oInputStream_Attachment, sFileExt);
+                        oMail._Attach(oDataSource, sFileName, sDescription);
+                        LOG.info("oMultiPartEmail.attach: Ok!");
+                    }
+                }
+            }
+        }
+        catch(Exception ex){
+            LOG.info("Error during old file mail processing ", ex);
+        }
+        
+        try{
+            LOG.info ("sAttachmentsForSend after parsing: " + sAttachmentsForSend);
             JSONObject oJsonTaskAttachVO = null;
             JSONParser parser = new JSONParser(); 
             
@@ -143,6 +159,9 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                 }
 
            }
+        }
+        catch(Exception ex){
+            LOG.info("Error during new file mail processing ", ex);
         }
 
         oMail.send();

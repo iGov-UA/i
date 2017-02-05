@@ -420,7 +420,7 @@ exports.getPatternFile = function (req, res) {
   var options = {
     path: 'object/file/getPatternFile',
     query: {
-      'sPathFile': req.query.sPathFile
+      'sPathFile': req.query.sPathFile.split(',')[0]
     }
   };
 
@@ -433,7 +433,7 @@ exports.getPatternFile = function (req, res) {
  * added pdf conversion if file name is sPrintFormFileAsPDF
  */
 exports.upload_content_as_attachment = function (req, res) {
-  if(req.body.sFileNameAndExt === 'sPrintFormFileAsPDF.pdf') {
+  if(req.body.sOutputFileType === 'pdf') {
     async.waterfall([
       function (callback) {
         var options = {
