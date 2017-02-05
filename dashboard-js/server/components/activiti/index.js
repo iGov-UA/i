@@ -170,7 +170,11 @@ exports.uploadStream = function (options, onResult) {
     file: options.stream,
     sID_Field: options.sID_Field,
     sFileNameAndExt: options.sFileNameAndExt
-  }, content = {
+  };
+  if(options.sFileNameCustom){
+    formData.sFileNameCustom = options.sFileNameCustom;
+  }
+  var content = {
     url: getRequestURL(options),
     formData: formData,
     headers: default_headers
