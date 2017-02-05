@@ -67,12 +67,13 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
         
         try{
 
-            String sOldAttachmentsForSend = sAttachmentsForSend.replaceAll("\\{(.*?)\\}\\,", "").replaceAll("\\{(.*?)\\}", "");
+            String sOldAttachmentsForSend = sAttachmentsForSend.replaceAll("\\{(.*?)\\}\\,", "").replaceAll("\\{(.*?)\\}", "")
+                    .replaceAll("^\"|\"$", "").trim();
             LOG.info("sOldAttachmentsForSend: " + sOldAttachmentsForSend.trim());
             
             if(!sOldAttachmentsForSend.trim().equals(""))
             {
-                List<Attachment> aAttachment = findAttachments(sOldAttachmentsForSend.trim(), oExecution.getId());
+                List<Attachment> aAttachment = findAddedAttachments(sOldAttachmentsForSend.trim(), oExecution.getId());
                 if (!aAttachment.isEmpty()) {
                     InputStream oInputStream_Attachment = null;
                     String sFileName;
