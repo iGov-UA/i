@@ -64,14 +64,15 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFileMail" name="Файл для мейла" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileMail" name="Файл для мейла (старый листнер)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileMailNew" name="Файл для мейла (новый листнер); ;bNew=true" type="file"></activiti:formProperty>
         
         
         <activiti:formProperty id="asECP" name="Підписати ЕЦП" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/testPrint2.html"></activiti:formProperty>
         
         <activiti:formProperty id="test_all_case_copy" name="markers test_all_case_copy" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_copy.json')}"></activiti:formProperty>
@@ -146,7 +147,7 @@
           <activiti:expression><![CDATA[test]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFileMail}]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFileMail},${nFileMailNew}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -180,7 +181,7 @@
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFileMail}]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFileMail},${nFileMailNew}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -211,6 +212,10 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
+        
+        
+        <activiti:formProperty id="nFileMailNew" name="Файл для мейла (новый листнер); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
 
         <activiti:formProperty id="asDecision1" name="Обробка тестової заяви" type="enum" required="true" default="reject">
           <activiti:value id="accept" name="Повернутися на цю юзертаску"></activiti:value>
