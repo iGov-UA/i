@@ -368,7 +368,7 @@ public abstract class AbstractModelTask {
 
                 byte[] aByteFile = oMultipartFile.getBytes();
                     oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), sFieldID,
-                            (String) oJsonTaskAttachVO.get("sFileNameAndExt"),
+                            (String) oJsonTaskAttachVO.get("sFileNameAndExt"), "",
                             (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html",
                             aAttribute, aByteFile, true);
 
@@ -609,7 +609,7 @@ public abstract class AbstractModelTask {
                                                                                 byte[] aByteFile = oMultipartFile.getBytes();
 
                                                                                 String sNewTableElemValue = oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), (String)oJsonMap.get("id"),
-                                                                                        (String) oJsonTableFile.get("sFileNameAndExt"),
+                                                                                        (String) oJsonTableFile.get("sFileNameAndExt"), "",
                                                                                         (boolean) oJsonTableFile.get("bSigned"), "Mongo", "text/html",
                                                                                         aAttribute, aByteFile, true);
                                                                                 
@@ -663,7 +663,7 @@ public abstract class AbstractModelTask {
                                             byte[] aByteContent = oTableJSONObject.toJSONString().getBytes(Charsets.UTF_8);
 
                                             oAttachmetService.createAttachment(oExecution.getProcessInstanceId(), sCurrFieldID,
-                                                        (String) oJsonTaskAttachVO.get("sFileNameAndExt"),
+                                                        (String) oJsonTaskAttachVO.get("sFileNameAndExt"), "",
                                                         (boolean) oJsonTaskAttachVO.get("bSigned"), "Mongo", "text/html",
                                                         aAttribute, aByteContent, true);
                                         }

@@ -12,11 +12,7 @@ import org.igov.io.mail.Mail;
 
 import javax.activation.DataSource;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import org.json.simple.JSONArray;
@@ -134,6 +130,10 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                     if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null)
                     {
                         String sFileName = "Attach_" + (String)oJsonTaskAttachVO.get("sFileNameAndExt");
+                        String sFileNameCustom = (String)oJsonTaskAttachVO.get("sFileNameCustom");
+                        if (sFileNameCustom != null && !Objects.equals(sFileNameCustom, "")){
+                            sFileName = sFileNameCustom;
+                        }
                         
                         oMultipartFile = oAttachmetService
                             .getAttachment(null, null, (String)oJsonTaskAttachVO.get("sKey"), (String)oJsonTaskAttachVO.get("sID_StorageType"));
