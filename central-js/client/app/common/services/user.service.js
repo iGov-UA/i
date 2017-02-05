@@ -80,6 +80,8 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
           AdminService.processAccountResponse(oResponse);
           if(ErrorsFactory.bSuccessResponse(oResponse.data)){
             return bankIDAccount = oResponse.data;
+          } else {
+            return $q.reject(oResponse.data);
           }
         }).catch(function (oResponse) {
           /*
@@ -89,7 +91,7 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
           bankIDLogin = undefined;
           bankIDAccount = undefined;
           ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['soResponse: '+JSON.stringify(oResponse)]});
-          return oResponse.data;
+          return  $q.reject(oResponse.data);
         }));
     }
   };

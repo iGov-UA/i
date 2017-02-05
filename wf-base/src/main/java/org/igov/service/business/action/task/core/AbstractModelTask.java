@@ -817,6 +817,39 @@ public abstract class AbstractModelTask {
 
     }
 
+
+    public List<Attachment> findAddedAttachments(String sAttachments, String processInstanceId) {
+        sAttachments = sAttachments == null ? "" : sAttachments;
+
+        List<Attachment> aAttachment = new ArrayList<>();
+
+        String[] asID_Attachment = sAttachments.split(",");
+
+        for (int i = 0; i < asID_Attachment.length; i++) {
+            asID_Attachment[i] = asID_Attachment[i].trim();
+        }
+
+        List<String> aAttachmentNotFound = new ArrayList<>();
+
+        for (String sID_Attachment : asID_Attachment) {
+            if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
+                String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
+                LOG.info("sID_AttachmentTrimmed is: " + sID_AttachmentTrimmed);
+                Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
+
+                if (oAttachment != null) {
+                    aAttachment.add(oAttachment);
+                }
+            } else {
+                LOG.warn("(sID_Attachment={})", sID_Attachment);
+            }
+        }
+        
+        return aAttachment;
+    }
+
+
+    
     public List<Attachment> findAttachments(String sAttachments, String processInstanceId) {
         sAttachments = sAttachments == null ? "" : sAttachments;
 
