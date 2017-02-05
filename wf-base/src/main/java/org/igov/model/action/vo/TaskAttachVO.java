@@ -18,6 +18,8 @@ public class TaskAttachVO {
     private String sDateTime;
     
     private String sFileNameAndExt;
+
+    private String sFileNameCustom;
     
     private String sContentType;
     
@@ -48,6 +50,10 @@ public class TaskAttachVO {
 
     public String getsFileNameAndExt() {
         return sFileNameAndExt;
+    }
+
+    public String getsFileNameCustom(){
+        return sFileNameCustom;
     }
 
     public String getsContentType() {
@@ -84,6 +90,10 @@ public class TaskAttachVO {
 
     public void setsFileNameAndExt(String sFileNameExt) {
         this.sFileNameAndExt = sFileNameExt;
+    }
+
+    public void setsFileNameCustom(String sFileNameCustom){
+        this.sFileNameCustom = sFileNameCustom;
     }
 
     public void setsContentType(String sContentType) {
