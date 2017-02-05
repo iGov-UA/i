@@ -81,7 +81,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
             
             if(!sOldAttachmentsForSend.trim().equals(""))
             {
-                List<Attachment> aAttachment = findAttachments(sOldAttachmentsForSend.trim(), oExecution.getId());
+                List<Attachment> aAttachment = findAddedAttachments(sOldAttachmentsForSend.trim(), oExecution.getId());
                 if (!aAttachment.isEmpty()) {
                     InputStream oInputStream_Attachment = null;
                     String sFileName;
