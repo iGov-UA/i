@@ -1,11 +1,13 @@
 var authProviderRegistry = require('../../auth/auth.provider.registry')
   , activiti = require('../../components/activiti')
   , Admin = require('../../components/admin')
+  , logger = require('../../components/logger').createLogger(module)
   , errors = require('../../components/errors');
 
 
 var finishRequest = function (req, res, err, result, userService) {
   if (err) {
+    logger.info("[tryCache] error on cache search", {err: err});
     res.status(err.code);
     res.send(err);
     res.end();
@@ -15,6 +17,8 @@ var finishRequest = function (req, res, err, result, userService) {
 
     var customer = userService.convertToCanonical(result.customer);
     var admin = result.admin;
+
+    logger.info("[tryCache] user is found", {result: customer});
 
     if (Admin.isAdminInn(customer.inn)) {
       admin = {
@@ -42,6 +46,7 @@ module.exports.tryCache = function (req, res, next) {
   var userService = authProviderRegistry.getUserService(type);
 
   if (req.session.usercacheid) {
+    logger.info("[tryCache] getting user from cache", {session_type: type});
     if (userService.decryptCallback) {
       var callback = userService.decryptCallback(function (error, response, body) {
         var err = null;
@@ -64,6 +69,7 @@ module.exports.tryCache = function (req, res, next) {
       }, callback);
     }
   } else {
+    logger.info("[tryCache] no cache. Go to get user from service", {session_type: type});
     next();
   }
 };

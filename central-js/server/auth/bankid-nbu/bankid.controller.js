@@ -1,9 +1,10 @@
 var passport = require('passport')
   , errors = require('../../components/errors')
-  , authService = require('../auth.service');
-
+  , authService = require('../auth.service')
+  , logger = require('../../components/logger').createLogger(module);
 
 module.exports.authenticate = function (req, res, next) {
+  logger.info('authenticate bankid-nbu request', { query : req.query });
   req.session.prepare = authService.createPrepareSessionObject('bankid-nbu', {
     link: req.query.link
   });
@@ -15,6 +16,8 @@ module.exports.authenticate = function (req, res, next) {
 };
 
 module.exports.token = function (req, res, next) {
+  logger.info('token bankid-nbu request', { query : req.query });
+
   if (!req.session.prepare) {
     res.status(400).send(errors.createInputParameterError(
       "session preparation should be initialized"));
@@ -44,6 +47,7 @@ module.exports.token = function (req, res, next) {
     callbackURL: '/auth/bankid-nbu/callback',
     state: req.query.state
   }, function (err, user, info) {
+    logger.info('token bankid-nbu result', { error : err, user : user, info : info });
     var error;
 
     if (err) {
@@ -60,11 +64,13 @@ module.exports.token = function (req, res, next) {
 
     if (error) {
       var errorString = JSON.stringify(error);
-      console.log(errorString);//TODO replace with real logger
+      logger.info('token bankid-nbu error, redirect back to initial page', { error : error, link : req.query.link });
       res.redirect(link + '?error=' + errorString);
     } else {
       req.session = authService.createSessionObject('bankid-nbu', user, info);
       delete req.session.prepare;
+      logger.info('bankid-nbu session is created', session);
+      logger.info('token bankid-nbu success, redirect back to initial page', { link : req.query.link });
       res.redirect(link);
     }
   })(req, res, next)

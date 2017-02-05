@@ -9,8 +9,9 @@ var request = require('request')
   , StringDecoder = require('string_decoder').StringDecoder
   , bankidNBUUtil = require('./bankid.util')
   , errors = require('../../components/errors')
-  , activiti = require('../../components/activiti');
-var pdfConversion = require('phantom-html-to-pdf')();
+  , activiti = require('../../components/activiti')
+  , logger = require('../../components/logger').createLogger(module)
+  , pdfConversion = require('phantom-html-to-pdf')();
 
 var createError = function (error, error_description, response) {
   return {
@@ -55,10 +56,13 @@ function changeToCustomer(body) {
     body.customer = body.customerCrypto;
     delete body.customerCrypto;
   }
+  logger.info('bankid-nbu result', body);
   return body;
 }
 
 module.exports.index = function (accessToken, callback, disableDecryption) {
+  logger.info('start search for client data', { accessToken: accessToken });
+
   var url = bankidNBUUtil.getInfoURL(config);
 
   function adminCheckCallback(error, response, body) {
@@ -66,25 +70,20 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
     var innToCheck;
 
     if (disableDecryption) {
-      console.log("---------------  innToCheck before decryption !!!!" + body.customer.inn);
+      logger.info('innToCheck before decryption', {inn : innToCheck});
       innToCheck = bankidNBUUtil.decryptField(body.customer.inn);
-      console.log("---------------  innToCheck after decryption !!!!" + innToCheck);
+      logger.info('innToCheck after decryption', {inn : innToCheck});
     } else {
       innToCheck = body.customer.inn;
-      console.log("--------------- nodecrption of inn !!!!");
+      logger.info('innToCheck without decryption', {inn : innToCheck});
     }
 
-    console.log("---------------  innToCheck in result !!!!" + innToCheck);
-
-    console.log("---------------  body.customer in result !!!!" + body.customer);
-    console.log("---------------  Admin.isAdminInn(innToCheck) in result!!!! " + Admin.isAdminInn(innToCheck));
-
     if (body.customer && Admin.isAdminInn(innToCheck)) {
-      console.log("---------------  user with inn " + innToCheck + " is admin");
       body.admin = {
         inn: innToCheck,
         token: Admin.generateAdminToken()
       };
+      logger.info('user is recognized as admin', body.admin);
     }
     callback(error, response, body);
   }
