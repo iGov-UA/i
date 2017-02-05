@@ -606,19 +606,34 @@ angular.module('dashboardJsApp')
              * parse name string property to get file names sPrintFormFileAsPDF and sPrintFormFileAsIs
              */
             var fileName = null;
+            var fileNameTemp = null;
             var sFileFieldID = null;
+            var sOutputFileType = null;
 
             if (typeof templateResult.fileField.name === 'string') {
-              fileName = templateResult.fileField.name.split(/;/).reduce(function (prev, current) {
-                return prev += current.match(/sPrintFormFileAsPDF/i) || current.match(/sPrintFormFileAsIs/i) || [];
+              fileNameTemp = templateResult.fileField.name.split(/;/).reduce(function (prev, current) {
+                var reduceResult = prev += current.match(/sPrintFormFileAsPDF/i) || current.match(/sPrintFormFileAsIs/i) || [];
+                if (reduceResult !== ''){
+                  var parts = current.split(',');
+                  angular.forEach(parts, function (el) {
+                    if (el.match(/^sFileName=/)){
+                      fileName = el.split('=')[1];
+                    }
+                  })
+                }
+                return  reduceResult;
               }, '');
 
-              if(fileName === 'sPrintFormFileAsPDF'){
+              fileName = fileName || fileNameTemp;
+
+              if(fileNameTemp === 'sPrintFormFileAsPDF'){
                 fileName = fileName + '.pdf';
+                sOutputFileType = 'pdf';
               }
 
-              if(fileName === 'sPrintFormFileAsIs'){
+              if(fileNameTemp === 'sPrintFormFileAsIs'){
                 fileName = fileName + '.html';
+                sOutputFileType = 'html';
               }
 
               sFileFieldID = templateResult.fileField.id;
@@ -631,7 +646,8 @@ angular.module('dashboardJsApp')
               sDescription: description,
               sFileNameAndExt: fileName || 'User form.html',
               sID_Field: sFileFieldID,
-              sContent: html
+              sContent: html,
+              sOutputFileType: sOutputFileType
             };
 
             printDefer[key] = $q.defer();
