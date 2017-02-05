@@ -59,10 +59,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFileMail" name="Файл для мейла (старый листнер)" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFileMailNew" name="Файл для мейла (новый листнер); ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="asListner" name="Який лістнер" type="enum" default="yes">
+        <activiti:formProperty id="asListner" name="Який лістнер" type="enum" default="newOld">
           <activiti:value id="new" name="Новый"></activiti:value>
           <activiti:value id="old" name="Старий"></activiti:value>
-          <activiti:value id="newOld" name="Новий і старий паралельно"></activiti:value>
+          <activiti:value id="newOld" name="Новий і старий (створиться 2-і паралельні заявки)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asECP" name="Підписати ЕЦП" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -288,7 +288,15 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<h1>Тестовый лист з СМС</h1>
-			<h2>Портал</h2>
+			<h2>Портал</h2>	
+			
+			<p>Файли:</p>
+			<ol>
+				<li>nFileMail - Файл для мейла (старый листнер) (портал)</li>
+				<li>nFileMailNew - Файл для мейла (новый листнер) (портал)</li>
+				<li>form_signed - Заява громадянина з ЕЦП (портал)</li>			
+			</ol>
+			
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
 			Тестова,<br>
@@ -321,7 +329,15 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<h1>Тестовий лист з файлом</h1>
-			<h2>Портал</h2>
+			<h2>Портал</h2>			
+			
+			<p>Файли:</p>
+			<ol>
+				<li>nFileMail - Файл для мейла (старый листнер) (портал)</li>
+				<li>nFileMailNew - Файл для мейла (новый листнер) (портал)</li>
+				<li>form_signed - Заява громадянина з ЕЦП (портал)</li>			
+			</ol>
+			
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
 			Тестова,<br>
