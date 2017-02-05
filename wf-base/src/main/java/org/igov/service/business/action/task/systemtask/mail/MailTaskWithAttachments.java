@@ -66,6 +66,10 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
         }*/
         
         try{
+
+            String sOldAttachmentsForSend = sAttachmentsForSend.replaceAll("\\{(.*?)\\}\\,", "").replaceAll("\\{(.*?)\\}", "");
+            LOG.info("sOldAttachmentsForSend: " + sOldAttachmentsForSend);
+            
             List<Attachment> aAttachment = findAttachments(sAttachmentsForSend, oExecution.getId());
             if (!aAttachment.isEmpty()) {
                 InputStream oInputStream_Attachment = null;
@@ -110,6 +114,7 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
         }
         
         try{
+            LOG.info ("sAttachmentsForSend after parsing: " + sAttachmentsForSend);
             JSONObject oJsonTaskAttachVO = null;
             JSONParser parser = new JSONParser(); 
             
