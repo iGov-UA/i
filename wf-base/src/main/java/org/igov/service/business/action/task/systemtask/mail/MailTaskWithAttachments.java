@@ -68,7 +68,7 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
         try{
 
             String sOldAttachmentsForSend = sAttachmentsForSend.replaceAll("\\{(.*?)\\}\\,", "").replaceAll("\\{(.*?)\\}", "");
-            LOG.info("sOldAttachmentsForSend: " + sOldAttachmentsForSend);
+            LOG.info("sOldAttachmentsForSend: " + sOldAttachmentsForSend.trim());
             
             List<Attachment> aAttachment = findAttachments(sAttachmentsForSend, oExecution.getId());
             if (!aAttachment.isEmpty()) {
@@ -93,6 +93,8 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                     if (sDescription == null || "".equals(sDescription.trim())) {
                         sDescription = "(no description)";
                     }
+                    LOG.info("Old attach whith name: " + sFileName + " and with id: " + oAttachment.getId()); 
+                    
                     LOG.info("(oAttachment.getId()={}, sFileName={}, sFileExt={}, sDescription={})",
                             oAttachment.getId(), sFileName, sFileExt, sDescription);
                     oInputStream_Attachment = oExecution.getEngineServices().getTaskService()
