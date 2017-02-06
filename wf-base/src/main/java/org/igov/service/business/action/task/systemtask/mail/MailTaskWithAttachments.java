@@ -119,7 +119,7 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
             LOG.info ("sAttachmentsForSend after parsing: " + sAttachmentsForSend);
             JSONObject oJsonTaskAttachVO = null;
             JSONParser parser = new JSONParser(); 
-            
+               
             Pattern pattern = Pattern.compile("\\{(.*?)\\}");
             Matcher match = pattern.matcher(sAttachmentsForSend);
             
