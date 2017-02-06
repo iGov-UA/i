@@ -187,7 +187,7 @@ public class BpServiceHandler {
             variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
             variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly")); 
             variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));
-            LOG.info("{variables }...", variables);
+            LOG.info(String.format("{variables }...[%s]", variables));
             Set<String> organ = new TreeSet<>();
             Set<String> sLoginAssigned = new TreeSet<>();
             //get process variables
