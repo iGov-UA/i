@@ -133,7 +133,7 @@ public class ActionIdentityCommonController {
      */
     @ApiOperation(value =
             "Возвращает список пользователей, если указан id групы, - выводит всех ее пользователей, иначе, по умолчанию"
-                    + " возвращает всех существующие пользователей.")
+                    + " возвращает всех существующих пользователей.")
     @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
     @ResponseBody
     public List<Map<String, String>> getUsers(
@@ -147,8 +147,7 @@ public class ActionIdentityCommonController {
     	} catch (Exception e) {
     		log.error("FAIL: ", e);
         }
-        
-        
+
         return amsUsers;
     }
 
