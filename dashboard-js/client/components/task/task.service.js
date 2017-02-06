@@ -644,7 +644,7 @@ angular.module('dashboardJsApp')
             var html = '<html><head><meta charset="utf-8"></head><body>' + compiled.find('.print-modal-content').html() + '</body></html>';
             var data = {
               sDescription: description,
-              sFileNameAndExt: fileName.replace(new RegExp(/[*|\\:"<>?/]/g), "") || 'User form.html',
+              sFileNameAndExt: fileName || 'User form.html',
               sID_Field: sFileFieldID,
               sContent: html,
               sOutputFileType: sOutputFileType

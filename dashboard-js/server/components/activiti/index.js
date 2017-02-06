@@ -169,12 +169,8 @@ exports.uploadStream = function (options, onResult) {
     taskId: options.nID_Process,
     file: options.stream,
     sID_Field: options.sID_Field,
-    sFileNameAndExt: options.sFileNameAndExt
-  };
-  if(options.sFileNameCustom){
-    formData.sFileNameCustom = options.sFileNameCustom;
-  }
-  var content = {
+    sFileNameAndExt: options.sFileNameAndExt.replace(new RegExp(/[*|\\:"<>?/]/g), "")
+  }, content = {
     url: getRequestURL(options),
     formData: formData,
     headers: default_headers

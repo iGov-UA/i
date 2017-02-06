@@ -64,7 +64,7 @@ public class AttachmetService {
     private final Logger LOG = LoggerFactory.getLogger(AttachmetService.class);
 	
     
-    public String createAttachment (String nID_Process, String sID_Field, String sFileNameAndExt, String sFileNameCustom,
+    public String createAttachment (String nID_Process, String sID_Field, String sFileNameAndExt,
         	boolean bSigned, String sID_StorageType, String sContentType, List<Map<String, Object>> saAttribute_JSON,
 		byte[] aContent, boolean bSetVariable) throws JsonProcessingException, CRCInvalidException, RecordNotFoundException{
         
@@ -74,8 +74,6 @@ public class AttachmetService {
         sFileNameAndExt = (sFileNameAndExt != null)?transliterateAll(getFileName(sFileNameAndExt.replace(" ", "_")))
                     + "." + getFileExtention(sTextTranslit(sFileNameAndExt)):sFileNameAndExt;
 
-        sFileNameCustom = (sFileNameCustom != null)?transliterateAll(getFileName(sFileNameCustom.replace(" ", "_")))
-                + "." + getFileExtention(sTextTranslit(sFileNameCustom)):"";
         
         LOG.info(" ----------- " + dtf.format(new Date()) + " ----------- ");
         LOG.info("createAttachment nID_Process: " + nID_Process);
@@ -115,7 +113,6 @@ public class AttachmetService {
         oTaskAttachVO.setsVersion(df.format(new Date()));
         oTaskAttachVO.setsDateTime(dtf.format(new Date()));
         oTaskAttachVO.setsFileNameAndExt(sFileNameAndExt);
-        oTaskAttachVO.setsFileNameCustom(sFileNameCustom);
         oTaskAttachVO.setsContentType(sContentType);
         oTaskAttachVO.setnBytes(Integer.toString(aContent.length));
         oTaskAttachVO.setbSigned(bSigned);

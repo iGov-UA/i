@@ -890,7 +890,6 @@ public class ObjectFileCommonController {
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
-            @ApiParam(value = "название и расширение файла, которое будет отправляться в письмах", required = false)@RequestParam(value = "sFileNameCustom", required = false, defaultValue = "") String sFileNameCustom,
             @ApiParam(value = "файл для сохранения в БД", required = true)@RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
             ) throws JsonProcessingException, IOException, CRCInvalidException, RecordNotFoundException
             {
@@ -903,19 +902,18 @@ public class ObjectFileCommonController {
             LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
             LOG.info("setAttachment sID_Field: " + sID_Field);
             LOG.info("setAttachment sContentType: " + sContentType);
-            LOG.info("setAttachment sFileNameCustom: " + sFileNameCustom);
 
             if (aAttribute == null){
                aAttribute = new ArrayList<>();
             }
             
             if(file != null && "Mongo".equals(sID_StorageType)){
-                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, sFileNameCustom, bSigned, sID_StorageType,
+                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
                         sContentType, aAttribute, file.getBytes(), true);
             }
             else if(file != null && "Redis".equals(sID_StorageType)){
                 byte[] aContent = AbstractModelTask.multipartFileToByteArray(file, file.getOriginalFilename()).toByteArray();
-                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, sFileNameCustom, bSigned, sID_StorageType,
+                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
                        sContentType, aAttribute, aContent, true);
             }
             else{
@@ -954,7 +952,7 @@ public class ObjectFileCommonController {
             }
             
             if(sData != null && "Mongo".equals(sID_StorageType)){
-                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, "", bSigned, sID_StorageType,
+                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
                         sContentType, aAttribute, sData.getBytes(Charsets.UTF_8), true);
             }
             else if(sData != null && "Redis".equals(sID_StorageType)){

@@ -15,7 +15,6 @@ import static org.igov.util.ToolLuna.getProtectedNumber;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
@@ -148,11 +147,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null)
                     {
                         String sFileName = (String)oJsonTaskAttachVO.get("sFileNameAndExt");
-                        String sFileNameCustom = (String)oJsonTaskAttachVO.get("sFileNameCustom");
-                        if (sFileNameCustom != null && !Objects.equals(sFileNameCustom, "")){
-                            sFileName = sFileNameCustom;
-                        }
-                        
+
                         oMultipartFile = oAttachmetService
                             .getAttachment(null, null, (String)oJsonTaskAttachVO.get("sKey"), (String)oJsonTaskAttachVO.get("sID_StorageType"));
 
