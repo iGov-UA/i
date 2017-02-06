@@ -112,8 +112,7 @@
         <activiti:formProperty id="ScancopyDoc2" name="Cвідоцтво про шлюб" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="ScancopyDoc1" name="Копія рішення суду (витяг з рішення суду) про визнання другого з подружжя безвісно відсутнім чи недієздатним, що набрало законної сили" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="ScancopyDoc3" name="Копії рішення суду (витягу з рішення суду) про розірвання шлюбу, що набрало законної сили" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDivorceDay" name="Дата церемонии развода" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDivorceDay" name="Дата развода" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_show.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="show-hide2" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_show_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Required" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_req.json')}"></activiti:formProperty>
@@ -173,7 +172,6 @@ ${sMail_Signature}<br /><br />
     </serviceTask>
     <userTask id="usertask3" name="Перевірка вхідних даних" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
           <activiti:value id="sEnum2" name="на підставі рішення суду (здійснене судом до набрання чинності Законом України «Про державну реєстрацію актів цивільного стану» (27.07.2010))"></activiti:value>
@@ -273,11 +271,15 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sSum" name="Сума державного мита, яку необхідно сплатити" type="invisible" default="8.50"></activiti:formProperty>
         <activiti:formProperty id="commentTax" name="Коментар до суми сплати (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_divorce_106.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Required_dash" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_req_dash.json')}"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_106" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_106.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_107" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_107.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_court" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_court.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_divorce_106.html]" type="invisible" default="заява громадян_106" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_divorce_107.html]" type="invisible" default="заява громадян_107" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_divorce_court.html]" type="invisible" default="заява громадян_sud" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="Required_dash" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_req_dash.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_divorce.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -428,7 +430,7 @@ ${sNameOrgan}<br />
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow23" sourceRef="timerintermediatecatchevent1" targetRef="scripttask2"></sequenceFlow>
-    <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="Счетчик на оплату" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('sCountPayment')
 src=(+src + +1)
 execution.setVariable('sCountPayment', src)</script>
@@ -436,7 +438,7 @@ execution.setVariable('sCountPayment', src)</script>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow24" sourceRef="scripttask2" targetRef="exclusivegateway4"></sequenceFlow>
     <sequenceFlow id="flow25" sourceRef="exclusivegateway4" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""&& sCountPayment =='48'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""&& sCountPayment =='72'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask9" name="Оплата не надійшла" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -477,12 +479,13 @@ ${sNameOrgan}<br />
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept' && asEnjoyingPaymentMethod =='sEnum1'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="exclusivegateway4" targetRef="usertask4"></sequenceFlow>
-    <sequenceFlow id="flow27" sourceRef="exclusivegateway4" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="exclusivegateway4" targetRef="timerintermediatecatchevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""&& sCountPayment!="72"}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="servicetask7" targetRef="usertask4"></sequenceFlow>
     <userTask id="usertask4" name="Прийнятя рішення щодо сплачених коштів" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
           <activiti:value id="sEnum2" name="на підставі рішення суду (здійснене судом до набрання чинності Законом України «Про державну реєстрацію актів цивільного стану» (27.07.2010))"></activiti:value>
@@ -579,9 +582,14 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_106" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_106.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_107" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_107.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_court" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_court.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_divorce_106.html]" type="invisible" default="заява громадян_106" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_divorce_107.html]" type="invisible" default="заява громадян_107" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_divorce_court.html]" type="invisible" default="заява громадян_sud" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_divorce.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -651,7 +659,7 @@ ${sNameOrgan}<br />
 
 <br><br>
 
-Співробітник ДРАЦС успішно прийняв та перевірив вашу заявку про розірвання шлюбу.<br> 
+Співробітник ДРАЦС успішно прийняв та перевірив вашу заяву про державну реєстрацію розірвання шлюбу.<br> 
 Примітка співробітника: ${comment}<br>
 <br>
 Тепер вам обом впродовж 3-х днів відвідайте обраний відділ ДРАЦС за адресою: ${sAddress} та підпишить паперову форму заяви.<br>
@@ -669,7 +677,7 @@ ${sMail_Signature} <br><br>
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_106}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -699,7 +707,7 @@ ${sMail_Signature} <br><br>
 
 <br><br>
 
-Співробітник ДРАЦС успішно прийняв та перевірив Вашу заявку про розірвання шлюбу.<br> 
+Співробітник ДРАЦС успішно прийняв та перевірив Вашу заяву про державну реєстрацію розірвання шлюбу.<br> 
 Примітка співробітника: ${comment}<br>
 <br>
 Тепер впродовж 3-х днів відвідайте обраний відділ ДРАЦС за адресою: ${sAddress} та підпишить паперову форму заяви.<br>
@@ -717,7 +725,7 @@ ${sMail_Signature} <br><br>
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_court}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -747,7 +755,7 @@ ${sMail_Signature} <br><br>
 
 <br><br>
 
-Співробітник ДРАЦС успішно прийняв та перевірив Вашу заявку про розірвання шлюбу.<br> 
+Співробітник ДРАЦС успішно прийняв та перевірив Вашу заяву про державну реєстрацію розірвання шлюбу.<br> 
 Примітка співробітника: ${comment}<br>
 <br>
 Тепер впродовж 3-х днів відвідайте обраний відділ ДРАЦС за адресою: ${sAddress} та підпишить паперову форму заяви.<br>
@@ -765,7 +773,7 @@ ${sMail_Signature} <br><br>
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_107}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -779,7 +787,6 @@ ${sMail_Signature} <br><br>
     <userTask id="usertask5" name="Кінцева обробка" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
           <activiti:value id="sEnum2" name="на підставі рішення суду (здійснене судом до набрання чинності Законом України «Про державну реєстрацію актів цивільного стану» (27.07.2010))"></activiti:value>
@@ -877,8 +884,14 @@ ${sMail_Signature} <br><br>
         <activiti:formProperty id="comment3" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_106" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_106.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_107" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_107.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_court" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_court.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_divorce_106.html]" type="invisible" default="заява громадян_106" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_divorce_107.html]" type="invisible" default="заява громадян_107" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_divorce_court.html]" type="invisible" default="заява громадян_sud" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_divorce.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -940,7 +953,6 @@ ${sMail_Signature}<br /><br />
     <userTask id="usertask6" name="Надання послуги" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
           <activiti:value id="sEnum2" name="на підставі рішення суду (здійснене судом до набрання чинності Законом України «Про державну реєстрацію актів цивільного стану» (27.07.2010))"></activiti:value>
@@ -1037,9 +1049,14 @@ ${sMail_Signature}<br /><br />
         </activiti:formProperty>
         <activiti:formProperty id="comment4" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_106" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_106.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_107" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_107.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_court" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_court.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_divorce_106.html]" type="invisible" default="заява громадян_106" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_divorce_107.html]" type="invisible" default="заява громадян_107" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_divorce_court.html]" type="invisible" default="заява громадян_sud" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_divorce.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -1051,7 +1068,7 @@ ${sMail_Signature}<br /><br />
     </userTask>
     <sequenceFlow id="flow49" sourceRef="usertask6" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow52" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
-    <sequenceFlow id="flow53" sourceRef="startevent1" targetRef="scripttask3"></sequenceFlow>
+    <sequenceFlow id="flow53" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow54" sourceRef="servicetask6" targetRef="endevent5"></sequenceFlow>
     <sequenceFlow id="flow55" sourceRef="servicetask9" targetRef="endevent1"></sequenceFlow>
@@ -1059,7 +1076,7 @@ ${sMail_Signature}<br /><br />
     <sequenceFlow id="flow56" sourceRef="servicetask12" targetRef="endevent6"></sequenceFlow>
     <endEvent id="endevent7" name="End"></endEvent>
     <sequenceFlow id="flow57" sourceRef="servicetask15" targetRef="endevent7"></sequenceFlow>
-    <scriptTask id="scripttask3" name="зміна суми та опису у мерчант" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="зміна суми та опису у мерчант" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var sum =" "
 var des = " "
 if (execution.getVariable('asEnjoyingPaymentMethod') == 'sEnum2'){
@@ -1070,7 +1087,7 @@ sum = "8.66"
 execution.setVariable('sSum', sum)
 execution.setVariable('sDescription', des)</script>
     </scriptTask>
-    <sequenceFlow id="flow58" sourceRef="scripttask3" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow58" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_divorce">
     <bpmndi:BPMNPlane bpmnElement="common_zags_divorce" id="BPMNPlane_common_zags_divorce">
@@ -1155,7 +1172,7 @@ execution.setVariable('sDescription', des)</script>
       <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
         <omgdc:Bounds height="35.0" width="35.0" x="738.0" y="774.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="81.0" width="105.0" x="56.0" y="14.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
