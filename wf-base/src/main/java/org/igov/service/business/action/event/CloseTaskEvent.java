@@ -77,7 +77,7 @@ public class CloseTaskEvent {
                     .taskId(snID_Task).singleResult();
 
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-            LOG.info("snID_Process is ", snID_Process);
+            LOG.info(String.format("snID_Process is [%s]", snID_Process));
             closeEscalationProcessIfExists(snID_Process);
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
@@ -97,9 +97,9 @@ public class CloseTaskEvent {
                         LOG.info("sProcessID ={}", sProcessID);
                         if (sProcessID != null) {
                             Long nID_ProcessV = Long.valueOf(sProcessID);
-                            LOG.info("nID_ProcessV={}", nID_ProcessV);
+                            LOG.info(String.format("nID_ProcessV [%s]", nID_ProcessV));
                             sID_Order = generalConfig.getOrderId_ByProcess(nID_ProcessV);
-                            LOG.info("sID_Order={}", sID_Order);
+                            LOG.info(String.format("sID_Order [%s]", sID_Order));
                         }
                     }
                 }
@@ -140,7 +140,7 @@ public class CloseTaskEvent {
                             LOG_BIG.debug("sResponse = {}", sResponse);
 
                             Long countClaim = Long.valueOf(sResponse);
-                            LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
+                            LOG.info(String.format("countClaimmmmmmmmmmmmmmmm [%s]", countClaim));
                             if (countClaim.compareTo(50L) > 0) {
                                 String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Task);
 
