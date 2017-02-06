@@ -77,6 +77,7 @@ public class CloseTaskEvent {
                     .taskId(snID_Task).singleResult();
 
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
+            LOG.info("snID_Process is ", snID_Process);
             closeEscalationProcessIfExists(snID_Process);
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
