@@ -35,6 +35,8 @@
         <activiti:formProperty id="nFile15" name="Довідка, що мати народила і виховала до восьмирічного віку п’ятьох і більше дітей (ПІБ, дата народження)" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile16" name="Ксерокопія трудової книжки матері та всіх її дітей, що працювали" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile17" name="Довідка про відсутність судимості у батьків та всіх дітей" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sListDocument" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityChild" name="Кількість дітей" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення працівнику відділу про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -96,7 +98,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="1. Первинна обробка звернення" activiti:candidateGroups="family_lviv_drohobych">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -118,6 +120,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateVisit" name="Вкажіть дату та час визиту громадянина" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocument" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityChild" name="Кількість дітей" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0450_mother_heroine.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/drogobych/rada_0450_mother_heroine.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowElements1" type="markers" default="${markerService.loadFromFile('drogobych/rada_0450_mother_heroine_1.json')}"></activiti:formProperty>
@@ -231,6 +235,8 @@
           <activiti:value id="accept1" name="Оригінали документів отримано. Підготувати нагородний лист до ОДА"></activiti:value>
           <activiti:value id="reject1" name="Громадянка не з'явилася в назначений час. Закріті заявуку"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sListDocument" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityChild" name="Кількість дітей" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0450_mother_heroine.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -286,14 +292,115 @@
     </sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow13" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
+    <scriptTask id="scripttask1" name="List Doc" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var per1 = ' '
+var per2 = ' '
+var per3 = ' '
+var per4 = ' '
+var per5 = ' '
+var per6 = ' '
+var per7 = ' '
+var per8 = ' '
+var per9 = ' '
+var per10 = ' '
+var per11 = ' '
+var per12 = ' '
+var per13 = ' '
+var per14 = ' '
+var per15 = ' '
+var per16 = ' '
+var per17 = ' '
+var res = ' '
+var perCh = ' '
+
+if(execution.getVariable('nFile1') != null){
+per1 = '&lt;li&gt;Ксерокопія паспорта матері.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile2') != null){
+per2 = '&lt;li&gt;Ксерокопії свідоцтв про народження всіх дітей.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile3') != null){
+per3 = '&lt;li&gt;Характеристика жінки (матері) з основного місця роботи.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile4') != null){
+per4 = '&lt;li&gt;Довідки-характеристики з місця навчання кожної дитини (шкільного і студентського віку) та характеристики з місця роботи на кожну дитину (для тих, хто працює), інформація про рід занять, громадську роботу, поведінку з місця проживання&lt;/li&gt;'
+}
+if(execution.getVariable('nFile5') != null){
+per5 = '&lt;li&gt;Ксерокопії про здобуття дітьми освіти (диплом про закінчення навчального закладу або атестат про освіту).&lt;/li&gt;'
+}
+if(execution.getVariable('nFile6') != null){
+per6 = '&lt;li&gt;Акт обстеження умов проживання багатодітної сім’ї.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile7') != null){
+per7 = '&lt;li&gt;Соціальний паспорт багатодітної сім’ї.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile8') != null){
+per8 = '&lt;li&gt;Подання (клопотання) підприємства, установи, організації на ім’я міського голови щодо представлення багатодітної матері до присвоєння почесного звання «Мати-героїня».&lt;/li&gt;'
+}
+if(execution.getVariable('nFile9') != null){
+per9 = '&lt;li&gt;Протокол підприємства, установи, організації (зборів трудового колективу), які представляють до присвоєння почесного звання «Мати-героїня».&lt;/li&gt;'
+}
+if(execution.getVariable('nFile10') != null){
+per10 = '&lt;li&gt;Нагородний лист.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile11') != null){
+per11 = '&lt;li&gt;Свідоцтва про смерть із зазначенням причини смерті.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile12') != null){
+per12 = '&lt;li&gt;Автобіографія багатодітної матері.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile13') != null){
+per13 = '&lt;li&gt;Автобіографія всіх дітей.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile14') != null){
+per14 = '&lt;li&gt;Довідка про склад сім’ї.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile15') != null){
+per15 = '&lt;li&gt;Довідка, що мати народила і виховала до восьмирічного віку п’ятьох і більше дітей (ПІБ, дата народження).&lt;/li&gt;'
+}
+if(execution.getVariable('nFile16') != null){
+per16 = '&lt;li&gt;Ксерокопія трудової книжки матері та всіх її дітей, що працювали.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile17') != null){
+per17 = '&lt;li&gt;Довідка про відсутність судимості у батьків та всіх дітей.&lt;/li&gt;'
+}
+
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+per15+per16+per17+'&lt;/ol&gt;'
+
+if (execution.getVariable('asQuantityChild') == 'five') {
+perCh = "п'ятеро"
+}
+if (execution.getVariable('asQuantityChild') == 'six') {
+perCh = "шестеро"
+}
+if (execution.getVariable('asQuantityChild') == 'seven') {
+perCh = "семеро"
+}
+if (execution.getVariable('asQuantityChild') == 'eight') {
+perCh = "восім"
+}
+if (execution.getVariable('asQuantityChild') == 'nine') {
+perCh = "дев'ять"
+}
+if (execution.getVariable('asQuantityChild') == 'ten') {
+perCh = "десять"
+}
+if (execution.getVariable('asQuantityChild') == 'eleven') {
+perCh = "одинадцять"
+}
+
+execution.setVariable('sListDocument', res)
+execution.setVariable('sQuantityChild', perCh)</script>
+    </scriptTask>
+    <sequenceFlow id="flow14" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rada_0450_mother_heroine">
     <bpmndi:BPMNPlane bpmnElement="rada_0450_mother_heroine" id="BPMNPlane_rada_0450_mother_heroine">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="180.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="170.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="90.0" y="170.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="630.0" y="170.0"></omgdc:Bounds>
@@ -328,13 +435,16 @@
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="618.0" y="290.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="155.0" y="197.0"></omgdi:waypoint>
-        <omgdi:waypoint x="200.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="45.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="90.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="305.0" y="197.0"></omgdi:waypoint>
-        <omgdi:waypoint x="350.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="195.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="735.0" y="197.0"></omgdi:waypoint>
@@ -377,6 +487,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="573.0" y="307.0"></omgdi:waypoint>
         <omgdi:waypoint x="618.0" y="307.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="325.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
