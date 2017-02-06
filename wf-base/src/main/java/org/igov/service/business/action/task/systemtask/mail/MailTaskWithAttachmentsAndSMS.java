@@ -147,10 +147,10 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
                     if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null)
                     {
-                        String sFileName = "Attach_" + (String)oJsonTaskAttachVO.get("sFileNameAndExt");
+                        String sFileName = (String)oJsonTaskAttachVO.get("sFileNameAndExt");
                         String sFileNameCustom = (String)oJsonTaskAttachVO.get("sFileNameCustom");
                         if (sFileNameCustom != null && !Objects.equals(sFileNameCustom, "")){
-                            sFileName = sFileNameCustom;
+                            //sFileName = sFileNameCustom;
                         }
                         
                         oMultipartFile = oAttachmetService
