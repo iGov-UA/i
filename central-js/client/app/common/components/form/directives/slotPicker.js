@@ -26,6 +26,12 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         scope.selected.date = null;
         scope.selected.slot = null;
         scope.ngModel = null;
+        scope.formData.params[scope.property.id].value = null;
+        var formObj = scope.$parent.form;
+        if(formObj[scope.property.id]){
+          formObj[scope.property.id].$viewValue = null;
+          formObj[scope.property.id].$modelValue = null;
+        }
       };
 
       var sID_Type_ID = 'sID_Type_' + scope.property.id;
@@ -269,28 +275,42 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         });
       }
 
-      scope.$watch('formData.params.' + nID_ServiceCustomPrivate_ID + '.value', function () {
-        resetData();
-        scope.loadList();
+      scope.$watch('formData.params.' + nID_ServiceCustomPrivate_ID + '.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
+        if (newValue){
+          resetData();
+          scope.loadList();
+        }
       });
 
-      scope.$watch('formData.params.bankIdlastName.value', function (newValue) {
+      scope.$watch('formData.params.bankIdlastName.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
         updateReservedSlot(newValue);
       });
 
-      scope.$watch('formData.params.bankIdfirstName.value', function (newValue) {
+      scope.$watch('formData.params.bankIdfirstName.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
         updateReservedSlot(newValue);
       });
 
-      scope.$watch('formData.params.bankIdmiddleName.value', function (newValue) {
+      scope.$watch('formData.params.bankIdmiddleName.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
         updateReservedSlot(newValue);
       });
 
-      scope.$watch('formData.params.bankIdPassport.value', function (newValue) {
+      scope.$watch('formData.params.bankIdPassport.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
         updateReservedSlot(newValue);
       });
 
-      scope.$watch('formData.params.phone.value', function (newValue) {
+      scope.$watch('formData.params.phone.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
         updateReservedSlot(newValue);
       });
 
