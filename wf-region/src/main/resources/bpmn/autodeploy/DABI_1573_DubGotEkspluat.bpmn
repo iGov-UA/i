@@ -118,7 +118,7 @@ execution.setVariable('sSum', sum);
 Ви отримаєте відповідь протягом 10 робочих днів.&lt;br /&gt;&lt;br /&gt;
 
 Порядок обробки:&lt;br /&gt;
-Звернення надійде до Державної архітектурної будівельної інспекції(ДАБІ) і буде нею оброблене.&lt;br /&gt;
+Звернення надійде до Державної архітектурно-будівельної інспекції(ДАБІ) і буде нею оброблене.&lt;br /&gt;
 У випадку помилок при заповненні форми, вам буде надіслано уточнення.&lt;br /&gt;
 Якщо помилки будуть критичні, в наданні послуги буде відмовлено.&lt;br /&gt;&lt;br /&gt;
 Після обробки в ДАБІ відповідь буде передана до ЦНАПу, про що вас буде повідомлено СМС повідомленням та листом на електронну пошту.&lt;br /&gt;
@@ -197,7 +197,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markerOsoba" name="Post" type="markers" default="${markerService.loadFromFile('AK/UrFizOsoba_Nofiles.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/Dash_UrFizOsoba.json')}"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
@@ -260,7 +260,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>noreply@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення задоволено. Оплатіть доставку. ${sPosluga_name}</activiti:expression>
+          <activiti:expression>Звернення задоволено. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
