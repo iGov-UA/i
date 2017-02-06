@@ -270,7 +270,7 @@ ${sMail_Signature}<br /><br />
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума державного мита, яку необхідно сплатити" type="string" default="8.50"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума державного мита, яку необхідно сплатити" type="invisible" default="8.50"></activiti:formProperty>
         <activiti:formProperty id="commentTax" name="Коментар до суми сплати (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_divorce_106.html" type="file"></activiti:formProperty>
@@ -1062,13 +1062,13 @@ ${sMail_Signature}<br /><br />
     <scriptTask id="scripttask3" name="зміна суми та опису у мерчант" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var sum =" "
 var des = " "
-var sumPr = " "
-var comPr = " "
-execution.getVariable('asEnjoyingPaymentMethod') == 'sEnum2'
+if (execution.getVariable('asEnjoyingPaymentMethod') == 'sEnum2'){
 des = "державне мито за державну реєстрацію розірвання шлюбу"
 sum = "8.66"
-sumPr = "8.50"
-comPr = "0.16"</script>
+
+}
+execution.setVariable('sSum', sum)
+execution.setVariable('sDescription', des)</script>
     </scriptTask>
     <sequenceFlow id="flow58" sourceRef="scripttask3" targetRef="servicetask4"></sequenceFlow>
   </process>
