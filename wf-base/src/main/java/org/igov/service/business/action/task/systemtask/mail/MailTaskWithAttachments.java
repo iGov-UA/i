@@ -119,7 +119,7 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
             LOG.info ("sAttachmentsForSend after parsing: " + sAttachmentsForSend);
             JSONObject oJsonTaskAttachVO = null;
             JSONParser parser = new JSONParser(); 
-            
+               
             Pattern pattern = Pattern.compile("\\{(.*?)\\}");
             Matcher match = pattern.matcher(sAttachmentsForSend);
             
@@ -133,12 +133,8 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
 
                     if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null)
                     {
-                        String sFileName = "Attach_" + (String)oJsonTaskAttachVO.get("sFileNameAndExt");
-                        String sFileNameCustom = (String)oJsonTaskAttachVO.get("sFileNameCustom");
-                        if (sFileNameCustom != null && !Objects.equals(sFileNameCustom, "")){
-                            sFileName = sFileNameCustom;
-                        }
-                        
+                        String sFileName = (String)oJsonTaskAttachVO.get("sFileNameAndExt");
+
                         oMultipartFile = oAttachmetService
                             .getAttachment(null, null, (String)oJsonTaskAttachVO.get("sKey"), (String)oJsonTaskAttachVO.get("sID_StorageType"));
 
