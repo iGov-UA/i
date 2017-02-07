@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="rada_0024_dovidka_live_place_2_step_Dnepr" name="Видача довідки про реєстрацію місця проживання/перебування особи" isExecutable="true">
+  <process id="rada_0024_dovidka_live_place_2_step_Dnepr" name="Довідка про реєстрацію місця проживання/перебування особи (для отримання ID-картки)" isExecutable="true">
     <documentation>Смоктій К.В. Последние правки: 07.02.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -15,6 +15,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameOtherDocument" name="Назва іншого документу, що посвідчує заявника" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника; Серія та номер документу, дата і орган, що його видав" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="warning1" name="УВАГА:" type="label" default="Ви повинні завантажити всі заповнені сторінки паспорта (іншого документа), що посвідчує заявника, одним файлом (наприклад, формату PDF)"></activiti:formProperty>
         <activiti:formProperty id="nFile_CopyPassportZ" name="Паспорт (інший документ), що посвідчує заявника" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Реєстраційний номер облікової картки платника податків" type="long"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -43,6 +44,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameOtherDocument1" name="Назва іншого документу, що посвідчує особу" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport1" name="Документ, що посвідчує особу;Серія та номер документу, дата і орган, що його видав" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="warning_nFile_CopyPassport" name="УВАГА:" type="label" default="Ви повинні завантажити всі заповнені сторінки паспорта (іншого документа), що посвідчує особу, одним файлом (наприклад, формату PDF)"></activiti:formProperty>
         <activiti:formProperty id="nFile_CopyPassport" name="Паспорт (інший документ), що посвідчує особу" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_SvidoztvoNarodzennya" name="Свідоцтво про народження" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" required="true"></activiti:formProperty>
@@ -156,7 +158,7 @@
     <sequenceFlow id="flow20" sourceRef="servicetask4" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="[Етап I] Перевірка вхідних даних (1-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, то громадянин має прийти до Вас після вказаної Вами дати для отримання довідки про реєстрацію місця проживання/перебування особи"></activiti:formProperty>
+        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Будь ласка, використовуйте функцію &quot;Внести зауваження&quot;, якщо потрібно уточнити надану інформацію! Якщо все добре, то переходимо до наступного етапу формування Довідки &lt;br&gt;"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -423,9 +425,9 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow36" sourceRef="servicetask10" targetRef="endevent5"></sequenceFlow>
-    <userTask id="usertask2_yellow" name="[Етап II] Підтвердження виготовлення довідки (2-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2_red" name="[Етап II] Підтвердження виготовлення довідки (2-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="info21" name="На цьому етапі:" type="label" default="Ви виготовляєте довідку про реєстрацію місця проживання/перебування особи. Коли вона готова - підтверджуєте, громадянину буде надіслано email, що його чекають для отриманні довідки."></activiti:formProperty>
+        <activiti:formProperty id="info21" name="На цьому етапі:" type="label" default="Ви виготовляєте довідку про реєстрацію місця проживання/перебування особи. Коли вона готова - підтверджуєте, громадянину буде надіслано email, що його чекають для отриманні довідки.&lt;br&gt;"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -748,8 +750,8 @@ execution.setVariable('sDateVizite', dDateV);
     <sequenceFlow id="flow41" name="${asDecision=='sAccept'}" sourceRef="exclusivegateway4" targetRef="servicetask11">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sAccept'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow42" sourceRef="servicetask11" targetRef="usertask2_yellow"></sequenceFlow>
-    <sequenceFlow id="flow43" sourceRef="usertask2_yellow" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="servicetask11" targetRef="usertask2_red"></sequenceFlow>
+    <sequenceFlow id="flow43" sourceRef="usertask2_red" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow44" name="sDecline" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision2=='sDecline'}]]></conditionExpression>
     </sequenceFlow>
@@ -802,7 +804,7 @@ execution.setVariable('sDateVizite', dDateV);
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="91.0" width="107.0" x="380.0" y="584.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2_yellow" id="BPMNShape_usertask2_yellow">
+      <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
         <omgdc:Bounds height="85.0" width="151.0" x="493.0" y="370.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3_red" id="BPMNShape_usertask3_red">
