@@ -136,7 +136,7 @@
       return aIds[oPreviousTextSearch.cursor];
     }
 
-    var searchTypes = ['unassigned','selfAssigned'];
+    var searchTypes = ['documents','unassigned','selfAssigned'];
 
     var searchSuccess = function (params) {
       if (!params.onlyThisType){

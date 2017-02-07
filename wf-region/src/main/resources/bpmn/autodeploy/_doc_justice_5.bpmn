@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_justice_4" name="Мінюст - звернення громадян" isExecutable="true">
+  <process id="_doc_justice_5" name="Мінюст - Звернення юридичних осіб" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Звернення громадян"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Звернення юридичних осіб"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="ProcessDefinitionId" name="PprocessDefinitionId" type="invisible"></activiti:formProperty>
@@ -12,7 +12,7 @@
     </startEvent>
     <userTask id="usertask1" name="Канцелярія - реєстрація звернення" activiti:candidateGroups="justice_common">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Звернення громадян" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Звернення юридичних осіб" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -45,24 +45,7 @@
           <activiti:value id="sEnum4" name="неодноразове"></activiti:value>
           <activiti:value id="sEnum5" name="масове"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSocialStatus" name="Соціальний стан" type="enum">
-          <activiti:value id="sEnum1" name="пенсіонер"></activiti:value>
-          <activiti:value id="sEnum2" name="робітник"></activiti:value>
-          <activiti:value id="sEnum3" name="селянин"></activiti:value>
-          <activiti:value id="sEnum4" name="працівник бюджетної сфери"></activiti:value>
-          <activiti:value id="sEnum5" name="державний службовець"></activiti:value>
-          <activiti:value id="sEnum6" name="військовослужбовець"></activiti:value>
-          <activiti:value id="sEnum7" name="підприємець"></activiti:value>
-          <activiti:value id="sEnum8" name="безробітний"></activiti:value>
-          <activiti:value id="sEnum9" name="учень, студент"></activiti:value>
-          <activiti:value id="sEnum10" name="служитель релігійної організації"></activiti:value>
-          <activiti:value id="sEnum11" name="особа, що позбавлена волі (особа, воля якої обмежена)"></activiti:value>
-          <activiti:value id="sEnum12" name="інші"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSex" name="Стать" type="enum">
-          <activiti:value id="sEnumMen" name="чоловіча"></activiti:value>
-          <activiti:value id="sEnumWomen" name="жіноча"></activiti:value>
-        </activiti:formProperty>
+  
         <activiti:formProperty id="asTypeAppeal" name="Тип звернення" type="enum" required="true">
           <activiti:value id="sEnum1" name="лист"></activiti:value>
           <activiti:value id="sEnum2" name="телеграма"></activiti:value>
@@ -75,32 +58,7 @@
           <activiti:value id="sEnum2" name="скарга"></activiti:value>
           <activiti:value id="sEnum3" name="пропозиція (зауваження)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asCategory" name="Категорія" type="enum">
-          <activiti:value id="sEnum1" name="багатодітна сім’я"></activiti:value>
-          <activiti:value id="sEnum2" name="ветеран праці"></activiti:value>
-          <activiti:value id="sEnum3" name="герой РС"></activiti:value>
-          <activiti:value id="sEnum4" name="герой соц. праці"></activiti:value>
-          <activiti:value id="sEnum5" name="герой України"></activiti:value>
-          <activiti:value id="sEnum6" name="дитина"></activiti:value>
-          <activiti:value id="sEnum7" name="дитина війни"></activiti:value>
-          <activiti:value id="sEnum8" name="дитина інвалід"></activiti:value>
-          <activiti:value id="sEnum9" name="інвалід ВВВ"></activiti:value>
-          <activiti:value id="sEnum10" name="інвалід I групи"></activiti:value>
-          <activiti:value id="sEnum11" name="інвалід II групи"></activiti:value>
-          <activiti:value id="sEnum12" name="інвалід III групи"></activiti:value>
-          <activiti:value id="sEnum13" name="ліквідатор аварії на ЧАЕС"></activiti:value>
-          <activiti:value id="sEnum14" name="мати-героїня"></activiti:value>
-          <activiti:value id="sEnum15" name="одинока мати"></activiti:value>
-          <activiti:value id="sEnum16" name="учасник бойових дій"></activiti:value>
-          <activiti:value id="sEnum17" name="учасник війни"></activiti:value>
-          <activiti:value id="sEnum18" name="чорнобилець"></activiti:value>
-          <activiti:value id="sEnum19" name="інші"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSubject" name="Суб’єкт" type="enum">
-          <activiti:value id="sEnum1" name="анонімне"></activiti:value>
-          <activiti:value id="sEnum2" name="індивідуальне"></activiti:value>
-          <activiti:value id="sEnum3" name="колективне"></activiti:value>
-        </activiti:formProperty>
+       
         <activiti:formProperty id="asFrom" name="Звернення від" type="enum">
           <activiti:value id="sEnum1" name="Урядова гаряча лінія"></activiti:value>
           <activiti:value id="sEnum2" name="Гаряча лінія Голови облдержадміністрації"></activiti:value>
@@ -209,7 +167,7 @@
     </userTask>
     <userTask id="usertask2" name="Керівник - накладення резолюції, призначення виконавців" activiti:candidateGroups="${sName_SubjectRole}">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Звернення громадян" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Звернення юридичних осіб" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -242,24 +200,7 @@
           <activiti:value id="sEnum4" name="неодноразове"></activiti:value>
           <activiti:value id="sEnum5" name="масове"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSocialStatus" name="Соціальний стан" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="пенсіонер"></activiti:value>
-          <activiti:value id="sEnum2" name="робітник"></activiti:value>
-          <activiti:value id="sEnum3" name="селянин"></activiti:value>
-          <activiti:value id="sEnum4" name="працівник бюджетної сфери"></activiti:value>
-          <activiti:value id="sEnum5" name="державний службовець"></activiti:value>
-          <activiti:value id="sEnum6" name="військовослужбовець"></activiti:value>
-          <activiti:value id="sEnum7" name="підприємець"></activiti:value>
-          <activiti:value id="sEnum8" name="безробітний"></activiti:value>
-          <activiti:value id="sEnum9" name="учень, студент"></activiti:value>
-          <activiti:value id="sEnum10" name="служитель релігійної організації"></activiti:value>
-          <activiti:value id="sEnum11" name="особа, що позбавлена волі (особа, воля якої обмежена)"></activiti:value>
-          <activiti:value id="sEnum12" name="інші"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSex" name="Стать" type="enum" writable="false">
-          <activiti:value id="sEnumMen" name="чоловіча"></activiti:value>
-          <activiti:value id="sEnumWomen" name="жіноча"></activiti:value>
-        </activiti:formProperty>
+       
         <activiti:formProperty id="asTypeAppeal" name="Тип звернення" type="enum" writable="false">
           <activiti:value id="sEnum1" name="лист"></activiti:value>
           <activiti:value id="sEnum2" name="телеграма"></activiti:value>
@@ -272,32 +213,7 @@
           <activiti:value id="sEnum2" name="скарга"></activiti:value>
           <activiti:value id="sEnum3" name="пропозиція (зауваження)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asCategory" name="Категорія" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="багатодітна сім’я"></activiti:value>
-          <activiti:value id="sEnum2" name="ветеран праці"></activiti:value>
-          <activiti:value id="sEnum3" name="герой РС"></activiti:value>
-          <activiti:value id="sEnum4" name="герой соц. праці"></activiti:value>
-          <activiti:value id="sEnum5" name="герой України"></activiti:value>
-          <activiti:value id="sEnum6" name="дитина"></activiti:value>
-          <activiti:value id="sEnum7" name="дитина війни"></activiti:value>
-          <activiti:value id="sEnum8" name="дитина інвалід"></activiti:value>
-          <activiti:value id="sEnum9" name="інвалід ВВВ"></activiti:value>
-          <activiti:value id="sEnum10" name="інвалід I групи"></activiti:value>
-          <activiti:value id="sEnum11" name="інвалід II групи"></activiti:value>
-          <activiti:value id="sEnum12" name="інвалід III групи"></activiti:value>
-          <activiti:value id="sEnum13" name="ліквідатор аварії на ЧАЕС"></activiti:value>
-          <activiti:value id="sEnum14" name="мати-героїня"></activiti:value>
-          <activiti:value id="sEnum15" name="одинока мати"></activiti:value>
-          <activiti:value id="sEnum16" name="учасник бойових дій"></activiti:value>
-          <activiti:value id="sEnum17" name="учасник війни"></activiti:value>
-          <activiti:value id="sEnum18" name="чорнобилець"></activiti:value>
-          <activiti:value id="sEnum19" name="інші"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSubject" name="Суб’єкт" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="анонімне"></activiti:value>
-          <activiti:value id="sEnum2" name="індивідуальне"></activiti:value>
-          <activiti:value id="sEnum3" name="колективне"></activiti:value>
-        </activiti:formProperty>
+   
         <activiti:formProperty id="asFrom" name="Звернення від" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Урядова гаряча лінія"></activiti:value>
           <activiti:value id="sEnum2" name="Гаряча лінія Голови облдержадміністрації"></activiti:value>
@@ -424,7 +340,7 @@
     </userTask>
     <userTask id="usertask2_yellow" name="Основний виконавець - формування підсумкового документу" activiti:candidateGroups="${sMainExecutor}">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Звернення громадян" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Звернення юридичних осіб" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -456,24 +372,7 @@
           <activiti:value id="sEnum4" name="неодноразове"></activiti:value>
           <activiti:value id="sEnum5" name="масове"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSocialStatus" name="Соціальний стан" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="пенсіонер"></activiti:value>
-          <activiti:value id="sEnum2" name="робітник"></activiti:value>
-          <activiti:value id="sEnum3" name="селянин"></activiti:value>
-          <activiti:value id="sEnum4" name="працівник бюджетної сфери"></activiti:value>
-          <activiti:value id="sEnum5" name="державний службовець"></activiti:value>
-          <activiti:value id="sEnum6" name="військовослужбовець"></activiti:value>
-          <activiti:value id="sEnum7" name="підприємець"></activiti:value>
-          <activiti:value id="sEnum8" name="безробітний"></activiti:value>
-          <activiti:value id="sEnum9" name="учень, студент"></activiti:value>
-          <activiti:value id="sEnum10" name="служитель релігійної організації"></activiti:value>
-          <activiti:value id="sEnum11" name="особа, що позбавлена волі (особа, воля якої обмежена)"></activiti:value>
-          <activiti:value id="sEnum12" name="інші"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSex" name="Стать" type="enum" writable="false">
-          <activiti:value id="sEnumMen" name="чоловіча"></activiti:value>
-          <activiti:value id="sEnumWomen" name="жіноча"></activiti:value>
-        </activiti:formProperty>
+       
         <activiti:formProperty id="asTypeAppeal" name="Тип звернення" type="enum" writable="false">
           <activiti:value id="sEnum1" name="лист"></activiti:value>
           <activiti:value id="sEnum2" name="телеграма"></activiti:value>
@@ -486,32 +385,7 @@
           <activiti:value id="sEnum2" name="скарга"></activiti:value>
           <activiti:value id="sEnum3" name="пропозиція (зауваження)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asCategory" name="Категорія" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="багатодітна сім’я"></activiti:value>
-          <activiti:value id="sEnum2" name="ветеран праці"></activiti:value>
-          <activiti:value id="sEnum3" name="герой РС"></activiti:value>
-          <activiti:value id="sEnum4" name="герой соц. праці"></activiti:value>
-          <activiti:value id="sEnum5" name="герой України"></activiti:value>
-          <activiti:value id="sEnum6" name="дитина"></activiti:value>
-          <activiti:value id="sEnum7" name="дитина війни"></activiti:value>
-          <activiti:value id="sEnum8" name="дитина інвалід"></activiti:value>
-          <activiti:value id="sEnum9" name="інвалід ВВВ"></activiti:value>
-          <activiti:value id="sEnum10" name="інвалід I групи"></activiti:value>
-          <activiti:value id="sEnum11" name="інвалід II групи"></activiti:value>
-          <activiti:value id="sEnum12" name="інвалід III групи"></activiti:value>
-          <activiti:value id="sEnum13" name="ліквідатор аварії на ЧАЕС"></activiti:value>
-          <activiti:value id="sEnum14" name="мати-героїня"></activiti:value>
-          <activiti:value id="sEnum15" name="одинока мати"></activiti:value>
-          <activiti:value id="sEnum16" name="учасник бойових дій"></activiti:value>
-          <activiti:value id="sEnum17" name="учасник війни"></activiti:value>
-          <activiti:value id="sEnum18" name="чорнобилець"></activiti:value>
-          <activiti:value id="sEnum19" name="інші"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSubject" name="Суб’єкт" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="анонімне"></activiti:value>
-          <activiti:value id="sEnum2" name="індивідуальне"></activiti:value>
-          <activiti:value id="sEnum3" name="колективне"></activiti:value>
-        </activiti:formProperty>
+       
         <activiti:formProperty id="asFrom" name="Звернення від" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Урядова гаряча лінія"></activiti:value>
           <activiti:value id="sEnum2" name="Гаряча лінія Голови облдержадміністрації"></activiti:value>
@@ -638,7 +512,7 @@
     </userTask>
     <userTask id="usertask3" name="Канцелярія - прийняття рішення про виконання завдання" activiti:candidateGroups="justice_common">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Звернення громадян" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Звернення юридичних осіб" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -670,24 +544,7 @@
           <activiti:value id="sEnum4" name="неодноразове"></activiti:value>
           <activiti:value id="sEnum5" name="масове"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSocialStatus" name="Соціальний стан" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="пенсіонер"></activiti:value>
-          <activiti:value id="sEnum2" name="робітник"></activiti:value>
-          <activiti:value id="sEnum3" name="селянин"></activiti:value>
-          <activiti:value id="sEnum4" name="працівник бюджетної сфери"></activiti:value>
-          <activiti:value id="sEnum5" name="державний службовець"></activiti:value>
-          <activiti:value id="sEnum6" name="військовослужбовець"></activiti:value>
-          <activiti:value id="sEnum7" name="підприємець"></activiti:value>
-          <activiti:value id="sEnum8" name="безробітний"></activiti:value>
-          <activiti:value id="sEnum9" name="учень, студент"></activiti:value>
-          <activiti:value id="sEnum10" name="служитель релігійної організації"></activiti:value>
-          <activiti:value id="sEnum11" name="особа, що позбавлена волі (особа, воля якої обмежена)"></activiti:value>
-          <activiti:value id="sEnum12" name="інші"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSex" name="Стать" type="enum" writable="false">
-          <activiti:value id="sEnumMen" name="чоловіча"></activiti:value>
-          <activiti:value id="sEnumWomen" name="жіноча"></activiti:value>
-        </activiti:formProperty>
+       
         <activiti:formProperty id="asTypeAppeal" name="Тип звернення" type="enum" writable="false">
           <activiti:value id="sEnum1" name="лист"></activiti:value>
           <activiti:value id="sEnum2" name="телеграма"></activiti:value>
@@ -700,32 +557,7 @@
           <activiti:value id="sEnum2" name="скарга"></activiti:value>
           <activiti:value id="sEnum3" name="пропозиція (зауваження)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asCategory" name="Категорія" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="багатодітна сім’я"></activiti:value>
-          <activiti:value id="sEnum2" name="ветеран праці"></activiti:value>
-          <activiti:value id="sEnum3" name="герой РС"></activiti:value>
-          <activiti:value id="sEnum4" name="герой соц. праці"></activiti:value>
-          <activiti:value id="sEnum5" name="герой України"></activiti:value>
-          <activiti:value id="sEnum6" name="дитина"></activiti:value>
-          <activiti:value id="sEnum7" name="дитина війни"></activiti:value>
-          <activiti:value id="sEnum8" name="дитина інвалід"></activiti:value>
-          <activiti:value id="sEnum9" name="інвалід ВВВ"></activiti:value>
-          <activiti:value id="sEnum10" name="інвалід I групи"></activiti:value>
-          <activiti:value id="sEnum11" name="інвалід II групи"></activiti:value>
-          <activiti:value id="sEnum12" name="інвалід III групи"></activiti:value>
-          <activiti:value id="sEnum13" name="ліквідатор аварії на ЧАЕС"></activiti:value>
-          <activiti:value id="sEnum14" name="мати-героїня"></activiti:value>
-          <activiti:value id="sEnum15" name="одинока мати"></activiti:value>
-          <activiti:value id="sEnum16" name="учасник бойових дій"></activiti:value>
-          <activiti:value id="sEnum17" name="учасник війни"></activiti:value>
-          <activiti:value id="sEnum18" name="чорнобилець"></activiti:value>
-          <activiti:value id="sEnum19" name="інші"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSubject" name="Суб’єкт" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="анонімне"></activiti:value>
-          <activiti:value id="sEnum2" name="індивідуальне"></activiti:value>
-          <activiti:value id="sEnum3" name="колективне"></activiti:value>
-        </activiti:formProperty>
+       
         <activiti:formProperty id="asFrom" name="Звернення від" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Урядова гаряча лінія"></activiti:value>
           <activiti:value id="sEnum2" name="Гаряча лінія Голови облдержадміністрації"></activiti:value>
@@ -913,7 +745,7 @@ execution.setVariable('sExecutor', sExecutor)</script>
     <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}">
       <extensionElements>
         <activiti:field name="sKey">
-          <activiti:string><![CDATA[_doc_justice_4]]></activiti:string>
+          <activiti:string><![CDATA[_doc_justice_5]]></activiti:string>
         </activiti:field>
         <activiti:field name="sPattern">
           <activiti:string><![CDATA[[sID_Custom_GovPublic]]]></activiti:string>
@@ -979,8 +811,8 @@ execution.setVariable('sIncomingNumber',sID_Custom_GovPublic)</script>
     </scriptTask>
     <sequenceFlow id="flow62" sourceRef="scripttask5" targetRef="callactivity1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_4">
-    <bpmndi:BPMNPlane bpmnElement="_doc_justice_4" id="BPMNPlane__doc_justice_4">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_5">
+    <bpmndi:BPMNPlane bpmnElement="_doc_justice_5" id="BPMNPlane__doc_justice_5">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="18.0" y="170.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
