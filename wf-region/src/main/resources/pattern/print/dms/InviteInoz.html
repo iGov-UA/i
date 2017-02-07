@@ -193,24 +193,18 @@
 </table>
 <script>
 	var dateStart = "[sDateStart]";
-	var dStart = '<b>' + dateStart.substring(0,2) + '</b>';
-	var mStart = '<b>' + dateStart.substring(3,2) + '</b>';
-	var yStart = '<b>' + dateStart.substring(8,2) + '</b>';
-	document.getElementById("dayStart").textContent = dateStart.substring(0,2);
-	document.getElementById("monthStart").innerHTML = mStart;
-	document.getElementById("yearStart").textContent = yStart;
+	document.getElementById("dayStart").innerHTML = '<b>' + dateStart.substring(0,2) + '</b>';
+	document.getElementById("monthStart").innerHTML = '<b>' + dateStart.substring(3,2) + '</b>';
+	document.getElementById("yearStart").innerHTML = '<b>' + dateStart.substring(8,2) + '</b>';
 	var dateFinish = "[sDateFinish]";
-	var dFinish = '<b>' + dateFinish.substring(0,2) + '</b>';
-	var mFinish = '<b>' + dateFinish.substring(3,2) + '</b>';
-	var yFinish = '<b>' + dateFinish.substring(8,2) + '</b>';
-	document.getElementById("dayFinish").textContent = dFinish;
-	document.getElementById("monthFinish").textContent = mFinish;
-	document.getElementById("yearFinish").textContent = yFinish;
+	document.getElementById("dayFinish").innerHTML = '<b>' + dateFinish.substring(0,2) + '</b>';
+	document.getElementById("monthFinish").innerHTML = '<b>' + dateFinish.substring(3,2) + '</b>';
+	document.getElementById("yearFinish").innerHTML = '<b>' + dateFinish.substring(8,2) + '</b>';
 	var aCountVizit = "[asCountVizit]";
 	var oneVizit = '<b>' + "-------------------------" + '</b>';
 	var twoVizit = '<b>' + "-------------------------" + '</b>';
 	var manyVizit = '<b>' + "-------------------------" + '</b>';
-	switch (aCountVizit) {
+	/*switch (aCountVizit) {
 		case "sVizOne":
 		oneVizit = " ";
 		case "sVizTwo":
@@ -219,14 +213,17 @@
 		manyVizit = " ";
 		default:
 		alert('Странный результат, очень странный');
-	}		
-	document.getElementById("VizitOne").textContent = oneVizit;
-	document.getElementById("VizitTwo").textContent = twoVizit;
-	document.getElementById("VizitMany").textContent = manyVizit;
-	var dateToday = new Date();
-	document.getElementById("dayToday").textContent = '<b>' + dateToday.getDate() + '</b>';
-	document.getElementById("monthToday").textContent = '<b>' + dateToday.getMonth() + '</b>';
-	document.getElementById("yearToday").textContent = '<b>' + dateToday.getFullYear().substring(2,2) + '</b>';
+	}*/		
+	document.getElementById("VizitOne").innerHTML = oneVizit;
+	document.getElementById("VizitTwo").innerHTML = twoVizit;
+	document.getElementById("VizitMany").innerHTML = manyVizit;
+	var dateToday = new Date( );
+	var day = dateToday.getDate();
+	var month = dateToday.getMonth();
+	var year = dateToday.getFullYear();
+	document.getElementById("dayToday").innerHTML = '<b>' + day + '</b>';
+	document.getElementById("monthToday").innerHTML = '<b>' + month + '</b>';
+	document.getElementById("yearToday").innerHTML = '<b>' + year.substring(1,2) + '</b>';
 	
 </script>
 </body></html>
