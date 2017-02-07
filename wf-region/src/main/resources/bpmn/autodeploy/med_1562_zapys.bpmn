@@ -37,11 +37,13 @@
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLikari" name="Лікарі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="Запуск таймера" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/medicine.json')}"></activiti:formProperty>
       </extensionElements>
@@ -241,7 +243,7 @@ execution.setVariable('sNotification_day', timer)</script>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow36" sourceRef="parallelgateway2" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finish=='attr1_ok'}]]></conditionExpression>
+
     </sequenceFlow>
     <serviceTask id="servicetask5" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -276,7 +278,7 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="endevent2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finish=='attr2_missed'}]]></conditionExpression>
+
     </sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow37" sourceRef="parallelgateway1" targetRef="servicetask2"></sequenceFlow>
