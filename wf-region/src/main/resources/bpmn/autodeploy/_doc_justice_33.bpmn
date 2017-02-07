@@ -46,14 +46,7 @@
         <activiti:formProperty id="sPrepareted" name="Підготував; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSupervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChangeDoc" name="Вносить зміни до наказу №" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateChangeDoc" name="Вносить зміни до наказу від" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sCancelDoc" name="Скасовує наказ №" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateCancelDoc" name="Скасовує наказ від" type="date"></activiti:formProperty>
-        <activiti:formProperty id="asActualDoc" name="Відмітки про чинність наказу" type="enum">
-          <activiti:value id="sEnumActualDoc" name="чиний"></activiti:value>
-          <activiti:value id="sEnumNotActualtDoc" name="той що втратив чинність"></activiti:value>
-        </activiti:formProperty>
+    
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2Рішення колегії.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
@@ -92,14 +85,7 @@
         <activiti:formProperty id="sPrepareted" name="Підготував; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSupervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChangeDoc" name="Вносить зміни до наказу №" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateChangeDoc" name="Вносить зміни до наказу від" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCancelDoc" name="Скасовує наказ №" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateCancelDoc" name="Скасовує наказ від" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asActualDoc" name="Відмітки про чинність наказу" type="enum" writable="false">
-          <activiti:value id="sEnumActualDoc" name="чиний"></activiti:value>
-          <activiti:value id="sEnumNotActualtDoc" name="той що втратив чинність"></activiti:value>
-        </activiti:formProperty>
+       
         <activiti:formProperty id="asRegular" name="регулярний документ; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum" default="sEnumNotRegularDoc" writable="false">
           <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
           <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
