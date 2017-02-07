@@ -67,7 +67,7 @@
 		<td colspan="6" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman;text-transform: uppercase"><b>[sPersonPOB]</b></td>
 	</tr>
 	<tr>
-		<td height="52" colspan="7" style="border-top:1px solid #000000">ЗАПРОШУЄТЬСЯ В УКРАЇНУ ДЛЯ (зайве закреслити)</td>
+		<td height="52" colspan="7" style="border-top:1px solid #000000"></td>
 	</tr>	
 </table>	
 <table cellspacing="0" border="0" style="margin: 0 auto;width: 560px;">
@@ -88,34 +88,34 @@
 		<td height="1" colspan="13" style="border-top:1px solid #000000"></td>
 	</tr>
 	<tr>
-		<td height="27" colspan="3" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>-------------------------</b></td>
-		<td colspan="5" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>-------------------------</b></td>
-		<td colspan="5" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>-------------------------</b></td>
+		<td id="VizitOne" height="27" colspan="3" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
+		<td id="VizitTwo" colspan="5" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
+		<td id="VizitMany" colspan="5" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
 	</tr>
 	<tr>
 		<td height="1" colspan="13" style="border-top:1px solid #000000"></td>
 	</tr>
 	<tr>
-		<td height="27">у період з</td>
-		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
-		<td colspan="2" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
+		<td height="27"></td>
+		<td id="dayStart" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
+		<td id="monthStart" colspan="2" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
 		<td></td>
-		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
+		<td id="yearStart" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
 		<td></td>
-		<td>до</td>
-		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
-		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
 		<td></td>
-		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
+		<td id="dayFinish" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
+		<td id="monthFinish" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
+		<td></td>
+		<td id="yearFinish" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
 		<td></td>
 	</tr>
 	<tr>
 		<td height="1" colspan="13" style="border-top:1px solid #000000"></td>
 	</tr>
 	<tr>
-		<td height="27">на</td>
+		<td height="27"></td>
 		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[nDay]</b></td>
-		<td colspan="11">днів</td>
+		<td colspan="11"></td>
 	</tr>
 </table>	
 <table cellspacing="0" border="0" style="margin: 0 auto;width: 560px;">
@@ -181,19 +181,49 @@
 	</tr>
 	<tr>
 		<td height="37"></td>
-		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
+		<td id="dayToday" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
 		<td></td>
-		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
+		<td id="monthToday" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
 		<td></td>
-		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
+		<td id="yearToday" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
 		<td></td>
 		<td></td>
 		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[sPersonDms]</b></td>		
 	</tr>
 </table>
 <script>
-	var a = "[sDateStart]";
-	var b = a.substring(0,2);
-	document.getElementById("first").textContent = b;
+	var dateStart = "[sDateStart]";
+	document.getElementById("dayStart").innerHTML = '<b>' + dateStart.substring(0,2) + '</b>';
+	document.getElementById("monthStart").innerHTML = '<b>' + dateStart.substring(3,2) + '</b>';
+	document.getElementById("yearStart").innerHTML = '<b>' + dateStart.substring(8,2) + '</b>';
+	var dateFinish = "[sDateFinish]";
+	document.getElementById("dayFinish").innerHTML = '<b>' + dateFinish.substring(0,2) + '</b>';
+	document.getElementById("monthFinish").innerHTML = '<b>' + dateFinish.substring(3,2) + '</b>';
+	document.getElementById("yearFinish").innerHTML = '<b>' + dateFinish.substring(8,2) + '</b>';
+	var aCountVizit = "[asCountVizit]";
+	var oneVizit = '<b>' + "-------------------------" + '</b>';
+	var twoVizit = '<b>' + "-------------------------" + '</b>';
+	var manyVizit = '<b>' + "-------------------------" + '</b>';
+	/*switch (aCountVizit) {
+		case "sVizOne":
+		oneVizit = " ";
+		case "sVizTwo":
+		twoVizit = " ";
+		case "sVizMany":
+		manyVizit = " ";
+		default:
+		alert('Странный результат, очень странный');
+	}*/		
+	document.getElementById("VizitOne").innerHTML = oneVizit;
+	document.getElementById("VizitTwo").innerHTML = twoVizit;
+	document.getElementById("VizitMany").innerHTML = manyVizit;
+	var dateToday = new Date( );
+	var day = dateToday.getDate();
+	var month = dateToday.getMonth();
+	var year = dateToday.getFullYear();
+	document.getElementById("dayToday").innerHTML = '<b>' + day + '</b>';
+	document.getElementById("monthToday").innerHTML = '<b>' + month + '</b>';
+	document.getElementById("yearToday").innerHTML = '<b>' + year.substring(1,2) + '</b>';
+	
 </script>
 </body></html>
