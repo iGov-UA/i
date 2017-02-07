@@ -39,10 +39,8 @@
         <activiti:formProperty id="sDateDoc" name="Дата документа" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" required="true"></activiti:formProperty>
-     
         <activiti:formProperty id="sEmailSender" name="Електронна адреса відправника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEmailAddressee" name="Електронна адреса адресата" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
@@ -258,7 +256,7 @@
     <scriptTask id="scripttask1" name="4 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//1. счетчик добавления номера в поле входящего номера
 var number=execution.getVariable('sID_Custom_GovPublic')
-var fullNumber="вх-"+number+"/"
+var fullNumber="ск-"+number+"/"
 execution.setVariable('sID_Custom_GovPublic', fullNumber)
 
 //2. назначение даты исполнения - по умолчанию + 30 дней к текущей даты и перевод даты в нужный формат дд/мм/гггг
