@@ -42,8 +42,9 @@ module.exports.getUserKeyFromSession = function (session) {
 
 function responseContractValidation(callback, nextCallback) {
   return function (error, response, body) {
+    logger.info('bankid-nbu result', body);
     if (response.statusCode === 200 && (body.customer || body.customerCrypto)) {
-      nextCallback(error, response, changeToCustomer(body));
+      nextCallback(error, response, body);
     } else if (response.statusCode === 200 && body.error) {
       // HTTP/1.1 406 Not Acceptable , якщо у запиті не задано ідентифікатор ПАП ,
       // HTTP/1.1 501 Not Implemented , якщо у банку відсутній сертифікат ПАП.
@@ -54,13 +55,14 @@ function responseContractValidation(callback, nextCallback) {
   }
 }
 
-function changeToCustomer(body) {
-  if (body.customerCrypto) {
-    body.customer = body.customerCrypto;
-    delete body.customerCrypto;
-  }
-  logger.info('bankid-nbu result', body);
-  return body;
+function changeToCustomer(nextCallback) {
+  return function(error, response, body){
+    if (body.customerCrypto) {
+      body.customer = body.customerCrypto;
+      delete body.customerCrypto;
+    }
+    nextCallback(error, response, body);
+  };
 }
 
 module.exports.index = function (accessToken, callback, disableDecryption) {
@@ -135,7 +137,7 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
         "fields": ["link", "dateCreate", "extension"]
       }]
     }
-  }, responseContractValidation(callback, resultCallback));
+  }, responseContractValidation(callback, changeToCustomer(resultCallback)));
 };
 
 module.exports.scansRequest = function (accessToken, callback) {
@@ -212,25 +214,20 @@ module.exports.syncWithSubject = function (accessToken, done) {
   async.waterfall([
     function (callback) {
       self.index(accessToken, function (error, response, body) {
-        if (error || body.error || (!body.customer && !body.customerCrypto)) {
+        if (error || body.error || !body.customer) {
           callback(createError(error || body.error || body, body.error_description, response), null);
         } else {
           var customerAndAdmin = {
             customer: body.customer,
             admin: body.admin
           };
-          if (body.customer) {
-            customerAndAdmin.customer = body.customer;
-          } else if (body.customerCrypto) {
-            customerAndAdmin.customerCrypto = body.customerCrypto;
-          }
           callback(null, customerAndAdmin);
         }
       }, disableDecryption);
     },
 
     function (result, callback) {
-      var inn = result.customer ? result.customer.inn : bankidNBUUtil.decryptFieldInn(result.customerCrypto);
+      var inn = bankidNBUUtil.decryptField(result.customer.inn);
       syncSubject.sync(inn, function (error, response, body) {
         if (error) {
           callback(createError(error, response), null);
@@ -242,16 +239,11 @@ module.exports.syncWithSubject = function (accessToken, done) {
     },
 
     function (result, callback) {
-      self.cacheCustomer(result, function (error, reponse, body) {
+      self.cacheCustomer(result, function (error, response, body) {
         if (error || body.code) {
           callback(createError(body, 'error while caching data. ' + body.message, response), null);
         } else {
           result.usercacheid = body;
-
-          var inn = result.customer ? result.customer.inn : bankidNBUUtil.decryptFieldInn(result.customerCrypto);
-          var firstName = result.customer ? result.customer.firstName : bankidNBUUtil.decryptFieldFirstName(result.customerCrypto);
-          var middleName = result.customer ? result.customer.middleName : bankidNBUUtil.decryptFieldMiddleName(result.customerCrypto);
-          var lastName = result.customer ? result.customer.lastName : bankidNBUUtil.decryptFieldLastName(result.customerCrypto);
 
           if (result.customer.inn) {
             result.customer.inn = bankidNBUUtil.decryptField(result.customer.inn);
