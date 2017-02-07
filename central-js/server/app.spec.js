@@ -2,6 +2,7 @@
 
 var nock = require('nock')
   , url = require('url')
+  , parse = url.parse
   , urlencode = require('urlencode')
   , superagent = require('superagent')
   , supertest = require('supertest-as-promised')
@@ -11,9 +12,11 @@ var nock = require('nock')
   , appData = require('./app.data.spec')
   , appUtil = require('./app.util.spec')
   , appTests = require('./app.tests.spec')(testRequest)
+  , cookiejar = require('cookiejar')
   , config = require('./config/environment');
 
 
+var CookieAccess = require('cookiejar').CookieAccessInfo;
 var testAuthResultPath = '/auth/result';
 var testAuthResultBase = 'http://localhost:9001';
 var testAuthResultURL = testAuthResultBase + testAuthResultPath;
@@ -43,6 +46,17 @@ var regionMock = nock('https://test.region.igov.org.ua')
 
 var self = this;
 
+function saveCookies(loginAgent, res) {
+  var cookies = res.headers['set-cookie'];
+  if (cookies) loginAgent.jar.setCookies(cookies);
+}
+
+function attachCookies(loginAgent, req) {
+  var url = parse(req.url);
+  var access = CookieAccess(url.hostname, url.pathname, 'https:' == url.protocol);
+  req.cookies = loginAgent.jar.getCookies(access).toValueString();
+}
+
 function getAuth(urlWithQueryParams, agentCallback, done, authMode) {
   testRequest
     .get(urlWithQueryParams)
@@ -57,7 +71,7 @@ function getAuth(urlWithQueryParams, agentCallback, done, authMode) {
       }
 
       var loginAgent = superagent.agent();
-      loginAgent.saveCookies(res);
+      saveCookies(loginAgent, res);
       if (agentCallback) {
         agentCallback(loginAgent);
       }
@@ -88,15 +102,15 @@ module.exports.loginWithBankIDNBU = function (done, agentCallback, code) {
     .expect(302)
     .then(function (res) {
       var loginAgent = superagent.agent();
-      loginAgent.saveCookies(res);
+      saveCookies(loginAgent, res);
 
       var tokenRequest = testRequest.get('/auth/bankid-nbu/callback?code=' + code + '&?link=' + testAuthResultURL);
-      loginAgent.attachCookies(tokenRequest);
+      attachCookies(loginAgent, tokenRequest);
 
       tokenRequest
         .expect(302)
         .then(function (res) {
-          loginAgent.saveCookies(res);
+          saveCookies(loginAgent, res);
           if (agentCallback) {
             agentCallback(loginAgent);
           }
@@ -123,7 +137,7 @@ module.exports.loginWithEmail = function (callback) {
   function prepareGet(url, agent) {
     var r = testRequest.get(url);
     if (agent) {
-      agent.attachCookies(r);
+      attachCookies(agent, r);
     }
     return r;
   }
@@ -131,7 +145,7 @@ module.exports.loginWithEmail = function (callback) {
   function preparePost(url, agent) {
     var r = testRequest.post(url);
     if (agent) {
-      agent.attachCookies(r);
+      attachCookies(agent, r);
     }
     return r;
   }
@@ -140,7 +154,8 @@ module.exports.loginWithEmail = function (callback) {
     request
       .expect(302)
       .then(function (res) {
-        loginAgent.saveCookies(res);
+        var loginAgent = superagent.agent();
+        saveCookies(loginAgent, res);
         asyncCallback(null, loginAgent);
       })
       .catch(function (err) {
@@ -154,7 +169,7 @@ module.exports.loginWithEmail = function (callback) {
       .expect(200)
       .then(function (res) {
         var loginAgent = superagent.agent();
-        loginAgent.saveCookies(res);
+        saveCookies(loginAgent, res);
         asyncCallback(null, loginAgent);
       })
       .catch(function (err) {
