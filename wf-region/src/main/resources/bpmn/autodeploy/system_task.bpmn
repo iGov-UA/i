@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="system_task" name="Завдання" isExecutable="true">
-   <startEvent id="startevent1" name="Start">
+    <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Attachment" name="sTable3 - таблица с исполнителями" type="table"></activiti:formProperty>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
@@ -26,7 +26,7 @@
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="${sTypeDoc}" activiti:candidateGroups="${sLogin_isExecute}">
+    <userTask id="usertask1" name="  " activiti:candidateGroups="${sLogin_isExecute}">
       <documentation>завдання по шаблонам
 _doc_justice_11, _doc_justice_12, _doc_justice_13, _doc_justice_14, _doc_justice_15, _doc_justice_16, _doc_justice_171, _doc_justice_172, _doc_justice_173</documentation>
       <extensionElements>
@@ -43,7 +43,11 @@ _doc_justice_11, _doc_justice_12, _doc_justice_13, _doc_justice_14, _doc_justice
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата документа" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAcceptor" name="Прийняв" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDelegator" name="Передав" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmailSender" name="Електронна адреса відправника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmailAddressee" name="Електронна адреса адресата" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string" writable="false"></activiti:formProperty>
@@ -63,7 +67,7 @@ _doc_justice_11, _doc_justice_12, _doc_justice_13, _doc_justice_14, _doc_justice
         </activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" required="true">
           <activiti:value id="executed" name="Виконано"></activiti:value>
           <activiti:value id="notExecuted" name="Невиконано"></activiti:value>
@@ -88,12 +92,12 @@ _doc_justice_11, _doc_justice_12, _doc_justice_13, _doc_justice_14, _doc_justice
           <activiti:field name="sID_Attachment">
             <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
-         
           <activiti:field name="processDefinitionId">
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sDateRegistration::${sDateRegistration};;sDateDoc::${sDateDoc};;sName_SubjectRole::${sName_SubjectRole};;sDateExecution::${sDateExecution};;sContent::${sContent};;sAutorResolution::${sAutorResolution};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>  </activiti:field>
+            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sDateRegistration::${sDateRegistration};;sDateDoc::${sDateDoc};;sName_SubjectRole::${sName_SubjectRole};;sDateExecution::${sDateExecution};;sContent::${sContent};;sAutorResolution::${sAutorResolution};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution};;sAcceptor::${sAcceptor};;sDelegator::${sDelegator};;sEmailSender::${sEmailSender};;sEmailAddressee::${sEmailAddressee}]]></activiti:expression>
+          </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
           <activiti:field name="sID_ProcessSubjectStatus">
@@ -130,7 +134,7 @@ _doc_justice_11, _doc_justice_12, _doc_justice_13, _doc_justice_14, _doc_justice
     <sequenceFlow id="flow7" sourceRef="exclusivegateway2" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${processDefinitionId == '_doc_justice_11'|| processDefinitionId == '_doc_justice_12'|| processDefinitionId == '_doc_justice_13'|| processDefinitionId == '_doc_justice_14'|| processDefinitionId == '_doc_justice_15'|| processDefinitionId == '_doc_justice_16'|| processDefinitionId == '_doc_justice_171'|| processDefinitionId == '_doc_justice_172'|| processDefinitionId == '_doc_justice_173'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="${sTypeDoc}" activiti:candidateGroups="${sLogin_isExecute}">
+    <userTask id="usertask3" name="  " activiti:candidateGroups="${sLogin_isExecute}">
       <documentation>завдання по шаблонам
 _doc_justice_4
 _doc_justice_5
@@ -158,7 +162,6 @@ _doc_justice_83</documentation>
         <activiti:formProperty id="nCountSheets" name="Кількість аркушів" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" writable="false"></activiti:formProperty>
-       
         <activiti:formProperty id="asTypeDelivery" name="Вид доставки" type="enum" writable="false">
           <activiti:value id="sEnum1" name="пошта"></activiti:value>
           <activiti:value id="sEnum2" name="особистий прийом"></activiti:value>
@@ -193,8 +196,7 @@ _doc_justice_83</documentation>
           <activiti:value id="sEnumMen" name="чоловіча"></activiti:value>
           <activiti:value id="sEnumWomen" name="жіноча"></activiti:value>
         </activiti:formProperty>
-        
-               <activiti:formProperty id="asTypeAppeal" name="Тип звернення" type="enum" writable="false">
+        <activiti:formProperty id="asTypeAppeal" name="Тип звернення" type="enum" writable="false">
           <activiti:value id="sEnum1" name="лист"></activiti:value>
           <activiti:value id="sEnum2" name="телеграма"></activiti:value>
           <activiti:value id="sEnum3" name="усне"></activiti:value>
@@ -232,8 +234,7 @@ _doc_justice_83</documentation>
           <activiti:value id="sEnum2" name="індивідуальне"></activiti:value>
           <activiti:value id="sEnum3" name="колективне"></activiti:value>
         </activiti:formProperty>
-        
-          <activiti:formProperty id="asFrom" name="Звернення від" type="enum" writable="false">
+        <activiti:formProperty id="asFrom" name="Звернення від" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Урядова гаряча лінія"></activiti:value>
           <activiti:value id="sEnum2" name="Гаряча лінія Голови облдержадміністрації"></activiti:value>
           <activiti:value id="sEnum3" name="МЮ"></activiti:value>
@@ -298,8 +299,7 @@ _doc_justice_83</documentation>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string" writable="false"></activiti:formProperty>
-        
-         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
+        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
@@ -307,9 +307,6 @@ _doc_justice_83</documentation>
           <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
           <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
         </activiti:formProperty>
-        
-
-        
         <activiti:formProperty id="asControl" name="Контроль; ;sID_CheckboxTrue=sEnumYesControl" type="enum" writable="false">
           <activiti:value id="sEnumYesControl" name="взяти на особливий контроль"></activiti:value>
           <activiti:value id="sEnumNoControl" name="не брати на особливий контроль"></activiti:value>
@@ -318,7 +315,6 @@ _doc_justice_83</documentation>
           <activiti:value id="sEnumJustified" name="Обґрунтовано"></activiti:value>
           <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
         </activiti:formProperty>
-           
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
           <activiti:value id="sEnumNothing" name=" "></activiti:value>
@@ -333,7 +329,7 @@ _doc_justice_83</documentation>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Структурний підрозділ, що здійснює розгляд; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" required="true">
           <activiti:value id="executed" name="Виконано"></activiti:value>
           <activiti:value id="notExecuted" name="Невиконано"></activiti:value>
@@ -350,7 +346,6 @@ _doc_justice_83</documentation>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання; ;bNew=true" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot; }]}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="Якщо інший виконавець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sTable2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегування іншому виконавцю'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-      
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
@@ -359,9 +354,6 @@ _doc_justice_83</documentation>
           <activiti:field name="sID_Attachment">
             <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
-         
-         
-        
           <activiti:field name="processDefinitionId">
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
@@ -390,14 +382,13 @@ _doc_justice_83</documentation>
     <sequenceFlow id="flow13" sourceRef="exclusivegateway3" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusTask == 'delegated'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask4" name="${sTypeDoc}" activiti:candidateGroups="${sLogin_isExecute}">
+    <userTask id="usertask4" name="  " activiti:candidateGroups="${sLogin_isExecute}">
       <documentation>завдання по шаблонам
 _doc_justice_31
 _doc_justice_32
 _doc_justice_33</documentation>
       <extensionElements>
         <activiti:formProperty id="sID_Attachment" name="sTable3 - таблица с исполнителями" type="table" writable="false"></activiti:formProperty>
-      
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
@@ -408,7 +399,6 @@ _doc_justice_33</documentation>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер наказу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameDoc" name="Назва наказу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
-    
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
@@ -427,12 +417,11 @@ _doc_justice_33</documentation>
           <activiti:value id="sEnumNotActualtDoc" name="той що втратив чинність"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-         
         <activiti:formProperty id="asRegular" name="регулярний документ; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum" writable="false">
           <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
           <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" required="true">
           <activiti:value id="executed" name="Виконано"></activiti:value>
           <activiti:value id="notExecuted" name="Невиконано"></activiti:value>
@@ -449,7 +438,6 @@ _doc_justice_33</documentation>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання; ;bNew=true" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot; }]}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="Якщо інший виконавець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sTable2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегування іншому виконавцю'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-    
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
@@ -458,12 +446,12 @@ _doc_justice_33</documentation>
           <activiti:field name="sID_Attachment">
             <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
           </activiti:field>
-        
           <activiti:field name="processDefinitionId">
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-          <activiti:expression><![CDATA[sDoc1::${sDoc1};;sTableViewed::${sTableViewed};;sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sChangeDoc::${sChangeDoc};;sDateChangeDoc::${sDateChangeDoc};;sCancelDoc::${sCancelDoc};;sDateCancelDoc::${sDateCancelDoc};;asActualDoc::${asActualDoc};;sDateRegistration::${sDateRegistration};;sDateExecution::${sDateExecution}]]></activiti:expression>        </activiti:field>
+            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sTableViewed::${sTableViewed};;sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sChangeDoc::${sChangeDoc};;sDateChangeDoc::${sDateChangeDoc};;sCancelDoc::${sCancelDoc};;sDateCancelDoc::${sDateCancelDoc};;asActualDoc::${asActualDoc};;sDateRegistration::${sDateRegistration};;sDateExecution::${sDateExecution}]]></activiti:expression>
+          </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
           <activiti:field name="sID_ProcessSubjectStatus">
