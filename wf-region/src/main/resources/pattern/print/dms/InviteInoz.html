@@ -201,19 +201,22 @@
 	document.getElementById("monthFinish").innerHTML = '<b>' + dateFinish.substr(3,2) + '</b>';
 	document.getElementById("yearFinish").innerHTML = '<b>' + dateFinish.substr(8,2) + '</b>';
 	var aCountVizit = "[asCountVizit]";
-	var oneVizit = '<b>' + aCountVizit + '</b>';
+	var oneVizit = '<b>' + "-------------------------" + '</b>';
 	var twoVizit = '<b>' + "-------------------------" + '</b>';
 	var manyVizit = '<b>' + "-------------------------" + '</b>';
-	/*switch (aCountVizit) {
-		case "sVizOne":
-		oneVizit = " ";
-		case "sVizTwo":
-		twoVizit = " ";
-		case "sVizMany":
-		manyVizit = " ";
-		default:
-		alert('Странный результат, очень странный');
-	}*/		
+	switch (aCountVizit) {
+	case "одноразовий в’їзд":
+	oneVizit = " ";
+	break;
+	case "дворазовий в’їзд":
+	twoVizit = " ";
+	break;
+	case "багаторазовий в’їзд":
+	manyVizit = " ";
+	break;
+	default:
+	alert('Странный результат, очень странный');
+	}	
 	document.getElementById("VizitOne").innerHTML = oneVizit;
 	document.getElementById("VizitTwo").innerHTML = twoVizit;
 	document.getElementById("VizitMany").innerHTML = manyVizit;
@@ -223,7 +226,6 @@
 	var year = dateToday.getFullYear();
 	document.getElementById("dayToday").innerHTML = '<b>' + day + '</b>';
 	document.getElementById("monthToday").innerHTML = '<b>' + month + '</b>';
-	document.getElementById("yearToday").innerHTML = '<b>' + year.substr(1,2) + '</b>';
-	
+	document.getElementById("yearToday").innerHTML = '<b>' + String(year).substr(2,2) + '</b>';	
 </script>
 </body></html>
