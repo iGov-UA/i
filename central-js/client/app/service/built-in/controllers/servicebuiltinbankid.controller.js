@@ -685,6 +685,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         if($scope.data.formData.params[property.id] instanceof SignFactory){
           $scope.isSignNeeded = bVisible;
         }
+        if(property.type === 'queueData' && !bVisible && $scope.data.formData.params[property.id].value !== null){
+          $scope.data.formData.params[property.id].value = null;
+        }
+
         return bVisible;
       };
 
