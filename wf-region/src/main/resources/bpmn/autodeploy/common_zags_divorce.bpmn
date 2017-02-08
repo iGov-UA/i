@@ -234,11 +234,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажаю мати прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита ; ;writable=false" type="enum">
-          <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
-          <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
-          <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
-        </activiti:formProperty>
+       
         <activiti:formProperty id="asCategoryPrivileges" name="Категорія; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
           <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -316,7 +312,7 @@ ${sMail_Signature}<br /><br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway3" targetRef="servicetask8">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept' && asEnjoyingPaymentMethod =='sEnum2'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask8" name="Лист про сплату" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -455,11 +451,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажаю мати прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита; ;writable=false" type="enum">
-          <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
-          <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
-          <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="asCategoryPrivileges" name="Категорія; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
           <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -589,7 +581,7 @@ ${sMail_Signature} <br><br>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
-<h3>Шановни (-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<h3>Шановний (-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 
 <br><br>
 
@@ -748,11 +740,7 @@ ${sMail_Signature} <br><br>
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажаю мати прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита; ;writable=false" type="enum">
-          <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
-          <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
-          <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
-        </activiti:formProperty>
+        
         <activiti:formProperty id="asCategoryPrivileges" name="Категорія; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
           <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -908,11 +896,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажаю мати прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита; ;writable=false" type="enum">
-          <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
-          <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
-          <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
-        </activiti:formProperty>
+       
         <activiti:formProperty id="asCategoryPrivileges" name="Категорія; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
           <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
