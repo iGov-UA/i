@@ -51,10 +51,6 @@
         <activiti:formProperty id="sAddress" name="Тип органу" type="invisible" default="м. Дніпро, вул. Короленко, буд.4, каб. 421"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для адмінпослуги" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/inozem.json')}"></activiti:formProperty>
       </extensionElements>
@@ -124,8 +120,6 @@
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dms_inozem_${sID_UA}">
       <extensionElements>
-        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, призначаєте дату та час, коли громадянин має прийти до вас для подання документів"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -167,9 +161,6 @@
         <activiti:formProperty id="sSum" name="Вартість послуги цифрами" type="string" default="171 грн. 38 коп."></activiti:formProperty>
         <activiti:formProperty id="sSumText" name="Вартість послуги текстом" type="string" default="сто сімдесят одна гривня тридцять вісім копійок"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для сплати" type="textArea" default="Отримувач: ГУ ДМС України в Дніпропетровській області, р/р 37114078079427, ЄДРПОУ 37806243, МФО 820172 в Державна казначейська служба України м.Київ"></activiti:formProperty>
-        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_inozem_UOFront.html]" type="invisible" default="Клопотання лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_inozem_UOBack.html]" type="invisible" default="Клопотання зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dms/Guarantee.html]" type="invisible" default="Гарантійний лист" writable="false"></activiti:formProperty>
