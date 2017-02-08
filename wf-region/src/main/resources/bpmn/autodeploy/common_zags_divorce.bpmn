@@ -103,7 +103,7 @@
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажаю мати прізвище; дошлюбне чи взяте при державній реєстрації шлюбу" type="string"></activiti:formProperty>
-        
+        <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sTitleCourt1" name="Назва суду; яким було розірвано шлюб" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateSolutions1" name="Дата ухвалення рішення; яким було розірвано шлюб" type="string"></activiti:formProperty>
@@ -116,7 +116,6 @@
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_show.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="show-hide2" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_show_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Required" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_req.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="value" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_val.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask4" name="сповіщення співробітника" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -190,7 +189,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
-        
+        <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
@@ -250,7 +249,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажаю мати прізвище; ;writable=false" type="string"></activiti:formProperty>
-        
+        <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита ; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
           <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
@@ -272,9 +271,9 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="commentTax" name="Коментар до суми сплати (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Required_dash" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_req_dash.json')}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_106" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_106.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_107" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_107.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_court" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_court.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_106.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_107.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_court.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_divorce_106.html]" type="invisible" default="заява громадян_106" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_divorce_107.html]" type="invisible" default="заява громадян_107" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_divorce_court.html]" type="invisible" default="заява громадян_sud" writable="false"></activiti:formProperty>
@@ -284,7 +283,7 @@ ${sMail_Signature}<br /><br />
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
+            <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -454,7 +453,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
-        
+        <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
@@ -539,7 +538,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_divorce.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
+            <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -749,7 +748,7 @@ ${sMail_Signature} <br><br>
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
-        
+        <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
@@ -808,7 +807,7 @@ ${sMail_Signature} <br><br>
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажаю мати прізвище; ;writable=false" type="string"></activiti:formProperty>
-        
+        <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
           <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
@@ -840,7 +839,7 @@ ${sMail_Signature} <br><br>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
+            <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -915,7 +914,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
-        
+        <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
@@ -974,7 +973,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажаю мати прізвище; ;writable=false" type="string"></activiti:formProperty>
-        
+        <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
           <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
@@ -1005,7 +1004,7 @@ ${sMail_Signature}<br /><br />
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
+            <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1031,7 +1030,7 @@ execution.setVariable('sSum', sum)
 execution.setVariable('sDescription', des)</script>
     </scriptTask>
     <sequenceFlow id="flow58" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
-    <sequenceFlow id="flow59" sourceRef="usertask4" targetRef="servicetask12"></sequenceFlow>
+    <sequenceFlow id="flow59" sourceRef="usertask4" targetRef="usertask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_divorce">
     <bpmndi:BPMNPlane bpmnElement="common_zags_divorce" id="BPMNPlane_common_zags_divorce">
@@ -1222,7 +1221,9 @@ execution.setVariable('sDescription', des)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="994.0" y="488.0"></omgdi:waypoint>
-        <omgdi:waypoint x="862.0" y="524.0"></omgdi:waypoint>
+        <omgdi:waypoint x="995.0" y="663.0"></omgdi:waypoint>
+        <omgdi:waypoint x="779.0" y="714.0"></omgdi:waypoint>
+        <omgdi:waypoint x="523.0" y="688.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
