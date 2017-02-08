@@ -154,7 +154,7 @@
                 </table>
               </div>
 
-              <div class="col-md-5"
+              <div id="label-{{property.id}}" class="col-md-5"
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
                 <label style="color: red;"
                        ng-if="isFieldRequired(property)==true">* </label>
@@ -167,7 +167,7 @@
               </div>
 
 
-              <div class="col-md-3"
+              <div id="field-{{property.id}}" class="col-md-3"
                    ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table'}"
                    ng-if="showFormField(property)"
                    ng-switch
@@ -245,6 +245,30 @@
                                   ng-disabled="!isFieldWritable(item.writable)"
                                   class="inputs-in-table">
                           </select>
+                        </div>
+
+                        <div ng-if="item.type == 'file'">
+                          <div dropdown class="dropup" style="display: inline-block; position:relative;">
+                            <div class="like-modal dropdown-menu" role="menu">
+                              <file-field style="text-align: center"
+                                          name="{{item.id}}"
+                                          ng-model="item.value"
+                                          ng-required="isFieldRequired(item)"
+                                          ng-class="getBpAndFieldID(item)"
+                                          ng-if="item.upload">Add File</file-field>
+                            </div>
+                            <button style="position:relative;"
+                                    ng-disabled="isFormPropertyDisabled(item) || isFileProcessUploading.bState"
+                                    ng-if="item.fileName"
+                                    type="button"
+                                    dropdown-toggle
+                                    class="btn btn-default dropdown-toggle">{{item.fileName}}</button>
+                            <file-field name="{{item.id}}"
+                                        ng-model="item.value"
+                                        ng-required="isFieldRequired(item)"
+                                        ng-class="getBpAndFieldID(item)"
+                                        ng-if="item.upload && !item.fileName">Add File</file-field>
+                          </div>
                         </div>
 
                         <div ng-if="item.type == 'long'">
@@ -414,7 +438,7 @@
                               {{$select.selected[autocompleteData.titleProperty] || item.value}}
                             </ui-select-match>
                             <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search)"
-                                               refresh-delay="50"
+                                               refresh-delay="300"
                                                repeat="field[item.autocompleteData.valueProperty] as field in items track by field[item.autocompleteData.orderBy]">
                                <span title="{{field[item.autocompleteData.titleProperty]}}">
                                  {{field[item.autocompleteData.titleProperty]}}
@@ -722,7 +746,7 @@
                     </ui-select-match>
 
                     <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"
-                                       refresh-delay="50"
+                                       refresh-delay="300"
                                        repeat="item[property.autocompleteData.valueProperty] as item in items track by item[property.autocompleteData.orderBy]">
                       <span title="{{item[property.autocompleteData.titleProperty]}}">
                         {{item[property.autocompleteData.titleProperty]}}
