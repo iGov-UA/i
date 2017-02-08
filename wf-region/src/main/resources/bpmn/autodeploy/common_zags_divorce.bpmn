@@ -532,16 +532,11 @@ ${sMail_Signature}<br /><br />
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_106" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_106.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_107" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_107.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_court" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_divorce_court.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_divorce_106.html]" type="invisible" default="заява громадян_106" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_divorce_107.html]" type="invisible" default="заява громадян_107" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_divorce_court.html]" type="invisible" default="заява громадян_sud" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_divorce.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_Passport1},${Scan_Passport2},${ScancopyDoc},${ScancopyDoc2},${ScancopyDoc1},${ScancopyDoc3}]]></activiti:expression>
@@ -549,7 +544,6 @@ ${sMail_Signature}<br /><br />
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow32" sourceRef="usertask4" targetRef="exclusivegateway5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow33" sourceRef="exclusivegateway5" targetRef="servicetask12">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject22'}]]></conditionExpression>
@@ -574,7 +568,7 @@ ${sMail_Signature}<br /><br />
 <br />
 Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br />
+${sMail_Signature}<br /><br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]></activiti:expression>
         </activiti:field>
@@ -1037,6 +1031,7 @@ execution.setVariable('sSum', sum)
 execution.setVariable('sDescription', des)</script>
     </scriptTask>
     <sequenceFlow id="flow58" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow59" sourceRef="usertask4" targetRef="servicetask12"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_divorce">
     <bpmndi:BPMNPlane bpmnElement="common_zags_divorce" id="BPMNPlane_common_zags_divorce">
@@ -1149,10 +1144,6 @@ execution.setVariable('sDescription', des)</script>
         <omgdi:waypoint x="994.0" y="174.0"></omgdi:waypoint>
         <omgdi:waypoint x="994.0" y="433.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="994.0" y="488.0"></omgdi:waypoint>
-        <omgdi:waypoint x="745.0" y="531.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="765.0" y="551.0"></omgdi:waypoint>
         <omgdi:waypoint x="810.0" y="551.0"></omgdi:waypoint>
@@ -1228,6 +1219,10 @@ execution.setVariable('sDescription', des)</script>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
         <omgdi:waypoint x="108.0" y="95.0"></omgdi:waypoint>
         <omgdi:waypoint x="230.0" y="115.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="994.0" y="488.0"></omgdi:waypoint>
+        <omgdi:waypoint x="862.0" y="524.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
