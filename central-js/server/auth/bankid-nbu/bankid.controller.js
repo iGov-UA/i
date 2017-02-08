@@ -67,7 +67,8 @@ module.exports.token = function (req, res, next) {
       logger.info('token bankid-nbu error, redirect back to initial page', { error : error, link : req.query.link });
       res.redirect(link + '?error=' + errorString);
     } else {
-      req.session = authService.createSessionObject('bankid-nbu', user, info);
+      var session = authService.createSessionObject('bankid-nbu', user, info);
+      req.session = session;
       delete req.session.prepare;
       logger.info('bankid-nbu session is created', session);
       logger.info('token bankid-nbu success, redirect back to initial page', { link : req.query.link });

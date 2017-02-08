@@ -16,7 +16,7 @@ import org.igov.model.core.NamedEntity;
  * User: goodg_000 Date: 14.06.2015 Time: 15:03
  */
 @javax.persistence.Entity
-public class Flow_ServiceData extends NamedEntity { 
+public class Flow extends NamedEntity { 
 
     /**
      * One-to-one soft reference to ServiceData which is stored in central but

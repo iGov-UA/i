@@ -40,7 +40,7 @@ import java.util.Map;
 import org.igov.model.flow.FlowServiceDataDao;
 import org.igov.model.flow.FlowSlot;
 import org.igov.model.flow.FlowSlotDao;
-import org.igov.model.flow.Flow_ServiceData;
+import org.igov.model.flow.Flow;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
 import static org.igov.run.schedule.JobBuilderFlowSlots.WORK_DAYS_NEEDED;
@@ -166,7 +166,7 @@ public class ActionFlowController {
         
         if(nDiffDays != 0){
             
-            Flow_ServiceData oFlow = null;
+            Flow oFlow = null;
             if (nID_Service != null) {
                 oFlow = oFlowService.getFlowByLink(nID_Service, nID_SubjectOrganDepartment);
             }

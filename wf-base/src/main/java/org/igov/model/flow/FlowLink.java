@@ -12,9 +12,9 @@ import org.igov.model.core.AbstractEntity;
 @javax.persistence.Entity
 public class FlowLink extends AbstractEntity {
 
-    @ManyToOne(targetEntity = Flow_ServiceData.class)
-    @JoinColumn(name = "nID_Flow_ServiceData")
-    private Flow_ServiceData flow_ServiceData;
+    @ManyToOne(targetEntity = Flow.class)
+    @JoinColumn(name = "nID_Flow")
+    private Flow flow_ServiceData;
 
     @Column
     private Long nID_Service;
@@ -22,11 +22,11 @@ public class FlowLink extends AbstractEntity {
     @Column
     private Long nID_SubjectOrganDepartment;
 	
-    public Flow_ServiceData getFlow_ServiceData() {
+    public Flow getFlow_ServiceData() {
         return flow_ServiceData;
     }
 
-    public void setFlow_ServiceData(Flow_ServiceData flow_ServiceData) {
+    public void setFlow_ServiceData(Flow flow_ServiceData) {
         this.flow_ServiceData = flow_ServiceData;
     }
 
