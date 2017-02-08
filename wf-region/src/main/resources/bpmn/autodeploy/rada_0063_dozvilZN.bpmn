@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="rada_0063_dozvilZN" name="Дозвіл на знесення зелених насаджень" isExecutable="true">
     <startEvent id="startevent1" name="Start">
-    <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть Центр надання адміністративних послуг" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -27,7 +27,7 @@
         <activiti:formProperty id="nFile2" name="Копія рішення міської ради про відведення земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Копія вихідних даних на проектування та будівництво" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile4" name="Декларація про початок будівельних робіт Інспекції Державного архітектурно-будівельного контролю (ДАБК)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('dneprCnap/rada_0063_dozvilZN_1.json')}"></activiti:formProperty> 
+        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('dneprCnap/rada_0063_dozvilZN_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
@@ -37,7 +37,7 @@
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення адміністратора про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-    <extensionElements>
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -54,7 +54,7 @@
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <userTask id="usertask1" name="1. Крок. Первинна обробка звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
-    <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -77,7 +77,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0455_buildingPassp.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="print-show-hide" type="markers" default="${markerService.loadFromFile('dneprCnap/rada_0063_dozvilZN_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_pr" name="print-show-hide" type="markers" default="${markerService.loadFromFile('dneprCnap/rada_0063_dozvilZN_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
@@ -91,7 +91,7 @@
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення про відмову в реєстрації" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-    <extensionElements>
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -128,11 +128,13 @@ ${sNameOrgan},<br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення про реєстрацію" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-    <extensionElements>
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -172,9 +174,11 @@ ${sNameOrgan},<br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask2" name="2. Крок. Обробка після рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
-    <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -203,7 +207,6 @@ ${sNameOrgan},<br>
         </activiti:formProperty>
         <activiti:formProperty id="nAnswerYes" name="Завантажте скан-копію дозволу" type="file"></activiti:formProperty>
         <activiti:formProperty id="nAnswerNo" name="Завантажте скан-копию листа-повідомлення" type="file"></activiti:formProperty>
-        
         <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0455_buildingPassp.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="required-show-hide" type="markers" default="${markerService.loadFromFile('dneprCnap/rada_0063_dozvilZN_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_pr" name="print-show-hide" type="markers" default="${markerService.loadFromFile('dneprCnap/rada_0063_dozvilZN_print.json')}"></activiti:formProperty>
@@ -218,7 +221,7 @@ ${sNameOrgan},<br>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow8" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення про надання дозволу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-    <extensionElements>
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -255,9 +258,11 @@ ${sNameOrgan},<br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow9" sourceRef="exclusivegateway2" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="exclusivegateway2" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecideAnswer=='sEnumYes'}]]></conditionExpression>
+    </sequenceFlow>
     <serviceTask id="servicetask5" name="Повідомлення про відмоу о видачі дозволу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-    <extensionElements>
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -295,7 +300,9 @@ ${sNameOrgan},<br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow10" sourceRef="exclusivegateway2" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="exclusivegateway2" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecideAnswer=='sEnumNo'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
