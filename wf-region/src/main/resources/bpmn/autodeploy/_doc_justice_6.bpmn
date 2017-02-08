@@ -333,8 +333,7 @@
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sName_SubjectRole::${sName_SubjectRole};;sTypeDoc::${sTypeDoc};;sNumberPrevious::${sNumberPrevious};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sDateRegistration::${sDateRegistration};;sNumberRegistration::${sNumberRegistration};;sDateDoc::${sDateDoc};;sNumberDoc::${sNumberDoc};;nCountSheets::${nCountSheets};;sContent::${sContent};;sApplicant::${sApplicant};;asTypeDelivery::${asTypeDelivery};;asTypeIncoming::${asTypeIncoming};;asSocialStatus::${asSocialStatus};;asSex::${asSex};;asTypeAppeal::${asTypeAppeal};;asKindAppeal::${asKindAppeal};;asCategory::${asCategory};;asSubject::${asSubject};;asFrom::${asFrom};;asPlace::${asPlace};;sAdress::${sAdress};;sDateExecution::${sDateExecution};;sNote::${sNote};;sAutorResolution::${sAutorResolution};;asUrgently::${asUrgently};;asRegular::${asRegular};;sDateBegin::${sDateBegin};;asPeriodicity::${asPeriodicity};;sDateEnd::${sDateEnd};;asControl::${asControl};;asJustified::${asJustified};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution};;sTable1::${sTable1}]]></activiti:expression>
-          </activiti:field>
+            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sName_SubjectRole::${sName_SubjectRole};;sTypeDoc::${sTypeDoc};;sNumberPrevious::${sNumberPrevious};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sDateRegistration::${sDateRegistration};;sNumberRegistration::${sNumberRegistration};;sDateDoc::${sDateDoc};;sNumberDoc::${sNumberDoc};;nCountSheets::${nCountSheets};;sContent::${sContent};;sApplicant::${sApplicant};;asTypeDelivery::${asTypeDelivery};;asTypeIncoming::${asTypeIncoming};;asTypeAppeal::${asTypeAppeal};;asKindAppeal::${asKindAppeal};;asFrom::${asFrom};;asPlace::${asPlace};;sAdress::${sAdress};;sDateExecution::${sDateExecution};;sNote::${sNote};;sAutorResolution::${sAutorResolution};;asUrgently::${asUrgently};;asRegular::${asRegular};;sDateBegin::${sDateBegin};;asPeriodicity::${asPeriodicity};;sDateEnd::${sDateEnd};;asControl::${asControl};;asJustified::${asJustified};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution};;sTable1::${sTable1}]]></activiti:expression>   </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -687,6 +686,14 @@
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string"></activiti:formProperty>
         <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
+          <activiti:field name="snID_Process_Activiti">
+            <activiti:expression><![CDATA[${processInstanceId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:string><![CDATA[unactual]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
