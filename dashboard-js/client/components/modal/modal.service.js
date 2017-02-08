@@ -107,17 +107,17 @@ angular.module('dashboardJsApp')
             modal: {
               dismissable: true,
               title: 'Уточнення!',
-              html: '<strong>' + 'Почати опрацювання задачі ?' + '</strong>',
+              html: '<strong>' + 'Звернення буде відправлено на наступний етап' + '</strong>',
               buttons: [{
                 classes: 'btn-success',
-                text: ' Так ',
+                text: ' Підтвердити ',
                 click: function(e) {
                   isYesButton = true;
                   warningModal.close(e);
                 }
               }, {
                 classes: 'btn-success',
-                text: ' Ні ',
+                text: ' Назад ',
                 click: function(e) {
                   console.log(isYesButton);
                   warningModal.close(e);

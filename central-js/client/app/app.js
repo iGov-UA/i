@@ -20,7 +20,8 @@ angular.module('appBoilerPlate', ['ngCookies',
   'iGovMarkers',
   'autocompleteService',
   'datepickerService',
-  'iGovTable']);
+  'iGovTable',
+  'datetimepicker']);
 
 angular.module('documents', ['appBoilerPlate']);
 angular.module('auth', ['appBoilerPlate']);
@@ -85,4 +86,28 @@ angular.module('app', [
       alert(errorText);
     }
   });
-});
+}).config([
+  'datetimepickerProvider',
+  function (datetimepickerProvider) {
+    datetimepickerProvider.setOptions({
+      locale: 'uk',
+      toolbarPlacement: 'default',
+      showClear: true,
+      format: 'DD/MM/YYYY',
+      tooltips:{
+        clear: 'Очистити',
+        selectMonth: 'Обрати мiсяць',
+        prevMonth: 'Попереднiй мiсяць',
+        nextMonth: 'Наступний мiсяць',
+        selectYear: 'Обрати рiк',
+        prevYear: 'Попереднiй рiк',
+        nextYear: 'Наступний рiк',
+        selectDecade: 'Обрати десятиліття',
+        prevDecade: 'Попереднє десятиліття',
+        nextDecade: 'Наступне десятиліття',
+        prevCentury: 'Попереднє століття',
+        nextCentury: 'Наступне століття'
+      }
+    });
+  }
+]);

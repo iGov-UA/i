@@ -127,7 +127,7 @@
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sDateRegistration::${sDateRegistration};;sDateDoc::${sDateDoc};;sName_SubjectRole::${sName_SubjectRole};;sDateExecution::${sDateExecution};;sContent::${sContent};;sAutorResolution::${sAutorResolution};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>
+            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sDateRegistration::${sDateRegistration};;sDateDoc::${sDateDoc};;sName_SubjectRole::${sName_SubjectRole};;sDateExecution::${sDateExecution};;sContent::${sContent};;sAutorResolution::${sAutorResolution};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sApplicant::${sApplicant};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -237,6 +237,14 @@
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string"></activiti:formProperty>
         <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
+          <activiti:field name="snID_Process_Activiti">
+            <activiti:expression><![CDATA[${processInstanceId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:string><![CDATA[unactual]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>

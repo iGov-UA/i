@@ -241,6 +241,14 @@
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string"></activiti:formProperty>
         <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+		<activiti:taskListener event="complete" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
+          <activiti:field name="snID_Process_Activiti">
+            <activiti:expression><![CDATA[${processInstanceId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:string><![CDATA[unactual]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>

@@ -1,6 +1,7 @@
 var passport = require('passport')
   , errors = require('../../components/errors')
   , authService = require('../auth.service')
+  , Buffer = require('buffer').Buffer
   , logger = require('../../components/logger').createLogger(module);
 
 module.exports.authenticate = function (req, res, next) {
@@ -62,15 +63,18 @@ module.exports.token = function (req, res, next) {
       error = {error: 'Cant sync user'};
     }
 
+    var link = new Buffer(req.query.state).toString('utf8');
+
     if (error) {
       var errorString = JSON.stringify(error);
-      logger.info('token bankid-nbu error, redirect back to initial page', { error : error, link : req.query.link });
+      logger.info('token bankid-nbu error, redirect back to initial page', { error : error, link : link });
       res.redirect(link + '?error=' + errorString);
     } else {
-      req.session = authService.createSessionObject('bankid-nbu', user, info);
+      var session = authService.createSessionObject('bankid-nbu', user, info);
+      req.session = session;
       delete req.session.prepare;
       logger.info('bankid-nbu session is created', session);
-      logger.info('token bankid-nbu success, redirect back to initial page', { link : req.query.link });
+      logger.info('token bankid-nbu success, redirect back to initial page', { link : link });
       res.redirect(link);
     }
   })(req, res, next)
