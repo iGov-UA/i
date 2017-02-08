@@ -21,8 +21,9 @@
           <activiti:value id="sBuild" name="будується"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCompElem" name="Перелік речовин, які викидаються підприємством" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="&lt;a href=&quot; https://drive.google.com/open?id=1eT5aMmb8GxhzcPL4kUzWJQ7BNJ9WtggAnqftMVvi-SM&quot; target=&quot;_blank&quot;&gt;Вимоги до розташування проммайданчика&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="&lt;a href=&quot; https://drive.google.com/open?id=1eT5aMmb8GxhzcPL4kUzWJQ7BNJ9WtggAnqftMVvi-SM&quot; target=&quot;_blank&quot;&gt;Вимоги до характеристики розташування проммайданчика&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="nDocComp" name="Характеристика розташування проммайданчика підприємства на карті-схемі міста" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -116,13 +117,13 @@
     <sequenceFlow id="flow49" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="Відправка відповіді на запит користувачу" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask5" name="Відправка відповіді на запит користувачу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${privateMail}]]></activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Довідка про величини фонових концентрацій забруднювальних речовин в атмосферному повітрі]]></activiti:string>
@@ -138,6 +139,15 @@
 			Дніпропетровської ОДА,<br>
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] peredano na opratsyvannja. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
