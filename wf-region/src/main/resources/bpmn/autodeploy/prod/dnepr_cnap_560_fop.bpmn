@@ -151,7 +151,7 @@
 
 <!--  Вставка автоподписания ЭЦП начало -->
 <!--    <activiti:formProperty id="fAppWithECP" name="Заявление на регистрацию" type="file"></activiti:formProperty> -->    
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dnepr_cnap_560_fop2_print.html"></activiti:formProperty>
 <!--  Вставка автоподписания ЭЦП конец  -->
 
@@ -285,14 +285,8 @@
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_560_fop2_print.html]" type="invisible" default="Заява про реєстрацію" writable="false"></activiti:formProperty>
 		
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-<!-- версия с файлом ЭЦП -->
-          <activiti:expression>${fAppWithECP},${fVarDod2},${fVarDod1}</activiti:expression> 
-<!-- версия  без файла ЭЦП           <activiti:expression>${fVarDod2},${fVarDod1}</activiti:expression> -->
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
+
+		</extensionElements>
     </userTask>
 
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
