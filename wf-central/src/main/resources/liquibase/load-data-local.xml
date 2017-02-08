@@ -106,8 +106,8 @@
             <column name="nID_SubjectOrgan" type="NUMERIC"/>
         </loadData>
 
-        <!-- Используем временную таблицу Flow_ServiceData_Tmp, чтобы удалить строки из Flow_ServiceData которых нет в Flow_ServiceData.csv -->
-        <createTable tableName="Flow_ServiceData_Tmp">
+        <!-- Используем временную таблицу Flow_Tmp, чтобы удалить строки из Flow которых нет в Flow.csv -->
+        <createTable tableName="Flow_Tmp">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
@@ -119,17 +119,17 @@
             <column name="nCountAutoGenerate" type="NUMERIC"/>
         </createTable>
 
-        <loadData encoding="UTF-8" file="data/Flow_ServiceData.csv" tableName="Flow_ServiceData_Tmp" separator=";">
+        <loadData encoding="UTF-8" file="data/Flow.csv" tableName="Flow_Tmp" separator=";">
             <column name="nID" type="NUMERIC"/>
         </loadData>
 
         <sql splitStatements="true" dbms="postgresql">
-            delete from "Flow_ServiceData" where "nID" not in (select "nID" from "Flow_ServiceData_Tmp");
+            delete from "Flow" where "nID" not in (select "nID" from "Flow_Tmp");
         </sql>
 
-        <dropTable tableName="Flow_ServiceData_Tmp"/>
+        <dropTable tableName="Flow_Tmp"/>
 
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Flow_ServiceData.csv" tableName="Flow_ServiceData" separator=";">
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Flow.csv" tableName="Flow" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="sName" type="STRING"/>
             <column name="nID_ServiceData" type="NUMERIC"/>
@@ -140,7 +140,7 @@
 
         <loadData encoding="UTF-8" file="data/FlowLink.csv" tableName="FlowLink" separator=";">
             <column name="nID" type="NUMERIC"/>
-            <column name="nID_Flow_ServiceData" type="NUMERIC"/>
+            <column name="nID_Flow" type="NUMERIC"/>
             <column name="nID_Service" type="NUMERIC"/>
             <column name="nID_SubjectOrganDepartment"  type="NUMERIC"/>
         </loadData>
@@ -156,7 +156,7 @@
             <column name="nID" type="NUMERIC"/>
             <column name="nID_FlowPropertyClass" type="NUMERIC"/>
             <column name="sData" type="STRING"/>
-            <column name="nID_Flow_ServiceData" type="NUMERIC"/>
+            <column name="nID_Flow" type="NUMERIC"/>
             <column name="bExclude" type="BOOLEAN" defaultValueBoolean="true"/>
             <column name="sName" type="STRING" defaultValue=""/>
             <column name="sRegionTime" type="STRING" defaultValue=""/>
@@ -172,7 +172,7 @@
             <column name="sName" type="STRING"/>
             <column name="sDate" type="DATETIME"/>
             <column name="sData" type="STRING"/>
-            <column name="nID_Flow_ServiceData" type="NUMERIC"/>
+            <column name="nID_Flow" type="NUMERIC"/>
         </loadUpdateData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/FlowSlotTicket.csv" tableName="FlowSlotTicket" separator=";">

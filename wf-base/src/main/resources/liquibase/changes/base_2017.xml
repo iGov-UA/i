@@ -31,4 +31,32 @@
             update "Subject" s set "nID_SubjectHuman" = (select sh."nID" from "SubjectHuman" sh where sh."nID_Subject" = s."nID") ;
         </sql>
     </changeSet>
+    
+    <changeSet id="issue-1488-rename-Flow_ServiceData" author="Kovylin Yegor">
+        
+        <dropForeignKeyConstraint baseTableName="FlowProperty" constraintName="FK_FlowProperty_Flow_ServiceData"/>
+        
+        <dropForeignKeyConstraint baseTableName="FlowSlot" constraintName="FK_FlowSlot_Flow_ServiceData"/>
+        
+        <dropForeignKeyConstraint baseTableName="FlowLink" constraintName="FK_FlowLink_Flow_ServiceData"/>
+        
+        <renameTable newTableName="Flow" oldTableName="Flow_ServiceData"/>
+        
+        <renameColumn newColumnName="nID_Flow" oldColumnName="nID_Flow_ServiceData" tableName="FlowProperty"/>
+        
+        <renameColumn newColumnName="nID_Flow" oldColumnName="nID_Flow_ServiceData" tableName="FlowSlot"/>
+        
+        <renameColumn newColumnName="nID_Flow" oldColumnName="nID_Flow_ServiceData" tableName="FlowLink"/>
+        
+        <addForeignKeyConstraint constraintName="FK_FlowProperty_Flow" referencedTableName="Flow" 
+                                 baseColumnNames="nID_Flow" baseTableName="FlowProperty" referencedColumnNames="nID"/>
+        
+        <addForeignKeyConstraint constraintName="FK_FlowSlot_Flow" referencedTableName="Flow" 
+                                 baseColumnNames="nID_Flow" baseTableName="FlowSlot" referencedColumnNames="nID"/>
+        
+        <addForeignKeyConstraint constraintName="FK_FlowLink_Flow" referencedTableName="Flow" 
+                                 baseColumnNames="nID_Flow" baseTableName="FlowLink" referencedColumnNames="nID"/>
+        
+    </changeSet>
+    
 </databaseChangeLog>

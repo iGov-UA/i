@@ -105,7 +105,7 @@ public class FlowService implements ApplicationContextAware {
                              int nFreeDays, int nSlots) {
 
         List<FlowSlot> aFlowSlot;
-        Flow_ServiceData oFlow = null;
+        Flow oFlow = null;
         if (nID_Service != null) {
             oFlow = getFlowByLink(nID_Service, nID_SubjectOrganDepartment);
         }
@@ -211,7 +211,7 @@ public class FlowService implements ApplicationContextAware {
         return res;
     }
 
-    public Flow_ServiceData getFlowByLink(Long nID_Service, Long nID_SubjectOrganDepartment) {
+    public Flow getFlowByLink(Long nID_Service, Long nID_SubjectOrganDepartment) {
         FlowLink flow = flowLinkDao.findLinkByService(nID_Service, nID_SubjectOrganDepartment);
         return flow != null ? flow.getFlow_ServiceData() : null;
     }
@@ -293,7 +293,7 @@ public class FlowService implements ApplicationContextAware {
      * @return generated slots.
      */
     public List<FlowSlotVO> buildFlowSlots(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate) {
-        Flow_ServiceData flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+        Flow flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
         
         List<FlowSlotVO> res = new ArrayList<>();
         List<ExcludeDateRange> aoDateRange_Exclude = new ArrayList<>();
@@ -632,7 +632,7 @@ public class FlowService implements ApplicationContextAware {
         }
 
         LOG.info("(nID_Flow_ServiceData={})", nID_Flow_ServiceData);
-        Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+        Flow flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
         List<FlowProperty> res = new LinkedList<FlowProperty>();
         if (flowServiceData != null) {
             if (flowServiceData.getFlowProperties() != null && !flowServiceData.getFlowProperties().isEmpty()) {
@@ -775,7 +775,7 @@ public class FlowService implements ApplicationContextAware {
 
             FlowPropertyClass flowPropertyClass = flowPropertyClassDao.findByIdExpected(DEFAULT_FLOW_PROPERTY_CLASS);
             LOG.info("Loaded flow propetry service class: {}", flowPropertyClass);
-            Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+            Flow flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
             LOG.info("Loaded flow service data class: ", flowServiceData);
 
             flowProperty = fillFlowProperty(sName, sRegionTime, saRegionWeekDay, sDateTimeAt, sDateTimeTo, nLen,
@@ -802,7 +802,7 @@ public class FlowService implements ApplicationContextAware {
      */
     public List<FlowProperty> removeSheduleFlow(Long nID, Long nID_Flow_ServiceData, Boolean bExclude){
 
-        Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+        Flow flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
 
         Iterator<FlowProperty> iterator = flowServiceData.getFlowProperties().iterator();
         while (iterator.hasNext()) {
@@ -945,10 +945,10 @@ public class FlowService implements ApplicationContextAware {
      * @return
      */
     public SubjectOrganDepartment[] getSubjectOrganDepartments(String sID_BP) {
-        List<Flow_ServiceData> serviceDataList = flowServiceDataDao.findAllBy("sID_BP", sID_BP);
+        List<Flow> serviceDataList = flowServiceDataDao.findAllBy("sID_BP", sID_BP);
         SubjectOrganDepartment[] result = new SubjectOrganDepartment[serviceDataList.size()];
         for (int i = 0; i < serviceDataList.size(); i++) {
-            Flow_ServiceData sd = serviceDataList.get(i);
+            Flow sd = serviceDataList.get(i);
             Long nID_SubjectOrganDepartment = sd.getnID_SubjectOrganDepartment();
             SubjectOrganDepartment subjectOrganDepartment = subjectOrganDepartmentDao
                     .findByIdExpected(nID_SubjectOrganDepartment);
@@ -958,7 +958,7 @@ public class FlowService implements ApplicationContextAware {
     }
       public List<FlowSlotVO> buildFlowSlotsTest(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate) {
 
-        Flow_ServiceData flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+        Flow flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
 
         List<FlowSlotVO> res = new ArrayList<>();
 
@@ -992,8 +992,8 @@ public class FlowService implements ApplicationContextAware {
     public void buildFlowSlots(){
       DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         LOG.info(" oDateStart = {}", oDateStart);
-        List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
-        for (Flow_ServiceData flow : aFlowServiceData) {
+        List<Flow> aFlowServiceData = flowServiceDataDao.findAll();
+        for (Flow flow : aFlowServiceData) {
                 if (flow.getsID_BP().endsWith(SUFFIX_AUTO) && flow.getnCountAutoGenerate() != null) {
                 LOG.info("Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
                 LOG.info("SUFFIX_AUTO: " + flow.getsID_BP().endsWith(SUFFIX_AUTO) + " flow.getnCountAutoGenerate(): " + flow.getnCountAutoGenerate());
@@ -1003,7 +1003,7 @@ public class FlowService implements ApplicationContextAware {
         }
         
     } 
-    public void checkAndBuildFlowSlots(Flow_ServiceData flow, DateTime oDateStart) {
+    public void checkAndBuildFlowSlots(Flow flow, DateTime oDateStart) {
         //Maxline: TODO добавить исключения
         Long nID_Flow_ServiceData = flow.getId();
         Long nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон

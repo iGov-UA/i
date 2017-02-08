@@ -21,8 +21,8 @@ public class FlowProperty extends AbstractEntity {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "nID_Flow_ServiceData")
-    private Flow_ServiceData oFlow_ServiceData;
+    @JoinColumn(name = "nID_Flow")
+    private Flow oFlow_ServiceData;
 
     @JsonProperty(value = "nID_FlowPropertyClass")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -61,11 +61,11 @@ public class FlowProperty extends AbstractEntity {
     @Column(nullable = true)
     private String sLenType;
 
-    public Flow_ServiceData getoFlow_ServiceData() {
+    public Flow getoFlow_ServiceData() {
         return oFlow_ServiceData;
     }
 
-    public void setoFlow_ServiceData(Flow_ServiceData oFlow_ServiceData) {
+    public void setoFlow_ServiceData(Flow oFlow_ServiceData) {
         this.oFlow_ServiceData = oFlow_ServiceData;
     }
 
