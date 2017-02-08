@@ -3,11 +3,11 @@
   <process id="_doc_justice_22" name="Мінюст - Вихідний лист-відповідь" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Вихідний лист-відповідь"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Вихідний лист-відповідь"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sReportCommon" name="sReportCommon" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible" required="true"></activiti:formProperty>
@@ -26,7 +26,7 @@
     </startEvent>
     <userTask id="usertask4" name="Канцелярія - формування та реєстрація вихідного листа-відповіді" activiti:candidateGroups="justice_common">
       <extensionElements>
-       <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Вихідний лист-відповідь" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Вихідний лист-відповідь" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
@@ -68,10 +68,10 @@
     </userTask>
     <scriptTask id="scripttask1" name="2 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//1. счетчик добавления номера в поле исходящего номера
-var number=execution.getVariable('sID_Custom_GovPublic')
-var sIncomingNumber=execution.getVariable('sIncomingNumber')
-var fullNumber=sIncomingNumber+"/"+number
-execution.setVariable('sID_Custom_GovPublic', fullNumber)
+var number=execution.getVariable('sID_Custom_GovPublic');
+var sIncomingNumber=execution.getVariable('sIncomingNumber');
+var fullNumber=sIncomingNumber+"/"+number;
+execution.setVariable('sID_Custom_GovPublic', fullNumber);
 
 //2. получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
@@ -83,7 +83,7 @@ execution.setVariable('processInstanceId', processInstanceId)
 
       </script>
     </scriptTask>
-   <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}">
+    <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}">
       <extensionElements>
         <activiti:field name="sKey">
           <activiti:string><![CDATA[_doc_justice_22]]></activiti:string>
