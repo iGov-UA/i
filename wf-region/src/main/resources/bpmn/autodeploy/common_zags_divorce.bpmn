@@ -189,7 +189,6 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
@@ -428,7 +427,7 @@ ${sMail_Signature}<br /><br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="usertask4"></sequenceFlow>
-    <sequenceFlow id="flow44" name="льготная категория" sourceRef="exclusivegateway3" targetRef="exclusivegateway5">
+    <sequenceFlow id="flow44" name="льготная категория" sourceRef="exclusivegateway3" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept' && asEnjoyingPaymentMethod =='sEnum1'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="servicetask7" targetRef="usertask4"></sequenceFlow>
@@ -453,7 +452,6 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
@@ -748,7 +746,6 @@ ${sMail_Signature} <br><br>
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
@@ -914,7 +911,6 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
@@ -1133,8 +1129,8 @@ execution.setVariable('sDescription', des)</script>
         <omgdi:waypoint x="663.0" y="199.0"></omgdi:waypoint>
         <omgdi:waypoint x="544.0" y="257.0"></omgdi:waypoint>
         <omgdi:waypoint x="625.0" y="338.0"></omgdi:waypoint>
-        <omgdi:waypoint x="702.0" y="508.0"></omgdi:waypoint>
-        <omgdi:waypoint x="745.0" y="531.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="499.0"></omgdi:waypoint>
+        <omgdi:waypoint x="523.0" y="633.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="100.0" x="115.0" y="276.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
