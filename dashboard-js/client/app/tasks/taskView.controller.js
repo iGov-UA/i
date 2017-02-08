@@ -764,6 +764,9 @@
               //   errorMessage = errorMessage.substr(0, comaIndex);
               // }
               // Modal.inform.error()(errorMessage);
+              angular.forEach(unpopulatedFields, function (field) {
+                console.warn("The field with id = " + field.id + " is required but it has undefined or empty value!");
+              });
               setTimeout(function () {
                 angular.element('.submitted').first().focus();
               },100);
