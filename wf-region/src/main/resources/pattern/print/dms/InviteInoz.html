@@ -22,7 +22,7 @@
 	</tr>
 	<tr>
 		<td height="31" colspan="2">дійсне для пред’явлення до </td>
-		<td id ="first" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b></b></td>
+		<td id ="first" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
 		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
 		<td></td>
 		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
@@ -174,7 +174,7 @@
 	<colgroup width="180"></colgroup>
 	<colgroup width="150"></colgroup>
 	<tr>
-		<td height="36" colspan="9" style="border-top:1px solid #000000">Дата видачі</td>
+		<td height="36" colspan="9" style="border-top:1px solid #000000"></td>
 	</tr>
 	<tr>
 		<td height="1" colspan="9" style="border-top:1px solid #000000"></td>
@@ -222,7 +222,10 @@
 	document.getElementById("VizitMany").innerHTML = manyVizit;
 	var dateToday = new Date( );
 	var day = dateToday.getDate();
+	if (day < 10) day = "0" + day;
 	var month = dateToday.getMonth();
+	month++;
+	if (month < 10) month = "0" + month;
 	var year = dateToday.getFullYear();
 	document.getElementById("dayToday").innerHTML = '<b>' + day + '</b>';
 	document.getElementById("monthToday").innerHTML = '<b>' + month + '</b>';
