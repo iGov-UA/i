@@ -485,7 +485,7 @@ public class DocumentStepService {
                 .collect(Collectors.toList());
         LOG.info("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList(aDocumentStepSubjectRight_Common);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Common;
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
         LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
 
