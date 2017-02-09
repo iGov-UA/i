@@ -53,7 +53,10 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
                 LOG.error("aFieldInheritedAttachmentID field is not specified!");
                 return;
             }
-
+            
+            List<Attachment> aAttachmentByProcess = new LinkedList<>();
+            aAttachmentByProcess = taskService.getProcessInstanceAttachments(oExecution.getProcessInstanceId());
+            
             /*List<Attachment> attachments = getAttachmentsFromParentTasks(oExecution);
             asID_Attachment_ToAdd = getInheritedAttachmentIdsFromTask(attachments,
                     sInheritedAttachmentsIds);
@@ -74,11 +77,11 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
 
             for(Attachment attachment: currentAttachments) {
-                if(attachments.contains(attachment)){
-                   /* boolean deleted = attachments.remove(attachment);
+                if(aAttachmentByProcess.contains(attachment)){
+                   boolean deleted = attachments.remove(attachment);
                     if(deleted) {
                         LOG.info("Duplicate is successfully deleted");
-                    }*/
+                    }
                 }
 
             }
