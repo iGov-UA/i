@@ -504,13 +504,13 @@ public class DocumentStepService {
         List<String> asID_Field_Read = new LinkedList();
         List<String> asID_Field_Write = new LinkedList();
 
-        List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();
+        List<FormProperty> aFormProperty = oFormService.getTaskFormData(snID_Task).getFormProperties();
         
         stopTime = System.nanoTime();
         
         LOG.info("getDocumentStepRights 2nd block time execution is: " + String.format("%,12d", (stopTime - startTime)));
         startTime = System.nanoTime();
-        LOG.info("total FormProperty size is: " + a.size());
+        LOG.info("total FormProperty size is: " + aFormProperty.size());
         LOG.info("total aDocumentStepSubjectRight size is: " + aDocumentStepSubjectRight.size());
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             List<String> asID_Field_Read_Temp = new LinkedList();
@@ -546,7 +546,7 @@ public class DocumentStepService {
                     LOG.info("bEndsWith={},bStartWith={},bAll={},bNot={}", bEndsWith, bStartWith, bAll, bNot);
                     long scLoopStartTime = System.nanoTime();
 
-                    for (FormProperty oProperty : a) {
+                    for (FormProperty oProperty : aFormProperty) {
                         String sID = oProperty.getId();
                         Boolean bFound = false;
                         if (bStartWith && bEndsWith) {
@@ -584,6 +584,11 @@ public class DocumentStepService {
             
             asID_Field_Read.addAll(asID_Field_Read_Temp);
             asID_Field_Write.addAll(asID_Field_Write_Temp);
+            
+            LOG.info("asID_Field_Write_TMP={}", asID_Field_Read_Temp);
+            LOG.info("asID_Field_Read_TMP={}", asID_Field_Write_Temp);
+            LOG.info("asID_Field_Write_TMP size={}", asID_Field_Read_Temp.size());
+            LOG.info("asID_Field_Read_TMP size={}", asID_Field_Write_Temp.size());
         }
         
         stopTime = System.nanoTime();
@@ -594,10 +599,21 @@ public class DocumentStepService {
         //mReturn.put("asID_Field_Read(0)", asID_Field_Read);
         LOG.info("asID_Field_Write(before)={}", asID_Field_Write);
         LOG.info("asID_Field_Read(before)={}", asID_Field_Read);
+        LOG.info("asID_Field_Write(before) size={}", asID_Field_Write.size());
+        LOG.info("asID_Field_Read(before) size={}", asID_Field_Read.size());
+        
+        TreeSet<String> asUnique_ID_Field_Write = new TreeSet<>(asID_Field_Write);
+        TreeSet<String> asUnique_ID_Field_Read = new TreeSet<>(asID_Field_Read);
+        
+        LOG.info("asUnique_ID_Field_Write ={}", asUnique_ID_Field_Write);
+        LOG.info("asUnique_ID_Field_Write ={}", asUnique_ID_Field_Read);
+        LOG.info("asID_Field_Write size={}", asUnique_ID_Field_Write.size());
+        LOG.info("asID_Field_Read size={}", asUnique_ID_Field_Read.size());
+        
         for (String sID_Field_Write : asID_Field_Write) {
             asID_Field_Read.remove(sID_Field_Write);
         }
-
+        
         mReturn.put("asID_Field_Write", asID_Field_Write);
         mReturn.put("asID_Field_Read", asID_Field_Read);
         LOG.info("asID_Field_Write(after)={}", asID_Field_Write);
