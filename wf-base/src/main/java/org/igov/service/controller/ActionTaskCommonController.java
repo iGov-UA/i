@@ -2671,7 +2671,12 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
     public @ResponseBody
     Map<String,Object> getDocumentStepRights(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin, //String
             @ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {
-        return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
+    
+        long startTime = System.nanoTime();
+        Map<String, Object> res = oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
+        long stopTime = System.nanoTime();
+        LOG.info("getDocumentStepRights total time execution is: " + (stopTime - startTime));
+        return res;
     }
 
     @ApiOperation(value = "/getDocumentStepLogins", notes = "##### Получение списка прав у логина по документу#####\n\n")

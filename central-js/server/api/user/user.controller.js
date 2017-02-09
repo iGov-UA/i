@@ -47,28 +47,37 @@ module.exports.tryCache = function (req, res, next) {
 
   if (req.session.usercacheid) {
     logger.info("[tryCache] getting user from cache", {session_type: type});
-    if (userService.decryptCallback) {
-      var callback = userService.decryptCallback(function (error, response, body) {
-        var err = null;
-        if (error) {
-          err = {code: 500, message: 'Unknown error', nested: error};
-        } else if (errors.isHttpError(response.statusCode)) {
-          if (body.hasOwnProperty('code') && body.hasOwnProperty('message')) {
-            err = {code: response.statusCode, message: 'External service error : ' + body.message, nested: body};
-          } else {
-            err = {code: response.statusCode, message: 'Unknown service error:' + body, nested: body};
-          }
-        }
-        //TODO error handling
-        //TODO if no cache kill session and force authorization again ???
-        finishRequest(req, res, err, body, userService);
-      });
 
-      activiti.get('/object/file/download_file_from_redis_bytes', {
-        key: req.session.usercacheid
-      }, callback);
+    function processResult(error, response, body) {
+      logger.info("[tryCache] process user info from cache", {session_type: type});
+      var err;
+      if (error) {
+        err = {code: 500, message: 'Unknown error', nested: error};
+      } else if (errors.isHttpError(response.statusCode)) {
+        if (body.hasOwnProperty('code') && body.hasOwnProperty('message')) {
+          err = {code: response.statusCode, message: 'External service error : ' + body.message, nested: body};
+        } else {
+          err = {code: response.statusCode, message: 'Unknown service error:' + body, nested: body};
+        }
+      }
+      finishRequest(req, res, err, body, userService);
     }
+
+    var callback = processResult;
+    if (userService.decryptCallback) {
+      logger.info("[tryCache] using decrypt callback", {session_type: type});
+      callback = userService.decryptCallback(processResult);
+    } else {
+      logger.info("[tryCache] doesn't have decrypt callback", {session_type: type});
+    }
+
+    activiti.get('/object/file/download_file_from_redis_bytes', {
+      key: req.session.usercacheid
+    }, callback);
+
   } else {
+    //TODO error handling
+    //TODO if no cache kill session and force authorization again ???
     logger.info("[tryCache] no cache. Go to get user from service", {session_type: type});
     next();
   }

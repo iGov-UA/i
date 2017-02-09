@@ -97,9 +97,8 @@ module.exports.decryptCallback = function (callback) {
   var self = this;
 
   return function (error, response, body) {
-    if (isCipherEnabled() && body && body.customerCrypto) {
-      body.customer = self.decryptData(body.customerCrypto);
-      delete body.customerCrypto;
+    if (isCipherEnabled() && body && body.customer) {
+      self.decryptData(body.customer);
     }
     callback(error, response, body);
   }
@@ -138,6 +137,14 @@ function decryptValue(value, privateKey) {
     return crypto.privateDecrypt(privateKey, new Buffer(value, 'base64')).toString('utf8');
   } catch (err) {
     throw new Error("can't decrypt value " + value + " because of\n" + err.message);
+  }
+}
+
+function decrypt(value, key, privateKey) {
+  if (isEncrypted(value, key)) {
+    return decryptValue(value, privateKey, key);
+  } else {
+    return value;
   }
 }
 

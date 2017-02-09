@@ -381,6 +381,9 @@ public class DocumentStepService {
     }*/
     public Map<String, Object> getDocumentStepRights(String sLogin, String snID_Process_Activiti) {//JSONObject
         //assume that we can have only one active task per process at the same time
+        
+        long startTime = System.nanoTime();
+        
         LOG.info("sLogin={}, snID_Process_Activiti={}", sLogin, snID_Process_Activiti);
         List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
         if (aTaskActive.size() < 1 || aTaskActive.get(0) == null) {
@@ -454,11 +457,11 @@ public class DocumentStepService {
 
         //final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
 
+        long stopTime = System.nanoTime();
         
+        LOG.info("getDocumentStepRights 1st block time execution is: " + (stopTime - startTime));
         
-        
-        
-        
+        startTime = System.nanoTime();
         
         
         
@@ -578,6 +581,11 @@ public class DocumentStepService {
         LOG.info("asID_Field_Write(after)={}", asID_Field_Write);
         LOG.info("asID_Field_Read(after)={}", asID_Field_Read);
         //LOG.info("mReturn={}", mReturn);
+        
+        stopTime = System.nanoTime();
+        
+        LOG.info("getDocumentStepRights 2nd block time execution is: " + (stopTime - startTime));
+        
         return mReturn;
     }
 

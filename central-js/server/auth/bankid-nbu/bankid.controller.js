@@ -63,7 +63,7 @@ module.exports.token = function (req, res, next) {
       error = {error: 'Cant sync user'};
     }
 
-    var link = new Buffer(req.query.state).toString('utf8');
+    var link = new Buffer(req.query.state, 'base64').toString('utf8');
 
     if (error) {
       var errorString = JSON.stringify(error);

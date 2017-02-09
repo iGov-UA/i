@@ -1,7 +1,7 @@
 'use strict';
 
 function requireTest(module) {
-  return require('../server' + module.replace('.',''));
+  return require('../server' + module.replace('.', ''));
 }
 
 var nock = require('nock')
@@ -68,7 +68,7 @@ function getAuth(urlWithQueryParams, agentCallback, done, authMode) {
     .then(function (res) {
       var error = null;
       var location = res.headers.location;
-      if(location && location.indexOf('?error=') > -1){
+      if (location && location.indexOf('?error=') > -1) {
         error = res.headers.location.split('?error=').reduce(function (previousValue, currentItem, index) {
           return index === 1 ? JSON.parse(currentItem) : null;
         });
@@ -80,7 +80,7 @@ function getAuth(urlWithQueryParams, agentCallback, done, authMode) {
         agentCallback(loginAgent);
       }
 
-      if(authMode === self.AUTH_MODE.FAIL_ON_ERROR && error){
+      if (authMode === self.AUTH_MODE.FAIL_ON_ERROR && error) {
         done(error);
       } else {
         done();
@@ -108,7 +108,11 @@ module.exports.loginWithBankIDNBU = function (done, agentCallback, code) {
       var loginAgent = superagent.agent();
       saveCookies(loginAgent, res);
 
-      var tokenRequest = testRequest.get('/auth/bankid-nbu/callback?code=' + code + '&link=' + testAuthResultURL);
+      var state = res.headers.location.split('?')[1].split('&').filter(function (param) {
+        return param.indexOf('state=') > -1;
+      })[0].split('state=')[1];
+
+      var tokenRequest = testRequest.get('/auth/bankid-nbu/callback?code=' + code + '&state=' + state);
       attachCookies(loginAgent, tokenRequest);
 
       tokenRequest

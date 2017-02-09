@@ -83,11 +83,12 @@ public class SubjectGroupController {
     		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
     		 @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind,
     		 @ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (true-отоборажаем, false-нет, по умолчанию Y)", required = false) @RequestParam(value = "bIncludeRoot", required = false) Boolean bIncludeRoot,
-             @ApiParam(value = "Ширина выборки", required = false) @RequestParam(value = "nDeepLevelWidth", required = false) Long nDeepLevelWidth)
+             @ApiParam(value = "Ширина выборки", required = false) @RequestParam(value = "nDeepLevelWidth", required = false) Long nDeepLevelWidth,
+             @ApiParam(value = "Тип выборки: Organ- иерархия в разрезе органы,  Human -иерархия в разрезе людей, * - иерархия органы+люди", required = false) @RequestParam(value = "sSubjectType", required = false) String sSubjectType)
             throws Exception  {
     	SubjectGroupResultTree subjectGroupResultTree = null;
     	try {
-    		subjectGroupResultTree = subjectGroupTreeService.getCatalogSubjectGroupsTree(sID_Group_Activiti,nDeepLevel,sFind,bIncludeRoot,nDeepLevelWidth);
+    		subjectGroupResultTree = subjectGroupTreeService.getCatalogSubjectGroupsTree(sID_Group_Activiti,nDeepLevel,sFind,bIncludeRoot,nDeepLevelWidth,sSubjectType);
     		
     	} catch (Exception e) {
     		 LOG.error("FAIL: ", e);
