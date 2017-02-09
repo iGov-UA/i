@@ -459,7 +459,7 @@ public class DocumentStepService {
 
         long stopTime = System.nanoTime();
         
-        LOG.info("getDocumentStepRights 1st block time execution is: " + (stopTime - startTime));
+        LOG.info("getDocumentStepRights 1st block time execution is: " + String.format("%,12d", (stopTime - startTime)));
         
         startTime = System.nanoTime();
         
@@ -474,6 +474,7 @@ public class DocumentStepService {
                     .filter(oRight -> asID_Group.contains(oRight.getsKey_GroupPostfix()))
                     .collect(Collectors.toList());
         }
+        
         LOG.info("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active
@@ -504,7 +505,12 @@ public class DocumentStepService {
         List<String> asID_Field_Write = new LinkedList();
 
         List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();
-
+        
+        stopTime = System.nanoTime();
+        
+        LOG.info("getDocumentStepRights 2nd block time execution is: " + String.format("%,12d", (stopTime - startTime)));
+        startTime = System.nanoTime();
+        
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             List<String> asID_Field_Read_Temp = new LinkedList();
             List<String> asID_Field_Write_Temp = new LinkedList();
@@ -584,7 +590,7 @@ public class DocumentStepService {
         
         stopTime = System.nanoTime();
         
-        LOG.info("getDocumentStepRights 2nd block time execution is: " + (stopTime - startTime));
+        LOG.info("getDocumentStepRights 3th block time execution is: " + String.format("%,12d", (stopTime - startTime)));
         
         return mReturn;
     }
