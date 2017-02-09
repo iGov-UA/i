@@ -75,10 +75,10 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
             for(Attachment attachment: currentAttachments) {
                 if(attachments.contains(attachment)){
-                    boolean deleted = attachments.remove(attachment);
+                    /*boolean deleted = attachments.remove(attachment);
                     if(deleted) {
                         LOG.info("Duplicate is successfully deleted");
-                    }
+                    }*/
                 }
 
             }
