@@ -123,9 +123,6 @@
         <activiti:formProperty id="markers2" name="Настроювання прінт-форми" type="markers" default="${markerService.loadFromFile('mvk/cnap_293_print_rda.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_293_rda_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}</activiti:expression>
-          </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
