@@ -333,13 +333,7 @@ public abstract class AbstractModelTask {
         //List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
         
         List<Attachment> attachments = oExecution.getEngineServices().getTaskService().getProcessInstanceAttachments(oExecution.getProcessInstanceId());
-        
-        for(Attachment currAttach: attachments){
-            if(asFieldValue.equals(currAttach.getId())){
-                LOG.info("attach before adding is: " + currAttach.getId());
-            }
-        }
-                
+       
         if (!asFieldValue.isEmpty()) {
             int n = 0;
             for (String sFieldValue : asFieldValue) {
