@@ -233,8 +233,6 @@ public class SubjectGroupTreeService {
 	        
 	        if(isSubjectType && !resSubjectTypeList.isEmpty() && resSubjectTypeList.contains(groupFiltr)) {
 	        	return processSubjectResultTree;
-			}else {
-				return null;
 			}
 		}
 		
