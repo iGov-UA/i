@@ -331,10 +331,27 @@ public abstract class AbstractModelTask {
         List<String> asFieldName = getListCastomFieldName(oFormData);
         LOG.info("(asFieldName={})", asFieldName);
         //List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
-
+        
+        List<Attachment> attachments = oExecution.getEngineServices().getTaskService().getProcessInstanceAttachments(oExecution.getProcessInstanceId());
+       
         if (!asFieldValue.isEmpty()) {
             int n = 0;
             for (String sFieldValue : asFieldValue) {
+                
+                boolean isContinue = false;
+                
+                for(Attachment currAttach: attachments){
+                    if(sFieldValue != null && sFieldValue.equals(currAttach.getId())){
+                        LOG.info("Dublicate is: " + currAttach.getId());
+                        isContinue = true;
+                        break;
+                    }
+                }
+                
+                if(isContinue){
+                    continue;
+                }
+                
                 LOG.info("(sFieldValue={})", sFieldValue);
                 if (sFieldValue != null && !sFieldValue.isEmpty() && !"".equals(sFieldValue.trim()) && !"null"
                         .equals(sFieldValue.trim())) {
@@ -390,6 +407,7 @@ public abstract class AbstractModelTask {
                             }
 
                             //------------------------------------------------------------------------------------------------
+                            
                             Attachment oAttachment = createAttachment(oByteArrayMultipartFile, oTask, sDescription);
                             if (oAttachment != null) {
                                 LOG.info("Added attachment with ID {} to the task:process {}:{}",
@@ -456,6 +474,7 @@ public abstract class AbstractModelTask {
             }
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
+        
         return aAttachment;
 
     }
