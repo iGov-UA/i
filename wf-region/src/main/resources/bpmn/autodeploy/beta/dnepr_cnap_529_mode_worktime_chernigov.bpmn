@@ -1096,7 +1096,7 @@
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print_chernigov.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява;Інформаційний лист-заява;pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html" type="file"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${PrintFormAutoSign_1},${form_signed}</activiti:expression>
           </activiti:field>

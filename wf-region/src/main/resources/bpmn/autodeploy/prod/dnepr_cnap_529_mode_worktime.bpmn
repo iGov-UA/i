@@ -113,7 +113,7 @@
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${nFileDerzReestration}, ${nFileOwnership}, ${nFileOwnershipZemlya}, ${nFileAptekaPassport}, ${nFileLicence}, ${nFileSertifikat}, ${nFileLicenceTurizm}, ${nFileDozvilSanEpedimSluzbi},${nFileTempBuild},${nFileHouseWaste}</activiti:expression>
           </activiti:field>
