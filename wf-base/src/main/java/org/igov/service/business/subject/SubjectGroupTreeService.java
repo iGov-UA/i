@@ -43,6 +43,10 @@ public class SubjectGroupTreeService {
 
 	private static final String ORGAN = "Organ";
 	private static final String HUMAN = "Human";
+	/**
+	 * флаг определяющий, что на вход был конкрентный тип ORGAN или HUMAN
+	 */
+	private static boolean isSubjectType = false;
 	private static final Log LOG = LogFactory.getLog(SubjectGroupTreeService.class);
 	private static final long FAKE_ROOT_SUBJECT_ID = 0;
 
@@ -57,6 +61,11 @@ public class SubjectGroupTreeService {
 
 	public SubjectGroupResultTree getCatalogSubjectGroupsTree(String sID_Group_Activiti, Long deepLevel,
 			String sFind, Boolean bIncludeRoot,Long deepLevelWidth, String sSubjectType) {
+		
+		/**
+		 * Лист для ид Subject ORGAN или HUMAN для последующего анализа
+		 */
+		List<Long> resSubjectTypeList = new ArrayList<>();
 		List<SubjectGroup> aChildResult = new ArrayList<>();
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 		 SubjectGroupResultTree processSubjectResultTree = new SubjectGroupResultTree();
@@ -69,14 +78,15 @@ public class SubjectGroupTreeService {
 		Set<Long> idParentList = new LinkedHashSet<>();
 		List<SubjectHuman> subjectHumans = null;
     	List<SubjectOrgan> subjectOrgans = null;
+    	
     	if(HUMAN.equals(sSubjectType)) {
     		subjectHumans = new ArrayList<>(baseEntityDao.findAll(SubjectHuman.class));
-    		LOG.info("HUMAN =..." + subjectHumans);
+    		isSubjectType = true;
     	}
     	
     	if(ORGAN.equals(sSubjectType)) {
     		subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
-    		LOG.info("ORGAN =..." + subjectOrgans);
+    		isSubjectType = true;
     	}
     	if(subjectHumans!=null && !subjectHumans.isEmpty()) {
     		List<Long> subjectHumansIdSubj = Lists
@@ -98,6 +108,8 @@ public class SubjectGroupTreeService {
                             		&& subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
                         }
                     }));
+    		
+    		resSubjectTypeList.addAll(subjectHumansIdSubj);
 		}
     	if(subjectOrgans!=null && !subjectOrgans.isEmpty()) {
     		List<Long> subjectOrgansIdSubj = Lists
@@ -119,6 +131,7 @@ public class SubjectGroupTreeService {
                             		&& subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
                         }
                     }));
+    		resSubjectTypeList.addAll(subjectOrgansIdSubj);
 		}
 		for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 			
@@ -210,7 +223,21 @@ public class SubjectGroupTreeService {
 	        }else {
 	        	processSubjectResultTree.setaSubjectGroupTree(resultTree);
 	        }
+	        
+	        /**
+	         * isSubjectType =true- был на вход тип орган или хьман, 
+	         * лист не пустой с ид Subject органа или хьманов,
+	         * лист содержит groupFiltr
+	         * возвращаем ответ, иначе ничего не возвращаем 
+	         */
+	        
+	        if(isSubjectType && !resSubjectTypeList.isEmpty() && resSubjectTypeList.contains(groupFiltr)) {
+	        	return processSubjectResultTree;
+			}else {
+				return null;
+			}
 		}
+		
 	        return processSubjectResultTree;
 
 	    }
