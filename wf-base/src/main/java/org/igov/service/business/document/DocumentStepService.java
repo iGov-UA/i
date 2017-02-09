@@ -523,7 +523,7 @@ public class DocumentStepService {
             for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
                 String sMask = oDocumentStepSubjectRightField.getsMask_FieldID();
                 LOG.info("sMask={}", sMask);
-                LOG.info("total DocumentStepSubjectRightFields size is: " + aDocumentStepSubjectRight.size());
+                LOG.info("total DocumentStepSubjectRightFields size is: " + oDocumentStepSubjectRight.getDocumentStepSubjectRightFields().size());
                 if (sMask != null) {
                     Boolean bNot = false;
                     if (sMask.startsWith("!")) {
