@@ -280,7 +280,7 @@
         $scope.taskId = oTask.id;
         $scope.tabHistoryAppeal = 'appeal';
         $scope.nID_Process = oTask.processInstanceId;
-        $scope.markers = ValidationService.getValidationMarkers();
+        $scope.markers = iGovMarkers.getMarkers();
         $scope.bHasEmail = false;
         $scope.isClarifySending = false;
         $scope.tableIsInvalid = false;
@@ -301,7 +301,7 @@
               //debugger;
             }
           });
-          ValidationService.validateByMarkers(form, null, true, oValidationFormData);
+          ValidationService.validateByMarkers(form, $scope.markers, true, oValidationFormData);
           return form.$valid && bValid;
         };
 
@@ -360,7 +360,7 @@
                 console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
               }
               if (sourceObj !== null) {
-                _.merge(iGovMarkers.getMarkers(), sourceObj, function (destVal, sourceVal) {
+                _.merge($scope.markers, sourceObj, function (destVal, sourceVal) {
                   if (_.isArray(sourceVal)) {
                     return sourceVal;
                   }
@@ -1132,7 +1132,7 @@
         idMatch();
 
         $scope.addRow = function (form, id, index) {
-          ValidationService.validateByMarkers(form, null, true, null, true);
+          ValidationService.validateByMarkers(form, $scope.markers, true, null, true);
           if (!form.$invalid) {
             $scope.tableIsInvalid = false;
             TableService.addRow(id, $scope.taskForm);

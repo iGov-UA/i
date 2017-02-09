@@ -373,9 +373,28 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       };
 
+      $scope.formMarkers = iGovMarkers.getMarkers();
+      $scope.activitiForm.formProperties.filter(function(item){return item.type === 'markers'}).forEach(function (field) {
+        if (field.type === 'markers' && $.trim(field.value)) {
+          var sourceObj = null;
+          try {
+            sourceObj = JSON.parse(field.value);
+          } catch (ex) {
+            console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
+          }
+          if (sourceObj !== null) {
+            _.merge($scope.formMarkers, sourceObj, function (destVal, sourceVal) {
+              if (_.isArray(sourceVal)) {
+                return sourceVal;
+              }
+            });
+          }
+        }
+      });
+
       $scope.validateForm = function (form) {
         var bValid = true;
-        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {});
+        ValidationService.validateByMarkers(form, $scope.formMarkers, true, this.data.formData.params ? this.data.formData.params : {});
         return form.$valid && bValid;
       };
 
@@ -954,7 +973,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       TableService.init($scope.activitiForm.formProperties);
 
       $scope.addRow = function (form, id, index) {
-        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {}, true);
+        ValidationService.validateByMarkers(form, $scope.formMarkers, true, this.data.formData.params ? this.data.formData.params : {}, true);
         if (!form.$invalid) {
           $scope.tableIsInvalid = false;
           TableService.addRow(id, $scope.activitiForm.formProperties);
