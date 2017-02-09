@@ -465,7 +465,7 @@ public class DocumentStepService {
         
         
         
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = new ArrayList();
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = new LinkedList();
         if(oDocumentStep_Common!=null){
             aDocumentStepSubjectRight_Common = oDocumentStep_Common
                     .getRights()
@@ -485,7 +485,7 @@ public class DocumentStepService {
                 .collect(Collectors.toList());
         LOG.info("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList(aDocumentStepSubjectRight_Common);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new LinkedList(aDocumentStepSubjectRight_Common);
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
         LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
 
@@ -501,8 +501,8 @@ public class DocumentStepService {
         mReturn.put("bWrite", bWrite);
         LOG.info("bWrite={}", bWrite);
 
-        List<String> asID_Field_Read = new ArrayList();
-        List<String> asID_Field_Write = new ArrayList();
+        List<String> asID_Field_Read = new LinkedList();
+        List<String> asID_Field_Write = new LinkedList();
 
         List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();
         
@@ -512,8 +512,8 @@ public class DocumentStepService {
         startTime = System.nanoTime();
         
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-            List<String> asID_Field_Read_Temp = new ArrayList();
-            List<String> asID_Field_Write_Temp = new ArrayList();
+            List<String> asID_Field_Read_Temp = new LinkedList();
+            List<String> asID_Field_Write_Temp = new LinkedList();
             //Boolean bInclude=null;
             LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix()={}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
             
@@ -573,7 +573,11 @@ public class DocumentStepService {
             asID_Field_Read.addAll(asID_Field_Read_Temp);
             asID_Field_Write.addAll(asID_Field_Write_Temp);
         }
-
+        
+        stopTime = System.nanoTime();
+        
+        LOG.info("getDocumentStepRights 3th block time execution is: " + String.format("%,12d", (stopTime - startTime)));
+        startTime = System.nanoTime();
         //mReturn.put("asID_Field_Write(0)", asID_Field_Write);
         //mReturn.put("asID_Field_Read(0)", asID_Field_Read);
         LOG.info("asID_Field_Write(before)={}", asID_Field_Write);
@@ -587,10 +591,8 @@ public class DocumentStepService {
         LOG.info("asID_Field_Write(after)={}", asID_Field_Write);
         LOG.info("asID_Field_Read(after)={}", asID_Field_Read);
         //LOG.info("mReturn={}", mReturn);
-        
         stopTime = System.nanoTime();
-        
-        LOG.info("getDocumentStepRights 3th block time execution is: " + String.format("%,12d", (stopTime - startTime)));
+        LOG.info("getDocumentStepRights 4th block time execution is: " + String.format("%,12d", (stopTime - startTime)));
         
         return mReturn;
     }
