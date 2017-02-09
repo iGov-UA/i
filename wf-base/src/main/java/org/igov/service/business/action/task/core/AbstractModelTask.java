@@ -332,7 +332,7 @@ public abstract class AbstractModelTask {
         LOG.info("(asFieldName={})", asFieldName);
         //List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
         
-        List<Attachment> attachments = oExecution.getEngineServices().getTaskService().getProcessInstanceAttachments(oExecution.getProcessInstanceId());
+        List<Attachment> aAttachmentByProcess = taskService.getProcessInstanceAttachments(oExecution.getProcessInstanceId());
        
         if (!asFieldValue.isEmpty()) {
             int n = 0;
@@ -340,7 +340,9 @@ public abstract class AbstractModelTask {
                 
                 boolean isContinue = false;
                 
-                for(Attachment currAttach: attachments){
+                for(Attachment currAttach: aAttachmentByProcess){
+                    LOG.info("sFieldValue in dublicate list" + sFieldValue);
+                    LOG.info("currAttach.getId in dublicate list" + currAttach.getId());
                     if(sFieldValue != null && sFieldValue.equals(currAttach.getId())){
                         LOG.info("Dublicate is: " + currAttach.getId());
                         isContinue = true;
