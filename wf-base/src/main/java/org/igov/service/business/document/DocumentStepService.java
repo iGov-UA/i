@@ -465,7 +465,7 @@ public class DocumentStepService {
         
         
         
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = new LinkedList();
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = new ArrayList();
         if(oDocumentStep_Common!=null){
             aDocumentStepSubjectRight_Common = oDocumentStep_Common
                     .getRights()
@@ -485,7 +485,7 @@ public class DocumentStepService {
                 .collect(Collectors.toList());
         LOG.info("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new LinkedList(aDocumentStepSubjectRight_Common);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList(aDocumentStepSubjectRight_Common);
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
         LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
 
@@ -501,8 +501,8 @@ public class DocumentStepService {
         mReturn.put("bWrite", bWrite);
         LOG.info("bWrite={}", bWrite);
 
-        List<String> asID_Field_Read = new LinkedList();
-        List<String> asID_Field_Write = new LinkedList();
+        List<String> asID_Field_Read = new ArrayList();
+        List<String> asID_Field_Write = new ArrayList();
 
         List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();
         
@@ -512,8 +512,8 @@ public class DocumentStepService {
         startTime = System.nanoTime();
         
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-            List<String> asID_Field_Read_Temp = new LinkedList();
-            List<String> asID_Field_Write_Temp = new LinkedList();
+            List<String> asID_Field_Read_Temp = new ArrayList();
+            List<String> asID_Field_Write_Temp = new ArrayList();
             //Boolean bInclude=null;
             LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix()={}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
             
