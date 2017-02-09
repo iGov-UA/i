@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.activiti.engine.IdentityService;
@@ -85,15 +86,16 @@ public class SubjectGroupTreeService {
 							return subjectHuman.getoSubject().getId();
 						}
 					}));
-    		LOG.info("subjectHumansIdSubj =..." + subjectHumansIdSubj);
-    		LOG.info("subjectGroupRelations =..." + subjectGroupRelations);
     		subjectGroupRelations = Lists
                     .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
                         @Override
                         public boolean apply(SubjectGroupTree subjectGroupTree) {
                             // получить только отфильтрованный
                             // список по Humans
-                            return subjectGroupTree.getoSubjectGroup_Parent().getoSubject()!=null && subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId());
+                        	return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject()) 
+                            		&& Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
+                            		&& subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
+                            		&& subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
                         }
                     }));
 		}
@@ -105,15 +107,16 @@ public class SubjectGroupTreeService {
 							return subjectOrgan.getoSubject().getId();
 						}
 					}));
-    		LOG.info("subjectOrgansIdSubj =..." + subjectOrgansIdSubj);
-    		LOG.info("subjectGroupRelations =..." + subjectGroupRelations);
     		subjectGroupRelations = Lists
                     .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
                         @Override
                         public boolean apply(SubjectGroupTree subjectGroupTree) {
                             // получить только отфильтрованный
                             // список по Organs
-                            return subjectGroupTree.getoSubjectGroup_Parent().getoSubject()!=null && subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId());
+                            return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject()) 
+                            		&& Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
+                            		&& subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
+                            		&& subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
                         }
                     }));
 		}
