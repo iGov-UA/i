@@ -2675,7 +2675,7 @@ LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
         long startTime = System.nanoTime();
         Map<String, Object> res = oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
         long stopTime = System.nanoTime();
-        LOG.info("getDocumentStepRights total time execution is: " + (stopTime - startTime));
+        LOG.info("getDocumentStepRights total time execution is: " + String.format("%,12d", (stopTime - startTime)));
         return res;
     }
 
