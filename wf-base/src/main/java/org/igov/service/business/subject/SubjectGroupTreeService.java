@@ -70,12 +70,12 @@ public class SubjectGroupTreeService {
     	List<SubjectOrgan> subjectOrgans = null;
     	if(HUMAN.equals(sSubjectType)) {
     		subjectHumans = new ArrayList<>(baseEntityDao.findAll(SubjectHuman.class));
-    		LOG.info(String.format("HUMAN =...{}", subjectHumans));
+    		LOG.info("HUMAN =..." + subjectHumans);
     	}
     	
     	if(ORGAN.equals(sSubjectType)) {
     		subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
-    		LOG.info(String.format("ORGAN =...{}", subjectOrgans));
+    		LOG.info("ORGAN =..." + subjectOrgans);
     	}
     	if(subjectHumans!=null && !subjectHumans.isEmpty()) {
     		List<Long> subjectHumansIdSubj = Lists
@@ -85,6 +85,8 @@ public class SubjectGroupTreeService {
 							return subjectHuman.getoSubject().getId();
 						}
 					}));
+    		LOG.info("subjectHumansIdSubj =..." + subjectHumansIdSubj);
+    		LOG.info("subjectGroupRelations =..." + subjectGroupRelations);
     		subjectGroupRelations = Lists
                     .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
                         @Override
@@ -103,6 +105,8 @@ public class SubjectGroupTreeService {
 							return subjectOrgan.getoSubject().getId();
 						}
 					}));
+    		LOG.info("subjectOrgansIdSubj =..." + subjectOrgansIdSubj);
+    		LOG.info("subjectGroupRelations =..." + subjectGroupRelations);
     		subjectGroupRelations = Lists
                     .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
                         @Override
