@@ -106,20 +106,20 @@ angular.module('dashboardJsApp')
           var warningModal = openModal({
             modal: {
               dismissable: true,
-              title: 'Уточнення!',
+              title: 'Підтверження',
               html: '<strong>' + 'Звернення буде відправлено на наступний етап' + '</strong>',
               buttons: [{
+                classes: 'btn-link modal-cancel-button',
+                text: ' Назад ',
+                click: function(e) {
+                  console.log(isYesButton);
+                  warningModal.close(e);
+                }
+              },{
                 classes: 'btn-success',
                 text: ' Підтвердити ',
                 click: function(e) {
                   isYesButton = true;
-                  warningModal.close(e);
-                }
-              }, {
-                classes: 'btn-success',
-                text: ' Назад ',
-                click: function(e) {
-                  console.log(isYesButton);
                   warningModal.close(e);
                 }
               }]

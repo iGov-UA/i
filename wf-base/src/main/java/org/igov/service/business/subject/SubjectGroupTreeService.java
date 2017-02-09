@@ -93,7 +93,7 @@ public class SubjectGroupTreeService {
                         public boolean apply(SubjectGroupTree subjectGroupTree) {
                             // получить только отфильтрованный
                             // список по Humans
-                            return subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId());
+                            return subjectGroupTree.getoSubjectGroup_Parent().getoSubject()!=null && subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId());
                         }
                     }));
 		}
@@ -113,7 +113,7 @@ public class SubjectGroupTreeService {
                         public boolean apply(SubjectGroupTree subjectGroupTree) {
                             // получить только отфильтрованный
                             // список по Organs
-                            return subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId());
+                            return subjectGroupTree.getoSubjectGroup_Parent().getoSubject()!=null && subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId());
                         }
                     }));
 		}
