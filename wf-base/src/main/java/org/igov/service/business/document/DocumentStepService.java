@@ -485,7 +485,7 @@ public class DocumentStepService {
                 .collect(Collectors.toList());
         LOG.info("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new LinkedList(aDocumentStepSubjectRight_Common);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList(aDocumentStepSubjectRight_Common);
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
         LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
 
@@ -504,7 +504,7 @@ public class DocumentStepService {
         List<String> asID_Field_Read = new LinkedList();
         List<String> asID_Field_Write = new LinkedList();
 
-        List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();
+        List<FormProperty> a = new ArrayList<>(oFormService.getTaskFormData(snID_Task).getFormProperties());
         
         stopTime = System.nanoTime();
         
@@ -517,7 +517,7 @@ public class DocumentStepService {
             //Boolean bInclude=null;
             LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix()={}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
             
-            for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
+            for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : new ArrayList<DocumentStepSubjectRightField>(oDocumentStepSubjectRight.getDocumentStepSubjectRightFields())) {
                 String sMask = oDocumentStepSubjectRightField.getsMask_FieldID();
                 LOG.info("sMask={}", sMask);
                 
