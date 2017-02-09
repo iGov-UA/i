@@ -504,23 +504,26 @@ public class DocumentStepService {
         List<String> asID_Field_Read = new LinkedList();
         List<String> asID_Field_Write = new LinkedList();
 
-        List<FormProperty> a = new ArrayList<>(oFormService.getTaskFormData(snID_Task).getFormProperties());
+        List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();
         
         stopTime = System.nanoTime();
         
         LOG.info("getDocumentStepRights 2nd block time execution is: " + String.format("%,12d", (stopTime - startTime)));
         startTime = System.nanoTime();
-        
+        LOG.info("total FormProperty size is: " + a.size());
+        LOG.info("total aDocumentStepSubjectRight size is: " + aDocumentStepSubjectRight.size());
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             List<String> asID_Field_Read_Temp = new LinkedList();
             List<String> asID_Field_Write_Temp = new LinkedList();
             //Boolean bInclude=null;
             LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix()={}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
             
-            for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : new ArrayList<DocumentStepSubjectRightField>(oDocumentStepSubjectRight.getDocumentStepSubjectRightFields())) {
+            long loopStartTime = System.nanoTime();
+            
+            for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
                 String sMask = oDocumentStepSubjectRightField.getsMask_FieldID();
                 LOG.info("sMask={}", sMask);
-                
+                LOG.info("total DocumentStepSubjectRightFields size is: " + aDocumentStepSubjectRight.size());
                 if (sMask != null) {
                     Boolean bNot = false;
                     if (sMask.startsWith("!")) {
@@ -541,6 +544,8 @@ public class DocumentStepService {
                         }
                     }
                     LOG.info("bEndsWith={},bStartWith={},bAll={},bNot={}", bEndsWith, bStartWith, bAll, bNot);
+                    long scLoopStartTime = System.nanoTime();
+
                     for (FormProperty oProperty : a) {
                         String sID = oProperty.getId();
                         Boolean bFound = false;
@@ -568,8 +573,15 @@ public class DocumentStepService {
                             LOG.info("bWriteField={}", bWriteField);
                         }
                     }
+                    
+                    long scLoopStopTime = System.nanoTime();
+                    LOG.info("2st loop time execution in getDocumentStepRights 3th block is: " + String.format("%,12d", (scLoopStopTime - scLoopStartTime)));
                 }
             }
+            
+            long loopStopTime = System.nanoTime();
+            LOG.info("1st loop time execution in getDocumentStepRights 3th block is: " + String.format("%,12d", (loopStopTime - loopStartTime)));
+            
             asID_Field_Read.addAll(asID_Field_Read_Temp);
             asID_Field_Write.addAll(asID_Field_Write_Temp);
         }
