@@ -508,10 +508,10 @@ public class DocumentStepService {
         
         stopTime = System.nanoTime();
         
-        LOG.info("getDocumentStepRights 2nd block time execution is: {}", String.format("%,12d", (stopTime - startTime)));
+        LOG.info("getDocumentStepRights 2nd block time execution is: " + String.format("%,12d", (stopTime - startTime)));
         startTime = System.nanoTime();
-        LOG.info("total FormProperty size is: {}", a.size());
-        LOG.info("total aDocumentStepSubjectRight size is: {}", aDocumentStepSubjectRight.size());
+        LOG.info("total FormProperty size is: " + a.size());
+        LOG.info("total aDocumentStepSubjectRight size is: " + aDocumentStepSubjectRight.size());
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             List<String> asID_Field_Read_Temp = new LinkedList();
             List<String> asID_Field_Write_Temp = new LinkedList();
@@ -523,7 +523,7 @@ public class DocumentStepService {
             for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
                 String sMask = oDocumentStepSubjectRightField.getsMask_FieldID();
                 LOG.info("sMask={}", sMask);
-                LOG.info("total DocumentStepSubjectRightFields size is: {}", oDocumentStepSubjectRight.getDocumentStepSubjectRightFields().size());
+                LOG.info("total DocumentStepSubjectRightFields size is: " + oDocumentStepSubjectRight.getDocumentStepSubjectRightFields().size());
                 if (sMask != null) {
                     Boolean bNot = false;
                     if (sMask.startsWith("!")) {
@@ -575,12 +575,12 @@ public class DocumentStepService {
                     }
                     
                     long scLoopStopTime = System.nanoTime();
-                    LOG.info("2st loop time execution in getDocumentStepRights 3th block is: {}", String.format("%,12d", (scLoopStopTime - scLoopStartTime)));
+                    LOG.info("2st loop time execution in getDocumentStepRights 3th block is: " + String.format("%,12d", (scLoopStopTime - scLoopStartTime)));
                 }
             }
             
             long loopStopTime = System.nanoTime();
-            LOG.info("1st loop time execution in getDocumentStepRights 3th block is: {}", String.format("%,12d", (loopStopTime - loopStartTime)));
+            LOG.info("1st loop time execution in getDocumentStepRights 3th block is: " + String.format("%,12d", (loopStopTime - loopStartTime)));
             
             asID_Field_Read.addAll(asID_Field_Read_Temp);
             asID_Field_Write.addAll(asID_Field_Write_Temp);
@@ -588,7 +588,7 @@ public class DocumentStepService {
         
         stopTime = System.nanoTime();
         
-        LOG.info("getDocumentStepRights 3th block time execution is: {}", String.format("%,12d", (stopTime - startTime)));
+        LOG.info("getDocumentStepRights 3th block time execution is: " + String.format("%,12d", (stopTime - startTime)));
         startTime = System.nanoTime();
         //mReturn.put("asID_Field_Write(0)", asID_Field_Write);
         //mReturn.put("asID_Field_Read(0)", asID_Field_Read);
@@ -604,7 +604,7 @@ public class DocumentStepService {
         LOG.info("asID_Field_Read(after)={}", asID_Field_Read);
         //LOG.info("mReturn={}", mReturn);
         stopTime = System.nanoTime();
-        LOG.info("getDocumentStepRights 4th block time execution is: {}", String.format("%,12d", (stopTime - startTime)));
+        LOG.info("getDocumentStepRights 4th block time execution is: " + String.format("%,12d", (stopTime - startTime)));
         
         return mReturn;
     }
