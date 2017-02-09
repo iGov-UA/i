@@ -46,9 +46,8 @@ public class SubjectGroup extends NamedEntity {
     private List<SubjectGroup> aSubjectGroup;
     
     @JsonProperty(value = "oSubject")
-   // @ManyToOne(fetch = FetchType.EAGER)
-   // @JoinColumn(name = "nID_Subject")
-    @Transient
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "nID_Subject")
     private Subject oSubject;
 
     public List<SubjectUser> getaUser() {
