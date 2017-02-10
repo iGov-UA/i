@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
+import org.activiti.engine.RuntimeService;
 
 /**
  * @author askosyr
@@ -31,7 +32,10 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
     @Autowired
     GeneralConfig generalConfig;
-
+    
+    @Autowired
+    private RuntimeService oRuntimeService;
+    
     //Issue #1441
     @Autowired
     FileTaskUploadListener fileTaskUploadListener;
@@ -64,35 +68,55 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             LOG.info("Current attachments size: {}", currentAttachments.size());
 
             for(Attachment attachment: currentAttachments) {
-                LOG.info("CurrentAttachment: Attachment task id {}; Attachment info: {}; attachment ID: {}", 
+                LOG.info("CurrentAttachment: Attachment process id: {}; Attachment time id: {}; Attachment task id {}; Attachment info: {}; attachment ID: {}", 
+                        attachment.getProcessInstanceId(), attachment.getTime().toString(),
                         attachment.getTaskId(), attachment.getDescription(), attachment.getId());
             }
 
             List<Attachment> attachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
             for(Attachment attachment: attachments) {
-                LOG.info("Attachments: Attachment task id: {}; Attachment info: {}; attachment ID: {}", 
-                         attachment.getTaskId(), attachment.getDescription(), attachment.getId());
+                LOG.info("Attachments: Attachment process id: {}; Attachment time id: {}; Attachment task id: {}; Attachment info: {}; attachment ID: {}", 
+                        attachment.getProcessInstanceId(), attachment.getTime().toString(),
+                        attachment.getTaskId(), attachment.getDescription(), attachment.getId());
             }
             
             
             for(Attachment attachment: currentAttachments) {
                 if(attachments.contains(attachment)){
-                    boolean deleted = attachments.remove(attachment);
-                    if(deleted) {
-                        
-                        LOG.info("Duplicate: getTaskId: {} ", attachment.getTaskId());
+                    if(!attachments.get(0).getTaskId().equals(attachment.getTaskId()))
+                    {   
+                        boolean deleted = attachments.remove(attachment);
+                        if(deleted) {
+                            LOG.info("Duplicate: getTaskId: {} ", attachment.getTaskId());
+                        }
                     }
                 }
             }
-
+            
+            /*for(Attachment attach : attachments){
+                taskService.deleteAttachment(attach.getId());
+                LOG.info("attach with id {} is deleted!", attach.getId());
+            }*/
+            
             LOG.info("Attachments: attachments size={}", attachments.size());
 
             addAttachmentsToCurrentTask(attachments, oTask);
             
             /*List<Attachment> aAttachments = taskService.getProcessInstanceAttachments(oTask.getProcessInstanceId());
             for(Attachment attachment: aAttachments) {
-                LOG.info("Attachment after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+                LOG.info("aAttachments after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+            }
+            
+            List<Attachment> aFindAttachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
+            for(Attachment attachment: aFindAttachments) {
+                LOG.info("aFindAttachments after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+            }
+            
+            List<Attachment> aTaskAttachments = taskService.getTaskAttachments(oTask.getId());
+            for(Attachment attachment: aTaskAttachments) {
+                LOG.info("aTaskAttachments after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
             }*/
+
             
         } catch (Exception oException) {
             LOG.error("FAIL: {}", oException.getMessage());
