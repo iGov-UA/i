@@ -209,6 +209,8 @@
 |Name|Description|Required|Schema|Default
 |aSubjectAccountContact||false|<<SubjectContact>> array|
 |nID||false|integer (int64)|
+|oSubjectHuman||false|<<SubjectHuman>>|
+|oSubjectOrgan||false|<<SubjectOrgan>>|
 |sID||false|string|
 |sLabel||false|string|
 |sLabelShort||false|string|
@@ -260,6 +262,47 @@
 |===
 |Name|Description|Required|Schema|Default
 |aSubjectGroupTree||false|<<SubjectGroup>> array|
+|===
+
+=== SubjectHuman
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|aContact||false|<<SubjectContact>> array|
+|aSubjectHumanRole||false|<<SubjectHumanRole>> array|
+|nID||false|integer (int64)|
+|oDefaultEmail||false|<<SubjectContact>>|
+|oDefaultPhone||false|<<SubjectContact>>|
+|oSex||false|enum (0, 1)|
+|sFamily||false|string|
+|sINN||false|string|
+|sName||false|string|
+|sPassportNumber||false|string|
+|sPassportSeria||false|string|
+|sSB||false|string|
+|sSurname||false|string|
+|subjectHumanIdType||false|enum (INN, Passport, Email, Phone)|
+|===
+
+=== SubjectHumanRole
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|aSubjectHuman||false|<<SubjectHuman>> array|
+|nID||false|integer (int64)|
+|sName||false|string|
+|===
+
+=== SubjectOrgan
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|aContact||false|<<SubjectContact>> array|
+|nID||false|integer (int64)|
+|sFormPrivacy||false|string|
+|sName||false|string|
+|sNameFull||false|string|
+|sOKPO||false|string|
 |===
 
 === SubjectUser

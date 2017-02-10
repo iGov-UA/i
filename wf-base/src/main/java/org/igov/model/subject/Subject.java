@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.AbstractEntity;
+import org.igov.model.subject.organ.SubjectOrgan;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -42,9 +43,10 @@ public class Subject extends AbstractEntity {
     @OneToOne
     @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "nID_SubjectOrgan")
-    private SubjectHuman oSubjectOrgan;
+    private SubjectOrgan oSubjectOrgan;
     
-    public SubjectHuman getoSubjectHuman() {
+    
+	public SubjectHuman getoSubjectHuman() {
 		return oSubjectHuman;
 	}
 
@@ -52,11 +54,11 @@ public class Subject extends AbstractEntity {
 		this.oSubjectHuman = oSubjectHuman;
 	}
 
-	public SubjectHuman getoSubjectOrgan() {
+	public SubjectOrgan getoSubjectOrgan() {
 		return oSubjectOrgan;
 	}
 
-	public void setoSubjectOrgan(SubjectHuman oSubjectOrgan) {
+	public void setoSubjectOrgan(SubjectOrgan oSubjectOrgan) {
 		this.oSubjectOrgan = oSubjectOrgan;
 	}
 
