@@ -105,8 +105,7 @@ public class SubjectGroupTreeService {
                         public boolean apply(SubjectGroupTree subjectGroupTree) {
                             // получить только отфильтрованный
                             // список по Humans
-                        	if(Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject()) 
-                            		&& Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
+                        	if(Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject())
                             		&& subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getoSubjectOrgan().getId()!=null) {
                         		
                         		resSubjectTypeList.add(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getoSubjectOrgan().getId());
