@@ -71,7 +71,8 @@ public class ObjectPlaceCommonService {
 	}
 	sURLSendAddressByType = sURL_Send + "/" + SUB_URL_ADDRESS_BY_TYPE;
 	sURLSendAddressByName = sURL_Send + "/" + SUB_URL_ADDRESS_BY_NAME;
-
+	
+	isReadyWork = true;
     }
 
     public String getSubPlaces_(String sID_SubPlace_PB, String sFind) {
