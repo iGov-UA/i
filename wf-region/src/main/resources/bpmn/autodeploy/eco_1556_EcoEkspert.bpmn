@@ -3,6 +3,20 @@
   <process id="eco_1556_EcoEkspert" name="Видача висновку державної екологічної експертизи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        
+        <activiti:formProperty id="asSubOrgan" name="Куди ви хочете подати заяву?" type="enum" required="true">
+          <activiti:value id="sEnamMinEco" name="В Київ (в міністерство)"></activiti:value>
+          <activiti:value id="sEnamODA" name="В ОДА"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOblast" name="Оберіть область" type="enum" required="true">
+          <activiti:value id="sEnamDnipro" name="Дніпропетровська"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markerEcoViz" name="marker" type="markers" default="${markerService.loadFromFile('eco/eco_1556_EcoEkspertODA.json')}"></activiti:formProperty>
+        
+        
+        
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
