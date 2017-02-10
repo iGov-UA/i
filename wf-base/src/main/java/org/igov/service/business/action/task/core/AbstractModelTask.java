@@ -336,7 +336,7 @@ public abstract class AbstractModelTask {
             int n = 0;
             for (String sFieldValue : asFieldValue) {
                 
-                LOG.info("(sFieldValue={})", sFieldValue);
+                LOG.info("(sFieldValue before processing={})", sFieldValue);
                 if (sFieldValue != null && !sFieldValue.isEmpty() && !"".equals(sFieldValue.trim()) && !"null"
                         .equals(sFieldValue.trim())) {
 
