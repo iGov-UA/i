@@ -80,15 +80,14 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             
             
             for(Attachment attachment: currentAttachments) {
-                if(attachments.contains(attachment)){
+               /* if(attachments.contains(attachment)){
                     boolean deleted = attachments.remove(attachment);
                     if(deleted) {
-                        
                         LOG.info("Duplicate: getTaskId: {} ", attachment.getTaskId());
                     }
-                }
+                }*/
             }
-
+            
             LOG.info("Attachments: attachments size={}", attachments.size());
 
             addAttachmentsToCurrentTask(attachments, oTask);
