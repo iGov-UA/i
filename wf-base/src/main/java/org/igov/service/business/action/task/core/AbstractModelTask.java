@@ -428,7 +428,7 @@ public abstract class AbstractModelTask {
                             try {
                                 LOG.info("Checking whether attachment with ID {} has already been saved and this is attachment object ID", sFieldValue);
                                 Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sFieldValue);
-                                //aAttachment.add(oAttachment);
+                                aAttachment.add(oAttachment);
                             } catch (Exception oException) {
                                 LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sFieldValue);
                                 new Log(oException, LOG)//this.getClass()
