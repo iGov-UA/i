@@ -11,6 +11,7 @@ import javax.persistence.*;
 import org.igov.model.subject.NewSubjectOrgan;
 import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectContact;
+import org.springframework.context.annotation.Lazy;
 
 @javax.persistence.Entity
 @AttributeOverrides({ @AttributeOverride(name = "name",
@@ -18,6 +19,7 @@ import org.igov.model.subject.SubjectContact;
 public class SubjectOrgan extends NamedEntity {
 
     @JsonProperty(value = "oSubject")
+    @Lazy(true)
     @OneToOne
     @Cascade({ CascadeType.SAVE_UPDATE })
     @JoinColumn(name = "nID_Subject", nullable = false)
