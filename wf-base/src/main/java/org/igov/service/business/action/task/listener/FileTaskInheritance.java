@@ -80,24 +80,27 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             
             
             for(Attachment attachment: currentAttachments) {
-               /* if(attachments.contains(attachment)){
-                    boolean deleted = attachments.remove(attachment);
-                    if(deleted) {
-                        LOG.info("Duplicate: getTaskId: {} ", attachment.getTaskId());
+                if(attachments.contains(attachment)){
+                    if(!attachments.get(0).getTaskId().equals(attachment.getTaskId()))
+                    {   
+                        boolean deleted = attachments.remove(attachment);
+                        if(deleted) {
+                            LOG.info("Duplicate: getTaskId: {} ", attachment.getTaskId());
+                        }
                     }
-                }*/
+                }
             }
             
-            for(Attachment attach : attachments){
+            /*for(Attachment attach : attachments){
                 taskService.deleteAttachment(attach.getId());
-                LOG.info("attach with id {} is deleted!" + attach.getId());
-            }
+                LOG.info("attach with id {} is deleted!", attach.getId());
+            }*/
             
             LOG.info("Attachments: attachments size={}", attachments.size());
 
             addAttachmentsToCurrentTask(attachments, oTask);
             
-            List<Attachment> aAttachments = taskService.getProcessInstanceAttachments(oTask.getProcessInstanceId());
+            /*List<Attachment> aAttachments = taskService.getProcessInstanceAttachments(oTask.getProcessInstanceId());
             for(Attachment attachment: aAttachments) {
                 LOG.info("aAttachments after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
             }
@@ -110,7 +113,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             List<Attachment> aTaskAttachments = taskService.getTaskAttachments(oTask.getId());
             for(Attachment attachment: aTaskAttachments) {
                 LOG.info("aTaskAttachments after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
-            }
+            }*/
 
             
         } catch (Exception oException) {
