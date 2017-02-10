@@ -179,7 +179,31 @@ public class GeneralConfig {
     
     @Value("${general.DFS.sURL}")
     private String sURL_DFS;
+
+    @Value("${general.Object.SubPlace.PB.Auth.sLogin}")
+    private String sObjectSubPlace_Auth_sLogin;
     
+    @Value("${general.Object.SubPlace.PB.Auth.sPassword}")
+    private String sObjectSubPlace_Auth_sPassword;
+    
+    @Value("${general.Object.SubPlace.PB.Auth.sURL_GenerateSID}")
+    private String sObjectSubPlace_Auth_sURL_GenerateSID;
+    
+    @Value("${general.Object.SubPlace.sURL_Send}")
+    private String sObjectSubPlace_sURL_Send;
+    
+    public String getObjectSubPlace_Auth_sLogin() {
+        return sObjectSubPlace_Auth_sLogin;
+    }
+    public String getObjectSubPlace_Auth_sPassword() {
+        return sObjectSubPlace_Auth_sPassword;
+    }
+    public String getObjectSubPlace_Auth_sURL_GenerateSID() {
+        return sObjectSubPlace_Auth_sURL_GenerateSID;
+    }
+    public String getObjectSubPlace_sURL_Send() {
+        return sObjectSubPlace_sURL_Send;
+    }
     
     public boolean isSelfTest() {
         boolean b = true;
