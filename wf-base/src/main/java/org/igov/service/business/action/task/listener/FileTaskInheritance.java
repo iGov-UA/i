@@ -121,6 +121,13 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
                     .save()
                     ;
         }
+        
+            List<Attachment> aAttachmentByProcess = new LinkedList<>();
+            aAttachmentByProcess = taskService.getTaskAttachments(oTask.getId());
+            
+            for(Attachment oAttach : aAttachmentByProcess){
+                LOG.info("oAttach id in aAttachmentByProcess after processing: " + oAttach.getId());
+            }
 
     }
 
