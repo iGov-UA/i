@@ -55,7 +55,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             }
             
             List<Attachment> aAttachmentByProcess = new LinkedList<>();
-            aAttachmentByProcess = taskService.getProcessInstanceAttachments(oExecution.getProcessInstanceId());
+            aAttachmentByProcess = taskService.getTaskAttachments(oTask.getId());
             
             for(Attachment oAttach : aAttachmentByProcess){
                 LOG.info("oAttach id in aAttachmentByProcess: " + oAttach.getId());
