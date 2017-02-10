@@ -55,7 +55,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             }
             
             List<Attachment> aAttachmentByProcess = new LinkedList<>();
-            aAttachmentByProcess = taskService.getTaskAttachments(oTask.getId());
+            aAttachmentByProcess = taskService.getTaskAttachments(oTask.getProcessInstanceId());
             
             for(Attachment oAttach : aAttachmentByProcess){
                 LOG.info("oAttach id in aAttachmentByProcess: " + oAttach.getId());
@@ -99,6 +99,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             LOG.info("Attachments: attachments size={}", attachments.size());
 
             addAttachmentsToCurrentTask(resultAttachements, oTask);
+            
         } catch (Exception oException) {
             LOG.error("FAIL: {}", oException.getMessage());
             LOG.trace("FAIL:", oException);
