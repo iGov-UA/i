@@ -1,17 +1,21 @@
 package org.igov.model.subject.organ;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.NamedEntity;
-
-import javax.persistence.*;
-
 import org.igov.model.subject.NewSubjectOrgan;
 import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectContact;
-import org.springframework.context.annotation.Lazy;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @javax.persistence.Entity
 @AttributeOverrides({ @AttributeOverride(name = "name",
@@ -19,7 +23,7 @@ import org.springframework.context.annotation.Lazy;
 public class SubjectOrgan extends NamedEntity {
 
     @JsonProperty(value = "oSubject")
-    @Lazy(true)
+   // @Lazy(true)
     @OneToOne
     @Cascade({ CascadeType.SAVE_UPDATE })
     @JoinColumn(name = "nID_Subject", nullable = false)

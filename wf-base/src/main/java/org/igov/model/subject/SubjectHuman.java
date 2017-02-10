@@ -16,7 +16,6 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.NamedEntity;
-import org.springframework.context.annotation.Lazy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -53,7 +52,7 @@ public class SubjectHuman extends NamedEntity {
     private List<SubjectHumanRole> aSubjectHumanRole = new ArrayList<>();
 
     @JsonProperty(value = "oSubject")
-    @Lazy(true)
+  //  @Lazy(true)
     @OneToOne
     @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "nID_Subject", nullable = false)
