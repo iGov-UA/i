@@ -1,10 +1,18 @@
 package org.igov.model.subject;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.igov.model.core.AbstractEntity;
+import java.util.List;
 
 import javax.persistence.Column;
-import java.util.List;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.igov.model.core.AbstractEntity;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @javax.persistence.Entity
 public class Subject extends AbstractEntity {
@@ -24,9 +32,35 @@ public class Subject extends AbstractEntity {
     @JsonProperty(value = "aSubjectAccountContact")
     private transient List<SubjectContact> aSubjectAccountContact;
     
+    @JsonProperty(value = "oSubjectHuman")
+    @OneToOne
+    @Cascade({CascadeType.SAVE_UPDATE})
+    @JoinColumn(name = "nID_SubjectHuman")
+    private SubjectHuman oSubjectHuman;
     
+    @JsonProperty(value = "oSubjectOrgan")
+    @OneToOne
+    @Cascade({CascadeType.SAVE_UPDATE})
+    @JoinColumn(name = "nID_SubjectOrgan")
+    private SubjectHuman oSubjectOrgan;
+    
+    public SubjectHuman getoSubjectHuman() {
+		return oSubjectHuman;
+	}
 
-    public String getsID() {
+	public void setoSubjectHuman(SubjectHuman oSubjectHuman) {
+		this.oSubjectHuman = oSubjectHuman;
+	}
+
+	public SubjectHuman getoSubjectOrgan() {
+		return oSubjectOrgan;
+	}
+
+	public void setoSubjectOrgan(SubjectHuman oSubjectOrgan) {
+		this.oSubjectOrgan = oSubjectOrgan;
+	}
+
+	public String getsID() {
         return sID;
     }
 
