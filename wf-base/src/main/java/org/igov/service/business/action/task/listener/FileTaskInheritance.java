@@ -17,6 +17,7 @@ import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import org.activiti.engine.RuntimeService;
 
 /**
@@ -111,7 +112,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             */
             
             addAttachmentsToCurrentTask(currentAttachments.get("added"), oTask);
-            
+            currentAttachments = new HashMap<>();
             /*List<Attachment> aAttachments = taskService.getProcessInstanceAttachments(oTask.getProcessInstanceId());
             for(Attachment attachment: aAttachments) {
                 LOG.info("aAttachments after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
