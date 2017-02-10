@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="DABI_1573_DubGotEkspluat" name="Дублікат декларації про підготовчі роботи/початок будівництва/готовність до експлуатації об`єкта I-ІІ категорії" isExecutable="true">
+  <process id="DABI_1575_ZminDekVukBud" name="Внесення змін до зареєстрованої декларації про початок виконання будівельних робіт на об`єкті I-ІІ категорії" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="markersLine_4" name="Спосіб отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sID_Public_SubjectOrganJoin&quot;],&quot;sValue&quot;:&quot;Спосіб отримання відповіді&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Спосіб отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sID_Public_SubjectOrganJoin&quot;],&quot;sValue&quot;:&quot;Спосіб отримання відповіді&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган який надасть вам відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
@@ -17,8 +17,8 @@
           <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 36.14"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_1" name="Інформація про замовника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про замовника&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище завника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
@@ -33,30 +33,32 @@
         <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації;(повна адреса особи, яка подає заяву)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
-        
-        <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт та декларацію" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdresBud&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт та декларацію&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sAdresBud" name="Адреса бідівництва;(місто, вулиця, номер)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asDekTipe" name="Тип документу" type="enum" required="true">
-          <activiti:value id="sEnamPid" name="Декларація про підготовчі роботи"></activiti:value>
-          <activiti:value id="sEnamPovBud" name="Повідомлення про будівельні роботи"></activiti:value>
-          <activiti:value id="sEnamDekBud" name="Декларація про будівельні роботи"></activiti:value>
-          <activiti:value id="sEnamDekEk" name="Декларація про введення в експлуатацію"></activiti:value>
+        <activiti:formProperty id="markersLine_3" name="Інформація про будівництво" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNameBud&quot;],&quot;sValue&quot;:&quot;Інформація про будівництво&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNameBud" name="Найменування об'єкта будівництва;(згідно з будівельним паспортом або проектною документацією )" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdresBud" name="Будівельна адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTipeBud" name="Вид будівництва" type="enum" required="true">
+          <activiti:value id="sEnamTipeBud1" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnamTipeBud2" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnamTipeBud3" name="Технічне переоснащення"></activiti:value>
+          <activiti:value id="sEnamTipeBud4" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnamTipeBud5" name="Капітальний ремонт"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDekDate" name="Дата реєстрації оригіналу документу" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDekNumber" name="Номер оригіналу документу" type="string" required="true"></activiti:formProperty>
-        
-        <activiti:formProperty id="markersLine_3" name="Причини отримання дублікату" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;asPrichDub&quot;],&quot;sValue&quot;:&quot;Причини отримання дублікату&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asPrichDub" name="Що трапилося з оригіналом документу?" type="enum" required="true">
-          <activiti:value id="sEnamVracheno" name="Документ втрачено"></activiti:value>
-          <activiti:value id="sEnamPoshkodjeno" name="Документ пошкоджено, що робить неможливим його використання"></activiti:value>
+        <activiti:formProperty id="sKodeBud" name="Код об'єкта;(згідно з Державним класифікатором будівель та споруд ДК 018-2000)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabelKodeBud" name="Коди ДК 018-2000" type="label" default="посилання на &lt;a href=&quot;http://zakon2.rada.gov.ua/rada/show/va507565-00 &quot; target=&quot;_blank&quot;&gt;ДЕРЖАВНИЙ КЛАСИФІКАТОР&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asSklKategor" name="Категорія складності" type="enum" required="true">
+          <activiti:value id="sEnam1" name="I категорія"></activiti:value>
+          <activiti:value id="sEnam2" name="II категорія"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDocDekPoshkod" name="Фотодоказ пошкодженого оригіналу декларації;(додайте фото або скан пошкодженої декларації, якщо файлів кілька завантажте ZIP архівом)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocDekVtrat" name="Докази розміщення у ЗМІ повідомлення про втрату декларації;(додайте відскановану квитанцію про оплату повідомлення або фото повідомлення)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markerDubDek" name="DubDek" type="markers" default="${markerService.loadFromFile('DABI/DubDek.json')}"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/DABI/DABI_1573_DubGotEkspluat.html"></activiti:formProperty>
-        
-        
+        <activiti:formProperty id="markersLine_4" name="Документ, що є підставою для змін" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sDokZmName&quot;],&quot;sValue&quot;:&quot;Документи, що є підставою для змін&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDokZmName" name="Найменування документа, що є підставою для зміни даних" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDokZmDat" name="Дата прийняття документа" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDokZmNum" name="Номер документа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDokZmOrgVud" name="Орган що видав документ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="tZminu" name="Які зміни необхідно внести до декларації" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocZmin" name="Документ що підтверджує факт змін;(завантажте сканкопію, якщо файлів кілька завантажте ZIP архівом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_5" name="Скани декларації з помилкою та декларації зі змінами" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;fDocDecPom&quot;],&quot;sValue&quot;:&quot;Скани декларації з помилкою та декларації зі змінами&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="fDocDecPom" name="Декларація, в якій виявлено технічну помилку або недостовірні дані;(завантажте сканкопію, якщо файлів кілька завантажте ZIP архівом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fDocDecNov" name="Декларація, в якій враховано зміни;(завантажте файл або сканкопію, якщо файлів кілька завантажте ZIP архівом)" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;nRegion&quot;,&quot;sAddress&quot;,&quot;sMailClerk_dabi&quot;,&quot;sMailClerk&quot;,&quot;sPhoneOrgan&quot;,&quot;sNameOrgan&quot;,&quot;sPosluga_name&quot;,&quot;sWorkTime&quot;,&quot;sID_Payment&quot;,&quot;nID_Subject&quot;,&quot;sID_Merchant&quot;,&quot;sSum&quot;,&quot;sID_Currency&quot;,&quot;sDescription&quot;,&quot;sCountPayment&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
@@ -73,8 +75,8 @@
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюти" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа, комісія 1,8%"></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Дублікат декларації про підготовчі роботи/початок будівництва/готовність до експлуатації об`єкта I-ІІ категорії"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="видачу дубліката декларації про підготовчі роботи/початок будівництва/готовність до експлуатації об`єкта I-ІІ категорії"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Внесення змін до зареєстрованої декларації про початок виконання будівельних робіт на об`єкті I-ІІ категорії"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="внесення змін до зареєстрованої декларації про початок виконання будівельних робіт на об`єкті I-ІІ категорії"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -203,38 +205,41 @@ ${sNameOrgan}<br />
     </sequenceFlow>
     <userTask id="usertask1" name="ЦНАП обробка" activiti:candidateGroups="dabi_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="markersLine_5" name="Інформація про замовника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про замовника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_11" name="Інформація про замовника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про замовника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
-          <activiti:value id="sEnamUr" name="Представник Юридичної особи"></activiti:value>
+          <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/Dash_UrFizOsoba.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markerOsoba" name="Post" type="markers" default="${markerService.loadFromFile('AK/UrFizOsoba_Nofiles.json')}"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
-        
-        <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт та декларацію" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdresBud&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт та декларацію&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sAdresBud" name="Адреса бідівництва; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asDekTipe" name="Тип документу" type="enum" writable="false">
-          <activiti:value id="sEnamPid" name="Декларація про підготовчі роботи"></activiti:value>
-          <activiti:value id="sEnamPovBud" name="Повідомлення про будівельні роботи"></activiti:value>
-          <activiti:value id="sEnamDekBud" name="Декларація про будівельні роботи"></activiti:value>
-          <activiti:value id="sEnamDekEk" name="Декларація про введення в експлуатацію"></activiti:value>
+        <activiti:formProperty id="markersLine_3" name="Інформація про будівництво" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNameBud&quot;],&quot;sValue&quot;:&quot;Інформація про будівництво&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNameBud" name="Найменування об'єкта будівництва; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdresBud" name="Будівельна адреса; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asTipeBud" name="Вид будівництва" type="enum" writable="false">
+          <activiti:value id="sEnamTipeBud1" name="Нове будівництво"></activiti:value>
+          <activiti:value id="sEnamTipeBud2" name="Реконструкція"></activiti:value>
+          <activiti:value id="sEnamTipeBud3" name="Технічне переоснащення"></activiti:value>
+          <activiti:value id="sEnamTipeBud4" name="Реставрація"></activiti:value>
+          <activiti:value id="sEnamTipeBud5" name="Капітальний ремонт"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDekDate" name="Дата реєстрації оригіналу декларації; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sDekNumber" name="Номер оригіналу документу; ;writable=false" type="string"></activiti:formProperty>
-        
-        <activiti:formProperty id="markersLine_3" name="Причини отримання дублікату" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;asPrichDub&quot;],&quot;sValue&quot;:&quot;Причини отримання дублікату&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asPrichDub" name="Що трапилося з оригіналом документу?" type="enum" writable="false">
-          <activiti:value id="sEnamVracheno" name="Документ втрачено"></activiti:value>
-          <activiti:value id="sEnamPoshkodjeno" name="Документ пошкоджено, що робить неможливим його використання"></activiti:value>
+        <activiti:formProperty id="sKodeBud" name="Код об'єкта; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asSklKategor" name="Категорія складності" type="enum" writable="false">
+          <activiti:value id="sEnam1" name="I категорія"></activiti:value>
+          <activiti:value id="sEnam2" name="II категорія"></activiti:value>
         </activiti:formProperty>
-        
+        <activiti:formProperty id="markersLine_4" name="Документ, що є підставою для змін" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sDokZmName&quot;],&quot;sValue&quot;:&quot;Документи, що є підставою для змін&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDokZmName" name="Найменування документа, що є підставою для зміни даних; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDokZmDat" name="Дата прийняття документа; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDokZmNum" name="Номер документа; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDokZmOrgVud" name="Орган що видав документ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="tZminu" name="Які зміни необхідно внести до декларації; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markersLine_6" name="Спосіб отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання відповіді&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хочете отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
@@ -246,13 +251,12 @@ ${sNameOrgan}<br />
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_1573_DubGotEkspluat.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_1575_ZminDekVukBud.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker" name="print_marker" type="markers" default="${markerService.loadFromFile('AK/Print_ur_fiz.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDocDekVtrat},${sDocDekPoshkod}</activiti:expression>
+            <activiti:expression>${sDocZmin},${fDocDecPom},${fDocDecNov}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -733,8 +737,8 @@ ${sNameOrgan}<br />
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideCN == 'reject'}]]></conditionExpression>
     </sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_DABI_1573_DubGotEkspluat">
-    <bpmndi:BPMNPlane bpmnElement="DABI_1573_DubGotEkspluat" id="BPMNPlane_DABI_1573_DubGotEkspluat">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_DABI_1575_ZminDekVukBud">
+    <bpmndi:BPMNPlane bpmnElement="DABI_1575_ZminDekVukBud" id="BPMNPlane_DABI_1575_ZminDekVukBud">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="81.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
