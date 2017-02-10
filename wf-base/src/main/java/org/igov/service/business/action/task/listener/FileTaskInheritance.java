@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
+import org.activiti.engine.RuntimeService;
 
 /**
  * @author askosyr
@@ -31,7 +32,10 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
     @Autowired
     GeneralConfig generalConfig;
-
+    
+    @Autowired
+    private RuntimeService oRuntimeService;
+    
     //Issue #1441
     @Autowired
     FileTaskUploadListener fileTaskUploadListener;
@@ -89,10 +93,21 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
             addAttachmentsToCurrentTask(attachments, oTask);
             
-            /*List<Attachment> aAttachments = taskService.getProcessInstanceAttachments(oTask.getProcessInstanceId());
+            List<Attachment> aAttachments = taskService.getProcessInstanceAttachments(oTask.getProcessInstanceId());
             for(Attachment attachment: aAttachments) {
-                LOG.info("Attachment after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
-            }*/
+                LOG.info("aAttachments after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+            }
+            
+            List<Attachment> aFindAttachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
+            for(Attachment attachment: aFindAttachments) {
+                LOG.info("aFindAttachments after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+            }
+            
+            List<Attachment> aTaskAttachments = taskService.getTaskAttachments(oTask.getId());
+            for(Attachment attachment: aTaskAttachments) {
+                LOG.info("aTaskAttachments after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+            }
+
             
         } catch (Exception oException) {
             LOG.error("FAIL: {}", oException.getMessage());
