@@ -57,6 +57,10 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             List<Attachment> aAttachmentByProcess = new LinkedList<>();
             aAttachmentByProcess = taskService.getProcessInstanceAttachments(oExecution.getProcessInstanceId());
             
+            for(Attachment oAttach : aAttachmentByProcess){
+                LOG.info("oAttach id in aAttachmentByProcess: " + oAttach.getId());
+            }
+            
             /*List<Attachment> attachments = getAttachmentsFromParentTasks(oExecution);
             asID_Attachment_ToAdd = getInheritedAttachmentIdsFromTask(attachments,
                     sInheritedAttachmentsIds);
@@ -75,20 +79,26 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
                 LOG.info("Attachments: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
             }
 
-
+            List<Attachment> resultAttachements = new LinkedList<>();
+            resultAttachements.addAll(currentAttachments);
+            
             for(Attachment attachment: currentAttachments) {
                 if(aAttachmentByProcess.contains(attachment)){
-                   boolean deleted = attachments.remove(attachment);
+                   boolean deleted = resultAttachements.remove(attachment);
                     if(deleted) {
                         LOG.info("Duplicate is successfully deleted");
                     }
                 }
 
             }
+            
+            for(Attachment oAttach : resultAttachements){
+                LOG.info("resultAttachements id in aAttachmentByProcess: " + oAttach.getId());
+            }
 
             LOG.info("Attachments: attachments size={}", attachments.size());
 
-            addAttachmentsToCurrentTask(attachments, oTask);
+            addAttachmentsToCurrentTask(resultAttachements, oTask);
         } catch (Exception oException) {
             LOG.error("FAIL: {}", oException.getMessage());
             LOG.trace("FAIL:", oException);
