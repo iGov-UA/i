@@ -4,7 +4,7 @@ package org.igov.service.controller;
 import org.igov.model.subject.SubjectGroupAndUser;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.service.business.subject.SubjectGroupService;
-import org.igov.service.business.subject.SubjectGroupTreeService_new;
+import org.igov.service.business.subject.SubjectGroupTreeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class SubjectGroupController {
     
     
     @Autowired
-    private SubjectGroupTreeService_new subjectGroupTreeService;
+    private SubjectGroupTreeService subjectGroupTreeService;
     
     
     
