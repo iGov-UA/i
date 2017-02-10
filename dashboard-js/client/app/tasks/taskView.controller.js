@@ -739,7 +739,7 @@
               })
             }
             if ((!documentUnpopulatedFields && unpopulatedFields.length > 0)
-              || (documentUnpopulatedFields && documentUnpopulatedFields.length > 0)) {
+                || (documentUnpopulatedFields && documentUnpopulatedFields.length > 0)) {
               var errorMessage = 'Будь ласка, заповніть поля: ';
 
               if (unpopulatedFields.length == 1) {
