@@ -36,6 +36,8 @@ public class ProminSession_Singleton {
     private String sid_Auth_UkrDoc_SED;
     private String sid_Auth_Receipt_PB_Bank;
     private String aSID_Auth_PB_SMS;
+    private String sid_Auth_PB_ObjectSubPlace;
+    
     private long nTimeCreatedMS;
     private final long nTimeLiveLimitMS = 1000 * 60 * 20;
     
@@ -60,6 +62,11 @@ public class ProminSession_Singleton {
         return aSID_Auth_PB_SMS;
     }
     
+    public String getSid_Auth_PB_ObjectSubPlace() {
+        checkAndUpdateSid();
+        return sid_Auth_PB_ObjectSubPlace;
+    }
+    
     private void checkAndUpdateSid() {
         LOG.info("getSID ... " + toString());
         if (sid_Auth_UkrDoc_SED == null || (System.currentTimeMillis() - nTimeCreatedMS) > nTimeLiveLimitMS) {
@@ -73,6 +80,9 @@ public class ProminSession_Singleton {
             aSID_Auth_PB_SMS = getSessionId(generalConfig.getLogin_Auth_PB_SMS(),
                     generalConfig.getPassword_Auth_PB_SMS(),
                     generalConfig.getURL_GenerateSID_Auth_PB_SMS() + "?lang=UA");
+            sid_Auth_PB_ObjectSubPlace= getSessionId(generalConfig.getObjectSubPlace_Auth_sLogin(),
+                    generalConfig.getObjectSubPlace_Auth_sPassword(),
+                    generalConfig.getObjectSubPlace_Auth_sURL_GenerateSID() + "?lang=UA");
         }
         LOG.info(toString() + " ok!");
     }

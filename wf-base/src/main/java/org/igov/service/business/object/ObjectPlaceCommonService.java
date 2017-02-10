@@ -104,7 +104,7 @@ public class ObjectPlaceCommonService {
 
 	String sessionId;
 	try {
-	    sessionId = prominSession_Singleton.getSID_Auth_PB_SMS();
+	    sessionId = prominSession_Singleton.getSid_Auth_PB_ObjectSubPlace();
 	} catch (Exception e) {
 	    LOG.error("Error get Session ID", e);
 	    return NULL_RESPONSE;
