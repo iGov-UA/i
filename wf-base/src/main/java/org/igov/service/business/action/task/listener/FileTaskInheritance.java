@@ -88,6 +88,11 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
                 }*/
             }
             
+            for(Attachment attach : attachments){
+                taskService.deleteAttachment(attach.getId());
+                LOG.info("attach with id {} is deleted!" + attach.getId());
+            }
+            
             LOG.info("Attachments: attachments size={}", attachments.size());
 
             addAttachmentsToCurrentTask(attachments, oTask);
