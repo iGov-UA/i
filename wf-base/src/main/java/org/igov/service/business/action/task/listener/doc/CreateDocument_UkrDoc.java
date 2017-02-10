@@ -155,9 +155,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                                 .getStartFormData(oExecution.getProcessDefinitionId());
                         LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
                                 oExecution.getProcessDefinitionId());
-                        Map<String, List<Attachment>> mAttachment = addAttachmentsToTask(oStartFormData, delegateTask);
-                        attachments.addAll(mAttachment.get("added"));
-                        attachments.addAll(mAttachment.get("not_added"));
+                        attachments = addAttachmentsToTask(oStartFormData, delegateTask);
                     }
                 }
 

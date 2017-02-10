@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -26,7 +25,7 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
 
     private static final long serialVersionUID = 1L;
 
-    private Map<String, List<Attachment>> mAttachment;
+    private List<Attachment> aAttachment;
 
     @Override
     public void notify(DelegateTask oTask) {
@@ -59,11 +58,11 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
                     .getStartFormData(oExecution.getProcessDefinitionId());
             LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
                     oExecution.getProcessDefinitionId());
-            mAttachment = addAttachmentsToTask(oStartFormData, oTask);
+            aAttachment = addAttachmentsToTask(oStartFormData, oTask);
         }
     }
 
-    public Map<String, List<Attachment>> getaAttachment() {
-        return mAttachment;
+    public List<Attachment> getaAttachment() {
+        return aAttachment;
     }
 }
