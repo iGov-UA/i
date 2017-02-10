@@ -85,7 +85,7 @@ public class SubjectGroupTreeService {
                         	if(Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject())
                             		&& subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getoSubjectHuman().getId()!=null) {
                         		
-                        		resSubjectTypeList.add(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getoSubjectHuman().getId());
+                        		resSubjectTypeList.add(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId());
                         		
                         	}
                         	return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject()) 
@@ -108,7 +108,7 @@ public class SubjectGroupTreeService {
                         	if(Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject())
                             		&& subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getoSubjectOrgan().getId()!=null) {
                         		
-                        		resSubjectTypeList.add(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getoSubjectOrgan().getId());
+                        		resSubjectTypeList.add(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId());
                         		
                         	}
                         	return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject()) 
