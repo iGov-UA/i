@@ -74,10 +74,10 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
             for(Attachment attachment: currentAttachments) {
                 if(attachments.contains(attachment)){
-                   /*boolean deleted = attachments.remove(attachment);
+                   boolean deleted = attachments.remove(attachment);
                     if(deleted) {
                         LOG.info("Duplicate is successfully deleted");
-                    }*/
+                    }
                 }
             }
 
@@ -85,7 +85,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
             addAttachmentsToCurrentTask(attachments, oTask);
             
-            List<Attachment> aAttachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
+            List<Attachment> aAttachments = taskService.getProcessInstanceAttachments(oTask.getProcessInstanceId());
             for(Attachment attachment: aAttachments) {
                 LOG.info("Attachment after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
             }
