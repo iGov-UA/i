@@ -21,10 +21,8 @@ import org.igov.model.core.BaseEntityDao;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.model.subject.SubjectGroupTree;
-import org.igov.model.subject.SubjectHuman;
 import org.igov.model.subject.SubjectUser;
 import org.igov.model.subject.VSubjectGroupParentNode;
-import org.igov.model.subject.organ.SubjectOrgan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +37,7 @@ import com.google.common.collect.Lists;
  * @author inna
  */
 @Service
-public class SubjectGroupTreeService_old {
+public class SubjectGroupTreeService_new {
 
 	private static final String ORGAN = "Organ";
 	private static final String HUMAN = "Human";
@@ -47,7 +45,7 @@ public class SubjectGroupTreeService_old {
 	 * флаг определяющий, что на вход был конкрентный тип ORGAN или HUMAN
 	 */
 	private static boolean isSubjectType = false;
-	private static final Log LOG = LogFactory.getLog(SubjectGroupTreeService_old.class);
+	private static final Log LOG = LogFactory.getLog(SubjectGroupTreeService_new.class);
 	private static final long FAKE_ROOT_SUBJECT_ID = 0;
 
 	@Autowired
@@ -76,63 +74,51 @@ public class SubjectGroupTreeService_old {
 		Map<String, Long> mapGroupActiviti = new HashMap<>();
 		VSubjectGroupParentNode parentSubjectGroup = null;
 		Set<Long> idParentList = new LinkedHashSet<>();
-		List<SubjectHuman> subjectHumans = null;
-    	List<SubjectOrgan> subjectOrgans = null;
-    	
-    	if(HUMAN.equals(sSubjectType)) {
-    		subjectHumans = new ArrayList<>(baseEntityDao.findAll(SubjectHuman.class));
+/*    	if(HUMAN.equals(sSubjectType)) {
     		isSubjectType = true;
-    	}
-    	
-    	if(ORGAN.equals(sSubjectType)) {
-    		subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
-    		isSubjectType = true;
-    	}
-    	if(subjectHumans!=null && !subjectHumans.isEmpty()) {
-    		List<Long> subjectHumansIdSubj = Lists
-					.newArrayList(Collections2.transform(subjectHumans, new Function<SubjectHuman, Long>() {
-						@Override
-						public Long apply(SubjectHuman subjectHuman) {
-							return subjectHuman.getoSubject().getId();
-						}
-					}));
     		subjectGroupRelations = Lists
                     .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
                         @Override
                         public boolean apply(SubjectGroupTree subjectGroupTree) {
                             // получить только отфильтрованный
                             // список по Humans
+                        	if(Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject())
+                            		&& subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getoSubjectHuman().getId()!=null) {
+                        		
+                        		resSubjectTypeList.add(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId());
+                        		
+                        	}
                         	return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject()) 
                             		&& Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
-                            		&& subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
-                            		&& subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
+                            		&& subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getoSubjectHuman().getId()!=null
+                            		&& subjectGroupTree.getoSubjectGroup_Child().getoSubject().getoSubjectHuman().getId()!=null;
                         }
                     }));
     		
-    		resSubjectTypeList.addAll(subjectHumansIdSubj);
 		}
-    	if(subjectOrgans!=null && !subjectOrgans.isEmpty()) {
-    		List<Long> subjectOrgansIdSubj = Lists
-					.newArrayList(Collections2.transform(subjectOrgans, new Function<SubjectOrgan, Long>() {
-						@Override
-						public Long apply(SubjectOrgan subjectOrgan) {
-							return subjectOrgan.getoSubject().getId();
-						}
-					}));
+    	
+    	if(ORGAN.equals(sSubjectType)) {
+    		isSubjectType = true;
     		subjectGroupRelations = Lists
                     .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
                         @Override
                         public boolean apply(SubjectGroupTree subjectGroupTree) {
                             // получить только отфильтрованный
-                            // список по Organs
-                            return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject()) 
+                            // список по Humans
+                        	if(Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject())
+                            		&& subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getoSubjectOrgan().getId()!=null) {
+                        		
+                        		resSubjectTypeList.add(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId());
+                        		
+                        	}
+                        	return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject()) 
                             		&& Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
-                            		&& subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
-                            		&& subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
+                            		&& subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getoSubjectOrgan().getId()!=null
+                            		&& subjectGroupTree.getoSubjectGroup_Child().getoSubject().getoSubjectOrgan().getId()!=null;
                         }
                     }));
-    		resSubjectTypeList.addAll(subjectOrgansIdSubj);
-		}
+    		
+		}*/
 		for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 			
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
