@@ -81,8 +81,6 @@ public class ObjectPlaceCommonService {
 	    return "{}";
 	}
 
-	sFind = sFind.trim();
-
 	LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
 
 	if (sID_SubPlace_PB == null) {
@@ -165,6 +163,8 @@ public class ObjectPlaceCommonService {
     private String searchByName(String sUrl, String idParent, ObjectPlaceType type, String sName,
 	    ObjectPlaceLang language) {
 	LOG.debug("sUrl={}, idParent={}, type={}, sName={}, language={}", sUrl, idParent, type, sName, language);
+
+	sName = sName.trim();
 
 	String sessionId;
 	try {
