@@ -19,7 +19,8 @@
           <activiti:value id="sTechnic" name="підлягає технічному переобладнанню"></activiti:value>
           <activiti:value id="sBuild" name="будується"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDocTime" name="Термін, на який запитуються величини фонових концентрацій" type="enum" required="true">
+        <activiti:formProperty id="asDocTime" name="Термін, на який запитуються величини фонових концентрацій" type="enum" required="true" default="sNo">
+          <activiti:value id="sNo" name=" "></activiti:value>
           <activiti:value id="sFirst" name="строки вводу першої черги будівництва"></activiti:value>
           <activiti:value id="sDone" name="розвитку підприємства на повну потужність"></activiti:value>
         </activiti:formProperty>
@@ -30,11 +31,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="&lt;a href=&quot; https://drive.google.com/open?id=1eT5aMmb8GxhzcPL4kUzWJQ7BNJ9WtggAnqftMVvi-SM&quot; target=&quot;_blank&quot;&gt;Вимоги до характеристики розташування проммайданчика&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="nDocComp" name="Характеристика розташування проммайданчика підприємства на карті-схемі міста підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asDocTime&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCompType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sBuild'&quot;}}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asDocTime&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCompType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sBuild'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса департаменту екології" type="invisible" default="м. Дніпро, вул. Лабораторна, 69"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон департаменту екології" type="invisible" default="(0562) 46-32-81 або (0562) 46-41-61"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Графік роботи департаменту екології" type="invisible" default="понеділок-п'ятниця з 9:00 до 18:00,&lt;br&gt; перерва з 13:00 до 14:00"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Графік роботи департаменту екології" type="invisible" default="Графік роботи: понеділок-п'ятниця з 9:00 до 18:00,&lt;br&gt; перерва з 13:00 до 14:00"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва департаменту екології" type="invisible" default="Департамент екології та природних ресурсів&lt;br&gt;Дніпропетровської ОДА"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -73,6 +74,7 @@
           <activiti:value id="sBuild" name="будується"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asDocTime" name="Термін, на який запитуються величини фонових концентрацій" type="enum" writable="false">
+          <activiti:value id="sNo" name=" "></activiti:value>
           <activiti:value id="sFirst" name="строки вводу першої черги будівництва"></activiti:value>
           <activiti:value id="sDone" name="розвитку підприємства на повну потужність"></activiti:value>
         </activiti:formProperty>
@@ -86,7 +88,6 @@
           <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для отримання довідки у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asDocTime&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCompType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sBuild'&quot;}}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -118,8 +119,7 @@
 			</p>
 			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
 			[pattern/mail/new_design/_common_signature_start.html]
-			Департамент екології та природних ресурсів<br>
-			Дніпропетровської ОДА.</p>
+			${sNameOrgan}.</p>
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
@@ -156,8 +156,7 @@
 			Приблизний строк виконання 30 календарних днів.</p>
 			<p>Якщо у Вас будуть питання - можете звернутись за телефоном ${sPhoneOrgan}.</p>
 			[pattern/mail/new_design/_common_signature_start.html]
-			Департамент екології та природних ресурсів<br>
-			Дніпропетровської ОДА,<br>
+			${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -190,6 +189,7 @@
           <activiti:value id="sBuild" name="будується"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asDocTime" name="Термін, на який запитуються величини фонових концентрацій" type="enum" writable="false">
+          <activiti:value id="sNo" name=" "></activiti:value>
           <activiti:value id="sFirst" name="строки вводу першої черги будівництва"></activiti:value>
           <activiti:value id="sDone" name="розвитку підприємства на повну потужність"></activiti:value>
         </activiti:formProperty>
@@ -199,7 +199,7 @@
           <activiti:value id="sPost" name="поштою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nDovidka" name="Довідка підписана ЕЦП" type="file"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asDocTime&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCompType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sBuild'&quot;}}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asDocTime&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCompType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'будується'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nDocComp}]]></activiti:expression>
@@ -212,7 +212,7 @@
     <sequenceFlow id="flow51" sourceRef="exclusivegateway2" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asGetType=='sPost'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="Довідка готова, надіслано поштою" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask4" name="Довідка готова, надіслано поштою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -230,11 +230,10 @@
 			В додатках до листа ви зможете знайти довідку підписану ЕЦП.
 			</p> 
 			<p>
-			Паперовий варіант буде надіслано Вам за адресою: ${sAddress}
+			Паперовий варіант буде надіслано Вам за адресою: ${sOrgAdress}
 			</p> 
 			[pattern/mail/new_design/_common_signature_start.html]
-			Департамент екології та природних ресурсів<br>
-			Дніпропетровської ОДА,<br>
+			${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -254,7 +253,7 @@
     <sequenceFlow id="flow52" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asGetType=='sMyself'}]]></conditionExpression>    
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Довідка готова, забрати особисто" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="Довідка готова, забрати особисто" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -272,12 +271,11 @@
 			В додатках до листа ви зможете знайти довідку підписану ЕЦП.
 			</p> 
 			<p>
-			Щоб отримати її особисто Вам необхадно з'явитись за адресою: ${sEcoAdress};
-			{sWorkTime}
+			Щоб отримати її особисто Вам необхідно з'явитись за адресою: ${sAddress};<br>
+			${sWorkTime}.
 			</p> 
 			[pattern/mail/new_design/_common_signature_start.html]
-			Департамент екології та природних ресурсів<br>
-			Дніпропетровської ОДА,<br>
+			${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
