@@ -726,7 +726,7 @@
         <activiti:formProperty id="sKVED30" name="Код тридцятого виду діяльності" type="string" default=""></activiti:formProperty>
 
         <activiti:formProperty id="sNameService" type="invisible" default="Державна реєстрація створення юридичної особи"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dnepr_cnap_560_ur_print.html"></activiti:formProperty>
         </extensionElements>
     </startEvent>
@@ -939,13 +939,10 @@
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_560_ur_print.html]" type="invisible" default="Заява про реєстрацію" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fAppWithECP},${fVarDod2},${fVarDod1},${fDoc01},${fVarUstDoc}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
+
+		</extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">

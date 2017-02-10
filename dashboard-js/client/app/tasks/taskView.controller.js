@@ -280,7 +280,7 @@
         $scope.taskId = oTask.id;
         $scope.tabHistoryAppeal = 'appeal';
         $scope.nID_Process = oTask.processInstanceId;
-        $scope.markers = ValidationService.getValidationMarkers();
+        $scope.markers = iGovMarkers.getMarkers();
         $scope.bHasEmail = false;
         $scope.isClarifySending = false;
         $scope.tableIsInvalid = false;
@@ -301,7 +301,7 @@
               //debugger;
             }
           });
-          ValidationService.validateByMarkers(form, null, true, oValidationFormData);
+          ValidationService.validateByMarkers(form, $scope.markers, true, oValidationFormData);
           return form.$valid && bValid;
         };
 
@@ -360,7 +360,7 @@
                 console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
               }
               if (sourceObj !== null) {
-                _.merge(iGovMarkers.getMarkers(), sourceObj, function (destVal, sourceVal) {
+                _.merge($scope.markers, sourceObj, function (destVal, sourceVal) {
                   if (_.isArray(sourceVal)) {
                     return sourceVal;
                   }
@@ -714,30 +714,30 @@
               }
             if ((!documentUnpopulatedFields && unpopulatedFields.length > 0)
                 || (documentUnpopulatedFields && documentUnpopulatedFields.length > 0)) {
-              // var errorMessage = 'Будь ласка, заповніть поля: ';
+              var errorMessage = 'Будь ласка, заповніть поля: ';
 
-              // if (unpopulatedFields.length == 1) {
-              //
-              //   var nameToAdd = unpopulatedFields[0].name;
-              //   if (nameToAdd.length > 50) {
-              //     nameToAdd = nameToAdd.substr(0, 50) + "...";
-              //   }
-              //
-              //   errorMessage = "Будь ласка, заповніть полe '" + nameToAdd + "'";
-              // }
-              // else {
-              //   unpopulatedFields.forEach(function (field) {
-              //
-              //     var nameToAdd = field.name;
-              //     if (nameToAdd.length > 50) {
-              //       nameToAdd = nameToAdd.substr(0, 50) + "...";
-              //     }
-              //     errorMessage = errorMessage + "'" + nameToAdd + "',<br />";
-              //   });
-              //   var comaIndex = errorMessage.lastIndexOf(',');
-              //   errorMessage = errorMessage.substr(0, comaIndex);
-              // }
-              // Modal.inform.error()(errorMessage);
+              if (unpopulatedFields.length == 1) {
+
+                var nameToAdd = unpopulatedFields[0].name;
+                if (nameToAdd.length > 50) {
+                  nameToAdd = nameToAdd.substr(0, 50) + "...";
+                }
+
+                errorMessage = "Будь ласка, заповніть полe '" + nameToAdd + "'";
+              }
+              else {
+                unpopulatedFields.forEach(function (field) {
+
+                  var nameToAdd = field.name;
+                  if (nameToAdd.length > 50) {
+                    nameToAdd = nameToAdd.substr(0, 50) + "...";
+                  }
+                  errorMessage = errorMessage + "'" + nameToAdd + "',<br />";
+                });
+                var comaIndex = errorMessage.lastIndexOf(',');
+                errorMessage = errorMessage.substr(0, comaIndex);
+              }
+              console.error(errorMessage);
               setTimeout(function () {
                 angular.element('.submitted').first().focus();
               },100);
@@ -1132,7 +1132,7 @@
         idMatch();
 
         $scope.addRow = function (form, id, index) {
-          ValidationService.validateByMarkers(form, null, true, null, true);
+          ValidationService.validateByMarkers(form, $scope.markers, true, null, true);
           if (!form.$invalid) {
             $scope.tableIsInvalid = false;
             TableService.addRow(id, $scope.taskForm);

@@ -53,7 +53,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
                 LOG.error("aFieldInheritedAttachmentID field is not specified!");
                 return;
             }
-
+            
             /*List<Attachment> attachments = getAttachmentsFromParentTasks(oExecution);
             asID_Attachment_ToAdd = getInheritedAttachmentIdsFromTask(attachments,
                     sInheritedAttachmentsIds);
@@ -64,28 +64,36 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             LOG.info("Current attachments size: {}", currentAttachments.size());
 
             for(Attachment attachment: currentAttachments) {
-                LOG.info("CurrentAttachment: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+                LOG.info("CurrentAttachment: Attachment task id {}; Attachment info: {}; attachment ID: {}", 
+                        attachment.getTaskId(), attachment.getDescription(), attachment.getId());
             }
 
             List<Attachment> attachments = findAttachments(sInheritedAttachmentsIds, oExecution.getId());
             for(Attachment attachment: attachments) {
-                LOG.info("Attachments: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+                LOG.info("Attachments: Attachment task id: {}; Attachment info: {}; attachment ID: {}", 
+                         attachment.getTaskId(), attachment.getDescription(), attachment.getId());
             }
-
-
+            
+            
             for(Attachment attachment: currentAttachments) {
                 if(attachments.contains(attachment)){
                     boolean deleted = attachments.remove(attachment);
                     if(deleted) {
-                        LOG.info("Duplicate is successfully deleted");
+                        
+                        LOG.info("Duplicate: getTaskId: {} ", attachment.getTaskId());
                     }
                 }
-
             }
 
             LOG.info("Attachments: attachments size={}", attachments.size());
 
             addAttachmentsToCurrentTask(attachments, oTask);
+            
+            /*List<Attachment> aAttachments = taskService.getProcessInstanceAttachments(oTask.getProcessInstanceId());
+            for(Attachment attachment: aAttachments) {
+                LOG.info("Attachment after adding: Attachment info: {}\n; attachment ID: {}", attachment.getDescription(), attachment.getId());
+            }*/
+            
         } catch (Exception oException) {
             LOG.error("FAIL: {}", oException.getMessage());
             LOG.trace("FAIL:", oException);
@@ -107,7 +115,6 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
                     .save()
                     ;
         }
-
     }
 
 
