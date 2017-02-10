@@ -74,7 +74,7 @@ public class SubjectGroupTreeService {
 		Map<String, Long> mapGroupActiviti = new HashMap<>();
 		VSubjectGroupParentNode parentSubjectGroup = null;
 		Set<Long> idParentList = new LinkedHashSet<>();
-    	if(HUMAN.equals(sSubjectType)) {
+/*    	if(HUMAN.equals(sSubjectType)) {
     		isSubjectType = true;
     		subjectGroupRelations = Lists
                     .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
@@ -118,7 +118,7 @@ public class SubjectGroupTreeService {
                         }
                     }));
     		
-		}
+		}*/
 		for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 			
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();

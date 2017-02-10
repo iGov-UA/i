@@ -33,7 +33,7 @@ public class Subject extends AbstractEntity {
     @JsonProperty(value = "aSubjectAccountContact")
     private transient List<SubjectContact> aSubjectAccountContact;
     
-    @JsonProperty(value = "oSubjectHuman")
+/*    @JsonProperty(value = "oSubjectHuman")
     @OneToOne
     @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "nID_SubjectHuman")
@@ -43,10 +43,10 @@ public class Subject extends AbstractEntity {
     @OneToOne
     @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "nID_SubjectOrgan")
-    private SubjectOrgan oSubjectOrgan;
+    private SubjectOrgan oSubjectOrgan;*/
     
     
-	public SubjectHuman getoSubjectHuman() {
+/*	public SubjectHuman getoSubjectHuman() {
 		return oSubjectHuman;
 	}
 
@@ -60,7 +60,7 @@ public class Subject extends AbstractEntity {
 
 	public void setoSubjectOrgan(SubjectOrgan oSubjectOrgan) {
 		this.oSubjectOrgan = oSubjectOrgan;
-	}
+	}*/
 
 	public String getsID() {
         return sID;
