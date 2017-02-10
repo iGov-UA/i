@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import org.activiti.engine.RuntimeService;
 
 /**
@@ -64,10 +65,18 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             addAttachmentsToCurrentTask(asID_Attachment_ToAdd, oTask);*/
 
             //Issue #1441: we need to keep list of attachments to current task in order to properly
-            List<Attachment> currentAttachments = fileTaskUploadListener.getaAttachment();
+            Map<String, List<Attachment>> currentAttachments = fileTaskUploadListener.getaAttachment();
             LOG.info("Current attachments size: {}", currentAttachments.size());
-
-            for(Attachment attachment: currentAttachments) {
+            
+            for(Attachment attach :  currentAttachments.get("added")){
+                LOG.info("added id attach is: " + attach.getId());
+            }
+            
+            for(Attachment attach :  currentAttachments.get("not_added")){
+                LOG.info("not added id attach is: " + attach.getId());
+            }
+            
+            /*for(Attachment attachment: currentAttachments) {
                 LOG.info("CurrentAttachment: Attachment process id: {}; Attachment time id: {}; Attachment task id {}; Attachment info: {}; attachment ID: {}", 
                         attachment.getProcessInstanceId(), attachment.getTime().toString(),
                         attachment.getTaskId(), attachment.getDescription(), attachment.getId());
@@ -93,14 +102,15 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
                 }
             }
             
-            /*for(Attachment attach : attachments){
+            for(Attachment attach : attachments){
                 taskService.deleteAttachment(attach.getId());
                 LOG.info("attach with id {} is deleted!", attach.getId());
-            }*/
+            }
             
             LOG.info("Attachments: attachments size={}", attachments.size());
-
-            addAttachmentsToCurrentTask(attachments, oTask);
+            */
+            
+            addAttachmentsToCurrentTask(currentAttachments.get("added"), oTask);
             
             /*List<Attachment> aAttachments = taskService.getProcessInstanceAttachments(oTask.getProcessInstanceId());
             for(Attachment attachment: aAttachments) {

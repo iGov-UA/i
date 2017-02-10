@@ -318,7 +318,7 @@ public abstract class AbstractModelTask {
      * @param oTask where we add Attachments.
      * @return list of Attachment
      */
-    public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask) {
+    public Map<String, List<Attachment>> addAttachmentsToTask(FormData oFormData, DelegateTask oTask) {
         LOG.info("addAttachmentsToTask oTask: " + oTask.getId() + " process: " + oTask.getProcessInstanceId());
         DelegateExecution oExecution = oTask.getExecution();
         List<Attachment> aAttachment = new LinkedList<>();
@@ -332,6 +332,10 @@ public abstract class AbstractModelTask {
         LOG.info("(asFieldName={})", asFieldName);
         //List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
         
+        List<Attachment> aAddedAttachements = new LinkedList<>();
+        List<Attachment> aNotAddedAttachements = new LinkedList<>();
+        Map<String, List<Attachment>> mRes = new HashMap<>();
+
         if (!asFieldValue.isEmpty()) {
             int n = 0;
             for (String sFieldValue : asFieldValue) {
@@ -396,7 +400,8 @@ public abstract class AbstractModelTask {
                             if (oAttachment != null) {
                                 LOG.info("Added attachment with ID {} to the task:process {}:{}",
                                         oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
-                                aAttachment.add(oAttachment);
+                                //aAttachment.add(oAttachment);
+                                aAddedAttachements.add(oAttachment);
                                 String nID_Attachment = oAttachment.getId();
                                 LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
                                         sID_Field, nID_Attachment);
@@ -428,7 +433,8 @@ public abstract class AbstractModelTask {
                             try {
                                 LOG.info("Checking whether attachment with ID {} has already been saved and this is attachment object ID", sFieldValue);
                                 Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sFieldValue);
-                                aAttachment.add(oAttachment);
+                                //aAttachment.add(oAttachment);
+                                aNotAddedAttachements.add(oAttachment);
                             } catch (Exception oException) {
                                 LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sFieldValue);
                                 new Log(oException, LOG)//this.getClass()
@@ -458,8 +464,9 @@ public abstract class AbstractModelTask {
             }
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
-        
-        return aAttachment;
+        mRes.put("added", aAddedAttachements);
+        mRes.put("not_added", aNotAddedAttachements);
+        return mRes;
 
     }
 
