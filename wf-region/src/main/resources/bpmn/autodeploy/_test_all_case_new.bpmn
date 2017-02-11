@@ -4,6 +4,8 @@
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Виберіть відділення" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="lVideo" name=" " type="string" default="&lt;video autoplay=&quot;autoplay&quot; id=&quot;backVideo&quot; loop=&quot;loop&quot; preload=&quot;auto&quot;&gt;&lt;source src=&quot;http://ym-web.narod.ru/PlayList/fon2.mkv&quot; /&gt;&lt;/video&gt;"></activiti:formProperty>
+
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -62,8 +64,10 @@
         <activiti:formProperty id="test_all_case_start_style" name="markers test_all_case_start_style" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_start_style.json')}"></activiti:formProperty>
         <activiti:formProperty id="test_all_case_start" name="markers test_all_case_start" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_start.json')}"></activiti:formProperty>
 
+        <activiti:formProperty id="test_all_case_style_template" name="markers template" type="markers" default="${markerService.loadFromFile('templates/temp_video.json')}"></activiti:formProperty>
 
-        <activiti:formProperty id="test_all_case_start_style_checkbox" name="markers test_all_case_start_style" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_start_style_checkbox.json')}"></activiti:formProperty>
+
+        <activiti:formProperty id="test_all_case_start_style_checkbox" name="markers test_all_case_start_style" type="markers" default="${markerService.loadFromFile('templates/all_checkbox_green.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Перевірка тестових даних (новий лістнер)" activiti:candidateGroups="tester">
