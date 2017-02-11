@@ -77,7 +77,7 @@ public class ObjectPlaceCommonService {
 
     public String getSubPlaces_(String sID_SubPlace_PB, String sFind) {
 	if (!isReadyWork) {
-	    LOG.warn("Сервис не готов к отсылке сообщений.");
+	    LOG.warn("Сервис не готов к работе.");
 	    return "{}";
 	}
 
@@ -168,7 +168,7 @@ public class ObjectPlaceCommonService {
 
 	String sessionId;
 	try {
-	    sessionId = prominSession_Singleton.getSID_Auth_PB_SMS();
+	    sessionId = prominSession_Singleton.getSid_Auth_PB_ObjectSubPlace();
 	} catch (Exception e) {
 	    LOG.error("Error get Session ID", e);
 	    return NULL_RESPONSE;

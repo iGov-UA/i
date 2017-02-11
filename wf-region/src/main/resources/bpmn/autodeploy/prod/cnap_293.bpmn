@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="cnap_293" name="Видача копій, витягів з розпоряджень міського (селищного, районного) голови, рішень, прийнятих міською (селищною, районною) радою та виконавчим комітетом" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 18.08.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 09.02.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
@@ -124,11 +124,7 @@
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Настроювання прінт-форми" type="markers" default="${markerService.loadFromFile('mvk/cnap_293_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_293_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}</activiti:expression>
-          </activiti:field>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
         </activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -232,7 +228,6 @@
         <activiti:formProperty id="sShapkaGolova" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Настроювання прінт-форми" type="markers" default="${markerService.loadFromFile('mvk/cnap_293_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_293_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${bankId_scan_passport}</activiti:expression>
