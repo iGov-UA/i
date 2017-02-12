@@ -999,4 +999,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
         $scope.fillSelfPrevious();
       }
+
+      $rootScope.queue = {
+        previousOrganJoin: {}
+      }
 });

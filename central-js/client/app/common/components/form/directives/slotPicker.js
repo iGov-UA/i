@@ -171,6 +171,23 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
         } else if (isQueueDataType.iGov) {
 
+          if (parseInt(departmentParam.value) > 0 && scope.formData.params.sID_Public_SubjectOrganJoin && scope.formData.params.sID_Public_SubjectOrganJoin.nID){
+            console.log('data.nID_SubjectOrganDepartment = ' + parseInt(departmentParam.value) + '; sID_Public_SubjectOrganJoin = ' + scope.formData.params.sID_Public_SubjectOrganJoin.nID);
+            var hKey = '' + parseInt(departmentParam.value);
+            if(scope.$root.queue.previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID]){
+              if(scope.$root.queue.previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID] === departmentParam.value){
+                //return;
+              }
+            } else {
+              for(var checkKey in scope.$root.queue.previousOrganJoin) if (scope.$root.queue.previousOrganJoin.hasOwnProperty(checkKey)){
+                if (scope.$root.queue.previousOrganJoin[checkKey] === departmentParam.value){
+                  return;
+                }
+              }
+              scope.$root.queue.previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID] = departmentParam.value;
+            }
+          }
+
           data = {
             nID_Server: scope.serviceData.nID_Server,
             nID_Service: (scope && scope.service && scope.service!==null ? scope.service.nID : null)
@@ -314,7 +331,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         updateReservedSlot(newValue);
       });
 
-      scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue) {
+      scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
         resetData();
         scope.loadList();
       });
