@@ -154,7 +154,6 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
       var departmentProperty = 'nID_Department_' + scope.property.id;
       var departmentParam = scope.formData.params[departmentProperty];
-      var previousOrganJoin = {};
 
       scope.loadList = function(){
         var data = {};
@@ -175,12 +174,17 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           if (parseInt(departmentParam.value) > 0 && scope.formData.params.sID_Public_SubjectOrganJoin && scope.formData.params.sID_Public_SubjectOrganJoin.nID){
             console.log('data.nID_SubjectOrganDepartment = ' + parseInt(departmentParam.value) + '; sID_Public_SubjectOrganJoin = ' + scope.formData.params.sID_Public_SubjectOrganJoin.nID);
             var hKey = '' + parseInt(departmentParam.value);
-            if(previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID]){
-              if(previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID] === departmentParam.value){
+            if(scope.$root.queue.previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID]){
+              if(scope.$root.queue.previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID] === departmentParam.value){
                 return;
               }
             } else {
-              previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID] = departmentParam.value;
+              for(var checkKey in scope.$root.queue.previousOrganJoin) if (scope.$root.queue.previousOrganJoin.hasOwnProperty(checkKey)){
+                if (scope.$root.queue.previousOrganJoin[checkKey] === departmentParam.value){
+                  return;
+                }
+              }
+              scope.$root.queue.previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID] = departmentParam.value;
             }
           }
 
@@ -327,7 +331,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         updateReservedSlot(newValue);
       });
 
-      scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue) {
+      scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
         resetData();
         scope.loadList();
       });
