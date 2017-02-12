@@ -3,13 +3,17 @@
   <process id="eco_1556_EcoEkspert" name="Видача висновку державної екологічної експертизи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sText1" name=" " type="label" default="УВАГА! Послуга запущена тільки для подачі заяв в обласні адміністрації! &lt;br&gt; Запуск на всю країну для подання в Київ очікується найближчим часом"></activiti:formProperty>
+        
         <activiti:formProperty id="asSubOrgan" name="Куди ви хочете подати заяву?" type="enum" required="true">
           <activiti:value id="sEnamMinEco" name="В Київ (в міністерство)"></activiti:value>
-          <activiti:value id="sEnamODA" name="В ОДА"></activiti:value>
+          <activiti:value id="sEnamODA" name="В ОДА (Департамент екології та природних ресурсів)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asOblast" name="Оберіть область" type="enum" required="true">
           <activiti:value id="sEnamDnipro" name="Дніпропетровська"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sTextColor1" name="Орган в якому відбудеться прийом документів" type="label" default="&lt;font color='#458b00'&gt;&lt;b&gt;Лівобережний ЦНАП (м. Дніпро, пр. Слобожанський 31Д)&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
+        
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible" default="266"></activiti:formProperty>
         <activiti:formProperty id="markerEcoViz" name="marker" type="markers" default="${markerService.loadFromFile('eco/eco_1556_EcoEkspertODA.json')}"></activiti:formProperty>
@@ -28,26 +32,41 @@
           <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Інформація про о'бєкт експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;tNazvObj&quot;],&quot;sValue&quot;:&quot;Інформація про о'бєкт експертизи&quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про о'бєкт експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sText2&quot;],&quot;sValue&quot;:&quot;Інформація про о'бєкт експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sText2" name=" " type="label" default="УВАГА! Не підлягають експертизі о'бєкти нового будівництва та реконструкції"></activiti:formProperty>
         <activiti:formProperty id="tNazvObj" name="Повна назва об'єкта експертизи;(наприклад: розчистка русла р.Самари від алювіальних відкладів біля с.Веселе Трипільського району Полтавської області)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdresObj" name="Місце розташування; (вкажіть повну адресу) " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="tProectInfo" name="Інформація про організацію, що виготовила проект;(назва, адреса, індентифікаційний код)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_3" name="Документація для експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sLabelDBN2003&quot;],&quot;sValue&quot;:&quot;Документація для експертизи виготовляється відповідно до державних будівельних норм&quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Інформація про документ, що посвідчує право власності чи користування земельною ділянкою" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;asZemVlasn&quot;],&quot;sValue&quot;:&quot;Документ, що посвідчує право власності чи користування земельною ділянкою&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asZemVlasn" name="Яке право ви маєте на земельну ділянку?" type="enum" required="true">
+          <activiti:value id="sEnamVlasn" name="Право власності"></activiti:value>
+          <activiti:value id="sEnamKor" name="Право користування"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="ZemDokData" name="Дата документу що посвідчує ваше право на ділянку" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Zem" name="Серія і номер документу що посвідчує ваше право на ділянку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ZemKadN" name="Кадастровий номер ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markerZem" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekZem.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_4" name="Інформація про організацію що виготовила ОВНС" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;OVNSNAzva&quot;],&quot;sValue&quot;:&quot;Інформація про організацію що виготовила ОВНС&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="OVNSNAzva" name="Повна назва організації що виготовила ОВНС;(назва відповідно статутних документів)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="OVNS_EDRPOU" name="Код ЄДРПОУ" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="OVNSVukPIB" name="Прізвище, ім’я та по батькові відповідальної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="OVNSVukKvalSert" name="Серія та номер кваліфікаційного сертифікату" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_5" name="Документація для експертизи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;sLabelDBN2003&quot;],&quot;sValue&quot;:&quot;Документація для експертизи виготовляється відповідно до державних будівельних норм&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sLabelDBN2003" name=" " type="label" default="&lt;a href=&quot;http://dbn.at.ua/load/normativy/dbn/1-1-0-242 &quot; target=&quot;_blank&quot;&gt;Державні Будівельні Норми А.2.2.-1-2003&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Том (книга, розділ) «Оцінка впливів на навколишнє середовище»;(інформація, як проект вплине на серидовище згідно ДБН А.2.2.-1-2003)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Заява про наміри;(публікація в друкованих ЗМІ про намір реалізувати проект згідно п.1.6 ДБН А.2.2.-1-2003)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc3" name="Підтвердження публікації «заяви про наміри»;(сканкопія документу що підтверджує публікацію згідно п.1.6 ДБН А.2.2.-1-2003)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc4" name="Заява про екологічні наслідки діяльності;(публікація в друкованих ЗМІ про наслідки реалізації проекту згідно п.4 ДБН А.2.2.-1-2003)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc5" name="Підтвердження публікації «заяви про екологічні наслідки діяльності» в ЗМІ;(сканкопія документу що підтверджує публікацію відповідно ст. 10 і 35 ЗУ Про екологічну експертизу)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asChekBud" name="Чи відноситься об'єкт екпетризи до категорії нове будівництво або капітальний ремонт?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('eco/eco_1556_EcoEkspert.json')}"></activiti:formProperty>
         <activiti:formProperty id="sLabelDBN2014" name=" " type="label" default="посилання на &lt;a href=&quot;http://dbn.at.ua/load/normativy/dbn/dbn_a_2_2_3_2014/1-1-0-1168 &quot; target=&quot;_blank&quot;&gt;Державні Будівельні Норми А.2.2-3-2014&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sDoc6" name="Загальна пояснювальна записка та основні креслення (марки ГП, ЗВК, ТХ);(план або схема проекту з поясненням згідно ДБН А.2.2-3-2014)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDoc7" name="Погодження з іншими органами (якщо такі є);(наприклад відповідь з державного агенства водних ресурсів, що вони не мають заперечень проти проекту)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="form_signed_all" name=" " type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc7" name="Погодження з державними органами (якщо необхідно);(погодження з МОЗ, Держнаглядохоронпраці, Управлінням пожежної охорони МВС)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc8" name="Протокол громадських слухань;(якщо слухання не відбулись, надайте акт про неявку на слухання)" type="file"></activiti:formProperty>
+        
         <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;sNameOrgan&quot;,&quot;sMailClerk&quot;,&quot;sAddress&quot;,&quot;sWorkTime&quot;,&quot;sPhoneOrgan&quot;,&quot;sShapka&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Міністерство екології та природних ресурсів України"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
