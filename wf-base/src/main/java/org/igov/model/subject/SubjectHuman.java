@@ -1,15 +1,23 @@
 package org.igov.model.subject;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
-
 import java.util.List;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.NamedEntity;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @javax.persistence.Entity
 @AttributeOverrides({
@@ -44,6 +52,7 @@ public class SubjectHuman extends NamedEntity {
     private List<SubjectHumanRole> aSubjectHumanRole = new ArrayList<>();
 
     @JsonProperty(value = "oSubject")
+  //  @Lazy(true)
     @OneToOne
     @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "nID_Subject", nullable = false)
