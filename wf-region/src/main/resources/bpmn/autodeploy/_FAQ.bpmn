@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_FAQ" name="Маю питання щодо послуги" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sNameCitizen" name="Ваше ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asExistentRequest" name="У Вас питання щодо існуючого звернення?" type="enum" required="true">
+          <activiti:value id="sEnumExistentRequest_yes" name="Так"></activiti:value>
+          <activiti:value id="sEnumExistentRequest_no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRequestNumber" name="Номер звернення" type="string" default="0-" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asRegionName" name="Оберіть, будь ласка, область, де Ви замовляли послугу" type="enum">
+          <activiti:value id="sEnumRegionName_1" name="Автономна республіка Крим "></activiti:value>
+          <activiti:value id="sEnumRegionName_2" name=" Вінницька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_3" name=" Волинська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_4" name=" Дніпропетровська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_5" name=" Донецька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_6" name=" Житомирська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_7" name=" Закарпатська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_8" name=" Запорізька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_9" name=" Івано-Франківська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_10" name=" Київська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_11" name=" Кіровоградська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_12" name=" Луганська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_13" name=" Львівська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_14" name=" Миколаївська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_15" name=" Одеська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_16" name=" Полтавська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_17" name=" Рівненська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_18" name=" Сумська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_19" name=" Тернопільська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_20" name=" Харківська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_21" name=" Херсонська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_22" name=" Хмельницька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_23" name=" Черкаська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_24" name=" Чернівецька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_25" name=" Чернігівська область "></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCityName" name="Вкажіть, будь ласка, місто/район, де Ви замовляли послугу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sServiceName" name="Вкажіть, будь ласка, назву послуги" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sProblemDescription" name="Опишіть проблему, будь ласка" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Screen" name="Якщо бажаєте, можете додати скрін помилки" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Show" type="markers" default="${markerService.loadFromFile('FAQ/FAQ_show.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="Первичная обработка" activiti:candidateGroups="request">
+      <extensionElements>
+        <activiti:formProperty id="sNameCitizen" name="Ваше ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asExistentRequest" name="У Вас питання щодо існуючого звернення?" type="enum" writable="false">
+          <activiti:value id="sEnumExistentRequest_yes" name="Так"></activiti:value>
+          <activiti:value id="sEnumExistentRequest_no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRequestNumber" name="Номер звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asRegionName" name="Оберіть, будь ласка, область, де Ви замовляли послугу" type="enum" writable="false">
+          <activiti:value id="sEnumRegionName_1" name="Автономна республіка Крим "></activiti:value>
+          <activiti:value id="sEnumRegionName_2" name=" Вінницька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_3" name=" Волинська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_4" name=" Дніпропетровська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_5" name=" Донецька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_6" name=" Житомирська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_7" name=" Закарпатська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_8" name=" Запорізька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_9" name=" Івано-Франківська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_10" name=" Київська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_11" name=" Кіровоградська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_12" name=" Луганська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_13" name=" Львівська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_14" name=" Миколаївська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_15" name=" Одеська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_16" name=" Полтавська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_17" name=" Рівненська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_18" name=" Сумська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_19" name=" Тернопільська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_20" name=" Харківська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_21" name=" Херсонська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_22" name=" Хмельницька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_23" name=" Черкаська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_24" name=" Чернівецька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_25" name=" Чернігівська область "></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCityName" name="Вкажіть, будь ласка, місто/район, де Ви замовляли послугу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sServiceName" name="Вкажіть, будь ласка, назву послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sProblemDescription" name="Опишіть проблему, будь ласка" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asRequestType" name="Тип звернення" type="enum" required="true">
+          <activiti:value id="sEnumRequestType_1" name="Питання про субсидію"></activiti:value>
+          <activiti:value id="sEnumRequestType_2" name="Паспорт ID"></activiti:value>
+          <activiti:value id="sEnumRequestType_3" name="Паспорт закордонний"></activiti:value>
+          <activiti:value id="sEnumRequestType_4" name="Питання про ФОП і ЮО"></activiti:value>
+          <activiti:value id="sEnumRequestType_5" name="Довідка про несудимість"></activiti:value>
+          <activiti:value id="sEnumRequestType_6" name="Технічні помилки"></activiti:value>
+          <activiti:value id="sEnumRequestType_7" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAnswer" name="Відповідь громадянину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCommentToAnalitic" name="Коментар для аналітика" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asDelegateTo" name="Тип звернення" type="enum">
+          <activiti:value id="julyprodan" name="Продан Юлія"></activiti:value>
+          <activiti:value id="tester" name="Тестер"></activiti:value>
+          <activiti:value id="kermit" name="Кермит"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="usertask2" name="User Task" activiti:assignee="${asDelegateTo}">
+      <extensionElements>
+        <activiti:formProperty id="sNameCitizen" name="Ваше ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asExistentRequest" name="У Вас питання щодо існуючого звернення?" type="enum" writable="false">
+          <activiti:value id="sEnumExistentRequest_yes" name="Так"></activiti:value>
+          <activiti:value id="sEnumExistentRequest_no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRequestNumber" name="Номер звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asRegionName" name="Оберіть, будь ласка, область, де Ви замовляли послугу" type="enum" writable="false">
+          <activiti:value id="sEnumRegionName_1" name="Автономна республіка Крим "></activiti:value>
+          <activiti:value id="sEnumRegionName_2" name=" Вінницька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_3" name=" Волинська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_4" name=" Дніпропетровська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_5" name=" Донецька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_6" name=" Житомирська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_7" name=" Закарпатська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_8" name=" Запорізька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_9" name=" Івано-Франківська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_10" name=" Київська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_11" name=" Кіровоградська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_12" name=" Луганська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_13" name=" Львівська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_14" name=" Миколаївська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_15" name=" Одеська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_16" name=" Полтавська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_17" name=" Рівненська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_18" name=" Сумська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_19" name=" Тернопільська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_20" name=" Харківська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_21" name=" Херсонська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_22" name=" Хмельницька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_23" name=" Черкаська область "></activiti:value>
+          <activiti:value id="sEnumRegionName_24" name=" Чернівецька область "></activiti:value>
+          <activiti:value id="sEnumRegionName_25" name=" Чернігівська область "></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCityName" name="Вкажіть, будь ласка, місто/район, де Ви замовляли послугу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sServiceName" name="Вкажіть, будь ласка, назву послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sProblemDescription" name="Опишіть проблему, будь ласка" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asRequestType" name="Тип звернення" type="enum" writable="false">
+          <activiti:value id="sEnumRequestType_1" name="Питання про субсидію"></activiti:value>
+          <activiti:value id="sEnumRequestType_2" name="Паспорт ID"></activiti:value>
+          <activiti:value id="sEnumRequestType_3" name="Паспорт закордонний"></activiti:value>
+          <activiti:value id="sEnumRequestType_4" name="Питання про ФОП і ЮО"></activiti:value>
+          <activiti:value id="sEnumRequestType_5" name="Довідка про несудимість"></activiti:value>
+          <activiti:value id="sEnumRequestType_6" name="Технічні помилки"></activiti:value>
+          <activiti:value id="sEnumRequestType_7" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAnswer" name="Відповідь громадянину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCommentToAnalitic" name="Коментар для аналітика" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__FAQ">
+    <bpmndi:BPMNPlane bpmnElement="_FAQ" id="BPMNPlane__FAQ">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="41.0" width="41.0" x="80.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="73.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="530.0" y="83.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="111.0" x="340.0" y="73.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="121.0" y="100.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="100.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="265.0" y="100.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="100.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="451.0" y="100.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="100.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
