@@ -22,11 +22,9 @@
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів" type="invisible" default="MJU_Dnipro_1"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів" type="invisible" default="0"></activiti:formProperty>
 
-        <activiti:formProperty id="sName_isExecutor" name="Селект людей; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_isExecutor" name="Автокомплит селекта людей" type="string"></activiti:formProperty>    
-            
-        <activiti:formProperty id="sName_isPrepareted" name="Селект підрозділів; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_isPrepareted" name="Автокомплит селекта підрозділів" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTableNew2" name="sTableNew2; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isPrepareted&quot;,&quot;name&quot;:&quot;Селект підрозділів; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sID_Group_Activiti_isPrepareted&quot;,&quot;name&quot;:&quot;Автокомплит селекта підрозділів&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+
+        <activiti:formProperty id="sTableNew2" name="sTableNew2; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecutor&quot;,&quot;name&quot;:&quot;Селект людей; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_isExecutor&quot;,&quot;name&quot;:&quot;Автокомплит селекта людей&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
