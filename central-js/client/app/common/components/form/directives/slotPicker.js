@@ -149,6 +149,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
       var departmentProperty = 'nID_Department_' + scope.property.id;
       var departmentParam = scope.formData.params[departmentProperty];
+      var previousOrganJoin = {};
 
       scope.loadList = function(){
         var data = {};
@@ -165,6 +166,18 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           sURL = '/api/service/flow/DMS/getSlots';
 
         } else if (isQueueDataType.iGov) {
+
+          if (parseInt(departmentParam.value) > 0 && scope.formData.params.sID_Public_SubjectOrganJoin && scope.formData.params.sID_Public_SubjectOrganJoin.nID){
+            console.log('data.nID_SubjectOrganDepartment = ' + parseInt(departmentParam.value) + '; sID_Public_SubjectOrganJoin = ' + scope.formData.params.sID_Public_SubjectOrganJoin.nID);
+            var hKey = '' + parseInt(departmentParam.value);
+            if(previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID]){
+              if(previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID] === departmentParam.value){
+                return;
+              }
+            } else {
+              previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID] = departmentParam.value;
+            }
+          }
 
           data = {
             nID_Server: scope.serviceData.nID_Server,
