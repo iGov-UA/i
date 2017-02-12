@@ -461,7 +461,7 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[w9898@i.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
@@ -512,7 +512,7 @@ ${sNameOrgan}<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow21" sourceRef="servicetask8" targetRef="servicetask9"></sequenceFlow>
-    <userTask id="usertask5" name="Попередня перевірка" activiti:candidateGroups="test_ECO">
+    <userTask id="usertask5" name="Попередня перевірка" activiti:candidateGroups="ODA_ECO">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
@@ -648,7 +648,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     </sequenceFlow>
     <serviceTask id="servicetask12" name="Видалення слота" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
     <sequenceFlow id="flow26" sourceRef="servicetask10" targetRef="servicetask12"></sequenceFlow>
-    <userTask id="usertask6" name="Після зустрічі" activiti:candidateGroups="test_ECO">
+    <userTask id="usertask6" name="Після зустрічі" activiti:candidateGroups="ODA_ECO">
       <extensionElements>
         <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;sNameUrOsob&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
@@ -753,7 +753,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow31" name="ЗУСТРІЧ ОК" sourceRef="exclusivegateway5" targetRef="servicetask14">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideZU == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask7" name="Результат екпертизи" activiti:candidateGroups="test_ECO">
+    <userTask id="usertask7" name="Результат екпертизи" activiti:candidateGroups="ODA_ECO">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
