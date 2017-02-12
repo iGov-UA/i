@@ -176,7 +176,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             var hKey = '' + parseInt(departmentParam.value);
             if(scope.$root.queue.previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID]){
               if(scope.$root.queue.previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID] === departmentParam.value){
-                return;
+                //return;
               }
             } else {
               for(var checkKey in scope.$root.queue.previousOrganJoin) if (scope.$root.queue.previousOrganJoin.hasOwnProperty(checkKey)){
