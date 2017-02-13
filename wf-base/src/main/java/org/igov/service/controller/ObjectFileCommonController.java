@@ -46,6 +46,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -788,6 +789,16 @@ public class ObjectFileCommonController {
         String sContentReturn = Files.toString(oFile, Charset.defaultCharset());
         LOG.info("Created document with customer info: {}", sContentReturn);
         String sRegex, sReplacement;
+        
+        
+        for(Map.Entry<String, String> oField : mField.entrySet()){
+            if(oField.getValue() != null){
+                mField.put(oField.getKey(), convetToWin(oField.getValue()));
+            }
+        }
+        String iGov = "igov";
+        String sReplacementIgov = convetToWin(iGov);
+        
         for (Map.Entry<String, String> oField : mField.entrySet()) {
             sRegex = "<" + oField.getKey().trim().toUpperCase() + ">";
             if (oField.getValue() != null) {
@@ -797,10 +808,16 @@ public class ObjectFileCommonController {
             }
         }
         sContentReturn = fillDateToday(sContentReturn);
+        sContentReturn = sContentReturn.replaceFirst(iGov, sReplacementIgov);
         LOG.info("sContentReturn: " + sContentReturn);
         mReturn.put("soPatternFilled", sContentReturn.replaceAll(System.getProperty("line.separator"), ""));
         mReturn.put("sFileName", buildFileName(mField));
         return mReturn;
+    }
+    
+    private String convetToWin(String str) throws UnsupportedEncodingException{
+        //return new String(str.getBytes("UTF-8"), "windows-1251");
+        return new String(str.getBytes("UTF-8"), "windows-1251");
     }
 
     //C_REG(2) + C_RAJ(2)+ TIN(10) + C_DOC(3) + C_DOC_SUB(3) + C_DOC_VER(2) + C_DOC_STAN(1) + C_DOC_TYPE(2, для нового 00) + C_DOC_CNT(7, 0000001) + 
