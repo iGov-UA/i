@@ -7,6 +7,7 @@ import com.google.common.io.Files;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.io.BufferedReader;
 
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -46,9 +47,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import static java.util.Arrays.stream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +71,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.http.MediaType;
 
 /**
  * @author BW
@@ -788,6 +793,14 @@ public class ObjectFileCommonController {
         String sContentReturn = Files.toString(oFile, Charset.defaultCharset());
         LOG.info("Created document with customer info: {}", sContentReturn);
         String sRegex, sReplacement;
+        
+        
+        for(Map.Entry<String, String> oField : mField.entrySet()){
+            if(oField.getValue() != null){
+                mField.put(oField.getKey(), convetToWin(oField.getValue()));
+            }
+        }
+        
         for (Map.Entry<String, String> oField : mField.entrySet()) {
             sRegex = "<" + oField.getKey().trim().toUpperCase() + ">";
             if (oField.getValue() != null) {
@@ -800,7 +813,20 @@ public class ObjectFileCommonController {
         LOG.info("sContentReturn: " + sContentReturn);
         mReturn.put("soPatternFilled", sContentReturn.replaceAll(System.getProperty("line.separator"), ""));
         mReturn.put("sFileName", buildFileName(mField));
+        //httpResponse.setContentType("application/json;charset=windows-1251");
         return mReturn;
+    }
+    
+    private String convetToWin(String str) throws UnsupportedEncodingException{
+        
+        
+        LOG.info("str: " + str);
+        LOG.info("Cp1251: " + new String(str.getBytes("UTF-8"), "Cp1251"));
+        LOG.info("windows-1251: " + new String(str.getBytes("UTF-8"), "windows-1251"));
+        LOG.info("no: " + new String(str.getBytes("UTF-8")));
+        return str;
+        //return new String(str.getBytes("UTF-8"), "Cp1251"); //Cp1251 windows-1251
+        //return new String(str.getBytes("UTF-8"));
     }
 
     //C_REG(2) + C_RAJ(2)+ TIN(10) + C_DOC(3) + C_DOC_SUB(3) + C_DOC_VER(2) + C_DOC_STAN(1) + C_DOC_TYPE(2, для нового 00) + C_DOC_CNT(7, 0000001) + 
