@@ -62,12 +62,14 @@ public class SubjectMessageCommonController {
             @ApiParam(value = "Текст сообщения", required = true) @RequestParam(value = "message") String message,
             @ApiParam(value = "Номер заявки", required = true) @RequestParam(value = "sID_Order", required = false, defaultValue = "0-00") String sID_Order)
     {
+        LOG.info("Send sms is started..");
             //@ApiParam(value = "Если значение флага true - отправка смс идет через старое api, независимо от оператора", required = false) @RequestParam(value = "oldApiFlag", required = false) Boolean apiFlag){
     
         //if (apiFlag == null)
         //{
         //    apiFlag = false;
         //}
+        LOG.info("Send sms isSelfTest: {}", generalConfig.isSelfTest());
         String resp = smsManager.sendSms(phone, message, sID_Order, generalConfig.isSelfTest());
         return resp;
     }
