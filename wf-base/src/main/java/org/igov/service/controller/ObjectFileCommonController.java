@@ -813,7 +813,7 @@ public class ObjectFileCommonController {
         LOG.info("sContentReturn: " + sContentReturn);
         mReturn.put("soPatternFilled", sContentReturn.replaceAll(System.getProperty("line.separator"), ""));
         mReturn.put("sFileName", buildFileName(mField));
-        httpResponse.setContentType("application/json;charset=windows-1251");
+        //httpResponse.setContentType("application/json;charset=windows-1251");
         return mReturn;
     }
     
