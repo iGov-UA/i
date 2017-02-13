@@ -7,7 +7,6 @@ var config = environmentConfig.activiti;
 var request = require('request');
 var catalogController = require('../catalog/catalog.controller.js');
 var NodeCache = require("node-cache");
-var windows1251 = require('windows-1251');
 
 var nodeCache = new NodeCache({stdTTL: 10800, checkperiod: 11000});//Chache for 3 hours
 var sHost = config.protocol + '://' + config.hostname + config.path;
@@ -201,8 +200,6 @@ module.exports.getPatternFilled = function(req, res){
   function regionHostCallback(data){
     var regionHost = data,
         url = regionHost + "/service/object/file/dfs/getPatternFilled";
-    var encodeDataString = windows1251.encode(JSON.stringify(req.body.oData));
-    var encodedDataObj = JSON.parse(encodeDataString);
 
     request.post(url, {
       auth: {
@@ -215,7 +212,7 @@ module.exports.getPatternFilled = function(req, res){
       qs: {
         sID_Pattern: req.body.sID_Pattern
       },
-      body: encodedDataObj,
+      body: req.body.oData,
       json: true
     }, callback);
   }
