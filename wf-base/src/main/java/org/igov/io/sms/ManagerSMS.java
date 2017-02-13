@@ -41,7 +41,7 @@ public class ManagerSMS {
             .append("<body content-type=\"text/plain\" encoding=\"plain\">").append("%s")
             .append("</body>")
             .append("</message>").toString();*/
-    public String sendSms(String phone, String message, String sID_Order, boolean bTest) {//, boolean bOldAPI
+     public String sendSms(String phone, String message, String sID_Order, boolean bTest) throws Exception {//, boolean bOldAPI
         
         String resp = "[none]";
 
@@ -51,10 +51,11 @@ public class ManagerSMS {
 
             phone = phone.replace("+", "").trim();
 
-            if(bTest){
-                LOG.info("Sending sms from testing server");
-                //Boolean bOldAPI = !bTest;
-                if (regexpLifeCell.matcher(phone).matches()) {
+            if(!bTest){
+                Boolean bOldAPI = !bTest;
+                if (bOldAPI) {
+                    resp = SendSenderSms(sID_Order, phone, message);
+                } else if (regexpLifeCell.matcher(phone).matches()) {
                     resp = SendLifeCellSms(phone, message);
                 } /*else if(regexKyivStar.matcher(phone).matches())
                     {
@@ -63,16 +64,12 @@ public class ManagerSMS {
                     resp = SendSenderSms(sID_Order, phone, message);
                 }
             }
-            else{
-                LOG.info("Sending sms from prod server");
-                resp = SendSenderSms(sID_Order, phone, message);
-            }
-            return resp;
         }
         catch (Exception ex){
             LOG.error("Error sending SMS: " + ex.toString());
-            return ex.getMessage();
         }
+            
+        return resp;
     }
     
     private String SendLifeCellSms(String phone, String message) throws Exception {
