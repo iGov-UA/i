@@ -41,7 +41,7 @@ public class ManagerSMS {
             .append("<body content-type=\"text/plain\" encoding=\"plain\">").append("%s")
             .append("</body>")
             .append("</message>").toString();*/
-    public String sendSms(String phone, String message, String sID_Order, boolean bTest) throws Exception {//, boolean bOldAPI
+    public String sendSms(String phone, String message, String sID_Order, boolean bTest) {//, boolean bOldAPI
         
         String resp = "[none]";
 
@@ -51,11 +51,9 @@ public class ManagerSMS {
 
             phone = phone.replace("+", "").trim();
 
-            if(!bTest){
-                Boolean bOldAPI = !bTest;
-                if (bOldAPI) {
-                    resp = SendSenderSms(sID_Order, phone, message);
-                } else if (regexpLifeCell.matcher(phone).matches()) {
+            if(bTest){
+                //Boolean bOldAPI = !bTest;
+                if (regexpLifeCell.matcher(phone).matches()) {
                     resp = SendLifeCellSms(phone, message);
                 } /*else if(regexKyivStar.matcher(phone).matches())
                     {
@@ -63,6 +61,9 @@ public class ManagerSMS {
                 }*/ else {
                     resp = SendSenderSms(sID_Order, phone, message);
                 }
+            }
+            else{
+                resp = SendSenderSms(sID_Order, phone, message);
             }
         }
         catch (Exception ex){
