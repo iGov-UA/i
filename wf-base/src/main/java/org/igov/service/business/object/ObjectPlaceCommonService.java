@@ -112,6 +112,11 @@ public class ObjectPlaceCommonService {
 	    return NULL_RESPONSE;
 	}
 	LOG.debug("Session ID={}", sessionId);
+	
+	if (sessionId == null) {
+	    LOG.error("Session ID is null");
+	    return NULL_RESPONSE;
+	}
 
 	String ret = "";
 	HttpURLConnection oHttpURLConnection = null;
