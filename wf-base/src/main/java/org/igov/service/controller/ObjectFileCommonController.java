@@ -7,6 +7,7 @@ import com.google.common.io.Files;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.io.BufferedReader;
 
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -46,10 +47,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import static java.util.Arrays.stream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -817,7 +820,8 @@ public class ObjectFileCommonController {
     
     private String convetToWin(String str) throws UnsupportedEncodingException{
         //return new String(str.getBytes("UTF-8"), "windows-1251");
-        return new String(str.getBytes("UTF-8"), "windows-1251");
+        return new String(str.getBytes("UTF-8"), "Cp1251");
+        //return new String(str.getBytes("UTF-8"));
     }
 
     //C_REG(2) + C_RAJ(2)+ TIN(10) + C_DOC(3) + C_DOC_SUB(3) + C_DOC_VER(2) + C_DOC_STAN(1) + C_DOC_TYPE(2, для нового 00) + C_DOC_CNT(7, 0000001) + 
