@@ -52,7 +52,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Опрацювання запиту" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Опрацювання запиту" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
@@ -80,7 +80,6 @@
           <activiti:value id="accept" name="Підтвердити"></activiti:value>
           <activiti:value id="reject" name="Дійсність свідотства не підтверджено"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -181,14 +180,14 @@
         <omgdi:waypoint x="424.0" y="113.0"></omgdi:waypoint>
         <omgdi:waypoint x="423.0" y="150.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="343.0" y="39.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="343.0" y="39.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="444.0" y="93.0"></omgdi:waypoint>
         <omgdi:waypoint x="530.0" y="94.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="449.0" y="51.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="449.0" y="51.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
