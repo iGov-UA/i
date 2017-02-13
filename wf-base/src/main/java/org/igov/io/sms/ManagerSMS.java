@@ -52,6 +52,7 @@ public class ManagerSMS {
             phone = phone.replace("+", "").trim();
 
             if(bTest){
+                LOG.info("Sending sms from testing server");
                 //Boolean bOldAPI = !bTest;
                 if (regexpLifeCell.matcher(phone).matches()) {
                     resp = SendLifeCellSms(phone, message);
@@ -63,6 +64,7 @@ public class ManagerSMS {
                 }
             }
             else{
+                LOG.info("Sending sms from prod server");
                 resp = SendSenderSms(sID_Order, phone, message);
             }
             return resp;
