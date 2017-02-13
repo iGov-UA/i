@@ -825,7 +825,7 @@ public class ObjectFileCommonController {
         //LOG.info("windows-1251: " + new String(str.getBytes("UTF-8"), "windows-1251"));
         LOG.info("no: " + new String(str.getBytes("UTF-8")));
         
-        return new String(str.getBytes("UTF-8"), "Cp-1251"); //Cp1251 windows-1251
+        return new String(str.getBytes("UTF-8"), "Cp1251"); //Cp1251 windows-1251
         //return new String(str.getBytes("UTF-8"));
     }
 
