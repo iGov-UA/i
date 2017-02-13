@@ -36,6 +36,7 @@
         <activiti:formProperty id="sAddress" name="Адреса департаменту екології" type="invisible" default="м. Дніпро, вул. Лабораторна, 69"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон департаменту екології" type="invisible" default="(0562) 46-32-81 або (0562) 46-41-61"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Графік роботи департаменту екології" type="invisible" default="Графік роботи: понеділок-четвер з 9:00 до 18:00,п'ятниця з 9:00 до 16:45&lt;br&gt; перерва з 13:00 до 14:00"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default="zhigan.roman@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва департаменту екології" type="invisible" default="Департамент екології та природних ресурсів&lt;br&gt;Дніпропетровської ОДА"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -46,7 +47,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нова заявка на довідку про величини фонових концентрацій забруднювальних речовин в атмосферному повітрі]]></activiti:expression>
@@ -88,7 +89,6 @@
           <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для отримання довідки у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/eco_fonConts1.html]" type="invisible" default="Заява на СЕС" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -199,8 +199,11 @@
           <activiti:value id="sMyself" name="особисто"></activiti:value>
           <activiti:value id="sPost" name="поштою"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sFioProd" name="Прізвище та ініціали керівника Держпродспоживслужби" type="string" default="КОНДРАТЬЕВУ А.Ю."></activiti:formProperty>
+        <activiti:formProperty id="sInitProd" name="Ім'я та по батькові керівника Держпродспоживслужби" type="string" default="Андрію Юрійовичу"></activiti:formProperty>
+        <activiti:formProperty id="sFioEco" name="Прізвище та ініціали керівника Департаменту екології" type="string" default="Р.О.СТРІЛЕЦЬ"></activiti:formProperty>
         <activiti:formProperty id="nDovidka" name="Довідка підписана ЕЦП" type="file"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asDocTime&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCompType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'будується'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_fonConts1.html]" type="invisible" default="Заява на СЕС" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nDocComp}]]></activiti:expression>
