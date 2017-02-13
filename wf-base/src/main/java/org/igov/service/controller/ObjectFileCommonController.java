@@ -71,6 +71,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.http.MediaType;
 
 /**
  * @author BW
@@ -799,8 +800,6 @@ public class ObjectFileCommonController {
                 mField.put(oField.getKey(), convetToWin(oField.getValue()));
             }
         }
-        String iGov = "igov";
-        String sReplacementIgov = convetToWin(iGov);
         
         for (Map.Entry<String, String> oField : mField.entrySet()) {
             sRegex = "<" + oField.getKey().trim().toUpperCase() + ">";
@@ -811,10 +810,10 @@ public class ObjectFileCommonController {
             }
         }
         sContentReturn = fillDateToday(sContentReturn);
-        sContentReturn = sContentReturn.replaceFirst(iGov, sReplacementIgov);
         LOG.info("sContentReturn: " + sContentReturn);
         mReturn.put("soPatternFilled", sContentReturn.replaceAll(System.getProperty("line.separator"), ""));
         mReturn.put("sFileName", buildFileName(mField));
+        httpResponse.setContentType("application/json;charset=windows-1251");
         return mReturn;
     }
     
