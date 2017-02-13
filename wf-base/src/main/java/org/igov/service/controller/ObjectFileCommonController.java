@@ -821,7 +821,6 @@ public class ObjectFileCommonController {
     private String convetToWin(String str) throws UnsupportedEncodingException{
         LOG.info("str: " + str);
         LOG.info("Cp1251: " + new String(str.getBytes("UTF-8"), "Cp1251"));
-        LOG.info("windows1251: " + new String(str.getBytes("UTF-8"), "windows1251"));
         LOG.info("windows-1251: " + new String(str.getBytes("UTF-8"), "windows-1251"));
         LOG.info("no: " + new String(str.getBytes("UTF-8")));
         
