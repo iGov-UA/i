@@ -65,12 +65,12 @@ public class ManagerSMS {
             else{
                 resp = SendSenderSms(sID_Order, phone, message);
             }
+            return resp;
         }
         catch (Exception ex){
             LOG.error("Error sending SMS: " + ex.toString());
+            return ex.getMessage();
         }
-            
-        return resp;
     }
     
     private String SendLifeCellSms(String phone, String message) throws Exception {
