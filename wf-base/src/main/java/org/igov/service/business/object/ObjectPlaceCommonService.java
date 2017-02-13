@@ -22,10 +22,10 @@ import org.springframework.stereotype.Service;
 public class ObjectPlaceCommonService {
     private static final Logger LOG = LoggerFactory.getLogger(ObjectPlaceCommonService.class);
 
-//    private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
-//    private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
-  private static final String SUB_URL_ADDRESS_BY_TYPE = "/listAddressByType.do";
-  private static final String SUB_URL_ADDRESS_BY_NAME = "/searchByName.do";
+    private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
+    private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
+//  private static final String SUB_URL_ADDRESS_BY_TYPE = "/listAddressByType.do";
+//  private static final String SUB_URL_ADDRESS_BY_NAME = "/searchByName.do";
     private static final String NULL_RESPONSE = "{}";
 
     @Autowired
@@ -113,10 +113,10 @@ public class ObjectPlaceCommonService {
 	}
 	LOG.debug("Session ID={}", sessionId);
 	
-	if (sessionId == null) {
-	    LOG.error("Session ID is null");
-	    return NULL_RESPONSE;
-	}
+//	if (sessionId == null) {
+//	    LOG.error("Session ID is null");
+//	    return NULL_RESPONSE;
+//	}
 
 	String ret = "";
 	HttpURLConnection oHttpURLConnection = null;
