@@ -22,8 +22,10 @@ import org.springframework.stereotype.Service;
 public class ObjectPlaceCommonService {
     private static final Logger LOG = LoggerFactory.getLogger(ObjectPlaceCommonService.class);
 
-    private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
-    private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
+//    private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
+//    private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
+  private static final String SUB_URL_ADDRESS_BY_TYPE = "/listAddressByType.do";
+  private static final String SUB_URL_ADDRESS_BY_NAME = "/searchByName.do";
     private static final String NULL_RESPONSE = "{}";
 
     @Autowired
@@ -69,8 +71,8 @@ public class ObjectPlaceCommonService {
 	    LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
 	    return;
 	}
-	sURLSendAddressByType = sURL_Send + "/" + SUB_URL_ADDRESS_BY_TYPE;
-	sURLSendAddressByName = sURL_Send + "/" + SUB_URL_ADDRESS_BY_NAME;
+	sURLSendAddressByType = sURL_Send + SUB_URL_ADDRESS_BY_TYPE;
+	sURLSendAddressByName = sURL_Send + SUB_URL_ADDRESS_BY_NAME;
 	
 	isReadyWork = true;
     }
