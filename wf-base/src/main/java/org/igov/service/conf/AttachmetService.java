@@ -147,6 +147,8 @@ public class AttachmetService {
         String sContentType = "";
         ByteArrayInputStream byteArrayInputStream = null;
         
+        tryConvetToWin("блаблабла");
+        
         LOG.info(tryConvetToWin(sID_Field));
         
         if(nID_Process != null && sID_Field != null){
