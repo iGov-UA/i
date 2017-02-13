@@ -57,10 +57,16 @@ public class SendDocument_SWinEd implements TaskListener {
                 GateSoapProxy gate = new GateSoapProxy(generalConfig.getsURL_DFS());
                 LOG.info("!!! Before sending request to gate web service. sID_File_XML_SWinEdValue:" + oByteArrayMultipartFile.getOriginalFilename() + 
                 		" sEmailValue:" + sEmailValue + " endpoint:" + gate.getEndpoint() + " content:" + oByteArrayMultipartFile.getBytes());
-                //ProcessResult result = gate.send(oByteArrayMultipartFile.getOriginalFilename(), sEmailValue, oByteArrayMultipartFile.getBytes());
+                ProcessResult result = gate.send(oByteArrayMultipartFile.getOriginalFilename(), sEmailValue, oByteArrayMultipartFile.getBytes());
 
-                ProcessResult result = gate.send(oByteArrayMultipartFile.getOriginalFilename(), sEmailValue, 
-                        new String(oByteArrayMultipartFile.getBytes(), "windows-1251").getBytes());
+                //ProcessResult result = gate.send(oByteArrayMultipartFile.getOriginalFilename(), sEmailValue, 
+                //        new String(oByteArrayMultipartFile.getBytes(), "windows-1251").getBytes());
+                
+                /*String originalFilename_utf8 = oByteArrayMultipartFile.getOriginalFilename();
+                String utf8String_windows_1251= new String(originalFilename_utf8.getBytes("UTF-8"), "windows-1251");
+                ProcessResult result = gate.send(utf8String_windows_1251, sEmailValue, 
+                        new String(oByteArrayMultipartFile.getBytes(), "windows-1251").getBytes());*/
+                
                 
                 LOG.info("!!!response:" + result.getValue());
                 if(!ProcessResult.GATE_OK.getValue().equalsIgnoreCase(result.getValue().trim())){
