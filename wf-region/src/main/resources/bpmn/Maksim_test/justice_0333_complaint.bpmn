@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="justice_0333_complaint" name="Оскарження рішення виконавчого комітету міської, сільської, селищної ради, районної державної адміністрації, акредитованого суб’єкта, нотаріуса" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть Центр надання адміністративних послуг" type="select" default="0" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="asTypeComplaint" name="Тип скаржника" type="enum" required="true">
+          <activiti:value id="sIndividual" name="фізична особа"></activiti:value>
+          <activiti:value id="sRepresentativeIndividual" name="представник фізичної особи"></activiti:value>
+          <activiti:value id="sLegalEntity" name="юридична особа в особі директора"></activiti:value>
+          <activiti:value id="sRepresentativeLegalEntity" name="юридична особа в особі іншого представника"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_1" name="лінія фізична особа" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Дані фізичної особи скаржника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса проживання чи перебування" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="лінія представник фізична особа" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRepresentativeLastName&quot;],&quot;sValue&quot;:&quot;Дані представника скаржника (фізичної особи)&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sRepresentativeLastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRepresentativeFirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRepresentativeMiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRepresentativeAddressFactual" name="Адреса проживання чи перебування" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRepresentativeDoc" name="Реквізити документа, що підтверджує повноваження представника;(батьки (свідоцтво про народження), опікун, піклувальник, помічник (рішення органів опіки та піклування), представник за довіреністю (довіреність), адвокат (ордер))" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="лінія юридична особа" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNameCompany&quot;],&quot;sValue&quot;:&quot;Дані юридичної особи скаржника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Повне найменування юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressCompany" name="Місцезнаходження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressCompanyLett" name="Адреса для листування" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_4" name="лінія директор" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sBossLastName&quot;],&quot;sValue&quot;:&quot;Дані директора юридичної особи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBossLastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBossFirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBossMiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_5" name="лінія представника юo" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;sRepresentCompLastName&quot;],&quot;sValue&quot;:&quot;Дані представника юридичної особи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sRepresentCompLastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRepresentCompFirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRepresentCompMiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRepresentCompDoc" name="Реквізити документа, що підтверджує повноваження представника;(представник за довіреністю (довіреність), адвокат (ордер), юридична особа (договір про надання правової допомоги))" type="string" required="true"></activiti:formProperty>
+        
+        
+        
+        
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="asSubjectCategory" name="Категорія суб’єктів оскарження" type="enum" required="true">
+          <activiti:value id="sExecutiveCommittee" name="виконавчий комітет міської, сільської, селищної ради"></activiti:value>
+          <activiti:value id="sDistrictAdministration" name="районна державна адміністрація"></activiti:value>
+          <activiti:value id="sAccredited" name="акредитований суб’єкт"></activiti:value>
+          <activiti:value id="sNotary" name="нотаріус"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sNameCouncil" name="Назва міської, сільської, селищної ради" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPibRegister_1" name="Прізвище, ім’я, по батькові державного реєстратора" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sNameCommittee" name="Назва районної державної адміністрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPibRegister_2" name="Прізвище, ім’я, по батькові державного реєстратора" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sNameAccredited" name="Назва акредитованого суб’єкта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPibRegister_3" name="Прізвище, ім’я, по батькові державного реєстратора" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sNameNotary" name="Прізвище, ім’я, по батькові нотаріуса" type="string" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="asDirectionOfAppeal" name="Напрямок оскарження" type="enum" required="true">
+          <activiti:value id="sRealty" name="Реєстрації речових прав на нерухоме майно та їх обтяжень"></activiti:value>
+          <activiti:value id="sRegistration" name="Реєстрація юридичних осіб та фізичних осіб – підприємців"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRealtyTop" name="Тема оскардження" type="enum" required="true">
+          <activiti:value id="sEnumReal_1" name="Рішення державного реєстратора про державну реєстрацію прав"></activiti:value>
+          <activiti:value id="sEnumReal_2" name="Рішення про відмову у державній реєстрації прав"></activiti:value>
+          <activiti:value id="sEnumReal_3" name="Рішення про зупинення державної реєстрації прав"></activiti:value>
+          <activiti:value id="sEnumReal_4" name="Дії державного реєстратора, суб’єкта державної реєстрації"></activiti:value>
+          <activiti:value id="sEnumReal_5" name="Бездіяльність державного реєстратора, суб’єкта державної реєстрації"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRegistrationTop" name="Тема оскардження" type="enum" required="true">
+          <activiti:value id="sEnumReg_1" name="Проведені державним реєстратором реєстраційні дії"></activiti:value>
+          <activiti:value id="sEnumReg_2" name="Повідомлення про відмову у проведенні державної реєстрації"></activiti:value>
+          <activiti:value id="sEnumReg_3" name="Повідомлення про зупинення розгляду документів"></activiti:value>
+          <activiti:value id="sEnumReg_4" name="Дії державного реєстратора, суб’єкта державної реєстраціїї"></activiti:value>
+          <activiti:value id="sEnumReg_5" name="Бездіяльність державного реєстратора, суб’єкта державної реєстрації"></activiti:value>
+        </activiti:formProperty>
+        
+        
+        
+        
+        
+        
+        
+        
+        <activiti:formProperty id="sPlace" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Площа земельної ділянки;Га" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asVlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="enum" required="true">
+          <activiti:value id="vlasnist1" name="договір купівлі-продажу приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist2" name="договір дарування приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist3" name="договір міни приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist4" name="свідоцтво про право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist5" name="державний акт на право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist6" name="державний акт на право постійного користування земельною ділянкою"></activiti:value>
+          <activiti:value id="vlasnist7" name="договір оренди земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist8" name="договір суперфіція"></activiti:value>
+          <activiti:value id="vlasnist9" name="витяг з Державного реєстру речових прав на земельну ділянку"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPartOwner" name="Ви одноосібний власник ділянки?" type="enum" required="true">
+          <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
+          <activiti:value id="no" name="так, ділянка належить лише мені"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nDoc1" name="Засвідчена в установленому порядку копія документа про право власності або користування земельною ділянкою;згідно з роз`ясненням МінЮсту від 02.2013, на засвідченому документі проставляється прізвище і ініціали того, хто посвідчує, особистий підпис, дата і відмітка &quot;Згідно з оригіналом&quot;" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDoc2" name="Ескізні наміри забудови;місце розташування будівель та споруд на земельній ділянці, відстані до меж сусідніх земельних ділянок та розташованих на них об`єктів, інженерних мереж і споруд, фасади та плани поверхів об`єктів із зазначенням габаритних розмірів, перелік систем інженерного забезпечення, у тому числі автономного, що планується до застосування, тощо. УВАГА! Ескізні наміри можуть бути виготовлені самостійно (згідно з перерахованими вище параметрами), або з залученням фахівців-архитекторів." type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDoc3" name="Засвідчена згода співвласників земельної ділянки (житлового будинку) на забудову;з ЕЦП нотаріуса" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDoc4" name="Викопіювання з схеми землекористування сільської/селищної ради з позначенням – земельної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArchShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArchName" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowElements1" type="markers" default="${markerService.loadFromFile('drogobych/rada_0455_buildingPassp_1.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="Повідомлення про нову скаргу"></serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <userTask id="usertask1" name="Крок 1. Обробка скарги"></userTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Повідомлення про пиняття скарги"></serviceTask>
+    <serviceTask id="servicetask3" name="Відмова в прийнятті скарги"></serviceTask>
+    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow6" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow7" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_justice_0333_complaint">
+    <bpmndi:BPMNPlane bpmnElement="justice_0333_complaint" id="BPMNPlane_justice_0333_complaint">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="160.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="75.0" width="131.0" x="230.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="75.0" width="135.0" x="406.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="590.0" y="208.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="71.0" width="137.0" x="680.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="75.0" width="137.0" x="680.0" y="290.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="862.0" y="118.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="862.0" y="310.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="195.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="361.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="406.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="541.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="228.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="610.0" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="610.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="135.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="610.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="610.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="327.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="817.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="862.0" y="135.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="817.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="862.0" y="327.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

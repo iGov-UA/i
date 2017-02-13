@@ -4,17 +4,35 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="test" name="test" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLogin" name="sLogin" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="User Task" activiti:assignee="${assignee}">
+    <userTask id="usertask1" name="User Task Sub Proc" activiti:assignee="GrekD">
       <extensionElements>
         <activiti:formProperty id="test" name="test" type="string"></activiti:formProperty>
         <activiti:formProperty id="testSub" name="testSub" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[_testSimpleSubProces]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[${sLogin}  [sID_Order]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__testSimpleSubProces">
     <bpmndi:BPMNPlane bpmnElement="_testSimpleSubProces" id="BPMNPlane__testSimpleSubProces">
@@ -27,13 +45,20 @@
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="300.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="79.0" y="77.0"></omgdi:waypoint>
-        <omgdi:waypoint x="140.0" y="77.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="80.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="245.0" y="77.0"></omgdi:waypoint>
         <omgdi:waypoint x="300.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="61.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="132.0" y="160.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="132.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="105.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
