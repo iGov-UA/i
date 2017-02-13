@@ -57,7 +57,11 @@ public class SendDocument_SWinEd implements TaskListener {
                 GateSoapProxy gate = new GateSoapProxy(generalConfig.getsURL_DFS());
                 LOG.info("!!! Before sending request to gate web service. sID_File_XML_SWinEdValue:" + oByteArrayMultipartFile.getOriginalFilename() + 
                 		" sEmailValue:" + sEmailValue + " endpoint:" + gate.getEndpoint() + " content:" + oByteArrayMultipartFile.getBytes());
-                ProcessResult result = gate.send(oByteArrayMultipartFile.getOriginalFilename(), sEmailValue, oByteArrayMultipartFile.getBytes());
+                //ProcessResult result = gate.send(oByteArrayMultipartFile.getOriginalFilename(), sEmailValue, oByteArrayMultipartFile.getBytes());
+
+                ProcessResult result = gate.send(oByteArrayMultipartFile.getOriginalFilename(), sEmailValue, 
+                        new String(oByteArrayMultipartFile.getBytes(), "windows-1251").getBytes());
+                
                 LOG.info("!!!response:" + result.getValue());
                 if(!ProcessResult.GATE_OK.getValue().equalsIgnoreCase(result.getValue().trim())){
                     throw new RuntimeException("Сервис ДФС вернул ошибку " + result.getValue() + " на запрос: " + oByteArrayMultipartFile.getOriginalFilename() 
