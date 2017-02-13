@@ -201,7 +201,8 @@ module.exports.getPatternFilled = function(req, res){
   function regionHostCallback(data){
     var regionHost = data,
         url = regionHost + "/service/object/file/dfs/getPatternFilled";
-    var encodeData = windows1251.encode(req.body.oData);
+    var encodeDataString = windows1251.encode(JSON.stringify(req.body.oData));
+    var encodedDataObj = JSON.parse(encodeDataString);
 
     request.post(url, {
       auth: {
@@ -214,7 +215,7 @@ module.exports.getPatternFilled = function(req, res){
       qs: {
         sID_Pattern: req.body.sID_Pattern
       },
-      body: encodeData,
+      body: encodedDataObj,
       json: true
     }, callback);
   }
