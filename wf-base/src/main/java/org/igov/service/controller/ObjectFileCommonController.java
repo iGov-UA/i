@@ -805,6 +805,7 @@ public class ObjectFileCommonController {
         LOG.info("sContentReturn: " + sContentReturn);
         mReturn.put("soPatternFilled", sContentReturn.replaceAll(System.getProperty("line.separator"), ""));
         mReturn.put("sFileName", buildFileName(mField));
+        mReturn.put("C_DOC_CNT", snCountYear);
         //httpResponse.setContentType("application/json;charset=windows-1251");
         return mReturn;
     }
