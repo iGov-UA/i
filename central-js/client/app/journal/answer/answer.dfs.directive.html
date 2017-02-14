@@ -54,7 +54,7 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <h4 class="modal-title" id="myModalLabel">Документ:</h4>
                                 </div>
-                                <div class="modal-body" ng-if="vm.viewContent.DECLAR.DECLARBODY[0].HDOCKOD[0]">
+                                <div class="modal-body" ng-if="vm.viewContent.DECLAR.DECLARBODY[0] && vm.viewContent.DECLAR.DECLARBODY[0].HDOCKOD[0]">
                                     <p>Код форми документу: {{::vm.viewContent.DECLAR.DECLARBODY[0].HDOCKOD[0]}}</p>
                                     <p>Назва документу звітності: {{::vm.viewContent.DECLAR.DECLARBODY[0].HDOCNAME[0]}}</p>
                                     <p>Ім'я файлу: {{::vm.viewContent.DECLAR.DECLARBODY[0].HFILENAME[0]}}</p>
@@ -77,7 +77,7 @@
                                     <p>{{::vm.viewContent.DECLAR.DECLARBODY[0].TEXT[0]}}</p>
                                 </div>
 
-                                <div class="modal-body" ng-if="!vm.viewContent.DECLAR.DECLARBODY[0].HDOCKOD[0]">
+                                <div class="modal-body" ng-if="vm.viewContent.DECLAR.DECLARBODY[0] && !vm.viewContent.DECLAR.DECLARBODY[0].HDOCKOD[0]">
                                   <h3 style="text-align: center">
                                     Відповідь на запит від &nbsp;{{parseDate(viewContent.DECLAR.DECLARHEAD[0].D_FILL[0])}}<br>
                                     про суми виплачених доходів та утриманих податків з Державного реєстру фізичних осіб – платників податків
