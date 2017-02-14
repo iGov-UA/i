@@ -76,6 +76,10 @@ public class DfsService {
         LOG.info("aByteArrayMultipartFile.size()=" + aByteArrayMultipartFile.size());
         String oFile_XML_SWinEd = (String) runtimeService.getVariable(snID_Process, "oFile_XML_SWinEd");
         String sFileName_XML_SWinEd_Answer = (String) runtimeService.getVariable(snID_Process, "sFileName_XML_SWinEd_Answer");
+        //
+        String saName_Attach_Dfs_Value = (String) runtimeService.getVariable(snID_Process, "saName_Attach_Dfs");
+        LOG.info("saName_Attach_Dfs: " + saName_Attach_Dfs_Value);
+        String saName_Attach_Dfs = "";
         boolean bExist_Attach_Dfs_Answer = false;
         try {
             Attachment oAttachment_Document = taskService.getAttachment(oFile_XML_SWinEd); //sFileName_XML_SWinEd_Answer=F1401801
@@ -91,18 +95,36 @@ public class DfsService {
                     if ((sFileName.contains(sAttachmentName_Document) && !sFileName.endsWith(".xml"))
                             || (bExist_Attach_Dfs_Answer = sFileName.contains(sFileName_XML_SWinEd_Answer))) { //"F1401801"
                         LOG.info("ToAttach-PROCESS Found sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
-                        Attachment oAttachment = taskService.createAttachment(sFileContentType,
-                                sID_Task, snID_Process, sFileName, oByteArrayMultipartFile.getName(), oByteArrayMultipartFile.getInputStream());
-                        if (oAttachment != null) {
-                            asID_Attach_Dfs.append(oAttachment.getId()).append(",");
-                            LOG.info("oAttachment.getId()=" + oAttachment.getId());
+                        //
+                        if (saName_Attach_Dfs_Value == null || !saName_Attach_Dfs_Value.contains(sFileName)) {
+                            saName_Attach_Dfs = saName_Attach_Dfs_Value + sFileName + ",";
+                            Attachment oAttachment = taskService.createAttachment(sFileContentType,
+                                    sID_Task, snID_Process, sFileName, oByteArrayMultipartFile.getName(), oByteArrayMultipartFile.getInputStream());
+                            if (oAttachment != null) {
+                                asID_Attach_Dfs.append(oAttachment.getId()).append(",");
+                                LOG.info("oAttachment.getId()=" + oAttachment.getId());
+                            } else {
+                                try {
+                                    String sMail = "";
+                                    BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
+                                    byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
+                                    saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби", "Отримана відповідь від Державної Фіскальної "
+                                            + "Служби у вигляді криптопакету: " + sFileName, aByte, sID_Order, sMail, sFileName, sFileContentType);
+                                } catch (Exception ex) {
+                                    LOG.error("ToJournal sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document + ":" + ex.getMessage());
+                                    java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                            //    
+                        } else {
+                            LOG.info("skip sFileName: " + sFileName);
                         }
                     } else {
                         LOG.info("ToAttach-SKIP sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
                     }
                 }
 
-                try {
+                /*try {
                     for (ByteArrayMultipartFile oByteArrayMultipartFile : aByteArrayMultipartFile) {
                         String sFileName = oByteArrayMultipartFile.getOriginalFilename();
                         String sFileContentType = oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp();
@@ -110,11 +132,13 @@ public class DfsService {
                                 || sFileName.contains(sFileName_XML_SWinEd_Answer)) { //"F1401801"
                             LOG.info("ToJournal-PROCESS sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
                             try {
-                                String sMail = "";
-                                BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
-                                byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
-                                saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби", "Отримана відповідь від Державної Фіскальної "
-                                        + "Служби у вигляді криптопакету: " + sFileName, aByte, sID_Order, sMail, sFileName, sFileContentType);
+                                
+                                    String sMail = "";
+                                    BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
+                                    byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
+                                    saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби", "Отримана відповідь від Державної Фіскальної "
+                                            + "Служби у вигляді криптопакету: " + sFileName, aByte, sID_Order, sMail, sFileName, sFileContentType);
+                                
                             } catch (Exception ex) {
                                 LOG.error("ToJournal sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document + ":" + ex.getMessage());
                                 java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
@@ -125,8 +149,7 @@ public class DfsService {
                     }
                 } catch (Exception ex) {
                     java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
+                }*/
             } else {
                 LOG.info("Can't find attachmett oFile_XML_SWinEd: " + oFile_XML_SWinEd);
             }
@@ -141,6 +164,8 @@ public class DfsService {
         runtimeService.setVariable(snID_Process, "anID_Attach_Dfs", sID_Attach_Dfs);
         taskService.setVariable(sID_Task, "anID_Attach_Dfs", sID_Attach_Dfs);
         runtimeService.setVariable(snID_Process, "bExist_Attach_Dfs_Answer", bExist_Attach_Dfs_Answer);
+        runtimeService.setVariable(snID_Process, "saName_Attach_Dfs", saName_Attach_Dfs_Value);
+        taskService.setVariable(sID_Task, "saName_Attach_Dfs", saName_Attach_Dfs);
         //taskService.setVariable(sID_Task, "bExist_Attach_Dfs_Answer", bExist_Attach_Dfs_Answer);
 
         return asID_Attach_Dfs.toString();
