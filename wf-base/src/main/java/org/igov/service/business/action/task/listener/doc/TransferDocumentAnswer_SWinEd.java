@@ -24,6 +24,8 @@ public class TransferDocumentAnswer_SWinEd implements TaskListener {
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(TransferDocumentAnswer_SWinEd.class);
 
     private Expression sINN;
+    
+    private Expression snCountYear;
 
     @Autowired
     private DfsService dfsService;
@@ -33,7 +35,8 @@ public class TransferDocumentAnswer_SWinEd implements TaskListener {
     public void notify(DelegateTask delegateTask) {
         LOG.info("!!! delegateTask.getId(): " + delegateTask.getId());
         String sINN_Value = getStringFromFieldExpression(this.sINN, delegateTask.getExecution());
-        String asID_Attach_Dfs = dfsService.getAnswer(delegateTask.getId(), delegateTask.getProcessInstanceId(), sINN_Value);
+        String snCountYear = getStringFromFieldExpression(this.snCountYear, delegateTask.getExecution());
+        String asID_Attach_Dfs = dfsService.getAnswer(delegateTask.getId(), delegateTask.getProcessInstanceId(), sINN_Value, snCountYear);
         LOG.info("!!! delegateTask.getId(): " + delegateTask.getId() + " as: " + asID_Attach_Dfs);
     }
 

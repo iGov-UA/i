@@ -69,19 +69,19 @@ public class DfsService {
     private HistoryEventService historyEventService;
     @Autowired
     private IBytesDataStorage durableBytesDataStorage;
-    
-    public String getAnswer(String sID_Task, String snID_Process, String sINN) {
+
+    public String getAnswer(String sID_Task, String snID_Process, String sINN, String snCountYear) {
         StringBuilder asID_Attach_Dfs = new StringBuilder();
-        List<ByteArrayMultipartFile> aByteArrayMultipartFile = getAnswer(sINN);
+        List<ByteArrayMultipartFile> aByteArrayMultipartFile = getAnswer(sINN, snCountYear);
         LOG.info("aByteArrayMultipartFile.size()=" + aByteArrayMultipartFile.size());
         try {
             Attachment oAttachment_Document = taskService.getAttachment((String) runtimeService.getVariable(snID_Process, "oFile_XML_SWinEd")); //sFileName_XML_SWinEd_Answer=F1401801
             if (oAttachment_Document != null) {
-                String sID_Order=generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
+                String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
                 String sAttachmentName_Document = oAttachment_Document.getName();
                 LOG.info("sAttachmentName_Document=" + sAttachmentName_Document + ", sID_Order=" + sID_Order);
                 sAttachmentName_Document = sAttachmentName_Document.replaceAll(".xml", "");
-                
+
                 for (ByteArrayMultipartFile oByteArrayMultipartFile : aByteArrayMultipartFile) {
                     String sFileName = oByteArrayMultipartFile.getOriginalFilename();
                     String sFileContentType = oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp();
@@ -98,7 +98,7 @@ public class DfsService {
                         LOG.info("ToAttach-SKIP sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
                     }
                 }
-                
+
                 try {
                     for (ByteArrayMultipartFile oByteArrayMultipartFile : aByteArrayMultipartFile) {
                         String sFileName = oByteArrayMultipartFile.getOriginalFilename();
@@ -107,19 +107,13 @@ public class DfsService {
                                 || sFileName.contains((String) runtimeService.getVariable(snID_Process, "sFileName_XML_SWinEd_Answer"))) { //"F1401801"
                             LOG.info("ToJournal-PROCESS sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
                             try {
-                                String sMail="";
+                                String sMail = "";
                                 BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
                                 byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
-                                saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби"
-                                        , "Отримана відповідь від Державної Фіскальної Служби у вигляді криптопакету: "+sFileName
-                                        , aByte
-                                        , sID_Order
-                                        , sMail
-                                        , sFileName
-                                        , sFileContentType
-                                                );
+                                saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби", "Отримана відповідь від Державної Фіскальної Служби у вигляді криптопакету: " + sFileName, aByte, sID_Order, sMail, sFileName, sFileContentType
+                                );
                             } catch (Exception ex) {
-                                LOG.error("ToJournal sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document+":"+ex.getMessage());
+                                LOG.error("ToJournal sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document + ":" + ex.getMessage());
                                 java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         } else {
@@ -129,13 +123,12 @@ public class DfsService {
                 } catch (Exception ex) {
                     java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
             }
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
         if (asID_Attach_Dfs.length() > 0) {
             String sID_Attach_Dfs = asID_Attach_Dfs.deleteCharAt(asID_Attach_Dfs.length() - 1).toString();
             runtimeService.setVariable(snID_Process, "anID_Attach_Dfs", sID_Attach_Dfs);
@@ -163,9 +156,9 @@ public class DfsService {
         String sID_DataLink;
         sID_DataLink = durableBytesDataStorage.saveData(aByte); //sBody.getBytes(Charset.forName("UTF-8"))
         mParam.put("sID_DataLink", sID_DataLink);
-        
+
         mParam.put("RequestMethod", RequestMethod.GET.name());
-        
+
         LOG.info("ToJournal-PROCESS mParam=" + mParam);
 
         ScheduledExecutorService oScheduledExecutorService = Executors
@@ -195,8 +188,8 @@ public class DfsService {
         LOG.info(
                 "Configured thread to run in 10 seconds with params: (params={})",
                 mParam);
-    }    
-    
+    }
+
     public String send(String content, String fileName, String email) throws Exception {
         LOG.info("content: " + content + " fileName: " + fileName + " email: " + email);
         String body = createBody_Send(content, fileName, email);
@@ -217,10 +210,10 @@ public class DfsService {
         return result;
     }
 
-    public List<ByteArrayMultipartFile> getAnswer(String inn) {
+    public List<ByteArrayMultipartFile> getAnswer(String INN, String snCountYear) {
         List<ByteArrayMultipartFile> result = new ArrayList<>();
         try {
-            String responseBody = getMessages(inn);
+            String responseBody = getMessages(INN);
             LOG.info("getMessages responseBody: " + responseBody);
             List<String> resultMessages = getContentFromXml(responseBody, "string");
             LOG.info("getMessages resultMessage: " + resultMessages);
@@ -231,7 +224,7 @@ public class DfsService {
                     List<String> fileNames = getContentFromXml(responseBody, "fileName");
                     List<String> fileContents = getContentFromXml(responseBody, "messageData");
                     LOG.info("receive fileNames: " + fileNames);
-                    if (fileNames != null && fileNames.size() > 0 && fileContents != null && fileContents.size() > 0) {
+                    if (fileNames != null && fileNames.size() > 0 && fileContents != null && fileContents.size() > 0 && fileNames.contains(snCountYear)) {
                         String fileName = fileNames.get(0);
                         byte[] fileContent = Base64.decodeBase64(fileContents.get(0));
                         if (fileName != null && fileContent != null && fileContent.length > 0) {
@@ -241,6 +234,8 @@ public class DfsService {
                             responseBody = delete(resultMessage);
                             LOG.info("delete responseBody: " + responseBody);
                         }
+                    } else {
+                        LOG.info("skip fileNames: " + fileNames);
                     }
                 }
             }
