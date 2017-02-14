@@ -230,7 +230,7 @@ public class DfsService {
                     List<String> fileContents = getContentFromXml(responseBody, "messageData");
                     LOG.info("receive fileNames: " + fileNames);
                     if (fileNames != null && fileNames.size() > 0 && fileContents != null && fileContents.size() > 0
-                            && fileNames.contains(snCountYear)) {
+                            && fileNames.get(0).contains(snCountYear)) {
                         String fileName = fileNames.get(0);
                         byte[] fileContent = Base64.decodeBase64(fileContents.get(0));
                         if (fileName != null && fileContent != null && fileContent.length > 0) {
