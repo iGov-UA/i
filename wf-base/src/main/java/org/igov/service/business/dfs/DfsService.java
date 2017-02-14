@@ -70,7 +70,7 @@ public class DfsService {
     @Autowired
     private IBytesDataStorage durableBytesDataStorage;
     
-    public String getAnswer(String sID_Task, String snID_Process, String sINN) {
+    public String getAnswer(String sID_Task, String snID_Process, String sINN, String snCountYear) {
         StringBuilder asID_Attach_Dfs = new StringBuilder();
         List<ByteArrayMultipartFile> aByteArrayMultipartFile = getAnswer(sINN);
         LOG.info("aByteArrayMultipartFile.size()=" + aByteArrayMultipartFile.size());
