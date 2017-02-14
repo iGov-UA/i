@@ -78,7 +78,7 @@ public class DfsService {
         String sFileName_XML_SWinEd_Answer = (String) runtimeService.getVariable(snID_Process, "sFileName_XML_SWinEd_Answer");
         //
         String saName_Attach_Dfs = (String) runtimeService.getVariable(snID_Process, "saName_Attach_Dfs");
-        
+        LOG.info("saName_Attach_Dfs: " + saName_Attach_Dfs);
         boolean bExist_Attach_Dfs_Answer = false;
         try {
             Attachment oAttachment_Document = taskService.getAttachment(oFile_XML_SWinEd); //sFileName_XML_SWinEd_Answer=F1401801
@@ -152,6 +152,7 @@ public class DfsService {
         taskService.setVariable(sID_Task, "anID_Attach_Dfs", sID_Attach_Dfs);
         runtimeService.setVariable(snID_Process, "bExist_Attach_Dfs_Answer", bExist_Attach_Dfs_Answer);
         runtimeService.setVariable(snID_Process, "saName_Attach_Dfs", saName_Attach_Dfs);
+        taskService.setVariable(sID_Task, "saName_Attach_Dfs", saName_Attach_Dfs);
         //taskService.setVariable(sID_Task, "bExist_Attach_Dfs_Answer", bExist_Attach_Dfs_Answer);
 
         return asID_Attach_Dfs.toString();
