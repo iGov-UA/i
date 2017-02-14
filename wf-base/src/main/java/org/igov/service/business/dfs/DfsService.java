@@ -219,7 +219,7 @@ public class DfsService {
         List<ByteArrayMultipartFile> result = new ArrayList<>();
         try {
             String responseBody = getMessages(INN);
-            LOG.info("getMessages responseBody: " + responseBody);
+            LOG.info("getMessages responseBody: " + responseBody + " snCountYear: " + snCountYear + " INN: " + INN);
             List<String> resultMessages = getContentFromXml(responseBody, "string");
             LOG.info("getMessages resultMessage: " + resultMessages);
             for (String resultMessage : resultMessages) {
