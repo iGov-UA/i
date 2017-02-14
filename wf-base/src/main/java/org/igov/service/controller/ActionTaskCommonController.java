@@ -71,14 +71,9 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import org.igov.model.document.DocumentStepSubjectRight;
-
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 
 import org.igov.service.business.document.DocumentStepService;
-import org.igov.service.controller.interceptor.ActionProcessCountUtils;
-import org.igov.service.controller.interceptor.ConstantsInterceptor;
 
 import static org.igov.util.Tool.sO;
 
@@ -2631,12 +2626,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getAnswer_DFS", method = RequestMethod.GET)
     public @ResponseBody
     String getAnswer_DFS(@ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String INN,
+            @ApiParam(value = "Порядковый номер документа в году", required = true) @RequestParam(value = "snCountYear", required = true) String snCountYear,
             @ApiParam(value = "ИНН", required = true) @RequestParam(value = "sID_Process", required = true) String sID_Process) throws Exception {
         Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
         LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
         String asID_Attach_Dfs = "";
         if (task != null) {
-            asID_Attach_Dfs = dfsService.getAnswer(task.getId(), sID_Process, INN);
+            asID_Attach_Dfs = dfsService.getAnswer(task.getId(), sID_Process, INN, snCountYear);
             if (asID_Attach_Dfs != null && asID_Attach_Dfs.length() > 0) {
                 taskService.complete(task.getId());
             }
