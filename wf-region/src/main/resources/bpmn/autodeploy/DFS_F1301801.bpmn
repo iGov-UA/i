@@ -44,16 +44,16 @@
         <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
           <activiti:field name="sID_File_XML_SWinEd">
-            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sEmail">
-            <activiti:expression>${email}</activiti:expression>
+            <activiti:expression><![CDATA[${email}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -64,22 +64,22 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему Запит</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему Запит]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення на тему Запит до ДФС. &lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>Ви подавали звернення на тему Запит до ДФС. <br />
 
-Ви можете відкрити криптопакет відповіді ДФС з допомогою  &lt;a href="https://alpha.test.igov.org.ua/journal/answer/DFS"&gt;цього інструменту&lt;/a&gt; із використанням своєї ЕЦП, що ви використали під час подання запиту. &lt;br /&gt; &lt;br /&gt;
+Ви можете відкрити криптопакет відповіді ДФС з допомогою  <a href="https://alpha.test.igov.org.ua/journal/answer/DFS">цього інструменту</a> із використанням своєї ЕЦП, що ви використали під час подання запиту. <br /> <br />
                         [pattern/mail/_common_signature_end.html]
-                        [pattern/mail/_common_footer.html]</activiti:expression>
+                        [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${anID_Attach_Dfs}</activiti:expression>
+          <activiti:expression><![CDATA[${anID_Attach_Dfs}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -95,12 +95,12 @@
         <activiti:formProperty id="anID_Attach_Dfs" name="Файл с ответом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}">
           <activiti:field name="sINN">
-            <activiti:expression>${bankIdinn}</activiti:expression>
+            <activiti:expression><![CDATA[${bankIdinn}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -114,7 +114,7 @@
     <sequenceFlow id="flow13" sourceRef="boundarytimer1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
-        <timeDuration>PT6M</timeDuration>
+        <timeDuration>PT30M</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow14" sourceRef="timerintermediatecatchevent1" targetRef="usertask2"></sequenceFlow>
@@ -127,7 +127,7 @@
     </sequenceFlow>
     <boundaryEvent id="boundarytimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT1M</timeDuration>
+        <timeDuration>PT3M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow18" sourceRef="boundarytimer2" targetRef="exclusivegateway1"></sequenceFlow>
@@ -140,6 +140,9 @@
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="67.0" width="105.0" x="150.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="225.0" y="133.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="67.0" width="105.0" x="530.0" y="114.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -151,9 +154,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundarytimer2" id="BPMNShape_boundarytimer2">
         <omgdc:Bounds height="30.0" width="30.0" x="360.0" y="240.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="225.0" y="133.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="330.0" y="129.0"></omgdc:Bounds>
