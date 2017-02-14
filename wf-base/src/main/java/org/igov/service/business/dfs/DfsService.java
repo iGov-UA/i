@@ -229,6 +229,7 @@ public class DfsService {
                     List<String> fileNames = getContentFromXml(responseBody, "fileName");
                     List<String> fileContents = getContentFromXml(responseBody, "messageData");
                     LOG.info("receive fileNames: " + fileNames);
+                    LOG.info("!!!snCountYear: " + snCountYear);
                     if (fileNames != null && fileNames.size() > 0 && fileContents != null && fileContents.size() > 0
                             && fileNames.contains(snCountYear)) {
                         String fileName = fileNames.get(0);
