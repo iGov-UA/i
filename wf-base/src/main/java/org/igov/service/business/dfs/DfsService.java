@@ -76,6 +76,9 @@ public class DfsService {
         LOG.info("aByteArrayMultipartFile.size()=" + aByteArrayMultipartFile.size());
         String oFile_XML_SWinEd = (String) runtimeService.getVariable(snID_Process, "oFile_XML_SWinEd");
         String sFileName_XML_SWinEd_Answer = (String) runtimeService.getVariable(snID_Process, "sFileName_XML_SWinEd_Answer");
+        //
+        String saName_Attach_Dfs = (String) runtimeService.getVariable(snID_Process, "saName_Attach_Dfs");
+        
         boolean bExist_Attach_Dfs_Answer = false;
         try {
             Attachment oAttachment_Document = taskService.getAttachment(oFile_XML_SWinEd); //sFileName_XML_SWinEd_Answer=F1401801
@@ -91,11 +94,18 @@ public class DfsService {
                     if ((sFileName.contains(sAttachmentName_Document) && !sFileName.endsWith(".xml"))
                             || (bExist_Attach_Dfs_Answer = sFileName.contains(sFileName_XML_SWinEd_Answer))) { //"F1401801"
                         LOG.info("ToAttach-PROCESS Found sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
-                        Attachment oAttachment = taskService.createAttachment(sFileContentType,
-                                sID_Task, snID_Process, sFileName, oByteArrayMultipartFile.getName(), oByteArrayMultipartFile.getInputStream());
-                        if (oAttachment != null) {
-                            asID_Attach_Dfs.append(oAttachment.getId()).append(",");
-                            LOG.info("oAttachment.getId()=" + oAttachment.getId());
+                        //
+                        if (saName_Attach_Dfs != null && !saName_Attach_Dfs.contains(sFileName)) {
+                            saName_Attach_Dfs = saName_Attach_Dfs + sFileName + ",";
+                            Attachment oAttachment = taskService.createAttachment(sFileContentType,
+                                    sID_Task, snID_Process, sFileName, oByteArrayMultipartFile.getName(), oByteArrayMultipartFile.getInputStream());
+                            if (oAttachment != null) {
+                                asID_Attach_Dfs.append(oAttachment.getId()).append(",");
+                                LOG.info("oAttachment.getId()=" + oAttachment.getId());
+                            }
+                        //    
+                        } else{
+                            LOG.info("skip sFileName: " + sFileName);
                         }
                     } else {
                         LOG.info("ToAttach-SKIP sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
@@ -141,6 +151,7 @@ public class DfsService {
         runtimeService.setVariable(snID_Process, "anID_Attach_Dfs", sID_Attach_Dfs);
         taskService.setVariable(sID_Task, "anID_Attach_Dfs", sID_Attach_Dfs);
         runtimeService.setVariable(snID_Process, "bExist_Attach_Dfs_Answer", bExist_Attach_Dfs_Answer);
+        runtimeService.setVariable(snID_Process, "saName_Attach_Dfs", saName_Attach_Dfs);
         //taskService.setVariable(sID_Task, "bExist_Attach_Dfs_Answer", bExist_Attach_Dfs_Answer);
 
         return asID_Attach_Dfs.toString();
