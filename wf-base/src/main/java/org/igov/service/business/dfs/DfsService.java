@@ -77,7 +77,8 @@ public class DfsService {
         String oFile_XML_SWinEd = (String) runtimeService.getVariable(snID_Process, "oFile_XML_SWinEd");
         String sFileName_XML_SWinEd_Answer = (String) runtimeService.getVariable(snID_Process, "sFileName_XML_SWinEd_Answer");
         //
-        String saName_Attach_Dfs = (String) runtimeService.getVariable(snID_Process, "saName_Attach_Dfs");
+        String saName_Attach_Dfs = (String) runtimeService.getVariable(snID_Process, "saName_Attach_Dfs") != null
+                ? (String) runtimeService.getVariable(snID_Process, "saName_Attach_Dfs") : "";
         LOG.info("saName_Attach_Dfs: " + saName_Attach_Dfs);
         boolean bExist_Attach_Dfs_Answer = false;
         try {
@@ -102,9 +103,20 @@ public class DfsService {
                             if (oAttachment != null) {
                                 asID_Attach_Dfs.append(oAttachment.getId()).append(",");
                                 LOG.info("oAttachment.getId()=" + oAttachment.getId());
+                            } else {
+                                try {
+                                    String sMail = "";
+                                    BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
+                                    byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
+                                    saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби", "Отримана відповідь від Державної Фіскальної "
+                                            + "Служби у вигляді криптопакету: " + sFileName, aByte, sID_Order, sMail, sFileName, sFileContentType);
+                                } catch (Exception ex) {
+                                    LOG.error("ToJournal sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document + ":" + ex.getMessage());
+                                    java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                             }
-                        //    
-                        } else{
+                            //    
+                        } else {
                             LOG.info("skip sFileName: " + sFileName);
                         }
                     } else {
@@ -112,7 +124,7 @@ public class DfsService {
                     }
                 }
 
-                try {
+                /*try {
                     for (ByteArrayMultipartFile oByteArrayMultipartFile : aByteArrayMultipartFile) {
                         String sFileName = oByteArrayMultipartFile.getOriginalFilename();
                         String sFileContentType = oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp();
@@ -120,11 +132,13 @@ public class DfsService {
                                 || sFileName.contains(sFileName_XML_SWinEd_Answer)) { //"F1401801"
                             LOG.info("ToJournal-PROCESS sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
                             try {
-                                String sMail = "";
-                                BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
-                                byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
-                                saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби", "Отримана відповідь від Державної Фіскальної "
-                                        + "Служби у вигляді криптопакету: " + sFileName, aByte, sID_Order, sMail, sFileName, sFileContentType);
+                                
+                                    String sMail = "";
+                                    BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
+                                    byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
+                                    saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби", "Отримана відповідь від Державної Фіскальної "
+                                            + "Служби у вигляді криптопакету: " + sFileName, aByte, sID_Order, sMail, sFileName, sFileContentType);
+                                
                             } catch (Exception ex) {
                                 LOG.error("ToJournal sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document + ":" + ex.getMessage());
                                 java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
@@ -135,8 +149,7 @@ public class DfsService {
                     }
                 } catch (Exception ex) {
                     java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
+                }*/
             } else {
                 LOG.info("Can't find attachmett oFile_XML_SWinEd: " + oFile_XML_SWinEd);
             }
