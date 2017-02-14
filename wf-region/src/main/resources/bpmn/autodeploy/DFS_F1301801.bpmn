@@ -43,16 +43,16 @@
         <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
           <activiti:field name="sID_File_XML_SWinEd">
-            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
+            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
           </activiti:field>
           <activiti:field name="sEmail">
-            <activiti:expression><![CDATA[${email}]]></activiti:expression>
+            <activiti:expression>${email}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
+            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -63,22 +63,22 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему Запит]]></activiti:expression>
+          <activiti:expression>Звернення на тему Запит</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>Ви подавали звернення на тему Запит до ДФС. <br />
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;Ви подавали звернення на тему Запит до ДФС. &lt;br /&gt;
 
-Ви можете відкрити криптопакет відповіді ДФС з допомогою  <a href="https://alpha.test.igov.org.ua/journal/answer/DFS">цього інструменту</a> із використанням своєї ЕЦП, що ви використали під час подання запиту. <br /> <br />
+Ви можете відкрити криптопакет відповіді ДФС з допомогою  &lt;a href="https://alpha.test.igov.org.ua/journal/answer/DFS"&gt;цього інструменту&lt;/a&gt; із використанням своєї ЕЦП, що ви використали під час подання запиту. &lt;br /&gt; &lt;br /&gt;
                         [pattern/mail/_common_signature_end.html]
-                        [pattern/mail/_common_footer.html]]]></activiti:expression>
+                        [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${anID_Attach_Dfs}]]></activiti:expression>
+          <activiti:expression>${anID_Attach_Dfs}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -94,15 +94,15 @@
         <activiti:formProperty id="anID_Attach_Dfs" name="Файл с ответом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}">
           <activiti:field name="sINN">
-            <activiti:expression><![CDATA[${bankIdinn}]]></activiti:expression>
+            <activiti:expression>${bankIdinn}</activiti:expression>
           </activiti:field>
           <activiti:field name="snCountYear">
-            <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
+            <activiti:expression>${C_DOC_CNT}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
+            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -116,7 +116,7 @@
     <sequenceFlow id="flow13" sourceRef="boundarytimer1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
-        <timeDuration>PT30M</timeDuration>
+        <timeDuration>PT6M</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow14" sourceRef="timerintermediatecatchevent1" targetRef="usertask2"></sequenceFlow>
@@ -129,7 +129,7 @@
     </sequenceFlow>
     <boundaryEvent id="boundarytimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT3M</timeDuration>
+        <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow18" sourceRef="boundarytimer2" targetRef="exclusivegateway1"></sequenceFlow>
