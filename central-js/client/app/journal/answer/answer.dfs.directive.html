@@ -79,7 +79,7 @@
 
                                 <div class="modal-body" ng-if="!vm.viewContent.DECLAR.DECLARBODY[0].HDOCKOD[0]">
                                   <h3 style="text-align: center">
-                                      Відповідь на запит від {{viewContent.DECLAR.DECLARHEAD.D_FILL["#text"]}}<br>
+                                      Відповідь на запит від {{::vm.viewContent.DECLAR.DECLARHEAD[0].D_FILL[0]}}<br>
                                   про суми виплачених доходів та утриманих податків з Державного реєстру фізичних осіб – платників податків
                                   для заповнення податкової декларації про майновий стан і доходи/декларації про доходи та витрати осіб, які звернулись за призначенням житлових субсидій
                                   </h3>
@@ -87,33 +87,33 @@
                                   <table class="tg">
                                     <tr>
                                       <th class="tg-s6z2" rowspan="8">Фізична особа – платник<br>податків</th>
-                                      <th class="tg-s6z2" colspan="2"><b>{{viewContent.DECLAR.DECLARBODY.HLNAME["#text"]}}</b></th>
+                                      <th class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HLNAME[0]}}</b></th>
                                     </tr>
                                     <tr>
                                       <td class="tg-s6z2" colspan="2">Прізвище</td>
                                     </tr>
                                     <tr>
-                                      <td class="tg-s6z2" colspan="2"><b>{{viewContent.DECLAR.DECLARBODY.HPNAME["#text"]}}</b></td>
+                                      <td class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HPNAME[0]}}</b></td>
                                     </tr>
                                     <tr>
                                       <td class="tg-s6z2" colspan="2">Ім’я</td>
                                     </tr>
                                     <tr>
-                                      <td class="tg-s6z2" colspan="2"><b>{{viewContent.DECLAR.DECLARBODY.HFNAME["#text"]}}</b></td>
+                                      <td class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HFNAME[0]}}</b></td>
                                     </tr>
                                     <tr>
                                       <td class="tg-s6z2" colspan="2">По батькові</td>
                                     </tr>
                                     <tr>
-                                      <td class="tg-s6z2" colspan="2"><b>{{viewContent.DECLAR.DECLARBODY.HTIN["#text"]}}</b></td>
+                                      <td class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HTIN[0]}}</b></td>
                                     </tr>
                                     <tr>
                                       <td class="tg-s6z2" colspan="2">Реєстраційний номер<br>облікової картки платника податків/серія та номер паспорта*</td>
                                     </tr>
                                     <tr>
                                       <td class="tg-s6z2" rowspan="2">Який зареєстрований в</td>
-                                      <td class="tg-s6z2"><b>{{viewContent.DECLAR.DECLARBODY.HKSTI["#text"]}}</b></td>
-                                      <td class="tg-yw4l"><b>{{viewContent.DECLAR.DECLARBODY.HSTI["#text"]}}</b></td>
+                                      <td class="tg-s6z2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HKSTI[0]}}</b></td>
+                                      <td class="tg-yw4l"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HSTI[0]}}</b></td>
                                     </tr>
                                     <tr>
                                       <td class="tg-s6z2">Код</td>
@@ -121,7 +121,7 @@
                                     </tr>
                                     <tr>
                                       <td class="tg-s6z2">Електронна адреса<br>фізичної особи</td>
-                                      <td class="tg-s6z2" colspan="2"><b>{{viewContent.DECLAR.DECLARBODY.HEMAIL["#text"]}}</b></td>
+                                      <td class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HEMAIL[0]}}</b></td>
                                     </tr>
                                   </table>
 
@@ -144,22 +144,22 @@
                                       <td class="tg-k6pi">рік</td>
                                     </tr>
 
-                                    <tr ng-repeat="row in viewContent.DECLAR.DECLARBODY.T1RXXXXG2" ng-init="ind = $index; content = viewContent.DECLAR.DECLARBODY">
+                                    <tr ng-repeat="row in vm.viewContent.DECLAR.DECLARBODY[0].T1RXXXXG2" ng-init="ind = $index; content = vm.viewContent.DECLAR.DECLARBODY[0]">
                                       <td class="tg-s6z2">{{ ind + 1 }}</td>
-                                      <td class="tg-s6z2">{{ row["#text"] }}</td>
-                                      <td class="tg-s6z2">{{ content.T1RXXXXG3S[ind]["#text"] }}</td>
-                                      <td class="tg-s6z2">{{ content.T1RXXXXG4S[ind]["#text"] }}</td>
-                                      <td class="tg-s6z2">{{ content.T1RXXXXG5[ind]["#text"] }}</td>
-                                      <td class="tg-s6z2">{{ content.T1RXXXXG6[ind]["#text"] }}</td>
-                                      <td class="tg-s6z2">{{ content.T1RXXXXG7[ind]["#text"] }}</td>
-                                      <td class="tg-s6z2">{{ content.T1RXXXXG8S[ind]["#text"] }}</td>
-                                      <td class="tg-s6z2">{{ content.T1RXXXXG9[ind]["#text"] }}</td>
-                                      <td class="tg-s6z2">{{ content.T1RXXXXG10[ind]["#text"] }}</td>
+                                      <td class="tg-s6z2">{{ row[0] }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG3S[ind][0] }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG4S[ind][0] }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG5[ind][0] }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG6[ind][0] }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG7[ind][0] }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG8S[ind][0] }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG9[ind][0] }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG10[ind][0] }}</td>
                                     </tr>
                                   </table>
 
-                                  <div>
-                                    <h3 style="display: inline-block;">Дата формування відповіді на запит </h3> <u> {{viewContent.DECLAR.DECLARHEAD.D_FILL["#text"]}} </u><br>
+                                  <div style="font-size: 12px">
+                                    <h3 style="display: inline-block;">Дата формування відповіді на запит </h3> <u> {{vm.viewContent.DECLAR.DECLARHEAD[0].D_FILL[0]}} </u><br>
                                     <b>*</b> серія та номер паспорта зазначають фізичні особи, які мають відмітку в паспорті про право здійснювати будь-які платежі за серією та номером паспорта;<br>
                                     <b>**</b> Результат обробки запиту може приймати наступні значення:<br>
                                     <b>Відповідь надано відповідно до:</b><br>
