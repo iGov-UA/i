@@ -494,6 +494,7 @@ ${sNameOrgan}<br />
 1. до 45 календарних днів, з продовженням у разі потреби до 60 днів, а у виняткових  випадках, залежно від складності проблеми, -до 120 днів;<br />
 2. за доопрацьованими матеріалами відповідно до висновків попередньої екологічної експертизи - до 30 календарних днів.<br />
 </p>
+<p>[cancelTask]</p>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 Департамент екології та природних ресурсів Дніпропетровської ОДА<br />
@@ -625,6 +626,7 @@ ${sNameOrgan}<br />
 День та час - ${date_of_visit}<br>
 Обов'язково принесіть заяву на експертизу.<br>
 
+<p>[cancelTask]</p>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 Департамент екології та природних ресурсів Дніпропетровської ОДА<br>
@@ -650,6 +652,8 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow26" sourceRef="servicetask10" targetRef="servicetask12"></sequenceFlow>
     <userTask id="usertask6" name="Після зустрічі" activiti:candidateGroups="test_ECO">
       <extensionElements>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;sNameUrOsob&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="long"></activiti:formProperty>
