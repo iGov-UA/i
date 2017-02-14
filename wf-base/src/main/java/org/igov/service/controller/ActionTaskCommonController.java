@@ -2644,6 +2644,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getAnswer_DFS_New", method = RequestMethod.GET)
     public @ResponseBody
     String getAnswer_DFS_New(@ApiParam(value = "ИНН", required = true) @RequestParam(value = "INN", required = true) String INN,
+            @ApiParam(value = "Порядковый номер документа в году", required = true) @RequestParam(value = "snCountYear", required = true) String snCountYear,
             @ApiParam(value = "ИНН", required = true) @RequestParam(value = "sID_Process", required = true) String sID_Process) throws Exception {
         Task task = taskService.createTaskQuery().processInstanceId(sID_Process.trim()).active().singleResult();
         LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
