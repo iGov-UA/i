@@ -57,7 +57,7 @@ public class ProcessCountTask implements JavaDelegate, TaskListener {
 		loadProcessCount(execution);
 	}
 
-	private void loadProcessCount(DelegateExecution execution) {
+	private void loadProcessCount(DelegateExecution execution) throws Exception {
             
             LOG.info("ProcessCountTask start...");
             LOG.info("execution.getProcessDefinitionId: " + execution.getProcessDefinitionId());
