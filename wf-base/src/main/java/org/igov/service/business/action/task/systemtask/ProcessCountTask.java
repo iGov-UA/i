@@ -26,52 +26,51 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * 
+ *
  * @author askosyr
  *
  */
 @Component("ProcessCountTaskListener")
 public class ProcessCountTask implements JavaDelegate, TaskListener {
 
-	public static final String S_ID_ORDER_GOV_PUBLIC = "sID_Order_GovPublic";
+    public static final String S_ID_ORDER_GOV_PUBLIC = "sID_Order_GovPublic";
 
-	private final static Logger LOG = LoggerFactory.getLogger(CreateDocument_UkrDoc.class);
-	
-	@Autowired
-        HttpRequester httpRequester;
-	
-	@Autowired
-        GeneralConfig generalConfig;
-	
-	@Autowired
-        RuntimeService runtimeService;
-	
-	@Autowired
-	TaskService taskService;
-	
-	@Autowired
-	FormService formService;
-	
-	@Override
-	public void execute(DelegateExecution execution) throws Exception {
-		loadProcessCount(execution);
-	}
+    private final static Logger LOG = LoggerFactory.getLogger(CreateDocument_UkrDoc.class);
 
-	private void loadProcessCount(DelegateExecution execution) {
-            
-            LOG.info("ProcessCountTask start...");
-            LOG.info("execution.getProcessDefinitionId: " + execution.getProcessDefinitionId());
-            
-            if (execution.getProcessDefinitionId().startsWith("_doc_")||
-                    ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(StringUtils.substringBefore(execution.getProcessDefinitionId(), ":"))) 
-            {
+    @Autowired
+    HttpRequester httpRequester;
+
+    @Autowired
+    GeneralConfig generalConfig;
+
+    @Autowired
+    RuntimeService runtimeService;
+
+    @Autowired
+    TaskService taskService;
+
+    @Autowired
+    FormService formService;
+
+    @Override
+    public void execute(DelegateExecution execution) throws Exception {
+        loadProcessCount(execution);
+    }
+
+    private void loadProcessCount(DelegateExecution execution) {
+
+        LOG.info("ProcessCountTask start...");
+        LOG.info("execution.getProcessDefinitionId: " + execution.getProcessDefinitionId());
+        try {
+            if (execution.getProcessDefinitionId().startsWith("_doc_")
+                    || ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(StringUtils.substringBefore(execution.getProcessDefinitionId(), ":"))) {
                 Integer count = ActionProcessCountUtils
                         .callSetActionProcessCount(httpRequester, generalConfig, StringUtils.substringBefore(execution.getProcessDefinitionId(), ":"), null);
                 LOG.info("SetDocument process count: " + count.intValue());
             }
-            
+
             String processCount = getActionProcessCount(execution.getProcessDefinitionId(), null);
-                
+
             if (processCount != null) {
                 runtimeService.setVariable(execution.getProcessInstanceId(), S_ID_ORDER_GOV_PUBLIC, processCount);
                 LOG.info("Set variable to runtime process:{}", processCount);
@@ -100,17 +99,20 @@ public class ProcessCountTask implements JavaDelegate, TaskListener {
                     }
                 }
             }
-	}
+        } catch (Exception ex) {
+            LOG.error("!!!loadProcessCount: ", ex);
+        }
+    }
 
-	private String getActionProcessCount(String sID_BP, Long nID_Service) {
-		int res = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, StringUtils.substringBefore(sID_BP, ":"), nID_Service, null);
-		String resStr = String.format("%07d", res);
-		LOG.info("Retrieved {} as a result", resStr);
-		return resStr;
-	}
+    private String getActionProcessCount(String sID_BP, Long nID_Service) {
+        int res = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, StringUtils.substringBefore(sID_BP, ":"), nID_Service, null);
+        String resStr = String.format("%07d", res);
+        LOG.info("Retrieved {} as a result", resStr);
+        return resStr;
+    }
 
-	@Override
-	public void notify(DelegateTask delegateTask) {
-		loadProcessCount(delegateTask.getExecution());
-	}
+    @Override
+    public void notify(DelegateTask delegateTask) {
+        loadProcessCount(delegateTask.getExecution());
+    }
 }
