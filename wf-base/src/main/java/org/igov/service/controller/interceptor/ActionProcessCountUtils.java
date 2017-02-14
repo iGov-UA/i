@@ -17,18 +17,22 @@ public class ActionProcessCountUtils {
     private static final String URI_SET_ACTION_PROCESS_COUNT = "/wf/service/action/event/setActionProcessCount";
     private static final String URI_GET_ACTION_PROCESS_COUNT = "/wf/service/action/event/getActionProcessCount";
 
-    public static Integer callSetActionProcessCount(HttpRequester httpRequester, GeneralConfig generalConfig, String sID_BP, Long nID_Service) throws Exception {
+    public static Integer callSetActionProcessCount(HttpRequester httpRequester, GeneralConfig generalConfig, String sID_BP, Long nID_Service) {
         Map<String, String> mParam = new HashMap<>();
         mParam.put("sID_BP", sID_BP);
         int result = 0;
         if (nID_Service != null) {
             mParam.put("nID_Service", nID_Service.toString());
         }
-        String soResponse = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI_SET_ACTION_PROCESS_COUNT, mParam);
-        LOG.info("Received response for updating ActionProcessCount {}", soResponse); //{"nCountYear":26}
-        Map<String, Object> mReturn = (Map<String, Object>) JSONValue.parse(soResponse);
-        if (mReturn != null && mReturn.containsKey("nCountYear")) {
-            result = Integer.valueOf(mReturn.get("nCountYear").toString());
+        try {
+            String soResponse = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI_SET_ACTION_PROCESS_COUNT, mParam);
+            LOG.info("Received response for updating ActionProcessCount {}", soResponse); //{"nCountYear":26}
+            Map<String, Object> mReturn = (Map<String, Object>) JSONValue.parse(soResponse);
+            if (mReturn != null && mReturn.containsKey("nCountYear")) {
+                result = Integer.valueOf(mReturn.get("nCountYear").toString());
+            }
+        } catch (Exception ex) {
+            LOG.error("callSetActionProcessCount: ", ex);
         }
         LOG.info("found nCountYear: " + result);
         return result;
