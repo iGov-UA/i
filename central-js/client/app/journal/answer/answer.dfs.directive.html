@@ -79,14 +79,14 @@
 
                                 <div class="modal-body" ng-if="!vm.viewContent.DECLAR.DECLARBODY[0].HDOCKOD[0]">
                                   <h3 style="text-align: center">
-                                      Відповідь на запит від {{::vm.viewContent.DECLAR.DECLARHEAD[0].D_FILL[0]}}<br>
-                                  про суми виплачених доходів та утриманих податків з Державного реєстру фізичних осіб – платників податків
-                                  для заповнення податкової декларації про майновий стан і доходи/декларації про доходи та витрати осіб, які звернулись за призначенням житлових субсидій
+                                    Відповідь на запит від &nbsp;{{parseDate(viewContent.DECLAR.DECLARHEAD[0].D_FILL[0])}}<br>
+                                    про суми виплачених доходів та утриманих податків з Державного реєстру фізичних осіб – платників податків
+                                    для заповнення податкової декларації про майновий стан і доходи/декларації про доходи та витрати осіб, які звернулись за призначенням житлових субсидій
                                   </h3>
 
                                   <table class="tg">
                                     <tr>
-                                      <th class="tg-s6z2" rowspan="8">Фізична особа – платник<br>податків</th>
+                                      <th class="tg-s6z2" rowspan="8">Фізична особа – платник податків</th>
                                       <th class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HLNAME[0]}}</b></th>
                                     </tr>
                                     <tr>
@@ -108,19 +108,19 @@
                                       <td class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HTIN[0]}}</b></td>
                                     </tr>
                                     <tr>
-                                      <td class="tg-s6z2" colspan="2">Реєстраційний номер<br>облікової картки платника податків/серія та номер паспорта*</td>
+                                      <td class="tg-s6z2" colspan="2">Реєстраційний номер облікової картки платника податків/серія та номер паспорта*</td>
                                     </tr>
                                     <tr>
                                       <td class="tg-s6z2" rowspan="2">Який зареєстрований в</td>
                                       <td class="tg-s6z2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HKSTI[0]}}</b></td>
-                                      <td class="tg-yw4l"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HSTI[0]}}</b></td>
+                                      <td class="tg-s6z2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HSTI[0]}}</b></td>
                                     </tr>
                                     <tr>
                                       <td class="tg-s6z2">Код</td>
-                                      <td class="tg-yw4l">та,назва,територіального органу ДФС України</td>
+                                      <td class="tg-s6z2">та назва територіального органу ДФС України</td>
                                     </tr>
                                     <tr>
-                                      <td class="tg-s6z2">Електронна адреса<br>фізичної особи</td>
+                                      <td class="tg-s6z2">Електронна адреса фізичної особи</td>
                                       <td class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HEMAIL[0]}}</b></td>
                                     </tr>
                                   </table>
@@ -131,17 +131,17 @@
                                       <th class="tg-kr94" rowspan="2">№ з/п</th>
                                       <th class="tg-kr94" rowspan="2">Результат обробки запиту**</th>
                                       <th class="tg-kr94" colspan="2">Джерела отримання доходів</th>
-                                      <th class="tg-kr94" rowspan="2">Сума,доходу</th>
-                                      <th class="tg-kr94" rowspan="2">Сума,податку</th>
-                                      <th class="tg-kr94" rowspan="2">Ознака,доходу</th>
+                                      <th class="tg-kr94" rowspan="2">Сума доходу</th>
+                                      <th class="tg-kr94" rowspan="2">Сума податку</th>
+                                      <th class="tg-kr94" rowspan="2">Ознака доходу</th>
                                       <th class="tg-kr94" rowspan="2">Коротка назва виду доходу</th>
                                       <th class="tg-kr94" colspan="2">Період, за який надається інформація</th>
                                     </tr>
                                     <tr>
-                                      <td class="tg-kr94">Податковий номер/серія та<br>номер,паспорта,податкового агента***</td>
+                                      <td class="tg-kr94">Податковий номер/серія та номер,паспорта,податкового агента***</td>
                                       <td class="tg-kr94">Назва юридичної особи/ПІБ фізичної особи –<br>підприємця</td>
                                       <td class="tg-kr94">квартал</td>
-                                      <td class="tg-k6pi">рік</td>
+                                      <td class="tg-kr94">рік</td>
                                     </tr>
 
                                     <tr ng-repeat="row in vm.viewContent.DECLAR.DECLARBODY[0].T1RXXXXG2" ng-init="ind = $index; content = vm.viewContent.DECLAR.DECLARBODY[0]">
@@ -159,7 +159,7 @@
                                   </table>
 
                                   <div style="font-size: 12px">
-                                    <h3 style="display: inline-block;">Дата формування відповіді на запит </h3> <u> {{vm.viewContent.DECLAR.DECLARHEAD[0].D_FILL[0]}} </u><br>
+                                    <h3 style="display: inline-block;">Дата формування відповіді на запит </h3> <u style="font-size: 16px;font-weight: bold;"> &nbsp;&nbsp;{{parseDate(viewContent.DECLAR.DECLARHEAD[0].D_FILL[0])}}&nbsp;&nbsp; </u><br>
                                     <b>*</b> серія та номер паспорта зазначають фізичні особи, які мають відмітку в паспорті про право здійснювати будь-які платежі за серією та номером паспорта;<br>
                                     <b>**</b> Результат обробки запиту може приймати наступні значення:<br>
                                     <b>Відповідь надано відповідно до:</b><br>
