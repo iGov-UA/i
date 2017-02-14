@@ -150,5 +150,9 @@
         + $location.port()
         + vm.redirectUrl;//stateForRedirect;
     }
+
+    vm.parseDate = function (date) {
+      if(date) return date.replace(/^(\d{2})(\d{2})(\d{4})$/, '$1.$2.$3');
+    }
   }
 })();
