@@ -96,7 +96,7 @@ public class DfsService {
                             || (bExist_Attach_Dfs_Answer = sFileName.contains(sFileName_XML_SWinEd_Answer))) { //"F1401801"
                         LOG.info("ToAttach-PROCESS Found sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
                         //
-                        if (saName_Attach_Dfs != null && !saName_Attach_Dfs.contains(sFileName)) {
+                        if (!saName_Attach_Dfs.contains(sFileName)) {
                             saName_Attach_Dfs = saName_Attach_Dfs + sFileName + ",";
                             Attachment oAttachment = taskService.createAttachment(sFileContentType,
                                     sID_Task, snID_Process, sFileName, oByteArrayMultipartFile.getName(), oByteArrayMultipartFile.getInputStream());
