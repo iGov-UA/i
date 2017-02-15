@@ -140,7 +140,7 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
     '  <input type="file" style="display:none"  ng-disabled="isFileProcessUploading.bState">' +
     ' </button>' +
     ' <br ng-if="!item"/>' +
-    ' <label ng-if="data.formData.params[property.id].value && !item || item && item.value">Файл: {{data.formData.params[property.id].fileName || item.fileName}}</label>' +
+    ' <label style="word-break: break-word" ng-if="data.formData.params[property.id].value && !item || item && item.value">Файл: {{data.formData.params[property.id].fileName || item.fileName}}</label>' +
     ' <br/>' +
     ' <label ng-if="data.formData.params[property.id].value && data.formData.params[property.id].value.signInfo || item.value && item.signInfo"  class="form-control_"> ' +
     '    Підпис: {{data.formData.params[property.id].value.signInfo.name || item.signInfo.name}} ' +
