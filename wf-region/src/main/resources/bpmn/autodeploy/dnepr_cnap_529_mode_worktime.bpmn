@@ -10,6 +10,11 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
+        <activiti:formProperty id="asTypeZayava" name="Оберіть поторібний тип дії" type="enum">
+          <activiti:value id="sElementTypeZayava_Nadannya" name="Надання погодження режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Podovzennya" name="Продовження погодженого режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Zmina" name="Внесення змін у режим роботи"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameObject_RV" name="У родовому відмінку повне найменування об'єкта торгівлі, ресторанного господарства або сфери послуг" type="string" required="true"></activiti:formProperty>
@@ -66,6 +71,11 @@
     <userTask id="usertask1" name="[Етап I] Прийняття рішення щодо розгляду повідомлення (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeZayava" name="Оберіть поторібний тип дії" type="enum" writable="false">
+          <activiti:value id="sElementTypeZayava_Nadannya" name="Надання погодження режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Podovzennya" name="Продовження погодженого режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Zmina" name="Внесення змін у режим роботи"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
@@ -120,6 +130,11 @@
     <userTask id="usertask2" name="[Етап II] Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeZayava" name="Оберіть поторібний тип дії" type="enum" writable="false">
+          <activiti:value id="sElementTypeZayava_Nadannya" name="Надання погодження режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Podovzennya" name="Продовження погодженого режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Zmina" name="Внесення змін у режим роботи"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
