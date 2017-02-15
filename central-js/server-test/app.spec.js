@@ -241,3 +241,5 @@ module.exports.regionMock = regionMock;
 module.exports.authResultMock = authResultMock;
 module.exports.testRequest = testRequest;
 module.exports.tests = appTests;
+module.exports.saveCookies = saveCookies;
+module.exports.attachCookies = attachCookies;
