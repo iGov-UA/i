@@ -81,8 +81,18 @@ public class SubjectGroup extends NamedEntity {
     public void setsChain(String sChain) {
         this.sChain = sChain;
     }
+    
+    
 
-    @Override
+    public Subject getoSubject() {
+		return oSubject;
+	}
+
+	public void setoSubject(Subject oSubject) {
+		this.oSubject = oSubject;
+	}
+
+	@Override
     public String toString() {
         return "SubjectGroup [sID_Group_Activiti=" + sID_Group_Activiti + ", sChain=" + sChain + ", getName()="
                 + getName() + ", getId()=" + getId() + "]";

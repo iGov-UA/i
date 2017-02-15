@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.activiti.engine.IdentityService;
@@ -20,8 +21,10 @@ import org.igov.model.core.BaseEntityDao;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.model.subject.SubjectGroupTree;
+import org.igov.model.subject.SubjectHuman;
 import org.igov.model.subject.SubjectUser;
 import org.igov.model.subject.VSubjectGroupParentNode;
+import org.igov.model.subject.organ.SubjectOrgan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,15 +32,23 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import org.springframework.stereotype.Component;
 
 /**
  * Сервис получения полной организационной иерархии (родитель - ребенок)
  *
  * @author inna
  */
+@Component("subjectGroupTreeService")
 @Service
 public class SubjectGroupTreeService {
 
+	private static final String ORGAN = "Organ";
+	private static final String HUMAN = "Human";
+	/**
+	 * флаг определяющий, что на вход был конкрентный тип ORGAN или HUMAN
+	 */
+	private static boolean isSubjectType = false;
 	private static final Log LOG = LogFactory.getLog(SubjectGroupTreeService.class);
 	private static final long FAKE_ROOT_SUBJECT_ID = 0;
 
@@ -51,7 +62,12 @@ public class SubjectGroupTreeService {
     Map<Long, List<SubjectGroup>> getChildrenTreeRes = new HashMap<>();
 
 	public SubjectGroupResultTree getCatalogSubjectGroupsTree(String sID_Group_Activiti, Long deepLevel,
-			String sFind, Boolean bIncludeRoot,Long deepLevelWidth) {
+			String sFind, Boolean bIncludeRoot,Long deepLevelWidth, String sSubjectType) {
+		
+		/**
+		 * Лист для ид Subject ORGAN или HUMAN для последующего анализа
+		 */
+		List<Long> resSubjectTypeList = new ArrayList<>();
 		List<SubjectGroup> aChildResult = new ArrayList<>();
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 		 SubjectGroupResultTree processSubjectResultTree = new SubjectGroupResultTree();
@@ -62,7 +78,65 @@ public class SubjectGroupTreeService {
 		Map<String, Long> mapGroupActiviti = new HashMap<>();
 		VSubjectGroupParentNode parentSubjectGroup = null;
 		Set<Long> idParentList = new LinkedHashSet<>();
+		List<SubjectHuman> subjectHumans = null;
+    	List<SubjectOrgan> subjectOrgans = null;
+    	
+    	if(HUMAN.equals(sSubjectType)) {
+    		subjectHumans = new ArrayList<>(baseEntityDao.findAll(SubjectHuman.class));
+    		isSubjectType = true;
+    	}
+    	
+    	if(ORGAN.equals(sSubjectType)) {
+    		subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
+    		isSubjectType = true;
+    	}
+    	if(subjectHumans!=null && !subjectHumans.isEmpty()) {
+    		List<Long> subjectHumansIdSubj = Lists
+					.newArrayList(Collections2.transform(subjectHumans, new Function<SubjectHuman, Long>() {
+						@Override
+						public Long apply(SubjectHuman subjectHuman) {
+							return subjectHuman.getoSubject().getId();
+						}
+					}));
+    		subjectGroupRelations = Lists
+                    .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
+                        @Override
+                        public boolean apply(SubjectGroupTree subjectGroupTree) {
+                            // получить только отфильтрованный
+                            // список по Humans
+                        	return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject()) 
+                            		&& Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
+                            		&& subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
+                            		&& subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
+                        }
+                    }));
+    		
+    		resSubjectTypeList.addAll(subjectHumansIdSubj);
+		}
+    	if(subjectOrgans!=null && !subjectOrgans.isEmpty()) {
+    		List<Long> subjectOrgansIdSubj = Lists
+					.newArrayList(Collections2.transform(subjectOrgans, new Function<SubjectOrgan, Long>() {
+						@Override
+						public Long apply(SubjectOrgan subjectOrgan) {
+							return subjectOrgan.getoSubject().getId();
+						}
+					}));
+    		subjectGroupRelations = Lists
+                    .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
+                        @Override
+                        public boolean apply(SubjectGroupTree subjectGroupTree) {
+                            // получить только отфильтрованный
+                            // список по Organs
+                            return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject()) 
+                            		&& Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
+                            		&& subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
+                            		&& subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
+                        }
+                    }));
+    		resSubjectTypeList.addAll(subjectOrgansIdSubj);
+		}
 		for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
+			
 			final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
 
 			if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
@@ -151,7 +225,22 @@ public class SubjectGroupTreeService {
 	        }else {
 	        	processSubjectResultTree.setaSubjectGroupTree(resultTree);
 	        }
+	        
+	        /**
+	         * isSubjectType =true- был на вход тип орган или хьман, 
+	         * лист не пустой с ид Subject органа или хьманов,
+	         * лист содержит groupFiltr
+	         * возвращаем ответ, иначе ничего не возвращаем 
+	         */
+	        
+	        if(isSubjectType && !resSubjectTypeList.isEmpty() && resSubjectTypeList.contains(groupFiltr)) {
+	        	return processSubjectResultTree;
+			}else {
+				SubjectGroupResultTree processSubjectResultTreeRes = new SubjectGroupResultTree();
+				 return processSubjectResultTreeRes;
+			}
 		}
+		
 	        return processSubjectResultTree;
 
 	    }
@@ -174,6 +263,7 @@ public class SubjectGroupTreeService {
             	subjectGroup.setaSubjectGroup(aChildResultByKey);
             }
         }
+		
 		return aChildResult;
 	}
 

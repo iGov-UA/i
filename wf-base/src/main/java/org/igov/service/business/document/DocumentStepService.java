@@ -381,6 +381,9 @@ public class DocumentStepService {
     }*/
     public Map<String, Object> getDocumentStepRights(String sLogin, String snID_Process_Activiti) {//JSONObject
         //assume that we can have only one active task per process at the same time
+        
+        long startTime = System.nanoTime();
+        
         LOG.info("sLogin={}, snID_Process_Activiti={}", sLogin, snID_Process_Activiti);
         List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
         if (aTaskActive.size() < 1 || aTaskActive.get(0) == null) {
@@ -454,11 +457,11 @@ public class DocumentStepService {
 
         //final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
 
+        long stopTime = System.nanoTime();
         
+        LOG.info("getDocumentStepRights 1st block time execution is: " + String.format("%,12d", (stopTime - startTime)));
         
-        
-        
-        
+        startTime = System.nanoTime();
         
         
         
@@ -471,6 +474,7 @@ public class DocumentStepService {
                     .filter(oRight -> asID_Group.contains(oRight.getsKey_GroupPostfix()))
                     .collect(Collectors.toList());
         }
+        
         LOG.info("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active
@@ -481,7 +485,7 @@ public class DocumentStepService {
                 .collect(Collectors.toList());
         LOG.info("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new LinkedList(aDocumentStepSubjectRight_Common);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Common;
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
         LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
 
@@ -500,84 +504,167 @@ public class DocumentStepService {
         List<String> asID_Field_Read = new LinkedList();
         List<String> asID_Field_Write = new LinkedList();
 
-        List<FormProperty> a = oFormService.getTaskFormData(snID_Task).getFormProperties();
+        List<FormProperty> aFormProperty = oFormService.getTaskFormData(snID_Task).getFormProperties();
+        
+        stopTime = System.nanoTime();
+        
+        LOG.info("getDocumentStepRights 2nd block time execution is: " + String.format("%,12d", (stopTime - startTime)));
+        startTime = System.nanoTime();
+        LOG.info("total FormProperty size is: " + aFormProperty.size());
+        LOG.info("total aDocumentStepSubjectRight size is: " + aDocumentStepSubjectRight.size());
+        
+        Map<String, boolean[]> resultMap = new HashMap<>();
+        
+        for (FormProperty oProperty : aFormProperty) {
+            groupSearch:
+            {
+                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                    List<String> asID_Field_Read_Temp = new LinkedList();
+                    List<String> asID_Field_Write_Temp = new LinkedList();
+                    //Boolean bInclude=null;
+                    LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix()={}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
 
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-            List<String> asID_Field_Read_Temp = new LinkedList();
-            List<String> asID_Field_Write_Temp = new LinkedList();
-            //Boolean bInclude=null;
-            LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix()={}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
-            
-            for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
-                String sMask = oDocumentStepSubjectRightField.getsMask_FieldID();
-                LOG.info("sMask={}", sMask);
-                
-                if (sMask != null) {
-                    Boolean bNot = false;
-                    if (sMask.startsWith("!")) {
-                        bNot = true;
-                        sMask = sMask.substring(1);
-                    }
-                    Boolean bEndsWith = false;
-                    Boolean bStartWith = false;
-                    Boolean bAll = "*".equals(sMask);
-                    if (!bAll) {
-                        if (sMask.startsWith("*")) {
-                            bEndsWith = true;
-                            sMask = sMask.substring(1);
-                        }
-                        if (sMask.endsWith("*")) {
-                            bStartWith = true;
-                            sMask = sMask.substring(0, sMask.length() - 1);
-                        }
-                    }
-                    LOG.info("bEndsWith={},bStartWith={},bAll={},bNot={}", bEndsWith, bStartWith, bAll, bNot);
-                    for (FormProperty oProperty : a) {
-                        String sID = oProperty.getId();
-                        Boolean bFound = false;
-                        if (bStartWith && bEndsWith) {
-                            bFound = sID.contains(sMask);
-                        } else if (bStartWith) {
-                            bFound = sID.startsWith(sMask);
-                        } else if (bEndsWith) {
-                            bFound = sID.endsWith(sMask);
-                        }
-                        LOG.info("sID={},bFound={},bAll={}", sID, bFound, bAll);
-                        if (bAll || bFound) {
-                            Boolean bWriteField = oDocumentStepSubjectRightField.getbWrite();
-                            if (bNot) {
-                                if (bWriteField) {
-                                    asID_Field_Write_Temp.remove(sID);
-                                } else {
-                                    asID_Field_Read_Temp.remove(sID);
-                                }
-                            } else if (bWriteField) {
-                                asID_Field_Write_Temp.add(sID);
-                            } else {
-                                asID_Field_Read_Temp.add(sID);
+                    long loopStartTime = System.nanoTime();
+
+                    for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
+                        String sMask = oDocumentStepSubjectRightField.getsMask_FieldID();
+                        LOG.info("sMask={}", sMask);
+                        LOG.info("total DocumentStepSubjectRightFields size is: " + oDocumentStepSubjectRight.getDocumentStepSubjectRightFields().size());
+                        if (sMask != null) {
+                            Boolean bNot = false;
+                            if (sMask.startsWith("!")) {
+                                bNot = true;
+                                sMask = sMask.substring(1);
                             }
-                            LOG.info("bWriteField={}", bWriteField);
+                            Boolean bEndsWith = false;
+                            Boolean bStartWith = false;
+                            Boolean bAll = "*".equals(sMask);
+                            if (!bAll) {
+                                if (sMask.startsWith("*")) {
+                                    bEndsWith = true;
+                                    sMask = sMask.substring(1);
+                                }
+                                if (sMask.endsWith("*")) {
+                                    bStartWith = true;
+                                    sMask = sMask.substring(0, sMask.length() - 1);
+                                }
+                            }
+                            LOG.info("bEndsWith={},bStartWith={},bAll={},bNot={}", bEndsWith, bStartWith, bAll, bNot);
+                            long scLoopStartTime = System.nanoTime();
+
+                            //for (FormProperty oProperty : aFormProperty) {
+                            String sID = oProperty.getId();
+                            Boolean bFound = false;
+                            if (bStartWith && bEndsWith) {
+                                bFound = sID.contains(sMask);
+                            } else if (bStartWith) {
+                                bFound = sID.startsWith(sMask);
+                            } else if (bEndsWith) {
+                                bFound = sID.endsWith(sMask);
+                            }
+                            
+                            LOG.info("sID={},bFound={},bAll={}", sID, bFound, bAll);
+                            if (bAll || bFound) {
+                                Boolean bWriteField = oDocumentStepSubjectRightField.getbWrite();
+                                if (bNot) {
+                                    /*if (bWriteField) {
+                                        asID_Field_Write_Temp.remove(sID);
+                                    } else {
+                                        asID_Field_Read_Temp.remove(sID);
+                                    }*/
+                                    resultMap.remove(sID);
+                                } else if (bWriteField) {
+                                    //asID_Field_Write_Temp.add(sID);
+                                    if (resultMap.containsKey(sID))
+                                    {
+                                        resultMap.replace(sID, new boolean[]{true, false});
+                                    }
+                                    else
+                                    {
+                                        resultMap.put(sID, new boolean[]{true, false});
+                                    }
+                                    
+                                    break groupSearch;
+                                
+                                } else {
+                                    resultMap.put(sID, new boolean[]{false, true});
+                                }
+                                LOG.info("bWriteField={}", bWriteField);
+                            }
+                            //}
+
+                            long scLoopStopTime = System.nanoTime();
+                            LOG.info("2st loop time execution in getDocumentStepRights 3th block is: " + String.format("%,12d", (scLoopStopTime - scLoopStartTime)));
                         }
                     }
+
+                    long loopStopTime = System.nanoTime();
+                    LOG.info("1st loop time execution in getDocumentStepRights 3th block is: " + String.format("%,12d", (loopStopTime - loopStartTime)));
+
+                    /*asID_Field_Read.addAll(asID_Field_Read_Temp);
+                    asID_Field_Write.addAll(asID_Field_Write_Temp);
+
+                    LOG.info("asID_Field_Write_TMP={}", asID_Field_Read_Temp);
+                    LOG.info("asID_Field_Read_TMP={}", asID_Field_Write_Temp);
+                    LOG.info("asID_Field_Write_TMP size={}", asID_Field_Read_Temp.size());
+                    LOG.info("asID_Field_Read_TMP size={}", asID_Field_Write_Temp.size()); */
                 }
             }
-            asID_Field_Read.addAll(asID_Field_Read_Temp);
-            asID_Field_Write.addAll(asID_Field_Write_Temp);
         }
 
+        stopTime = System.nanoTime();
+        
+        LOG.info("getDocumentStepRights 3th block time execution is: " + String.format("%,12d", (stopTime - startTime)));
+        startTime = System.nanoTime();
         //mReturn.put("asID_Field_Write(0)", asID_Field_Write);
         //mReturn.put("asID_Field_Read(0)", asID_Field_Read);
         LOG.info("asID_Field_Write(before)={}", asID_Field_Write);
         LOG.info("asID_Field_Read(before)={}", asID_Field_Read);
-        for (String sID_Field_Write : asID_Field_Write) {
+        LOG.info("asID_Field_Write(before) size={}", asID_Field_Write.size());
+        LOG.info("asID_Field_Read(before) size={}", asID_Field_Read.size());
+        
+        TreeSet<String> asUnique_ID_Field_Write = new TreeSet<>(asID_Field_Write);
+        TreeSet<String> asUnique_ID_Field_Read = new TreeSet<>(asID_Field_Read);
+        
+        LOG.info("asUnique_ID_Field_Write ={}", asUnique_ID_Field_Write);
+        LOG.info("asUnique_ID_Field_Write ={}", asUnique_ID_Field_Read);
+        LOG.info("asID_Field_Write size={}", asUnique_ID_Field_Write.size());
+        LOG.info("asID_Field_Read size={}", asUnique_ID_Field_Read.size());
+        
+        /*for (String sID_Field_Write : asID_Field_Write) {
             asID_Field_Read.remove(sID_Field_Write);
         }
-
+        
         mReturn.put("asID_Field_Write", asID_Field_Write);
-        mReturn.put("asID_Field_Read", asID_Field_Read);
+        mReturn.put("asID_Field_Read", asID_Field_Read);*/
+        
+        List<String> asNewID_Field_Read = new LinkedList();
+        List<String> asNewID_Field_Write = new LinkedList();
+        
+        for(String key : resultMap.keySet())
+        {
+            boolean[] resultArray = resultMap.get(key);
+            if(resultArray[0])
+            {
+                asNewID_Field_Write.add(key);
+            }
+            else{
+                asNewID_Field_Read.add(key);
+            }
+        }
+        
+        mReturn.put("asID_Field_Write", asNewID_Field_Write);
+        mReturn.put("asID_Field_Read", asNewID_Field_Read);
+        
+        LOG.info("asNewID_Field_Write = {}", asID_Field_Write);
+        LOG.info("asNewID_Field_Read ={}", asID_Field_Read);
+        
         LOG.info("asID_Field_Write(after)={}", asID_Field_Write);
         LOG.info("asID_Field_Read(after)={}", asID_Field_Read);
         //LOG.info("mReturn={}", mReturn);
+        stopTime = System.nanoTime();
+        LOG.info("getDocumentStepRights 4th block time execution is: " + String.format("%,12d", (stopTime - startTime)));
+        
         return mReturn;
     }
 

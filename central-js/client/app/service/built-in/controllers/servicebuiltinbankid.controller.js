@@ -329,6 +329,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           }, function (data, error) {
 
             if (data) {
+              var C_DOC_CNT = data.soPatternFilled.match(/<C_DOC_CNT>(.*?)<\/C_DOC_CNT>/);
+              if (C_DOC_CNT !== null && C_DOC_CNT.length == 2) {
+                if('C_DOC_CNT' in $scope.data.formData.params) {
+                  $scope.data.formData.params.C_DOC_CNT.value = C_DOC_CNT[1];
+                }
+              }
               $scope.data.formData.params[taxTemplateFileHandlerConfig.soPatternFilled] = data.soPatternFilled;
 
               angular.extend($scope.data.formData, {
@@ -373,9 +379,28 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       };
 
+      $scope.formMarkers = iGovMarkers.getMarkers();
+      $scope.activitiForm.formProperties.filter(function(item){return item.type === 'markers'}).forEach(function (field) {
+        if (field.type === 'markers' && $.trim(field.value)) {
+          var sourceObj = null;
+          try {
+            sourceObj = JSON.parse(field.value);
+          } catch (ex) {
+            console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
+          }
+          if (sourceObj !== null) {
+            _.merge($scope.formMarkers, sourceObj, function (destVal, sourceVal) {
+              if (_.isArray(sourceVal)) {
+                return sourceVal;
+              }
+            });
+          }
+        }
+      });
+
       $scope.validateForm = function (form) {
         var bValid = true;
-        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {});
+        ValidationService.validateByMarkers(form, $scope.formMarkers, true, this.data.formData.params ? this.data.formData.params : {});
         return form.$valid && bValid;
       };
 
@@ -954,7 +979,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       TableService.init($scope.activitiForm.formProperties);
 
       $scope.addRow = function (form, id, index) {
-        ValidationService.validateByMarkers(form, null, true, this.data.formData.params ? this.data.formData.params : {}, true);
+        ValidationService.validateByMarkers(form, $scope.formMarkers, true, this.data.formData.params ? this.data.formData.params : {}, true);
         if (!form.$invalid) {
           $scope.tableIsInvalid = false;
           TableService.addRow(id, $scope.activitiForm.formProperties);
@@ -979,5 +1004,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       if ($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot) {
         $scope.fillSelfPrevious();
+      }
+
+      $rootScope.queue = {
+        previousOrganJoin: {}
       }
 });

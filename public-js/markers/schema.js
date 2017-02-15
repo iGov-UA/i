@@ -389,6 +389,14 @@ angular.module('iGovMarkers')
                             },
                             required: ["aField_ID"],
                             additionalProperties: false
+                        },
+                        "^OrderValue": {
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"}
+                            },
+                            required: ["aField_ID"],
+                            additionalProperties: false
                         }
                     },
                     additionalProperties: false

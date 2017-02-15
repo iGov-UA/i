@@ -235,7 +235,7 @@
 
         function searchSelectSubject() {
           angular.forEach(taskForm, function (item) {
-            var isExecutorSelect = item.name.split(';')[2];
+            var isExecutorSelect = item.name ? item.name.split(';')[2] : null;
             if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
               var match;
               if (((match = item.id ? item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/) : false))
@@ -248,9 +248,18 @@
                     item.autocompleteName += match[2];
                   item.autocompleteData = autocompletesDataFactory[match[1]];
                 } else if (!match && isExecutorSelect.indexOf('SubjectRole') > -1) {
+                  var props = isExecutorSelect.split(','), role;
                   item.type = 'select';
                   item.selectType = 'autocomplete';
-                  item.autocompleteName = 'SubjectRole';
+                  for(var i=0; i<props.length; i++) {
+                    if(props[i].indexOf('sID_SubjectRole') > -1) {
+                      role = props[i];
+                      break;
+                    }
+                  }
+                  var roleValue = role ? role.split('=')[1] : null;
+                  if(roleValue && roleValue === 'Executor') item.autocompleteName = 'SubjectRole';
+                  if(roleValue && roleValue === 'ExecutorDepart') item.autocompleteName = 'SubjectRoleDept';
                   item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
                 }
               }
@@ -283,7 +292,7 @@
         $scope.taskId = oTask.id;
         $scope.tabHistoryAppeal = 'appeal';
         $scope.nID_Process = oTask.processInstanceId;
-        $scope.markers = ValidationService.getValidationMarkers();
+        $scope.markers = iGovMarkers.getMarkers();
         $scope.bHasEmail = false;
         $scope.isClarifySending = false;
         $scope.tableIsInvalid = false;
@@ -305,7 +314,7 @@
               //debugger;
             }
           });
-          ValidationService.validateByMarkers(form, null, true, oValidationFormData);
+          ValidationService.validateByMarkers(form, $scope.markers, true, oValidationFormData);
           return form.$valid && bValid;
         };
 
@@ -362,7 +371,7 @@
                 console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
               }
               if (sourceObj !== null) {
-                _.merge(iGovMarkers.getMarkers(), sourceObj, function (destVal, sourceVal) {
+                _.merge($scope.markers, sourceObj, function (destVal, sourceVal) {
                   if (_.isArray(sourceVal)) {
                     return sourceVal;
                   }
@@ -739,7 +748,7 @@
               })
             }
             if ((!documentUnpopulatedFields && unpopulatedFields.length > 0)
-              || (documentUnpopulatedFields && documentUnpopulatedFields.length > 0)) {
+                || (documentUnpopulatedFields && documentUnpopulatedFields.length > 0)) {
               var errorMessage = 'Будь ласка, заповніть поля: ';
 
               if (unpopulatedFields.length == 1) {
@@ -1259,7 +1268,7 @@
         };
 
         $scope.addRow = function (form, id, index) {
-          ValidationService.validateByMarkers(form, null, true, null, true);
+          ValidationService.validateByMarkers(form, $scope.markers, true, null, true);
           if (!form.$invalid) {
             $scope.tableIsInvalid = false;
             TableService.addRow(id, $scope.taskForm);

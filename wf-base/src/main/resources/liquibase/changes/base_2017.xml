@@ -59,4 +59,24 @@
         
     </changeSet>
     
+<!--     <changeSet id="issue-1385-dropForeignKey" author="inna">
+        <dropForeignKeyConstraint baseTableName="SubjectHuman" constraintName="FK_Subject_SubjectHuman"/>
+        <dropForeignKeyConstraint baseTableName="SubjectOrgan" constraintName="FK_Subject_SubjectOrgan"/>
+    </changeSet> -->
+    
+     <changeSet id="issue-1522-Add-fields" author="Elena Shebaldenkova">
+        <addColumn tableName="DocumentStepSubjectRight">
+            <column name="sDateECP" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sID_File_ForSign" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="bNeedECP" type="boolean" defaultValue="false">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    
 </databaseChangeLog>
