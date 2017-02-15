@@ -26,8 +26,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
       "writable": true,
       "required": false,
       "datePattern":null,
-      "enumValues":[],
-      "descriptors":{}
+      "enumValues":[]
     });
   };
 
