@@ -197,7 +197,6 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
                       if (immediateValidation === true) tableField.$validate();
                     }
                   }
-                  break
                 }
               }
             })
@@ -968,6 +967,17 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
               break;
             }
         }      
+      }
+
+      if(sFileName === "" && modelValue && typeof modelValue === 'string') {
+        try {
+          var isNewAttaches = JSON.parse(modelValue);
+          if(typeof isNewAttaches === 'object' && isNewAttaches.sFileNameAndExt) {
+            sFileName = isNewAttaches.sFileNameAndExt;
+          }
+        }catch (e) {
+          console.info(e)
+        }
       }
 
       var aExtensions = options.saExtension.split(',');

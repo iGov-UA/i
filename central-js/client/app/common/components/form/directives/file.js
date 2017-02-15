@@ -21,21 +21,24 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
 
       // for file in table
       if(!oFile && ngModel.$name) {
-        angular.forEach(scope.activitiForm.formProperties, function (prop) {
-          if('aRow' in prop) {
-            angular.forEach(prop.aRow, function (row) {
-              angular.forEach(row.aField, function (field) {
-                if(field.id === ngModel.$name){
-                  oFile = field;
-                  oFileField = {
-                    id:field.id,
-                    isNew:true
+        function setFileInTable() {
+          angular.forEach(scope.activitiForm.formProperties, function (prop) {
+            if('aRow' in prop) {
+              angular.forEach(prop.aRow, function (row) {
+                angular.forEach(row.aField, function (field) {
+                  if(ngModel.$name.indexOf(field.id) === 0){
+                    oFile = field;
+                    oFileField = {
+                      id:field.id,
+                      isNew:true
+                    }
                   }
-                }
+                })
               })
-            })
-          }
-        })
+            }
+          })
+        } setFileInTable();
+
       }
 
       var nMaxFileSizeLimit = 10; // max upload file size = 10 MB
@@ -76,6 +79,7 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
             if(aFilteredFiles.length > 0){
               scope.switchProcessUploadingState();
               console.log("Start uploading " + aFilteredFiles.length + " file(s)");
+              if(!oFile) {setFileInTable()}
               oFile.setFiles(aFilteredFiles);
               if(oFileField.isNew) {
                 oFile.upload(scope.oServiceData, oFileField.id);
