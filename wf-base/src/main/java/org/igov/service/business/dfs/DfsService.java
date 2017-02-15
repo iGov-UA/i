@@ -73,7 +73,7 @@ public class DfsService {
     public String getAnswer(String sID_Task, String snID_Process, String sINN, String snCountYear) {
         StringBuilder asID_Attach_Dfs = new StringBuilder();
         List<ByteArrayMultipartFile> aByteArrayMultipartFile = getAnswer(sINN, snCountYear);
-        LOG.info("snID_Process: " + snID_Process + " snCountYear: " + snCountYear 
+        LOG.info("snID_Process: " + snID_Process + " snCountYear: " + snCountYear
                 + "aByteArrayMultipartFile.size()=" + aByteArrayMultipartFile.size());
         String oFile_XML_SWinEd = (String) runtimeService.getVariable(snID_Process, "oFile_XML_SWinEd");
         String sFileName_XML_SWinEd_Answer = (String) runtimeService.getVariable(snID_Process, "sFileName_XML_SWinEd_Answer");
@@ -115,7 +115,7 @@ public class DfsService {
                                 }
                             } else {
                                 LOG.info("Attach is null!!! sFileName: " + sFileName);
-                            }   
+                            }
                         } else {
                             LOG.info("skip sFileName: " + sFileName);
                         }
@@ -123,33 +123,6 @@ public class DfsService {
                         LOG.info("ToAttach-SKIP sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
                     }
                 }
-
-                /*try {
-                    for (ByteArrayMultipartFile oByteArrayMultipartFile : aByteArrayMultipartFile) {
-                        String sFileName = oByteArrayMultipartFile.getOriginalFilename();
-                        String sFileContentType = oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp();
-                        if ((sFileName.contains(sAttachmentName_Document) && !sFileName.endsWith(".xml"))
-                                || sFileName.contains(sFileName_XML_SWinEd_Answer)) { //"F1401801"
-                            LOG.info("ToJournal-PROCESS sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
-                            try {
-                                
-                                    String sMail = "";
-                                    BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
-                                    byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
-                                    saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби", "Отримана відповідь від Державної Фіскальної "
-                                            + "Служби у вигляді криптопакету: " + sFileName, aByte, sID_Order, sMail, sFileName, sFileContentType);
-                                
-                            } catch (Exception ex) {
-                                LOG.error("ToJournal sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document + ":" + ex.getMessage());
-                                java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        } else {
-                            LOG.info("ToJournal-SKIP sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
-                        }
-                    }
-                } catch (Exception ex) {
-                    java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
             } else {
                 LOG.info("Can't find attachmett oFile_XML_SWinEd: " + oFile_XML_SWinEd);
             }
@@ -164,8 +137,7 @@ public class DfsService {
         runtimeService.setVariable(snID_Process, "anID_Attach_Dfs", sID_Attach_Dfs);
         taskService.setVariable(sID_Task, "anID_Attach_Dfs", sID_Attach_Dfs);
         runtimeService.setVariable(snID_Process, "bExist_Attach_Dfs_Answer", bExist_Attach_Dfs_Answer);
-        runtimeService.setVariable(snID_Process, "saName_Attach_Dfs", saName_Attach_Dfs_Value);
-        taskService.setVariable(sID_Task, "saName_Attach_Dfs", saName_Attach_Dfs);
+        runtimeService.setVariable(snID_Process, "saName_Attach_Dfs", saName_Attach_Dfs_Value + saName_Attach_Dfs);
         return asID_Attach_Dfs.toString();
     }
 
@@ -253,7 +225,7 @@ public class DfsService {
                     List<String> fileContents = getContentFromXml(responseBody, "messageData");
                     LOG.info("receive fileNames: " + fileNames);
                     if (fileNames != null && fileNames.size() > 0 && fileContents != null && fileContents.size() > 0
-                            && fileNames.get(0).contains(snCountYear)) {
+                            && fileNames.get(0) != null && snCountYear != null && fileNames.get(0).contains(snCountYear)) {
                         String fileName = fileNames.get(0);
                         byte[] fileContent = Base64.decodeBase64(fileContents.get(0));
                         if (fileName != null && fileContent != null && fileContent.length > 0) {
