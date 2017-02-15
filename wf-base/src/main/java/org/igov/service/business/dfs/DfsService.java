@@ -73,10 +73,10 @@ public class DfsService {
     public String getAnswer(String sID_Task, String snID_Process, String sINN, String snCountYear) {
         StringBuilder asID_Attach_Dfs = new StringBuilder();
         List<ByteArrayMultipartFile> aByteArrayMultipartFile = getAnswer(sINN, snCountYear);
-        LOG.info("aByteArrayMultipartFile.size()=" + aByteArrayMultipartFile.size());
+        LOG.info("snID_Process: " + snID_Process + " snCountYear: " + snCountYear 
+                + "aByteArrayMultipartFile.size()=" + aByteArrayMultipartFile.size());
         String oFile_XML_SWinEd = (String) runtimeService.getVariable(snID_Process, "oFile_XML_SWinEd");
         String sFileName_XML_SWinEd_Answer = (String) runtimeService.getVariable(snID_Process, "sFileName_XML_SWinEd_Answer");
-        //
         String saName_Attach_Dfs_Value = (String) runtimeService.getVariable(snID_Process, "saName_Attach_Dfs");
         LOG.info("saName_Attach_Dfs: " + saName_Attach_Dfs_Value);
         String saName_Attach_Dfs = "";
@@ -95,15 +95,14 @@ public class DfsService {
                     if ((sFileName.contains(sAttachmentName_Document) && !sFileName.endsWith(".xml"))
                             || (bExist_Attach_Dfs_Answer = sFileName.contains(sFileName_XML_SWinEd_Answer))) { //"F1401801"
                         LOG.info("ToAttach-PROCESS Found sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
-                        //
+                        LOG.info("ToAttach-PROCESS saName_Attach_Dfs_Value=" + saName_Attach_Dfs_Value + " saName_Attach_Dfs=" + saName_Attach_Dfs);
                         if (saName_Attach_Dfs_Value == null || !saName_Attach_Dfs_Value.contains(sFileName)) {
-                            saName_Attach_Dfs = saName_Attach_Dfs_Value + sFileName + ",";
+                            saName_Attach_Dfs = saName_Attach_Dfs + sFileName + ",";
                             Attachment oAttachment = taskService.createAttachment(sFileContentType,
                                     sID_Task, snID_Process, sFileName, oByteArrayMultipartFile.getName(), oByteArrayMultipartFile.getInputStream());
                             if (oAttachment != null) {
                                 asID_Attach_Dfs.append(oAttachment.getId()).append(",");
                                 LOG.info("oAttachment.getId()=" + oAttachment.getId());
-                            } else {
                                 try {
                                     String sMail = "";
                                     BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
@@ -114,8 +113,9 @@ public class DfsService {
                                     LOG.error("ToJournal sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document + ":" + ex.getMessage());
                                     java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                            }
-                            //    
+                            } else {
+                                LOG.info("Attach is null!!! sFileName: " + sFileName);
+                            }   
                         } else {
                             LOG.info("skip sFileName: " + sFileName);
                         }
@@ -166,8 +166,6 @@ public class DfsService {
         runtimeService.setVariable(snID_Process, "bExist_Attach_Dfs_Answer", bExist_Attach_Dfs_Answer);
         runtimeService.setVariable(snID_Process, "saName_Attach_Dfs", saName_Attach_Dfs_Value);
         taskService.setVariable(sID_Task, "saName_Attach_Dfs", saName_Attach_Dfs);
-        //taskService.setVariable(sID_Task, "bExist_Attach_Dfs_Answer", bExist_Attach_Dfs_Answer);
-
         return asID_Attach_Dfs.toString();
     }
 
