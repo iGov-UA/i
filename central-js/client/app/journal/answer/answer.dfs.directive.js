@@ -35,6 +35,7 @@
     vm.decryptedIsPresent;
     vm.onDownload = onDownload;
     vm.onView = onView;
+    vm.parseDate = parseDate;
     vm.viewContent = {};
 
     activate();
@@ -151,7 +152,7 @@
         + vm.redirectUrl;//stateForRedirect;
     }
 
-    vm.parseDate = function (date) {
+    function parseDate(date) {
       if(date) return date.replace(/^(\d{2})(\d{2})(\d{4})$/, '$1.$2.$3');
     }
   }
