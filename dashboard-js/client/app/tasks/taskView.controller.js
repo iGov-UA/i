@@ -235,7 +235,7 @@
 
         function searchSelectSubject() {
           angular.forEach(taskForm, function (item) {
-            var isExecutorSelect = item.name.split(';')[2];
+            var isExecutorSelect = item.name ? item.name.split(';')[2] : null;
             if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
               var match;
               if (((match = item.id ? item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/) : false))
