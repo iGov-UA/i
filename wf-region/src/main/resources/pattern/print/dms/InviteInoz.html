@@ -22,10 +22,10 @@
 	</tr>
 	<tr>
 		<td height="31" colspan="2">дійсне для пред’явлення до </td>
-		<td id ="first" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
-		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
+		<td id="dayEnd" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
+		<td id="monthEnd" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
 		<td></td>
-		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>[XXX]</b></td>
+		<td id="yearEnd" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
 		<td></td>
 	</tr>
 	<tr>
@@ -130,7 +130,7 @@
 	</tr>
 	<tr>
 		<td height="27">Мета в’їзду</td>
-		<td colspan="3" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>-----------------</b></td>
+		<td colspan="3" align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"></td>
 		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>-----------------</b></td>
 		<td align="CENTER" valign="middle" style="font-size:12pt;font-family:Times New Roman"><b>-----------------</b></td>
 	</tr>
@@ -174,7 +174,7 @@
 	<colgroup width="180"></colgroup>
 	<colgroup width="150"></colgroup>
 	<tr>
-		<td height="36" colspan="9" style="border-top:1px solid #000000"></td>
+		<td height="36" colspan="9" style="border-top:1px solid #000000">Дата видачі</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="9" style="border-top:1px solid #000000"></td>
@@ -220,15 +220,20 @@
 	document.getElementById("VizitOne").innerHTML = oneVizit;
 	document.getElementById("VizitTwo").innerHTML = twoVizit;
 	document.getElementById("VizitMany").innerHTML = manyVizit;
-	var dateToday = new Date( );
-	var day = dateToday.getDate();
-	if (day < 10) day = "0" + day;
-	var month = dateToday.getMonth();
-	month++;
-	if (month < 10) month = "0" + month;
-	var year = dateToday.getFullYear();
-	document.getElementById("dayToday").innerHTML = '<b>' + day + '</b>';
-	document.getElementById("monthToday").innerHTML = '<b>' + month + '</b>';
-	document.getElementById("yearToday").innerHTML = '<b>' + String(year).substr(2,2) + '</b>';	
+	var dateResult = "[sDateResult]";
+	document.getElementById("dayToday").innerHTML = '<b>' + dateResult.substr(0,2) + '</b>';;
+	document.getElementById("monthToday").innerHTML = '<b>' + dateResult.substr(3,2) + '</b>';
+	document.getElementById("yearToday").innerHTML = '<b>' + dateResult.substr(8,2) + '</b>';
+	var dayEnd1 = +dateResult.substr(0,2);
+	var monthEnd1 = +dateResult.substr(3,2)+6;
+	var yearEnd1 = +dateResult.substr(8,2);
+	if (dayEnd1 == 31 && (monthEnd1-6 == 3 || monthEnd1-6 == 5 || monthEnd1-6 == 10 || monthEnd1-6 == 12)) {dayEnd1 = 30};
+	if (monthEnd1 > 12) {yearEnd1 = yearEnd1 + 1};
+	if (monthEnd1 > 12) {monthEnd1 = monthEnd1 - 12};
+	if (monthEnd1 < 10) {monthEnd1 = 0 + String(monthEnd1)};
+	if (dayEnd1 > 29 && monthEnd1 == "02") {dayEnd1 = 28};
+	document.getElementById("dayEnd").innerHTML = '<b>' + dayEnd1 + '</b>';;
+	document.getElementById("monthEnd").innerHTML = '<b>' + monthEnd1 + '</b>';
+	document.getElementById("yearEnd").innerHTML = '<b>' + yearEnd1 + '</b>';
 </script>
 </body></html>
