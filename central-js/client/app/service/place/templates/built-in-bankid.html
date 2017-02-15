@@ -241,13 +241,15 @@
                           <div dropdown class="dropup" style="display: inline-block; position:relative;">
                             <div class="like-modal dropdown-menu" role="menu">
                               <file-field style="text-align: center"
-                                          name="{{item.id}}"
+                                          name="{{item.id + rowIndex}}"
                                           ng-model="item.value"
                                           ng-required="isFieldRequired(item)"
                                           ng-class="getBpAndFieldID(item)"
                                           ng-if="item.upload">Add File</file-field>
                             </div>
                             <button style="position:relative;"
+                                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                                    name="{{item.id + rowIndex}}"
                                     ng-disabled="isFormPropertyDisabled(item) || isFileProcessUploading.bState"
                                     ng-if="item.fileName"
                                     type="button"
