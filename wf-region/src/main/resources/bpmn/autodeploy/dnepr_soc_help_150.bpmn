@@ -212,6 +212,10 @@
 		<activiti:formProperty id="markersUT1" name="Маркер UT1" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_150_user.json')}"></activiti:formProperty>
 
         <activiti:formProperty id="sBody_2" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+		
+		<activiti:formProperty id="PrintFormUPSZN" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/minsoc/min_soc_help_441_print.html" type="file"></activiti:formProperty>
+        
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
 
 <!-- 
@@ -371,7 +375,7 @@
 				Кабінет №: ${sRoom}
 			</p>
 			<p>
-				З собою необхідно мати орігінали документів, які ви прикріпили при замовленні послуги.
+				З собою необхідно мати орігінали документів, які ви прикріпили при замовленні послуги, та роздрукуйте заповнену прінт-форму, прикладену до цього листа.
 			</p>			
 			<br>
 			За наявності питань можете звернутись за наступними контактами:<br>
@@ -391,7 +395,7 @@
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression><![CDATA["${PrintFormUPSZN}"]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
