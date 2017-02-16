@@ -492,12 +492,22 @@ exports.upload_content_as_attachment = function (req, res) {
 };
 
 exports.setTaskQuestions = function (req, res) {
-  activiti.get({
+  activiti.post({
     path: 'action/task/setTaskQuestions',
-    query: req.body
+    query: {
+      nID_Process: req.body.nID_Process,
+      sMail: req.body.sMail,
+      sHead: req.body.sHead,
+      sSubjectInfo: req.body.sSubjectInfo,
+      nID_Subject: req.body.nID_Subject
+    }
   }, function (error, statusCode, result) {
     res.statusCode = statusCode;
     res.send(result);
+  }, {
+    saField : req.body.saField,
+    soParams : req.body.soParams,
+    sBody : req.body.sBody
   });
 };
 

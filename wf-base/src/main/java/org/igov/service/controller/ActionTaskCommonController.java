@@ -17,6 +17,7 @@ import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskInfo;
@@ -1480,18 +1481,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * // * @param sID_Order - строка-ид заявки
      *
      * @param nID_Process
-     * @param saField -- строка-массива полей (например:
-     * "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
-     * ) // * @param nID_Process - ид заявки
-     * @param soParams
      * @param sMail -- строка электронного адреса гражданина // * @param
      * nID_Server - ид сервера
      * @param sHead -- строка заголовка письма //опциональный (если не задан, то
      * "Необходимо уточнить данные")
-     * @param sBody -- строка тела письма //опциональный (если не задан, то
-     * пустота)
      * @param sSubjectInfo -- строка-информация о субъекте //опциональный
      * @param nID_Subject -- ID гражданина //опциональный
+     * @param sJsonBody -- JSON-объект с параметрами:
+     *                  saField -- строка-массива полей (например:"[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]");
+     *                  soParams - строка-обьекта параметров;
+     *                  sBody -- строка тела письма //опциональный (если не задан, то пустота)     *
      * @throws CommonServiceException
      * @throws CRCInvalidException
      */
@@ -1515,18 +1514,40 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "- не найдена заявка (Record not found) или ид заявки неверное (CRC Error)\n"
             + "- связанные с отсылкой письма, например, невалидный емейл (Error happened when sending email)\n"
             + "- из-за некорректных входящих данных, например неверный формат saField (пример ошибки: Expected a ',' or ']' at 72 [character 73 line 1])")
-    @RequestMapping(value = "/setTaskQuestions", method = RequestMethod.GET)
+    @RequestMapping(value = "/setTaskQuestions", method = RequestMethod.POST)
     public @ResponseBody
     void setTaskQuestions(
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
-            @ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
-            @ApiParam(value = "строка-обьекта параметров", required = true) @RequestParam(value = "soParams") String soParams,
+            //@ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
+            //@ApiParam(value = "строка-обьекта параметров", required = true) @RequestParam(value = "soParams") String soParams,
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
-            @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
+            //@ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
             @ApiParam(value = "строка информация о субьекте", required = false) @RequestParam(value = "sSubjectInfo", required = false) String sSubjectInfo,
-            @ApiParam(value = "номер - ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
+            @ApiParam(value = "номер - ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "JSON-щбъект с параметрами: saField - строка-массива полей (required = true); soParams - строка-обьекта параметров (required = true); sBody - строка тела сообщения-коммента (общего) (required = false)", required = true) @RequestBody String sJsonBody
     ) throws CommonServiceException, CRCInvalidException {
+
+        String saField = "";
+        String soParams = null;
+        String sBody = null;
+        Map<String, String> mJsonBody;
+        try {
+            mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
+        } catch (Exception e){
+            throw new IllegalArgumentException("Error parse JSON smData: " + e.getMessage());
+        }
+        if(mJsonBody != null){
+            if (mJsonBody.containsKey("saField")) {
+                saField = (String) mJsonBody.get("saField");
+            }
+            if (mJsonBody.containsKey("soParams")) {
+                soParams = (String) mJsonBody.get("soParams");
+            }
+            if (mJsonBody.containsKey("sBody")) {
+                sBody = (String) mJsonBody.get("sBody");
+            }
+        }
 
         String sToken = Tool.getGeneratedToken();
         try {
