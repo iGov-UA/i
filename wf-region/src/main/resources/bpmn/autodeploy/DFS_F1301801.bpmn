@@ -9,7 +9,6 @@
         <activiti:formProperty id="bankIdinn" name="Податковий номер;реєстраційний номер облікової картки платника податків;writable=true,sID_Field_SWinEd=HTIN" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCode" name="Код  територіального органу ДФС; ;writable=true,sID_Field_SWinEd=HKSTI" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Назва територіального органу ДФС; ;writable=true,sID_Field_SWinEd=HSTI" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса;для отримання відповіді ;writable=true,sID_Field_SWinEd=HEMAIL" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCountry" name="Назва країни громадянства ; ;writable=true,sID_Field_SWinEd=HCOUNTRY" type="string" default="Україна" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCity" name="Назва населеного пункту;за місцем реєстрації ;writable=true,sID_Field_SWinEd=HCITY" type="string" required="true"></activiti:formProperty>
@@ -19,8 +18,8 @@
         <activiti:formProperty id="sStartYear" name="Рік;початок періоду;writable=true,sID_Field_SWinEd=R01G02" type="string" default="2015"></activiti:formProperty>
         <activiti:formProperty id="sEndPeriod" name="Квартал;кінець періоду;writable=true,sID_Field_SWinEd=R02G01" type="string" default="1"></activiti:formProperty>
         <activiti:formProperty id="sEndYear" name="Рік;кінець періоду;writable=true,sID_Field_SWinEd=R02G02" type="string" default="2016"></activiti:formProperty>
-        <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG" type="string"></activiti:formProperty>
-        <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG" type="string" default="04"></activiti:formProperty>
+        <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ" type="string" default="63"></activiti:formProperty>
         <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field_SWinEd=TIN" type="string"></activiti:formProperty>
         <activiti:formProperty id="C_DOC" name="C_DOC;system;writable=true,sID_Field_SWinEd=C_DOC" type="string" default="F13"></activiti:formProperty>
         <activiti:formProperty id="C_DOC_SUB" name="C_DOC_SUB;system;writable=true,sID_Field_SWinEd=C_DOC_SUB" type="string" default="018"></activiti:formProperty>
@@ -31,7 +30,7 @@
         <activiti:formProperty id="PERIOD_TYPE" name="PERIOD_TYPE;system;writable=true,sID_Field_SWinEd=PERIOD_TYPE" type="string" default="1"></activiti:formProperty>
         <activiti:formProperty id="PERIOD_MONTH" name="PERIOD_MONTH;system;writable=true,sID_Field_SWinEd=PERIOD_MONTH" type="string" default="12"></activiti:formProperty>
         <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field_SWinEd=PERIOD_YEAR" type="string" default="2015"></activiti:formProperty>
-        <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG" type="string"></activiti:formProperty>
+        <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG" type="string" default="0463"></activiti:formProperty>
         <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="F1301801"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Inv" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2_3.json')}"></activiti:formProperty>
@@ -135,7 +134,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow18" sourceRef="boundarytimer2" targetRef="exclusivegateway1"></sequenceFlow>
     <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-     <extensionElements>
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -158,7 +157,6 @@
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
- 
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow19" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
