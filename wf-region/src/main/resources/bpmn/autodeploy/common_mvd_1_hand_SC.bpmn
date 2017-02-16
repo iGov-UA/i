@@ -5,11 +5,11 @@
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть територіальний сервісний центр для отримання довідки" type="select" default="0" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="sMailClerk" name=" " type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name=" " type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name=" " type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name=" " type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailSignature" name=" " type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name=" " type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name=" " type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name=" " type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name=" " type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailSignature" name=" " type="invisible" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFamily_RU" name="Фамилия (рус.)" type="string" required="true"></activiti:formProperty>
@@ -103,6 +103,7 @@
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="markers00" name="external marker00" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_hand_SC.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers01" name="external marker01" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_hand_SC_01.json')}"></activiti:formProperty>
 
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/mvd/common_mvd_1_hand_SC_print.html"></activiti:formProperty>
@@ -152,9 +153,9 @@
         <activiti:formProperty id="sAreaBirth" name="Район народження; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth" name="Населений пункт народження; ;writable=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sCountry" name="Громадянство" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="asDoc_type" name="До запиту додається копія документа" type="enum">
+        <activiti:formProperty id="asDoc_type" name="До запиту додається копія документа" type="enum" writable="false">
           <activiti:value id="attr01" name="Паспорт"></activiti:value>
           <activiti:value id="attr02" name="Свідоцтво про народження"></activiti:value>
           <activiti:value id="attr03" name="Довідка"></activiti:value>
@@ -252,7 +253,7 @@ ${sAddress}
 Примітка щодо дати отримання довідки:
 ${sComment}&lt;br /&gt;
  &lt;b&gt; Увага! При собі обов'язково мати громадянський паспорт або інший документ, що посвідчує особу. &lt;/b&gt;  &lt;br /&gt;&lt;br /&gt;
-Графік прийому:&lt;br /&gt;
+&lt;b&gt;Графік прийому:&lt;/b&gt;&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;&lt;br /&gt;
 ${sPhoneOrgan}
 
