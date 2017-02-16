@@ -77,7 +77,7 @@
                    ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                    type="number">
             <input name="{{field.id + rowIndex}}"
-                   ng-if="field.hasOwnProperty('value')"
+                   ng-if="field.hasOwnProperty('value') && !field.hasOwnProperty('default')"
                    ng-required="field.required"
                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                    ng-model="field.value"
