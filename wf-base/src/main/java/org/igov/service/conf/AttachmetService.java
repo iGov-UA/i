@@ -147,10 +147,6 @@ public class AttachmetService {
         String sContentType = "";
         ByteArrayInputStream byteArrayInputStream = null;
         
-        tryConvetToWin("блаблабла");
-        
-        LOG.info(tryConvetToWin(sID_Field));
-        
         if(nID_Process != null && sID_Field != null){
             
             Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
@@ -207,22 +203,7 @@ public class AttachmetService {
         //return aResultArray;
     }
     
-    private String tryConvetToWin(String str) {
-        
-        LOG.info("sourse string before converting: " + str);
-        try {
-            LOG.info("1st convert try: {}", new String(str.getBytes("UTF-8"), "windows-1251"));
-            LOG.info("2nd convert try: {}", new String(str.getBytes("UTF-16"), "windows-1251"));
-            LOG.info("3th convert try: {}", new String(str.getBytes("UTF-16"), "windows-1251").getBytes("windows-1251"));
-            LOG.info("4th convert try: {}", new String(str.getBytes("UTF-8"), "windows-1251").getBytes("windows-1251"));
-        } catch (UnsupportedEncodingException ex) {
-            LOG.info("Convertation error: ", ex);
-        }
-
-        return str;
-        //return new String(str.getBytes("UTF-8"), "Cp1251"); 
-    }
-    
+     
     public String getFileExtention(String fileName) {
         String[] parts = fileName.split("\\.");
         if (parts.length != 0) {
