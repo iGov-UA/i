@@ -315,8 +315,7 @@ ${sNameOrgan}<br>
       </extensionElements>
     </serviceTask>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-var per1 = "&lt;li&gt;Документ, що посвідчує особу.&lt;/li&gt;"
+      <script>var per1 = "&lt;li&gt;Документ, що посвідчує особу.&lt;/li&gt;"
 var per2 = "&lt;li&gt;Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом.&lt;/li&gt;"
 var per3 = " "
 var per4 = " "
@@ -332,48 +331,38 @@ var per11 = " "
 var per12 = " "
 var per13 = " "
 var per14 = " "
-var per15 = " "
-var per16 = " "
-var per17 = " "
-var per18 = " "
-var per19 = " "
-var per20 = " "
-var per21 = " "
 if(execution.getVariable('sDocConfidant') != null){
 per3 = "&lt;li&gt;Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування.&lt;/li&gt;"
-per13 = "&lt;li&gt;Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування.&lt;/li&gt;"
 }
 if(execution.getVariable('vipiska') != null){
 per4 = "&lt;li&gt;Копію виписки з Єдиного державного реєстру.&lt;/li&gt;"
-per14 = "&lt;li&gt;Копія виписки з Єдиного державного реєстру.&lt;/li&gt;"
 }
 if(execution.getVariable('sTehPasport') != null){
 per5 = "&lt;li&gt;Копію технічного паспорту об'єкту нерухомого майна.&lt;/li&gt;"
-per15 = "&lt;li&gt;Копія технічного паспорту об'єкту нерухомого майна.&lt;/li&gt;"
 }
 if(execution.getVariable('sOwnershipHouse') != null){
 per6 = "&lt;li&gt;Копію документа, що підтверджує право власності на об'єкт нерухомого майна.&lt;/li&gt;"
-per16 = "&lt;li&gt;Копія документа, що підтверджує право власності на об'єкт нерухомого майна.&lt;/li&gt;"
 }
 if(execution.getVariable('sDocDivideHouse') != null){
 per7 = "&lt;li&gt;Копію договору про поділ нерухомого майна в натурі (будинку, приміщення).&lt;/li&gt;"
-per17 = "&lt;li&gt;Копія договору про поділ нерухомого майна в натурі (будинку, приміщення).&lt;/li&gt;"
 }
 if(execution.getVariable('sOwnershipZemlya') != null){
 per8 = "&lt;li&gt;Копію документа, що засвідчує право власності або користування земельною ділянкою.&lt;/li&gt;"
-per18 = "&lt;li&gt;Копія документа, що засвідчує право власності або користування земельною ділянкою.&lt;/li&gt;"
 }
 if(execution.getVariable('sShemaZemlya') != null){
 per9 = "&lt;li&gt;Схему розміщення земельної ділянки.&lt;/li&gt;"
-per19 = "&lt;li&gt;Схема розміщення земельної ділянки.&lt;/li&gt;"
 }
 if(execution.getVariable('sDocDivideZemlya') != null){
 per10 = "&lt;li&gt;Схему розподілу земельної ділянки виконана ліцензованою організацією з підписом виконавця та печаткою організації.&lt;/li&gt;"
-per20 = "&lt;li&gt;Схема розподілу земельної ділянки виконана ліцензованою організацією з підписом виконавця та печаткою організації.&lt;/li&gt;"
 }
 if(execution.getVariable('sDovidka') != null){
 per12 = "&lt;li&gt;Довідку фінансового управління про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури міста.&lt;/li&gt;"
-per21 = "&lt;li&gt;Довідка фінансового управління про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури міста.&lt;/li&gt;"
+}
+if(execution.getVariable('sDeclaration') != null){
+per13 = "&lt;li&gt;Декларацію про готовність завершеного будівництва до експлуатації.&lt;/li&gt;"
+}
+if(execution.getVariable('sReferenceBTI') != null){
+per14 = "&lt;li&gt;Довідку з БТІ про номер який рекомендовано присвоїти даній споруді.&lt;/li&gt;"
 }
 if(execution.getVariable('sAction') == 'give'){
 per11 = 'присвоєння'
@@ -384,13 +373,11 @@ per11 = 'підтвердження'
 if(execution.getVariable('sAction') == 'change'){
 per11 = 'зміни'
 }
-res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per12+'&lt;/ol&gt;'
-res2 = '&lt;ol&gt;'+per13+per14+per15+per16+per17+per18+per19+per20+per21+'&lt;/ol&gt;'
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+'&lt;/ol&gt;'
+res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsLetter', res)
 execution.setVariable('sListDocumentsPrint', res2)
-execution.setVariable('sWordsLetter', per11)
-
- </script>
+execution.setVariable('sWordsLetter', per11)</script>
     </scriptTask>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
