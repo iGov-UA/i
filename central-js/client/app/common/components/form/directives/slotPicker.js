@@ -20,6 +20,10 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         scope.selected.slot = null;
       });
 
+      scope.getSelectorsBpAndFieldId = function (field) {
+        return this.serviceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.property.id + "_--_"
+      };
+
       var resetData = function()
       {
         scope.slotsData = {};
