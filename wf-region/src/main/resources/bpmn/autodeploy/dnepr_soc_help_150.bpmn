@@ -218,13 +218,7 @@
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
 
-<!-- 
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${nFileBirthCertificate},${nFileResidence},${nFileEducation},${nFileAttestat},${nFileNotRegisterAsRecipient},${nFileForeigner},${nFileGuardian},${form_signed}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
- -->
+
 
       </extensionElements>
     </userTask>
@@ -290,6 +284,12 @@
        	<activiti:formProperty id="markers22" name="якщо відхилити" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;sComment2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDecision2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відмовлено у призначенні допомоги'&quot;}}}"></activiti:formProperty>
 
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${nFileBirthCertificate},${nFileResidence},${nFileEducation},${nFileAttestat},${nFileNotRegisterAsRecipient},${nFileForeigner},${nFileGuardian},${form_signed}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>        
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask1" name="Повідомлення співробітника соц.захисту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
