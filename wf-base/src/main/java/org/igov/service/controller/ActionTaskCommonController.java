@@ -1,10 +1,8 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
-
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
@@ -17,7 +15,6 @@ import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskInfo;
@@ -43,6 +40,7 @@ import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
 import org.igov.service.business.dfs.DfsService;
 import org.igov.service.business.dfs.DfsService_New;
+import org.igov.service.business.document.DocumentStepService;
 import org.igov.service.business.subject.message.MessageService;
 import org.igov.service.exception.*;
 import org.igov.util.JSON.JsonDateTimeSerializer;
@@ -51,6 +49,8 @@ import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
 import org.igov.util.db.queryloader.QueryLoader;
 import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,20 +66,14 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
-
-import org.igov.service.business.document.DocumentStepService;
-
 import static org.igov.util.Tool.sO;
-
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 //import com.google.common.base.Optional;
 
 /**
@@ -1535,7 +1529,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         try {
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
         } catch (Exception e){
-            throw new IllegalArgumentException("Error parse JSON smData: " + e.getMessage());
+            throw new IllegalArgumentException("Error parse JSON sJsonBody in request setTaskQuestions: " + e.getMessage());
         }
         if(mJsonBody != null){
             if (mJsonBody.containsKey("saField")) {
