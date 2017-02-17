@@ -72,13 +72,13 @@
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
-       
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask1" name="2 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//1. счетчик добавления номера в поле исходящего номера
 var number=execution.getVariable('sID_Custom_GovPublic')
+number = number&lt;&lt;0
 var sIncomingNumber=execution.getVariable('sIncomingNumber')
 var fullNumber=sIncomingNumber+"/"+number
 execution.setVariable('sID_Custom_GovPublic', fullNumber)
