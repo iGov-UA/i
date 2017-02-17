@@ -140,7 +140,7 @@
         text-align: center;
         color: #606060;
         bottom: -16px;
-        font-size: 11px;
+        font-size: 7px;
       }
 
 
@@ -237,6 +237,14 @@
       /* выравнивание текста */
       div.PrintFormClaim .ta-l { text-align: left;}
       div.PrintFormClaim .ta-j { text-align: justify;}
+      div.PrintFormClaim .ta-J { 
+      	text-align: justify;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+        word-wrap: break-word;
+      }
       div.PrintFormClaim .ta-r { text-align: right;}
       div.PrintFormClaim .ta-c { text-align: center;}
 
@@ -459,7 +467,7 @@
       function setStyleCell(id) {
           var sp = document.getElementById(id);
           sp.innerHTML = "&#10004;";
-          sp.className = "check_box_text";
+          sp.className = "check_box_text ta-c";
           sp.previousElementSibling.className += ' u';
       }      
       
@@ -516,7 +524,7 @@
         <div class="under_multifield">
           <b>проживаю за адресою:</b><u>[sAddressFactual]</u>
         </div>
-        <div class="ta-J line12">
+        <div class="ta-J line2">
           контактний телефон <em>[phone]</em>, паспорт:
           <span id="spanDetailPassport" style="display:none">
             <em id="spanPassportSeria"></em> серія № <em id="spanPassportNumber"></em>,
@@ -529,7 +537,7 @@
           від прийняття такого номера <em>[bankIdinn]</em>
           дата народження <em>[bankIdbirthDay]р.</em>
         </div>        
-        <div class="ta-J">
+        <div class="ta-j">
           звернення:
           первинне<span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span>
           вторинне<span class="check_box"><span id="spanSecond" style="visibility:hidden">&#10004;</span></span>
@@ -963,8 +971,8 @@
             <span>(підпис заявника/ уповноваженого представника сім'ї)</span>
           </div>
         </div>       
-        <div class=" w150"></div>       
-        <div class=" w150">
+        <div class=" w100"></div>       
+        <div class=" w100">
           <div class="under_field w100p">
             <span>(дата)
             </span>
@@ -993,7 +1001,7 @@
         </div>
         <div class="layout w100p">         
           <div class=" w30p">
-            <div class="under_field w100p">
+            <div class="under_field w30p">
               <b>Відповідальна особа</b>
               <span>(прізвище та підпис відповідальної особи)</span>
             </div>
@@ -1002,9 +1010,7 @@
           <div class=" w60p">
             <div class="under_field w100p">
               <b>Ознайомився</b>
-              <span>(підпис заявника / 
-                уповноваженого представника / 
-                власника, співвласника (наймача) житла)
+              <span>(підпис заявника/уповноваженого представника/власника, співвласника (наймача) житла)
               </span>
             </div> &#160;
           </div>
