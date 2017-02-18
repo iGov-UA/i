@@ -62,7 +62,7 @@ module.exports.createError = function (code, error_description, error) {
 };
 
 module.exports.isHttpError = function (statusCode) {
-  return errorStatusCodes.indexOf(statusCode / 100) > -1;
+  return errorStatusCodes.indexOf(Math.floor(statusCode / 100)) > -1;
 };
 
 module.exports[404] = function pageNotFound(req, res) {

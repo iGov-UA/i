@@ -132,6 +132,9 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     if (markerName.indexOf('Numbers_Accounts_') == 0) {
       markerName = 'Numbers_Accounts';
     }
+    if (markerName.indexOf('OrderValue') == 0) {
+      markerName = 'OrderValue';
+    }
     return markerName;
   };
 
@@ -147,22 +150,25 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     var existingValidator = false; 
     
     if((formField != null) && (formField.$name != null)) { 
-    
-    	fieldNameIsListedInMarker = (formField != null) && (formField.$name != null) && (_.indexOf(marker.aField_ID, formField.$name) !== -1);
+
+    	fieldNameIsListedInMarker = (formField != null) && (formField.$name != null) && (_.indexOf(marker.aField_ID, formField.$name) > -1);
 
     	var element = document.getElementsByName(formField.$name); 
     	if( element.length > 0 && element[0].attributes["ng-switch-when"] != null) {
     		formFieldType = element[0].attributes["ng-switch-when"].value;
     	}
+	else if  ( element.length > 0 && self.oFormDataParams[formField.$name] != null) { 
+		formFieldType = self.oFormDataParams[formField.$name].type; 
+	} 
 
-    	fieldTypeIsListedInMarker = (formField != null) && (formFieldType != null) && (_.indexOf(marker.aField_Type, formFieldType) !== -1); 
+    	fieldTypeIsListedInMarker = (formField != null) && (formFieldType != null) && (_.indexOf(marker.aField_Type, formFieldType)  > -1); 
     	
     	existingValidator = (formField != null) && formField.$validators && formField.$validators[keyByMarkerName];
 
     }
 
     if(formField && (fieldNameIsListedInMarker || fieldTypeIsListedInMarker) ) 
-    	console.log( markerName + " formField.$name=" + formField.$name + " formField.attributes[ng-switch-when]=" + formFieldType + " fieldNameIsListedInMarker=" + fieldNameIsListedInMarker + " fieldTypeIsListedInMarker=" + fieldTypeIsListedInMarker );
+    	console.log( markerName + " formField.$name=" + formField.$name + " formField.attributes[ng-switch-when] | formField.attributes[ng-if]=" + formFieldType + " fieldNameIsListedInMarker=" + fieldNameIsListedInMarker + " fieldTypeIsListedInMarker=" + fieldTypeIsListedInMarker );
    
     // для того чтобы валидация работала в таблице, нужно добраться до полей, вводится доп проверка.
     if(!fieldNameIsListedInMarker && !fieldTypeIsListedInMarker) {
@@ -253,6 +259,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     FieldNotEmptyAndNonZero: 'FieldNotEmptyAndNonZero',
     LongNumber: 'long',
     DoubleNumber: 'double',
+    OrderValue: 'OrderValue',
     StringRange: 'string'
   };
 
@@ -1039,6 +1046,26 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       bValid = bValid && (sValue!==null && sValue.trim() !== "");
       bValid = bValid && (sValue!==null && sValue.trim() !== "0");
       return bValid;
+    },
+
+    /**
+     *
+     * @param modelValue
+     * @return {boolean}
+     */
+    'OrderValue': function (modelValue) {
+      if (modelValue === null || modelValue === '') {
+        return true;
+      }
+      var value = "" + modelValue;
+      if(value.indexOf('-') > 0){
+        value = value.split('-')[1];
+      }
+      if(value.length !== ('' + parseInt(value)).length){
+        return false;
+      }
+
+      return self.getLunaValue(value.substr(0, value.length-1)) === parseInt(value.charAt(value.length-1));
     }
   };
 
@@ -1088,7 +1115,6 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
    */
   this.getLunaValue = function (id) {
 
-    // TODO: Fix Alhoritm Luna
     // Number 2187501 must give CRC=3
     // Check: http://planetcalc.ru/2464/
     // var inputNumber = 3;
@@ -1110,11 +1136,6 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     }
 
     nCRC = nCRC % 10;
-
-    // console.log(nCRC%10);
-    // nCRC=Math.round(nCRC/10)
-    // console.log(nCRC%10);
-    // console.log(nCRC);
 
     return nCRC;
 

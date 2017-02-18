@@ -405,6 +405,7 @@
 |sData||false|string|
 |sDateTimeAt||false|string|
 |sDateTimeTo||false|string|
+|sGroup||false|string|
 |sLenType||false|string|
 |sName||false|string|
 |sRegionTime||false|string|
@@ -1212,11 +1213,45 @@
 |processDefinitionId||false|string|
 |===
 
-=== SubjectGroup
+=== Subject
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|aSubjectAccountContact||false|<<SubjectContact>> array|
+|nID||false|integer (int64)|
+|sID||false|string|
+|sLabel||false|string|
+|sLabelShort||false|string|
+|===
+
+=== SubjectContact
 [options="header"]
 |===
 |Name|Description|Required|Schema|Default
 |nID||false|integer (int64)|
+|sDate||false|<<DateTime>>|
+|sValue||false|string|
+|subjectContactType||false|<<SubjectContactType>>|
+|===
+
+=== SubjectContactType
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|nID||false|integer (int64)|
+|sName_EN||false|string|
+|sName_RU||false|string|
+|sName_UA||false|string|
+|===
+
+=== SubjectGroup
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|aSubjectGroupChilds||false|<<SubjectGroup>> array|
+|aUser||false|<<SubjectUser>> array|
+|nID||false|integer (int64)|
+|oSubject||false|<<Subject>>|
 |sChain||false|string|
 |sID_Group_Activiti||false|string|
 |sName||false|string|
@@ -1230,13 +1265,11 @@
 |aSubjectUser||false|<<SubjectUser>> array|
 |===
 
-=== SubjectGroupTree
+=== SubjectGroupResultTree
 [options="header"]
 |===
 |Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|oSubjectGroup_Child||false|<<SubjectGroup>>|
-|oSubjectGroup_Parent||false|<<SubjectGroup>>|
+|aSubjectGroupTree||false|<<SubjectGroup>> array|
 |===
 
 === SubjectUser

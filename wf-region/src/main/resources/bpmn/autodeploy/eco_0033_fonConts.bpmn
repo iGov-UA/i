@@ -88,7 +88,9 @@
           <activiti:value id="accept" name="Повідомити громадянина, що заявка прийнята до опрацювання"></activiti:value>
           <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sReestrNum" name="Номер реєстрації звернення у канцелярії" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для отримання довідки у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_fonConts1.html]" type="invisible" default="Дані по заявці" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -154,6 +156,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>Ваша заявка на довідку про величини фонових концентрацій забруднювальних речовин в атмосферному повітрі прийнята в роботу.<br>
+			Вхідний номер - ${sReestrNum}.<br>
 			Приблизний строк виконання 30 календарних днів.</p>
 			<p>Якщо у Вас будуть питання - можете звернутись за телефоном ${sPhoneOrgan}.</p>
 			[pattern/mail/new_design/_common_signature_start.html]
@@ -203,7 +206,6 @@
         <activiti:formProperty id="sInitProd" name="Ім'я та по батькові керівника Держпродспоживслужби" type="string" default="Андрію Юрійовичу"></activiti:formProperty>
         <activiti:formProperty id="sFioEco" name="Прізвище та ініціали керівника Департаменту екології" type="string" default="Р.О.СТРІЛЕЦЬ"></activiti:formProperty>
         <activiti:formProperty id="nDovidka" name="Довідка підписана ЕЦП" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_fonConts1.html]" type="invisible" default="Заява на СЕС" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nDocComp}]]></activiti:expression>

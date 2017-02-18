@@ -38,11 +38,12 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
     this.fileName = files[0].name;
   };
 
-  file.prototype.upload = function (oServiceData) {
+  file.prototype.upload = function (oServiceData, fileFieldID) {
     var self = this;
     var scope = $rootScope.$new(true, $rootScope);
+    var param = fileFieldID ? ActivitiService.getUploadFileURL(oServiceData, null, {name:this.fileName, id:fileFieldID}) : ActivitiService.getUploadFileURL(oServiceData);
     uiUploader.startUpload({
-      url: ActivitiService.getUploadFileURL(oServiceData),
+      url: param,
       concurrency: 1,
       onProgress: function (file) {
         self.isUploading = true;
@@ -50,12 +51,30 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
         });
       },
       onCompleted: function (file, fileid) {
-        self.value = {id : fileid, signInfo: null, fromDocuments: false};
+        var isJson = function (res) {
+          try {
+            JSON.parse(res);
+          } catch (e) {
+            return false;
+          }
+          return true;
+        };
+        if(isJson(fileid)) {
+          self.value = fileid;
+          fileid = JSON.parse(fileid).sKey;
+        }else {
+          self.value = {id : fileid, signInfo: null, fromDocuments: false};
+        }
+
         scope.$apply(function () {
           ActivitiService.checkFileSign(oServiceData, fileid).then(function(signInfo){
-            self.value.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
+            if(typeof self.value === 'object') {
+              self.value.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
+            } else {
+              self.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
+            }
           }).catch(function(error){
-            self.value.signInfo = null;
+            typeof self.value === 'object' ?  self.value.signInfo = null : self.signInfo = null;
           }).finally(function(){
             self.isUploading = false;
           });

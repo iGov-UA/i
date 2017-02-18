@@ -96,9 +96,25 @@ module.exports.submit = function (req, res) {
 
   if (keys.length > 0) {
     async.forEach(keys, function (key, next) {
-        function putTableToRedis(table, callback) {
-          var url = '/object/file/upload_file_to_redis';
-          activiti.upload(url, {}, table.id + '.json', JSON.stringify(table), callback);
+        function putTableToRedis (table, callback) {
+          var url,
+              params = {},
+              nameAndExt = table.id + '.json',
+              checkForNewService = table.name.split(';');
+
+          // now we have two services for saving table, so we checking what service is needed;
+          if(checkForNewService.length === 3 && checkForNewService[2].indexOf('bNew=true') > -1) {
+            url = '/object/file/setProcessAttach';
+            params = {
+              sID_StorageType:'Redis',
+              sID_Field:table.id,
+              sFileNameAndExt:nameAndExt
+            }
+          } else {
+            url = '/object/file/upload_file_to_redis';
+          }
+
+          activiti.upload(url, params, nameAndExt, JSON.stringify(table), callback);
         }
 
         putTableToRedis(formData.params[key], function (error, response, data) {
@@ -150,8 +166,8 @@ module.exports.scanUpload = function (req, res) {
         };
 
         pipeFormDataToRequest(form, requestOptionsForUploadContent, function (error, result) {
-          logger.info('[scanUpload]: scan redis id ', {redisanswer: result, error: error});
-          if (error) {
+          logger.info('[scanUpload]: scan redis id ', {redisanswer: result, error : error});
+          if(error){
             callback(error);
           } else {
             uploadResults.push({

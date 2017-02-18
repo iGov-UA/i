@@ -1568,4 +1568,24 @@
         <dropColumn tableName="SubjectMessageFeedback" columnName="sBody" />
     </changeSet>
     
+    <changeSet id="issue-1488-Add-Column-for-Exception-group" author="Kovilin Yegor">
+        <addColumn tableName="FlowProperty">
+            <column name="sGroup" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1492" author="brunneng">
+        <addColumn tableName="ServiceTag">
+            <column name="nID_Place" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint constraintName="FK_ServiceTag_Place"
+                                 baseTableName="ServiceTag" baseColumnNames="nID_Place"
+                                 referencedTableName="Place" referencedColumnNames="nID"
+                                 onDelete="NO ACTION"/>
+    </changeSet>
+
 </databaseChangeLog>

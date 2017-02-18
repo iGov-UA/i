@@ -43,7 +43,7 @@ public class DefaultFlowSlotGeneratorTest {
         Map<String, String> configuration = new HashMap<>();
         String sData = JsonRestUtils.toJson(configuration);
         List<FlowSlot> slot = generator.generateObjects(configuration, startDate, endDate, maxGeneratedSlotsCount,
-                defaultSlotName);
+                defaultSlotName, null);
 
         Assert.assertTrue(slot.isEmpty());
     }
@@ -53,7 +53,7 @@ public class DefaultFlowSlotGeneratorTest {
         configuration.put(cronExpression, DEFAULT_DURATION);
 
         List<FlowSlot> slot = generator.generateObjects(configuration, startDate, endDate, maxGeneratedSlotsCount,
-                defaultSlotName);
+                defaultSlotName, null);
 
         Assert.assertEquals(slotsCount, slot.size());
     }

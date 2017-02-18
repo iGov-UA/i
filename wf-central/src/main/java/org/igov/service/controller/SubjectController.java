@@ -5,6 +5,7 @@ import io.swagger.annotations.*;
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.model.subject.*;
+import org.igov.model.subject.SubjectHumanRoleDao;
 import org.igov.model.subject.organ.*;
 import org.igov.service.business.subject.SubjectService;
 import org.igov.service.exception.CommonServiceException;
@@ -45,6 +46,9 @@ public class SubjectController {
 
     @Autowired
     private SubjectHumanDao subjectHumanDao;
+    
+    @Autowired
+    private SubjectHumanRoleDao subjectHumanRoleDao;
 
     @Autowired
     private SubjectOrganDao subjectOrganDao;
@@ -187,7 +191,8 @@ public class SubjectController {
     }
 
     private SubjectHuman getSubjectHuman_(Long nID_Subject) throws CommonServiceException {
-        Optional<SubjectHuman> subjectHuman = subjectHumanDao.findById(nID_Subject);
+        try {
+          Optional<SubjectHuman> subjectHuman = subjectHumanDao.findById(nID_Subject);
         if (subjectHuman.isPresent()) {
             return subjectHuman.get();
         } else {
@@ -195,7 +200,11 @@ public class SubjectController {
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "Record not found",
                     HttpStatus.NOT_FOUND);
+        }  
+        } catch (Exception ex) {
+            ex.getStackTrace();
         }
+        return null;
     }
 
     @ApiOperation(value = "/getSubjectOrgan", notes = "##### SubjectController - Субъекты  и смежные сущности. Получение объекта SubjectOrgan по номеру #####\n\n"
@@ -900,5 +909,22 @@ public class SubjectController {
         	    throws CommonServiceException {
 	return subjectService.getSubjectActionKVED(sID, sNote); 
     }
-    
+    @ApiOperation(value = "Предоставление сабджекту роли",notes = "Предоставление сабджекту роли")
+    @RequestMapping(value = "/setSubjectHumanRole", method = RequestMethod.GET, headers = {JSON_TYPE})
+    public @ResponseBody
+    String setSubjectHumanRole(
+            @ApiParam(value = "nID_SubjectHuman", required = true) @RequestParam(value = "nID_SubjectHuman", required = true) Long nID_SubjectHuman,
+            @ApiParam(value = "nID_SubjectHumanRole", required = true) @RequestParam(value = "nID_SubjectHumanRole", required = true) Long nID_SubjectHumanRole)
+            throws CommonServiceException {
+       return subjectService.setSubjectHumanRole(nID_SubjectHuman, nID_SubjectHumanRole);
+        
+    }
+     public String stackTraceToString(Throwable e) {
+        StringBuilder sb = new StringBuilder();
+        for (StackTraceElement element : e.getStackTrace()) {
+            sb.append(element.toString());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }

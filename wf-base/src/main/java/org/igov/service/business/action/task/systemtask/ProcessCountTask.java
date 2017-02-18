@@ -19,6 +19,7 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
 import org.igov.service.controller.interceptor.ActionProcessCountUtils;
+import org.igov.service.controller.interceptor.ConstantsInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,13 @@ public class ProcessCountTask implements JavaDelegate, TaskListener {
 	private final static Logger LOG = LoggerFactory.getLogger(CreateDocument_UkrDoc.class);
 	
 	@Autowired
-    HttpRequester httpRequester;
+        HttpRequester httpRequester;
 	
 	@Autowired
-    GeneralConfig generalConfig;
+        GeneralConfig generalConfig;
 	
 	@Autowired
-    RuntimeService runtimeService;
+        RuntimeService runtimeService;
 	
 	@Autowired
 	TaskService taskService;
@@ -57,36 +58,48 @@ public class ProcessCountTask implements JavaDelegate, TaskListener {
 	}
 
 	private void loadProcessCount(DelegateExecution execution) {
-		String processCount = getActionProcessCount(execution.getProcessDefinitionId(), null);
-		
-		if (processCount != null) {
-            runtimeService.setVariable(execution.getProcessInstanceId(), S_ID_ORDER_GOV_PUBLIC, processCount);
-            LOG.info("Set variable to runtime process:{}", processCount);
+            
+            LOG.info("ProcessCountTask start...");
+            LOG.info("execution.getProcessDefinitionId: " + execution.getProcessDefinitionId());
+            
+            if (execution.getProcessDefinitionId().startsWith("_doc_")||
+                    ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(StringUtils.substringBefore(execution.getProcessDefinitionId(), ":"))) 
+            {
+                Integer count = ActionProcessCountUtils
+                        .callSetActionProcessCount(httpRequester, generalConfig, StringUtils.substringBefore(execution.getProcessDefinitionId(), ":"), null);
+                LOG.info("SetDocument process count: " + count.intValue());
+            }
+            
+            String processCount = getActionProcessCount(execution.getProcessDefinitionId(), null);
+                
+            if (processCount != null) {
+                runtimeService.setVariable(execution.getProcessInstanceId(), S_ID_ORDER_GOV_PUBLIC, processCount);
+                LOG.info("Set variable to runtime process:{}", processCount);
 
-            LOG.info("Looking for a new task to set form properties");
-            List<Task> tasks = taskService.createTaskQuery().processInstanceId(execution.getId()).active().list();
-            LOG.info("Get {} active tasks for the process", tasks);
-            for (Task task : tasks) {
-                TaskFormData formData = formService.getTaskFormData(task.getId());
-                for (FormProperty formProperty : formData.getFormProperties()) {
-                    if (formProperty.getId().equals(S_ID_ORDER_GOV_PUBLIC)) {
-                        LOG.info("Found form property with the id " + S_ID_ORDER_GOV_PUBLIC + ". Setting value {}", processCount);
-                        if (formProperty instanceof FormPropertyImpl) {
-                            ((FormPropertyImpl) formProperty).setValue(processCount);
+                LOG.info("Looking for a new task to set form properties");
+                List<Task> tasks = taskService.createTaskQuery().processInstanceId(execution.getId()).active().list();
+                LOG.info("Get {} active tasks for the process", tasks);
+                for (Task task : tasks) {
+                    TaskFormData formData = formService.getTaskFormData(task.getId());
+                    for (FormProperty formProperty : formData.getFormProperties()) {
+                        if (formProperty.getId().equals(S_ID_ORDER_GOV_PUBLIC)) {
+                            LOG.info("Found form property with the id " + S_ID_ORDER_GOV_PUBLIC + ". Setting value {}", processCount);
+                            if (formProperty instanceof FormPropertyImpl) {
+                                ((FormPropertyImpl) formProperty).setValue(processCount);
+                            }
                         }
                     }
-                }
-                StartFormData startFormData = formService.getStartFormData(execution.getProcessDefinitionId());
-                for (FormProperty formProperty : startFormData.getFormProperties()) {
-                    if (formProperty.getId().equals(S_ID_ORDER_GOV_PUBLIC)) {
-                        LOG.info("Found start form property with the id " + S_ID_ORDER_GOV_PUBLIC + ". Setting value {}", processCount);
-                        if (formProperty instanceof FormPropertyImpl) {
-                            ((FormPropertyImpl) formProperty).setValue(processCount);
+                    StartFormData startFormData = formService.getStartFormData(execution.getProcessDefinitionId());
+                    for (FormProperty formProperty : startFormData.getFormProperties()) {
+                        if (formProperty.getId().equals(S_ID_ORDER_GOV_PUBLIC)) {
+                            LOG.info("Found start form property with the id " + S_ID_ORDER_GOV_PUBLIC + ". Setting value {}", processCount);
+                            if (formProperty instanceof FormPropertyImpl) {
+                                ((FormPropertyImpl) formProperty).setValue(processCount);
+                            }
                         }
                     }
                 }
             }
-        }
 	}
 
 	private String getActionProcessCount(String sID_BP, Long nID_Service) {

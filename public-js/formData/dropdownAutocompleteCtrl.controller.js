@@ -27,14 +27,45 @@ angular.module('autocompleteService')
                         el.sFind = el.sName_UA + " " + el.sID_UA;
                     }
                 });
-            } else if(typeof res.data === 'object' && res.data.aSubjectUser) {
-                angular.forEach(res.data.aSubjectUser, function (user) {
+            } else if(typeof res.data === 'object' && res.data.aSubjectGroupTree) {
+                var response = subjectUserFilter(res.data.aSubjectGroupTree);
+                angular.forEach(response, function (user) {
                     user.sName = user.sFirstName + " " + user.sLastName;
                 })
             }
             return res;
         });
     }
+
+    // filter for resp from getSubjectGroupsTree, with tree list
+    var subjectUserFilter = function (arr) {
+        var allUsers = [],
+            filteredUsers = [],
+            logins = [];
+
+        function loop(arr) {
+            angular.forEach(arr, function(item) {
+                if(item.aUser) {
+                    angular.forEach(item.aUser, function(user) {
+                        allUsers.push(user);
+                    })
+                }
+                if(item.aSubjectGroupChilds && item.aSubjectGroupChilds.length > 0){
+                    loop(item.aSubjectGroupChilds)
+                }
+            })
+        }
+
+        loop(arr);
+
+        for(var i=0; i<allUsers.length; i++) {
+            if(logins.indexOf(allUsers[i].sLogin) === -1) {
+                filteredUsers.push(allUsers[i]);
+                logins.push(allUsers[i].sLogin);
+            }
+        }
+        return filteredUsers;
+    };
 
     var getAdditionalPropertyName = function() {
         return ($scope.autocompleteData.additionalValueProperty ? $scope.autocompleteData.additionalValueProperty : $scope.autocompleteData.prefixAssociatedField) + '_' + $scope.autocompleteName;
@@ -51,7 +82,10 @@ angular.module('autocompleteService')
 
         return ($scope.autocompleteData ? getInfinityScrollChunk() : $timeout(getInfinityScrollChunk, 200))
             .then(function(response) {
-                var resp = response.data.aSubjectUser ? response.data.aSubjectUser : response.data;
+                var resp = response.data.aSubjectGroupTree ? response.data.aSubjectGroupTree : response.data;
+                if(response.data.aSubjectGroupTree) {
+                    resp = subjectUserFilter(response.data.aSubjectGroupTree);
+                }
                 Array.prototype.push.apply(collection, $filter('orderBy')(resp, $scope.autocompleteData.orderBy));
                 if (!$scope.autocompleteData.hasPaging || response.data.length < count) {
                     hasNextChunk = false;
@@ -121,7 +155,14 @@ angular.module('autocompleteService')
                 // $timeout(function () {
                 //   $scope.$select.items = items;
                 // }, 0, !angular.equals(queryParams.params[queryKey], queryValue));
-                $scope.$select.items = items;
+                var filtered = null;
+                if(queryValue && isNaN(queryValue)){
+                   filtered = items.filter(function(i){
+                        var name = i.sName_UA ? i.sName_UA : i.sNameShort_UA;
+                        return name.toLowerCase().indexOf(queryValue.toLowerCase()) !== -1;
+                    });  
+                }
+                $scope.$select.items = filtered ? filtered : items;
                 !angular.equals(queryParams.params[queryKey], queryValue);
             });
         } else {
@@ -146,7 +187,7 @@ angular.module('autocompleteService')
                             }
                         }
                         if(nameWithPostFix && nameWithPostFix[1]) {
-                            if(nameWithPostFix[1] === field.id.split('_')[1]) {
+                            if(isNaN(parseInt(nameWithPostFix[1])) && nameWithPostFix[1] === field.id.split('_')[1]) {
                                 obj[key].value = item[field.id.split('_')[0]];
                             }
                         }

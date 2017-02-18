@@ -179,12 +179,20 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     }
   };
 
-  this.getUploadFileURL = function (oServiceData, customFileName) {
-    return this.getUploadFileURLByServer(oServiceData.nID_Server, customFileName);
+  this.getUploadFileURL = function (oServiceData, customFileName, file) {
+    if(file){
+      return this.getUploadFileURLByServer(oServiceData.nID_Server, null, file);
+    } else {
+      return this.getUploadFileURLByServer(oServiceData.nID_Server, customFileName);
+    }
   };
 
-  this.getUploadFileURLByServer = function (nID_Server, customFileName) {
-    return './api/uploadfile?nID_Server=' + nID_Server + (customFileName ? 'customFileName=' + customFileName : '');
+  this.getUploadFileURLByServer = function (nID_Server, customFileName, file) {
+    if(file) {
+      return './api/uploadfile?sFileNameAndExt=' + file.name + (file.id ? '&sID_Field=' + file.id : '');
+    } else {
+      return './api/uploadfile?nID_Server=' + nID_Server + (customFileName ? 'customFileName=' + customFileName : '');
+    }
   };
 
   this.updateFileField = function (oServiceData, formData, propertyID, fileUUID) {
@@ -192,6 +200,14 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
   };
 
   this.checkFileSign = function (oServiceData, fileID){
+
+    try{
+      var keyOrJSON = JSON.parse(fileID);
+      if(typeof keyOrJSON === 'object' && 'sKey' in keyOrJSON) {
+        fileID = JSON.parse(fileID).sKey;
+      }
+    } catch(e){}
+
     var oFuncNote = {sHead:"Перевірка ЕЦП у файлу", sFunc:"checkFileSign"};
     ErrorsFactory.init(oFuncNote, {asParam: ['nID_ServiceData: '+oServiceData.nID, 'fileID: '+fileID]});
     return $http.get('./api/process-form/sign/check', {

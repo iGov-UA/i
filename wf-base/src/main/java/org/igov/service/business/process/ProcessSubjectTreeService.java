@@ -23,6 +23,7 @@ import org.igov.model.process.ProcessSubjectResultTree;
 import org.igov.model.process.ProcessSubjectTree;
 import org.igov.model.process.ProcessUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
@@ -34,6 +35,7 @@ import com.google.common.collect.Lists;
  *
  * @author inna
  */
+@Component("processSubjectTreeService")
 @Service
 public class ProcessSubjectTreeService {
 
@@ -64,6 +66,9 @@ public class ProcessSubjectTreeService {
 
         List<ProcessSubject> aChildResult = new ArrayList<>();
         List<ProcessSubjectTree> processSubjectRelations = new ArrayList<>(baseEntityDao.findAll(ProcessSubjectTree.class));
+        
+        ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
+        if(processSubjectRelations!=null&& !processSubjectRelations.isEmpty()) {
         List<ProcessSubjectParentNode> parentProcessSubjects = new ArrayList<>();
         Map<Long, List<ProcessSubject>> subjToNodeMap = new HashMap<>();
         Map<ProcessSubject, List<ProcessSubject>> parentChildren = new HashMap<>();
@@ -143,7 +148,7 @@ public class ProcessSubjectTreeService {
 
         List<ProcessSubject> aChildResultByUser = filtrChildResultByUser(sFind, aChildResult);
 
-        ProcessSubjectResultTree processSubjectResultTree = new ProcessSubjectResultTree();
+        
         List<ProcessSubject> resultTree = new ArrayList<>();
         if (sFind != null && !sFind.isEmpty()) {
         	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResultByUser);
@@ -151,7 +156,7 @@ public class ProcessSubjectTreeService {
         }else {
         	resultTree = getProcessSubjectTree(hierarchyProcessSubject, aChildResult);
         }
-        
+        if (isDisplayRootElement(bIncludeRoot)) {
 		if (checkDeepLevelWidth(deepLevelWidth) < resultTree.size()) {
 			if (resultTree != null && !resultTree.isEmpty()) {
 				 List<ProcessSubject> result = new ArrayList<>();
@@ -159,6 +164,12 @@ public class ProcessSubjectTreeService {
 				processSubjectResultTree.setaProcessSubjectTree(result);
 			}
 		}
+        }else {
+        	processSubjectResultTree.setaProcessSubjectTree(resultTree);
+        }
+		
+		
+        }
         return processSubjectResultTree;
 
     }

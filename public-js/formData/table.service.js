@@ -1,7 +1,9 @@
 angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerService'])
     .service('TableService',
-        ['autocompletesDataFactory', 'ValidationService', 'DatepickerFactory',
-        function (autocompletesDataFactory, ValidationService, DatepickerFactory) {
+        ['autocompletesDataFactory', 'ValidationService', 'DatepickerFactory', '$injector',
+        function (autocompletesDataFactory, ValidationService, DatepickerFactory, $injector) {
+
+        var factory = $injector.has('FileFactory') ? $injector.get('FileFactory') : null;
 
         var addTableFieldsProperties = function (formProps) {
         angular.forEach(formProps, function(prop) {
@@ -27,6 +29,10 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
 
                         if (item.type === 'date') {
                             obj[key].props = DatepickerFactory.prototype.createFactory();
+                        }else if(item.type === 'file' && factory !== null) {
+                            var temp = obj[key];
+                            obj[key] = new factory();
+                            for(var k in temp) obj[key][k]=temp[k];
                         }else if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
                             var match;
                             if (((match = item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/)))
@@ -59,9 +65,11 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
     var checkRowsLimit = function (formProps) {
         angular.forEach(formProps, function(item, key, obj) {
             if(item.type === 'table') {
-                var isRowLimit = item.name.split(';');
-                if(isRowLimit.length === 3 && isRowLimit[2].indexOf('nRowsLimit') !== -1) {
-                    obj[key].nRowsLimit = isRowLimit[2].split('=')[1];
+                var hasOptions = item.name.split(';');
+                if(hasOptions.length === 3) {
+                    var hasLimit = hasOptions[2].match(/\b(nRowsLimit=(\d+))\b/);
+                    if(hasLimit !== null)
+                        obj[key].nRowsLimit = hasLimit[2];
                 }
             }
         })
@@ -135,7 +143,16 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
         angular.forEach(form, function (item, key, obj) {
             if(item.id === id) {
                 var defaultCopy = angular.copy(obj[key].aRow[0]);
-                angular.forEach(defaultCopy.aField, function (field) {
+                angular.forEach(defaultCopy.aField, function (field, k, o) {
+                    if(field.type === 'file') {
+                        var copy = field;
+                        factory !== null ? o[k] = new factory() : o[k] = {};
+                        o[k].required = copy.required;
+                        o[k].type = copy.type;
+                        o[k].name = copy.name;
+                        o[k].writable = copy.writable;
+                        o[k].id = copy.id + '_' + obj[key].aRow.length;
+                    }
                     if(field.default) {
                         delete field.default;
                     } else if(field.props) {
