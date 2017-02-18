@@ -61,28 +61,6 @@
     <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-      var post = ['1210@dmsu.gov.ua', 'dms_dn_babysh@ukr.net', '1212@dmsu.gov.ua', '1213@dmsu.gov.ua', '1214@dmsu.gov.ua', '1215@dmsu.gov.ua', '1216@dmsu.gov.ua', '1217@dmsu.gov.ua', '1220@dmsu.gov.ua', '1221@dmsu.gov.ua', '1222@dmsu.gov.ua', 'cnap.vilnogirsk@gmail.com', 'dozvildndz@ukr.net', 'edv.rda@gmail.com', 'admin_kom@ukr.net', 'teplikcnap@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com']
-      var no = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21']
-      var region = ['Амур-Нижньодніпровський', 'Шевченківський (Бабушкінський)', 'Соборний (Жовтневий)', 'Індустріальний', 'Центральний (Кіровський)', 'Чечелівський (Красногвардійський)', 'Новокодацький (Ленінський)', 'Самарський', 'Баглійський', 'Дніпровський', 'Заводський', 'Вільногірськ', 'Дніпродзержинськ', 'Тернопільський район', 'Комінтернівський район', 'Теплицький район', 'Житомир', 'Кременчук', 'Харків', 'Вишгородський район', 'Червоноград']
-      var Regservice = ['Амур-Нижньодніпровський РВ у м.Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Бабушкінський РВ у місті Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Жовтневий РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Індустріальний РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Кіровський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Красногвардійський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Ленінський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Самарський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Баглійський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Дніпровський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Заводський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Вільногірський МС ГУ ДМС України в Дніпропетровській області', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'Вишгородський РВ ДМС України в Київській області', 'Червоноградський МС ДМС України у Львівській області'] 
-	  var So = ['and', 'bab', 'zhovt', 'indust', 'kirov', 'krasn', 'lenin', 'samar', 'bagl', 'dnipro', 'zavod', 'viln', 'dndzT', 'ternR', 'od_komint', 'vin_teplic', 'zhitomT', 'pol_krem', 'kharkT', 'kiev_vish', 'lviv_chervonogradT']
-for (var i = 0; i&lt;697; i++){
-var per = So[i]
-if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
-var per1 = post[i]
-var per2 = no[i]
-var per3 = region[i]
-var per4 = Regservice[i]
-break}}
-execution.setVariable('sMailClerk', per1)
-execution.setVariable('viddil', per2)
-execution.setVariable('sArea', per3)
-execution.setVariable('Registrationservice', per4)
-	  </script>
-    </scriptTask>
-    <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -174,11 +152,6 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRecviziti" name="Реквізити для держмита" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${svid1},${doksmen}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -210,7 +183,7 @@ ${sNameOrgan},<br>
 											<b><i>${decisionComment}</i></b>
 									</p>
 									<p>
-										При вниникненні питань Ви можете звернутися до чергового:<br>
+										При вниникненні питань Ви можете звернутися:<br>
 										${sPhoneOrgan}
 									</p>
 									
@@ -290,7 +263,7 @@ ${sNameOrgan},<br>
 										<b><i>${decisionComment}</i></b>
 									</p>
 									<p>
-										При вниникненні питань Ви можете звернутися до чергового:<br>
+										При вниникненні питань Ви можете звернутися:<br>
 										${sPhoneOrgan}
 									</p>
                                     <p>[cancelTask]</p>
@@ -359,7 +332,6 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="sBody_5" name="[pattern/print/dms/vremUdost(dnepr).html]" type="invisible" default="Заява на тимчасове посвідчення" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/dms/vidomist16Fr(dnepr).html]" type="invisible" default="Відомості про реєстрацію лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/dms/vidomist16Bk(dnepr).html]" type="invisible" default="Відомості про реєстрацію зворотня" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${bankId_scan_passport},${svid1},${doksmen}]]></activiti:expression>
@@ -420,9 +392,6 @@ ${sNameOrgan},<br>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="150.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="175.0" y="41.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="81.0" width="110.0" x="242.0" y="107.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -470,11 +439,6 @@ ${sNameOrgan},<br>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="212.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="242.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="280.0" y="68.0"></omgdi:waypoint>
-        <omgdi:waypoint x="298.0" y="68.0"></omgdi:waypoint>
-        <omgdi:waypoint x="297.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="352.0" y="147.0"></omgdi:waypoint>
