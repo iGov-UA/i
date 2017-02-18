@@ -119,6 +119,11 @@
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р); ;writable=false" type="string"></activiti:formProperty>
 
+        <activiti:formProperty id="asECP" name="Чи подаєте звернення з ЕЦП або без ЕЦП?" type="enum" writable="false">
+          <activiti:value id="online" name="з ЕЦП (для отримання електронної послуги про призначення допомги)"></activiti:value>
+          <activiti:value id="offline" name="без ЕЦП (погоджуєтесь на особистий візит після перевірки правильності даних)"></activiti:value>
+        </activiti:formProperty>
+        
         <activiti:formProperty id="asDecision1" name="Обробка заяви (1-й етап)" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
@@ -130,8 +135,8 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="bFlagFullBP" name="Флаг полного процесса" type="invisible" default="true"></activiti:formProperty>
-        <activiti:formProperty id="bFlagECP" name="Флаг ЕЦП" type="invisible" default="false"></activiti:formProperty>
+        <activiti:formProperty id="bFlagFullBP" name="Флаг полного процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bFlagECP" name="Флаг ЕЦП" type="invisible"></activiti:formProperty>
 		<activiti:formProperty id="markersUT1_2" name="Маркер UT1 2" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_154_user1_2.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="dDateVisit" name="Внесіть дату візиту громадянки для надання довідки про вагітність" type="date"></activiti:formProperty>
