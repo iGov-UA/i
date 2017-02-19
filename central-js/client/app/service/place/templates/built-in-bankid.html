@@ -186,7 +186,7 @@
                                   service-data="oServiceData"
                                   ng-required="isFieldRequired(property)"></dropdown-country>
 
-                <div class="col-md-12 field-table" ng-switch-when="table">
+                <div class="col-md-12 field-table" ng-switch-when="table" ng-class="getBpAndFieldID(property)">
                   <table ng-init="tableName = property.id">
 
                     <thead>
@@ -209,6 +209,7 @@
                     <tr ng-repeat="row in property.aRow track by $index" ng-init="rowIndex=$index">
 
                       <td ng-repeat="item in row.aField track by $index" style="border: 1px solid lightgrey">
+                        <div ng-class="getFullCellId(property, item.id, rowIndex)">
 
                         <div ng-if="item.type == 'string'">
                           <input class="inputs-in-table"
@@ -247,7 +248,6 @@
                                           name="{{item.id + rowIndex}}"
                                           ng-model="item.value"
                                           ng-required="isFieldRequired(item)"
-                                          ng-class="getBpAndFieldID(item)"
                                           ng-if="item.upload">Add File</file-field>
                             </div>
                             <button style="position:relative;"
@@ -262,7 +262,6 @@
                             <file-field name="{{item.id}}"
                                         ng-model="item.value"
                                         ng-required="isFieldRequired(item)"
-                                        ng-class="getBpAndFieldID(item)"
                                         ng-if="item.upload && !item.fileName">Add File</file-field>
                           </div>
                         </div>
@@ -405,7 +404,7 @@
                           <!--заменить на директиву-->
                         </div>
 
-                        <div ng-if="item.type === 'select'" ng-class="getBpAndFieldID(item)">
+                        <div ng-if="item.type === 'select'">
                           <dropdown-organ ng-if="item.id==='sID_Public_SubjectOrganJoin'"
                                           ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                           ng-model="item.value"
@@ -474,7 +473,7 @@
                           <span ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</span>
                           <span ng-message="OrderValue">Такого номеру не існує</span>
                         </div>
-
+                        </div>
                       </td>
 
                       <td style="padding: 0;" ng-if="$index !== 0">

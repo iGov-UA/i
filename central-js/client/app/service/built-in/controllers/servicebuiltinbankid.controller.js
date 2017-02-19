@@ -912,6 +912,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         return this.oServiceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.id;
       };
 
+      $scope.getFullCellId = function(field, column, row){
+        return this.oServiceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.id + "_--_" + "COL_" + column + "_--_" + "ROW_" + row;
+      };
+
       // https://github.com/e-government-ua/i/issues/1326
       $scope.redirectPaymentLiqpay = function (sMerchantFieldID) {
         var incorrectLiqpayRequest = false;
