@@ -10,7 +10,8 @@
         <activiti:formProperty id="phone" name="Контактний телефон;для отримання смс-повідомлення" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCode" name="Код  територіального органу ДФС;system;writable=true,sID_Field_SWinEd=HKSTI" type="string" default="0463"></activiti:formProperty>
         <activiti:formProperty id="HSTI" name="Назва територіального органу ДФС;system;writable=true,sID_Field_SWinEd=HSTI" type="string" default="0463"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна адреса;для отримання відповіді ;writable=true,sID_Field_SWinEd=HEMAIL" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса;для отримання відповіді ;writable=true" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email1" name="Електронна адреса;для отримання відповіді ;writable=true,sID_Field_SWinEd=HEMAIL" type="string" default="f1301801@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sNameCountry" name="Назва країни громадянства;сервіс працює лише для громадян України;writable=true,sID_Field_SWinEd=HCOUNTRY" type="string" default="Україна" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCity" name="Назва населеного пункту;за місцем реєстрації ;writable=true,sID_Field_SWinEd=HCITY" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameStreet" name="Назва вулиці ;за місцем реєстрації;writable=true,sID_Field_SWinEd=HSTREET" type="string" required="true"></activiti:formProperty>
@@ -159,8 +160,8 @@
     <sequenceFlow id="flow20" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Счетчик для автозакрытия" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('sCounter')
-src=(src +)
-execution.setVariable('sCouner', src)</script>
+src=(src + +1)
+execution.setVariable('sCounter', src)</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 3}]]></conditionExpression>
