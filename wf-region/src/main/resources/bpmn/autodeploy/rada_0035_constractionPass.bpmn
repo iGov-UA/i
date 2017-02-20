@@ -7,11 +7,15 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані (серия, номер паспорту)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asBuilding" name="Згода на виготовлення будівельного паспорта на" type="enum" required="true">
+          <activiti:value id="sEnumHouse" name="житловий будинок"></activiti:value>
+          <activiti:value id="sEnumGarden" name="садовий будинок"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sNumberOwnership" name="Номер документу, що посвідчує право власності на земельну ділянку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddressArea" name="Місце знаходження земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Площа планованого будинку, м.кв" type="string" required="true"></activiti:formProperty>
@@ -52,11 +56,15 @@
     <userTask id="usertask1" name="Крок 1. Прийняття рішення щодо розгляду звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані (серия, номер паспорту); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asBuilding" name="Згода на виготовлення будівельного паспорта на; ;writable=false" type="enum">
+          <activiti:value id="sEnumHouse" name="житловий будинок"></activiti:value>
+          <activiti:value id="sEnumGarden" name="садовий будинок"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sNumberOwnership" name="Номер документу, що посвідчує право власності на земельну ділянку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressArea" name="Місце знаходження земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Площа планованого будинку, м.кв; ;writable=false" type="string"></activiti:formProperty>
@@ -169,11 +177,15 @@ ${sNameOrgan}<br>
     <userTask id="usertask2" name="Крок 2. Кінцева обробка звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані (серия, номер паспорту)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asBuilding" name="Згода на виготовлення будівельного паспорта на" type="enum" writable="false">
+          <activiti:value id="sEnumHouse" name="житловий будинок"></activiti:value>
+          <activiti:value id="sEnumGarden" name="садовий будинок"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sNumberOwnership" name="Номер документу, що посвідчує право власності на земельну ділянку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAddressArea" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Площа планованого будинку, м.кв" type="string" writable="false"></activiti:formProperty>
