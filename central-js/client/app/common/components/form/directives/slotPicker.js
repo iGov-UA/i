@@ -33,8 +33,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         scope.formData.params[scope.property.id].value = null;
         var formObj = scope.$parent.form;
         if(formObj[scope.property.id]){
-          formObj[scope.property.id].$viewValue = null;
-          formObj[scope.property.id].$modelValue = null;
+          //formObj[scope.property.id].$viewValue = null;
+          //formObj[scope.property.id].$modelValue = null;
         }
       };
 
@@ -165,7 +165,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
         if (isQueueDataType.DMS){
 
-          if (isInvalidServiceCustomPrivate()) return;
+          if (isInvalidServiceCustomPrivate()) {
+            return;
+          }
 
           data = {
             nID_Server: scope.serviceData.nID_Server,
@@ -200,7 +202,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           if (departmentParam) {
             if (parseInt(departmentParam.value) > 0)
               data.nID_SubjectOrganDepartment = departmentParam.value;
-            else return;
+            else {
+              return;
+            }
           }
 
           if (nSlotsParam && parseInt(nSlotsParam.value) > 1) {
@@ -265,6 +269,14 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           return Date.parse(a.sDate) - Date.parse(b.sDate);
         });
         return result;
+      }
+
+      if(angular.isDefined(scope.formData.params.sID_Public_SubjectOrganJoin && angular.isDefined(departmentParam))){
+        scope.$watch('formData.params.sID_Public_SubjectOrganJoin.value', function (newValue, oldValue) {
+          if (newValue == oldValue)
+            return;
+          resetData();
+        });
       }
 
       if (angular.isDefined(departmentParam)) {
