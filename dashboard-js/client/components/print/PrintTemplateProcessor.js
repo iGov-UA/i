@@ -141,6 +141,8 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
                               return field.a[j].name;
                             }
                           }
+                        } else if(field.type === 'date' && !field.value) {
+                          return field.props.value.split('T')[0];
                         } else {
                           return '';
                         }
