@@ -27,6 +27,12 @@
           <activiti:value id="sEnamOsobDoc" name="Особа, яка має право подавати документи для державної реєстрації (без довіреності)"></activiti:value>
           <activiti:value id="sEnamOsobDov" name="Уповноважена особа (за довіреністю чи іншим документом, що підтверджує її повноваження)"></activiti:value>
         </activiti:formProperty>
+        
+        <activiti:formProperty id="fDoviren" name="Довіреність на представника; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markerDoviren" name="Doviren" type="markers" default="${markerService.loadFromFile('RegistrGO/PrupGODov.json')}"></activiti:formProperty>
+        
+        
+        
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
@@ -112,6 +118,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="sEnamOsobDoc" name="Особа, яка має право подавати документи для державної реєстрації (без довіреності)"></activiti:value>
           <activiti:value id="sEnamOsobDov" name="Уповноважена особа (за довіреністю чи іншим документом, що підтверджує її повноваження)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="fDoviren" name="Довіреність на представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно, надіслати листи заявнику та в ЦНАП"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
