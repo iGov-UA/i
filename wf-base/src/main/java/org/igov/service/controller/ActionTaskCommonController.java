@@ -2647,7 +2647,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + sID_Process));
         String asID_Attach_Dfs = "";
         if (task != null) {
-            asID_Attach_Dfs = dfsService.getAnswer(task.getId(), sID_Process, INN, snCountYear);
+            asID_Attach_Dfs = dfsService.getAnswer(task.getId(), sID_Process, INN, snCountYear, "");
             if (asID_Attach_Dfs != null && asID_Attach_Dfs.length() > 0) {
                 taskService.complete(task.getId());
             }
