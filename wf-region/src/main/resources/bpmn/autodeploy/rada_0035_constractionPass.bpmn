@@ -34,6 +34,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka0035" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocument" name="Перелік документів" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення співробітнику ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -52,7 +53,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Крок 1. Прийняття рішення щодо розгляду звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -74,6 +75,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka0035" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocument" name="Перелік документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_Registrastion" name="Вкажіть дату реєстрації" type="date"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="string"></activiti:formProperty>
@@ -195,6 +197,7 @@ ${sNameOrgan}<br>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka0035" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocument" name="Перелік документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_Registrastion" name="Вкажіть дату реєстрації" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="string" writable="false"></activiti:formProperty>
@@ -270,7 +273,9 @@ ${sNameOrgan}<br>
 Ваше звернення щодо згоди на виготовлення будівельного паспорта на житловий або садовий будинок схвалено департаментом архітектури.<br>
 Для отримання згоди Вам або уповноваженой Вами особи (при наявності довіреності) необхідно підійти до ЦНАПу:<br>
 ${sAddress}.<br><br>
-При собі треба мати оригінали всіх документів, які були завантажені при подачі звернення.<br><br>
+При собі треба мати оригінали всіх документів, які були завантажені при подачі звернення.<br>
+Перелік документів:<br>
+${sListDocument}
 
 ${sWorkTime}
 <br>
@@ -300,11 +305,56 @@ ${sNameOrgan}<br>
     <sequenceFlow id="flow12" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task List Document" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var per1 = ' '
+var per2 = ' '
+var per3 = ' '
+var per4 = ' '
+var per5 = ' '
+var per6 = ' '
+var per7 = ' '
+var per8 = ' '
+var per9 = ' '
+var res = ' '
+
+if(execution.getVariable('bankId_scan_passport') != null){
+per1 = '&lt;li&gt;Копія паспорта.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile_1') != null){
+per2 = '&lt;li&gt;Нотаріально завірена копія документа, що засвідчує право власності або користування земельною ділянкою або договір суперфіцію.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile_2') != null){
+per3 = '&lt;li&gt;Засвідчена в уст. порядку згода співвласників зем.ділянки (житл.будинку) на забудову.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile_3') != null){
+per4 = '&lt;li&gt;Нотаріально завірена копія документа, що засвідчує право власності заявника на об’єкт нерухомості.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile_4') != null){
+per5 = '&lt;li&gt;Засвідчена у встановленому порядку копія технічного паспорта на об’єкт нерухомості.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile_5') != null){
+per6 = '&lt;li&gt;Топографічне знімання (М 1:500), виконане ліцензованою організацією, яке відображає існуючу ситуацію (термін придатності якого 2 роки) з нанесеними червоними лініями та завіреною наявністю інженерних мереж і перевірене відповідними інженерними службами.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile_6') != null){
+per7 = '&lt;li&gt;Технічні умови на інженерне забезпечення.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile_7') != null){
+per8 = '&lt;li&gt;Проект будівництва.&lt;/li&gt;'
+}
+if(execution.getVariable('nFile_8') != null){
+per9 = '&lt;li&gt;Позитивний висновок управління охорони історичного середовища щодо можливості та умов здійснення містобудівних, архітектурних і ландшафтних перетворень.&lt;/li&gt;'
+}
+
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+'&lt;/ol&gt;'
+
+execution.setVariable('sListDocument', res)</script>
+    </scriptTask>
+    <sequenceFlow id="flow15" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rada_0035_constractionPass">
     <bpmndi:BPMNPlane bpmnElement="rada_0035_constractionPass" id="BPMNPlane_rada_0035_constractionPass">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="190.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="248.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="151.0" x="190.0" y="180.0"></omgdc:Bounds>
@@ -339,9 +389,12 @@ ${sNameOrgan}<br>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="454.0" y="690.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="151.0" x="190.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="155.0" y="207.0"></omgdi:waypoint>
-        <omgdi:waypoint x="190.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="265.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="265.0" y="90.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="471.0" y="235.0"></omgdi:waypoint>
@@ -390,6 +443,10 @@ ${sNameOrgan}<br>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="341.0" y="207.0"></omgdi:waypoint>
         <omgdi:waypoint x="389.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="265.0" y="145.0"></omgdi:waypoint>
+        <omgdi:waypoint x="265.0" y="180.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
