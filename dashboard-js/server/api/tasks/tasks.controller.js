@@ -492,23 +492,29 @@ exports.upload_content_as_attachment = function (req, res) {
 };
 
 exports.setTaskQuestions = function (req, res) {
-  activiti.post({
-    path: 'action/task/setTaskQuestions',
-    query: {
-      nID_Process: req.body.nID_Process,
-      sMail: req.body.sMail,
-      sHead: req.body.sHead,
-      sSubjectInfo: req.body.sSubjectInfo,
-      nID_Subject: req.body.nID_Subject
-    }
-  }, function (error, statusCode, result) {
-    res.statusCode = statusCode;
-    res.send(result);
-  }, {
+  var query = {
+    nID_Process: req.body.nID_Process,
+    sMail: req.body.sMail,
+    sHead: req.body.sHead,
+    sSubjectInfo: req.body.sSubjectInfo,
+    nID_Subject: req.body.nID_Subject
+  };
+
+  var data = {
     saField : req.body.saField,
     soParams : req.body.soParams,
     sBody : req.body.sBody
-  });
+  };
+
+  activiti.post({
+    path: 'action/task/setTaskQuestions',
+    query: query,
+    headers: {
+      'Content-Type': 'text/html;charset=utf-8'
+    }
+  }, function (error, statusCode, result) {
+    error ? res.send(error) : res.status(statusCode).json(result);
+  }, data);
 };
 
 // отправка комментария от чиновника, сервис работает на централе, поэтому с env конфигов берем урл.
