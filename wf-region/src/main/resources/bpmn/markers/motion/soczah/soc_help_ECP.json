@@ -10,7 +10,7 @@
 		"ShowFieldsOnCondition_ecp2" : {
 			"aField_ID" : ["form_signed"], 
 			"asID_Field" : {
-				"sClient" : "asECP",
+				"sClient" : "asECP", 
 				"sClient_2" : "bFlagECP"
 			}, 
 			"sCondition" : "[sClient] == 'online' && [sClient_2] == 'true'"
@@ -18,10 +18,58 @@
 		"RequiredFieldsOnCondition_ecp1" : {
 			"aField_ID" : ["form_signed"], 
 			"asID_Field" : {
-				"sClient" : "asECP",
+				"sClient" : "asECP", 
 				"sClient_2" : "bFlagECP"
 			}, 
 			"sCondition" : "[sClient] == 'online' && [sClient_2] == 'true'"
+		}, 
+		"ValuesFieldsOnCondition_ecp1" : {
+			"aField_ID" : ["bFlagFullBP"], 
+			"asID_Field_sValue" : ["true"], 
+			"asID_Field" : {
+				"sClient" : "asECP", 
+				"sClient_2" : "bFlagECP"
+			}, 
+			"sCondition" : "([sClient] == 'online' && [sClient_2] == 'true') || ([sClient_2] == 'false')"
+		}, 
+		"ValuesFieldsOnCondition_ecp2" : {
+			"aField_ID" : ["bFlagFullBP"], 
+			"asID_Field_sValue" : ["false"], 
+			"asID_Field" : {
+				"sClient" : "asECP", 
+				"sClient_2" : "bFlagECP"
+			}, 
+			"sCondition" : "[sClient] == 'offline' && [sClient_2] == 'true'"
+		}
+	}, 
+	"attributes" : {
+		"Style_ecp1" : {
+			"aSelectors" : ["#label-infoECP"], 
+			"oCommonStyle" : {
+				"display" : "none"
+			}
+		}, 
+		"Style_ecp2" : {
+			"aSelectors" : ["#field-infoECP"], 
+			"oCommonStyle" : {
+				"width" : "100%!important", 
+				"text-align" : "center"
+			}
+		}, 
+		"Style_ecp3" : {
+			"aElement_ID" : ["infoECP"], 
+			"oCommonStyle" : {
+				"color" : "green", 
+				"padding" : "16px 10px", 
+				"margin" : "20px 40px", 
+				"border" : "1px solid #dddddd", 
+				"border-radius" : "5px", 
+				"background-color" : "lightyellow"
+			}
+		}, 
+		"Line_ecp1" : {
+			"aElement_ID" : ["infoECP"], 
+			"sValue" : ""
 		}
 	}
 }

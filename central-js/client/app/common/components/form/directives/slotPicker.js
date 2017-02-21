@@ -20,6 +20,10 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         scope.selected.slot = null;
       });
 
+      scope.getSelectorsBpAndFieldId = function (field) {
+        return this.serviceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.property.id + "_--_"
+      };
+
       var resetData = function()
       {
         scope.slotsData = {};
@@ -29,8 +33,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         scope.formData.params[scope.property.id].value = null;
         var formObj = scope.$parent.form;
         if(formObj[scope.property.id]){
-          formObj[scope.property.id].$viewValue = null;
-          formObj[scope.property.id].$modelValue = null;
+          //formObj[scope.property.id].$viewValue = null;
+          //formObj[scope.property.id].$modelValue = null;
         }
       };
 
@@ -86,13 +90,18 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             error(function(data, status, headers, config) {
               console.error('Error reserved slot ' + angular.toJson(data));
               var err = data.message.split(": response=");
-              if(data.message.indexOf('tapi.cherg.net') >= 0 && err[1]){
+              if(data.message.indexOf('api.cherg.net') >= 0 && err[1]){
+                var needReload = false;
                 if(data.message.indexOf('Время уже занято') >= 0){
+                  needReload = true;
                   dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка')
                 } else {
                   dialogs.error('Помилка', err[1])
                 }
                 scope.selected.slot = null;
+                if(needReload){
+                  scope.loadList();
+                }
               } else {
                 dialogs.error('Помилка', data.message);
               }
@@ -195,7 +204,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
         if (isQueueDataType.DMS){
 
-          if (isInvalidServiceCustomPrivate()) return;
+          if (isInvalidServiceCustomPrivate()) {
+            return;
+          }
 
           data = {
             nID_Server: scope.serviceData.nID_Server,
@@ -230,7 +241,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           if (departmentParam) {
             if (parseInt(departmentParam.value) > 0)
               data.nID_SubjectOrganDepartment = departmentParam.value;
-            else return;
+            else {
+              return;
+            }
           }
 
           if (nSlotsParam && parseInt(nSlotsParam.value) > 1) {
@@ -312,6 +325,14 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           return Date.parse(a.sDate) - Date.parse(b.sDate);
         });
         return result;
+      }
+
+      if(angular.isDefined(scope.formData.params.sID_Public_SubjectOrganJoin && angular.isDefined(departmentParam))){
+        scope.$watch('formData.params.sID_Public_SubjectOrganJoin.value', function (newValue, oldValue) {
+          if (newValue == oldValue)
+            return;
+          resetData();
+        });
       }
 
       if (angular.isDefined(departmentParam)) {

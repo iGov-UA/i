@@ -73,7 +73,7 @@
         <activiti:formProperty id="sStringInZayava" name="Формування строки в заяві" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="Флаг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFioClerk_SignDovidka" name="Посада та П.І.Б. посадової особи, яка підписує довідку" type="invisible" default=" " ></activiti:formProperty>
+        <activiti:formProperty id="sFioClerk_SignDovidka" name="Посада та П.І.Б. посадової особи, яка підписує довідку" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sIsCancellCustomeVizite" name="Прапор скасованої заявки громадянином" type="invisible" default="False"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="hide fields" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_11.json')}"></activiti:formProperty>
@@ -104,7 +104,7 @@
     <serviceTask id="servicetask3" name="Повідомлення громадянина  про успішну реєстрацію звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -113,30 +113,28 @@
           <activiti:string><![CDATA[Нове звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-          	[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з результатом перевірки поданих даних.&lt;br&gt;  
-					Адреса ${sOrganType}: ${sAddress}.&lt;br&gt; 
-					${sPhoneOrgan}&lt;br&gt;
-					${sWorkTime}.&lt;br&gt; 
-				&lt;/p&gt;
+				<p>
+					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з результатом перевірки поданих даних.<br>  
+					Адреса ${sOrganType}: ${sAddress}.<br> 
+					${sPhoneOrgan}<br>
+					${sWorkTime}.<br> 
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},&lt;br&gt;
+				${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]
-		  </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -144,7 +142,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -153,7 +151,7 @@
           <activiti:string><![CDATA[Нове звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -226,8 +224,7 @@
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0024_Zayava_na_Dovidku_Person.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0024_Zayava_na_Dovidku_Another_Person.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="tune print" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_2.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -238,7 +235,7 @@
     <serviceTask id="servicetask5" name="Повідомлення громадянина про відхилення звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -247,36 +244,34 @@
           <activiti:string><![CDATA[Відхилено звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-          	[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					На жаль, Вам відмовлено у надані послуги [sID_Order].&lt;br&gt;
-					При необхідності реєстрації нового запиту щодо видачі довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-				&lt;/p&gt; 
-				&lt;p&gt;
-					Коментар Державного службовця:&lt;br&gt;
-					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
+				<p>
+					На жаль, Вам відмовлено у надані послуги [sID_Order].<br>
+					При необхідності реєстрації нового запиту щодо видачі довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+				</p> 
+				<p>
+					Коментар Державного службовця:<br>
+					<b><i>${sDecisionComment}</i></b>
+				</p>
+				<p>
 					При виникненні питань Ви можете звернутися: ${sPhoneOrgan}
-				&lt;/p&gt;
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan},&lt;br/&gt;
+                ${sNameOrgan},<br/>
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]                    
-		  </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -290,7 +285,7 @@
     <serviceTask id="servicetask6" name="Повідомлення громадянина про призначення візиту + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -299,63 +294,61 @@
           <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-          	[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) опрацювали Ваше звернення [sID_Order] та виготовили довідку про реєстрацію місця проживання/перебування особи. &lt;br&gt;
-					Чекаємо на Вас у зручний для Вас час.  &lt;br&gt;
-					Адреса ${sOrganType}: ${sAddress}.&lt;br&gt; 
-					${sWorkTime}&lt;br&gt;
+				<p>
+					Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) опрацювали Ваше звернення [sID_Order] та виготовили довідку про реєстрацію місця проживання/перебування особи. <br>
+					Чекаємо на Вас у зручний для Вас час.  <br>
+					Адреса ${sOrganType}: ${sAddress}.<br> 
+					${sWorkTime}<br>
 
-					Для того щоб отримати довідку про реєстрацію місця проживання/перебування особи необхідно:&lt;br&gt;
-					&lt;ul&gt;
-						&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89} в робочий час.&lt;/li&gt;
-						&lt;li&gt;Підписати необхідні документи та отримати довідку про реєстрацію місця проживання або перебування особи.&lt;/li&gt;
-					&lt;/ul&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
-					&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} для отримання довідки про реєстрацію місця проживання або перебування особи:&lt;/b&gt;&lt;br&gt;
-					&lt;ul&gt;
-						&lt;li&gt;оригінал та копію паспорта громадянина України;&lt;/li&gt;
-						&lt;li&gt;оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;&lt;/li&gt;
-						&lt;li&gt;оригінал та копію картки реєстрації особи або будинкової книги;&lt;/li&gt;
-						&lt;li&gt;за необхідності - інші документи, що підтверджують Вашу реєстрацію\проживання.&lt;/li&gt;
-					&lt;/ul&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
-					Коментар Державного службовця:&lt;br&gt;
-					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
+					Для того щоб отримати довідку про реєстрацію місця проживання/перебування особи необхідно:<br>
+					<ul>
+						<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89} в робочий час.</li>
+						<li>Підписати необхідні документи та отримати довідку про реєстрацію місця проживання або перебування особи.</li>
+					</ul>
+				</p>
+				<p>
+					<b>Необхідні документи, які треба принести до ${sOrganType} для отримання довідки про реєстрацію місця проживання або перебування особи:</b><br>
+					<ul>
+						<li>оригінал та копію паспорта громадянина України;</li>
+						<li>оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;</li>
+						<li>оригінал та копію картки реєстрації особи або будинкової книги;</li>
+						<li>за необхідності - інші документи, що підтверджують Вашу реєстрацію\проживання.</li>
+					</ul>
+				</p>
+				<p>
+					Коментар Державного службовця:<br>
+					<b><i>${sDecisionComment}</i></b>
+				</p>
+				<p>
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-				&lt;/p&gt;
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},&lt;br&gt;
+				${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]
-		  </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow34" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="servicetask6" targetRef="usertask2_green"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="servicetask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sAccept'&&sFlag=='true'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask10" name="Повідомлення громадянина про призначення візиту Днепр + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -364,65 +357,63 @@
           <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-          	[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) опрацювали Ваше звернення [sID_Order] та виготовили довідку про реєстрацію місця проживання/перебування особи. &lt;br&gt;
-					Чекаємо на Вас у зручний для Вас час.  &lt;br&gt;
-					Адреса ${sOrganType}: ${sAddress}.&lt;br&gt; 
-					${sWorkTime}&lt;br&gt;
+				<p>
+					Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) опрацювали Ваше звернення [sID_Order] та виготовили довідку про реєстрацію місця проживання/перебування особи. <br>
+					Чекаємо на Вас у зручний для Вас час.  <br>
+					Адреса ${sOrganType}: ${sAddress}.<br> 
+					${sWorkTime}<br>
 
-					Для того щоб отримати довідку про реєстрацію місця проживання/перебування особи необхідно:&lt;br&gt;
-					&lt;ul&gt;
-						&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89} в робочий час. &lt;/li&gt;
-						&lt;li&gt;Роздрукувати та підписати одну з заяв, що знаходиться у додатках до цього листа &lt;/li&gt; 
-						&lt;ul&gt;
-							&lt;li&gt;Заява про видачу довідки &lt;/li&gt;
+					Для того щоб отримати довідку про реєстрацію місця проживання/перебування особи необхідно:<br>
+					<ul>
+						<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89} в робочий час. </li>
+						<li>Роздрукувати та підписати одну з заяв, що знаходиться у додатках до цього листа </li> 
+						<ul>
+							<li>Заява про видачу довідки </li>
 						або							 
-							&lt;li&gt;Заява про видачу довідки (від довіреної особи) &lt;/li&gt; 
-						&lt;/ul&gt;
-						&lt;li&gt;Підписати необхідні документи та отримати довідку про реєстрацію місця проживання або перебування особи. &lt;/li&gt;
-					&lt;/ul&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
-					&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} для отримання довідки про реєстрацію місця проживання або перебування особи: &lt;/b&gt;&lt;br&gt;
-					&lt;ul&gt;
-						&lt;li&gt;заяву про видачу довідки про реєстрацію місця проживання/перебування особи, що знаходиться у додатках до листа (розрукуйте на одному аркуші); &lt;/li&gt;
-						&lt;li&gt;оригінал та копію паспорта громадянина України;&lt;/li&gt;
-						&lt;li&gt;оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;&lt;/li&gt;
-						&lt;li&gt;оригінал та копію картки реєстрації особи або будинкової книги;&lt;/li&gt;
-						&lt;li&gt;за необхідності - інші документи, що підтверджують Вашу реєстрацію\проживання.&lt;/li&gt;
-					&lt;/ul&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
-					Коментар Державного службовця:&lt;br&gt;
-					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
+							<li>Заява про видачу довідки (від довіреної особи) </li> 
+						</ul>
+						<li>Підписати необхідні документи та отримати довідку про реєстрацію місця проживання або перебування особи. </li>
+					</ul>
+				</p>
+				<p>
+					<b>Необхідні документи, які треба принести до ${sOrganType} для отримання довідки про реєстрацію місця проживання або перебування особи: </b><br>
+					<ul>
+						<li>заяву про видачу довідки про реєстрацію місця проживання/перебування особи, що знаходиться у додатках до листа (розрукуйте на одному аркуші); </li>
+						<li>оригінал та копію паспорта громадянина України;</li>
+						<li>оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;</li>
+						<li>оригінал та копію картки реєстрації особи або будинкової книги;</li>
+						<li>за необхідності - інші документи, що підтверджують Вашу реєстрацію\проживання.</li>
+					</ul>
+				</p>
+				<p>
+					Коментар Державного службовця:<br>
+					<b><i>${sDecisionComment}</i></b>
+				</p>
+				<p>
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-				&lt;/p&gt;
+				</p>
 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},&lt;br&gt;
+				${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]
-		  </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1},${PrintForm_2}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1},${PrintForm_2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow36" sourceRef="servicetask10" targetRef="usertask2_red"></sequenceFlow>
-    <userTask id="usertask2_red" name="[Етап II] Візит громадянина (2-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
+    <sequenceFlow id="flow36" sourceRef="servicetask10" targetRef="usertask2_green"></sequenceFlow>
+    <userTask id="usertask2_green" name="[Етап II] Візит громадянина (2-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та видаєте довідку про реєстрацію місця проживання."></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Орган надання послуги" type="string" writable="false"></activiti:formProperty>
@@ -490,12 +481,12 @@
         <activiti:formProperty id="markers3" name="tune print" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_CopyPassportZ},${nFile_DocPredstavnika},${nFile_CopyPassport},${nFile_SvidoztvoNarodzennya},${nFile_ReeCard},${nFile_Other}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile_CopyPassportZ},${nFile_DocPredstavnika},${nFile_CopyPassport},${nFile_SvidoztvoNarodzennya},${nFile_ReeCard},${nFile_Other}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow28" sourceRef="usertask2_red" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="usertask2_green" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow17" name="${asResult=='sReestr'}" sourceRef="exclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sReestr'}]]></conditionExpression>
@@ -507,7 +498,7 @@
     <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -516,21 +507,19 @@
           <activiti:string><![CDATA[Опрацьовано звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-          	[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-                	Ви отримали послугу "Видача довідки про реєстрацію місця проживання/перебування особи", звернення [sID_Order].&lt;br&gt;
-                    Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
+				<p>
+                	Ви отримали послугу "Видача довідки про реєстрацію місця проживання/перебування особи", звернення [sID_Order].<br>
+                    Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
                     Дякуємо.
-				&lt;/p&gt;
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},&lt;br&gt;
+				${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]
-          </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -669,7 +658,7 @@ execution.setVariable('sDateVizite', dDateV);
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="91.0" width="107.0" x="380.0" y="314.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
+      <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
         <omgdc:Bounds height="78.0" width="131.0" x="503.0" y="432.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
@@ -719,7 +708,7 @@ execution.setVariable('sDateVizite', dDateV);
         <omgdi:waypoint x="588.0" y="230.0"></omgdi:waypoint>
         <omgdi:waypoint x="690.0" y="231.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="580.0" y="187.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="580.0" y="187.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
@@ -735,7 +724,7 @@ execution.setVariable('sDateVizite', dDateV);
         <omgdi:waypoint x="568.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="568.0" y="310.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="570.0" y="249.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="570.0" y="249.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
@@ -761,7 +750,7 @@ execution.setVariable('sDateVizite', dDateV);
         <omgdi:waypoint x="652.0" y="550.0"></omgdi:waypoint>
         <omgdi:waypoint x="652.0" y="570.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="86.0" x="587.0" y="520.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="86.0" x="587.0" y="520.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
@@ -770,7 +759,7 @@ execution.setVariable('sDateVizite', dDateV);
         <omgdi:waypoint x="495.0" y="677.0"></omgdi:waypoint>
         <omgdi:waypoint x="551.0" y="677.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="83.0" x="467.0" y="521.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="83.0" x="467.0" y="521.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
@@ -787,7 +776,7 @@ execution.setVariable('sDateVizite', dDateV);
         <omgdi:waypoint x="952.0" y="311.0"></omgdi:waypoint>
         <omgdi:waypoint x="954.0" y="350.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="904.0" y="271.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="904.0" y="271.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
@@ -796,7 +785,7 @@ execution.setVariable('sDateVizite', dDateV);
         <omgdi:waypoint x="803.0" y="449.0"></omgdi:waypoint>
         <omgdi:waypoint x="863.0" y="449.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="781.0" y="272.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="781.0" y="272.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
