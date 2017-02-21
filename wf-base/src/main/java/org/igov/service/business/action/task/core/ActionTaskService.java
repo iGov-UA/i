@@ -1753,7 +1753,7 @@ public class ActionTaskService {
             sBody += ": " + sReason;
         }
         Map<String, String> mParam = new HashMap<>();
-        //mParam.put("RequestMethod", RequestMethod.POST.name());
+        mParam.put("RequestMethod", RequestMethod.POST.name());
         mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
         mParam.put("sBody", sBody);
         LOG.info("Deleting process {}: {}", nID_Process, sUserTaskName);

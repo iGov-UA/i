@@ -16,6 +16,7 @@ import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
+import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -166,7 +167,7 @@ public class ActionEventController implements ControllerConstants {
             @ApiParam(value = "строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "строка-статус", required = false) @RequestParam(value = "sUserTaskName", required = false) String sUserTaskName,
             //@ApiParam(value = "строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "soData", required = false) String soData,
-            @ApiParam(value = "строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestBody(required = false) String soData,
+            @ApiParam(value = "строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestBody(required = false) String body,
             @ApiParam(value = "строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
             @ApiParam(value = "строка-время обработки задачи (в минутах, опционально)", required = false) @RequestParam(value = "nTimeMinutes", required = false) String nTimeMinutes,
@@ -178,6 +179,21 @@ public class ActionEventController implements ControllerConstants {
     // @ApiParam(value = "дата создания таски", required = false) @RequestParam(value = "sDateCreate", required =false) String sDateCreate,
     // @ApiParam(value = "дата закрытия таски", required = false) @RequestParam(value = "sDateClosed", required = false) String sDateClosed
     ) throws CommonServiceException {
+        String soData = "";
+        Map<String, String> mBody;
+        try {
+            mBody = JsonRestUtils.readObject(body, Map.class);
+        } catch (Exception e){
+            throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
+        }
+        if(mBody != null){
+            if (mBody.containsKey("soData")) {
+                soData = (String) mBody.get("soData");
+            }
+            if (mBody.containsKey("sBody")) {
+                sBody = (String) mBody.get("sBody");
+            }
+        }
         return oActionEventService.updateActionStatus_Central(
                 sID_Order,
                 sUserTaskName,
