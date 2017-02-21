@@ -31,7 +31,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricTaskInstance;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import org.igov.service.business.action.event.ActionEventHistoryService;
@@ -252,7 +251,6 @@ public class ActionEventService {
             String saField, String sBody, String sToken,
             String sUserTaskName) throws Exception {
         Map<String, String> mParam = new HashMap<>();
-        mParam.put("RequestMethod", RequestMethod.POST.name());
         mParam.put("soData", saField);
         mParam.put("sBody", sBody);
         mParam.put("sToken", sToken);

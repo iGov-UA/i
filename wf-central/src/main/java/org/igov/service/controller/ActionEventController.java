@@ -16,7 +16,6 @@ import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
-import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -29,7 +28,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.NumberUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -164,13 +166,12 @@ public class ActionEventController implements ControllerConstants {
             + "- \"По заявці №[nID_Process] задане прохання уточнення: [sBody]\" (если sToken не пустой) -- согласно сервису запроса на уточнение\n"
             + "- \"По заявці №[nID_Process] дана відповідь громадянином: [sBody]\" (если sToken пустой) -- согласно сервису ответа на запрос по уточнению\n\n"
             + "плюс перечисление полей из soData в формате таблицы Поле / Тип / Текущее значение")
-    @RequestMapping(value = "/updateHistoryEvent_Service", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/updateHistoryEvent_Service", method = RequestMethod.GET)
     public @ResponseBody
     HistoryEvent_Service updateHistoryEvent_Service(
             @ApiParam(value = "строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "строка-статус", required = false) @RequestParam(value = "sUserTaskName", required = false) String sUserTaskName,
             @ApiParam(value = "строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "soData", required = false) String soData,
-            @ApiParam(value = "строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestBody(required = false) String body,
             @ApiParam(value = "строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
             @ApiParam(value = "строка-время обработки задачи (в минутах, опционально)", required = false) @RequestParam(value = "nTimeMinutes", required = false) String nTimeMinutes,
@@ -182,41 +183,6 @@ public class ActionEventController implements ControllerConstants {
     // @ApiParam(value = "дата создания таски", required = false) @RequestParam(value = "sDateCreate", required =false) String sDateCreate,
     // @ApiParam(value = "дата закрытия таски", required = false) @RequestParam(value = "sDateClosed", required = false) String sDateClosed
     ) throws CommonServiceException {
-        Map<String, String> mBody;
-        try {
-            mBody = JsonRestUtils.readObject(body, Map.class);
-        } catch (Exception e){
-            throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
-        }
-        if(mBody != null){
-            if (mBody.containsKey("soData")) {
-                soData = (String) mBody.get("soData");
-            }
-            if (mBody.containsKey("sBody")) {
-                sBody = (String) mBody.get("sBody");
-            }
-            if (mBody.containsKey("sUserTaskName")) {
-                sUserTaskName = (String) mBody.get("sUserTaskName");
-            }
-            if (mBody.containsKey("sToken")) {
-                sToken = (String) mBody.get("sToken");
-            }
-            if (mBody.containsKey("nTimeMinutes")) {
-                nTimeMinutes = (String) mBody.get("nTimeMinutes");
-            }
-            if (mBody.containsKey("nID_Proccess_Escalation")) {
-                nID_Proccess_Escalation = Long.getLong((String) mBody.get("nID_Proccess_Escalation"));
-            }
-            if (mBody.containsKey("nID_Proccess_Feedback")) {
-                nID_Proccess_Feedback = Long.getLong((String) mBody.get("nID_Proccess_Feedback"));
-            }
-            if (mBody.containsKey("sSubjectInfo")) {
-                sSubjectInfo = (String) mBody.get("sSubjectInfo");
-            }
-            if (mBody.containsKey("nID_Subject")) {
-                nID_Subject = Long.getLong((String) mBody.get("nID_Subject"));
-            }
-        }
         return oActionEventService.updateActionStatus_Central(
                 sID_Order,
                 sUserTaskName,

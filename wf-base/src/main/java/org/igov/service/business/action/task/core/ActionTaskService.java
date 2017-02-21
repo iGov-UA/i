@@ -96,7 +96,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -1464,7 +1463,6 @@ public class ActionTaskService {
         ) throws Exception {
 
         Map<String, String> mParam = new HashMap<>();
-        mParam.put("RequestMethod", RequestMethod.POST.name());
         //params.put("sID_Order", sID_Order);
         //Long nID_StatusType
         mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
@@ -1753,7 +1751,6 @@ public class ActionTaskService {
             sBody += ": " + sReason;
         }
         Map<String, String> mParam = new HashMap<>();
-        mParam.put("RequestMethod", RequestMethod.POST.name());
         mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
         mParam.put("sBody", sBody);
         LOG.info("Deleting process {}: {}", nID_Process, sUserTaskName);
