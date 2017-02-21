@@ -11,6 +11,9 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть огран, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Адреса реєстраці; Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="VizitData" name="Оберіть день коли ви хочете прийти за довідкою" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asWhere" name="Оберіть для чого Вам потрібна довідка" type="enum" required="true">
           <activiti:value id="sSubs" name="Отримання субсидії"></activiti:value>
           <activiti:value id="sSocHelp" name="Отримання соціальної допомоги"></activiti:value>
@@ -87,8 +90,6 @@
         <activiti:formProperty id="middleName_UA8" name="По батькові" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="Birth8" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="Doc8" name="№, серія паспорта або свідоцтва про народження" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nPasport" name="Скан-копія паспорту з пропискою;Якщо декілька сторінок завантажте ZIP-архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
@@ -96,7 +97,8 @@
         <activiti:formProperty id="Pasportyst" name="в прінтформу 1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="Nachalnyk" name="в прінтформу 2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/forma2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('form3/forma2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="VisitDay" type="markers" default="${markerService.loadFromFile('form3/form3_Subject.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -376,7 +378,7 @@ ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_content_start.html]
                                     <p>
                                         Спеціалісти міськвиконкому успішно опрацювли Вашу заявку.<br>
-										Для того щоб закінчити процедуру отримання довідки про склад сім'ї необхідно звернутись до уповноваженого органу:<br>
+										Для того щоб закінчити процедуру отримання довідки про склад сім'ї необхідно ${VizitData} звернутись до уповноваженого органу:<br>
 										${sAddress}.
 									</p>
 									<p>
@@ -483,6 +485,9 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dms/forma3_lubin.html]" type="invisible" default="Форма Мінсоцполітики №204 (для домогосподарств)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nPasport}]]></activiti:expression>
+          </activiti:field>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow18" sourceRef="usertask2_red" targetRef="exclusivegateway2"></sequenceFlow>
