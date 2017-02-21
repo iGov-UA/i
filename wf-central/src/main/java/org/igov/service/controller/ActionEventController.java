@@ -39,6 +39,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.igov.service.business.action.event.ActionEventHistoryService;
 
 @Controller
 @Api(tags = {"ActionEventController -- События по действиям и статистика"})
@@ -66,6 +67,8 @@ public class ActionEventController implements ControllerConstants {
     private SubjectDao subjectDao;
     @Autowired
     private SubjectHumanDao subjectHumanDao;
+    @Autowired
+    private ActionEventHistoryService actionEventHistoryService;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -138,7 +141,7 @@ public class ActionEventController implements ControllerConstants {
             @ApiParam(value = "номер-ид бп эсклации (поле на перспективу для следующего тз по эскалации)", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation,
             @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType
     ) {
-        return oActionEventService.addActionStatus_Central(
+        return actionEventHistoryService.addActionStatus_Central(
                 sID_Order,
                 nID_Subject,
                 sUserTaskName,
