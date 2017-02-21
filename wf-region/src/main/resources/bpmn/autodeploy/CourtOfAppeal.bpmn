@@ -3,7 +3,7 @@
   <process id="CourtOfAppeal" name="Подання процесуальних документів у відкритому апеляційному провадженні" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="info" name="Звернення, що подані до 16 години 00 хвилин, будуть невідкладно опрацьовані працівником служби діловодства в день надходження звернення у продовж робочого часу" type="label" default="а ті звернення, які подані після 16 години 00 хвилин, будуть невідкладно опрацьовані на наступний робочий день"></activiti:formProperty>
+        <activiti:formProperty id="info" name="" type="label" default="Звернення, що подані до 16 години 00 хвилин, будуть невідкладно опрацьовані працівником служби діловодства в день надходження звернення у продовж робочого часу, а ті звернення, які подані після 16 години 00 хвилин, будуть невідкладно опрацьовані на наступний робочий день"></activiti:formProperty>
          <activiti:formProperty id="saCourt" name="Оберіть відповідний апеляційний суд" type="enum" required="true" default="sEnumCourtDnipro">
           <activiti:value id="sEnumCourtDnipro" name="Дніпропетровський апеляційний господарський суд"></activiti:value>
          </activiti:formProperty>
@@ -238,6 +238,7 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCountAttach" name="Кількість документів у додатку" type="enum" required="true">
+          <activiti:value id="zero" name=" "></activiti:value>
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
           <activiti:value id="three" name="3"></activiti:value>
@@ -275,13 +276,15 @@
         <activiti:formProperty id="markers18" name="якщо 4 додаткових документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;sDoc11&quot;,&quot;sCategoryDoc12&quot;,&quot;sDoc12&quot;,&quot;sCategoryDoc13&quot;,&quot;sDoc13&quot;,&quot;sCategoryDoc14&quot;,&quot;sDoc14&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'four'||[sReason] == '4'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers19" name="якщо 5 додаткових документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;sDoc11&quot;,&quot;sCategoryDoc12&quot;,&quot;sDoc12&quot;,&quot;sCategoryDoc13&quot;,&quot;sDoc13&quot;,&quot;sCategoryDoc14&quot;,&quot;sDoc14&quot;,&quot;sCategoryDoc15&quot;,&quot;sDoc15&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'five'||[sReason] == '5'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers22" name="заховати маркери" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;markers0&quot;,&quot;markers1&quot;,&quot;markers2&quot;,&quot;markers3&quot;,&quot;markers4&quot;,&quot;markers5&quot;,&quot;markers6&quot;,&quot;markers7&quot;,&quot;markers8&quot;,&quot;markers9&quot;,&quot;markers10&quot;,&quot;markers11&quot;,&quot;markers12&quot;,&quot;markers13&quot;,&quot;markers14&quot;,&quot;markers15&quot;,&quot;markers16&quot;,&quot;markers17&quot;,&quot;markers18&quot;,&quot;markers19&quot;,&quot;markers20&quot;,&quot;markers21&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc10&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'картошечка'&quot;}}}"></activiti:formProperty>
+ 		<activiti:formProperty id="markersStyle1" name="Маркер Style" type="markers" default="${markerService.loadFromFile('court/court_of_appeal_style_1.json')}"></activiti:formProperty>
+
         <activiti:formProperty id="form_signed" name="Загальний ЕЦП, що було накладено при поданні звернення" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Appeal">
       <extensionElements>
         <activiti:formProperty id="saCourt" name="Оберіть відповідний апеляційний суд" type="enum" writable="false">
-          <activiti:value id="sEnumCourtDnipro" name="Київський апеляційний господарський суд"></activiti:value>
+          <activiti:value id="sEnumCourtDnipro" name="Дніпропетровський апеляційний господарський суд"></activiti:value>
          </activiti:formProperty>
         <activiti:formProperty id="fio" name="ПІБ особи, яка внесла дані" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPositionAplicant" name="Посада особи, яка внесла дані; ;writable=false" type="string"></activiti:formProperty>
@@ -502,6 +505,7 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCountAttach" name="Кількість додаткових документів" type="enum" writable="false">
+          <activiti:value id="zero" name=" "></activiti:value>
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
           <activiti:value id="three" name="3"></activiti:value>
