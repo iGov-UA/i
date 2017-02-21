@@ -175,9 +175,13 @@ public class HttpRequester {
             oURL = new URL(getFullURL(sURL, mParam));
         } else {
             Map<String, String> params = new HashMap<String, String>();
-            params.put("sID_Order", mParam.remove("sID_Order"));
-            params.put("nID_SubjectMessageType", mParam.remove("nID_SubjectMessageType"));
-            params.put("sBody", mParam.remove("sBody"));
+            if(sURL.contains("/wf/service/action/event/updateHistoryEvent_Service")){
+                params.put("soData", mParam.remove("soData"));
+            } else {
+                params.put("sID_Order", mParam.remove("sID_Order"));
+                params.put("nID_SubjectMessageType", mParam.remove("nID_SubjectMessageType"));
+                params.put("sBody", mParam.remove("sBody"));
+            }
             oURL = new URL(getFullURL(sURL, params));
         }
         InputStream oInputStream;
@@ -291,7 +295,7 @@ public class HttpRequester {
     /**
      * Веривикация сертификата при HTTPS-соединении.
      *
-     * @param oConnectHTTPS соединение (если null, то верификация будет
+     * //@param oConnectHTTPS соединение (если null, то верификация будет
      * пропущенна)
      */
     //public void simplifySSLConnection(HttpsURLConnection oConnectHTTPS) {
