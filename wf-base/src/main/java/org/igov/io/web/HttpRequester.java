@@ -178,6 +178,28 @@ public class HttpRequester {
             params.put("sBody", mParam.remove("sBody"));
             if(sURL.contains("/wf/service/action/event/updateHistoryEvent_Service")){
                 params.put("soData", mParam.remove("soData"));
+                if (mParam.containsKey("sUserTaskName")) {
+                    params.put("sUserTaskName", mParam.remove("sUserTaskName"));
+                }
+                if (mParam.containsKey("sToken")) {
+                    params.put("sToken", mParam.remove("sToken"));
+                }
+                if (mParam.containsKey("nTimeMinutes")) {
+                    params.put("nTimeMinutes", mParam.remove("nTimeMinutes"));
+                }
+                if (mParam.containsKey("nID_Proccess_Escalation")) {
+                    params.put("nID_Proccess_Escalation", mParam.remove("nID_Proccess_Escalation"));
+                }
+                if (mParam.containsKey("nID_Proccess_Feedback")) {
+                    params.put("nID_Proccess_Feedback", mParam.remove("nID_Proccess_Feedback"));
+                }
+                if (mParam.containsKey("sSubjectInfo")) {
+                    params.put("sSubjectInfo", mParam.remove("sSubjectInfo"));
+                }
+                if (mParam.containsKey("nID_Subject")) {
+                    params.put("nID_Subject", mParam.remove("nID_Subject"));
+                }
+
             } else {
                 params.put("sID_Order", mParam.remove("sID_Order"));
                 params.put("nID_SubjectMessageType", mParam.remove("nID_SubjectMessageType"));
