@@ -58,7 +58,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
       params[property.id].required = property.required;
       params[property.id].writable = property.hasOwnProperty('writable') ? property.writable : true;
 
-      if(property.name.indexOf(';;') >= 0){
+      if(property.name && property.name.indexOf(';;') >= 0){
         var as = property.name.split(';;');
         property.name = as[0];
         for(var i = 1; i < as.length; i++){
