@@ -163,7 +163,7 @@ public class ActionEventController implements ControllerConstants {
             + "- \"По заявці №[nID_Process] задане прохання уточнення: [sBody]\" (если sToken не пустой) -- согласно сервису запроса на уточнение\n"
             + "- \"По заявці №[nID_Process] дана відповідь громадянином: [sBody]\" (если sToken пустой) -- согласно сервису ответа на запрос по уточнению\n\n"
             + "плюс перечисление полей из soData в формате таблицы Поле / Тип / Текущее значение")
-    @RequestMapping(value = "/updateHistoryEvent_Service", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateHistoryEvent_Service", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody
     HistoryEvent_Service updateHistoryEvent_Service(
             @ApiParam(value = "строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
