@@ -14,7 +14,7 @@
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="assignment" name="Цільове призначення земельної ділянки;з документу, що підтверджує право на землю, або з рішення, наказу, та ін." type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Загальна площа ділянки (га)" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Загальна площа ділянки (га);(введыть число через крапку)" type="double" required="true"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер ділянки;за наявності" type="string"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" required="true">
           <activiti:value id="otr" name="Для отримання земельної ділянки у власність"></activiti:value>
@@ -223,7 +223,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="assignment" name="Цільове призначення земельної ділянки;з документу, що підтверджує право на землю, або з рішення, наказу, та ін." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер ділянки;за наявності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="CLgoal" name="значення енум" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" writable="false">
@@ -345,7 +345,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="assignment" name="Цільове призначення земельної ділянки;з документу, що підтверджує право на землю, або з рішення, наказу, та ін." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="CLgoal" name="значення енум" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
@@ -358,8 +358,8 @@ ${sNameOrgan}&lt;br /&gt;
         
         <activiti:formProperty id="markerVidmovaDGK" name="VidmovaDGK" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/VidpovidPost.json')}"></activiti:formProperty>
         <activiti:formProperty id="decideDGK" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="accept" name="Успіх! Заява оформлена вірно"></activiti:value>
-          <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
+          <activiti:value id="accept" name="ДГК задовольнив заяву"></activiti:value>
+          <activiti:value id="reject" name="ДГК відмовив у наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="commentDGK" name="Вкажіть підставу відмови у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="result" name="Відповідь ДГК; ;bNew=true" type="file" required="true"></activiti:formProperty>
@@ -495,7 +495,7 @@ ${sNameOrgan}&lt;br/&gt;
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="assignment" name="Цільове призначення земельної ділянки;з документу, що підтверджує право на землю, або з рішення, наказу, та ін." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер ділянки;за наявності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="CLgoal" name="значення енум" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" writable="false">
