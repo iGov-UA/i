@@ -2874,7 +2874,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         
         
         
-        HistoryEvent_Service oHistoryEvent_Service = actionEventHistoryService.addActionStatus_Central(
+       /* HistoryEvent_Service oHistoryEvent_Service = actionEventHistoryService.addActionStatus_Central(
                 //generalConfig.getOrderId_ByProcess(Long.parseLong(oProcessInstanceChild.getProcessInstanceId())), 
                 //subjectAccountDao.findSubjectAccounts(null, sLogin, null, null).get(0).getnID_Subject(), 
                 //HistoryEventType.getById(11L).getsName(), 
@@ -2894,7 +2894,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 null, 
                 11L);
 
-        LOG.info("HistoryEvent_Service elem in setDocument: {}", oHistoryEvent_Service.toString());
+        LOG.info("HistoryEvent_Service elem in setDocument: {}", oHistoryEvent_Service.toString());*/
         
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
         LOG.info("mReturn in setDocument: ", mReturn);
