@@ -27,6 +27,11 @@ import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.vo.TaskAttachVO;
+import org.igov.model.document.DocumentStep;
+import org.igov.model.document.DocumentStepDao;
+import org.igov.model.document.DocumentStepDaoImpl;
+import org.igov.model.document.DocumentStepSubjectRight;
+import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import org.igov.service.business.action.task.core.ActionTaskService;
@@ -35,6 +40,7 @@ import org.igov.service.exception.RecordNotFoundException;
 import static org.igov.util.Tool.sTextTranslit;
 import org.json.simple.JSONObject;
 import org.igov.util.JSON.JsonRestUtils;
+import org.joda.time.DateTime;
 import org.igov.util.VariableMultipartFile;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -58,7 +64,13 @@ public class AttachmetService {
         
     @Autowired
     private IBytesDataStorage oBytesDataStaticStorage;
-        
+    
+    @Autowired
+    private  DocumentStepDao documentStepDao;
+    
+    @Autowired
+    private  DocumentStepSubjectRightDao documentStepSubjectRightDao;
+    
     @Autowired
     private ActionTaskService oActionTaskService;
         
@@ -136,6 +148,49 @@ public class AttachmetService {
         return sID_Field_Value;
     }
     
+    public String setDocumentImage (String nID_Process, String sID_Field, String sFileNameAndExt,
+        	boolean bSigned, String sID_StorageType, String sContentType, List<Map<String, Object>> saAttribute_JSON,
+		byte[] aContent, boolean bSetVariable, String sKey_Step, String sLogin) throws JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException{
+        
+    	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        	
+        //написала через criteria метод для получения oDocumentStep
+        List<DocumentStep> oDocumentStep = documentStepDao.getRightsByStep(nID_Process, sKey_Step);
+        //проверка на уникальность 
+        if(oDocumentStep.size()!=1){
+        	LOG.info("oDocumentStep is not unique " + oDocumentStep.size());}
+                //получаю список логинов        
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.get(0).getRights();
+       // пробегаюсь по листу логинов, ищу нужный
+        for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
+        	if(oDocumentStepSubjectRight.getsLogin().equals(sLogin)){
+        
+        		 if(bSigned == true)      
+        oDocumentStepSubjectRight.setsDateECP(new DateTime(df.format(new Date())));
+        		 
+        		 String sJsonValue = createAttachment(nID_Process, sID_Field, sFileNameAndExt,
+        	 bSigned, sID_StorageType, sContentType, saAttribute_JSON,
+		 aContent, bSetVariable);
+        		 JSONParser parser = new JSONParser();
+                 JSONObject result = (JSONObject) parser.parse(sJsonValue);
+
+                 String sKey = (String)result.get("sKey");
+        	                    
+        	     
+        		 
+    	oDocumentStepSubjectRight.setsID_File_ForSign(sKey);
+    	documentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+    	return oDocumentStepSubjectRight.getsID_File_ForSign();
+    	
+        	}
+        }
+        	
+      	
+        return "There is no DocumentStepSubjectRight";
+        }
+    
+    
+    
     public MultipartFile getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
     //    byte[] getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
             throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
@@ -203,7 +258,31 @@ public class AttachmetService {
         //return aResultArray;
     }
     
-     
+    public MultipartFile getDocumentImage(String snID_Process_Activiti, String sLogin,String sKey_Step) 
+              throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
+             
+        //написала через criteria метод для получения oDocumentStep
+        List<DocumentStep> oDocumentStep = documentStepDao.getRightsByStep(snID_Process_Activiti, sKey_Step);
+        //проверка на уникальность 
+        if(oDocumentStep.size()!=1){
+        	LOG.info("oDocumentStep's size is: " + oDocumentStep.size());
+        	}
+        //получаю список логинов        
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.get(0).getRights();
+       // пробегаюсь по листу логинов, ищу нужный
+        for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
+        	if(oDocumentStepSubjectRight.getsLogin().equals(sLogin)){
+        
+       String sKey = oDocumentStepSubjectRight.getsID_File_ForSign();
+       
+       return getAttachment(null, null, sKey, "Mongo");
+        	     
+               
+            }
+        }
+		return null;
+    }
+    
     public String getFileExtention(String fileName) {
         String[] parts = fileName.split("\\.");
         if (parts.length != 0) {

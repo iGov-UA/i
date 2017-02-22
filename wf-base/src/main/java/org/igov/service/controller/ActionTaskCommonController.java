@@ -71,6 +71,10 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.igov.model.action.event.HistoryEventType;
+import org.igov.model.action.event.HistoryEvent_Service;
+import org.igov.model.subject.SubjectAccountDao;
+import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
@@ -88,7 +92,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private HttpRequester httpRequester;
-
+    @Autowired
+    private ActionEventHistoryService actionEventHistoryService;
     @Autowired
     public GeneralConfig generalConfig;
     @Autowired
@@ -134,7 +139,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private MessageService oMessageService;
-
+    
+    @Autowired
+    private SubjectAccountDao subjectAccountDao;
+    
     @Autowired
     private Mail oMail;
 
@@ -2853,8 +2861,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
     ) throws Exception {
 
-        LOG.info("SetDocument started...");
-
+        LOG.info("SetDocument in ActionTaskCommonController started...");
+        
         /*if (sID_BP.startsWith("_doc_")||ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(sID_BP)) {
                 Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, sID_BP, null);
                 LOG.info("SetDocument process count: " + count.intValue());
@@ -2863,8 +2871,34 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> mParam = new HashMap<>();
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
         Map<String, Object> mReturn = new HashMap<>();
+        
+        
+        
+       /* HistoryEvent_Service oHistoryEvent_Service = actionEventHistoryService.addActionStatus_Central(
+                //generalConfig.getOrderId_ByProcess(Long.parseLong(oProcessInstanceChild.getProcessInstanceId())), 
+                //subjectAccountDao.findSubjectAccounts(null, sLogin, null, null).get(0).getnID_Subject(), 
+                //HistoryEventType.getById(11L).getsName(), 
+                null,
+                null,
+                null,
+                null, 
+                null,
+                null, 
+                null, 
+                null, 
+                null, 
+                null, 
+                null, 
+                null, 
+                null, 
+                null, 
+                11L);
+
+        LOG.info("HistoryEvent_Service elem in setDocument: {}", oHistoryEvent_Service.toString());*/
+        
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
+        LOG.info("mReturn in setDocument: ", mReturn);
+        
         return mReturn;
     }
-
 }
