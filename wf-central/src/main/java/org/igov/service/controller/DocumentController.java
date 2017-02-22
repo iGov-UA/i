@@ -331,6 +331,8 @@ public class DocumentController {
             @ApiParam(value = "контект в виде строки-обьекта", required = true) @RequestParam(value = "soDocumentContent") String sContent,
             HttpServletRequest request) throws IOException {
 
+        LOG.info("setDocument in documentController started");
+        
         SubjectService oManageSubject = new SubjectService();
 
         String sFileName = "filename.txt";

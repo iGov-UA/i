@@ -24,7 +24,7 @@ var createError = function (error, error_description, response) {
 };
 
 module.exports.decryptCallback = function (callback) {
-  bankidNBUUtil.decryptCallback(callback);
+  return bankidNBUUtil.decryptCallback(callback);
 };
 
 module.exports.convertToCanonical = function (customer) {

@@ -4,16 +4,20 @@
     <documentation>https://github.com/e-government-ua/i/issues/1353</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sFileNew1" name="sFileNew1; ;bNew=true" type="file"></activiti:formProperty>
+      
         <activiti:formProperty id="email" name="email" type="string"></activiti:formProperty>
-   
+        <activiti:formProperty id="sDoc1" name="Документ №1 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="тільки пдф або p7s" type="markers" default="{&quot;validate&quot;:{&quot;FileExtensions_1&quot;:{&quot;aField_ID&quot;:[&quot;sDoc1&quot;],&quot;saExtension&quot;:&quot;pdf,p7s&quot;,&quot;sMessage&quot;:&quot;будь ласка, завантажте файл у форматі pdf або p7s&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="крок 1" activiti:assignee="kermit">
       <extensionElements>
         <activiti:formProperty id="email" name="email" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFileNew1" name="sFileNew1; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFileNew2" name="sFileNew2; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Документ №1 засвідчений ЄЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -22,8 +26,9 @@
     <userTask id="usertask2" name="крок 2" activiti:assignee="kermit" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="email" name="email" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFileNew1" name="sFileNew1; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFileNew2" name="sFileNew2; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Документ №1 засвідчений ЄЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -43,14 +48,14 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-файл у додатку до листа - PrintForm_1, sFileNew1
+файл у додатку до листа - PrintForm_1, sDoc1
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1},${sFileNew1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1},${sDoc1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

@@ -155,7 +155,7 @@ public class ActionFlowController {
             oDateEnd = oDateStart.plusDays(nDays);
         }*/
         
-        DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
+        DateTime oDateStart = DateTime.now().withTimeAtStartOfDay().plusDays(1);
         DateTime oDateEnd = oDateStart.plusDays(nDays);
         
         SimpleDateFormat df_DayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");
