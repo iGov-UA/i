@@ -881,6 +881,32 @@ public class ObjectFileCommonController {
         return multipartFile.getBytes();
     }
 
+    @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
+    @RequestMapping(value = "/getDocumentImage", method = RequestMethod.GET)
+    @Transactional
+    public @ResponseBody
+    byte[] getDocumentImage(
+            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
+            @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
+                   HttpServletResponse httpResponse) throws Exception {
+
+        LOG.info("snID_Process_Activiti: " + snID_Process_Activiti);
+        LOG.info("sLogin: " + sLogin);
+        LOG.info("sKey_Step: " + sKey_Step);
+
+        MultipartFile multipartFile = attachmetService.getDocumentImage(snID_Process_Activiti, sLogin, sKey_Step);
+
+        httpResponse.setHeader("Content-disposition", "attachment; filename="
+                + multipartFile.getOriginalFilename());
+        httpResponse.setHeader("Content-Type", "application/octet-stream");
+
+        httpResponse.setContentLength(multipartFile.getBytes().length);
+
+        return multipartFile.getBytes();
+    }
+
+    
     @ApiOperation(value = "setProcessAttach", notes
             = "##### загрузка файла-атачмента по новому концепту")
     @RequestMapping(value = "/setProcessAttach", method = RequestMethod.POST, produces = "application/json")
@@ -924,6 +950,8 @@ public class ObjectFileCommonController {
         //return oAttachmentCover.apply(attachment);
     }
 
+   
+    
     @ApiOperation(value = "setProcessAttachText", notes
             = "##### загрузка body-атачмента по новому концепту")
     @RequestMapping(value = "/setProcessAttachText", method = RequestMethod.POST, produces = "application/json")
@@ -964,7 +992,52 @@ public class ObjectFileCommonController {
         //AttachmentCover oAttachmentCover = new AttachmentCover();
         //return oAttachmentCover.apply(attachment);
     }
+    @ApiOperation(value = "setDocumentImage", notes
+            = "##### загрузка body-атачмента по новому концепту(PDF)")
+    @RequestMapping(value = "/setDocumentImage", method = RequestMethod.POST, produces = "application/json")
+    @Transactional
+    public @ResponseBody
+    String setDocumentImage(
+            @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
+            @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
+            @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
+            @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
+            @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
+            @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field,
+            @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
+            @ApiParam(value = "контент файла в виде строки", required = true) @RequestBody String sData,
+            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
+            @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step, byte[] aContent, List<Map<String, Object>> saAttribute, boolean bSetVariable)
+            throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException
+        {
 
+        LOG.info("setAttachment nID_Process: " + nID_Process);
+        LOG.info("setAttachment bSigned: " + bSigned);
+        LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
+        LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
+        LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
+        LOG.info("setAttachment sID_Field: " + sID_Field);
+        LOG.info("setAttachment sContentType: " + sContentType);
+        LOG.info("setAttachment sData: " + sData);
+        LOG.info("setAttachment sLogin: " + sLogin);
+        LOG.info("setAttachment sKey_Step: " + sKey_Step);
+
+        if (aAttribute == null) {
+            aAttribute = new ArrayList<>();
+        }
+
+        if (sData != null && "Mongo".equals(sID_StorageType)) {
+            return attachmetService.setDocumentImage(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, sContentType, saAttribute, aContent, bSetVariable, snID_Process_Activiti, sKey_Step, sLogin);
+        } else if (sData != null && "Redis".equals(sID_StorageType)) {
+            throw new RuntimeException("There is no suitable metod for string data for redis");
+        } else {
+            return "data is null";
+        }
+
+    }
+
+    
     @ApiOperation(value = "setTaskAttachment", notes
             = "#####  Set/update файла-атачмента к таске Activiti")
     @RequestMapping(value = "/setTaskAttachment", method = RequestMethod.POST, produces = "application/json")
