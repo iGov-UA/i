@@ -236,6 +236,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        
         <activiti:formProperty id="print_marker1" name="show/hide name" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;vl&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='orend'||[sCond]=='podatok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;pr&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='otr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/211_6-ZEM.html]" type="invisible" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
@@ -386,7 +387,7 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow2" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" name="ДГК ОК" sourceRef="exclusivegateway1" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideDGK=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideDGK == 'accept' && asVidpovid != 'sEnamPost'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow3" name="ДГК Відмова" sourceRef="exclusivegateway1" targetRef="servicetask4">
@@ -700,7 +701,7 @@ ${sNameOrgan}&lt;br/&gt;
     <sequenceFlow id="flow40" sourceRef="servicetask4" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="servicetask3" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow71" name="ДГК ОК Пошта" sourceRef="exclusivegateway1" targetRef="servicetask14">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideDGK == 'accept'&&asVidpovid == 'sEnamPost'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideDGK == 'accept' && asVidpovid == 'sEnamPost'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask14" name="Оплата пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
