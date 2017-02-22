@@ -61,7 +61,39 @@ public enum HistoryEventType {
             "Ответ на запрос об уточнении данных",
             "По заявці №" + HistoryEventMessage.TASK_NUMBER + " дана відповідь громадянином:\n"
                     + HistoryEventMessage.S_BODY + "\n"
-                    + HistoryEventMessage.TABLE_BODY);
+                    + HistoryEventMessage.TABLE_BODY),
+    CREATING_DOCUMENT(11L,
+            "DocumentCreating",
+            "Нажата кнопка \"створити документ\"",
+            "Створення документу %sID_Order%"),
+    CREATE_DOCUMENT(12L,
+            "DocumentCreated",
+            "Нажата кнопка \"створити\"",
+            "Створено документ %sID_Order%"),
+    SIGNE_DOCUMENT(13L,
+            "DocumentSigned",
+            "Нажата кнопка \"підписати\" или \"ознайомлен\"",
+            "%ФИО юзера (логін юзера)% - документ завізовано"),
+    CHANGE_DOCUMENT(14L,
+            "DocumentChanged",
+            "Внесены изменения в документ или задачу (Слушатель SetTask)",
+            "%ФИО юзера (логін юзера)% - внесено зміни до документу"),
+    CREATE_SUBDOCUMENT(15L,
+            "SubDocumentCreated",
+            "В текущем процессе вызван другой процесс (с помощью элемента БП callActiviti)",
+            "Створено вкладений документ %sID_Order%"),
+    CHANGE_DOCUMENT_STEP(16L,
+            "DocumentChangeStep",
+            "Изменился статус документа (переход с одной юзертаски на другую)",
+            "Статус документа змінено - %статус юзертаски%"),
+    MENTION_DOCUMENT(17L,
+            "DocumentMentioned",
+            "Документ упомянули в другом документе",
+            "Документ %sID_Order%  пов'язаний з іншим %sID_Order%"),
+    CLOSE_DOCUMENT(18L,
+            "DocumentClosed",
+            "Процесс дошел до конца и закрылся",
+            "Документ перміщено до архіву");
 
     private Long nID;
     private String sID;

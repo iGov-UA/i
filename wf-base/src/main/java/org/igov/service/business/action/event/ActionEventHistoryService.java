@@ -59,7 +59,9 @@ public class ActionEventHistoryService {
             String sBody,
             Long nID_Proccess_Feedback,
             Long nID_Proccess_Escalation,
-            Long nID_StatusType
+            Long nID_StatusType,
+            Long nID_HistoryEventType
+            
     ) {
         int dash_position = sID_Order.indexOf(DASH);
         int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
@@ -90,7 +92,7 @@ public class ActionEventHistoryService {
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
-        setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
+        setHistoryEvent(HistoryEventType.getById(nID_HistoryEventType), nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
         return oHistoryEvent_Service;
     }
 }
