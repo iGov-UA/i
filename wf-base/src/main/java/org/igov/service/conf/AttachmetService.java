@@ -150,12 +150,12 @@ public class AttachmetService {
     
     public String setDocumentImage (String nID_Process, String sID_Field, String sFileNameAndExt,
         	boolean bSigned, String sID_StorageType, String sContentType, List<Map<String, Object>> saAttribute_JSON,
-		byte[] aContent, boolean bSetVariable, String snID_Process_Activiti, String sKey_Step, String sLogin) throws JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException{
+		byte[] aContent, boolean bSetVariable, String sKey_Step, String sLogin) throws JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException{
         
     	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         	
         //написала через criteria метод для получения oDocumentStep
-        List<DocumentStep> oDocumentStep = documentStepDao.getRightsByStep(snID_Process_Activiti, sKey_Step);
+        List<DocumentStep> oDocumentStep = documentStepDao.getRightsByStep(nID_Process, sKey_Step);
         //проверка на уникальность 
         if(oDocumentStep.size()!=1){
         	LOG.info("oDocumentStep is not unique " + oDocumentStep.size());}
@@ -260,38 +260,27 @@ public class AttachmetService {
     
     public MultipartFile getDocumentImage(String snID_Process_Activiti, String sLogin,String sKey_Step) 
               throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
-        MultipartFile oMultipartFile = null;
-        
-        byte [] aResultArray = null;
-        String sFileName = null;
-        String sVersion = "";
-        String sContentType = "";
-        ByteArrayInputStream byteArrayInputStream = null;
-        
-        
+             
         //написала через criteria метод для получения oDocumentStep
         List<DocumentStep> oDocumentStep = documentStepDao.getRightsByStep(snID_Process_Activiti, sKey_Step);
         //проверка на уникальность 
         if(oDocumentStep.size()!=1){
-        	LOG.info("oDocumentStep is not unique " + oDocumentStep.size());}
-                //получаю список логинов        
+        	LOG.info("oDocumentStep's size is: " + oDocumentStep.size());
+        	}
+        //получаю список логинов        
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.get(0).getRights();
        // пробегаюсь по листу логинов, ищу нужный
         for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
         	if(oDocumentStepSubjectRight.getsLogin().equals(sLogin)){
         
        String sKey = oDocumentStepSubjectRight.getsID_File_ForSign();
+       
+       return getAttachment(null, null, sKey, "Mongo");
         	     
-            aResultArray = oBytesDataStaticStorage.getData(sKey);
-            byteArrayInputStream = new ByteArrayInputStream(aResultArray);
-            oMultipartFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sFileName, sContentType);
-            if (aResultArray != null) {
-                LOG.info("Mongo byte array isn't null");
-            }
-        
+               
             }
         }
-		return oMultipartFile;
+		return null;
     }
     
     public String getFileExtention(String fileName) {
