@@ -80,7 +80,9 @@
           <activiti:value id="sEnumNo" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTextLabel_1" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt;такі скарги не підлягають задоволенню&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_7" name="лінія Перелік санкцій" type="markers" default="{&quot;attributes&quot;:{&quot;Line_7&quot;:{&quot;aElement_ID&quot;:[&quot;asDirectionOfAppeal&quot;],&quot;sValue&quot;:&quot;Перелік санкцій, які скаржник бажає обрати для застосування, у разі задоволення його скарги&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_7" name="лінія Перелік санкцій" type="markers" default="{&quot;attributes&quot;:{&quot;Line_7&quot;:{&quot;aElement_ID&quot;:[&quot;sTextLabel_Sanction&quot;],&quot;sValue&quot;:&quot;Перелік санкцій, які скаржник бажає обрати для застосування, у разі задоволення його скарги&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTextLabel_Sanction" name=" " type="label" default=" "></activiti:formProperty>
+        
         <activiti:formProperty id="bSanction_1" name="Скасування рішення про державну реєстрацію прав; ;sID_CheckboxTrue=yes" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -288,6 +290,8 @@
           <activiti:value id="reject" name="Відмовити громадянину в прийнятті скарги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/justice_0333_complaint_print.html]" type="invisible" default="скарга" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>

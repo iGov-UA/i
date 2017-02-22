@@ -78,7 +78,7 @@
         <activiti:formProperty id="nDocBezpek" name="Копія акта огляду судна Укртрансбезпекою" type="file"></activiti:formProperty>
 
 
-        <activiti:formProperty id="form_signed_all" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all" name="Заява з ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/infr/sea_licenseECP.html"></activiti:formProperty>
 
 
@@ -185,12 +185,6 @@
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для отримання ліцензії у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/sea_license.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/sea_license.html" type="file"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nPassport},${nDocVidom},${nDocKvalif},${nDocBezpek},${nDocSvid},${nDocPass},${nDocSafety},${nDocSysSafety},${nDocCharter},${nDocKvalif1},${nShipTiket}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway3"></sequenceFlow>
