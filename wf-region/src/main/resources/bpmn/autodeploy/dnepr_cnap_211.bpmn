@@ -352,7 +352,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sflag_dgk" name="гілка ДГК" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="FlagPost" name="Флаг способу отримання" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" writable="false">
+        <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
         </activiti:formProperty>
@@ -699,7 +699,7 @@ ${sNameOrgan}&lt;br/&gt;
     <sequenceFlow id="flow40" sourceRef="servicetask4" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="servicetask3" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow71" name="ДГК ОК Пошта" sourceRef="exclusivegateway1" targetRef="servicetask14">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideCN == 'accept'&&asVidpovid == 'sEnamPost'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideDGK == 'accept'&&asVidpovid == 'sEnamPost'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask14" name="Оплата пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
