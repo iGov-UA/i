@@ -15,7 +15,6 @@ import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.task.Task;
-import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;

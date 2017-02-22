@@ -62,6 +62,7 @@
 
 
         <div class="nav navbar-nav navbar-right right-menu-group">
+
           <div class="nav navbar-nav document-button" ng-if="usersDocumentsBPs.length > 0 && showCreateDocButton()">
             <a ng-click="openCloseUsersSelect()"
                class="btn btn-info">Створити документ
@@ -86,17 +87,34 @@
                 </ui-select>
             </div>
           </div>
+
           <ul class="nav navbar-nav">
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                 aria-expanded="false">{{getCurrentUserName()}} <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#" ng-click="goToProfile()">Профіль</a></li>
+              <a href="#" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">
+                {{getCurrentUserName()}} <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dashboard-settings-menu" style="overflow: hidden">
+                <li>
+                  <a href="#" ng-click="goToProfile()">Профіль</a>
+                </li>
+
+                <li role="separator" class="divider"></li>
+                <li style="padding: 1px 20px" ng-click="$event.stopPropagation()">
+                  <div class="checkbox">
+                    <label class="ecp-description-for-checkbox" style="font-size: 1em">
+                      <input type="checkbox" ng-model="checkboxForAutoECP.status">
+                      <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                      Авто пiдпис ЕЦП
+                    </label>
+                  </div>
+                </li>
+
                 <li role="separator" class="divider"></li>
                 <li><a href="#" ng-click="logout()">Вийти</a></li>
               </ul>
             </li>
           </ul>
+
         </div>
 
         <div class="archive-container" ng-if="tasksSearch.archive && switchArchive && archive">
