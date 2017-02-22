@@ -22,16 +22,16 @@
           <activiti:value id="podatok" name="Для подачі в податкову для нарахування податку на землю"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dovidka" name="Копія документа, що підтверджує право на землю (держакт, свідоцтво, договір); ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dilianka" name="Викопіювання земельної ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nakaz" name="Копія рішення (наказу, розпорядження) про надання дозволу на розробку проекту землеустрою; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="eDoc" name="Обмінний ХМL-файл;складається землевпорядною організацією;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="pravo" name="Копія документа, що підтверджує право на об’єкти нерухомості (будинок, будівля і т.і.); ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="scan_passport" name="Копія паспорта уповноваженої особи;у разі подання заяви уповноваженою заявником особою;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="scan_inn" name="Копія ІПН уповноваженої особи;у разі подання заяви уповноваженою заявником особою;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="dover" name="Копія документа, який підтверджує повноваження діяти від імені заявника;у разі подання заяви уповноваженою заявником особою;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dovidka" name="Копія документа, що підтверджує право на землю (держакт, свідоцтво, договір)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dilianka" name="Викопіювання земельної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nakaz" name="Копія рішення (наказу, розпорядження) про надання дозволу на розробку проекту землеустрою" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="eDoc" name="Обмінний ХМL-файл;складається землевпорядною організацією" type="file"></activiti:formProperty>
+        <activiti:formProperty id="pravo" name="Копія документа, що підтверджує право на об’єкти нерухомості (будинок, будівля і т.і.)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="scan_passport" name="Копія паспорта уповноваженої особи;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
+        <activiti:formProperty id="scan_inn" name="Копія ІПН уповноваженої особи;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
+        <activiti:formProperty id="dover" name="Копія документа, який підтверджує повноваження діяти від імені заявника;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
         
         <activiti:formProperty id="markerEnum" name="markerEnum" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/211_6ZEM.json')}"></activiti:formProperty>
         
@@ -243,17 +243,12 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dovidka" name="Копія документа, що підтверджує право на землю (держакт, свідоцтво, договір); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dilianka" name="Викопіювання земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nakaz" name="Копія рішення (наказу, розпорядження) про надання дозволу на розробку проекту землеустрою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="eDoc" name="Обмінний ХМL-файл; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pravo" name="Копія документа, що підтверджує право на об’єкти нерухомості (будинок, будівля і т.і.); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scan_passport" name="Копія паспорта уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scan_inn" name="Копія ІПН уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dover" name="Копія документа, який підтверджує повноваження діяти від імені заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${dovidka},${dilianka},${nakaz},${pravo},${eDoc},${scan_passport},${scan_inn},${dover}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow20" name="ЦНАП ПОЗИТИВ" sourceRef="exclusivegateway2" targetRef="servicetask7">
@@ -364,25 +359,19 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="reject" name="ДГК відмовив у наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="commentDGK" name="Вкажіть підставу відмови у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="result" name="Відповідь ДГК; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="result" name="Відповідь ДГК" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerVidmovaDGK" name="VidmovaDGK" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/VidmovaDGK.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="print_marker1" name="show/hide name" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;vl&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='orend'||[sCond]=='podatok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;pr&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='otr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/Zemelni_Poslugi/211_6-ZEM.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/211_6-ZEM.html]" type="invisible" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dovidka" name="Копія документа, що підтверджує право на землю (держакт, свідоцтво, договір); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dilianka" name="Викопіювання земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nakaz" name="Копія рішення (наказу, розпорядження) про надання дозволу на розробку проекту землеустрою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="eDoc" name="Обмінний ХМL-файл; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pravo" name="Копія документа, що підтверджує право на об’єкти нерухомості (будинок, будівля і т.і.); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scan_passport" name="Копія паспорта уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scan_inn" name="Копія ІПН уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dover" name="Копія документа, який підтверджує повноваження діяти від імені заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
@@ -509,23 +498,18 @@ ${sNameOrgan}&lt;br/&gt;
           <activiti:value id="sEnam_ok" name="Видати довідку"></activiti:value>
           <activiti:value id="sEnam_bad" name="Відмовити в видачі довідки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="result" name="Завантажте скановану копію відповіді; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="result" name="Завантажте скановану копію відповіді" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hide name" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;vl&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='orend'||[sCond]=='podatok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;pr&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='otr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/211_6-ZEM.html]" type="invisible" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dovidka" name="Копія документа, що підтверджує право на землю (держакт, свідоцтво, договір); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dilianka" name="Викопіювання земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nakaz" name="Копія рішення (наказу, розпорядження) про надання дозволу на розробку проекту землеустрою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="eDoc" name="Обмінний ХМL-файл; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pravo" name="Копія документа, що підтверджує право на об’єкти нерухомості (будинок, будівля і т.і.); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scan_passport" name="Копія паспорта уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scan_inn" name="Копія ІПН уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dover" name="Копія документа, який підтверджує повноваження діяти від імені заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${dovidka},${dilianka},${nakaz},${pravo},${eDoc},${scan_passport},${scan_inn},${dover}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow28" sourceRef="servicetask9" targetRef="usertask3"></sequenceFlow>
@@ -610,8 +594,12 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="bad" name="Заявник не з'явився протягом тривалого терміну"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="result" name="Відповідь ДГК; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${result}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow31" sourceRef="servicetask11" targetRef="usertask4"></sequenceFlow>
