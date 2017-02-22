@@ -4,9 +4,6 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
-
-        <activiti:formProperty id="infoECP" name="Зверніть увагу" type="label" default="Для отримання &lt;b&gt;рішення щодо призначення допомоги &lt;/b&gt;Вам буде необхідно підписати заяву Електронно-цифровим підписом. &lt;br&gt;&lt;br&gt;&lt;b&gt;У разі відсутності ЕЦП на заяві, Вам буде необхідно відвідати УПСЗН після первинної перевірки &lt;/b&gt;даних і особисто підписати Заяву для подальшого розгляду.&lt;br&gt;&lt;br&gt; Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
-
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -38,7 +35,8 @@
         <activiti:formProperty id="asLandShare" name="У Вас є у володінні земельна частка (пай)" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>        
+        </activiti:formProperty>
+        <activiti:formProperty id="nFileLandShare" name="Завантажте довідку про наявність та розмір земельної частки (паю)" type="file"></activiti:formProperty>
         
         <activiti:formProperty id="asBusinessman" name="Чи являєтесь ви підприємцем" type="enum">
           <activiti:value id="yes" name="Так"></activiti:value>
@@ -57,8 +55,8 @@
 
         <activiti:formProperty id="lInfo_2" name="Заповніть декларацію" type="label" default="Завантажте &lt;a href=&quot;https://www.dropbox.com/s/jyrbb4d12dt9vui/blank-deklaratsiya-dopomogi.doc?dl=0&quot; target=&quot;_blank&quot;&gt;декларацію&lt;/a&gt;, роздрукуйте, заповніть, та додайте у наступному полі."></activiti:formProperty>
         <activiti:formProperty id="nFileDeclaration" name="Заповнена декларація" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lNotice" name="Зверніть увагу" type="label" default="Я усвідомлюю, що наведені мною відомості про доходи та майно, що вплинули або могли вплинути на прийняте рішення щодо надання соціальної допомоги, компенсацій та пільг, будуть перевірені згідно з чинним законодавством України."></activiti:formProperty>
 
+        <activiti:formProperty id="infoECP" name="Зверніть увагу" type="label" default="Для отримання &lt;b&gt;рішення щодо призначення допомоги &lt;/b&gt;Вам буде необхідно підписати заяву Електронно-цифровим підписом. &lt;br&gt;&lt;br&gt;&lt;b&gt;У разі відсутності ЕЦП на заяві, Вам буде необхідно відвідати УПСЗН після первинної перевірки &lt;/b&gt;даних і особисто підписати Заяву для подальшого розгляду.&lt;br&gt;&lt;br&gt; Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="asECP" name="Чи подаєте звернення з ЕЦП або без ЕЦП?" type="enum" required="true">
           <activiti:value id="online" name="з ЕЦП (для отримання електронної послуги про призначення допомги)"></activiti:value>
           <activiti:value id="offline" name="без ЕЦП (погоджуєтесь на особистий візит після перевірки правильності даних)"></activiti:value>
@@ -68,6 +66,9 @@
         <activiti:formProperty id="bFlagFullBP" name="Флаг полного процесса" type="invisible" default="true"></activiti:formProperty>
         <activiti:formProperty id="bFlagECP" name="Флаг ЕЦП" type="invisible" default="false"></activiti:formProperty>
  		<activiti:formProperty id="markersSocHelpECP" name="Маркер для Дрогобича" type="markers" default="${markerService.loadFromFile('soczah/soc_help_ECP.json')}"></activiti:formProperty>
+
+
+        <activiti:formProperty id="lNotice" name="Зверніть увагу" type="label" default="Я усвідомлюю, що наведені мною відомості про доходи та майно, що вплинули або могли вплинути на прийняте рішення щодо надання соціальної допомоги, компенсацій та пільг, будуть перевірені згідно з чинним законодавством України."></activiti:formProperty>
 
 
         <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
@@ -147,8 +148,12 @@
         <activiti:formProperty id="cc_2" name="Галка на прінтформі" type="invisible"></activiti:formProperty>
         
         <activiti:formProperty id="markersUT1" name="Маркер UT1" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_154_user.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="PrintForm_1" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/minsoc/min_soc_help_441_print_ECP.html" type="file"></activiti:formProperty>
+		<activiti:formProperty id="PrintForm_1" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/minsoc/min_soc_help_441_print_ECP.html" type="file"></activiti:formProperty>		
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
