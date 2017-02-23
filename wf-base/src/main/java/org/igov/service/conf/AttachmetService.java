@@ -154,8 +154,18 @@ public class AttachmetService {
         
     	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         	
-        //написала через criteria метод для получения oDocumentStep
-        List<DocumentStep> aDocumentStep = documentStepDao.getRightsByStep(nID_Process, sKey_Step);
+    	List<DocumentStep> aDocumentStep = documentStepDao.getStepForProcess(nID_Process);
+    	LOG.info("The size of list"+ aDocumentStep.size() );
+    	LOG.info("Result list of steps: {}", aDocumentStep);
+    	
+    	DocumentStep oFindedDocumentStep = null;
+    	 
+    	 for(DocumentStep oDocumentStep: aDocumentStep){
+         	if(oDocumentStep.getsKey_Step().equals(sKey_Step)){
+         		oFindedDocumentStep = oDocumentStep;
+    	        break;
+         	
+     /*   List<DocumentStep> aDocumentStep = documentStepDao.getRightsByStep(nID_Process, sKey_Step);
         //проверка на уникальность 
         if(aDocumentStep.size()!=1){
         	LOG.info("aDocumentStep is not unique " + aDocumentStep.size());}
@@ -172,7 +182,11 @@ public class AttachmetService {
         for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
         	if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sLogin)){
         		LOG.info("oDocumentStepSubjectRight's Key_GroupPostfix() is "+ oDocumentStepSubjectRight.getsKey_GroupPostfix());
-        
+        */
+    	      
+    	/*List<DocumentStepSubjectRight> aDocumentStepSubjectRight=oFindedDocumentStep.getRights();
+    	for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
+        	if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sLogin)){
         		 if(bSigned == true)      
         oDocumentStepSubjectRight.setsDateECP(new DateTime(df.format(new Date())));
         		 
@@ -189,7 +203,7 @@ public class AttachmetService {
     	oDocumentStepSubjectRight.setsID_File_ForSign(sKey);
     	documentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
     	return oDocumentStepSubjectRight.getsID_File_ForSign();
-    	
+    	*/
         	}
         }
         	
