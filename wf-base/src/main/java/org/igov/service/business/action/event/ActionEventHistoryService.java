@@ -19,9 +19,9 @@ import org.slf4j.LoggerFactory;
  * @author Kovilin
  */
 @Service
-public class ActionEventService {
+public class ActionEventHistoryService {
     
-    private static final Logger LOG = LoggerFactory.getLogger(ActionEventService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActionEventHistoryService.class);
     
     @Autowired
     private HistoryEventDao historyEventDao;
