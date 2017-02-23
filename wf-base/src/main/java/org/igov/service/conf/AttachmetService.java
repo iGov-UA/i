@@ -170,7 +170,7 @@ public class AttachmetService {
         LOG.info("nID_Process is " + nID_Process);
        // пробегаюсь по листу логинов, ищу нужный
         for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
-        	if(oDocumentStepSubjectRight.getsLogin().equals(sLogin)){
+        	if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sLogin)){
         
         		 if(bSigned == true)      
         oDocumentStepSubjectRight.setsDateECP(new DateTime(df.format(new Date())));
