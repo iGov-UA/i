@@ -49,11 +49,27 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     var result = factories.filter(function (factory) {
       return factory.prototype.isFit(property);
     });
+
+    if(!property.options) property.options = {};
+
     if (result.length > 0) {
       params[property.id] = result[0].prototype.createFactory();
       params[property.id].value = property.value;
       params[property.id].required = property.required;
       params[property.id].writable = property.hasOwnProperty('writable') ? property.writable : true;
+
+      if(property.name && property.name.indexOf(';;') >= 0){
+        var as = property.name.split(';;');
+        property.name = as[0];
+        for(var i = 1; i < as.length; i++){
+          var source = as[i];
+          var equalsIndex = source.indexOf('=');
+          var key = source.substr(0, equalsIndex).trim();
+          var val = source.substr(equalsIndex + 1).trim();
+          if(!property.options) property.options = {};
+          property.options[key] = source.substr(equalsIndex + 1).trim();
+        }
+      }
     }
   };
 

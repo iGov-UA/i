@@ -366,7 +366,10 @@
                       style="background-color: #337ACF; outline: none; border: none"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()"
                       ng-show="selectedTask.assignee == null && isDocument()">
-                <span ng-if="documentRights.bWrite">Пiдписати</span>
+                <span ng-if="documentRights.bWrite">
+                  <span ng-if="!checkboxForAutoECP.status">Пiдписати</span>
+                  <span ng-if="checkboxForAutoECP.status">Пiдписати ЕЦП</span>
+                </span>
                 <span ng-if="!documentRights.bWrite">Ознайомлений</span>
               </button>
               <label ng-show="isTaskInProcess() && !isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Зачекайте...</label>
@@ -397,7 +400,10 @@
                       class="btn btn-info"
                       style="background-color: #337ACF; outline: none; border: none"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">
-                <span ng-if="documentRights.bWrite && !isDocument()">Пiдписати</span>
+                <span ng-if="documentRights.bWrite && !isDocument()">
+                  <span ng-if="!checkboxForAutoECP.status">Пiдписати</span>
+                  <span ng-if="checkboxForAutoECP.status">Пiдписати ЕЦП</span>
+                </span>
                 <span ng-if="!documentRights.bWrite && !isDocument()">Ознайомлений</span>
                 <span ng-if="isDocument()">Створити</span>
               </button>

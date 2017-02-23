@@ -3,6 +3,7 @@
   <process id="dnepr_cnap_759" name="Державна реєстрація змін до відомостей про юридичну особу (з заповненням заяви онлайн)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="markers_Hide01all" name="спрятать переменные" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide01all&quot;:{&quot;aField_ID&quot;:[&quot;Info_01_01&quot;,&quot;asSelectIzm_00&quot;,&quot;Info_03_00&quot;,&quot;asSelectIzm_03&quot;,&quot;Info_11_00&quot;,&quot;asSelectIzm_11&quot;,&quot;Info_10_00&quot;,&quot;asSelectIzm_10&quot;,&quot;Info_16_00&quot;,&quot;asSelectIzm_16&quot;,&quot;Info_13_0&quot;,&quot;asSelectIzm_13&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
 <!--         <activiti:formProperty id="markers_ext" name="КВЕДы" type="markers" default="${markerService.loadFromFile('dnepr_cnap_759.json')}"></activiti:formProperty>  -->
         <activiti:formProperty id="markers_ext_00" name="внешние маркеры 00" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_00.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_ext_01" name="внешние маркеры 01" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_01.json')}"></activiti:formProperty>
@@ -569,6 +570,18 @@
     <scriptTask id="scripttask1" name="Отримувач сплати" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>          
       	  var sVarCNAP=execution.getVariable('user_last')
+          if (sVarCNAP=='ternopil_test')
+          	{
+          		execution.setVariable('sID_Merchant','i5516072613')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')
+				execution.setVariable('sVarBankMFO','805012')
+				execution.setVariable('sVarPayCode','22010300')
+				execution.setVariable('sVarWhoPayGetCode','37870848')
+				execution.setVariable('sVarWhoPayGet','ВАСИЛЬКІВСЬКЕ УК (ВАСИЛЬКІВСЬКОГО РАЙОНУ)')
+				execution.setVariable('sVarPayGetSchet','31419501700049')
+				execution.setVariable('sVarSumPay','480.00')
+          	}
           if (sVarCNAP=='agerman')
           	{
           		execution.setVariable('sID_Merchant','i5516072613')

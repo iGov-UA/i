@@ -87,7 +87,7 @@ angular.module('iGovMarkers')
           nMin: 1,
           nMax: 1000000000000000,
           //sSeparator: '.',
-          sMessage: 'Повинно бути подільним числом та розділене ",".'
+          sMessage: 'Повинно бути числом, яке розділене крапкою "."'
         }
         ,NumberBetween: { //Целочисленное между
           aField_ID: ['numberBetween'],
