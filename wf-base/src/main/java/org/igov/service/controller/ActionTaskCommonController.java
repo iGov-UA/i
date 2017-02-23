@@ -74,7 +74,7 @@ import java.util.*;
 import org.igov.model.action.event.HistoryEventType;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.subject.SubjectAccountDao;
-import org.igov.service.business.action.event.ActionEventHistoryService;
+import org.igov.service.business.action.event.ActionEventService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
@@ -93,7 +93,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Autowired
     private HttpRequester httpRequester;
     @Autowired
-    private ActionEventHistoryService actionEventHistoryService;
+    private ActionEventService actionEventHistoryService;
     @Autowired
     public GeneralConfig generalConfig;
     @Autowired

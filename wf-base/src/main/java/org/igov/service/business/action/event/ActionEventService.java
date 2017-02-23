@@ -19,9 +19,9 @@ import org.slf4j.LoggerFactory;
  * @author Kovilin
  */
 @Service
-public class ActionEventHistoryService {
+public class ActionEventService {
     
-    private static final Logger LOG = LoggerFactory.getLogger(ActionEventHistoryService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActionEventService.class);
     
     @Autowired
     private HistoryEventDao historyEventDao;
@@ -93,6 +93,7 @@ public class ActionEventHistoryService {
         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
         setHistoryEvent(HistoryEventType.getById(nID_HistoryEventType), nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
+        
         return oHistoryEvent_Service;
     }
 }
