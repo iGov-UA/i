@@ -10,6 +10,7 @@ import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
 import org.igov.model.action.task.core.entity.ActionProcessCount;
 import org.igov.model.action.task.core.entity.ActionProcessCountDao;
+import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.model.subject.*;
 import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
@@ -67,7 +68,7 @@ public class ActionEventController implements ControllerConstants {
     @Autowired
     private SubjectHumanDao subjectHumanDao;
     @Autowired
-    private org.igov.service.business.action.event.ActionEventService actionEventHistoryService;
+    private ActionEventHistoryService actionEventHistoryService;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"

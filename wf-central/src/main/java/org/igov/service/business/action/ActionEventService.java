@@ -31,7 +31,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricTaskInstance;
-
+import org.igov.service.business.action.event.ActionEventHistoryService;
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
@@ -62,7 +62,7 @@ public class ActionEventService {
     private HistoryEvent_ServiceDao historyEventServiceDao;
     
     @Autowired
-    private org.igov.service.business.action.event.ActionEventService actionEventHistoryService;
+    private  ActionEventHistoryService actionEventHistoryService;
     
     @Autowired
     private SubjectMessagesDao subjectMessagesDao;
