@@ -97,9 +97,8 @@ module.exports.decryptCallback = function (callback) {
   var self = this;
 
   return function (error, response, body) {
-    if (isCipherEnabled() && body && body.customerCrypto) {
-      body.customer = self.decryptData(body.customerCrypto);
-      delete body.customerCrypto;
+    if (isCipherEnabled() && body && body.customer) {
+      self.decryptData(body.customer);
     }
     callback(error, response, body);
   }
