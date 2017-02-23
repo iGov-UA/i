@@ -164,7 +164,9 @@ public class AttachmetService {
          	if(oDocumentStep.getsKey_Step().equals(sKey_Step)){
          		oFindedDocumentStep = oDocumentStep;
     	        break;
-         	
+    	        }
+    	 }
+    	        LOG.info("List of rights " + oFindedDocumentStep.getRights());
      /*   List<DocumentStep> aDocumentStep = documentStepDao.getRightsByStep(nID_Process, sKey_Step);
         //проверка на уникальность 
         if(aDocumentStep.size()!=1){
@@ -184,7 +186,8 @@ public class AttachmetService {
         		LOG.info("oDocumentStepSubjectRight's Key_GroupPostfix() is "+ oDocumentStepSubjectRight.getsKey_GroupPostfix());
         */
     	      
-    	/*List<DocumentStepSubjectRight> aDocumentStepSubjectRight=oFindedDocumentStep.getRights();
+    /*	List<DocumentStepSubjectRight> aDocumentStepSubjectRight=oFindedDocumentStep.getRights();
+    	
     	for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
         	if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sLogin)){
         		 if(bSigned == true)      
@@ -204,8 +207,8 @@ public class AttachmetService {
     	documentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
     	return oDocumentStepSubjectRight.getsID_File_ForSign();
     	*/
-        	}
-        }
+        	
+        
         	
       	
         return "There is no DocumentStepSubjectRight";
