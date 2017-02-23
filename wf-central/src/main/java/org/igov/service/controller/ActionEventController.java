@@ -39,7 +39,6 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.igov.service.business.action.event.ActionEventHistoryService;
 
 @Controller
 @Api(tags = {"ActionEventController -- События по действиям и статистика"})
@@ -68,7 +67,7 @@ public class ActionEventController implements ControllerConstants {
     @Autowired
     private SubjectHumanDao subjectHumanDao;
     @Autowired
-    private ActionEventHistoryService actionEventHistoryService;
+    private org.igov.service.business.action.event.ActionEventService actionEventHistoryService;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
