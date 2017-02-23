@@ -1535,6 +1535,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String sBody = null;
         Map<String, String> mJsonBody;
         try {
+            LOG.info("Start parse JSONstring: " + sJsonBody);
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
         } catch (Exception e){
             throw new IllegalArgumentException("Error parse JSON sJsonBody in request setTaskQuestions: " + e.getMessage());
