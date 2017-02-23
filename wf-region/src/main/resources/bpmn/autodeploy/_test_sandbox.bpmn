@@ -3,23 +3,25 @@
   <process id="_test_sandbox" name="_test_sandbox" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="email" name="Адреса особистої електронної пошти (e-mail)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Документ №1" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sDocOld" name="sDocOld1" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocNew" name="sDocNew; ;bNew=true" type="file" ></activiti:formProperty>
+        <activiti:formProperty id="sTableFileOld" name="Таблиця з файлом олд; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sDoc&quot;,&quot;name&quot;:&quot;Документ олд&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;20%&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTableFileNew" name="Таблиця з файлом нью; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sDoc&quot;,&quot;name&quot;:&quot;Документ нью; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;20%&quot;}]}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Cassation">
       <extensionElements>
-        <activiti:formProperty id="email" name="Адреса особистої електронної пошти (e-mail)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Документ №1" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocOld" name="sDocOld1" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNew" name="sDocNew; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTableFileOld" name="Таблиця з файлом олд; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sDoc&quot;,&quot;name&quot;:&quot;Документ олд&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;20%&quot;}]}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTableFileNew" name="Таблиця з файлом нью; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sDoc&quot;,&quot;name&quot;:&quot;Документ нью; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;20%&quot;}]}" writable="false"></activiti:formProperty>
+     
         <activiti:formProperty id="sBody_1" name="[pattern/print/_test_sandbox_print.html]" type="invisible" default="Супровідний лист" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/CourtOfCassation_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+  
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="повідомлення громадянина про реєстрацію документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -40,9 +42,9 @@
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
- </activiti:field>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1},${sDoc1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

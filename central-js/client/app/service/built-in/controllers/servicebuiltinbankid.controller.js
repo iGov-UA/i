@@ -329,6 +329,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           }, function (data, error) {
 
             if (data) {
+              var C_DOC_CNT = data.soPatternFilled.match(/<C_DOC_CNT>(.*?)<\/C_DOC_CNT>/);
+              if (C_DOC_CNT !== null && C_DOC_CNT.length == 2) {
+                if('C_DOC_CNT' in $scope.data.formData.params) {
+                  $scope.data.formData.params.C_DOC_CNT.value = C_DOC_CNT[1];
+                }
+              }
               $scope.data.formData.params[taxTemplateFileHandlerConfig.soPatternFilled] = data.soPatternFilled;
 
               angular.extend($scope.data.formData, {
@@ -492,6 +498,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
 
       };
+      $scope.slotsCache = {
+        iGov: {},
+        loadedList: {},
+        showConfirm: false
+      };
 
       $scope.submitForm = function (form, aFormProperties) {
         if (form) {
@@ -500,19 +511,53 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
         $scope.fixForm(form, aFormProperties);
         var aReservedSlotsDMS = [];
+        var aQueueOfIGov = [];
         if (aFormProperties && aFormProperties !== null) {
           angular.forEach(aFormProperties, function (oProperty) {
             if (oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true) {//oProperty.id === attr.sName &&
               $scope.data.formData.params[oProperty.id].value = null;
             }
             if (oProperty.type === 'queueData' && $scope.data.formData.params[oProperty.id].value) {
+              var needSend = true;
               angular.forEach(aFormProperties, function (checkField) {
                 if (checkField.id === ('sID_Type_' + oProperty.id) && checkField.value === 'DMS') {
                   aReservedSlotsDMS.push(oProperty.id);
+                  needSend = false;
                 }
               });
+              if(needSend){
+                aQueueOfIGov.push(oProperty.id);
+              }
             }
           });
+        }
+
+        for(var keySlotField = 0; keySlotField < aQueueOfIGov.length; keySlotField++){
+          var bValid = true;
+          var slot = angular.fromJson(this.data.formData.params[aQueueOfIGov[keySlotField]].value);
+          var cachedSlot = this.slotsCache.iGov[slot.nID_FlowSlotTicket];
+          if(bValid && cachedSlot.nID_SubjectOrganDepartment){
+            bValid = bValid && this.data.formData.params[cachedSlot.sDepartmentField].value === cachedSlot.nID_SubjectOrganDepartment;
+          }
+          if(bValid && cachedSlot.sID_Public_SubjectOrganJoin){
+            bValid = bValid && this.data.formData.params.sID_Public_SubjectOrganJoin.nID === cachedSlot.sID_Public_SubjectOrganJoin;
+          }
+
+          if(!bValid){
+            $scope.slotsCache.showConfirm = true;
+            this.data.formData.params[aQueueOfIGov[keySlotField]].value = null;
+            if(form[aQueueOfIGov[keySlotField]]){
+              form[aQueueOfIGov[keySlotField]].$modelValue = null;
+              form[aQueueOfIGov[keySlotField]].$viewValue = null;
+            }
+            $rootScope.$broadcast("reset-slot-picker");
+            ErrorsFactory.push({
+              type: 'danger',
+              text: 'Під час реєстрації вашого талону в електронній черзі були змінені реєстраційні дані. Будь ласка, повторіть свій вибір.'
+            });
+            $scope.isSending = false;
+            return;
+          }
         }
 
         if (aReservedSlotsDMS.length > 0) {
@@ -904,6 +949,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       // https://github.com/e-government-ua/i/issues/1325
       $scope.getBpAndFieldID = function (field) {
         return this.oServiceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.id;
+      };
+
+      $scope.getFullCellId = function(field, column, row){
+        return this.oServiceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.id + "_--_" + "COL_" + column + "_--_" + "ROW_" + row;
       };
 
       // https://github.com/e-government-ua/i/issues/1326

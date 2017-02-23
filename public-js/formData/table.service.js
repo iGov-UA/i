@@ -44,10 +44,19 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
                                     if (match[2])
                                         item.autocompleteName += match[2];
                                     item.autocompleteData = autocompletesDataFactory[match[1]];
-                                } else if (!match && isExecutorSelect) {
+                                } else if (!match && isExecutorSelect.indexOf('SubjectRole') > -1) {
+                                    var props = isExecutorSelect.split(','), role;
                                     item.type = 'select';
                                     item.selectType = 'autocomplete';
-                                    item.autocompleteName = 'SubjectRole';
+                                    for(var i=0; i<props.length; i++) {
+                                        if(props[i].indexOf('sID_SubjectRole') > -1) {
+                                            role = props[i];
+                                            break;
+                                        }
+                                    }
+                                    var roleValue = role ? role.split('=')[1] : null;
+                                    if(roleValue && roleValue === 'Executor') item.autocompleteName = 'SubjectRole';
+                                    if(roleValue && roleValue === 'ExecutorDepart') item.autocompleteName = 'SubjectRoleDept';
                                     item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
                                 }
                             }
