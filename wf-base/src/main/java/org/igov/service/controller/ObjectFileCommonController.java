@@ -992,6 +992,7 @@ public class ObjectFileCommonController {
         //AttachmentCover oAttachmentCover = new AttachmentCover();
         //return oAttachmentCover.apply(attachment);
     }
+    
     @ApiOperation(value = "setDocumentImage", notes
             = "##### загрузка body-атачмента по новому концепту(PDF)")
     @RequestMapping(value = "/setDocumentImage", method = RequestMethod.POST, produces = "application/json")
@@ -1005,9 +1006,9 @@ public class ObjectFileCommonController {
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
-            @ApiParam(value = "контент файла в виде строки", required = true) @RequestBody String sData,
-            @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
-            @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step, byte[] aContent, List<Map<String, Object>> saAttribute, boolean bSetVariable)
+            @ApiParam(value = "Логин подписанта", required = true) @RequestParam(required = true, value = "sLogin") String sLogin,
+            @ApiParam(value = "Ключ шага документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step,
+            @ApiParam(value = "контент файла в виде строки", required = true) @RequestBody String sData)
             throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException
         {
 
@@ -1027,7 +1028,8 @@ public class ObjectFileCommonController {
         }
 
         if (sData != null && "Mongo".equals(sID_StorageType)) {
-            return attachmetService.setDocumentImage(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, sContentType, saAttribute, aContent, bSetVariable, sKey_Step, sLogin);
+            return attachmetService.setDocumentImage(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
+                    sContentType, aAttribute, sData.getBytes(Charsets.UTF_8), true, sKey_Step, sLogin);
         } else if (sData != null && "Redis".equals(sID_StorageType)) {
             throw new RuntimeException("There is no suitable metod for string data for redis");
         } else {
