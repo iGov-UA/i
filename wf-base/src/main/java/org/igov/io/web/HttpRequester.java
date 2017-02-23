@@ -178,6 +178,17 @@ public class HttpRequester {
             params.put("sID_Order", mParam.remove("sID_Order"));
             params.put("nID_SubjectMessageType", mParam.remove("nID_SubjectMessageType"));
             params.put("sBody", mParam.remove("sBody"));
+
+            params.put("sUserTaskName", mParam.remove("sUserTaskName"));
+            params.put("soData", mParam.remove("soData"));
+            params.put("sToken", mParam.remove("sToken"));
+            params.put("nTimeMinutes", mParam.remove("nTimeMinutes"));
+            params.put("nID_Proccess_Feedback", mParam.remove("nID_Proccess_Feedback"));
+            params.put("nID_Proccess_Escalation", mParam.remove("nID_Proccess_Escalation"));
+            params.put("nID_StatusType", mParam.remove("nID_StatusType"));
+            params.put("sSubjectInfo", mParam.remove("sSubjectInfo"));
+            params.put("nID_Subject", mParam.remove("nID_Subject"));
+
             oURL = new URL(getFullURL(sURL, params));
         }
         InputStream oInputStream;
