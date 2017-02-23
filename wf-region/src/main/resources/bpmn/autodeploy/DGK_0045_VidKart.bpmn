@@ -38,8 +38,8 @@
         <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asLust" name="Оберіть тип поштового відправлення" type="enum" required="true">
-          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 15.78"></activiti:value>
-          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 36.14"></activiti:value>
+          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 18.01"></activiti:value>
+          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 38.38"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
         <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;m1&quot;,&quot;m2&quot;,&quot;m3&quot;,&quot;m4&quot;,&quot;m5&quot;,&quot;m6&quot;,&quot;forma&quot;,&quot;bFlag&quot;,&quot;FlagPost&quot;,&quot;sAddress&quot;,&quot;shapka&quot;,&quot;sShapka&quot;,&quot;sMailClerk_dgk&quot;,&quot;sMailClerk&quot;,&quot;sPhoneOrgan&quot;,&quot;sNameOrgan&quot;,&quot;sWorkTime&quot;,&quot;sID_Payment&quot;,&quot;nID_Subject&quot;,&quot;sID_Merchant&quot;,&quot;sSum&quot;,&quot;sID_Currency&quot;,&quot;sDescription&quot;,&quot;sCountPayment&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
@@ -603,7 +603,7 @@ ${sNameOrgan}&lt;br/&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-По вашому зверненню №[sID_Order] винесено позитевне рішення.&lt;br /&gt;
+По вашому зверненню №[sID_Order] винесено позитивне рішення.&lt;br /&gt;
 Відповідь готова і знаходиться в ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 При замовленні послуги, заповнюючи форму ви обрали доставку поштою.&lt;br /&gt; 
 Для того щоб закінчити процедуру, необхідно протягом 48 годин(2х діб) сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)
@@ -758,15 +758,21 @@ ${sNameOrgan}&lt;br/&gt;
     </userTask>
     <userTask id="usertask5" name="УКРПОШТА" activiti:candidateGroups="UkrPost_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="markersLine_post1" name="Інформація про послугу і орган" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sPosluga_name&quot;],&quot;sValue&quot;:&quot;Інформація про послугу і орган&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу де забрати документи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу де забрати документи" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine__post2" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sIndex" name="Індекс" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine__post3" name="Інформація про поштове відправлення" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sIndex&quot;],&quot;sValue&quot;:&quot;Інформація про поштове відправлення&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sIndex" name="Індекс заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asLust" name="Тип поштового відправлення" type="enum" writable="false">
           <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 17.70"></activiti:value>
