@@ -32,6 +32,7 @@
         <activiti:formProperty id="scan_inn" name="Копія ІПН уповноваженої особи;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
         <activiti:formProperty id="dover" name="Копія документа, який підтверджує повноваження діяти від імені заявника;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
         <activiti:formProperty id="markerEnum" name="markerEnum" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/211_6ZEM.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
@@ -44,6 +45,7 @@
           <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 38.38"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;FlagPost&quot;,&quot;sAddress&quot;,&quot;sMailClerk_dgk&quot;,&quot;sMailClerk&quot;,&quot;sPhoneOrgan&quot;,&quot;sNameOrgan&quot;,&quot;sWorkTime&quot;,&quot;sID_Payment&quot;,&quot;nID_Subject&quot;,&quot;sID_Merchant&quot;,&quot;sSum&quot;,&quot;sID_Currency&quot;,&quot;sDescription&quot;,&quot;sCountPayment&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
@@ -343,7 +345,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markerVidmovaDGK" name="VidmovaDGK" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/VidpovidPost.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markerVidpovidPost" name="VidpovidPost" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/VidpovidPost.json')}"></activiti:formProperty>
         <activiti:formProperty id="decideDGK" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="ДГК задовольнив заяву"></activiti:value>
           <activiti:value id="reject" name="ДГК відмовив у наданні послуги"></activiti:value>
@@ -386,7 +388,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-&lt;p&gt;Ваше звернення [sID_Order] про ${sPosluga_nameZV} опрацьоване. Довідка готова.&lt;br /&gt;
+&lt;p&gt;Ваше звернення [sID_Order] про ${sPosluga_nameZV} опрацьоване. Довідка готова.&lt;/p&gt;
 Ви можете завантажити її з додатку до цього листа, та отримати оригінал за адресою:&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
 ${sWorkTime}.&lt;br /&gt;
@@ -424,7 +426,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-&lt;p&gt;На жаль, для виконати ваш запит не можливо.&lt;/p&gt;
+&lt;p&gt;На жаль, виконати ваш запит [sID_Order] не можливо.&lt;/p&gt;
 Причина відмови:&lt;br&gt;
 &lt;p&gt;${commentDGK}&lt;/p&gt;
 За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
@@ -812,25 +814,6 @@ ${sNameOrgan}&lt;br/&gt;
       </extensionElements>
     </serviceTask>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask7" name="УКРПОШТА" activiti:candidateGroups="UkrPost_${sID_Public_SubjectOrganJoin}">
-      <extensionElements>
-        <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sIndex" name="Індекс" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asLust" name="Тип поштового відправлення" type="enum" writable="false">
-          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 17.70"></activiti:value>
-          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 37.70"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPostIdentif" name="Ідентифікатор внутрішнього поштового відправлення" type="string" required="true"></activiti:formProperty>
-      </extensionElements>
-    </userTask>
     <sequenceFlow id="flow57" sourceRef="parallelgateway1" targetRef="usertask7"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="servicetask15" targetRef="servicetask21"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
@@ -838,7 +821,6 @@ ${sNameOrgan}&lt;br/&gt;
     <userTask id="usertask8" name="ЦНАП Відправка поштою" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="В якому органі забрати документи" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
@@ -861,8 +843,28 @@ ${sNameOrgan}&lt;br/&gt;
         </activiti:formProperty>
       </extensionElements>
     </userTask>
+    <userTask id="usertask7" name="УКРПОШТА" activiti:candidateGroups="UkrPost_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса органу де забрати документи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIndex" name="Індекс" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asLust" name="Тип поштового відправлення" type="enum" writable="false">
+          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 17.70"></activiti:value>
+          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 37.70"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPostIdentif" name="Ідентифікатор внутрішнього поштового відправлення" type="string" required="true"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow63" sourceRef="servicetask21" targetRef="endevent4"></sequenceFlow>
-    <serviceTask id="servicetask22" name="ЦНАП передав лист пошті" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask22" name="ЦНАП передав документи пошті" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1233,7 +1235,7 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdi:waypoint x="651.0" y="717.0"></omgdi:waypoint>
         <omgdi:waypoint x="687.0" y="717.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="77.0" x="463.0" y="673.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="77.0" x="710.0" y="666.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
