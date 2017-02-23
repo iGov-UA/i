@@ -185,45 +185,47 @@ public class ActionEventController implements ControllerConstants {
     // @ApiParam(value = "дата создания таски", required = false) @RequestParam(value = "sDateCreate", required =false) String sDateCreate,
     // @ApiParam(value = "дата закрытия таски", required = false) @RequestParam(value = "sDateClosed", required = false) String sDateClosed
     ) throws CommonServiceException {
-        Map<String, String> mBody;
-        try {
-            mBody = JsonRestUtils.readObject(body, Map.class);
-        } catch (Exception e){
-            throw new IllegalArgumentException("Error parse JSON sJsonBody in request setTaskQuestions: " + e.getMessage());
-        }
-        if(mBody != null){
-            if (mBody.containsKey("sID_Order")) {
-                sID_Order = (String) mBody.get("sID_Order");
+        if(body != null){
+            Map<String, String> mBody;
+            try {
+                mBody = JsonRestUtils.readObject(body, Map.class);
+            } catch (Exception e){
+                throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
             }
-            if (mBody.containsKey("sUserTaskName")) {
-                sUserTaskName = (String) mBody.get("sUserTaskName");
-            }
-            if (mBody.containsKey("soData")) {
-                soData = (String) mBody.get("soData");
-            }
-            if (mBody.containsKey("sToken")) {
-                sToken = (String) mBody.get("sToken");
-            }
-            if (mBody.containsKey("sBody")) {
-                sBody = (String) mBody.get("sBody");
-            }
-            if (mBody.containsKey("nTimeMinutes")) {
-                nTimeMinutes = (String) mBody.get("nTimeMinutes");
-            }
-            if (mBody.containsKey("nID_Proccess_Feedback")) {
-                nID_Proccess_Feedback = Long.getLong((String) mBody.get("nID_Proccess_Feedback"));
-            }
-            if (mBody.containsKey("nID_Proccess_Escalation")) {
-                nID_Proccess_Escalation = Long.getLong((String) mBody.get("nID_Proccess_Escalation"));
-            }
-            if (mBody.containsKey("nID_StatusType")) {
-                nID_StatusType = Long.getLong((String) mBody.get("nID_StatusType"));
-            }
-            if (mBody.containsKey("sSubjectInfo")) {
-                sSubjectInfo = (String) mBody.get("sSubjectInfo");
-            }
-            if (mBody.containsKey("nID_Subject")) {
-                nID_Subject = Long.getLong((String) mBody.get("nID_Subject"));
+            if(mBody != null){
+                if (mBody.containsKey("sID_Order")) {
+                    sID_Order = (String) mBody.get("sID_Order");
+                }
+                if (mBody.containsKey("sUserTaskName")) {
+                    sUserTaskName = (String) mBody.get("sUserTaskName");
+                }
+                if (mBody.containsKey("soData")) {
+                    soData = (String) mBody.get("soData");
+                }
+                if (mBody.containsKey("sToken")) {
+                    sToken = (String) mBody.get("sToken");
+                }
+                if (mBody.containsKey("sBody")) {
+                    sBody = (String) mBody.get("sBody");
+                }
+                if (mBody.containsKey("nTimeMinutes")) {
+                    nTimeMinutes = (String) mBody.get("nTimeMinutes");
+                }
+                if (mBody.containsKey("nID_Proccess_Feedback")) {
+                    nID_Proccess_Feedback = Long.getLong((String) mBody.get("nID_Proccess_Feedback"));
+                }
+                if (mBody.containsKey("nID_Proccess_Escalation")) {
+                    nID_Proccess_Escalation = Long.getLong((String) mBody.get("nID_Proccess_Escalation"));
+                }
+                if (mBody.containsKey("nID_StatusType")) {
+                    nID_StatusType = Long.getLong((String) mBody.get("nID_StatusType"));
+                }
+                if (mBody.containsKey("sSubjectInfo")) {
+                    sSubjectInfo = (String) mBody.get("sSubjectInfo");
+                }
+                if (mBody.containsKey("nID_Subject")) {
+                    nID_Subject = Long.getLong((String) mBody.get("nID_Subject"));
+                }
             }
         }
 
