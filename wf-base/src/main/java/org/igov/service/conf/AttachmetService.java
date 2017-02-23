@@ -171,6 +171,7 @@ public class AttachmetService {
        // пробегаюсь по листу логинов, ищу нужный
         for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
         	if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sLogin)){
+        		LOG.info("oDocumentStepSubjectRight's Key_GroupPostfix() is "+ oDocumentStepSubjectRight.getsKey_GroupPostfix());
         
         		 if(bSigned == true)      
         oDocumentStepSubjectRight.setsDateECP(new DateTime(df.format(new Date())));
