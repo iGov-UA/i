@@ -15,7 +15,7 @@
     <endEvent id="endevent5" name="End"></endEvent>
     <userTask id="usertask6" name="статус 1 (ЮТ с таймером)" activiti:assignee="kermit">
       <extensionElements>
-        <activiti:executionListener event="complete" delegateExpression="${DoWorkOnCloseTaskEvent}"></activiti:executionListener>
+        <activiti:taskListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <intermediateCatchEvent id="timerintermediatecatchevent2" name="TimerCatchEvent">
@@ -28,7 +28,11 @@
     <sequenceFlow id="flow165" sourceRef="exclusivegateway6" targetRef="timerintermediatecatchevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saChangeName == 'no'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask7" name="статус 2 (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
+    <userTask id="usertask7" name="статус 2 (ЮТ без таймера)" activiti:assignee="kermit">
+      <extensionElements>
+        <activiti:taskListener event="complete" delegateExpression="${DoWorkOnCloseTaskEvent}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <userTask id="usertask8" name="статус 3 (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
     <sequenceFlow id="flow168" sourceRef="usertask8" targetRef="endevent5"></sequenceFlow>
     <userTask id="usertask9" name="статус 2 - перед этим был висящий таймер (ЮТ без таймера)" activiti:assignee="kermit"></userTask>
@@ -63,7 +67,7 @@
         <omgdc:Bounds height="71.0" width="121.0" x="191.0" y="21.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="190.0" y="43.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="298.0" y="42.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="248.0" y="154.0"></omgdc:Bounds>
@@ -115,7 +119,7 @@
         <omgdi:waypoint x="191.0" y="56.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow174" id="BPMNEdge_flow174">
-        <omgdi:waypoint x="220.0" y="58.0"></omgdi:waypoint>
+        <omgdi:waypoint x="328.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="420.0" y="56.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
