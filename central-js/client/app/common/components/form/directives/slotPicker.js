@@ -147,20 +147,23 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       }
       function checkParamsOfSlot(slotId){
         var bValid = true;
+        if(!scope.$parent.slotsCache.loadedList[slotId]){
+          return false;
+        }
         bValid = bValid && scope.$parent.slotsCache.loadedList[slotId].nID_Server === scope.serviceData.nID_Server;
-        if(bValid && scope.service && scope.service.nID){
+        if(bValid && scope.service && scope.service.nID && scope.$parent.slotsCache.loadedList[slotId].nID_Service){
           bValid = bValid && scope.service.nID === scope.$parent.slotsCache.loadedList[slotId].nID_Service;
         }
-        if(bValid && scope.formData.params.sID_Public_SubjectOrganJoin && scope.formData.params.sID_Public_SubjectOrganJoin.nID){
+        if(bValid && scope.formData.params.sID_Public_SubjectOrganJoin && scope.formData.params.sID_Public_SubjectOrganJoin.nID && scope.$parent.slotsCache.loadedList[slotId].sID_Public_SubjectOrganJoin){
           bValid = bValid && scope.formData.params.sID_Public_SubjectOrganJoin.nID === scope.$parent.slotsCache.loadedList[slotId].sID_Public_SubjectOrganJoin;
         }
-        if(bValid && scope.formData.params.nID_SubjectOrganDepartment && scope.formData.params.nID_SubjectOrganDepartment.value){
+        if(bValid && scope.formData.params.nID_SubjectOrganDepartment && scope.formData.params.nID_SubjectOrganDepartment.value && scope.$parent.slotsCache.loadedList[slotId].nID_SubjectOrganDepartment){
           bValid = bValid && scope.formData.params.nID_SubjectOrganDepartment.value === scope.$parent.slotsCache.loadedList[slotId].nID_SubjectOrganDepartment;
         }
-        if(bValid && nSlotsParam && nSlotsParam.value){
+        if(bValid && nSlotsParam && nSlotsParam.value && scope.$parent.slotsCache.loadedList[slotId].nSlots){
           bValid = bValid && nSlotsParam.value === scope.$parent.slotsCache.loadedList[slotId].nSlots;
         }
-        if(bValid && nDiffDaysParam && nDiffDaysParam.value){
+        if(bValid && nDiffDaysParam && nDiffDaysParam.value && scope.$parent.slotsCache.loadedList[slotId].nDiffDays){
           bValid = bValid && nDiffDaysParam.value === scope.$parent.slotsCache.loadedList[slotId].nDiffDays;
         }
         return bValid;
@@ -234,8 +237,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 }
               }
               scope.$root.queue.previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID] = departmentParam.value;
-              data.sID_Public_SubjectOrganJoin = scope.formData.params.sID_Public_SubjectOrganJoin.nID;
             }
+            data.sID_Public_SubjectOrganJoin = scope.formData.params.sID_Public_SubjectOrganJoin.nID;
           }
 
           if (departmentParam) {
