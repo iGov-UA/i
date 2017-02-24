@@ -10,6 +10,7 @@ import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
 import org.igov.model.action.task.core.entity.ActionProcessCount;
 import org.igov.model.action.task.core.entity.ActionProcessCountDao;
+import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.model.subject.*;
 import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
@@ -39,7 +40,6 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.igov.service.business.action.event.ActionEventHistoryService;
 
 @Controller
 @Api(tags = {"ActionEventController -- События по действиям и статистика"})

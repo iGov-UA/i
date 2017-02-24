@@ -76,7 +76,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     @Override
     public void addHistoryEvent(String sID_Order, String sUserTaskName, Map<String, String> params)
             throws Exception {
-        LOG.info("addHistoryEvent params", params);
+        LOG.info("addHistoryEvent params {}", params);
         doRemoteRequest(URI_ADD_HISTORY_EVENT, params, sID_Order, sUserTaskName);
     }
 

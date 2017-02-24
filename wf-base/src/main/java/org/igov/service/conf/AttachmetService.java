@@ -154,17 +154,42 @@ public class AttachmetService {
         
     	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         	
-        //написала через criteria метод для получения oDocumentStep
-        List<DocumentStep> oDocumentStep = documentStepDao.getRightsByStep(nID_Process, sKey_Step);
+    	List<DocumentStep> aDocumentStep = documentStepDao.getStepForProcess(nID_Process);
+    	LOG.info("The size of list"+ aDocumentStep.size() );
+    	LOG.info("Result list of steps: {}", aDocumentStep);
+    	
+    	DocumentStep oFindedDocumentStep = null;
+    	 
+    	 for(DocumentStep oDocumentStep: aDocumentStep){
+         	if(oDocumentStep.getsKey_Step().equals(sKey_Step)){
+         		oFindedDocumentStep = oDocumentStep;
+    	        break;
+    	        }
+    	 }
+    	        LOG.info("List of rights " + oFindedDocumentStep.getRights());
+     /*   List<DocumentStep> aDocumentStep = documentStepDao.getRightsByStep(nID_Process, sKey_Step);
         //проверка на уникальность 
-        if(oDocumentStep.size()!=1){
-        	LOG.info("oDocumentStep is not unique " + oDocumentStep.size());}
+        if(aDocumentStep.size()!=1){
+        	LOG.info("aDocumentStep is not unique " + aDocumentStep.size());}
                 //получаю список логинов        
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.get(0).getRights();
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStep.get(0).getRights();
+        aDocumentStep.get(0).getRights();
+        LOG.info("Result list of steps: {}", aDocumentStep);
+        aDocumentStep.get(0).getnOrder();
+        aDocumentStep.get(0).getsKey_Step();
+        LOG.info("sKey_Step is " + sKey_Step);
+        aDocumentStep.get(0).getSnID_Process_Activiti();
+        LOG.info("nID_Process is " + nID_Process);
        // пробегаюсь по листу логинов, ищу нужный
         for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
-        	if(oDocumentStepSubjectRight.getsLogin().equals(sLogin)){
-        
+        	if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sLogin)){
+        		LOG.info("oDocumentStepSubjectRight's Key_GroupPostfix() is "+ oDocumentStepSubjectRight.getsKey_GroupPostfix());
+        */
+    	      
+    /*	List<DocumentStepSubjectRight> aDocumentStepSubjectRight=oFindedDocumentStep.getRights();
+    	
+    	for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
+        	if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sLogin)){
         		 if(bSigned == true)      
         oDocumentStepSubjectRight.setsDateECP(new DateTime(df.format(new Date())));
         		 
@@ -181,9 +206,9 @@ public class AttachmetService {
     	oDocumentStepSubjectRight.setsID_File_ForSign(sKey);
     	documentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
     	return oDocumentStepSubjectRight.getsID_File_ForSign();
-    	
-        	}
-        }
+    	*/
+        	
+        
         	
       	
         return "There is no DocumentStepSubjectRight";

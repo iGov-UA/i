@@ -58,9 +58,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     private boolean bFinish = false;
     private static final String FORM_FORM_DATA = "/form/form-data";
+    private static final String DOCUMENT_SERVICE = "/action/task/setDocument";
     private static final String RUNTIME_TASKS = "/runtime/tasks";
     private static final String POST = "POST";
     private static final String PUT = "PUT";
+    private static final String GET = "GET";
  
 
     @Autowired
@@ -212,7 +214,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             LOG.info("oRequest.getRequestURL: " + oRequest.getRequestURL().toString());
             LOG.info("sResponseBody before SaveTask: " + sResponseBody);
             
-            if (isSaveTask(oRequest, sResponseBody)) {
+            if (isSaveTask(oRequest, sResponseBody)||isDocumentService(oRequest, sResponseBody)) {
                 sType = "Save";
                 LOG.info("saveNewTaskInfo block started");
                 if (oResponse.getStatus() < 200 || oResponse.getStatus() >= 300 
@@ -517,6 +519,18 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         return (bFinish && sResponseBody != null && !"".equals(sResponseBody))
                 && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim());
+    }
+    
+    private boolean isDocumentService(HttpServletRequest oRequest, String sResponseBody) {
+        boolean isNewDocument = (bFinish && sResponseBody != null && !"".equals(sResponseBody))
+                && oRequest.getRequestURL().toString().indexOf(DOCUMENT_SERVICE) > 0
+                && GET.equalsIgnoreCase(oRequest.getMethod().trim());
+        
+        if(isNewDocument){
+            LOG.info("We catch document in requestProcessingInterceptor! Yippie-Kai-Yay!");
+        }
+        
+        return isNewDocument;
     }
 
     protected void closeEscalationProcessIfExists(String sID_Process) {
