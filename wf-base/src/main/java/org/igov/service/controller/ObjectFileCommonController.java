@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.identity.Group;
 import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.Task;
 import org.apache.commons.io.IOUtils;
@@ -54,8 +55,10 @@ import java.util.ArrayList;
 import static java.util.Arrays.stream;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import org.igov.io.fs.FileSystemData;
 
@@ -1011,7 +1014,12 @@ public class ObjectFileCommonController {
             @ApiParam(value = "контент файла в виде строки", required = true) @RequestBody String sData)
             throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException
         {
-
+    	List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
+        Set<String> asID_Group = new HashSet<>();
+        if (aGroup != null) {
+            aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
+        }
+        LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
         LOG.info("setAttachment nID_Process: " + nID_Process);
         LOG.info("setAttachment bSigned: " + bSigned);
         LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
