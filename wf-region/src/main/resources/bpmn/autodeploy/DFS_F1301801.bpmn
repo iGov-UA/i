@@ -104,7 +104,7 @@
             <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sFile_XML_SWinEd_Filter">
-            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
+            <activiti:expression><![CDATA[${sFileName_XML_SWinEd_Answer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -127,12 +127,12 @@
     </intermediateCatchEvent>
     <sequenceFlow id="flow14" sourceRef="timerintermediatecatchevent1" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <boundaryEvent id="boundarytimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
       <timerEventDefinition>
         <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow18" sourceRef="boundarytimer2" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="escalationTimer1" targetRef="exclusivegateway1"></sequenceFlow>
     <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -170,7 +170,7 @@ execution.setVariable('sCounter', src)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 15}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Негативна відповідь" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Негативна відповідь" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -193,9 +193,12 @@ execution.setVariable('sCounter', src)</script>
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${anID_Attach_Dfs}]]></activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="servicetask4">
+    <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter == 15}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent3" name="End">
@@ -207,6 +210,31 @@ execution.setVariable('sCounter', src)</script>
     <sequenceFlow id="flow25" sourceRef="exclusivegateway1" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'true'}]]></conditionExpression>
     </sequenceFlow>
+    <userTask id="usertask3" name="User Task">
+      <extensionElements>
+        <activiti:formProperty id="result" name="Результат" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="anID_Attach_Dfs" name="Файл с ответом" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}">
+          <activiti:field name="sINN">
+            <activiti:expression><![CDATA[${bankIdinn}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="snCountYear">
+            <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <boundaryEvent id="boundarytimer2" name="Timer" attachedToRef="usertask3" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow26" sourceRef="boundarytimer2" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_DFS_F1301801">
     <bpmndi:BPMNPlane bpmnElement="DFS_F1301801" id="BPMNPlane_DFS_F1301801">
@@ -228,7 +256,7 @@ execution.setVariable('sCounter', src)</script>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="295.0" y="218.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundarytimer2" id="BPMNShape_boundarytimer2">
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
         <omgdc:Bounds height="30.0" width="30.0" x="360.0" y="240.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
@@ -244,10 +272,16 @@ execution.setVariable('sCounter', src)</script>
         <omgdc:Bounds height="55.0" width="105.0" x="384.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="170.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="692.0" y="170.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="810.0" y="180.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="844.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer2" id="BPMNShape_boundarytimer2">
+        <omgdc:Bounds height="30.0" width="30.0" x="580.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="755.0" y="57.0"></omgdi:waypoint>
@@ -285,15 +319,20 @@ execution.setVariable('sCounter', src)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="458.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="702.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="170.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="755.0" y="197.0"></omgdi:waypoint>
-        <omgdi:waypoint x="810.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="797.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="844.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="438.0" y="126.0"></omgdi:waypoint>
-        <omgdi:waypoint x="702.0" y="91.0"></omgdi:waypoint>
+        <omgdi:waypoint x="511.0" y="62.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="610.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="692.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
