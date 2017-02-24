@@ -63,6 +63,14 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     }
 
     @Override
+    public String updateHistoryEvent(String sID_Order, Map<String, Object> bodyForRequestPOST)  throws Exception {
+        String soResponse = "";
+        //ToDo https://github.com/e-government-ua/i/issues/1517
+        //soResponse = httpRequester.postInside("", bodyForRequestPOST);
+        return soResponse;
+    }
+
+    @Override
     public String updateHistoryEvent(String sID_order, HistoryEvent_Service_StatusType statusType,
             Map<String, String> mParam) throws Exception {
         if (mParam == null) {

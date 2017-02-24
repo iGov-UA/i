@@ -1461,21 +1461,27 @@ public class ActionTaskService {
     public String updateHistoryEvent_Service(HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType, String sID_Order,
             String saField, String sBody, String sToken, String sUserTaskName,String sSubjectInfo, Long nID_Subject
         ) throws Exception {
+        try{
+            Map<String, String> mParam = new HashMap<>();
+            //params.put("sID_Order", sID_Order);
+            //Long nID_StatusType
+            mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
+            mParam.put("soData", saField);
+            //params.put("sHead", sHead);
+            mParam.put("sBody", sBody);
+            mParam.put("sToken", sToken);
+            mParam.put("sSubjectInfo",sSubjectInfo);
+            if(nID_Subject != null){
+                mParam.put("snID_Subject",nID_Subject+"");
+            }
+            //params.put("sUserTaskName", sUserTaskName);
+            return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, oHistoryEvent_Service_StatusType, mParam);
+        }catch (Exception e){
+            Map<String, Object> mBody = new HashMap<>();
 
-        Map<String, String> mParam = new HashMap<>();
-        //params.put("sID_Order", sID_Order);
-        //Long nID_StatusType
-        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
-        mParam.put("soData", saField);
-        //params.put("sHead", sHead);
-        mParam.put("sBody", sBody);
-        mParam.put("sToken", sToken);
-        mParam.put("sSubjectInfo",sSubjectInfo);
-        if(nID_Subject != null){
-        mParam.put("snID_Subject",nID_Subject+"");
+            return oHistoryEventService.updateHistoryEvent(sID_Order, mBody);
+
         }
-        //params.put("sUserTaskName", sUserTaskName);
-        return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, oHistoryEvent_Service_StatusType, mParam);
     }
     
     public List<Task> getTasksForChecking(String sLogin,
