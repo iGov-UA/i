@@ -63,10 +63,28 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     }
 
     @Override
-    public String updateHistoryEvent(String sID_Order, Map<String, Object> bodyForRequestPOST)  throws Exception {
+    public String updateHistoryEvent(Map<String, String> params, Map<String, Object> body)  throws Exception {
         String soResponse = "";
-        //ToDo https://github.com/e-government-ua/i/issues/1517
-        //soResponse = httpRequester.postInside("", bodyForRequestPOST);
+        if (params == null) {
+            params = new HashMap<>();
+        }
+        String sAccessKey_HistoryEvent = accessDataDao.setAccessData(
+                httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params));
+        params.put("sAccessKey", sAccessKey_HistoryEvent);
+        params.put("sAccessContract", "Request");
+
+        if (!generalConfig.getSelfHostCentral().contains("ksds.nads.gov.ua") && !generalConfig.getSelfHostCentral().contains("staff.igov.org.ua")) {
+            String sURL = generalConfig.getSelfHostCentral() + httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params);
+            LOG.info("START POST Request updateHistoryEvent (sURL={}, body={})", sURL, body);
+            try {
+                soResponse = httpRequester.postInside(sURL, body);
+                LOG.info("(FINISH POST Request updateHistoryEvent soResponse={})", soResponse);
+            } catch (Exception e){
+                LOG.error("REJECTED POST Request updateHistoryEvent soResponse={})", soResponse);
+                throw new Exception(e.getMessage());
+            }
+        }
+
         return soResponse;
     }
 

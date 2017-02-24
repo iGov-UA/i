@@ -8,7 +8,7 @@ public interface HistoryEventService {
 
     String updateHistoryEvent(String sID_Order,String sUserTaskName, boolean addAccessKey, HistoryEvent_Service_StatusType nID_StatusType, Map<String, String> params) throws Exception;
 
-    String updateHistoryEvent(String sID_Order, Map<String, Object> bodyForRequestPOST) throws Exception;
+    String updateHistoryEvent(Map<String, String> mParams, Map<String, Object> bodyForRequestPOST) throws Exception;
 
     String updateHistoryEvent(String sID_order, HistoryEvent_Service_StatusType statusType, Map<String, String> mParam) throws Exception;
 

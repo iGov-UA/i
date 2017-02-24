@@ -1465,21 +1465,35 @@ public class ActionTaskService {
             Map<String, String> mParam = new HashMap<>();
             //params.put("sID_Order", sID_Order);
             //Long nID_StatusType
-            mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
+            //mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
             mParam.put("soData", saField);
             //params.put("sHead", sHead);
             mParam.put("sBody", sBody);
             mParam.put("sToken", sToken);
             mParam.put("sSubjectInfo",sSubjectInfo);
             if(nID_Subject != null){
-                mParam.put("snID_Subject",nID_Subject+"");
+                mParam.put("nID_Subject",nID_Subject+"");
             }
             //params.put("sUserTaskName", sUserTaskName);
             return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, oHistoryEvent_Service_StatusType, mParam);
         }catch (Exception e){
             Map<String, Object> mBody = new HashMap<>();
+            Map<String, String> mParam = new HashMap<>();
+            mBody.put("sID_Order", sID_Order);
+            mBody.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
+            mBody.put("soData", saField);
+            mBody.put("sBody", sBody);
+            mBody.put("sSubjectInfo",sSubjectInfo);
+            if(nID_Subject != null){
+                mBody.put("nID_Subject",nID_Subject);
+            }
+            if (sUserTaskName != null) {
+                mBody.put("sUserTaskName", sUserTaskName);
+            }
 
-            return oHistoryEventService.updateHistoryEvent(sID_Order, mBody);
+            mParam.put("sToken", sToken);
+            
+            return oHistoryEventService.updateHistoryEvent(mParam, mBody);
 
         }
     }
