@@ -3,7 +3,6 @@ package org.igov.service.controller;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
@@ -18,7 +17,6 @@ import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
-import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -191,7 +189,8 @@ public class ActionEventController implements ControllerConstants {
             try {
                 String sReqBody = URLDecoder.decode(body, "UTF-8");
                 LOG.info("Start parse JSON body = " + sReqBody);
-                mBody = JsonRestUtils.readObject(StringEscapeUtils.escapeJson(body), Map.class);
+                //mBody = JsonRestUtils.readObject(StringEscapeUtils.escapeJson(body), Map.class);
+                mBody = (Map<String, Object>) JSONValue.parse(body);
             } catch (Exception e){
                 throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
             }
