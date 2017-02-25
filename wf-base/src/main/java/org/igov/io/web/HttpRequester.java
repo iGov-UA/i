@@ -1,7 +1,10 @@
 package org.igov.io.web;
 
-import org.igov.io.Log;
+import groovy.json.StringEscapeUtils;
+import org.activiti.engine.impl.util.json.JSONObject;
+import org.apache.commons.io.IOUtils;
 import org.igov.io.GeneralConfig;
+import org.igov.io.Log;
 import org.igov.util.ToolWeb;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import groovy.json.StringEscapeUtils;
-
+import javax.net.ssl.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -22,16 +24,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import org.activiti.engine.impl.util.json.JSONObject;
-import org.apache.commons.io.IOUtils;
 
 import static org.igov.util.Tool.sCut;
 
@@ -96,7 +88,7 @@ public class HttpRequester {
             if(contentType != null){
                 oConnection.setRequestProperty("Content-Type", contentType);
             } else{
-                oConnection.setRequestProperty("Content-Type", "text/plain");
+                oConnection.setRequestProperty("Content-Type", "text/plain;charset=utf-8");
             }
             
             oConnection.setDoOutput(true);
