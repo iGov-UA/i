@@ -1461,7 +1461,7 @@ public class ActionTaskService {
     public String updateHistoryEvent_Service(HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType, String sID_Order,
             String saField, String sBody, String sToken, String sUserTaskName,String sSubjectInfo, Long nID_Subject
         ) throws Exception {
-        try{
+        /*try{
             Map<String, String> mParam = new HashMap<>();
             //params.put("sID_Order", sID_Order);
             //Long nID_StatusType
@@ -1476,7 +1476,7 @@ public class ActionTaskService {
             }
             //params.put("sUserTaskName", sUserTaskName);
             return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, oHistoryEvent_Service_StatusType, mParam);
-        }catch (Exception e){
+        }catch (Exception e){*/
             Map<String, Object> mBody = new HashMap<>();
             Map<String, String> mParam = new HashMap<>();
             mBody.put("sID_Order", sID_Order);
@@ -1495,7 +1495,7 @@ public class ActionTaskService {
 
             return oHistoryEventService.updateHistoryEvent(mParam, mBody);
 
-        }
+        //}
     }
     
     public List<Task> getTasksForChecking(String sLogin,
