@@ -1465,7 +1465,7 @@ public class ActionTaskService {
             Map<String, String> mParam = new HashMap<>();
             //params.put("sID_Order", sID_Order);
             //Long nID_StatusType
-            //mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
+            mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
             mParam.put("soData", saField);
             //params.put("sHead", sHead);
             mParam.put("sBody", sBody);
@@ -1480,7 +1480,7 @@ public class ActionTaskService {
             Map<String, Object> mBody = new HashMap<>();
             Map<String, String> mParam = new HashMap<>();
             mBody.put("sID_Order", sID_Order);
-            mBody.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
+            mBody.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID());
             mBody.put("soData", saField);
             mBody.put("sBody", sBody);
             mBody.put("sSubjectInfo",sSubjectInfo);
@@ -1492,7 +1492,7 @@ public class ActionTaskService {
             }
 
             mParam.put("sToken", sToken);
-            
+
             return oHistoryEventService.updateHistoryEvent(mParam, mBody);
 
         }

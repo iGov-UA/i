@@ -186,7 +186,7 @@ public class ActionEventController implements ControllerConstants {
     // @ApiParam(value = "дата закрытия таски", required = false) @RequestParam(value = "sDateClosed", required = false) String sDateClosed
     ) throws CommonServiceException {
         if(body != null){
-            Map<String, String> mBody;
+            Map<String, Object> mBody;
             try {
                 mBody = JsonRestUtils.readObject(body, Map.class);
             } catch (Exception e){
@@ -212,19 +212,19 @@ public class ActionEventController implements ControllerConstants {
                     nTimeMinutes = (String) mBody.get("nTimeMinutes");
                 }
                 if (mBody.containsKey("nID_Proccess_Feedback")) {
-                    nID_Proccess_Feedback = Long.getLong((String) mBody.get("nID_Proccess_Feedback"));
+                    nID_Proccess_Feedback = (Long) mBody.get("nID_Proccess_Feedback");
                 }
                 if (mBody.containsKey("nID_Proccess_Escalation")) {
-                    nID_Proccess_Escalation = Long.getLong((String) mBody.get("nID_Proccess_Escalation"));
+                    nID_Proccess_Escalation = (Long) mBody.get("nID_Proccess_Escalation");
                 }
                 if (mBody.containsKey("nID_StatusType")) {
-                    nID_StatusType = Long.getLong((String) mBody.get("nID_StatusType"));
+                    nID_StatusType = (Long) mBody.get("nID_StatusType");
                 }
                 if (mBody.containsKey("sSubjectInfo")) {
                     sSubjectInfo = (String) mBody.get("sSubjectInfo");
                 }
                 if (mBody.containsKey("nID_Subject")) {
-                    nID_Subject = Long.getLong((String) mBody.get("nID_Subject"));
+                    nID_Subject = (Long) mBody.get("nID_Subject");
                 }
             }
         }
