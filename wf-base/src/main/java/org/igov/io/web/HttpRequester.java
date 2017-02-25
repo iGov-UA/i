@@ -88,7 +88,7 @@ public class HttpRequester {
             if(contentType != null){
                 oConnection.setRequestProperty("Content-Type", contentType);
             } else{
-                oConnection.setRequestProperty("Content-Type", "text/plain;charset=utf-8");
+                oConnection.setRequestProperty("Content-Type", "text/plain");
             }
             
             oConnection.setDoOutput(true);

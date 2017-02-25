@@ -78,7 +78,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
             String sURL = generalConfig.getSelfHostCentral() + httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params);
             LOG.info("START POST Request updateHistoryEvent (sURL={}, body={})", sURL, body);
             try {
-                soResponse = httpRequester.postInside(sURL, null, JSONValue.toJSONString(body), null);
+                soResponse = httpRequester.postInside(sURL, null, JSONValue.toJSONString(body), "text/html; charset=utf-8");
                 LOG.info("(FINISH POST Request updateHistoryEvent soResponse={})", soResponse);
             } catch (Exception e){
                 LOG.error("REJECTED POST Request updateHistoryEvent soResponse={})", soResponse);
