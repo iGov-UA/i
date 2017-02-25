@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,7 +79,9 @@ public class HistoryEventServiceImpl implements HistoryEventService {
             String sURL = generalConfig.getSelfHostCentral() + httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params);
             LOG.info("START POST Request updateHistoryEvent (sURL={}, body={})", sURL, body);
             try {
-                soResponse = httpRequester.postInside(sURL, null, JSONValue.toJSONString(body), "text/html;charset=utf-8");
+                String json = JSONValue.toJSONString(body);
+                String reqBody = URLEncoder.encode(json, "UTF-8");
+                soResponse = httpRequester.postInside(sURL, null, reqBody, "text/html;charset=utf-8");
                 LOG.info("(FINISH POST Request updateHistoryEvent soResponse={})", soResponse);
             } catch (Exception e){
                 LOG.error("REJECTED POST Request updateHistoryEvent soResponse={})", soResponse);
