@@ -735,22 +735,22 @@ public class ObjectFileCommonController {
 
         //mField.get("C_DOC_CNT").trim()
         Integer nCountYear = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, "AlienBP_" + sID_Pattern, null);//Long.valueOf(snID_Service)
-        String snCountYear = nCountYear + "";
-        LOG.info("snCountYear(before)=", snCountYear);
+        LOG.info("snCountYear(before)=" + nCountYear);
+        String snCountYear = String.valueOf(nCountYear);
         if (nCountYear != null && nCountYear > 0) {
             Integer nDigits = 7;
             if (snCountYear.length() < nDigits) {
                 snCountYear = "0000000".substring(0, nDigits - snCountYear.length()) + snCountYear;
-                LOG.info("snCountYear(after)=", snCountYear);
+                LOG.info("snCountYear(after)=" + snCountYear);
             }
             mField.put("C_DOC_CNT", snCountYear);
         }
-
         LOG.info("mField: " + mField);
         File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, sID_Pattern + ".xml");
         String sContentReturn = Files.toString(oFile, Charset.defaultCharset());
         LOG.info("Created document with customer info: {}", sContentReturn);
         String sRegex, sReplacement;
+
         for (Map.Entry<String, String> oField : mField.entrySet()) {
             sRegex = "<" + oField.getKey().trim().toUpperCase() + ">";
             if (oField.getValue() != null) {
@@ -763,6 +763,8 @@ public class ObjectFileCommonController {
         LOG.info("sContentReturn: " + sContentReturn);
         mReturn.put("soPatternFilled", sContentReturn.replaceAll(System.getProperty("line.separator"), ""));
         mReturn.put("sFileName", buildFileName(mField));
+        mReturn.put("C_DOC_CNT", snCountYear);
+        //httpResponse.setContentType("application/json;charset=windows-1251");
         return mReturn;
     }
 
