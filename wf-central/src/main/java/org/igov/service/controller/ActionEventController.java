@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -188,8 +189,9 @@ public class ActionEventController implements ControllerConstants {
         if(body != null){
             Map<String, Object> mBody;
             try {
-                LOG.debug("Start parse JSON body = " + body);
-                mBody = JsonRestUtils.readObject(body, Map.class);
+                String sReqBody = URLDecoder.decode(body, "UTF-8");
+                LOG.info("Start parse JSON body = " + sReqBody);
+                mBody = JsonRestUtils.readObject(sReqBody, Map.class);
             } catch (Exception e){
                 throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
             }
