@@ -1,5 +1,6 @@
 package org.igov.service.business.action.event;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
@@ -78,7 +79,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
             String sURL = generalConfig.getSelfHostCentral() + httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params);
             LOG.info("START POST Request updateHistoryEvent (sURL={}, body={})", sURL, body);
             try {
-                soResponse = httpRequester.postInside(sURL, null, JSONValue.toJSONString(body), null);
+                soResponse = httpRequester.postInside(sURL, null, StringEscapeUtils.escapeJson(JSONValue.toJSONString(body)), null);
                 LOG.info("(FINISH POST Request updateHistoryEvent soResponse={})", soResponse);
             } catch (Exception e){
                 LOG.error("REJECTED POST Request updateHistoryEvent soResponse={})", soResponse);
