@@ -2,7 +2,9 @@ package org.igov.service.business.action.event;
 
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.service.business.access.AccessDataService;
+import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 
 @Service
 public class HistoryEventServiceImpl implements HistoryEventService {
@@ -77,7 +78,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
             String sURL = generalConfig.getSelfHostCentral() + httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params);
             LOG.info("START POST Request updateHistoryEvent (sURL={}, body={})", sURL, body);
             try {
-                soResponse = httpRequester.postInside(sURL, body);
+                soResponse = httpRequester.postInside(sURL, null, JSONValue.toJSONString(body), null);
                 LOG.info("(FINISH POST Request updateHistoryEvent soResponse={})", soResponse);
             } catch (Exception e){
                 LOG.error("REJECTED POST Request updateHistoryEvent soResponse={})", soResponse);
