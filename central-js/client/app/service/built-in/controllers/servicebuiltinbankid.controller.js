@@ -329,6 +329,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           }, function (data, error) {
 
             if (data) {
+              var C_DOC_CNT = data.soPatternFilled.match(/<C_DOC_CNT>(.*?)<\/C_DOC_CNT>/);
+              if (C_DOC_CNT !== null && C_DOC_CNT.length == 2) {
+                if('C_DOC_CNT' in $scope.data.formData.params) {
+                  $scope.data.formData.params.C_DOC_CNT.value = C_DOC_CNT[1];
+                }
+              }
               $scope.data.formData.params[taxTemplateFileHandlerConfig.soPatternFilled] = data.soPatternFilled;
 
               angular.extend($scope.data.formData, {
