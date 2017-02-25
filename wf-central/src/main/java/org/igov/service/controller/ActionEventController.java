@@ -3,18 +3,18 @@ package org.igov.service.controller;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.igov.io.GeneralConfig;
-import org.igov.io.Log;
 import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
 import org.igov.model.action.task.core.entity.ActionProcessCount;
 import org.igov.model.action.task.core.entity.ActionProcessCountDao;
-import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.model.subject.*;
 import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
 import org.igov.service.business.action.ActionEventService;
+import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
@@ -191,7 +191,7 @@ public class ActionEventController implements ControllerConstants {
             try {
                 String sReqBody = URLDecoder.decode(body, "UTF-8");
                 LOG.info("Start parse JSON body = " + sReqBody);
-                mBody = JsonRestUtils.readObject(sReqBody, Map.class);
+                mBody = JsonRestUtils.readObject(StringEscapeUtils.escapeJson(body), Map.class);
             } catch (Exception e){
                 throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
             }
