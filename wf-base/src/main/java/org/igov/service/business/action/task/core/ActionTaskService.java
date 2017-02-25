@@ -1479,15 +1479,15 @@ public class ActionTaskService {
         }catch (Exception e){*/
             Map<String, Object> mBody = new HashMap<>();
             Map<String, String> mParam = new HashMap<>();
-            mBody.put("sID_Order", sID_Order);
+            mParam.put("sID_Order", sID_Order);
             mBody.put("soData", saField);
             mBody.put("sBody", sBody);
-            mBody.put("sSubjectInfo",sSubjectInfo);
+            mParam.put("sSubjectInfo",sSubjectInfo);
             if(nID_Subject != null){
-                mBody.put("nID_Subject",nID_Subject);
+                mParam.put("nID_Subject",nID_Subject+"");
             }
             if (sUserTaskName != null) {
-                mBody.put("sUserTaskName", sUserTaskName);
+                mParam.put("sUserTaskName", sUserTaskName);
             }
 
             mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");

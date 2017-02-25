@@ -188,6 +188,7 @@ public class ActionEventController implements ControllerConstants {
         if(body != null){
             Map<String, Object> mBody;
             try {
+                LOG.debug("Start parse JSON body = " + body);
                 mBody = JsonRestUtils.readObject(body, Map.class);
             } catch (Exception e){
                 throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
