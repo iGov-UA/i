@@ -9,6 +9,7 @@ import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
 import static org.igov.util.Tool.sO;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -1480,8 +1481,8 @@ public class ActionTaskService {
             Map<String, Object> mBody = new HashMap<>();
             Map<String, String> mParam = new HashMap<>();
             mParam.put("sID_Order", sID_Order);
-            mBody.put("soData", saField);
-            mBody.put("sBody", sBody);
+            mBody.put("soData", URLEncoder.encode(saField, "UTF-8"));
+            mBody.put("sBody", URLEncoder.encode(sBody, "UTF-8"));
             mParam.put("sSubjectInfo",sSubjectInfo);
             if(nID_Subject != null){
                 mParam.put("nID_Subject",nID_Subject+"");
