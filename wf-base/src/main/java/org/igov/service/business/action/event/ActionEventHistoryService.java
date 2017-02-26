@@ -140,51 +140,32 @@ public class ActionEventHistoryService {
         Long nID_Order = Long.valueOf(sID_Order.substring(dash_position + 1));
         Long nID_Process = ToolLuna.getOriginalNumber(nID_Order);
         
-        HistoryEvent_Service oHistoryEvent_Service = null;
-        
-        if(saveHistoryEventService){
-            LOG.info("save HistoryEvent_Service started...");
-            oHistoryEvent_Service = new HistoryEvent_Service();
-            oHistoryEvent_Service.setnID_Process(nID_Process);
-            oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
-            oHistoryEvent_Service.setnID_StatusType(nID_StatusType);
-            oHistoryEvent_Service.setnID_Subject(nID_Subject);
-            oHistoryEvent_Service.setnID_Region(nID_Region);
-            oHistoryEvent_Service.setnID_Service(nID_Service);
-            oHistoryEvent_Service.setnID_ServiceData(nID_ServiceData);
-            oHistoryEvent_Service.setsID_UA(sID_UA);
-            oHistoryEvent_Service.setnRate(null);
-            oHistoryEvent_Service.setSoData(soData);
-            oHistoryEvent_Service.setsToken(sToken);
-            oHistoryEvent_Service.setsHead(sHead);
-            oHistoryEvent_Service.setsBody(sBody);
-            oHistoryEvent_Service.setnID_Server(nID_Server);
-            oHistoryEvent_Service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
-            oHistoryEvent_Service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
-            oHistoryEvent_Service = historyEventServiceDao.addHistoryEvent_Service(oHistoryEvent_Service);
-        }
-        
-        if(saveHistoryEvent){
-            LOG.info("save HistoryEvent started...");
-            Map<String, String> mParamMessage = new HashMap<>();
-            mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
-            mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
-            
-            if(oHistoryEvent_Service == null)
-            {
-                try {
-                    oHistoryEvent_Service = getHistoryEventService(sID_Order);
-                } catch (CRCInvalidException|CommonServiceException e) {
-                    LOG.info("can't get HistoryEvent_Service entity: {} ", e);
-                }
-            }
-            
-            if(oHistoryEvent_Service != null)
-            {
-                setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
-            }
-        }
-        
+        HistoryEvent_Service oHistoryEvent_Service = new HistoryEvent_Service();
+        oHistoryEvent_Service.setnID_Process(nID_Process);
+        oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
+        oHistoryEvent_Service.setnID_StatusType(nID_StatusType);
+        oHistoryEvent_Service.setnID_Subject(nID_Subject);
+        oHistoryEvent_Service.setnID_Region(nID_Region);
+        oHistoryEvent_Service.setnID_Service(nID_Service);
+        oHistoryEvent_Service.setnID_ServiceData(nID_ServiceData);
+        oHistoryEvent_Service.setsID_UA(sID_UA);
+        oHistoryEvent_Service.setnRate(null);
+        oHistoryEvent_Service.setSoData(soData);
+        oHistoryEvent_Service.setsToken(sToken);
+         //if(sHead==null){
+         //    sHead = sProcessInstanceName;
+         //}
+         oHistoryEvent_Service.setsHead(sHead);
+         oHistoryEvent_Service.setsBody(sBody);
+         oHistoryEvent_Service.setnID_Server(nID_Server);
+         oHistoryEvent_Service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
+         oHistoryEvent_Service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
+         oHistoryEvent_Service = historyEventServiceDao.addHistoryEvent_Service(oHistoryEvent_Service);
+         Map<String, String> mParamMessage = new HashMap<>();
+         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
+         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
+         setHistoryEvent(HistoryEventType.getById(nID_HistoryEventType), nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
+       
         return oHistoryEvent_Service;
     }
 }
