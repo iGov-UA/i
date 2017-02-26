@@ -384,8 +384,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             if(omRequestBody != null){
                 sendMailTo(omRequestBody, sID_Order, snID_Subject, snID_Service, oProcessDefinition);
             }
-            //historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
-            oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
+            historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
+            //oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
             LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
             if (oProcessDefinition.getKey().startsWith("_doc_") || DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())) {
                 //Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
