@@ -37,7 +37,6 @@ import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.escalation.EscalationHistoryService;
 import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -86,8 +85,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private EscalationHistoryService escalationHistoryService;
     @Autowired
     private CloseTaskEvent closeTaskEvent;
-    @Autowired
-    ActionEventHistoryService oActionEventHistoryService;
 
     private JSONParser oJSONParser = new JSONParser();
 
@@ -126,7 +123,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             throws IOException, TaskAlreadyUnboundException {
         LOG.info("Method 'protocolize' started");
         int nLen = generalConfig.isSelfTest() ? 300 : 200;
-        
+
         Map<String, String> mRequestParam = new HashMap<>();
         Enumeration<String> paramsName = oRequest.getParameterNames();
         while (paramsName.hasMoreElements()) {
@@ -147,7 +144,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         String snTaskId = null;
         //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
         String sRequestBody = osRequestBody.toString();
-        LOG.info("sRequestBody is: {}", sRequestBody);
         LOG.info("oRequest.getRequestURL(): " + oRequest.getRequestURL() + " oRequest.getMethod(): " + oRequest.getMethod());
         if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()) {
             snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
@@ -220,10 +216,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             
             if (isSaveTask(oRequest, sResponseBody)||isDocumentService(oRequest, sResponseBody)) {
                 sType = "Save";
-                
-                LOG.info("isSaveTask redult: {}", isSaveTask(oRequest, sResponseBody));
-                LOG.info("isDocumentService result {}", isDocumentService(oRequest, sResponseBody));
-                
                 LOG.info("saveNewTaskInfo block started");
                 if (oResponse.getStatus() < 200 || oResponse.getStatus() >= 300 
                         || (sResponseBody != null && sResponseBody.contains(SYSTEM_ERR))) { //SYSTEM_ERR
@@ -293,50 +285,21 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             throws Exception {
         
         LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
-        LOG.info("sRequestBody is {} , sResponseBody is {}",  sRequestBody, sResponseBody);
         
         if (sResponseBody == null) {
             LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
         }
-        
-        JSONObject omRequestBody = null;
         Map<String, String> mParam = new HashMap<>();
-        
-        try{
-            omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
-        }
-        catch (Exception ex){
-            LOG.info("omRequestBody is null");
-        }
-        
-        JSONObject omResponseBody = null;
-        
-        try{
-            omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
-        }
-        catch (Exception ex){
-            LOG.info("omResponseBody is null");
-        }
-        
+        JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+        JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
-        String snID_Process = String.valueOf(omResponseBody.get("snID_Process")); //разобраться чего получаем нал в некоторых случаях
-        
-        if(snID_Process == null)
-        {
-            snID_Process = String.valueOf(omResponseBody.get("id"));
-        }
-            
+        String snID_Process = String.valueOf(omResponseBody.get("id")); //разобраться чего получаем нал в некоторых случаях
         if (snID_Process != null && !"null".equalsIgnoreCase(snID_Process)) {
             Long nID_Process = Long.valueOf(snID_Process);
             LOG.info("snID_Process please be here: " + snID_Process);
             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
-             String snID_Subject = null;
-            
-             if(omRequestBody != null){
-                snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
-            }
-            
+            String snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
             mParam.put("nID_Subject", snID_Subject);
 
             LOG.info("(sID_Order={},nID_Subject={})", sID_Order, snID_Subject);
@@ -380,12 +343,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).active().list();
             boolean bProcessClosed = aTask == null || aTask.size() == 0;
             String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();//"(нет назви)"
-            
-            if(omRequestBody != null){
-                sendMailTo(omRequestBody, sID_Order, snID_Subject, snID_Service, oProcessDefinition);
-            }
+
+            sendMailTo(omRequestBody, sID_Order, snID_Subject, snID_Service, oProcessDefinition);
+
             historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
-            //oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
             LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
             if (oProcessDefinition.getKey().startsWith("_doc_") || DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())) {
                 //Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
