@@ -331,7 +331,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             Long nID_Process = Long.valueOf(snID_Process);
             LOG.info("snID_Process please be here: " + snID_Process);
             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
-            String snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
+             String snID_Subject = null;
+            
+             if(omRequestBody != null){
+                snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
+            }
+            
             mParam.put("nID_Subject", snID_Subject);
 
             LOG.info("(sID_Order={},nID_Subject={})", sID_Order, snID_Subject);
@@ -375,9 +380,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).active().list();
             boolean bProcessClosed = aTask == null || aTask.size() == 0;
             String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();//"(нет назви)"
-
-            sendMailTo(omRequestBody, sID_Order, snID_Subject, snID_Service, oProcessDefinition);
-
+            
+            if(omRequestBody != null){
+                sendMailTo(omRequestBody, sID_Order, snID_Subject, snID_Service, oProcessDefinition);
+            }
             //historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
             oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
             LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
