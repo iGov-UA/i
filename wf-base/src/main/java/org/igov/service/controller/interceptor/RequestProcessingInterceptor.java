@@ -298,12 +298,35 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         if (sResponseBody == null) {
             LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
         }
+        
+        JSONObject omRequestBody = null;
         Map<String, String> mParam = new HashMap<>();
-        JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
-        JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
+        
+        try{
+            omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+        }
+        catch (Exception ex){
+            LOG.info("omRequestBody is null");
+        }
+        
+        JSONObject omResponseBody = null;
+        
+        try{
+            omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
+        }
+        catch (Exception ex){
+            LOG.info("omResponseBody is null");
+        }
+        
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
-        String snID_Process = String.valueOf(omResponseBody.get("id")); //разобраться чего получаем нал в некоторых случаях
+        String snID_Process = String.valueOf(omResponseBody.get("snID_Process")); //разобраться чего получаем нал в некоторых случаях
+        
+        if(snID_Process == null)
+        {
+            snID_Process = String.valueOf(omResponseBody.get("id"));
+        }
+            
         if (snID_Process != null && !"null".equalsIgnoreCase(snID_Process)) {
             Long nID_Process = Long.valueOf(snID_Process);
             LOG.info("snID_Process please be here: " + snID_Process);
