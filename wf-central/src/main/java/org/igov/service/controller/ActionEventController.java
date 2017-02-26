@@ -147,7 +147,7 @@ public class ActionEventController implements ControllerConstants {
         sID_Order, nID_Subject, sUserTaskName, nID_Service, nID_ServiceData, nID_ServiceData, nID_Region, 
         sID_UA, soData, sToken, sHead, sBody, nID_Proccess_Feedback, nID_Proccess_Escalation, nID_StatusType);*/
         
-        return actionEventHistoryService.addActionStatus_Central(
+        return oActionEventService.addActionStatus_Central(
                 sID_Order,
                 nID_Subject,
                 sUserTaskName,
@@ -161,8 +161,7 @@ public class ActionEventController implements ControllerConstants {
                 sBody,
                 nID_Proccess_Feedback,
                 nID_Proccess_Escalation,
-                nID_StatusType,
-                1L
+                nID_StatusType
         );
     }
 
