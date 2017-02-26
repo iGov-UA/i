@@ -126,7 +126,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             throws IOException, TaskAlreadyUnboundException {
         LOG.info("Method 'protocolize' started");
         int nLen = generalConfig.isSelfTest() ? 300 : 200;
-
+        
         Map<String, String> mRequestParam = new HashMap<>();
         Enumeration<String> paramsName = oRequest.getParameterNames();
         while (paramsName.hasMoreElements()) {
@@ -147,6 +147,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         String snTaskId = null;
         //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
         String sRequestBody = osRequestBody.toString();
+        LOG.info("sRequestBody is: {}", sRequestBody);
         LOG.info("oRequest.getRequestURL(): " + oRequest.getRequestURL() + " oRequest.getMethod(): " + oRequest.getMethod());
         if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()) {
             snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
