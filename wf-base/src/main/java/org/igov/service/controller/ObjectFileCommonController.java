@@ -1020,6 +1020,9 @@ public class ObjectFileCommonController {
             aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
         }
         LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
+        LOG.info("aGroup={}", aGroup);
+        
+        
         LOG.info("setAttachment nID_Process: " + nID_Process);
         LOG.info("setAttachment bSigned: " + bSigned);
         LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
