@@ -292,6 +292,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             throws Exception {
         
         LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
+        LOG.info("sRequestBody is {} , mParamRequest is {}",  sRequestBody, mParamRequest);
         
         if (sResponseBody == null) {
             LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
