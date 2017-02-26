@@ -181,7 +181,7 @@ public class ActionEventHistoryService {
             
             if(oHistoryEvent_Service != null)
             {
-                setHistoryEvent(HistoryEventType.getById(nID_HistoryEventType), nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
+                setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
             }
         }
         
