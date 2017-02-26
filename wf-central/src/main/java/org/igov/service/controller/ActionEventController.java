@@ -141,11 +141,11 @@ public class ActionEventController implements ControllerConstants {
             @ApiParam(value = "номер-ид бп эсклации (поле на перспективу для следующего тз по эскалации)", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation,
             @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType
     ) {
-        LOG.info("addHistoryEvent_Service was started with params: sID_Order: {} nID_Subject : {} sUserTaskName: {} "
+        /*LOG.info("addHistoryEvent_Service was started with params: sID_Order: {} nID_Subject : {} sUserTaskName: {} "
                 + "nID_Service: {} nID_ServiceData: {} nID_ServiceData: {} nID_Region: {} sID_UA: {} soData: {} "
                 + "sToken: {} sHead: {} sBody: nID_Proccess_Feedback: {} nID_Proccess_Escalation: {} nID_StatusType: {}",
         sID_Order, nID_Subject, sUserTaskName, nID_Service, nID_ServiceData, nID_ServiceData, nID_Region, 
-        sID_UA, soData, sToken, sHead, sBody, nID_Proccess_Feedback, nID_Proccess_Escalation, nID_StatusType);
+        sID_UA, soData, sToken, sHead, sBody, nID_Proccess_Feedback, nID_Proccess_Escalation, nID_StatusType);*/
         
         return actionEventHistoryService.addActionStatus_Central(
                 sID_Order,
@@ -162,10 +162,7 @@ public class ActionEventController implements ControllerConstants {
                 nID_Proccess_Feedback,
                 nID_Proccess_Escalation,
                 nID_StatusType,
-                1L,
-                true,
-                true,
-                false
+                1L
         );
     }
 
