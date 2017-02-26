@@ -31,8 +31,9 @@
         <activiti:formProperty id="mfo" name="МФО банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileSocAccount" name="Довідка про відкриття соц.рахунку у банку" type="file"></activiti:formProperty>
 
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileScanPassport" name="Сканований паспорт громадянина;Сторінки 1, 2, та сторінка з останньою пропискою. Скан копії можуть бути завантажені у вигляді одного ZIP-архіву чи pdf-файлу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileRishennja" name="Рішення районної, держадміністрації, виконавчого органу міської, районної у місті ради про влаштування дитини до дитячого будинку сімейного типу або прийомної сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileStatusChild" name="Документи, що підтверджують статус дитини;(Рішення про надання статусу дитини-сироти або дитини, позбавленої батьківського піклування. У рішенні зазначаються прізвище, ім'я, по батькові дитини, дата народження, обставини, за яких вона залишилась без батьківського піклування, документи, які підтверджують ці обставини, та форма влаштування дитини. Приймається місцевою чи районною радою)" type="file" required="true"></activiti:formProperty>
@@ -78,8 +79,6 @@
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р); ;writable=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="string" default="9" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="asNumberApplication" name="Це перше звернення?" type="enum" default="sFirst" required="true">
           <activiti:value id="sFirst" name="первинне"></activiti:value>
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
@@ -93,18 +92,11 @@
         <activiti:formProperty id="sComment1" name="Будь ласка, укажіть причину Вашого рішення" type="textArea"></activiti:formProperty>
         
         <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="cc_7" name="Категорія компенсацій (галочка на формі)" type="invisible"></activiti:formProperty>
 
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_147_user.json')}"></activiti:formProperty>
-        <activiti:formProperty id="cc_7" name="Категорія компенсацій (галочка на формі)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="7"></activiti:formProperty>
         
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileRishennja},${nFileStatusChild},${nFileAliment},${nFileStudy},${nFileMedicine},${bankId_scan_passport},${bankId_scan_inn}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener> 
-
       </extensionElements>
     </userTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
@@ -156,6 +148,9 @@
           <activiti:value id="accept2" name="Рішення отримане, допомогу призначено"></activiti:value>
           <activiti:value id="reject2" name="Рішення отримане, в допомозі відмовлено"></activiti:value>
         </activiti:formProperty>
+        
+        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="cc_7" name="Категорія компенсацій (галочка на формі)" type="invisible"></activiti:formProperty>
         
         <activiti:formProperty id="nFileDecision" name="Сканована копія рішення" type="file" required="true"></activiti:formProperty>
       </extensionElements>
