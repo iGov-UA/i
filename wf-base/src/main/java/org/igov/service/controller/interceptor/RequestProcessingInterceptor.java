@@ -37,6 +37,7 @@ import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.escalation.EscalationHistoryService;
 import org.igov.service.exception.TaskAlreadyUnboundException;
+import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -85,6 +86,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private EscalationHistoryService escalationHistoryService;
     @Autowired
     private CloseTaskEvent closeTaskEvent;
+    @Autowired
+    ActionEventHistoryService oActionEventHistoryService;
 
     private JSONParser oJSONParser = new JSONParser();
 
@@ -216,6 +219,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             
             if (isSaveTask(oRequest, sResponseBody)||isDocumentService(oRequest, sResponseBody)) {
                 sType = "Save";
+                
+                LOG.info("isSaveTask redult: {}", isSaveTask(oRequest, sResponseBody));
+                LOG.info("isDocumentService result {}", isDocumentService(oRequest, sResponseBody));
+                
                 LOG.info("saveNewTaskInfo block started");
                 if (oResponse.getStatus() < 200 || oResponse.getStatus() >= 300 
                         || (sResponseBody != null && sResponseBody.contains(SYSTEM_ERR))) { //SYSTEM_ERR
@@ -346,7 +353,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
             sendMailTo(omRequestBody, sID_Order, snID_Subject, snID_Service, oProcessDefinition);
 
-            historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
+            //historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
+            oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
             LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
             if (oProcessDefinition.getKey().startsWith("_doc_") || DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())) {
                 //Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
