@@ -60,30 +60,6 @@
         <activiti:formProperty id="markersStart" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_177_start.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    
-    
-    <serviceTask id="servicetask5" name="Повідомлення співробітника соц.захисту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове  звернення. Довідка про отримання/неотримання усіх видів державних соціальних допомог]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify_head.html]
-			Послуга: Довідка про отримання/неотримання усіх видів державних соціальних допомог.<br>
-			Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-			[pattern/mail/new_design/_common_employee_notify_footer.html]]]>
-          </activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    
-    
     <userTask id="usertask1" name="опрацювання звернення" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
@@ -123,6 +99,32 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
+    
+    
+        
+    <serviceTask id="servicetask5" name="Повідомлення співробітника соц.захисту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове  звернення. Довідка про отримання/неотримання усіх видів державних соціальних допомог]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify_head.html]
+			Послуга: Довідка про отримання/неотримання усіх видів державних соціальних допомог.<br>
+			Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+			[pattern/mail/new_design/_common_employee_notify_footer.html]]]>
+          </activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    
+    
+    
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
