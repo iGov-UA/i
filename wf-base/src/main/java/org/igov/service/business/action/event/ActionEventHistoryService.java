@@ -61,8 +61,9 @@ public class ActionEventHistoryService {
             //int dash_position = sID_Order.indexOf(DASH);
             //int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
             
-            LOG.info("nID_Server by DASH: {}", nID_Server);
             LOG.info("nID_Server by sID_order {}", Integer.parseInt(sID_Order.split("-")[0]));
+            LOG.info("nID_Server by DASH1: {}", generalConfig.getSelfServerId());
+            LOG.info("nID_Server by DASH2: {}", generalConfig.getSelfHost());
             
             /*if(nID_Server == Integer.parseInt(sID_Order.split("-")[0])){
                 LOG.info("addHistoryEvent make request...");
