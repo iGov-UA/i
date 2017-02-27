@@ -3,7 +3,7 @@
   <process id="_doc_dmr_10677" name="Дніпровська міська рада - Звернення громадян (вхідний шаблон)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-      	<activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asAppealCharacter" name="Характер звернення" type="enum">
           <activiti:value id="sEnumEmergency" name="Аварійне"></activiti:value>
           <activiti:value id="sEnumConsult" name="Консультаційне"></activiti:value>
@@ -568,10 +568,11 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)</scrip
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Оператор КЦ" activiti:candidateGroups="dmr_operatorFO">
       <extensionElements>
-      	<activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Звернення громадян"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asAppealCharacter" name="Характер звернення" type="enum">
           <activiti:value id="sEnumEmergency" name="Аварійне"></activiti:value>
           <activiti:value id="sEnumConsult" name="Консультаційне"></activiti:value>
@@ -1119,9 +1120,9 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)</scrip
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="Супервайзер - вибор оператора БО" activiti:candidateGroups="dmr_supervisor">
       <extensionElements>
-      	<activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
-		<activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -1736,10 +1737,10 @@ execution.setVariable('sExecutor', sExecutor)</script>
     </scriptTask>
     <userTask id="usertask3" name="Оператор БО - відпрацювання звернення. Переадресація в управління" activiti:candidateGroups="dmr_${asStatusSuper}">
       <extensionElements>
-      	<activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
-		<activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
@@ -2317,10 +2318,10 @@ execution.setVariable('sExecutor', sExecutor)</script>
     <sequenceFlow id="flow12" sourceRef="usertask3" targetRef="usertask4"></sequenceFlow>
     <userTask id="usertask4" name="Керівник управління (департаменту)" activiti:candidateGroups="${sName_SubjectRole}">
       <extensionElements>
-      	<activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
-		<activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -2898,10 +2899,10 @@ execution.setVariable('sExecutor', sExecutor)</script>
     <sequenceFlow id="flow13" sourceRef="usertask4" targetRef="scripttask2"></sequenceFlow>
     <userTask id="usertask5" name="Виконавець - формування відповіді на звернення">
       <extensionElements>
-      	<activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
-		<activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -3478,10 +3479,10 @@ execution.setVariable('sExecutor', sExecutor)</script>
     <sequenceFlow id="flow14" sourceRef="scripttask2" targetRef="usertask5"></sequenceFlow>
     <userTask id="usertask6" name="Оператор БО - перевірка відповіді">
       <extensionElements>
-      	<activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
-		<activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -4063,7 +4064,9 @@ execution.setVariable('sExecutor', sExecutor)</script>
     <sequenceFlow id="flow17" sourceRef="exclusivegateway3" targetRef="scripttask3"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="exclusivegateway3" targetRef="usertask5"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow19" sourceRef="scripttask3" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="scripttask3" targetRef="callactivity1"></sequenceFlow>
+    <callActivity id="callactivity1" name="Виклик шаблону _doc_dmr_11401"></callActivity>
+    <sequenceFlow id="flow20" sourceRef="callactivity1" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_dmr_10677">
     <bpmndi:BPMNPlane bpmnElement="_doc_dmr_10677" id="BPMNPlane__doc_dmr_10677">
@@ -4107,7 +4110,10 @@ execution.setVariable('sExecutor', sExecutor)</script>
         <omgdc:Bounds height="81.0" width="142.0" x="440.0" y="540.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="360.0" y="563.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="193.0" y="563.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="callactivity1" id="BPMNShape_callactivity1">
+        <omgdc:Bounds height="81.0" width="105.0" x="272.0" y="540.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="271.0" y="167.0"></omgdi:waypoint>
@@ -4169,7 +4175,11 @@ execution.setVariable('sExecutor', sExecutor)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="440.0" y="580.0"></omgdi:waypoint>
-        <omgdi:waypoint x="395.0" y="580.0"></omgdi:waypoint>
+        <omgdi:waypoint x="377.0" y="580.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="272.0" y="580.0"></omgdi:waypoint>
+        <omgdi:waypoint x="228.0" y="580.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
