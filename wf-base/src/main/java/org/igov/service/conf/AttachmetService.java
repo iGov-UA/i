@@ -209,7 +209,7 @@ public class AttachmetService {
                  
                  
                  
-                 LOG.info("SKEY is =", sKey);
+                 LOG.info("SKEY is =", result.get(sKey).toString());
         	                    
         	     
         		 
