@@ -304,24 +304,60 @@ public class AttachmetService {
     public MultipartFile getDocumentImage(String snID_Process_Activiti, String sLogin, String sKey_Step)
             throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
 
-        //написала через criteria метод для получения oDocumentStep
-        List<DocumentStep> oDocumentStep = documentStepDao.getRightsByStep(snID_Process_Activiti, sKey_Step);
-        //проверка на уникальность 
-        if (oDocumentStep.size() != 1) {
-            LOG.info("oDocumentStep's size is: " + oDocumentStep.size());
+        List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
+        // получаю все группы
+        Set<String> asID_Group = new HashSet<>();
+        
+        if (aGroup != null) {
+            aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
         }
-        //получаю список логинов        
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.get(0).getRights();
-        // пробегаюсь по листу логинов, ищу нужный
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-            if (oDocumentStepSubjectRight.getsLogin().equals(sLogin)) {
 
-                String sKey = oDocumentStepSubjectRight.getsID_File_ForSign();
+        LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
+        LOG.info("aGroup={}", aGroup);
+        
+        List<DocumentStep> aDocumentStep = documentStepDao.getStepForProcess(snID_Process_Activiti);
+        LOG.info("The size of list" + aDocumentStep.size());
+        LOG.info("Result list of steps: {}", aDocumentStep);
 
-                return getAttachment(null, null, sKey, "Mongo");
+        DocumentStep oFindedDocumentStep = null;
 
+        for (DocumentStep oDocumentStep : aDocumentStep) {
+            if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
+                oFindedDocumentStep = oDocumentStep;
+                break;
             }
         }
+        
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList<>();
+        
+        if(oFindedDocumentStep != null){
+            aDocumentStepSubjectRight.addAll(oFindedDocumentStep.getRights());
+            LOG.info("oFindedDocumentStep ={}", oFindedDocumentStep.getRights());
+        }
+        
+        DocumentStepSubjectRight oTargetDocumentStepSubjectRight = null;
+        
+        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+            
+            for(String sID_Group : asID_Group)
+            {
+                if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sID_Group)) {
+                    if(oTargetDocumentStepSubjectRight == null){
+                        oTargetDocumentStepSubjectRight = oDocumentStepSubjectRight;
+                    }
+                    else{
+                        throw new RuntimeException("There are few target groups in the DocumentStep set");
+                    }
+                }
+            }
+        }
+        
+        if(oTargetDocumentStepSubjectRight != null)
+        {
+            String sKey = oTargetDocumentStepSubjectRight.getsID_File_ForSign();
+            return getAttachment(null, null, sKey, "Mongo");
+        }
+        
         return null;
     }
 
