@@ -176,14 +176,14 @@ public class AttachmetService {
     	LOG.info("The size of list"+ aDocumentStep.size() );
     	LOG.info("Result list of steps: {}", aDocumentStep);
     	
-    	/*DocumentStep oFindedDocumentStep = null;
+    	DocumentStep oFindedDocumentStep = null;
     	 
     	 for(DocumentStep oDocumentStep: aDocumentStep){
          	if(oDocumentStep.getsKey_Step().equals(sKey_Step)){
          		oFindedDocumentStep = oDocumentStep;
     	        break;
     	        }
-    	 }*/
+    	 }
                    //получаю список логинов        
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStep.get(0).getRights();
         aDocumentStep.get(0).getRights();
@@ -206,10 +206,7 @@ public class AttachmetService {
                  if(bSigned == true)   {   
                      oDocumentStepSubjectRight.setsDateECP(new DateTime(df.format(new Date())));}
                  String sKey = (String)result.get("sKey");
-                 
-                 
-                 
-                 LOG.info("SKEY is =", result.get(sKey).toString());
+                 LOG.info("SKEY is =", sKey);
         	                    
         	     
         		 
