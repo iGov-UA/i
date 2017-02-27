@@ -47,7 +47,7 @@ public class ActionEventHistoryService {
         return soResponse;
     }
     
-    public void addHistoryEvent(String sID_Order, String sUserTaskName, Map<String, String> params)
+    public void addHistoryEvent(String sID_Order, String sUserTaskName, Map<String, String> params, Long nID_HistoryEventType)
             throws Exception {
         if(sID_Order != null){
             params.put("sID_Order", sID_Order);
@@ -84,7 +84,7 @@ public class ActionEventHistoryService {
                         Long.parseLong(params.get("nID_Proccess_Feedback")),
                         Long.parseLong(params.get("nID_Proccess_Escalation")),
                         Long.parseLong(params.get("nID_StatusType")),
-                        1L, 
+                        nID_HistoryEventType, 
                         true,
                         true,
                         false
@@ -180,7 +180,7 @@ public class ActionEventHistoryService {
             }
             
             if(oHistoryEvent_Service != null)
-            {
+            {   
                 setHistoryEvent(HistoryEventType.getById(nID_HistoryEventType), nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
             }
         }

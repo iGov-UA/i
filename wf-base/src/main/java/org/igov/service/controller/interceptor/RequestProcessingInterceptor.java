@@ -32,6 +32,7 @@ import org.igov.io.Log;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.event.CloseTaskEvent;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
@@ -85,6 +86,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private EscalationHistoryService escalationHistoryService;
     @Autowired
     private CloseTaskEvent closeTaskEvent;
+    @Autowired
+    private ActionEventHistoryService oActionEventHistoryService;
 
     private JSONParser oJSONParser = new JSONParser();
 
@@ -189,10 +192,21 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 boolean bProcessClosed = aTask == null || aTask.size() == 0;
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 
+                Map<String, String> mParam = new HashMap<>();
                 LOG.info("document sID_Process in interceptor {}", sID_Process);
                 LOG.info("document sID_Order in interceptor {}", sID_Order);
                 LOG.info("document sHead in interceptor {}", sProcessName);
+                mParam.put("sHead", sProcessName);
                 LOG.info("document sUserTaskName in interceptor {}", sUserTaskName);
+                
+                if (!(oResponse.getStatus() < 200 || oResponse.getStatus() >= 300 
+                        || (sResponseBody != null && sResponseBody.contains(SYSTEM_ERR)))) 
+                {
+                    if(isSetDocumentService(oRequest, sResponseBody)){
+                        oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 11L);
+                    }
+                }
+                
             }
         
         }
@@ -296,7 +310,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             LOG.info("oRequest.getRequestURL: " + oRequest.getRequestURL().toString());
             LOG.info("sResponseBody before SaveTask: " + sResponseBody);
             
-            if (isSaveTask(oRequest, sResponseBody)||isDocumentService(oRequest, sResponseBody)) {
+            if (isSaveTask(oRequest, sResponseBody)) {
                 sType = "Save";
                 LOG.info("saveNewTaskInfo block started");
                 if (oResponse.getStatus() < 200 || oResponse.getStatus() >= 300 
@@ -603,7 +617,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim());
     }
     
-    private boolean isDocumentService(HttpServletRequest oRequest, String sResponseBody) {
+    private boolean isSetDocumentService(HttpServletRequest oRequest, String sResponseBody) {
         boolean isNewDocument = (bFinish && sResponseBody != null && !"".equals(sResponseBody))
                 && oRequest.getRequestURL().toString().indexOf(DOCUMENT_SERVICE) > 0
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim());
