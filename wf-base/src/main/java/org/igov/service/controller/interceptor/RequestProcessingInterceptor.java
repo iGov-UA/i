@@ -102,6 +102,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
         return true;
+        documentHistoryProcessing(oRequest, oResponse);
     }
 
     @Override
