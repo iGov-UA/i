@@ -145,17 +145,22 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             String sRequestBody = osRequestBody.toString();
             String sResponseBody = !bFinish ? null : oResponse.toString();
             
-            LOG.info("--------------NEW DOCUMENT PARAMS--------------");
-            String sURL = oRequest.getRequestURL().toString();
-            LOG.info("protocolize sURL is: " + sURL);
-            LOG.info("-----------------------------------------------");
-            LOG.info("sRequestBody: {}", sRequestBody);
-            LOG.info("-----------------------------------------------");
-            LOG.info("sResponseBody: {}", sResponseBody);
-            LOG.info("-----------------------------------------------");
-            LOG.info("mRequestParam {}", mRequestParam);        
-            LOG.info("-----------------------------------------------");
+            if(mRequestParam.containsKey("sID_BP")&&
+               mRequestParam.get("sID_BP").startsWith("_doc"))
+            {
+                LOG.info("We found a document! Uhhuu!!");
+                LOG.info("--------------NEW DOCUMENT PARAMS--------------");
+                String sURL = oRequest.getRequestURL().toString();
+                LOG.info("protocolize sURL is: " + sURL);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sRequestBody: {}", sRequestBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sResponseBody: {}", sResponseBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("mRequestParam {}", mRequestParam);        
+                LOG.info("-----------------------------------------------");
             
+            }
         }
         catch (Exception ex){
             LOG.info("Error during document processing in interceptor: {} ", ex);
