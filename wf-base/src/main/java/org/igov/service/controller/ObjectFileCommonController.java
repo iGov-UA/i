@@ -1014,14 +1014,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "контент файла в виде строки", required = true) @RequestBody String sData)
             throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException
         {
-    	List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
-        Set<String> asID_Group = new HashSet<>();
-        if (aGroup != null) {
-            aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
-        }
-        LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
-        LOG.info("aGroup={}", aGroup);
-        
+    	      
         
         LOG.info("setAttachment nID_Process: " + nID_Process);
         LOG.info("setAttachment bSigned: " + bSigned);
