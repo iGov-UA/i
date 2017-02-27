@@ -14,62 +14,66 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.igov.util.ToolLuna;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  *
  * @author Kovilin
  */
 @Service
 public class ActionEventHistoryService {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(ActionEventHistoryService.class);
-    private final String URI_ADD_HISTORY_EVENT = "/wf/service/action/event/addHistoryEvent_Service";
-    
+    private final String URI_ADD_HISTORY_EVENT = "/wf/service/history/document/event/addHistoryEvent";
+
     @Autowired
     private HistoryEventDao historyEventDao;
-    
+
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
-    
+
     @Autowired
     private GeneralConfig generalConfig;
-    
+
     @Autowired
     private HttpRequester httpRequester;
-    
+
     private String doRemoteRequest(String sServiceContext, Map<String, String> mParam) throws Exception {
         String soResponse = "";
         if (!generalConfig.getSelfHostCentral().contains("ksds.nads.gov.ua") && !generalConfig.getSelfHostCentral().contains("staff.igov.org.ua")) {
             String sURL = generalConfig.getSelfHostCentral() + sServiceContext;
-            LOG.info("(sURL={},mParam={})", sURL, mParam);
+            LOG.info("(sURL in ActionEventHistoryService ={},mParam={})", sURL, mParam);
             soResponse = httpRequester.getInside(sURL, mParam);
             LOG.info("(soResponse={})", soResponse);
         }
         return soResponse;
     }
-    
+
     public void addHistoryEvent(String sID_Order, String sUserTaskName, Map<String, String> params, Long nID_HistoryEventType)
             throws Exception {
-        if(sID_Order != null){
+        if (sID_Order != null) {
             params.put("sID_Order", sID_Order);
-            
-            if(sUserTaskName != null){
+
+            if (sUserTaskName != null) {
                 params.put("sUserTaskName", sUserTaskName);
             }
-            
+
             LOG.info("addHistoryEvent started with params: {}", params);
             int nID_Server = generalConfig.getSelfServerId();
-            //int dash_position = sID_Order.indexOf(DASH);
-            //int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
             
             LOG.info("nID_Server by sID_order {}", Integer.parseInt(sID_Order.split("-")[0]));
-            LOG.info("nID_Server by DASH1: {}", generalConfig.getSelfServerId());
-            LOG.info("nID_Server by DASH2: {}", generalConfig.getSelfHost());
+            LOG.info("nID_Server by generalConfig: {}", generalConfig.getSelfServerId());
+            LOG.info("getSelfHost: {}", generalConfig.getSelfHost());
             
-            /*if(nID_Server == Integer.parseInt(sID_Order.split("-")[0])){
-                LOG.info("addHistoryEvent make request...");
-                doRemoteRequest(URI_ADD_HISTORY_EVENT, params);
+            try{
+                if(nID_Server == Integer.parseInt(sID_Order.split("-")[0])){
+                    LOG.info("addHistoryEvent make request...");
+                    doRemoteRequest(URI_ADD_HISTORY_EVENT, params);
+                }
+            }
+            catch (Exception ex){
+                LOG.info("error during send a request to addHistoryEvent: {} ", ex);
+            }
             
-            }else{*/
             Long nID_Subject = params.get("nID_Subject") == null ? null : Long.parseLong(params.get("nID_Subject"));
             Long nID_Service = params.get("nID_Service") == null ? null : Long.parseLong(params.get("nID_Service"));
             Long nID_ServiceData = params.get("nID_ServiceData") == null ? null : Long.parseLong(params.get("nID_ServiceData"));
@@ -77,31 +81,30 @@ public class ActionEventHistoryService {
             Long nID_Proccess_Feedback = params.get("nID_Proccess_Feedback") == null ? null : Long.parseLong(params.get("nID_Proccess_Feedback"));
             Long nID_Proccess_Escalation = params.get("nID_Proccess_Escalation") == null ? null : Long.parseLong(params.get("nID_Proccess_Escalation"));
             Long nID_StatusType = params.get("nID_StatusType") == null ? null : Long.parseLong(params.get("nID_StatusType"));
-            
+
             addActionStatus(
-                        sID_Order,
-                        nID_Subject,
-                        sUserTaskName,
-                        nID_Service,
-                        nID_ServiceData,
-                        nID_Region,
-                        params.get("sID_UA"),
-                        params.get("soData"),
-                        params.get("sToken"),
-                        params.get("sHead"),
-                        params.get("sBody"),
-                        nID_Proccess_Feedback,
-                        nID_Proccess_Escalation,
-                        nID_StatusType,
-                        nID_HistoryEventType, 
-                        true,
-                        true,
-                        false
-                );
-            //}
+                    sID_Order,
+                    nID_Subject,
+                    sUserTaskName,
+                    nID_Service,
+                    nID_ServiceData,
+                    nID_Region,
+                    params.get("sID_UA"),
+                    params.get("soData"),
+                    params.get("sToken"),
+                    params.get("sHead"),
+                    params.get("sBody"),
+                    nID_Proccess_Feedback,
+                    nID_Proccess_Escalation,
+                    nID_StatusType,
+                    nID_HistoryEventType,
+                    true,
+                    true,
+                    false
+            );
         }
     }
-    
+
     public void setHistoryEvent(HistoryEventType eventType,
             Long nID_Subject, Map<String, String> mParamMessage, Long nID_HistoryEvent_Service, Long nID_Document, String sSubjectInfo) {
         try {
@@ -116,9 +119,8 @@ public class ActionEventHistoryService {
             LOG.trace("FAIL:", e);
         }
     }
-    
-    public HistoryEvent_Service getHistoryEventService(String sID_Order) throws CommonServiceException, CRCInvalidException 
-    {   
+
+    public HistoryEvent_Service getHistoryEventService(String sID_Order) throws CommonServiceException, CRCInvalidException {
         return historyEventServiceDao.getOrgerByID(sID_Order);
     }
 
@@ -142,16 +144,15 @@ public class ActionEventHistoryService {
             boolean saveHistoryEventService,
             boolean saveHistoryEvent,
             boolean saveSubjectMessage
-            
     ) {
         int dash_position = sID_Order.indexOf(DASH);
         int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
         Long nID_Order = Long.valueOf(sID_Order.substring(dash_position + 1));
         Long nID_Process = ToolLuna.getOriginalNumber(nID_Order);
-        
+
         HistoryEvent_Service oHistoryEvent_Service = null;
-        
-        if(saveHistoryEventService){
+
+        if (saveHistoryEventService) {
             LOG.info("save HistoryEvent_Service started...");
             oHistoryEvent_Service = new HistoryEvent_Service();
             oHistoryEvent_Service.setnID_Process(nID_Process);
@@ -172,28 +173,26 @@ public class ActionEventHistoryService {
             oHistoryEvent_Service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
             oHistoryEvent_Service = historyEventServiceDao.addHistoryEvent_Service(oHistoryEvent_Service);
         }
-        
-        if(saveHistoryEvent){
+
+        if (saveHistoryEvent) {
             LOG.info("save HistoryEvent started...");
             Map<String, String> mParamMessage = new HashMap<>();
             mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
-            
-            if(oHistoryEvent_Service == null)
-            {
+
+            if (oHistoryEvent_Service == null) {
                 try {
                     oHistoryEvent_Service = getHistoryEventService(sID_Order);
-                } catch (CRCInvalidException|CommonServiceException e) {
+                } catch (CRCInvalidException | CommonServiceException e) {
                     LOG.info("can't get HistoryEvent_Service entity: {} ", e);
                 }
             }
-            
-            if(oHistoryEvent_Service != null)
-            {   
+
+            if (oHistoryEvent_Service != null) {
                 setHistoryEvent(HistoryEventType.getById(nID_HistoryEventType), nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
             }
         }
-        
+
         LOG.info("oHistoryEvent_Service result object is: {}", oHistoryEvent_Service.toString());
         return oHistoryEvent_Service;
     }
