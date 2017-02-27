@@ -193,10 +193,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 
                 Map<String, String> mParam = new HashMap<>();
+                
+                LOG.info("document nID_StatusType in interceptor {}", HistoryEvent_Service_StatusType.CREATED.getnID());
+                mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
                 LOG.info("document sID_Process in interceptor {}", sID_Process);
                 LOG.info("document sID_Order in interceptor {}", sID_Order);
                 LOG.info("document sHead in interceptor {}", sProcessName);
                 mParam.put("sHead", sProcessName);
+                
                 LOG.info("document sUserTaskName in interceptor {}", sUserTaskName);
                 
                 if (!(oResponse.getStatus() < 200 || oResponse.getStatus() >= 300 
