@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_task_dmr" name="Завдання" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateDoc" name="Дата документа" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sApplicant" name="Кореспондент" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asUrgently" name="Якщо терміновий документ - поставте галочку; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
+          <activiti:value id="sEnumUrgentDoc" name="з ЕЦП"></activiti:value>
+          <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="User Task"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="usertask1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__task_dmr">
+    <bpmndi:BPMNPlane bpmnElement="_task_dmr" id="BPMNPlane__task_dmr">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="250.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="340.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="490.0" y="208.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="575.0" y="211.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="285.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="445.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="228.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="530.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="228.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="510.0" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="509.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="392.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="392.0" y="200.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
