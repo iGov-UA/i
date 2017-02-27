@@ -74,7 +74,7 @@ public class ProminSession_Singleton {
             LOG.debug("Auth Promin, sid refresh");
             
             sid_Auth_PB_ObjectSubPlace= getSessionId(generalConfig.getObjectSubPlace_Auth_sLogin(),
-                    generalConfig.getObjectSubPlace_Auth_sPassword()+"1111",
+                    generalConfig.getObjectSubPlace_Auth_sPassword(),
                     generalConfig.getObjectSubPlace_Auth_sURL_GenerateSID() + "?lang=UA");            
         }
         LOG.info("Auth Promin end. sid_Auth_PB_ObjectSubPlace={}, nTimeCreatedMS_PB_ObjectSubPlace={}, nTimeLiveLimitMS_PB_ObjectSubPlace={}", 
