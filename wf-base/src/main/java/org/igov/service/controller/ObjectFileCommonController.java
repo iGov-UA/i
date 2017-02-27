@@ -889,7 +889,7 @@ public class ObjectFileCommonController {
     @Transactional
     public @ResponseBody
     byte[] getDocumentImage(
-            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String snID_Process_Activiti,
             @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
             @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
                    HttpServletResponse httpResponse) throws Exception {
@@ -901,7 +901,7 @@ public class ObjectFileCommonController {
         MultipartFile multipartFile = attachmetService.getDocumentImage(snID_Process_Activiti, sLogin, sKey_Step);
 
         httpResponse.setHeader("Content-disposition", "attachment; filename="
-                + multipartFile.getOriginalFilename());
+                + "ecp_Attach.pdf" );
         httpResponse.setHeader("Content-Type", "application/octet-stream");
 
         httpResponse.setContentLength(multipartFile.getBytes().length);
