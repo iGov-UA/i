@@ -11,15 +11,19 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Date;
+import java.util.HashSet;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import org.activiti.engine.ActivitiObjectNotFoundException;
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 
 
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.identity.Group;
 import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.Task;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
@@ -73,6 +77,9 @@ public class AttachmetService {
     
     @Autowired
     private ActionTaskService oActionTaskService;
+    
+    @Autowired
+    private IdentityService identityService;
         
     private final Logger LOG = LoggerFactory.getLogger(AttachmetService.class);
 	
@@ -153,43 +160,40 @@ public class AttachmetService {
 		byte[] aContent, boolean bSetVariable, String sKey_Step, String sLogin) throws JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException{
         
     	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        	
-    	List<DocumentStep> aDocumentStep = documentStepDao.getStepForProcess(nID_Process);
+        //получаю по апи активити список груп	
+    	List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
+    	// получаю все группы
+        Set<String> asID_Group = new HashSet<>();
+        if (aGroup != null) {
+            aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
+        }
+        
+        LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
+        LOG.info("aGroup={}", aGroup);
+    	
+    	
+        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("nID_Process", nID_Process);
     	LOG.info("The size of list"+ aDocumentStep.size() );
     	LOG.info("Result list of steps: {}", aDocumentStep);
     	
-    	DocumentStep oFindedDocumentStep = null;
+    	/*DocumentStep oFindedDocumentStep = null;
     	 
     	 for(DocumentStep oDocumentStep: aDocumentStep){
          	if(oDocumentStep.getsKey_Step().equals(sKey_Step)){
          		oFindedDocumentStep = oDocumentStep;
     	        break;
     	        }
-    	 }
-    	        LOG.info("List of rights " + oFindedDocumentStep.getRights());
-     /*   List<DocumentStep> aDocumentStep = documentStepDao.getRightsByStep(nID_Process, sKey_Step);
-        //проверка на уникальность 
-        if(aDocumentStep.size()!=1){
-        	LOG.info("aDocumentStep is not unique " + aDocumentStep.size());}
-                //получаю список логинов        
+    	 }*/
+                   //получаю список логинов        
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStep.get(0).getRights();
         aDocumentStep.get(0).getRights();
-        LOG.info("Result list of steps: {}", aDocumentStep);
-        aDocumentStep.get(0).getnOrder();
-        aDocumentStep.get(0).getsKey_Step();
-        LOG.info("sKey_Step is " + sKey_Step);
-        aDocumentStep.get(0).getSnID_Process_Activiti();
-        LOG.info("nID_Process is " + nID_Process);
        // пробегаюсь по листу логинов, ищу нужный
         for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
         	if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sLogin)){
         		LOG.info("oDocumentStepSubjectRight's Key_GroupPostfix() is "+ oDocumentStepSubjectRight.getsKey_GroupPostfix());
-        */
+        
     	      
-    /*	List<DocumentStepSubjectRight> aDocumentStepSubjectRight=oFindedDocumentStep.getRights();
-    	
-    	for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
-        	if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sLogin)){
+   
         		 if(bSigned == true)      
         oDocumentStepSubjectRight.setsDateECP(new DateTime(df.format(new Date())));
         		 
@@ -206,14 +210,14 @@ public class AttachmetService {
     	oDocumentStepSubjectRight.setsID_File_ForSign(sKey);
     	documentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
     	return oDocumentStepSubjectRight.getsID_File_ForSign();
-    	*/
+    	
         	
-        
+        	}
         	
-      	
+        }
         return "There is no DocumentStepSubjectRight";
         }
-    
+        
     
     
     public MultipartFile getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
