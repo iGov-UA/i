@@ -200,10 +200,16 @@ public class AttachmetService {
 		 aContent, bSetVariable);
         		 JSONParser parser = new JSONParser();
                  JSONObject result = (JSONObject) parser.parse(sJsonValue);
-                 LOG.info("Result parse json [%s]", result);
-                 if(bSigned == true)      
-                     oDocumentStepSubjectRight.setsDateECP(new DateTime(df.format(new Date())));
+                 LOG.info("Result parse json={}", result);
+               
+                 
+                 if(bSigned == true)   {   
+                     oDocumentStepSubjectRight.setsDateECP(new DateTime(df.format(new Date())));}
                  String sKey = (String)result.get("sKey");
+                 
+                 
+                 
+                 LOG.info("SKEY is =", sKey);
         	                    
         	     
         		 
