@@ -194,16 +194,22 @@ public class AttachmetService {
         
     	      
    
-        		 if(bSigned == true)      
-        oDocumentStepSubjectRight.setsDateECP(new DateTime(df.format(new Date())));
-        		 
+        		
         		 String sJsonValue = createAttachment(nID_Process, sID_Field, sFileNameAndExt,
         	 bSigned, sID_StorageType, sContentType, saAttribute_JSON,
 		 aContent, bSetVariable);
         		 JSONParser parser = new JSONParser();
                  JSONObject result = (JSONObject) parser.parse(sJsonValue);
-
+                 LOG.info("Result parse json={}", result);
+               
+                 
+                 if(bSigned == true)   {   
+                     oDocumentStepSubjectRight.setsDateECP(new DateTime(df.format(new Date())));}
                  String sKey = (String)result.get("sKey");
+                 
+                 
+                 
+                 LOG.info("SKEY is =", sKey);
         	                    
         	     
         		 
