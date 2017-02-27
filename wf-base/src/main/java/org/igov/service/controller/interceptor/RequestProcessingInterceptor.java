@@ -179,9 +179,22 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(sID_Process));
                 }
                 
+                HistoricProcessInstance oHistoricProcessInstance
+                    = historyService.createHistoricProcessInstanceQuery().processInstanceId(sID_Process).singleResult();
+                ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
+                        .processDefinitionId(oHistoricProcessInstance.getProcessDefinitionId()).singleResult();
+                String sProcessName = oProcessDefinition.getName() != null ? oProcessDefinition.getName() : "";
+                
+                List<Task> aTask = taskService.createTaskQuery().processInstanceId(sID_Process).active().list();
+                boolean bProcessClosed = aTask == null || aTask.size() == 0;
+                String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+                
                 LOG.info("document sID_Process in interceptor {}", sID_Process);
                 LOG.info("document sID_Order in interceptor {}", sID_Order);
+                LOG.info("document sHead in interceptor {}", sProcessName);
+                LOG.info("document sUserTaskName in interceptor {}", sUserTaskName);
             }
+        
         }
         catch (Exception ex){
             LOG.info("Error during document processing in interceptor: {} ", ex);

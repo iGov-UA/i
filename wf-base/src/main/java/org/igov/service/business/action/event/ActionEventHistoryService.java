@@ -64,12 +64,12 @@ public class ActionEventHistoryService {
             LOG.info("nID_Server by DASH: {}", nID_Server);
             LOG.info("nID_Server by sID_order {}", Integer.parseInt(sID_Order.split("-")[0]));
             
-            if(nID_Server == Integer.parseInt(sID_Order.split("-")[0])){
+            /*if(nID_Server == Integer.parseInt(sID_Order.split("-")[0])){
                 LOG.info("addHistoryEvent make request...");
                 doRemoteRequest(URI_ADD_HISTORY_EVENT, params);
             
-            }else{
-               addActionStatus_Central(
+            }else{*/
+               addActionStatus(
                         sID_Order,
                         Long.parseLong(params.get("nID_Subject")),
                         sUserTaskName,
@@ -89,7 +89,7 @@ public class ActionEventHistoryService {
                         true,
                         false
                 );
-            }
+            //}
         }
     }
     
@@ -113,7 +113,7 @@ public class ActionEventHistoryService {
         return historyEventServiceDao.getOrgerByID(sID_Order);
     }
 
-    public HistoryEvent_Service addActionStatus_Central(
+    public HistoryEvent_Service addActionStatus(
             String sID_Order,
             Long nID_Subject,
             String sUserTaskName,
@@ -185,6 +185,7 @@ public class ActionEventHistoryService {
             }
         }
         
+        LOG.info("oHistoryEvent_Service result object is: {}", oHistoryEvent_Service.toString());
         return oHistoryEvent_Service;
     }
 }
