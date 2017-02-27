@@ -66,6 +66,7 @@ public class ActionEventHistoryService {
             
             try{
                 if(nID_Server == Integer.parseInt(sID_Order.split("-")[0])){
+                    params.put("nID_HistoryEventType", nID_HistoryEventType.toString());
                     LOG.info("addHistoryEvent make request...");
                     doRemoteRequest(URI_ADD_HISTORY_EVENT, params);
                 }
@@ -112,6 +113,7 @@ public class ActionEventHistoryService {
             String eventMessage = HistoryEventMessage.createJournalMessage(
                     eventType, mParamMessage);
             LOG.info("Creating journal message ended");
+            
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage, nID_HistoryEvent_Service, nID_Document, sSubjectInfo);
         } catch (IOException e) {
