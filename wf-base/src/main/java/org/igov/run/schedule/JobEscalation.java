@@ -11,10 +11,13 @@ import org.activiti.engine.HistoryService;
 
 import java.util.Date;
 import org.activiti.engine.RuntimeService;
+import org.igov.io.GeneralConfig;
 
 public class JobEscalation extends IAutowiredSpringJob {
 
     private final static Logger LOG = LoggerFactory.getLogger(JobEscalation.class);
+    @Autowired
+    GeneralConfig oGeneralConfig;
     @Autowired
     private EscalationService escalationService;
     @Autowired
@@ -24,13 +27,15 @@ public class JobEscalation extends IAutowiredSpringJob {
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
-        
-
         LOG.info("In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
                 new Date(), context.getTrigger().getName());
         try {
             //TODO: ��� ����� �������� ����� ������� ���������!
-            escalationService.runEscalationAll();
+            if (!oGeneralConfig.isTest_Escalation()) {
+                escalationService.runEscalationAll();
+            } else{
+                LOG.info("skip doing escalation");
+            }
         } catch (CommonServiceException oException) {
             LOG.error("Bad: ", oException.getMessage());
             LOG.debug("FAIL:", oException);
