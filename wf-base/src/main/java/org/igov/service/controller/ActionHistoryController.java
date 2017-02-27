@@ -30,9 +30,9 @@ public class ActionHistoryController {
     @RequestMapping(value = "/addHistoryEvent", method = RequestMethod.GET)
     public @ResponseBody
     HistoryEvent_Service addHistoryEvent(
-            @ApiParam(value = "строка-ид заявки, в формате XXX-XXXXXX = nID_Server-nID_Order", required = false) @RequestParam(value = "sID_Order", required = true) String sID_Order,
-            @ApiParam(value = "ИД-номер", required = false) @RequestParam(value = "nID_Subject") Long nID_Subject,
-            @ApiParam(value = "строка-статус", required = false) @RequestParam(value = "sUserTaskName") String sUserTaskName,
+            @ApiParam(value = "строка-ид заявки, в формате XXX-XXXXXX = nID_Server-nID_Order", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @ApiParam(value = "ИД-номер", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "строка-статус", required = false) @RequestParam(value = "sUserTaskName", required = false) String sUserTaskName,
             @ApiParam(value = "ид услуги", required = false) @RequestParam(value = "nID_Service", required = false) Long nID_Service,
             @ApiParam(value = "ид под-услуги", required = false) @RequestParam(value = "nID_ServiceData", required = false) Long nID_ServiceData,
             @ApiParam(value = "ид области", required = false) @RequestParam(value = "nID_Region", required = false) Long nID_Region,
@@ -43,8 +43,8 @@ public class ActionHistoryController {
             @ApiParam(value = "строка тела сообщения (для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
             @ApiParam(value = "номер-ид запущенного процесса для обработки фидбеков (issue 962)", required = false) @RequestParam(value = "nID_Proccess_Feedback", required = false) Long nID_Proccess_Feedback,
             @ApiParam(value = "номер-ид бп эсклации (поле на перспективу для следующего тз по эскалации)", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation,
-            @ApiParam(value = "числовой код, который соответсвует статусу", required = false) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType,
-            @ApiParam(value = "числовой код, который соответсвует типу события", required = false) @RequestParam(value = "nID_HistoryEventType", required = true) Long nID_HistoryEventType
+            @ApiParam(value = "числовой код, который соответсвует статусу", required = false) @RequestParam(value = "nID_StatusType", required = false) Long nID_StatusType,
+            @ApiParam(value = "числовой код, который соответсвует типу события", required = false) @RequestParam(value = "nID_HistoryEventType", required = false) Long nID_HistoryEventType
     ) {
         LOG.info("addHistoryEvent was started with params: sID_Order: {} nID_Subject : {} sUserTaskName: {} "
                 + "nID_Service: {} nID_ServiceData: {} nID_ServiceData: {} nID_Region: {} sID_UA: {} soData: {} "
