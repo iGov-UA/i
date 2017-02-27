@@ -69,21 +69,29 @@ public class ActionEventHistoryService {
                 doRemoteRequest(URI_ADD_HISTORY_EVENT, params);
             
             }else{*/
-               addActionStatus(
+            Long nID_Subject = params.get("nID_Subject") == null ? null : Long.parseLong(params.get("nID_Subject"));
+            Long nID_Service = params.get("nID_Service") == null ? null : Long.parseLong(params.get("nID_Service"));
+            Long nID_ServiceData = params.get("nID_ServiceData") == null ? null : Long.parseLong(params.get("nID_ServiceData"));
+            Long nID_Region = params.get("nID_Region") == null ? null : Long.parseLong(params.get("nID_Region"));
+            Long nID_Proccess_Feedback = params.get("nID_Proccess_Feedback") == null ? null : Long.parseLong(params.get("nID_Proccess_Feedback"));
+            Long nID_Proccess_Escalation = params.get("nID_Proccess_Escalation") == null ? null : Long.parseLong(params.get("nID_Proccess_Escalation"));
+            Long nID_StatusType = params.get("nID_StatusType") == null ? null : Long.parseLong(params.get("nID_StatusType"));
+            
+            addActionStatus(
                         sID_Order,
-                        Long.parseLong(params.get("nID_Subject")),
+                        nID_Subject,
                         sUserTaskName,
-                        Long.parseLong(params.get("nID_Service")),
-                        Long.parseLong(params.get("nID_ServiceData")),
-                        Long.parseLong( params.get("nID_Region")),
+                        nID_Service,
+                        nID_ServiceData,
+                        nID_Region,
                         params.get("sID_UA"),
                         params.get("soData"),
                         params.get("sToken"),
                         params.get("sHead"),
                         params.get("sBody"),
-                        Long.parseLong(params.get("nID_Proccess_Feedback")),
-                        Long.parseLong(params.get("nID_Proccess_Escalation")),
-                        Long.parseLong(params.get("nID_StatusType")),
+                        nID_Proccess_Feedback,
+                        nID_Proccess_Escalation,
+                        nID_StatusType,
                         nID_HistoryEventType, 
                         true,
                         true,
