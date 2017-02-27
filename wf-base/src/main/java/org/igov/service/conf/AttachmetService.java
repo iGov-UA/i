@@ -172,7 +172,7 @@ public class AttachmetService {
         LOG.info("aGroup={}", aGroup);
     	
     	
-        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy(nID_Process, asID_Group);
+        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy(nID_Process, nID_Process);
     	LOG.info("The size of list"+ aDocumentStep.size() );
     	LOG.info("Result list of steps: {}", aDocumentStep);
     	
