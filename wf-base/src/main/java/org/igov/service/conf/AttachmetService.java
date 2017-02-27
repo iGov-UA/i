@@ -176,17 +176,19 @@ public class AttachmetService {
     	LOG.info("The size of list"+ aDocumentStep.size() );
     	LOG.info("Result list of steps: {}", aDocumentStep);
     	
-    	/*DocumentStep oFindedDocumentStep = null;
+    	
+    	  	
+    	DocumentStep oFindedDocumentStep = null;
     	 
     	 for(DocumentStep oDocumentStep: aDocumentStep){
          	if(oDocumentStep.getsKey_Step().equals(sKey_Step)){
          		oFindedDocumentStep = oDocumentStep;
     	        break;
     	        }
-    	 }*/
+    	 }
                    //получаю список логинов        
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStep.get(0).getRights();
-        aDocumentStep.get(0).getRights();
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oFindedDocumentStep.getRights();
+        LOG.info("oFindedDocumentStep ={}", oFindedDocumentStep.getRights());
        // пробегаюсь по листу логинов, ищу нужный
         for(DocumentStepSubjectRight oDocumentStepSubjectRight: aDocumentStepSubjectRight){
         	if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sLogin)){
@@ -206,9 +208,6 @@ public class AttachmetService {
                  if(bSigned == true)   {   
                      oDocumentStepSubjectRight.setsDateECP(new DateTime(df.format(new Date())));}
                  String sKey = (String)result.get("sKey");
-                 
-                 
-                 
                  LOG.info("SKEY is =", sKey);
         	                    
         	     
@@ -217,8 +216,8 @@ public class AttachmetService {
     	documentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
     	return oDocumentStepSubjectRight.getsID_File_ForSign();
     	
+                 }
         	
-        	}
         	
         }
         return "There is no DocumentStepSubjectRight";
