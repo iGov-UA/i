@@ -143,7 +143,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             }
             
             String sRequestBody = osRequestBody.toString();
-            String sResponseBody = !bFinish ? null : oResponse.toString();
+            String sResponseBody = !bFinish ? "" : oResponse.toString();
             
             if(mRequestParam.containsKey("sID_BP")&&
                mRequestParam.get("sID_BP").startsWith("_doc"))
@@ -160,6 +160,27 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("mRequestParam {}", mRequestParam);        
                 LOG.info("-----------------------------------------------");
             
+                JSONObject omRequestBody = null;
+                JSONObject omResponseBody = null;
+                
+                if(!sRequestBody.trim().equals("")){
+                    omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+                }
+                
+                if(!sResponseBody.trim().equals("")){
+                    omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
+                }
+                
+                String sID_Process = null;
+                String sID_Order = null;
+                
+                if(omResponseBody != null){
+                    sID_Process = (String)omResponseBody.get("snID_Process");
+                    sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(sID_Process));
+                }
+                
+                LOG.info("document sID_Process in interceptor {}", sID_Process);
+                LOG.info("document sID_Order in interceptor {}", sID_Order);
             }
         }
         catch (Exception ex){
