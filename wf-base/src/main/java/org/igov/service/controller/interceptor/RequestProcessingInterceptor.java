@@ -117,6 +117,49 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         oResponse = ((MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") != null
                 ? (MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") : oResponse);
         protocolize(oRequest, oResponse, true);
+        documentHistoryProcessing(oRequest, oResponse);
+    }
+    
+    private void documentHistoryProcessing(HttpServletRequest oRequest, HttpServletResponse oResponse)
+    {
+        try
+        {
+            Map<String, String> mRequestParam = new HashMap<>();
+            Enumeration<String> paramsName = oRequest.getParameterNames();
+        
+            while (paramsName.hasMoreElements()) {
+                String sKey = (String) paramsName.nextElement();
+                mRequestParam.put(sKey, oRequest.getParameter(sKey));
+            }
+
+            StringBuilder osRequestBody = new StringBuilder();
+            BufferedReader oReader = oRequest.getReader();
+            String line;
+            
+            if (oReader != null) {
+                while ((line = oReader.readLine()) != null) {
+                    osRequestBody.append(line);
+                }
+            }
+            
+            String sRequestBody = osRequestBody.toString();
+            String sResponseBody = !bFinish ? null : oResponse.toString();
+            
+            LOG.info("--------------NEW DOCUMENT PARAMS--------------");
+            String sURL = oRequest.getRequestURL().toString();
+            LOG.info("protocolize sURL is: " + sURL);
+            LOG.info("-----------------------------------------------");
+            LOG.info("sRequestBody: {}", sRequestBody);
+            LOG.info("-----------------------------------------------");
+            LOG.info("sResponseBody: {}", sResponseBody);
+            LOG.info("-----------------------------------------------");
+            LOG.info("mRequestParam {}", mRequestParam);        
+            LOG.info("-----------------------------------------------");
+            
+        }
+        catch (Exception ex){
+            LOG.info("Error during document processing in interceptor: {} ", ex);
+        }
     }
 
     private void protocolize(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean bSaveHistory)
@@ -140,7 +183,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             }
         }
         String sURL = oRequest.getRequestURL().toString();
-        LOG.info("sURL: " + sURL);
+        LOG.info("protocolize sURL is: " + sURL);
         String snTaskId = null;
         //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
         String sRequestBody = osRequestBody.toString();
