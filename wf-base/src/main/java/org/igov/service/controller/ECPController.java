@@ -39,7 +39,7 @@ public class ECPController {
     @RequestMapping(value = "/apply", method = RequestMethod.POST)
     public
     ResponseEntity<byte[]> applyDigitalSignature(
-    		@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response
+    		@RequestParam(required = true, value = "file") MultipartFile file, HttpServletRequest request, HttpServletResponse response
     ) throws Exception {
     	LOG.info("Uploaded file with filename : " + file.getName());
     	byte[] res = ecpService.signFile(file.getBytes());
