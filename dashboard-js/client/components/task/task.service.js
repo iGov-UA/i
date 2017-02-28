@@ -556,6 +556,12 @@ angular.module('dashboardJsApp')
               template: ''
             });
         });
+        if(formProperties.sendDefaultPrintForm){
+          filesDefers.push($q.resolve({
+            fileField: null,
+            template: '<html><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="style.css" /></head><body">' + $(".ng-modal-dialog-content")[0].innerHTML + '</html>'
+          }));
+        }
         // компиляция и отправка html
         $q.all(filesDefers).then(function (results) {
           var uploadPromises = [],
@@ -571,7 +577,7 @@ angular.module('dashboardJsApp')
             //scope.getPrintTemplate = function(){return PrintTemplateProcessor.getPrintTemplate(task, formProperties, templateResult.template, scope.lunaService);},
             scope.getPrintTemplate = function () {
               return PrintTemplateProcessor.getPrintTemplate(task, formProperties, templateResult.template);
-            },
+            };
               scope.containsPrintTemplate = function () {
                 return templateResult.template != '';
               };
@@ -609,45 +615,57 @@ angular.module('dashboardJsApp')
             var fileNameTemp = null;
             var sFileFieldID = null;
             var sOutputFileType = null;
+            var html = null;
+            var sKey_Step = null;
 
-            if (typeof templateResult.fileField.name === 'string') {
-              fileNameTemp = templateResult.fileField.name.split(/;/).reduce(function (prev, current) {
-                var reduceResult = prev += current.match(/sPrintFormFileAsPDF/i) || current.match(/sPrintFormFileAsIs/i) || [];
-                if (reduceResult !== ''){
-                  var parts = current.split(',');
-                  angular.forEach(parts, function (el) {
-                    if (el.match(/^sFileName=/)){
-                      fileName = el.split('=')[1];
-                    }
-                  })
+            if(templateResult.fileField) {
+              if (typeof templateResult.fileField.name === 'string') {
+                fileNameTemp = templateResult.fileField.name.split(/;/).reduce(function (prev, current) {
+                  var reduceResult = prev += current.match(/sPrintFormFileAsPDF/i) || current.match(/sPrintFormFileAsIs/i) || [];
+                  if (reduceResult !== '') {
+                    var parts = current.split(',');
+                    angular.forEach(parts, function (el) {
+                      if (el.match(/^sFileName=/)) {
+                        fileName = el.split('=')[1];
+                      }
+                    })
+                  }
+                  return reduceResult;
+                }, '');
+
+                fileName = fileName || fileNameTemp;
+
+                if (fileNameTemp === 'sPrintFormFileAsPDF') {
+                  fileName = fileName + '.pdf';
+                  sOutputFileType = 'pdf';
                 }
-                return  reduceResult;
-              }, '');
 
-              fileName = fileName || fileNameTemp;
+                if (fileNameTemp === 'sPrintFormFileAsIs') {
+                  fileName = fileName + '.html';
+                  sOutputFileType = 'html';
+                }
 
-              if(fileNameTemp === 'sPrintFormFileAsPDF'){
-                fileName = fileName + '.pdf';
-                sOutputFileType = 'pdf';
+                sFileFieldID = templateResult.fileField.id;
               }
-
-              if(fileNameTemp === 'sPrintFormFileAsIs'){
-                fileName = fileName + '.html';
-                sOutputFileType = 'html';
-              }
-
-              sFileFieldID = templateResult.fileField.id;
+              var description = templateResult.fileField.name.split(";")[0];
+            } else {
+              sOutputFileType = 'pdf';
+              fileName = 'form.pdf';
+              html = templateResult.template;
             }
-            var description = templateResult.fileField.name.split(";")[0];
 
             uploadPromises.push($timeout(function(){
-            var html = '<html><head><meta charset="utf-8"></head><body>' + compiled.find('.print-modal-content').html() + '</body></html>';
+              if(!html){
+                html = '<html><head><meta charset="utf-8"></head><body>' + compiled.find('.print-modal-content').html() + '</body></html>';
+              }
             var data = {
               sDescription: description,
               sFileNameAndExt: fileName || 'User form.html',
               sID_Field: sFileFieldID,
               sContent: html,
-              sOutputFileType: sOutputFileType
+              sOutputFileType: sOutputFileType,
+              sKey_Step: sKey_Step,
+              isSendDefaultPrintForm: formProperties.sendDefaultPrintForm
             };
 
             printDefer[key] = $q.defer();
