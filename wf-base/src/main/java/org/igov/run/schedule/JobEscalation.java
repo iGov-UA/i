@@ -31,11 +31,7 @@ public class JobEscalation extends IAutowiredSpringJob {
                 new Date(), context.getTrigger().getName());
         try {
             //TODO: ��� ����� �������� ����� ������� ���������!
-            if (!oGeneralConfig.isTest_Escalation()) {
-                escalationService.runEscalationAll();
-            } else{
-                LOG.info("skip doing escalation");
-            }
+            escalationService.runEscalationAll();
         } catch (CommonServiceException oException) {
             LOG.error("Bad: ", oException.getMessage());
             LOG.debug("FAIL:", oException);
