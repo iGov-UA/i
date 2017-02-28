@@ -201,7 +201,8 @@ public class AttachmetService {
                         oTargetDocumentStepSubjectRight = oDocumentStepSubjectRight;
                     }
                     else{
-                        throw new RuntimeException("There are few target groups in the DocumentStep set");
+                        break;
+                        //throw new RuntimeException("There are few target groups in the DocumentStep set");
                     }
                 }
                 
@@ -346,7 +347,8 @@ public class AttachmetService {
                         oTargetDocumentStepSubjectRight = oDocumentStepSubjectRight;
                     }
                     else{
-                        throw new RuntimeException("There are few target groups in the DocumentStep set");
+                        break;
+                        //throw new RuntimeException("There are few target groups in the DocumentStep set");
                     }
                 }
             }
