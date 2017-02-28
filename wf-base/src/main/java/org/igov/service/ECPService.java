@@ -1,4 +1,4 @@
-package org.igov.digitalsignature;
+package org.igov.service;
 
 import ua.privatbank.cryptonite.CryptoniteException;
 

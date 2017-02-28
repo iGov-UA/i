@@ -1,4 +1,4 @@
-package org.igov.digitalsignature;
+package org.igov.service;
 
 import org.igov.io.GeneralConfig;
 import org.slf4j.Logger;

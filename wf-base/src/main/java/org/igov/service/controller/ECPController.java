@@ -6,8 +6,8 @@ import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.igov.digitalsignature.ECPService;
 import org.igov.io.GeneralConfig;
+import org.igov.service.ECPService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class ECPController {
     private static final Logger LOG = LoggerFactory.getLogger(ECPController.class);
 
     @Autowired
-    private ECPService ecpService;
+    ECPService ecpService;
     
     @Autowired
     GeneralConfig generalConfig;
