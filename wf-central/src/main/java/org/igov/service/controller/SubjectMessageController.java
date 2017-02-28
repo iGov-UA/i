@@ -51,6 +51,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 import org.igov.io.mail.NotificationPatterns;
+import org.igov.model.action.event.HistoryEventDao;
 import static org.igov.util.Tool.sO;
 
 @Controller
@@ -83,6 +84,9 @@ public class SubjectMessageController {
     private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
     @Autowired
     private ServerDao serverDao;
+    @Autowired
+    private HistoryEventDao historyEventDao;
+
 
     @Autowired
     HttpRequester httpRequester;
@@ -419,6 +423,7 @@ public class SubjectMessageController {
             }
             aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
             aoSubjectMessage.addAll(aSubjectMessage);
+            aoSubjectMessage.addAll(historyEventDao.getHistoryEvents(null, nID_HistoryEvent_Service, false));
         } catch (Exception e) {
             LOG.error("FAIL: {}", e);
             //LOG.trace("FAIL:", e);
