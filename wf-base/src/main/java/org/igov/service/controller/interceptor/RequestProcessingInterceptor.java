@@ -160,7 +160,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             LOG.info("mRequestParam {}", mRequestParam);        
             LOG.info("-----------------------------------------------");
             
-            if(mRequestParam.containsKey("sID_BP")&&
+            if((mRequestParam.containsKey("sID_BP")||mRequestParam.containsKey("snID_Process_Activiti"))&&
                mRequestParam.get("sID_BP").startsWith("_doc"))
             {
                 LOG.info("We found a document! Uhhuu!!");
