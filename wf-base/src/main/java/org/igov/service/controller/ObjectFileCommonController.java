@@ -3,15 +3,12 @@ package org.igov.service.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import java.io.BufferedReader;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
-import org.activiti.engine.identity.Group;
 import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.Task;
 import org.apache.commons.io.IOUtils;
@@ -19,19 +16,24 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
+import org.igov.io.fs.FileSystemData;
+import org.igov.io.web.HttpRequester;
 import org.igov.model.action.task.core.AttachmentCover;
 import org.igov.model.action.task.core.BuilderAttachModelCover;
 import org.igov.model.action.task.core.entity.AttachmentEntityI;
-//import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.access.BankIDUtils;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.FileTaskUpload;
-import org.igov.service.conf.AttachmetService;
 import org.igov.service.business.object.ObjectFileService;
+import org.igov.service.conf.AttachmetService;
+import org.igov.service.controller.interceptor.ActionProcessCountUtils;
+import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
+import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.VariableMultipartFile;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,38 +44,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import static java.util.Arrays.stream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import org.igov.io.fs.FileSystemData;
+import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
-import org.igov.io.web.HttpRequester;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
-import org.igov.service.controller.interceptor.ActionProcessCountUtils;
-import org.igov.service.exception.CRCInvalidException;
-import org.igov.service.exception.RecordNotFoundException;
 import static org.igov.util.Tool.sTextTranslit;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.springframework.http.MediaType;
+
+//import org.igov.service.business.access.BankIDConfig;
 
 /**
  * @author BW
@@ -1011,10 +994,16 @@ public class ObjectFileCommonController {
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "Логин подписанта", required = true) @RequestParam(required = true, value = "sLogin") String sLogin,
             @ApiParam(value = "Ключ шага документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step,
-            @ApiParam(value = "контент файла в виде строки", required = true) @RequestBody String sData)
+            @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = false) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            @ApiParam(value = "контент файла в виде строки", required = false) @RequestBody String sData)
             throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException
         {
-    	      
+
+            if(file != null){
+                sData = new String(file.getBytes());
+            } else if (sData == null || sData.equals("")){
+                throw new IllegalArgumentException("Bad request! Context not found");
+            }
         
         LOG.info("setAttachment nID_Process: " + nID_Process);
         LOG.info("setAttachment bSigned: " + bSigned);
