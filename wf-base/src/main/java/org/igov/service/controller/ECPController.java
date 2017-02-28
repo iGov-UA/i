@@ -35,13 +35,14 @@ public class ECPController {
     @Autowired
     GeneralConfig generalConfig;
 
-    @ApiOperation(value = "/apply", notes = "##### Метод для наложения цифровой подписи к файлу\n")
+    @ApiOperation(value = "/apply", notes = "##### Файл передается в теле запроса (POST) с именем параметра file. Примеры:\n"
+            + "https://alpha.test.igov.org.ua/wf/service/ecp/apply")
     @RequestMapping(value = "/apply", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity<byte[]> applyDigitalSignature(
     		@RequestParam(required = true, value = "file") MultipartFile file, HttpServletRequest request, HttpServletResponse response
     ) throws Exception {
-    	LOG.info("Uploaded file with filename : " + file.getName());
+    	LOG.info("Uploaded file with filename : " + file.getOriginalFilename());
     	byte[] res = ecpService.signFile(file.getBytes());
 
     	HttpHeaders responseHeaders = new HttpHeaders();

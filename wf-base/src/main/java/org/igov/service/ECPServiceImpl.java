@@ -39,6 +39,8 @@ public class ECPServiceImpl implements ECPService {
 					generalConfig.getsECPKeystorePasswd());
 			LOG.info("Created KeyStore");
 
+			LOG.info("Signing the document. Size of original document:"
+					+ (content != null ? content.length : "0"));
 			byte[] signedDoc = CryptoniteX.signHash(ks, content);
 			LOG.info("Signed the document. Size of signed document:"
 					+ (signedDoc != null ? signedDoc.length : "0"));
