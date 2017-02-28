@@ -352,6 +352,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
                   $scope.activitiForm,
                   $scope.data.formData
               ).then(function (result) {
+                if(result.formID && result.formID.indexOf('sKey') > -1) {
+                  try {
+                    result.formID = JSON.parse(result.formID).sKey;
+                  } catch(e) {}
+                }
                 $window.location.href =
                     $location.protocol() + '://' +
                     $location.host() + ':' +
