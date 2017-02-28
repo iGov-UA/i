@@ -191,6 +191,13 @@ public class GeneralConfig {
     
     @Value("${general.Object.SubPlace.sURL_Send}")
     private String sObjectSubPlace_sURL_Send;
+   
+    @Value("${general.ECP.Self.sSubPathFile}")
+    private String sECPKeystoreFilename;
+    
+    @Value("${general.ECP.Self.sPassword}")
+    private String sECPKeystorePasswd;
+
     
     public String getObjectSubPlace_Auth_sLogin() {
         return sObjectSubPlace_Auth_sLogin;
@@ -204,8 +211,14 @@ public class GeneralConfig {
     public String getObjectSubPlace_sURL_Send() {
         return sObjectSubPlace_sURL_Send;
     }
-    
-    public boolean isSelfTest() {
+	
+	public String getsECPKeystoreFilename() {
+		return sECPKeystoreFilename;
+	}
+	public String getsECPKeystorePasswd() {
+		return sECPKeystorePasswd;
+	}
+	public boolean isSelfTest() {
         boolean b = true;
         try {
             b = (sbTest_Self == null ? b : Boolean.valueOf(sbTest_Self));
