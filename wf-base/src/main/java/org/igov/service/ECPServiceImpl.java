@@ -1,9 +1,12 @@
 package org.igov.service;
 
+import java.io.File;
+
 import org.igov.io.GeneralConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +21,15 @@ public class ECPServiceImpl implements ECPService {
     @Autowired
     GeneralConfig generalConfig;
     
+    @Autowired
+    private Environment environment;
+    
 	@Override
 	public byte[] signFile(byte[] content) throws CryptoniteException {
-		LOG.info("Creating KeyStore with parameters. FileName:" + generalConfig.getsECPKeystoreFilename() + " Passwd:"
+		LOG.info("Creating KeyStore with parameters. FileName:" + (environment.getProperty("catalina.home") + "/conf/" + generalConfig.getsECPKeystoreFilename()) + " Passwd:"
 				+ generalConfig.getsECPKeystorePasswd());
 
-		ClassPathResource storePath = new ClassPathResource(generalConfig.getsECPKeystoreFilename());
+		File storePath = new File(environment.getProperty("catalina.home") + "/conf/" + generalConfig.getsECPKeystoreFilename());
 
 		if (storePath.exists()) {
 			LOG.info("Creating KeyStore with parameters. keystore path:"
