@@ -337,7 +337,11 @@ execution.setVariable('sExecutor', sExecutor)</script>
     <sequenceFlow id="flow15" sourceRef="usertask5" targetRef="usertask6"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow16" sourceRef="usertask6" targetRef="exclusivegateway3"></sequenceFlow>
-    <scriptTask id="scripttask3" name="перетворення вхідного номера для передачі в вихідний шаблон" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask3" name="перетворення вхідного номера для передачі в вихідний шаблон" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//1. преобразование входящего номера для передачи в исходящий шаблон
+var number=execution.getVariable('sID_Custom_GovPublic')
+execution.setVariable('sIncomingNumber',sID_Custom_GovPublic)</script>
+    </scriptTask>
     <sequenceFlow id="flow17" sourceRef="exclusivegateway3" targetRef="scripttask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision =='sEnumDecisionYes'}]]></conditionExpression>
     </sequenceFlow>
@@ -347,7 +351,7 @@ execution.setVariable('sExecutor', sExecutor)</script>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow19" sourceRef="scripttask3" targetRef="callactivity1"></sequenceFlow>
     <callActivity id="callactivity1" name="Виклик шаблону _doc_dmr_11401" calledElement="_doc_dmr_11401">
-    <extensionElements>
+      <extensionElements>
         <activiti:in source="sIncomingNumber" target="sIncomingNumber"></activiti:in>
         <activiti:in source="sApplicant" target="sApplicant"></activiti:in>
         <activiti:in source="sReportCommon" target="sReportCommon"></activiti:in>
