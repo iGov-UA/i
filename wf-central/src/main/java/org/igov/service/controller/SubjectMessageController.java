@@ -409,6 +409,7 @@ public class SubjectMessageController {
     ) throws CommonServiceException {
         Long nID_HistoryEvent_Service;
         List<SubjectMessage> aSubjectMessage = new ArrayList();
+        List<Object> aoSubjectMessage = new ArrayList();
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
@@ -417,13 +418,13 @@ public class SubjectMessageController {
                 actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
             }
             aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
-
+            aoSubjectMessage.addAll(aSubjectMessage);
         } catch (Exception e) {
             LOG.error("FAIL: {}", e);
             //LOG.trace("FAIL:", e);
             //throw new CommonServiceException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
-        return JsonRestUtils.toJsonResponse(aSubjectMessage);
+        return JsonRestUtils.toJsonResponse(aoSubjectMessage);
     }
 
 
