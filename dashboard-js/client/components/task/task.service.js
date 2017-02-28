@@ -616,7 +616,12 @@ angular.module('dashboardJsApp')
             var sFileFieldID = null;
             var sOutputFileType = null;
             var html = null;
-            var sKey_Step = null;
+            var sKey_Step_field = formProperties.filter(function (item) {
+              return item.id === "sKey_Step_Document";
+            })[0];
+            if(sKey_Step_field){
+              var sKey_Step = sKey_Step_field.value
+            }
 
             if(templateResult.fileField) {
               if (typeof templateResult.fileField.name === 'string') {

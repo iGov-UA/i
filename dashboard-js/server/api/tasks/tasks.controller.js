@@ -451,18 +451,39 @@ exports.upload_content_as_attachment = function (req, res) {
             quality: 100
           }
         };
+        if(req.body.isSendDefaultPrintForm){
+          req.body.url = "setDocumentImage";
+        } else {
+          req.body.url = 'setProcessAttach';
+        }
         pdfConversion(options, function (err, pdf) {
-          callback(err, {content: pdf.stream, contentType: 'application/json', url: 'setProcessAttach'});
+          callback(err, {content: pdf.stream, contentType: 'application/json'});
         });
       },
       function (data, callback) {
-        if (data.url === 'setProcessAttach') {
+        if (req.body.url === 'setProcessAttach') {
           activiti.uploadStream({
-            path: 'object/file/' + data.url,
+            path: 'object/file/' + req.body.url,
             nID_Process: req.params.taskId,
             stream: data.content,
             sFileNameAndExt: req.body.sFileNameAndExt,
             sID_Field: req.body.sID_Field,
+            headers: {
+              'Content-Type': data.contentType + ';charset=utf-8'
+            }
+          }, function (error, statusCode, result) {
+            pdfConversion.kill();
+            error ? res.send(error) : res.status(statusCode).json(result);
+          });
+        } else if(req.body.url === "setDocumentImage"){
+          var user = JSON.parse(req.cookies.user);
+          activiti.uploadStream({
+            path: 'object/file/' + req.body.url,
+            nID_Process: req.params.taskId,
+            stream: data.content,
+            sFileNameAndExt: req.body.sFileNameAndExt,
+            sKey_Step: req.body.sKey_Step,
+            sLogin: user.id,
             headers: {
               'Content-Type': data.contentType + ';charset=utf-8'
             }
