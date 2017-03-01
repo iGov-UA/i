@@ -790,12 +790,7 @@
                 return item.id === "sKey_Step_Document";
               })[0];
               if(sKey_Step_field){
-                var sKey_Step = sKey_Step_field.value
-              }
-              if(sKey_Step){
-                $scope.taskForm.sendDefaultPrintForm = true;
-              } else {
-                $scope.taskForm.sendDefaultPrintForm = false;
+                $scope.taskForm.sendDefaultPrintForm = !!sKey_Step_field.value;
               }
             }
             tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment)
