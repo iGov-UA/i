@@ -300,7 +300,6 @@ public class FlowService implements ApplicationContextAware {
         CronExpression cronExpression = null;
         
         DateTimeFormatter format = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
-        DateTimeFormatter inputformat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SS Z");
         SimpleDateFormat rangeformat = new SimpleDateFormat("dd.MM.yyyy");
         
         
@@ -408,19 +407,24 @@ public class FlowService implements ApplicationContextAware {
                     BaseFlowSlotScheduler handler = getFlowPropertyHandlerInstance(
                     flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
                     
-                    LOG.info("inputformat.parseDateTime: {}", inputformat.parseDateTime(flowProperty.getsDateTimeAt()));
+                    try{
                     
-                    if (startDate.isBefore(inputformat.parseDateTime(flowProperty.getsDateTimeAt()))||
-                        startDate.isAfter(inputformat.parseDateTime(flowProperty.getsDateTimeTo())))
-                    {
-                        startDate = inputformat.parseDateTime(flowProperty.getsDateTimeAt());
+                        if (startDate.isBefore(format.parseDateTime(flowProperty.getsDateTimeAt()))||
+                            startDate.isAfter(format.parseDateTime(flowProperty.getsDateTimeTo())))
+                        {
+                            startDate = format.parseDateTime(flowProperty.getsDateTimeAt());
+                        }
+
+                        if (stopDate.isAfter(format.parseDateTime(flowProperty.getsDateTimeTo()))||
+                            stopDate.isBefore(format.parseDateTime(flowProperty.getsDateTimeAt())))
+                        {
+                            stopDate = format.parseDateTime(flowProperty.getsDateTimeTo());
+                        }
+                    }
+                    catch(IllegalArgumentException ex){
+                        LOG.info("Illegal date format in flowProperty");
                     }
                     
-                    if (stopDate.isAfter(inputformat.parseDateTime(flowProperty.getsDateTimeTo()))||
-                        stopDate.isBefore(inputformat.parseDateTime(flowProperty.getsDateTimeAt())))
-                    {
-                        stopDate = inputformat.parseDateTime(flowProperty.getsDateTimeTo());
-                    }
                     
                     handler.setStartDate(startDate);
                     handler.setEndDate(stopDate);
