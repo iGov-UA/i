@@ -456,6 +456,7 @@ public class AttachmetService {
                 if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sID_Group)) {
                     if(oTargetDocumentStepSubjectRight == null){
                         oTargetDocumentStepSubjectRight = oDocumentStepSubjectRight;
+                        LOG.info("oTargetDocumentStepSubjectRight={}", oTargetDocumentStepSubjectRight );
                     }
                     else{
                     	 break;
@@ -467,10 +468,10 @@ public class AttachmetService {
         
 		if (oTargetDocumentStepSubjectRight != null) {
 			boolean bNeedECP = oTargetDocumentStepSubjectRight.getbNeedECP();
-			LOG.info("For " + oTargetDocumentStepSubjectRight.getsKey_GroupPostfix() + " bNeedECP =",
+			LOG.info(" bNeedECP =",
 					oTargetDocumentStepSubjectRight.getbNeedECP());
 			DateTime sDateECP = oTargetDocumentStepSubjectRight.getsDateECP();
-			LOG.info("sDateECP =");
+			LOG.info("sDateECP =", oTargetDocumentStepSubjectRight.getsDateECP());
 
 			if (bNeedECP == true && sDateECP == null) {
 				mReturn.put("bSigned:", false);// ецп не наложено
