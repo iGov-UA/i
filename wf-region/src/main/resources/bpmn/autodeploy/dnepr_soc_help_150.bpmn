@@ -14,7 +14,7 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileScanPassport" name="Сканований паспорт громадянина;Сторінки 1, 2, та сторінка з останньою пропискою. Скан копії можуть бути завантажені у вигляді одного ZIP-архіву чи pdf-файлу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Сканована копія ІПН" type="file" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
@@ -80,6 +80,7 @@
         <activiti:formProperty id="mfo" name="МФО банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileSocAccount" name="Довідка про відкриття соц.рахунку у банку" type="file"></activiti:formProperty>
 
         <activiti:formProperty id="nFileBirthCertificate" name="сканована копія свідоцтва про народження дитини-інваліда" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileResidence" name="довідка про місце проживання дитини-інваліда (або копія паспорта)" type="file" required="true"></activiti:formProperty>
@@ -89,7 +90,7 @@
           <activiti:value id="offline" name="без ЕЦП (погоджуєтесь на особистий візит після перевірки правильності даних)"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="form_signed" name="Заява з накладено ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява, з накладеним ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для накладення ЭЦП" type="invisible" default="pattern/print/minsoc/min_soc_help_441_print_ECP.html"></activiti:formProperty>        
 
         <activiti:formProperty id="bFlagFullBP" name="Флаг полного процесса" type="invisible" default="true"></activiti:formProperty>
@@ -197,25 +198,25 @@
         <activiti:formProperty id="bFlagECP" name="Флаг ЕЦП" type="invisible"></activiti:formProperty>
 		<activiti:formProperty id="markersUT1_2" name="Маркер UT1 2" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_150_user1_2.json')}"></activiti:formProperty>
 
-
-        
         <activiti:formProperty id="dDateVisit" name="Внесіть дату візиту громадянки для надання довідки про вагітність" type="date"></activiti:formProperty>
         <activiti:formProperty id="dTimeVisit" name="Внесіть час візиту громадянки для надання довідки про вагітність" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRoom" name="укажіть кабінет - куди прийти громадянці" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment1" name="Будь ласка, укажіть причину Вашого рішення" type="textArea"></activiti:formProperty>
        
+
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>		
         <activiti:formProperty id="cc_3_1" name="інвалідам з дитинства I групи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="cc_3_2" name="інвалідам з дитинства II групи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="cc_3_3" name="інвалідам з дитинства III групи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="cc_3_4" name="на дітей-інвалідів віком до 18 років" type="invisible"></activiti:formProperty>
 
-		<activiti:formProperty id="markersUT1" name="Маркер UT1" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_150_user.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>		
 		<activiti:formProperty id="PrintForm_1" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/minsoc/min_soc_help_441_print_ECP.html" type="file"></activiti:formProperty>
+
+		<activiti:formProperty id="markersUT1" name="Маркер UT1" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_150_user.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="прийняте рішення" activiti:candidateGroups="upszn${nArea}">
+    <userTask id="usertask2_green" name="прийняте рішення" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -274,17 +275,19 @@
           <activiti:value id="reject" name="відмовлено у призначенні допомоги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment2" name="Будь ласка, вкажіть причину відмови" type="textArea"></activiti:formProperty>
-       	<activiti:formProperty id="markers22" name="якщо відхилити" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;sComment2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDecision2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відмовлено у призначенні допомоги'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFileDecision" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
-        
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${nFileBirthCertificate},${nFileResidence},${nFileEducation},${nFileAttestat},${nFileNotRegisterAsRecipient},${nFileForeigner},${nFileGuardian},${form_signed}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>        
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>		
+        <activiti:formProperty id="cc_3_1" name="інвалідам з дитинства I групи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="cc_3_2" name="інвалідам з дитинства II групи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="cc_3_3" name="інвалідам з дитинства III групи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="cc_3_4" name="на дітей-інвалідів віком до 18 років" type="invisible"></activiti:formProperty>
+
+       	<activiti:formProperty id="markers22" name="якщо відхилити" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;sComment2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDecision2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відмовлено у призначенні допомоги'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </userTask>
+
+
     <serviceTask id="servicetask1" name="Повідомлення співробітника соц.захисту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -566,7 +569,7 @@
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${rishen}"]]></activiti:expression>
+          <activiti:expression><![CDATA["${nFileDecision}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -588,7 +591,7 @@
           <activiti:expression><![CDATA[iGov: Призначення ${nameService}. Схвалено]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${rishen}"]]></activiti:expression>
+          <activiti:expression><![CDATA["${nFileDecision}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -623,10 +626,10 @@
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow37" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="servicetask5" targetRef="usertask2_green"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow39" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow4" sourceRef="usertask2" targetRef="exclusivegateway4"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="usertask2_green" targetRef="exclusivegateway4"></sequenceFlow>
     <sequenceFlow id="flow6" name="відмова" sourceRef="exclusivegateway4" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision2=='reject'}]]></conditionExpression>
     </sequenceFlow>
@@ -648,7 +651,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow42" sourceRef="servicetask6" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="servicetask6" targetRef="usertask2_green"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow44" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow45" name="offline" sourceRef="exclusivegateway1" targetRef="exclusivegateway2">
@@ -671,7 +674,7 @@
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="72.0" width="191.0" x="428.0" y="109.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+      <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
         <omgdc:Bounds height="55.0" width="189.0" x="599.0" y="406.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">

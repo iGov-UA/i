@@ -31,6 +31,7 @@
         <activiti:formProperty id="mfo" name="МФО банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileSocAccount" name="Довідка про відкриття соц.рахунку у банку" type="file"></activiti:formProperty>
 
         <activiti:formProperty id="asNumberApplication" name="Ваше звернення до Управління праці та соціального захисту населення за даной послугой" type="enum" required="true">
           <activiti:value id="sFirst" name="Первинне"></activiti:value>
@@ -61,7 +62,7 @@
         <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailCler1k" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
 
@@ -72,8 +73,6 @@
 
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка документів в Управлінні праці та соціального захисту населення (1-й крок)" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Відділення" type="string" writable="false"></activiti:formProperty>
@@ -118,24 +117,12 @@
 
         <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/dnepr_soczah_139_zayava1.html]" type="invisible" default="Заява громадянина, продовження" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="cc_6" name="Помітка в прінтформі" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_139_user.json')}"></activiti:formProperty>
 
+        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_139_user.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFileBirthCertificate},${nFileRegReb},${nFileRegOder},${nFileRishSudu},${nFileDovVikon},${nFileDovProvad},${nFileDovOvs},${nFileRozmirAlim},${nFileIncomeStatement}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow5" name="Дані заповнені невірно" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1 =='reject1'}]]></conditionExpression>
-    </sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
     <userTask id="usertask2_green" name="Перевірка документів в Управлінні праці та соціального захисту населення (2-й крок)" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Відділення" type="string" writable="false"></activiti:formProperty>
@@ -165,9 +152,22 @@
           <activiti:value id="reject2" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
 
+        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/dnepr_soczah_139_zayava1.html]" type="invisible" default="Заява громадянина, продовження" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="cc_6" name="Помітка в прінтформі" type="invisible"></activiti:formProperty>
+
         <activiti:formProperty id="nFileRishCopy" name="Завантажте копію рішення по наданню послуги" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
+
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow5" name="Дані заповнені невірно" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1 =='reject1'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask2_green" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow8" name="Відмовити" sourceRef="exclusivegateway2" targetRef="servicetask4">
@@ -190,7 +190,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailCler1k}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Тимчасова державна допомога дітям, батьки яких ухиляються від сплати аліментів.]]></activiti:string>

@@ -21,8 +21,6 @@ public class JobEscalation extends IAutowiredSpringJob {
     @Autowired
     private EscalationService escalationService;
     @Autowired
-    private HistoryService historyService;
-    @Autowired
     protected RuntimeService runtimeService;
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -31,11 +29,7 @@ public class JobEscalation extends IAutowiredSpringJob {
                 new Date(), context.getTrigger().getName());
         try {
             //TODO: ��� ����� �������� ����� ������� ���������!
-            if (!oGeneralConfig.isTest_Escalation()) {
-                escalationService.runEscalationAll();
-            } else{
-                LOG.info("skip doing escalation");
-            }
+            escalationService.runEscalationAll();
         } catch (CommonServiceException oException) {
             LOG.error("Bad: ", oException.getMessage());
             LOG.debug("FAIL:", oException);
