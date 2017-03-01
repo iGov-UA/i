@@ -303,7 +303,7 @@ public class AttachmetService {
         //return aResultArray;
     }
 
-    public MultipartFile getDocumentImage(String snID_Process_Activiti, String sLogin, String sKey_Step)
+    public MultipartFile getDocumentImage(String nID_Process, String sLogin, String sKey_Step)
             throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
 
         List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
@@ -317,7 +317,7 @@ public class AttachmetService {
         LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
         LOG.info("aGroup={}", aGroup);
         
-        List<DocumentStep> aDocumentStep = documentStepDao.getStepForProcess(snID_Process_Activiti);
+        List<DocumentStep> aDocumentStep = documentStepDao.getStepForProcess(nID_Process);
         LOG.info("The size of list" + aDocumentStep.size());
         LOG.info("Result list of steps: {}", aDocumentStep);
 
@@ -456,6 +456,7 @@ public class AttachmetService {
                 if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sID_Group)) {
                     if(oTargetDocumentStepSubjectRight == null){
                         oTargetDocumentStepSubjectRight = oDocumentStepSubjectRight;
+                        LOG.info("oTargetDocumentStepSubjectRight={}", oTargetDocumentStepSubjectRight );
                     }
                     else{
                     	 break;
@@ -467,10 +468,13 @@ public class AttachmetService {
         
 		if (oTargetDocumentStepSubjectRight != null) {
 			boolean bNeedECP = oTargetDocumentStepSubjectRight.getbNeedECP();
-			LOG.info("For " + oTargetDocumentStepSubjectRight.getsKey_GroupPostfix() + " bNeedECP =",
+			if (oTargetDocumentStepSubjectRight.getbNeedECP()==null){
+				bNeedECP=false;
+			
+			LOG.info(" bNeedECP =",
 					oTargetDocumentStepSubjectRight.getbNeedECP());
 			DateTime sDateECP = oTargetDocumentStepSubjectRight.getsDateECP();
-			LOG.info("sDateECP =");
+			LOG.info("sDateECP =", oTargetDocumentStepSubjectRight.getsDateECP());
 
 			if (bNeedECP == true && sDateECP == null) {
 				mReturn.put("bSigned:", false);// ецп не наложено
@@ -481,7 +485,7 @@ public class AttachmetService {
 			}
 			return mReturn;
 		}
-
+		}
 		return mReturn;
 	}
 
