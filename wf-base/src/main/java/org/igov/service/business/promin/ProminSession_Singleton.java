@@ -66,22 +66,20 @@ public class ProminSession_Singleton {
     }
     
     public String getSid_Auth_PB_ObjectSubPlace() {
-// Потом добавить свои проперти для Проминя
-	
-//        LOG.info("Auth Promin begin. sid_Auth_PB_ObjectSubPlace={}, nTimeCreatedMS_PB_ObjectSubPlace={}, nTimeLiveLimitMS_PB_ObjectSubPlace={}", 
-//        	sid_Auth_PB_ObjectSubPlace, nTimeCreatedMS_PB_ObjectSubPlace, nTimeLiveLimitMS_PB_ObjectSubPlace);
-//        if (sid_Auth_PB_ObjectSubPlace == null || (System.currentTimeMillis() - nTimeCreatedMS_PB_ObjectSubPlace) > nTimeLiveLimitMS_PB_ObjectSubPlace) {
-//            nTimeCreatedMS_PB_ObjectSubPlace = System.currentTimeMillis();
-//
-//            LOG.debug("Auth Promin, sid refresh");
-//            
-//            sid_Auth_PB_ObjectSubPlace= getSessionId(generalConfig.getObjectSubPlace_Auth_sLogin(),
-//                    generalConfig.getObjectSubPlace_Auth_sPassword(),
-//                    generalConfig.getObjectSubPlace_Auth_sURL_GenerateSID() + "?lang=UA");            
-//        }
-//        LOG.info("Auth Promin end. sid_Auth_PB_ObjectSubPlace={}, nTimeCreatedMS_PB_ObjectSubPlace={}, nTimeLiveLimitMS_PB_ObjectSubPlace={}", 
-//        	sid_Auth_PB_ObjectSubPlace, nTimeCreatedMS_PB_ObjectSubPlace, nTimeLiveLimitMS_PB_ObjectSubPlace);
-	sid_Auth_PB_ObjectSubPlace = getSid_Auth_Receipt_PB_Bank();
+        LOG.info("Auth Promin begin. sid_Auth_PB_ObjectSubPlace={}, nTimeCreatedMS_PB_ObjectSubPlace={}, nTimeLiveLimitMS_PB_ObjectSubPlace={}", 
+        	sid_Auth_PB_ObjectSubPlace, nTimeCreatedMS_PB_ObjectSubPlace, nTimeLiveLimitMS_PB_ObjectSubPlace);
+        if (sid_Auth_PB_ObjectSubPlace == null || (System.currentTimeMillis() - nTimeCreatedMS_PB_ObjectSubPlace) > nTimeLiveLimitMS_PB_ObjectSubPlace) {
+            nTimeCreatedMS_PB_ObjectSubPlace = System.currentTimeMillis();
+
+            LOG.debug("Auth Promin, sid refresh");
+            
+            sid_Auth_PB_ObjectSubPlace= getSessionId(generalConfig.getObjectSubPlace_Auth_sLogin(),
+                    generalConfig.getObjectSubPlace_Auth_sPassword(),
+                    generalConfig.getObjectSubPlace_Auth_sURL_GenerateSID() + "?lang=UA");            
+        }
+        LOG.info("Auth Promin end. sid_Auth_PB_ObjectSubPlace={}, nTimeCreatedMS_PB_ObjectSubPlace={}, nTimeLiveLimitMS_PB_ObjectSubPlace={}", 
+        	sid_Auth_PB_ObjectSubPlace, nTimeCreatedMS_PB_ObjectSubPlace, nTimeLiveLimitMS_PB_ObjectSubPlace);
+//	sid_Auth_PB_ObjectSubPlace = getSID_Auth_PB_SMS();
 	
         return sid_Auth_PB_ObjectSubPlace;
     }

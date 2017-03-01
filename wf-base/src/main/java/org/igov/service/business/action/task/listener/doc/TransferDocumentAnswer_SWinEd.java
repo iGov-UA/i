@@ -37,9 +37,9 @@ public class TransferDocumentAnswer_SWinEd implements TaskListener {
     public void notify(DelegateTask delegateTask) {
         LOG.info("!!! delegateTask.getId(): " + delegateTask.getId());
         String sINN_Value = getStringFromFieldExpression(this.sINN, delegateTask.getExecution());
-        String snCountYear = getStringFromFieldExpression(this.snCountYear, delegateTask.getExecution());
-        String sFile_XML_SWinEd_Filter = getStringFromFieldExpression(this.sFile_XML_SWinEd_Filter, delegateTask.getExecution());
-        String asID_Attach_Dfs = dfsService.getAnswer(delegateTask.getId(), delegateTask.getProcessInstanceId(), sINN_Value, snCountYear, sFile_XML_SWinEd_Filter);
+        String snCountYear_Value = getStringFromFieldExpression(this.snCountYear, delegateTask.getExecution());
+        String sFile_XML_SWinEd_Filter_Value = getStringFromFieldExpression(this.sFile_XML_SWinEd_Filter, delegateTask.getExecution());
+        String asID_Attach_Dfs = dfsService.getAnswer(delegateTask.getId(), delegateTask.getProcessInstanceId(), sINN_Value, snCountYear_Value, sFile_XML_SWinEd_Filter_Value);
         LOG.info("!!! delegateTask.getId(): " + delegateTask.getId() + " as: " + asID_Attach_Dfs);
     }
 

@@ -134,7 +134,8 @@ module.exports.scanUpload = function (req, res) {
   var sHost = req.region.sHost;
   var accessToken = req.session.access.accessToken;
   var data = req.body;
-  var sURL = sHost + '/service/object/file/upload_file_to_redis';
+  // var sURL = sHost + '/service/object/file/upload_file_to_redis';
+  var sURL = sHost + '/service/object/file/setProcessAttach';
   var type = req.session.type;
   var userService = authProviderRegistry.getUserService(type);
   console.log("[scanUpload]:sURL=" + sURL);
@@ -162,7 +163,11 @@ module.exports.scanUpload = function (req, res) {
         var requestOptionsForUploadContent = {
           url: uploadURL,
           auth: getAuth(),
-          headers: form.getHeaders()
+          headers: form.getHeaders(),
+          qs : {
+            sFileNameAndExt: documentScan.scan.type + '.' + documentScan.scan.extension,
+            sID_StorageType : 'Redis'
+          }
         };
 
         pipeFormDataToRequest(form, requestOptionsForUploadContent, function (error, result) {
@@ -245,6 +250,7 @@ module.exports.signFormMultiple = function (req, res) {
   var sURL = sHost + '/';
   var type = req.session.type;
   var userService = authProviderRegistry.getUserService(type);
+  var storageType = 'Redis';
 
   if (!formID) {
     res.status(400).send({error: 'formID should be specified'});
@@ -343,7 +349,14 @@ module.exports.signFormMultiple = function (req, res) {
     var formData = result.loadedForm;
     var filesToSign = [];
     async.forEach(findFileFields(formData), function (fileField, callbackEach) {
-      uploadFileService.downloadBuffer(fileField.value, function (error, response, buffer) {
+      var params = {};
+
+      if(fileField.value && fileField.value.indexOf('sKey') > -1) {
+        fileField.value = JSON.parse(fileField.value).sKey;
+      }
+      params.ID = fileField.value;
+      params.storageType = storageType;
+      uploadFileService.downloadBuffer(params, function (error, response, buffer) {
         var ext = formData.formData.files[fileField.id].split('.').pop().toLowerCase();
         var fileName = fileField.id + (ext ? '.' + ext : '');
         filesToSign.push({
@@ -443,8 +456,12 @@ module.exports.signFormMultipleCallback = function (req, res) {
           entryProcessCallback(errors.createExternalServiceError('Can\'t save signed content from archive. Unknown error', error));
         } else if (body.code && body.message) {
           entryProcessCallback(errors.createExternalServiceError('Can\'t save signed content from archive. ' + body.message, body));
-        } else if (body.fileID) {
-          uploadedFiles[zipEntry.name.split('.')[0]] = body.fileID;
+        // } else if (body.fileID) {
+        //   uploadedFiles[zipEntry.name.split('.')[0]] = body.fileID;
+        //   entryProcessCallback();
+        // }
+        } else if (body.sKey) {
+          uploadedFiles[zipEntry.name.split('.')[0]] = JSON.stringify(body);
           entryProcessCallback();
         }
       }, sHost);
@@ -488,10 +505,14 @@ module.exports.signFormMultipleCallback = function (req, res) {
             callback(errors.createExternalServiceError('Can\'t rewrite form. Unknown error', error), null);
           } else if (body.code && body.message) {
             callback(errors.createExternalServiceError('Can\'t rewrite form. ' + body.message, body), null);
-          } else if (body.fileID) {
+            // } else if (body.fileID) {
+            //   var oldFormID = formID;
+            //   req.session.formID = body.fileID;
+            //   formID = body.fileID;
+          }else if (body.sKey) {
             var oldFormID = formID;
-            req.session.formID = body.fileID;
-            formID = body.fileID;
+            req.session.formID = body.sKey;
+            formID = body.sKey;
             console.log('[sign multiple callback] update form id. was : ' + oldFormID + 'now : ' + formID);
             callback(null, result);
           } else {
@@ -516,8 +537,12 @@ module.exports.signFormMultipleCallback = function (req, res) {
         callback(errors.createExternalServiceError('Can\'t save signed content. Unknown error', error), null);
       } else if (body.code && body.message) {
         callback(errors.createExternalServiceError('Can\'t save content. ' + body.message, body), null);
-      } else if (body.fileID) {
-        result.signedFileID = body.fileID;
+      // } else if (body.fileID) {
+      //   result.signedFileID = body.fileID;
+      //   callback(null, result);
+      // }
+      } else if (body.sKey) {
+        result.signedFileID = body.sKey;
         callback(null, result);
       }
     }, sHost);
@@ -725,8 +750,12 @@ module.exports.signFormCallback = function (req, res) {
         callback(errors.createExternalServiceError('Can\'t save signed content to storage. Unknown error', error), null);
       } else if (body.code && body.message) {
         callback(errors.createExternalServiceError('Can\'t save signed content to storage. ' + body.message, body), null);
-      } else if (body.fileID) {
-        downloadResult.signedFormID = body.fileID;
+      // } else if (body.fileID) {
+      //   downloadResult.signedFormID = body.fileID;
+      //   callback(null, downloadResult);
+      // }
+      } else if (body) {
+        downloadResult.signedFormID = JSON.stringify(body);
         callback(null, downloadResult);
       }
     }, sHost);
@@ -770,9 +799,13 @@ module.exports.saveForm = function (req, res) {
       res.status(500).send(errors.createExternalServiceError('Can\'t save form. Unknown error', error));
     } else if (body.code && body.message) {
       res.status(500).send(errors.createExternalServiceError('Can\'t save form. ' + body.message, body));
-    } else if (body.fileID) {
-      req.session.formID = body.fileID;
-      res.send({formID: body.fileID});
+    // } else if (body.fileID) {
+    //   req.session.formID = body.fileID;
+    //   res.send({formID: body.fileID});
+    // }
+    } else if (body.sKey) {
+      req.session.formID = body.sKey;
+      res.send({formID: body.sKey});
     }
   });
 };
@@ -794,12 +827,17 @@ module.exports.loadForm = function (req, res) {
 };
 
 function loadForm(formID, sURL, callback) {
-  var downloadURL = sURL + 'service/object/file/download_file_from_redis_bytes';
+  // var downloadURL = sURL + 'service/object/file/download_file_from_redis_bytes';
+  var downloadURL = sURL + 'service/object/file/getProcessAttach';
   request.get({
     url: downloadURL,
     auth: getAuth(),
+    // qs: {
+    //   key: formID
+    // },
     qs: {
-      key: formID
+      sKey: formID,
+      sID_StorageType : 'Redis'
     },
     json: true
   }, callback);

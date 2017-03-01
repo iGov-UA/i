@@ -783,6 +783,11 @@
             $scope.taskForm.isInProcess = true;
 
             rollbackReadonlyEnumFields();
+            if($scope.model.printTemplate){
+              $scope.taskForm.sendDefaultPrintForm = false;
+            } else {
+              $scope.taskForm.sendDefaultPrintForm = true;
+            }
             tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment)
               .then(function (result) {
                 if(result.status == 500){
@@ -1264,6 +1269,7 @@
           if ( ( $scope.printTemplateList.length === 0 || isMenuItem === true ) && $scope.selectedTask && $scope.taskForm) {
             rollbackReadonlyEnumFields();
             $scope.printModalState.show = !$scope.printModalState.show;
+            debugger;
           }
         };
 
@@ -1297,6 +1303,7 @@
           if ($scope.printTemplateList.length > 0) {
             $scope.model.printTemplate = $scope.printTemplateList[0];
           }
+          debugger;
           return true;
         };
 

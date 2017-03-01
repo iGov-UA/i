@@ -97,7 +97,9 @@ public class DfsService {
                         LOG.info("ToAttach-PROCESS Found sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
                         LOG.info("ToAttach-PROCESS saName_Attach_Dfs_Value=" + saName_Attach_Dfs_Value + " saName_Attach_Dfs=" + saName_Attach_Dfs);
                         if (saName_Attach_Dfs_Value == null || !saName_Attach_Dfs_Value.contains(sFileName)) {
-                            if ("".equalsIgnoreCase(sFile_XML_SWinEd_Filter) || sFileName.contains(sFile_XML_SWinEd_Filter)) {
+                            if (sFile_XML_SWinEd_Filter == null 
+                                    || "".equalsIgnoreCase(sFile_XML_SWinEd_Filter.trim()) 
+                                    || sFileName.contains(sFile_XML_SWinEd_Filter)) {
                                 saName_Attach_Dfs = saName_Attach_Dfs + sFileName + ",";
                                 Attachment oAttachment = taskService.createAttachment(sFileContentType,
                                         sID_Task, snID_Process, sFileName, oByteArrayMultipartFile.getName(), oByteArrayMultipartFile.getInputStream());

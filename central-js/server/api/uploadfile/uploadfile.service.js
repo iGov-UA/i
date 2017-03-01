@@ -4,9 +4,13 @@ var url = require('url')
   , activiti = require('../../components/activiti')
   , config = require('../../config/environment');
 
+// var apiURLS = {
+//   upload: '/object/file/upload_file_to_redis',
+//   download: '/object/file/download_file_from_redis_bytes'
+// };
 var apiURLS = {
-  upload: '/object/file/upload_file_to_redis',
-  download: '/object/file/download_file_from_redis_bytes'
+  upload: '/object/file/setProcessAttach',
+  download: '/object/file/getProcessAttach'
 };
 
 function fixHost(sHost){
@@ -54,8 +58,8 @@ module.exports.download = function (fileID, callback, sHost, session) {
   activiti.get(apiURLS.download, {key: fileID}, callback, fixHost(sHost), session);
 };
 
-module.exports.downloadBuffer = function (fileID, callback, sHost, session) {
-  activiti.get(apiURLS.download, {key: fileID}, callback, fixHost(sHost), session, true);
+module.exports.downloadBuffer = function (params, callback, sHost, session) {
+  activiti.get(apiURLS.download, {sKey: params.ID, sID_StorageType: params.storageType}, callback, fixHost(sHost), session, true);
 };
 
 module.exports.uploadHTMLForm = function (fullUploadURL, formToUpload, headers, callback) {
