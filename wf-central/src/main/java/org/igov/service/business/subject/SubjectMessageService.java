@@ -197,7 +197,7 @@ public class SubjectMessageService {
     /*issue1215 Перегружен ради добавлениия нового параметра (sSubjectInfo) в /setTaskQuestions, чтобы не рушить
     существующие сервисыБ которые используют этот метод  */
     public SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
-            String sContacts, String sData, Long nID_subjectMessageType, String sSubjectInfo) throws CommonServiceException {
+            String sContacts, String sData, Long nID_subjectMessageType, String sSubjectInfo) throws Exception {
         SubjectContact subjectContact = null;
         Subject subject = new Subject();
         SubjectMessage message = null;
@@ -263,13 +263,22 @@ public class SubjectMessageService {
 
 
         message.setContacts((sContacts == null) ? "" : sContacts);
+        if(sData != null){
+            LOG.info("sData before set to Subject Message (size="+sData.length()+") = " + sData);
+        }
         message.setData((sData == null) ? "" : sData);
+        LOG.info("sData before set to Subject Message (size="+message.getData().length()+") = " + message.getData());
         message.setDate(new DateTime());
         message.setsSubjectInfo((sSubjectInfo == null) ? "" : sSubjectInfo);
         LOG.info("(createSubjectMessage: message sSubjectInfo{})", message.getsSubjectInfo());
         if (nID_subjectMessageType != null) {
             SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(nID_subjectMessageType);
-            message.setSubjectMessageType(subjectMessageType);
+            try{
+                message.setSubjectMessageType(subjectMessageType);
+            } catch (Exception e){
+                throw new Exception("ERROR Can't save SubjectMessage");
+            }
+
         }
 
         return message;

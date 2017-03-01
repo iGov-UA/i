@@ -994,17 +994,17 @@ public class ObjectFileCommonController {
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "Логин подписанта", required = true) @RequestParam(required = true, value = "sLogin") String sLogin,
             @ApiParam(value = "Ключ шага документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step,
-            @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = false) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
+       //     @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = false) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
             @ApiParam(value = "контент файла в виде строки", required = false) @RequestBody String sData)
             throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException
         {
-
+/*
             if(file != null){
                 sData = new String(file.getBytes());
             } else if (sData == null || sData.equals("")){
                 throw new IllegalArgumentException("Bad request! Context not found");
             }
-        
+        */
         LOG.info("setAttachment nID_Process: " + nID_Process);
         LOG.info("setAttachment bSigned: " + bSigned);
         LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
@@ -1087,6 +1087,24 @@ public class ObjectFileCommonController {
         AttachmentCover oAttachmentCover = new AttachmentCover();
 
         return oAttachmentCover.apply(attachment);
+    }
+    @ApiOperation(value = "проверка подписано ли ЕЦП")
+    @RequestMapping(value = "/isDocumentAllSigned", method = RequestMethod.GET)
+    @Transactional
+    public @ResponseBody
+    Map<String, Boolean> isDocumentAllSigned(
+            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
+            @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
+            @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
+                   HttpServletResponse httpResponse) throws Exception {
+
+        LOG.info("snID_Process_Activiti: " + nID_Process);
+        LOG.info("sLogin: " + sLogin);
+        LOG.info("sKey_Step: " + sKey_Step);
+        
+        return attachmetService.isDocumentAllSigned(nID_Process, sLogin, sKey_Step);
+
+        
     }
 
 }

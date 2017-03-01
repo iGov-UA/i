@@ -369,9 +369,7 @@ public class ActionEventService {
             isChanged = true;
         }
         if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
-            LOG.info("======== ####### ======== Start save soData ======== ####### ======== ");
             oHistoryEvent_Service.setSoData(soData);
-            LOG.info("======== ####### ======== END save soData ======== ####### ======== ");
             isChanged = true;
         }
 
@@ -464,8 +462,14 @@ public class ActionEventService {
                 setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, sSubjectInfo);
 
                 LOG.info("======== ####### ======== Start create subject message object ======== ####### ======== ");
-                SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
-                        sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo);
+                LOG.info("soData in HistoryEventService (size="+ oHistoryEvent_Service.getSoData().length() +") = " + oHistoryEvent_Service.getSoData());
+                SubjectMessage oSubjectMessage = null;
+                try {
+                    oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+                            sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo);
+                } catch (Exception e) {
+                    throw new CommonServiceException("500", e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
+                }
                 oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
                 LOG.info("setting message");
                 subjectMessagesDao.setMessage(oSubjectMessage);
