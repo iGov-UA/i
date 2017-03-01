@@ -300,7 +300,9 @@ public class FlowService implements ApplicationContextAware {
         CronExpression cronExpression = null;
         
         DateTimeFormatter format = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
+        DateTimeFormatter inputformat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS Z");
         SimpleDateFormat rangeformat = new SimpleDateFormat("dd.MM.yyyy");
+        
         
         List<FlowProperty> aoFlowPropertyGroup = flowPropertyDao.findAllBy("sGroup", flow.getsGroup());
                 
