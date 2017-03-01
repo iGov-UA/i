@@ -786,7 +786,17 @@
             if($scope.model.printTemplate){
               $scope.taskForm.sendDefaultPrintForm = false;
             } else {
-              $scope.taskForm.sendDefaultPrintForm = true;
+              var sKey_Step_field = $scope.taskForm.filter(function (item) {
+                return item.id === "sKey_Step_Document";
+              })[0];
+              if(sKey_Step_field){
+                var sKey_Step = sKey_Step_field.value
+              }
+              if(sKey_Step){
+                $scope.taskForm.sendDefaultPrintForm = true;
+              } else {
+                $scope.taskForm.sendDefaultPrintForm = false;
+              }
             }
             tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment)
               .then(function (result) {
