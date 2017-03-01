@@ -467,7 +467,7 @@ public class AttachmetService {
 		}
 
 		if (oTargetDocumentStepSubjectRight != null) {
-			boolean bNeedECP = true;
+			boolean bNeedECP = false;
 			if (oTargetDocumentStepSubjectRight.getbNeedECP() != null) {
 				bNeedECP = oTargetDocumentStepSubjectRight.getbNeedECP();
 			}
