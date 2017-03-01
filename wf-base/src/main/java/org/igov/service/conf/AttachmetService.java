@@ -467,25 +467,23 @@ public class AttachmetService {
         }
         
 		if (oTargetDocumentStepSubjectRight != null) {
-			boolean bNeedECP = oTargetDocumentStepSubjectRight.getbNeedECP();
-			if (oTargetDocumentStepSubjectRight.getbNeedECP()==null){
-				bNeedECP=false;
+			boolean bNeedECP = false;
+			if (oTargetDocumentStepSubjectRight.getbNeedECP() != null) {
+				bNeedECP = oTargetDocumentStepSubjectRight.getbNeedECP();
+			}
 			
-			LOG.info(" bNeedECP =",
-					oTargetDocumentStepSubjectRight.getbNeedECP());
 			DateTime sDateECP = oTargetDocumentStepSubjectRight.getsDateECP();
 			LOG.info("sDateECP =", oTargetDocumentStepSubjectRight.getsDateECP());
 
-			if (bNeedECP == true && sDateECP == null) {
+			if (bNeedECP && sDateECP == null) {
 				mReturn.put("bSigned:", false);// ецп не наложено
 			}
 
-			else {
+			if (bNeedECP && sDateECP != null) {
 				mReturn.put("bSigned:", true); // ецп наложено
 			}
-			return mReturn;
-		}
-		}
+		}	
+
 		return mReturn;
 	}
 
