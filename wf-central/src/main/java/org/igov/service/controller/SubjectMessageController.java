@@ -409,6 +409,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "Строка-Token", required = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            @ApiParam(value = "булевский флаг, определяющий сервер вызова", required = false) @RequestParam(value = "isRegion", required = false, defaultValue = "false") Boolean isRegion,
             @ApiParam(value = "Номер-ИД субьекта (владельца заявки)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
         Long nID_HistoryEvent_Service;
@@ -423,7 +424,12 @@ public class SubjectMessageController {
             }
             aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
             aoSubjectMessage.addAll(aSubjectMessage);
-            aoSubjectMessage.addAll(historyEventDao.getHistoryEvents(null, nID_HistoryEvent_Service, false));
+            
+            if(isRegion){
+                aoSubjectMessage.addAll(historyEventDao.getHistoryEvents(null, nID_HistoryEvent_Service, false));
+            }
+            
+        
         } catch (Exception e) {
             LOG.error("FAIL: {}", e);
             //LOG.trace("FAIL:", e);
