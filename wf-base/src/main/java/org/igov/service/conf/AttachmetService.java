@@ -468,6 +468,9 @@ public class AttachmetService {
         
 		if (oTargetDocumentStepSubjectRight != null) {
 			boolean bNeedECP = oTargetDocumentStepSubjectRight.getbNeedECP();
+			if (oTargetDocumentStepSubjectRight.getbNeedECP()==null){
+				bNeedECP=false;
+			}
 			LOG.info(" bNeedECP =",
 					oTargetDocumentStepSubjectRight.getbNeedECP());
 			DateTime sDateECP = oTargetDocumentStepSubjectRight.getsDateECP();
