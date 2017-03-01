@@ -408,7 +408,7 @@ public class FlowService implements ApplicationContextAware {
                     BaseFlowSlotScheduler handler = getFlowPropertyHandlerInstance(
                     flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
                     
-                    LOG.info("inputformat.parseDateTime: {}", inputformat.parseDateTime(flowProperty.getsDateTimeAt()))
+                    LOG.info("inputformat.parseDateTime: {}", inputformat.parseDateTime(flowProperty.getsDateTimeAt()));
                     
                     if (startDate.isBefore(inputformat.parseDateTime(flowProperty.getsDateTimeAt()))||
                         startDate.isAfter(inputformat.parseDateTime(flowProperty.getsDateTimeTo())))
