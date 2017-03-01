@@ -59,7 +59,7 @@ public class SubjectMessage extends AbstractEntity {
     private String contacts;
 
     @JsonProperty(value = "sData")
-    @Column(name = "sData", length = 200)
+    @Column(name = "sData")
     private String data;
 
     @JsonProperty(value = "oSubjectMessageType")
