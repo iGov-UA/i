@@ -303,7 +303,7 @@ public class AttachmetService {
         //return aResultArray;
     }
 
-    public MultipartFile getDocumentImage(String snID_Process_Activiti, String sLogin, String sKey_Step)
+    public MultipartFile getDocumentImage(String nID_Process, String sLogin, String sKey_Step)
             throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
 
         List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
@@ -317,7 +317,7 @@ public class AttachmetService {
         LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
         LOG.info("aGroup={}", aGroup);
         
-        List<DocumentStep> aDocumentStep = documentStepDao.getStepForProcess(snID_Process_Activiti);
+        List<DocumentStep> aDocumentStep = documentStepDao.getStepForProcess(nID_Process);
         LOG.info("The size of list" + aDocumentStep.size());
         LOG.info("Result list of steps: {}", aDocumentStep);
 
@@ -468,6 +468,9 @@ public class AttachmetService {
         
 		if (oTargetDocumentStepSubjectRight != null) {
 			boolean bNeedECP = oTargetDocumentStepSubjectRight.getbNeedECP();
+			if (oTargetDocumentStepSubjectRight.getbNeedECP()==null){
+				bNeedECP=false;
+			
 			LOG.info(" bNeedECP =",
 					oTargetDocumentStepSubjectRight.getbNeedECP());
 			DateTime sDateECP = oTargetDocumentStepSubjectRight.getsDateECP();
@@ -482,7 +485,7 @@ public class AttachmetService {
 			}
 			return mReturn;
 		}
-
+		}
 		return mReturn;
 	}
 
