@@ -180,10 +180,11 @@ public class CloseTaskEvent {
                     if (bProcessClosed) {
                       
                         status = HistoryEvent_Service_StatusType.CLOSED;
-                          LOG.info("HistoryEvent_Service_StatusType is CLOSED + ", status); 
+                          LOG.info("HistoryEvent_Service_StatusType is CLOSED ", status.toString()); 
+                          
                     } else {
                         status = HistoryEvent_Service_StatusType.OPENED;
-                          LOG.info("HistoryEvent_Service_StatusType is OPENED + ", status); 
+                          LOG.info("HistoryEvent_Service_StatusType is OPENED ", status.toString()); 
                     }
                     LOG.info("Saving closed task", status);
                     mParam.put("sUserTaskName", sUserTaskName);
