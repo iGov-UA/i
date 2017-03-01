@@ -300,7 +300,7 @@ public class FlowService implements ApplicationContextAware {
         CronExpression cronExpression = null;
         
         DateTimeFormatter format = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
-        DateTimeFormatter inputformat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SS");
+        DateTimeFormatter inputformat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SS Z");
         SimpleDateFormat rangeformat = new SimpleDateFormat("dd.MM.yyyy");
         
         
@@ -407,6 +407,8 @@ public class FlowService implements ApplicationContextAware {
                         
                     BaseFlowSlotScheduler handler = getFlowPropertyHandlerInstance(
                     flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
+                    
+                    LOG.info("inputformat.parseDateTime: {}", inputformat.parseDateTime(flowProperty.getsDateTimeAt()))
                     
                     if (startDate.isBefore(inputformat.parseDateTime(flowProperty.getsDateTimeAt()))||
                         startDate.isAfter(inputformat.parseDateTime(flowProperty.getsDateTimeTo())))
