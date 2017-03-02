@@ -184,45 +184,11 @@ public class SubjectMessageController {
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
 
-        //Boolean bExist = false;
         Map<String,Object> m = mInitOrderMessageFeedback(sID_Order, nRate);
         String sURL_Redirect = (String)m.get("sURL_Redirect");
-        //bExist = (Boolean) m.get("bExist");
-        //String sURL_Redirect = initOrderMessageFeedback(sID_Order, nRate);
         oResponse.sendRedirect(sURL_Redirect);
         String sReturn = "Ok!";
-
-        //subjectMessagesDao.setMessage(oSubjectMessage_Rate);
-        /*String sToken = RandomStringUtils.randomAlphanumeric(15);
-         try {
-         HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
-         nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
-         nID_Subject = oHistoryEvent_Service.getnID_Subject();
-         oHistoryEvent_Service.setsToken(sToken);
-         historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
-         } catch (Exception e) {
-         LOG.error("Error occured while saving sID_Order in subject message for feedback.", e);;
-         }*/
-        /*Long nID_SubjectMessageType = 0l;
-         SubjectMessage oSubjectMessage_Rate
-         = createSubjectMessage(
-         sMessageHead(nID_SubjectMessageType, sID_Order),
-         "Оцінка " + sID_Rate + " (по шкалі від 2 до 5)"
-         , nID_Subject, "", "", "sID_Rate=" + sID_Rate, nID_SubjectMessageType);
-         if(nID_HistoryEvent_Service!=null){
-         oSubjectMessage_Rate.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
-         }
-         subjectMessagesDao.setMessage(oSubjectMessage_Rate);*/
-        //setServiceRate(sID_Order, sID_Rate);
-        // storing message for feedback
-        /*try {
-         String sURL_Redirect = generalConfig.getSelfHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
-         LOG.info("Redirecting to URL:" + sURL_Redirect);
-         oResponse.sendRedirect(sURL_Redirect);
-         } catch (Exception e) {
-         LOG.error("Error occured while saving subject message for feedback.", e);;
-         }*/
-        return sReturn;//"Ok!";
+        return sReturn;
     }
 
     private Map<String,Object> mInitOrderMessageFeedback(String sID_Order, Integer nID_Rate) throws CommonServiceException{
@@ -409,6 +375,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "Строка-Token", required = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            @ApiParam(value = "булевский флаг, определяющий сервер вызова", required = false) @RequestParam(value = "isRegion", required = false, defaultValue = "false") Boolean isRegion,
             @ApiParam(value = "Номер-ИД субьекта (владельца заявки)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
         Long nID_HistoryEvent_Service;
@@ -423,7 +390,12 @@ public class SubjectMessageController {
             }
             aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
             aoSubjectMessage.addAll(aSubjectMessage);
-            aoSubjectMessage.addAll(historyEventDao.getHistoryEvents(null, nID_HistoryEvent_Service, false));
+            
+            if(isRegion){
+                aoSubjectMessage.addAll(historyEventDao.getHistoryEvents(null, nID_HistoryEvent_Service, false));
+            }
+            
+        
         } catch (Exception e) {
             LOG.error("FAIL: {}", e);
             //LOG.trace("FAIL:", e);
@@ -609,12 +581,9 @@ public class SubjectMessageController {
         LOG.info("sID_Order: "+sID_Order);
         if(sID_Order!=null){
             Map<String,Object> m = mInitOrderMessageFeedback(sID_Order, Integer.valueOf(""+nID_Rate));
-            //sURL_Redirect = m.get("sURL_Redirect");
             bExist = (Boolean) m.get("bExist");
-        }//sID_Order!=null &&
-        if(bExist){//sURL_Redirect==null
-            /*    throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "Cant save feedback! sID_Order="+sID_Order, HttpStatus.NOT_FOUND);*/
+        }
+        if(bExist){
             LOG.warn("Cant save feedback! (sID_Order={})", sID_Order);
             if(bSelf){
                 responseMessage = String.format("%s/service/%d/feedback",
@@ -637,15 +606,6 @@ public class SubjectMessageController {
                         "sID_Token not equal or absant! sID_Token="+sID_Token+", nID="+nID, HttpStatus.NOT_FOUND);
                 }
 
-                /*if (!isEmpty(sAnswer)) {
-                    SubjectMessageFeedbackAnswer answer = oSubjectMessageService
-                            .setSubjectMessageFeedbackAnswer(feedback.getId(), sAnswer, nID_Subject);
-
-                    List<SubjectMessageFeedbackAnswer> answers = feedback.getoSubjectMessageFeedbackAnswers();
-                    answers.add(answer);
-                    feedback.setoSubjectMessageFeedbackAnswers(answers);
-                    subjectMessageFeedbackDao.update(feedback);
-                }*/
                 LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {}, sID_Order: {}",
                         sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token(), oSubjectMessageFeedback.getsID_Order());
                responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
@@ -751,14 +711,8 @@ public class SubjectMessageController {
         LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nID, sID_Token);
         if(nID!=null){
             SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nID);
-//            LOG.info("feedback.getsBody(): " + feedback.getsBody());
-//            LOG.info("feedback.getsHead(): " + feedback.getsHead());
-//            LOG.info("feedback.getoSubjectMessage().getHead(): " + feedback.getoSubjectMessage().getHead());
-//            LOG.info("feedback.getoSubjectMessage().getBody(): " + feedback.getoSubjectMessage().getBody());
             if (feedback != null) {
                 if (sID_Token!=null && sID_Token.equals(feedback.getsID_Token())) {
-                    //feedback.setsID_Token(null);
-                    //LOG.info("getFeedbackExternal returned SubjectMessageFeedback with the nID: {}, sID_Token: {}", nID, sID_Token);
                     return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedback);
                 } else {
                     throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -784,30 +738,6 @@ public class SubjectMessageController {
             throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "need parameters!", HttpStatus.NOT_FOUND);
         }
-        /*
-        LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nId, sID_Token);
-        SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nId);
-        if (feedback != null && sID_Token.equals(feedback.getsID_Token())) {
-            LOG.info("authentication passed");
-            if (nID_Service == null) { // return one feedback by nId and sID_Token
-                feedback.setsID_Token(null);
-                LOG.info("getFeedbackExternal returned SubjectMessageFeedback with the nID: {}, sID_Token: {}", nId, sID_Token);
-                return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedback);
-            } else
-                LOG.info("getFeedbackExternal started for the nID_Service: {} ", nID_Service);
-            List<SubjectMessageFeedback> feedbackList =
-                    oSubjectMessageService.getAllSubjectMessageFeedbackBynID_Service(nID_Service); // return list of feedbacks by nID_Service
-
-            for (SubjectMessageFeedback messageFeedback : feedbackList) {
-                messageFeedback.setsID_Token(null);
-            }
-            LOG.info("getFeedbackExternal returned list size: {} for nID_Service: {} ", feedbackList.size(), nID_Service);
-            return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedbackList);
-        }
-        LOG.info("feedback is absent or authentication failed for the nID: {}, sID_Token: {}", nId, sID_Token);
-        throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                "can't find SubjectMessageFeedback with nID: " + nId, HttpStatus.NOT_FOUND);
-        */
     }
 
     @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = "получает сообщение-фидбека:\n"
@@ -875,15 +805,6 @@ public class SubjectMessageController {
                     mReturn.put("sDate", null);
                 }
                 return mReturn;
-
-                /*} else {
-                 LOG.info("Skipping history event service " + oHistoryEvent_Service.getId() + " from processing as it contains wrong token: " +
-                 oHistoryEvent_Service.getsToken() + ":" + oHistoryEvent_Service.getsID_Order());
-                 throw new CommonServiceException(
-                 ExceptionCommonController.BUSINESS_ERROR_CODE,
-                 "Security Error",
-                 HttpStatus.FORBIDDEN);
-                 }*/
             } else {
                 LOG.warn("Skipping history event service, wrong sID_Order: {}",  sID_Order);
                 throw new CommonServiceException(

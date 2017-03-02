@@ -49,6 +49,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import org.igov.io.GeneralConfig;
+import org.igov.service.business.action.event.ActionEventHistoryService;
 
 /**
  *
@@ -64,8 +66,14 @@ public class ProcessSubjectService {
     private BaseEntityDao<Long> baseEntityDao;
 
     @Autowired
+    GeneralConfig generalConfig;
+    
+    @Autowired
     private IdentityService identityService;
-
+    
+    @Autowired
+    private ActionEventHistoryService oActionEventHistoryService;
+    
     @Autowired
     private TaskService taskService;
 
@@ -463,7 +471,7 @@ public class ProcessSubjectService {
                     
 
                     if (!mParamDocumentNew.isEmpty()) {
-
+                            
                         for (ProcessSubject oProcessSubject : aProcessSubject_Child) {
                             oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
 
@@ -472,18 +480,54 @@ public class ProcessSubjectService {
                                 datePlan = new DateTime(parseDate((String) mParamDocument.get("sDateExecution")));
                                 
                             }
-
+                            
+                            String sOldHistoryData = "";
+                            String sNewHistoryData = "";
+                            
+                            for (String mKey : mParamDocumentNew.keySet()) {
+                                runtimeService.setVariable(oProcessSubject.getSnID_Process_Activiti(), mKey, mParamDocumentNew.get(mKey));
+                                sOldHistoryData = sOldHistoryData + mKey + " : " + mParamDocument.get(mKey);
+                                sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey);        
+                            }
+                            
+                            addEditHistoryEvent(oProcessSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
+                                    processSubject.getsLogin());
+                            
                             oProcessSubject.setsDatePlan(datePlan);
                             processSubjectDao.saveOrUpdate(oProcessSubject);
 
-                            for (String mKey : mParamDocumentNew.keySet()) {
-                                runtimeService.setVariable(oProcessSubject.getSnID_Process_Activiti(), mKey, mParamDocumentNew.get(mKey));
-                            }
                         }
                     }
                 }
             }
         }
+    }
+    
+    public void addEditHistoryEvent(String snID_Process_Activiti, String sNewHistoryData, String sOldHistoryData, String sLogin) 
+    {
+        
+        String sID_Order
+                = generalConfig.getOrderId_ByProcess(Long.parseLong(snID_Process_Activiti));
+        
+        LOG.info("history data during document editing - snID_Process_Activiti: " + snID_Process_Activiti);
+        LOG.info("history data during document editing - sID_Order: " + sID_Order);
+        LOG.info("history data during document editing - sNewHistoryData: " + sNewHistoryData);
+        LOG.info("history data during document editing - sOldHistoryData: " + sOldHistoryData);
+        LOG.info("history data during document editing - sLogin: " + sLogin);
+        
+        Map<String, String> historyParam = new HashMap<>();
+
+        historyParam.put("newData", sNewHistoryData);
+        historyParam.put("oldData", sOldHistoryData);
+        historyParam.put("sLogin", sID_Order);
+
+        try {
+            oActionEventHistoryService.addHistoryEvent(sID_Order,
+                   sLogin, historyParam, 14L);
+        } catch (Exception ex) {
+            LOG.info("Error saving history during document editing: {}", ex);
+        }
+
     }
 
     public void setProcessSubjects(Map<String, Object> mParam, String snProcess_ID) {
