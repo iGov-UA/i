@@ -20,6 +20,12 @@ public class HistoryEventMessage {
     public static final String DAYS = "%кількість днів%";
     public static final String TABLE_BODY = "%tableBody%";
     public static final String S_BODY = "%sBody%";
+    public static final String OLD_DATA = "%oldData%";
+    public static final String NEW_DATA = "%newData%";
+    public static final String ORDER_ID = "%sID_Order%";
+    public static final String LINKED_ORDER_ID = "%sID_Order_Link%";
+    public static final String BP_ID = "%sID_BP%";
+    
     private static final Logger LOG = LoggerFactory.getLogger(HistoryEventMessage.class);
 
     public static String createJournalMessage(HistoryEventType eventType, Map<String, String> values) {
