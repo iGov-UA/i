@@ -469,7 +469,9 @@ public class ProcessSubjectService {
 
                     LOG.info("mParamDocumentNew: " + mParamDocumentNew);
                     
-
+                    String sOldHistoryData = "";
+                    String sNewHistoryData = "";
+                    
                     if (!mParamDocumentNew.isEmpty()) {
                             
                         for (ProcessSubject oProcessSubject : aProcessSubject_Child) {
@@ -481,8 +483,7 @@ public class ProcessSubjectService {
                                 
                             }
                             
-                            String sOldHistoryData = "";
-                            String sNewHistoryData = "";
+                            
                             
                             for (String mKey : mParamDocumentNew.keySet()) {
                                 runtimeService.setVariable(oProcessSubject.getSnID_Process_Activiti(), mKey, mParamDocumentNew.get(mKey));
@@ -503,6 +504,10 @@ public class ProcessSubjectService {
                             processSubjectDao.saveOrUpdate(oProcessSubject);
 
                         }
+                        
+                        addEditHistoryEvent(processSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
+                                    processSubject.getsLogin(), processSubject.getProcessSubjectStatus().getId());
+                    
                     }
                 }
             }
