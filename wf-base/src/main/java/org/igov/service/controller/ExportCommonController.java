@@ -22,8 +22,8 @@ public class ExportCommonController {
     @Autowired
     AgroholdingService agroholdingService;
 
-    @ApiOperation(value = "/transferDocumentVacation", notes = "##### Экспорт документа о отпуске в агрофирму. Примеры:\n"
-            + "https://alpha.test.igov.org.ua/wf/service/export/transferDocumentVacation")
+    @ApiOperation(value = "/agroholding/transferDocumentVacation", notes = "##### Экспорт документа о отпуске в агрофирму. Примеры:\n"
+            + "https://alpha.test.igov.org.ua/wf/service/export/agroholding/transferDocumentVacation")
     @RequestMapping(value = "/transferDocumentVacation", method = RequestMethod.GET)
     public @ResponseBody String transferDocumentVacation() throws Exception {
         LOG.info("transferDocumentVacation...");
