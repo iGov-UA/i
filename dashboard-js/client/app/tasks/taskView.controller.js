@@ -1308,7 +1308,6 @@
           if ($scope.printTemplateList.length > 0) {
             $scope.model.printTemplate = $scope.printTemplateList[0];
           }
-          debugger;
           return true;
         };
 
