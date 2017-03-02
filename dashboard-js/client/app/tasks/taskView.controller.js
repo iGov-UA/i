@@ -786,12 +786,13 @@
             if($scope.model.printTemplate){
               $scope.taskForm.sendDefaultPrintForm = false;
             } else {
+              /*
               var sKey_Step_field = $scope.taskForm.filter(function (item) {
                 return item.id === "sKey_Step_Document";
               })[0];
               if(sKey_Step_field){
                 $scope.taskForm.sendDefaultPrintForm = !!sKey_Step_field.value;
-              }
+              }*/
             }
             tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment)
               .then(function (result) {
@@ -1274,7 +1275,6 @@
           if ( ( $scope.printTemplateList.length === 0 || isMenuItem === true ) && $scope.selectedTask && $scope.taskForm) {
             rollbackReadonlyEnumFields();
             $scope.printModalState.show = !$scope.printModalState.show;
-            debugger;
           }
         };
 
@@ -1308,7 +1308,6 @@
           if ($scope.printTemplateList.length > 0) {
             $scope.model.printTemplate = $scope.printTemplateList[0];
           }
-          debugger;
           return true;
         };
 
