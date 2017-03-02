@@ -1,6 +1,6 @@
 {
 	"motion" : {
-		"ShowFieldsOnCondition_u1" : {
+		"RequiredFieldsOnCondition_u1" : {
 			"aField_ID" : ["sComment1"], 
 			"asID_Field" : {
 				"sClient" : "asDecide1"
@@ -17,10 +17,9 @@
 		"ShowFieldsOnCondition_u3" : {
 			"aField_ID" : ["sDate"], 
 			"asID_Field" : {
-				"sClient" : "asDecide1",
-				"sClient1" : "asGetResult"
+				"sClient" : "asGetResult"
 			}, 
-			"sCondition" : "([sClient] == 'Повідимити громадянина, що заявка прийнята до опрацювання' && [sClient1] == 'особисто') || ([sClient] == 'sAccept' && [sClient1] == 'sOffline')"
+			"sCondition" : "[sClient] == 'особисто' || [sClient] == 'sOffline'"
 		}, 
 		"ShowFieldsOnCondition_uinv01" : {
 			"aField_ID" : ["markersUser1"], 
@@ -28,6 +27,16 @@
 				
 			}, 
 			"sCondition" : "false"
+		}
+	},
+	"attributes" : {
+		"Line_1" : {
+			"aElement_ID" : ["asOwnerType"], 
+			"sValue" : "Дані щодо власника/судновласника"
+		}, 
+		"Line_2" : {
+			"aElement_ID" : ["asOwnerType"], 
+			"sValue" : "Дані щодо судна"
 		}
 	}
 }
