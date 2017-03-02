@@ -171,7 +171,7 @@ public class AgroholdingService {
         String sURL = generalConfig.getsURL_Agroholding() + "/Document_ОтпускаОрганизаций";
         LOG.info("sURL: " + sURL);
         //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
-        String result = httpRequester.postInside(sURL, null, documentVacation, "text/xml; charset=utf-8");
+        String result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
         LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
         
 
