@@ -491,7 +491,7 @@ public class ProcessSubjectService {
                             }
                             
                             addEditHistoryEvent(oProcessSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
-                                    processSubject.getsLogin());
+                                    processSubject.getsLogin(), oProcessSubject.getProcessSubjectStatus().getId());
                             
                             oProcessSubject.setsDatePlan(datePlan);
                             processSubjectDao.saveOrUpdate(oProcessSubject);
@@ -503,7 +503,7 @@ public class ProcessSubjectService {
         }
     }
     
-    public void addEditHistoryEvent(String snID_Process_Activiti, String sNewHistoryData, String sOldHistoryData, String sLogin) 
+    public void addEditHistoryEvent(String snID_Process_Activiti, String sNewHistoryData, String sOldHistoryData, String sLogin, Long nID_Status) 
     {
         
         String sID_Order
@@ -521,8 +521,8 @@ public class ProcessSubjectService {
         //historyParam.put("oldData", sOldHistoryData);
         historyParam.put("newData", "старые данные");
         historyParam.put("oldData", "новые данные");
-        
-        historyParam.put("sLogin", sID_Order);
+        historyParam.put("nID_StatusType", nID_Status.toString());
+        historyParam.put("sLogin", sLogin);
 
         try {
             oActionEventHistoryService.addHistoryEvent(sID_Order,
