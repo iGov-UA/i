@@ -5,6 +5,7 @@
  */
 package org.igov.service.business.action;
 
+import org.activiti.engine.HistoryService;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.*;
 import org.igov.model.core.GenericEntityDao;
@@ -13,6 +14,7 @@ import org.igov.model.document.DocumentDao;
 import org.igov.model.object.place.Region;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.subject.SubjectMessageService;
@@ -29,12 +31,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.history.HistoricTaskInstance;
-import org.igov.service.business.action.event.ActionEventHistoryService;
+
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
-import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
 /**
@@ -462,8 +461,15 @@ public class ActionEventService {
                 mParamMessage.put(HistoryEventMessage.TABLE_BODY, soTable);//soData
                 setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, sSubjectInfo);
 
-                SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
-                        sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo);
+                LOG.info("======== ####### ======== Start create subject message object ======== ####### ======== ");
+                LOG.info("soData in HistoryEventService (size="+ oHistoryEvent_Service.getSoData().length() +") = " + oHistoryEvent_Service.getSoData());
+                SubjectMessage oSubjectMessage = null;
+                try {
+                    oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+                            sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo);
+                } catch (Exception e) {
+                    throw new CommonServiceException("500", e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
+                }
                 oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
                 LOG.info("setting message");
                 subjectMessagesDao.setMessage(oSubjectMessage);

@@ -51,6 +51,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 import org.igov.io.mail.NotificationPatterns;
+import org.igov.model.action.event.HistoryEventDao;
 import static org.igov.util.Tool.sO;
 
 @Controller
@@ -83,6 +84,9 @@ public class SubjectMessageController {
     private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
     @Autowired
     private ServerDao serverDao;
+    @Autowired
+    private HistoryEventDao historyEventDao;
+
 
     @Autowired
     HttpRequester httpRequester;
@@ -405,10 +409,12 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "Строка-Token", required = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            @ApiParam(value = "булевский флаг, определяющий сервер вызова", required = false) @RequestParam(value = "isRegion", required = false, defaultValue = "false") Boolean isRegion,
             @ApiParam(value = "Номер-ИД субьекта (владельца заявки)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
         Long nID_HistoryEvent_Service;
         List<SubjectMessage> aSubjectMessage = new ArrayList();
+        List<Object> aoSubjectMessage = new ArrayList();
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
@@ -417,13 +423,19 @@ public class SubjectMessageController {
                 actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
             }
             aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
-
+            aoSubjectMessage.addAll(aSubjectMessage);
+            
+            if(isRegion){
+                aoSubjectMessage.addAll(historyEventDao.getHistoryEvents(null, nID_HistoryEvent_Service, false));
+            }
+            
+        
         } catch (Exception e) {
             LOG.error("FAIL: {}", e);
             //LOG.trace("FAIL:", e);
             //throw new CommonServiceException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
-        return JsonRestUtils.toJsonResponse(aSubjectMessage);
+        return JsonRestUtils.toJsonResponse(aoSubjectMessage);
     }
 
 
