@@ -20,8 +20,51 @@ import org.springframework.stereotype.Service;
 public class AgroholdingService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AgroholdingService.class);
-
-    private final static String documentVacation = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+    private final static String documentVacation = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<feed xmlns=\"http://www.w3.org/2005/Atom\" xmlns:at=\"http://purl.org/atompub/tombstones/1.0\" xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xml:base=\"http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/\">\n"
+                + "<entry>\n"
+                + "<id>http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций(guid'34b0dffb-fec5-11e6-98d3-005056b384b3')</id>\n"
+                + "<category term=\"StandardODATA.Document_ОтпускаОрганизаций\" scheme=\"http://schemas.microsoft.com/ado/2007/08/dataservices/scheme\"/>\n"
+                + "<title/>\n"
+                + "<updated/>\n"
+                + "<author/>\n"
+                + "<summary/>\n"
+                + "<content type=\"application/xml\">\n"
+                + "<m:properties xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\"><d:DataVersion>AAAAAAABX8s=</d:DataVersion>\n"
+                + "<d:DeletionMark>false</d:DeletionMark>\n"
+                + "<d:Number/>\n"
+                + "<d:Date>2017-03-01T23:22:43</d:Date>\n"
+                + "<d:Posted>true</d:Posted>\n"
+                + "<d:Организация_Key>a1257d8c-6fb0-11d9-ac6c-0080482454f7</d:Организация_Key>\n"
+                + "<d:Комментарий/>\n"
+                + "<d:Ответственный_Key>c82f6314-6faa-11d9-ac6c-0080482454f7</d:Ответственный_Key>\n"
+                + "<d:КраткийСоставДокумента>Барсуков Г.В.</d:КраткийСоставДокумента>\n"
+                + "<d:ВидОперации>Отпуск</d:ВидОперации>\n"
+                + "<d:ДокументОснование_Key>00000000-0000-0000-0000-000000000000</d:ДокументОснование_Key>\n"
+                + "<d:РасчитыватьОстаткиЗаВсеГода>false</d:РасчитыватьОстаткиЗаВсеГода>\n"
+                + "<d:КоличествоЛет>0</d:КоличествоЛет>\n"
+                + "<d:РаботникиОрганизации m:type=\"Collection(StandardODATA.Document_ОтпускаОрганизаций_РаботникиОрганизации_RowType)\">\n"
+                + "<d:element m:type=\"StandardODATA.Document_ОтпускаОрганизаций_РаботникиОрганизации_RowType\">\n"
+                + "<d:LineNumber>1</d:LineNumber>\n"
+                + "<d:Сотрудник_Key>a807e909-abfb-11dc-aa58-00112f3000a2</d:Сотрудник_Key>\n"
+                + "<d:ФизЛицо_Key>79c4fdca-71ed-11d9-ac6c-0080482454f7</d:ФизЛицо_Key>\n"
+                + "<d:ОсвобождатьСтавку>false</d:ОсвобождатьСтавку>\n"
+                + "<d:ДатаНачала>2017-03-02T00:00:00</d:ДатаНачала>\n"
+                + "<d:ДатаОкончания>2017-03-15T00:00:00</d:ДатаОкончания>\n"
+                + "<d:Основание/>\n"
+                + "<d:КвоДней>0</d:КвоДней>\n"
+                + "<d:РабочийГодС>0001-01-01T00:00:00</d:РабочийГодС>\n"
+                + "<d:РабочийГодПо>0001-01-01T00:00:00</d:РабочийГодПо>\n"
+                + "<d:НапомнитьПоЗавершении>false</d:НапомнитьПоЗавершении>\n"
+                + "<d:ВидОтпуска_Key>e8d50a27-8506-4dec-9584-531961cf445d</d:ВидОтпуска_Key>\n"
+                + "</d:element>\n"
+                + "</d:РаботникиОрганизации>\n"
+                + "<d:ИспользованиеЕжегодногоОтпуска m:type=\"Collection(StandardODATA.Document_ОтпускаОрганизаций_ИспользованиеЕжегодногоОтпуска_RowType)\"/>\n"
+                + "</m:properties>\n"
+                + "</content>\n"
+                + "</entry>\n"
+                + "</feed>";
+    /*private final static String documentVacation = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<feed xmlns=\"http://www.w3.org/2005/Atom\""
             + " xmlns:at=\"http://purl.org/atompub/tombstones/1.0\""
             + " xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\""
@@ -69,7 +112,7 @@ public class AgroholdingService {
             + "</m:properties>"
             + "</content>"
             + "</entry>"
-            + "</feed>";
+            + "</feed>";*/
 
     @Autowired
     HttpRequester httpRequester;
@@ -85,6 +128,8 @@ public class AgroholdingService {
         //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
         String result = httpRequester.postInside(sURL, null, documentVacation, "text/xml; charset=utf-8");
         LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
+        
+
         return result;
     }
 }
