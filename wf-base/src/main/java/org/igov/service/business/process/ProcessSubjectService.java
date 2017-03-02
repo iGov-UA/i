@@ -505,9 +505,9 @@ public class ProcessSubjectService {
 
                         }
                         
-                        addEditHistoryEvent(processSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
+                        /*addEditHistoryEvent(processSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
                                     processSubject.getsLogin(), processSubject.getProcessSubjectStatus().getId());
-                    
+                    */
                     }
                 }
             }
@@ -528,10 +528,10 @@ public class ProcessSubjectService {
         
         Map<String, String> historyParam = new HashMap<>();
 
-        historyParam.put("newData", sNewHistoryData);
-        historyParam.put("oldData", sOldHistoryData);
-        //historyParam.put("newData", "старые данные");
-        //historyParam.put("oldData", "новые данные");
+        //historyParam.put("newData", sNewHistoryData);
+        //historyParam.put("oldData", sOldHistoryData);
+        historyParam.put("newData", "старые данные");
+        historyParam.put("oldData", "новые данные");
         historyParam.put("nID_StatusType", nID_Status.toString());
         historyParam.put("sLogin", sLogin);
 
