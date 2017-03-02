@@ -486,8 +486,14 @@ public class ProcessSubjectService {
                             
                             for (String mKey : mParamDocumentNew.keySet()) {
                                 runtimeService.setVariable(oProcessSubject.getSnID_Process_Activiti(), mKey, mParamDocumentNew.get(mKey));
-                                sOldHistoryData = sOldHistoryData + mKey + " : " + mParamDocument.get(mKey);
-                                sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey);        
+                                
+                                LOG.info("mParamDocument.get(mKey): " + mParamDocument.get(mKey));
+                                LOG.info("mParamDocumentNew.get(mKey): " + mParamDocumentNew.get(mKey));
+                                
+                                if(!mParamDocument.get(mKey).equals(mParamDocumentNew.get(mKey))){
+                                    sOldHistoryData = sOldHistoryData + mKey + " : " + mParamDocument.get(mKey);
+                                    sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey);
+                                }
                             }
                             
                             addEditHistoryEvent(oProcessSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
