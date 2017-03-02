@@ -63,10 +63,11 @@ public class ActionEventHistoryService {
             LOG.info("nID_Server by sID_order {}", Integer.parseInt(sID_Order.split("-")[0]));
             LOG.info("nID_Server by generalConfig: {}", generalConfig.getSelfServerId());
             LOG.info("getSelfHost: {}", generalConfig.getSelfHost());
+            params.put("nID_HistoryEventType", nID_HistoryEventType.toString());
             
             try{
                 if(nID_Server == Integer.parseInt(sID_Order.split("-")[0])){
-                    params.put("nID_HistoryEventType", nID_HistoryEventType.toString());
+                    
                     LOG.info("addHistoryEvent make request...");
                     doRemoteRequest(URI_ADD_HISTORY_EVENT, params);
                 }

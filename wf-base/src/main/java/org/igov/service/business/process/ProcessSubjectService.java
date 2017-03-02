@@ -517,8 +517,11 @@ public class ProcessSubjectService {
         
         Map<String, String> historyParam = new HashMap<>();
 
-        historyParam.put("newData", sNewHistoryData);
-        historyParam.put("oldData", sOldHistoryData);
+        //historyParam.put("newData", sNewHistoryData);
+        //historyParam.put("oldData", sOldHistoryData);
+        historyParam.put("newData", "старые данные");
+        historyParam.put("oldData", "новые данные");
+        
         historyParam.put("sLogin", sID_Order);
 
         try {
