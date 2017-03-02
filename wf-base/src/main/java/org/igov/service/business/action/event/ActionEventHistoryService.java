@@ -99,6 +99,9 @@ public class ActionEventHistoryService {
                     nID_Proccess_Escalation,
                     nID_StatusType,
                     nID_HistoryEventType,
+                    params.get("newData"),
+                    params.get("oldData"),
+                    params.get("sLogin"),
                     true,
                     true,
                     false
@@ -143,6 +146,9 @@ public class ActionEventHistoryService {
             Long nID_Proccess_Escalation,
             Long nID_StatusType,
             Long nID_HistoryEventType,
+            String newData,
+            String oldData,
+            String sLogin,
             boolean saveHistoryEventService,
             boolean saveHistoryEvent,
             boolean saveSubjectMessage
@@ -181,7 +187,12 @@ public class ActionEventHistoryService {
             Map<String, String> mParamMessage = new HashMap<>();
             mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
+            mParamMessage.put(HistoryEventMessage.ORDER_ID, sID_Order);
+            mParamMessage.put(HistoryEventMessage.FIO, sLogin);
+            mParamMessage.put(HistoryEventMessage.NEW_DATA, newData);
+            mParamMessage.put(HistoryEventMessage.OLD_DATA, oldData);
 
+            
             if (oHistoryEvent_Service == null) {
                 try {
                     oHistoryEvent_Service = getHistoryEventService(sID_Order);

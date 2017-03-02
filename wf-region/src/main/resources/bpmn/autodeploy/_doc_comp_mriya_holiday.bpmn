@@ -13,31 +13,11 @@
     <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//1. счетчик добавления номера в поле входящего номера
-var number=execution.getVariable('sID_Custom_GovPublic')
-number = number&lt;&lt;0
-var fullNumber="вх-"+number+"/"
-execution.setVariable('sID_Custom_GovPublic', fullNumber)
-
-//2. назначение даты исполнения - по умолчанию + 30 дней к текущей даты и перевод даты в нужный формат дд/мм/гггг
-var updatedDate = new Date();
-var days = 30;
-updatedDate.setDate(new Date().getDate() + days);
-var d = updatedDate.getDate();
-if (d &lt; 10) d = "0"+d;
-var m = updatedDate.getMonth() + 1;
-if (m &lt; 10) m = "0"+m;
-var sNewDate = (d + "/" + m + "/" + updatedDate.getFullYear());
-execution.setVariable('sDateExecution', sNewDate)
+      <script>
 
 //3. получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
-
-//4. получение ИД БП
-var executeProcessDefinitionId = execution.getProcessDefinitionId();
-var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
-execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
 </script>
     </scriptTask>
@@ -53,10 +33,8 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="invisible"></activiti:formProperty>
-        
         <activiti:formProperty id="sDateHolidayBegin" name="Дата початку відпустки" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDateHolidayEnd" name="Остання дата відпустки" type="date"></activiti:formProperty>
-        
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSigned" name="Підписав" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
@@ -64,13 +42,26 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mriya/holiday_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/iDoc/mriya/holiday_print.html" type="file"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+          <activiti:field name="sTaskProcessDefinition">
+            <activiti:string><![CDATA[_task_mriya]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sID_Attachment">
+            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="processDefinitionId">
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="soData">
+            <activiti:expression><![CDATA[PrintForm_1::${PrintForm_1};;sDateHolidayBegin::${sDateHolidayBegin};;sDateHolidayEnd::${sDateHolidayEnd};;sName_SubjectRole::${sName_SubjectRole};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sTextResolution::${sTextResolution}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1" activiti:candidateGroups="mriya_common"></sequenceFlow>
     <userTask id="usertask2" name="Розгляд керівником 1">
-    <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -89,27 +80,11 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="cloneDocumentStepSubject" name="cloneDocumentStepSubject" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html]" type="invisible" default="РКК1" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
-          <activiti:field name="sTaskProcessDefinition">
-            <activiti:string><![CDATA[system_task]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="processDefinitionId">
-            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sDateRegistration::${sDateRegistration};;sDateDoc::${sDateDoc};;sName_SubjectRole::${sName_SubjectRole};;sDateExecution::${sDateExecution};;sContent::${sContent};;sAutorResolution::${sAutorResolution};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask3" name="Розгляд керівником 2"></userTask>
-    <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="usertask3"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow6" sourceRef="usertask3" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_comp_mriya_holiday">
     <bpmndi:BPMNPlane bpmnElement="_doc_comp_mriya_holiday" id="BPMNPlane__doc_comp_mriya_holiday">
@@ -128,11 +103,8 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="810.0" y="150.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="960.0" y="160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="810.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="155.0" y="177.0"></omgdi:waypoint>
@@ -153,10 +125,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="765.0" y="177.0"></omgdi:waypoint>
         <omgdi:waypoint x="810.0" y="177.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="915.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="960.0" y="177.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
