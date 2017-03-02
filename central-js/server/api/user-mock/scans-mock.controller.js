@@ -14,7 +14,8 @@ module.exports.scanUpload = function (req, res, next) {
     var sHost = req.region.sHost;
     var data = req.body;
 
-    var sURL = sHost + '/service/object/file/upload_file_to_redis';
+    // var sURL = sHost + '/service/object/file/upload_file_to_redis';
+    var sURL = sHost + '/service/object/file/setProcessAttach';
     console.log("[scanUpload]:sURL=" + sURL);
 
     var uploadURL = sURL; //data.url
@@ -38,7 +39,11 @@ module.exports.scanUpload = function (req, res, next) {
         var requestOptionsForUploadContent = {
           url: uploadURL,
           auth: getAuth(),
-          headers: form.getHeaders()
+          headers: form.getHeaders(),
+          qs: {
+            sFileNameAndExt: documentScan.scan.type + '.' + documentScan.scan.extension,
+            sID_StorageType : 'Redis'
+          }
         };
 
         pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
