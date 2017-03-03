@@ -469,8 +469,8 @@ public class ProcessSubjectService {
 
                     LOG.info("mParamDocumentNew: " + mParamDocumentNew);
                     
-                    String sOldHistoryData = "";
-                    String sNewHistoryData = "";
+                    String sOldHistoryData = "<tr><td>";
+                    String sNewHistoryData = "<td>";
                     
                     if (!mParamDocumentNew.isEmpty()) {
                             
@@ -492,8 +492,8 @@ public class ProcessSubjectService {
                                 LOG.info("mParamDocumentNew.get(mKey): " + mParamDocumentNew.get(mKey));
                                 
                                 if(!mProcessVariable.get(mKey).equals(mParamDocumentNew.get(mKey))){
-                                    sOldHistoryData = sOldHistoryData + mKey + " : " + mProcessVariable.get(mKey);
-                                    sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey);
+                                    sOldHistoryData = sOldHistoryData + mKey + " : " + mProcessVariable.get(mKey) + "\n";
+                                    sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey) + "\n";
                                 }
                             }
                             
@@ -528,8 +528,8 @@ public class ProcessSubjectService {
         
         Map<String, String> historyParam = new HashMap<>();
 
-        historyParam.put("newData", sNewHistoryData);
-        historyParam.put("oldData", sOldHistoryData);
+        historyParam.put("newData", sNewHistoryData + "</td></tr>");
+        historyParam.put("oldData", sOldHistoryData + "</td>");
         //historyParam.put("newData", "старые данные");
         //historyParam.put("oldData", "новые данные");
         historyParam.put("nID_StatusType", nID_Status.toString());
