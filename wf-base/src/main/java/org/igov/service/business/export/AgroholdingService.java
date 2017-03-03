@@ -11,13 +11,21 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.web.RestRequest;
 import org.igov.util.ToolWeb;
+import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException; 
+import org.igov.io.fs.FileSystemData;
+import org.igov.util.ToolFS;
 /**
  *
  * @author olga
@@ -82,11 +90,27 @@ public class AgroholdingService {
         httpRequester.setsLogin(generalConfig.getsLogin_Auth_Agroholding());
         httpRequester.setsPassword(generalConfig.getsPassword_Auth_Agroholding());
         String sURL = generalConfig.getsURL_Agroholding() + "/Document_ОтпускаОрганизаций";
+        
+        File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, "test1C.txt");
+                
+        BufferedReader in = new BufferedReader(
+           new InputStreamReader(new FileInputStream(oFile), "UTF-8"));
+
+        String str = "";
+        String nstr = "";
+        while ((nstr = in.readLine()) != null) {
+            str = str + nstr;
+        }
+        
+        LOG.info("string in transferDocumentVacation: {} ", str.substring(1));
+                
+        in.close();
+        
         LOG.info("sURL: " + sURL);
         //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
         //String result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
         String result = "none";
-        result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
+        result = httpRequester.postInside(sURL, null, str, "application/atom+xml;type=entry;charset=utf-8");
         LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
         return result;
     }
