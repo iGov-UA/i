@@ -110,8 +110,15 @@ public class AgroholdingService {
         //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
         //String result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
         String result = "none";
-        result = httpRequester.postInside(sURL, null, str, "application/atom+xml;type=entry;charset=utf-8");
-        LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
+        /*result = httpRequester.postInside(sURL, null, str, "application/atom+xml;type=entry;charset=utf-8");
+        LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);*/
+
+        HttpHeaders oHttpHeaders = new HttpHeaders();
+        String sAuth = ToolWeb.base64_encode(generalConfig.getsLogin_Auth_Agroholding() + ":" + generalConfig.getsPassword_Auth_Agroholding());
+        oHttpHeaders.add("Authorization", "Basic " + sAuth);
+        result = result + "!!!!!!!!!!!!!!!!!" + new RestRequest().post(sURL, str, MediaType.APPLICATION_ATOM_XML,
+                StandardCharsets.UTF_8, String.class, oHttpHeaders);
+        
         return result;
     }
 
