@@ -33,13 +33,27 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="invisible"></activiti:formProperty>
+        
+         <activiti:formProperty id="asTypeHoliday" name="Тип відпустки" type="enum">
+          <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Дополнительный ежегодный отпуск"></activiti:value>
+          <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Дополнительный отпуск на детей"></activiti:value>
+          <activiti:value id="cce0b4e5-4623-4edb-8c49-78829203392e" name="Основной ежегодный отпуск"></activiti:value>
+          <activiti:value id="e8d50a27-8506-4dec-9584-531961cf445d" name="Отпуск за свой счет (обязательный)"></activiti:value>
+          <activiti:value id="9c5d9dcb-cb72-4431-bb6d-aed3244c975b" name="Отпуск за свой счет (по соглашению сторон)"></activiti:value>
+          <activiti:value id="47bbd0bd-aed9-4b7d-9c9d-263095b53cff" name="Прочий дополнительный отпуск"></activiti:value>
+          <activiti:value id="7b77fc48-4feb-4a82-98ce-ef1dec8b0566" name="Учебный отпуск"></activiti:value>
+          <activiti:value id="813ade4b-40b0-43dc-8a29-50a876ebcd0f" name="Учебный отпуск без оплаты"></activiti:value>
+          <activiti:value id="746cc7bf-a84c-4950-85b6-80dfd0bbd16b" name="Чернобыльский отпуск"></activiti:value>
+        </activiti:formProperty>
+        
         <activiti:formProperty id="sDateHolidayBegin" name="Дата початку відпустки" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDateHolidayEnd" name="Остання дата відпустки" type="date"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSigned" name="Підписав" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_mriyaHoliday.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mriya/holiday_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/iDoc/mriya/holiday_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -48,19 +62,19 @@ execution.setVariable('processInstanceId', processInstanceId)
             <activiti:string><![CDATA[_task_mriya]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression><![CDATA[${sTable1}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="processDefinitionId">
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[PrintForm_1::${PrintForm_1};;sDateHolidayBegin::${sDateHolidayBegin};;sDateHolidayEnd::${sDateHolidayEnd};;sName_SubjectRole::${sName_SubjectRole};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sTextResolution::${sTextResolution}]]></activiti:expression>
+            <activiti:expression><![CDATA[PrintForm_1::${PrintForm_1};;sDateHolidayBegin::${sDateHolidayBegin};;sDateHolidayEnd::${sDateHolidayEnd};;sName_SubjectRole::${sName_SubjectRole};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sTextResolution::${sTextResolution};;sAutorResolution::${sAutorResolution};;sNote::${sNote}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask2" name="Розгляд керівником 1" activiti:candidateGroups="mriya_common">
+    <userTask id="usertask2" name="Розгляд керівником 1 - проверка" activiti:candidateGroups="mriya_common">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
@@ -71,14 +85,29 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSigned" name="Підписав" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
+        
+       <activiti:formProperty id="asTypeHoliday" name="Тип відпустки" type="enum"  writable="false">
+          <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Дополнительный ежегодный отпуск"></activiti:value>
+          <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Дополнительный отпуск на детей"></activiti:value>
+          <activiti:value id="cce0b4e5-4623-4edb-8c49-78829203392e" name="Основной ежегодный отпуск"></activiti:value>
+          <activiti:value id="e8d50a27-8506-4dec-9584-531961cf445d" name="Отпуск за свой счет (обязательный)"></activiti:value>
+          <activiti:value id="9c5d9dcb-cb72-4431-bb6d-aed3244c975b" name="Отпуск за свой счет (по соглашению сторон)"></activiti:value>
+          <activiti:value id="47bbd0bd-aed9-4b7d-9c9d-263095b53cff" name="Прочий дополнительный отпуск"></activiti:value>
+          <activiti:value id="7b77fc48-4feb-4a82-98ce-ef1dec8b0566" name="Учебный отпуск"></activiti:value>
+          <activiti:value id="813ade4b-40b0-43dc-8a29-50a876ebcd0f" name="Учебный отпуск без оплаты"></activiti:value>
+          <activiti:value id="746cc7bf-a84c-4950-85b6-80dfd0bbd16b" name="Чернобыльский отпуск"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sDateHolidayBegin" name="Дата початку відпустки" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateHolidayEnd" name="Остання дата відпустки" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="cloneDocumentStepSubject" name="cloneDocumentStepSubject" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html]" type="invisible" default="РКК1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mriya/holiday_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
