@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException; 
+import org.igov.util.ToolFS;
 /**
  *
  * @author olga
@@ -88,8 +89,8 @@ public class AgroholdingService {
         httpRequester.setsPassword(generalConfig.getsPassword_Auth_Agroholding());
         String sURL = generalConfig.getsURL_Agroholding() + "/Document_ОтпускаОрганизаций";
         
-        File fileDir = new File("data/test1C.txt");
-
+        File fileDir = ToolFS.aFile("pattern/xml/test1C.txt");
+                
         BufferedReader in = new BufferedReader(
            new InputStreamReader(new FileInputStream(fileDir), "UTF-8"));
 
