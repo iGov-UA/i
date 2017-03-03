@@ -473,7 +473,10 @@ public class ProcessSubjectService {
                     String sNewHistoryData = "<td>";
                     
                     if (!mParamDocumentNew.isEmpty()) {
-                            
+                        
+                        addEditHistoryEvent(processSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
+                                    processSubject.getsLogin(), processSubject.getProcessSubjectStatus().getId());
+                        
                         for (ProcessSubject oProcessSubject : aProcessSubject_Child) {
                             oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
 
@@ -504,10 +507,6 @@ public class ProcessSubjectService {
                             processSubjectDao.saveOrUpdate(oProcessSubject);
 
                         }
-                        
-                        /*addEditHistoryEvent(processSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
-                                    processSubject.getsLogin(), processSubject.getProcessSubjectStatus().getId());
-                    */
                     }
                 }
             }
