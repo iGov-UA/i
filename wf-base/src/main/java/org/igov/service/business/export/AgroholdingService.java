@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 /**
@@ -89,10 +90,15 @@ public class AgroholdingService {
             result = httpRequester.postInside(sURL, null, URLEncoder.encode(documentVacation, "UTF-8"), "application/atom+xml;type=entry;charset=utf-8");
             LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
         } catch (Exception ex) {
+            LOG.error("ex: ", ex);
             HttpHeaders oHttpHeaders = new HttpHeaders();
             String sAuth = ToolWeb.base64_encode(generalConfig.getsLogin_Auth_Agroholding() + ":" + generalConfig.getsPassword_Auth_Agroholding());
             oHttpHeaders.add("Authorization", "Basic " + sAuth);
-            result = result + "!!!!!!!!!!!!!!!!!" + new RestRequest().post(sURL, documentVacation, null, StandardCharsets.UTF_8, String.class, oHttpHeaders);
+            //APPLICATION_XML
+            LOG.info("documentVacation: " + documentVacation);
+            result = result + "!!!!!!!!!!!!!!!!!" + new RestRequest().post(sURL, documentVacation, MediaType.APPLICATION_ATOM_XML, 
+                    StandardCharsets.UTF_8, String.class, oHttpHeaders);
+            LOG.info("**result: " + result);
         }
         return result;
     }
