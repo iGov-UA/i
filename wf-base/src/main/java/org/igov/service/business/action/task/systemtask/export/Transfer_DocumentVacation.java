@@ -41,7 +41,12 @@ public class Transfer_DocumentVacation implements JavaDelegate, TaskListener {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        agroholdingService.transferDocumentVacation();
+        try {
+            //по ид вытащить того, кто отрабатывает и достать кеш человека ..
+            agroholdingService.transferDocumentVacation();
+        } catch (Exception ex) {
+            LOG.info(EVENTNAME_CREATE);
+        }
     }
 
     @Override
