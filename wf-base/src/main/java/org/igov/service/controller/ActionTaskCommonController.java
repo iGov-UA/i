@@ -1742,109 +1742,122 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
     }
 
-    @ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: Получение списка всех тасок, которые могут быть доступны указанному логину #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=[sLogin]\n\n\n"
-            + "- Возвращает список всех тасок, которые могут быть доступны указанному логину [sLogin] и которые уже заняты другими логинами, входящими во все те-же группы, в которые входит данный логин\n\n"
-            + "Во время выполнения производит поиск групп, в которые входит указанный пользователь, и затем возвращает список задач, которые могут быть "
-            + " заассайнены на пользователей из полученных групп:\n\n"
-            + "Содержит следующие параметры:\n"
-            + "- sLogin - id пользователя. обязательный параметр, указывающий пользователя\n"
-            + "- bIncludeAlienAssignedTasks - необязательный параметр (по умолчанию false). Если значение false - то возвращать только свои и только не ассайнутые, к которым доступ.\n"
-            + "- sOrderBy - метод сортировки задач. Необязательный параметр. По умолчанию 'id'. Допустимые значения 'id', 'taskCreateTime', 'ticketCreateDate'\n"
-            + "- nSize - Количество задач в результате. Необязательный параметр. По умолчанию 10.\n"
-            + "- nStart - Порядковый номер первой задачи для возвращения. Необязательный параметр. По умолчанию 0\n"
-            + "- sFilterStatus - Необязательный параметр (по умолчанию обрабатывается как OpenedUnassigned). статус фильтрации задач, у которого возможные значения: OpenedUnassigned (только не-ассайнутые), "
-            + " OpenedAssigned(только ассайнутые), Opened(только открытые (не в истории)), Closed(только закрытые (история))\n"
-            + "- bFilterHasTicket - Необязательный параметр (по умолчанию false). Если true - возвращать только те задачи, у которых есть связанный тикет\n"
-            + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit\n\n"
-            + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit&nSize=15&nStart=10\n\n")
-    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
-    public @ResponseBody
-    Map<String, Object> getTasks(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
-            @ApiParam(value = "bIncludeAlienAssignedTasks", required = true) @RequestParam(value = "bIncludeAlienAssignedTasks", defaultValue = "false", required = false) boolean bIncludeAlienAssignedTasks,
-            @ApiParam(value = "sOrderBy", required = false) @RequestParam(value = "sOrderBy", defaultValue = "id", required = false) String sOrderBy,
-            @ApiParam(value = "nSize", required = false) @RequestParam(value = "nSize", defaultValue = "10", required = false) Integer nSize,
-            @ApiParam(value = "nStart", required = false) @RequestParam(value = "nStart", defaultValue = "0", required = false) Integer nStart,
-            @ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue = "OpenedUnassigned", required = false) String sFilterStatus,
-            @ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue = "false", required = false) boolean bFilterHasTicket,
-            @ApiParam(value = "soaFilterField", required = false) @RequestParam(value = "soaFilterField", required = false) String soaFilterField) throws CommonServiceException {
+	@ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: Получение списка всех тасок, которые могут быть доступны указанному логину #####\n\n"
+			+ "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=[sLogin]\n\n\n"
+			+ "- Возвращает список всех тасок, которые могут быть доступны указанному логину [sLogin] и которые уже заняты другими логинами, входящими во все те-же группы, в которые входит данный логин\n\n"
+			+ "Во время выполнения производит поиск групп, в которые входит указанный пользователь, и затем возвращает список задач, которые могут быть "
+			+ " заассайнены на пользователей из полученных групп:\n\n" + "Содержит следующие параметры:\n"
+			+ "- sLogin - id пользователя. обязательный параметр, указывающий пользователя\n"
+			+ "- bIncludeAlienAssignedTasks - необязательный параметр (по умолчанию false). Если значение false - то возвращать только свои и только не ассайнутые, к которым доступ.\n"
+			+ "- sOrderBy - метод сортировки задач. Необязательный параметр. По умолчанию 'id'. Допустимые значения 'id', 'taskCreateTime', 'ticketCreateDate'\n"
+			+ "- nSize - Количество задач в результате. Необязательный параметр. По умолчанию 10.\n"
+			+ "- nStart - Порядковый номер первой задачи для возвращения. Необязательный параметр. По умолчанию 0\n"
+			+ "- sFilterStatus - Необязательный параметр (по умолчанию обрабатывается как OpenedUnassigned). статус фильтрации задач, у которого возможные значения: OpenedUnassigned (только не-ассайнутые), "
+			+ " OpenedAssigned(только ассайнутые), Opened(только открытые (не в истории)), Closed(только закрытые (история))\n"
+			+ "- bFilterHasTicket - Необязательный параметр (по умолчанию false). Если true - возвращать только те задачи, у которых есть связанный тикет\n"
+			+ "Примеры:\n\n" + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit\n\n"
+			+ "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit&nSize=15&nStart=10\n\n")
+	@RequestMapping(value = "/getTasks", method = RequestMethod.GET)
+	public @ResponseBody Map<String, Object> getTasks(
+			@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
+			@ApiParam(value = "nID_Process", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+			@ApiParam(value = "bIncludeAlienAssignedTasks", required = true) @RequestParam(value = "bIncludeAlienAssignedTasks", defaultValue = "false", required = false) boolean bIncludeAlienAssignedTasks,
+			@ApiParam(value = "sOrderBy", required = false) @RequestParam(value = "sOrderBy", defaultValue = "id", required = false) String sOrderBy,
+			@ApiParam(value = "nSize", required = false) @RequestParam(value = "nSize", defaultValue = "10", required = false) Integer nSize,
+			@ApiParam(value = "nStart", required = false) @RequestParam(value = "nStart", defaultValue = "0", required = false) Integer nStart,
+			@ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue = "OpenedUnassigned", required = false) String sFilterStatus,
+			@ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue = "false", required = false) boolean bFilterHasTicket,
+			@ApiParam(value = "soaFilterField", required = false) @RequestParam(value = "soaFilterField", required = false) String soaFilterField,
+			@ApiParam(value = "bIncludeVariablesProcess", required = false) @RequestParam(value = "bIncludeVariablesProcess", required = false, defaultValue = "true") Boolean bIncludeVariablesProcess)
+			throws CommonServiceException {
 
-        Map<String, Object> res = new HashMap<String, Object>();
+		Map<String, Object> res = new HashMap<String, Object>();
 
-        try {
-            List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
+		try {
+			List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
-            if (groups != null && !groups.isEmpty()) {
-                List<String> groupsIds = new LinkedList<String>();
-                for (Group group : groups) {
-                    groupsIds.add(group.getId());
-                }
-                LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+			if (groups != null && !groups.isEmpty()) {
+				List<String> groupsIds = new LinkedList<String>();
+				for (Group group : groups) {
+					groupsIds.add(group.getId());
+				}
+				LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
 
-                Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
-                long totalNumber = 0;
-                Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy, sFilterStatus,
-                        groupsIds, soaFilterField);
+				Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
+				long totalNumber = 0;
+				Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
+						sFilterStatus, groupsIds, soaFilterField);
+                LOG.info("taskQuery = {}", taskQuery );
+				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
+						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
+				LOG.info("Total number of tasks:{}", totalNumber);
+				int nStartBunch = nStart;
+				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
 
-                totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count() : oActionTaskService.getCountOfTasksForGroups(groupsIds);
-                LOG.info("Total number of tasks:{}", totalNumber);
-                int nStartBunch = nStart;
-                List<TaskInfo> tasks = new LinkedList<TaskInfo>();
+				// this while is intended to work until we either pass through
+				// all the tasks or select needed number of tickets
+				long sizeOfTasksToSelect = nSize;
+				if (bFilterHasTicket) {
+					// in case bFilterHasTicket tasks can be shifted. So we have
+					// select tasks from 0 and select tasks from nStart after
+					// that
+					sizeOfTasksToSelect = totalNumber;
+					nStartBunch = 0;
+				}
+				while ((tasks.size() < sizeOfTasksToSelect) && (nStartBunch < totalNumber)) {
+					LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
+					List<TaskInfo> currTasks = oActionTaskService.getTasksWithTicketsFromQuery(taskQuery, nStartBunch,
+							nSize, bFilterHasTicket, mapOfTickets);
+					tasks.addAll(currTasks);
 
-                // this while is intended to work until we either pass through all the tasks or select needed number of tickets
-                long sizeOfTasksToSelect = nSize;
-                if (bFilterHasTicket) {
-                    // in case bFilterHasTicket tasks can be shifted. So we have select tasks from 0 and select tasks from nStart after that
-                    sizeOfTasksToSelect = totalNumber;
-                    nStartBunch = 0;
-                }
-                while ((tasks.size() < sizeOfTasksToSelect) && (nStartBunch < totalNumber)) {
-                    LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
-                    List<TaskInfo> currTasks = oActionTaskService.getTasksWithTicketsFromQuery(taskQuery, nStartBunch, nSize, bFilterHasTicket, mapOfTickets);
-                    tasks.addAll(currTasks);
+					nStartBunch += nSize;
 
-                    nStartBunch += nSize;
+					if (!bFilterHasTicket) {
+						break;
+					}
+				}
 
-                    if (!bFilterHasTicket) {
-                        break;
-                    }
-                }
+				int tasksSize = tasks.size();
+				if (bFilterHasTicket) {
+					totalNumber = tasksSize;
+					if (tasksSize > nStart && tasksSize > (nStart + nSize)) {
+						tasks = tasks.subList(nStart, nStart + nSize);
+					} else if (tasksSize > nStart) {
+						tasks = tasks.subList(nStart, tasksSize);
+					} else {
+						LOG.info("Number of tasks with FlowSlotTicket is less than starting point to fetch:{}",
+								tasksSize);
+						tasks.clear();
+					}
+				}
 
-                int tasksSize = tasks.size();
-                if (bFilterHasTicket) {
-                    totalNumber = tasksSize;
-                    if (tasksSize > nStart && tasksSize > (nStart + nSize)) {
-                        tasks = tasks.subList(nStart, nStart + nSize);
-                    } else if (tasksSize > nStart) {
-                        tasks = tasks.subList(nStart, tasksSize);
-                    } else {
-                        LOG.info("Number of tasks with FlowSlotTicket is less than starting point to fetch:{}", tasksSize);
-                        tasks.clear();
-                    }
-                }
+				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
+				if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
+					oActionTaskService.populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, data);
+				} else {
+					oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
+				}
 
-                List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
-                if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
-                    oActionTaskService.populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, data);
-                } else {
-                    oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
-                }
-
-                /*if (!StringUtils.isEmpty(soaFilterField))
-                	data = filterTasks(data, soaFilterField);*/
-                res.put("data", data);
-                res.put("size", nSize);
-                res.put("start", nStart);
-                res.put("order", "asc");
-                res.put("sort", "id");
-                res.put("total", totalNumber);
-            }
-        } catch (Exception e) {
-            LOG.error("Error occured while getting list of tasks", e);
-        }
-        return res;
-    }
+				/*
+				 * if (!StringUtils.isEmpty(soaFilterField)) data =
+				 * filterTasks(data, soaFilterField);
+				 */
+				res.put("data", data);
+				res.put("size", nSize);
+				res.put("start", nStart);
+				res.put("order", "asc");
+				res.put("sort", "id");
+				res.put("total", totalNumber);
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured while getting list of tasks", e);
+		}
+		/*if (bIncludeVariablesProcess.equals(Boolean.TRUE) && nID_Process != null) {
+			Map<String, Object> mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
+			res.put("mProcessVariable", mProcessVariable);
+		}*/
+		return res;
+	}
 
     @Deprecated
     private List<Map<String, Object>> filterTasks(List<Map<String, Object>> tasks,
