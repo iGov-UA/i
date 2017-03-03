@@ -74,17 +74,11 @@ public class AgroholdingService {
 
     public String transferDocumentVacation() throws Exception {
         String result = "";
-        try {
-            httpRequester.setsLogin(generalConfig.getsLogin_Auth_Agroholding());
-            httpRequester.setsPassword(generalConfig.getsPassword_Auth_Agroholding());
-            String sURL = generalConfig.getsURL_Agroholding() + "/Document_ОтпускаОрганизаций";
-            result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
-            LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
-        } catch (Exception ex) {
-            LOG.error(".*.*.*" + result, ex);
-
-        }
-
+        httpRequester.setsLogin(generalConfig.getsLogin_Auth_Agroholding());
+        httpRequester.setsPassword(generalConfig.getsPassword_Auth_Agroholding());
+        String sURL = generalConfig.getsURL_Agroholding() + "/Document_ОтпускаОрганизаций";
+        result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
+        LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
         return result;
     }
 }
