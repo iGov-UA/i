@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="vpl_prolongation_spravka" name="Продовження строка дії довідки про взяття на облік внутрішньо переміщеної особи" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 04.10.2016, id=1504</documentation>
+    <documentation>Смоктій К.В. Последние правки: 02.03.2017, id=1504</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканована копія паспорту; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
         <activiti:formProperty id="sAdressPropiska" name="Реєстраційна адреса (по паспорту)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressFact" name="Фактична адреса проживання (перебування)" type="string" required="true"></activiti:formProperty>
@@ -17,7 +17,7 @@
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnumGet_Help" name="Чи потрібно надання щомісячної адресної допомоги внутрішньо переміщеним особам для покриття витрат на проживання, в тому числі на оплату житлово-комунальних послуг?" type="enum" default=" " required="true">
           <activiti:value id="sEnumElement_Yes" name="Так, надати щомісячну допомогу"></activiti:value>
           <activiti:value id="sEnumElement_No" name="Ні, не потрібно надання допомоги"></activiti:value>
@@ -32,9 +32,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="sLabelFailure" name=" " type="label" default="&lt;b&gt; Грошова допомога НЕ МОЖЕ бути Вам призначена (згідно &lt;a href=&quot;http://zakon4.rada.gov.ua/laws/show/505-2014-%D0%BF#n34)&quot; target=&quot;_blank&quot;&gt; Порядку &lt;/a&gt; надання щомісячної адресної допомоги)!! &lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/soJngn&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; , що є підставою для надання щомісячної адресної допомоги внутрішньо переміщеним особам"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви для надання щомісячної адресної допомоги" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_SvodoztvoOdruzennya" name="Копія свідоцтва про одруження;якщо в заяві на отримання грошової допомоги вказані чоловік і дружина" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_SvodoztvoNarodzennya" name="копії свідоцтв про народження дітей;якщо в заяві на отримання грошової допомоги вказані діти (завантажте одним файлом формату PDF, якщо дітей декілька)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви для надання щомісячної адресної допомоги; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_SvodoztvoOdruzennya" name="Копія свідоцтва про одруження;якщо в заяві на отримання грошової допомоги вказані чоловік і дружина;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_SvodoztvoNarodzennya" name="копії свідоцтв про народження дітей;якщо в заяві на отримання грошової допомоги вказані діти (завантажте одним файлом формату PDF, якщо дітей декілька);bNew=true" type="file"></activiti:formProperty>
 		<activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
@@ -88,12 +88,12 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_prolongation_spravka_print.html]" type="invisible" default="Заява про продовження строка дії довідки про взяття на облік ВПО" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканована копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви для надання щомісячної адресної допомоги; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_SvodoztvoOdruzennya" name="Копія свідоцтва про одруження;якщо в заяві на отримання грошової допомоги вказані чоловік і дружина;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_SvodoztvoNarodzennya" name="копії свідоцтв про народження дітей;якщо в заяві на отримання грошової допомоги вказані діти (завантажте одним файлом формату PDF, якщо дітей декілька);bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava},${nFile_SvodoztvoOdruzennya},${nFile_SvodoztvoNarodzennya}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="[Етап II] Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -137,12 +137,11 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_prolongation_spravka_print.html]" type="invisible" default="Заява про продовження строка дії довідки про взяття на облік ВПО" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava},${nFile_SvodoztvoOdruzennya},${nFile_SvodoztvoNarodzennya}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви для надання щомісячної адресної допомоги; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_SvodoztvoOdruzennya" name="Копія свідоцтва про одруження;якщо в заяві на отримання грошової допомоги вказані чоловік і дружина;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_SvodoztvoNarodzennya" name="копії свідоцтв про народження дітей;якщо в заяві на отримання грошової допомоги вказані діти (завантажте одним файлом формату PDF, якщо дітей декілька);bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Відпрвка e-mail з відмовою + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
