@@ -5,6 +5,7 @@
  */
 package org.igov.service.business.export;
 
+import java.net.URLEncoder;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.slf4j.Logger;
@@ -65,7 +66,30 @@ public class AgroholdingService {
                 + "</content>"
                 + "</entry>"
                 + "</feed>";
-    /*private final static String documentVacation = "<?xml version='1.0' encoding='UTF-8'?>"
+
+    @Autowired
+    HttpRequester httpRequester;
+
+    @Autowired
+    GeneralConfig generalConfig;
+
+    public String transferDocumentVacation() throws Exception {
+        httpRequester.setsLogin(generalConfig.getsLogin_Auth_Agroholding());
+        httpRequester.setsPassword(generalConfig.getsPassword_Auth_Agroholding());
+        String sURL = generalConfig.getsURL_Agroholding() + "/Document_ОтпускаОрганизаций";
+        LOG.info("sURL: " + sURL);
+        //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
+        //String result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
+        
+        String result = httpRequester.postInside(URLEncoder.encode(sURL, "UTF-8"), null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
+        LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
+        
+
+        return result;
+    }
+}
+
+/*private final static String documentVacation = "<?xml version='1.0' encoding='UTF-8'?>"
                 + "<feed xmlns='http://www.w3.org/2005/Atom' xmlns:at='http://purl.org/atompub/tombstones/1.0' xmlns:d='http://schemas.microsoft.com/ado/2007/08/dataservices' xmlns:m='http://schemas.microsoft.com/ado/2007/08/dataservices/metadata' xml:base='http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/'>"
                 + "<entry>"
                 + "<id>http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций(guid'34b0dffb-fec5-11e6-98d3-005056b384b3')</id>"
@@ -158,23 +182,3 @@ public class AgroholdingService {
             + "</content>"
             + "</entry>"
             + "</feed>";*/
-
-    @Autowired
-    HttpRequester httpRequester;
-
-    @Autowired
-    GeneralConfig generalConfig;
-
-    public String transferDocumentVacation() throws Exception {
-        httpRequester.setsLogin(generalConfig.getsLogin_Auth_Agroholding());
-        httpRequester.setsPassword(generalConfig.getsPassword_Auth_Agroholding());
-        String sURL = generalConfig.getsURL_Agroholding() + "/Document_ОтпускаОрганизаций";
-        LOG.info("sURL: " + sURL);
-        //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
-        String result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
-        LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
-        
-
-        return result;
-    }
-}

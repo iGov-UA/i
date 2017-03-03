@@ -4,34 +4,34 @@
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport" name="Ваш документ;Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail;На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asOwnerType" name="Власник / судновласник судна" type="enum" required="true">
           <activiti:value id="ur" name="юридична особа"></activiti:value>
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="privatePhone" name="Телефон судновласника" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="privateMail" name="E-mail судновласника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShipName" name="Назва судна;відповідно до Свідоцтва про право плавання під прапором України або Суднового білета" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН;містить 7 цифр" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім’я власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sManPassport" name="№, серія паспорту власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sManAdress" name="Адреса власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон судновласника" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="privateMail" name="E-mail судновласника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShipName" name="Назва судна;відповідно до Свідоцтва про право плавання під прапором України або Суднового білета" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН;містить 7 цифр" type="string"></activiti:formProperty>
         <activiti:formProperty id="asPassengerShip" name="Пасажирське судно" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asGetResult" name="Як бажаєте отримати результат?" type="enum" required="true">
           <activiti:value id="sPost" name="поштою"></activiti:value>
-          <activiti:value id="sCourier" name="кур'єрською доставкою (за Ваш рахунок)"></activiti:value>
+          <activiti:value id="sCourier" name="кур’єрською доставкою (за Ваш рахунок)"></activiti:value>
           <activiti:value id="sOffline" name="особисто"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити та заповнити &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYaFExblNOTUFnaEdMUE5Ycl9Qc2REanNScHhn&quot;  target=&quot;_blank&quot;&gt;обґрунтування і розрахунок мінімального складу екіпажу судна&lt;/a&gt;."></activiti:formProperty>
@@ -44,7 +44,7 @@
         <activiti:formProperty id="markersStart2" name="Маркер на СтарТаске" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_841_start2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Автор звернення" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdresECP" name="адрес" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/infr/min_equip_ecp.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -112,7 +112,6 @@
           <activiti:value id="ur" name="юридична особа"></activiti:value>
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sVlasn" name=" " type="label" default="Дані щодо власника / судновласника"></activiti:formProperty>
         <activiti:formProperty id="sCompName" name="Повна назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи; ;writable=false" type="string"></activiti:formProperty>
@@ -127,23 +126,23 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asGetResult" name="Як бажаєте отримати результат?" type="enum" writable="false">
+        <activiti:formProperty id="asGetResult" name="Бажаний спосіб отримання результату" type="enum" writable="false">
           <activiti:value id="sPost" name="поштою"></activiti:value>
-          <activiti:value id="sCourier" name="кур'єрською доставкою (за Ваш рахунок)"></activiti:value>
+          <activiti:value id="sCourier" name="кур’єрською доставкою (за Ваш рахунок)"></activiti:value>
           <activiti:value id="sOffline" name="особисто"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asDecide1" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="sAccept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
           <activiti:value id="sReject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment1" name="Вкажіть причину відмови або додаткові дані для отримання свідоцтва у цьому полі" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Вкажіть причину відмови або додаткові дані для отримання свідоцтва у цьому полі" type="textArea" default="  "></activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата готовності свідоцтва" type="date"></activiti:formProperty>
         <activiti:formProperty id="nDocAnketa" name="Обґрунтування і розрахунок мінімального складу екіпажу судна; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDocTO" name="Копія класифікаційного свідоцтва або копія акта технічного нагляду судна для здійснення його державної реєстрації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDocFlag" name="Копія свідоцтва про право плавання під Державним Прапором України; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDocVlasn" name="Копія свідоцтва про право власності на судно; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nBill" name="Рахунок для сплати; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/min_equip.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_841_user1.json')}"></activiti:formProperty>
@@ -228,7 +227,8 @@
 			Приймальні дні управління надання адміністративних послуг на водному транспорті Департаменту надання адміністративних послуг Укртрансбезпеки:<br>
 			понеділок, середа, п’ятниця з 9.00-18.00, обідня перерва з 13.00-13.45.<br>
 			Факт отримання свідоцтва засвідчується у журналі видачі свідоцтв особистим підписом керівника юридичної особи, фізичної особи - підприємця, фізичної особи (уповноваженої особи) у разі пред’явлення документа, що посвідчує його (її) особу.<br>
-			${comment}
+			<p>
+			${sComment1}
 			</p> 
 			<p>
 			Після отримання свідоцтва, будь ласка, оцініть якість надання послуги за допомогою форми нижче.
@@ -279,7 +279,7 @@
 			</ul>
 			</p> 
 			<p>
-			${comment}
+			${sComment1}
 			</p> 
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
@@ -309,7 +309,6 @@
           <activiti:value id="ur" name="юридична особа"></activiti:value>
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sVlasn" name=" " type="label" default="Дані щодо власника / судновласника"></activiti:formProperty>
         <activiti:formProperty id="sCompName" name="Повна назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи; ;writable=false" type="string"></activiti:formProperty>
@@ -324,9 +323,9 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asGetResult" name="Як бажаєте отримати результат?" type="enum" writable="false">
+        <activiti:formProperty id="asGetResult" name="Бажаний спосіб отримання результату" type="enum" writable="false">
           <activiti:value id="sPost" name="поштою"></activiti:value>
-          <activiti:value id="sCourier" name="кур'єрською доставкою (за Ваш рахунок)"></activiti:value>
+          <activiti:value id="sCourier" name="кур’єрською доставкою (за Ваш рахунок)"></activiti:value>
           <activiti:value id="sOffline" name="особисто"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nDocAnketa" name="Обґрунтування і розрахунок мінімального складу екіпажу судна; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -335,7 +334,8 @@
         <activiti:formProperty id="nDocVlasn" name="Копія свідоцтва про право власності на судно; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/min_equip.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_841_user1.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow47" sourceRef="usertask2_green" targetRef="servicetask7"></sequenceFlow>
