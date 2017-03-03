@@ -99,16 +99,18 @@ public class AgroholdingService {
         String str = "";
         String nstr = "";
         while ((nstr = in.readLine()) != null) {
-            nstr = nstr + str;
+            str = str + nstr;
         }
-
+        
+        LOG.info("string in transferDocumentVacation: {} ", str);
+                
         in.close();
         
         LOG.info("sURL: " + sURL);
         //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
         //String result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
         String result = "none";
-        result = httpRequester.postInside(sURL, null, nstr, "application/atom+xml;type=entry;charset=utf-8");
+        result = httpRequester.postInside(sURL, null, str, "application/atom+xml;type=entry;charset=utf-8");
         LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
         return result;
     }
