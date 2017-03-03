@@ -27,7 +27,7 @@ public class AgroholdingService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AgroholdingService.class);
 
-    private final static String documentVacation = "<?xml version='1.0' encoding='UTF-8'?>"
+    private final static String documentVacation = "<?xml version='1.0' encoding='windows-1251'?>"
             + "<feed xmlns='http://www.w3.org/2005/Atom' xmlns:at='http://purl.org/atompub/tombstones/1.0' xmlns:d='http://schemas.microsoft.com/ado/2007/08/dataservices' xmlns:m='http://schemas.microsoft.com/ado/2007/08/dataservices/metadata' xml:base='http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/'>"
             + "<entry>"
             + "<id></id>"
