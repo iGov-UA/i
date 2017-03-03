@@ -85,7 +85,7 @@
 		<td height="20" colspan="12" align="LEFT" valign="BOTTOM"><font face="Times New Roman" color="#000000">небезпечних вантажів та небезпечних відходів річковим, морським транспортом, а саме:</font></td>
 	</tr>
 	<tr>
-		<td style="border-bottom:1px solid #000000" colspan="12" height="20" align="LEFT" valign="BOTTOM"><font face="Times New Roman" color="#000000">[sTypeBiz]<br></font></td>
+		<td id="license" style="border-bottom:1px solid #000000" colspan="12" height="20" align="LEFT" valign="BOTTOM"><font face="Times New Roman" color="#000000"></font></td>
 	</tr>
 	<tr>
 		<td height="20" align="CENTER" valign="BOTTOM"></td>
@@ -185,6 +185,16 @@
 	</tr>
 	
 </table>
-
-
+<script>
+	var PassSmalShip = "";
+	var PassShip = "";
+	var ScrapShip = "";
+	var TrashShip = "";
+	if "[asPassSmalShip]" == "Так" {PassSmalShip = "перевезення пасажирів малими/маломірними суднами";}
+	if "[asPassShip]" == "Так" {PassShip = "перевезення пасажирів річковим, морським транспортом";}
+	if "[asScrapShip]" == "Так" {ScrapShip = "перевезення небезпечних вантажів річковим, морським транспортом";}
+	if "[asTrashShip]" == "Так" {TrashShip = "перевезення небезпечних відходів річковим, морським транспортом";}
+	var sTypeBiz = PassSmalShip + PassShip + ScrapShip + TrashShip;
+	document.getElementById("license").innerHTML = sTypeBiz;
+</script>
 </body></html>

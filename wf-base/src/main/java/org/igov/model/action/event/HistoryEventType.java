@@ -77,9 +77,10 @@ public enum HistoryEventType {
     CHANGE_DOCUMENT(14L,
             "DocumentChanged",
             "Внесены изменения в документ или задачу (Слушатель SetTask)",
-            HistoryEventMessage.FIO + " - документ відредаговано:\n" +
-            "Було: " + HistoryEventMessage.OLD_DATA + "\n" +
-            "Стало: " + HistoryEventMessage.NEW_DATA),         
+            HistoryEventMessage.FIO + " - документ відредаговано:\n\n" +  
+            "<table style=\"width:30%\"><tr><th>Було</th><th>Cтало</th></tr>" +         
+            HistoryEventMessage.OLD_DATA + "\n" 
+            + HistoryEventMessage.NEW_DATA + "</table>"),         
     CREATE_SUBDOCUMENT(15L,
             "SubDocumentCreated",
             "В текущем процессе вызван другой процесс (с помощью элемента БП callActiviti)",

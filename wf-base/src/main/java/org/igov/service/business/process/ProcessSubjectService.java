@@ -469,7 +469,9 @@ public class ProcessSubjectService {
 
                     LOG.info("mParamDocumentNew: " + mParamDocumentNew);
                     
-
+                    String sOldHistoryData = "<tr><td>";
+                    String sNewHistoryData = "<td>";
+                    
                     if (!mParamDocumentNew.isEmpty()) {
                             
                         for (ProcessSubject oProcessSubject : aProcessSubject_Child) {
@@ -481,29 +483,38 @@ public class ProcessSubjectService {
                                 
                             }
                             
-                            String sOldHistoryData = "";
-                            String sNewHistoryData = "";
+                            
                             
                             for (String mKey : mParamDocumentNew.keySet()) {
                                 runtimeService.setVariable(oProcessSubject.getSnID_Process_Activiti(), mKey, mParamDocumentNew.get(mKey));
-                                sOldHistoryData = sOldHistoryData + mKey + " : " + mParamDocument.get(mKey);
-                                sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey);        
+                                
+                                LOG.info("mProcessVariable.get(mKey): " + mProcessVariable.get(mKey));
+                                LOG.info("mParamDocumentNew.get(mKey): " + mParamDocumentNew.get(mKey));
+                                
+                                if(!mProcessVariable.get(mKey).equals(mParamDocumentNew.get(mKey))){
+                                    sOldHistoryData = sOldHistoryData + mKey + " : " + mProcessVariable.get(mKey) + "\n";
+                                    sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey) + "\n";
+                                }
                             }
                             
                             addEditHistoryEvent(oProcessSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
-                                    processSubject.getsLogin());
+                                    processSubject.getsLogin(), oProcessSubject.getProcessSubjectStatus().getId());
                             
                             oProcessSubject.setsDatePlan(datePlan);
                             processSubjectDao.saveOrUpdate(oProcessSubject);
 
                         }
+                        
+                        /*addEditHistoryEvent(processSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
+                                    processSubject.getsLogin(), processSubject.getProcessSubjectStatus().getId());
+                    */
                     }
                 }
             }
         }
     }
     
-    public void addEditHistoryEvent(String snID_Process_Activiti, String sNewHistoryData, String sOldHistoryData, String sLogin) 
+    public void addEditHistoryEvent(String snID_Process_Activiti, String sNewHistoryData, String sOldHistoryData, String sLogin, Long nID_Status) 
     {
         
         String sID_Order
@@ -517,9 +528,12 @@ public class ProcessSubjectService {
         
         Map<String, String> historyParam = new HashMap<>();
 
-        historyParam.put("newData", sNewHistoryData);
-        historyParam.put("oldData", sOldHistoryData);
-        historyParam.put("sLogin", sID_Order);
+        historyParam.put("newData", sNewHistoryData + "</td></tr>");
+        historyParam.put("oldData", sOldHistoryData + "</td>");
+        //historyParam.put("newData", "старые данные");
+        //historyParam.put("oldData", "новые данные");
+        historyParam.put("nID_StatusType", nID_Status.toString());
+        historyParam.put("sLogin", sLogin);
 
         try {
             oActionEventHistoryService.addHistoryEvent(sID_Order,

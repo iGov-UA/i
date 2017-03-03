@@ -63,10 +63,11 @@ public class ActionEventHistoryService {
             LOG.info("nID_Server by sID_order {}", Integer.parseInt(sID_Order.split("-")[0]));
             LOG.info("nID_Server by generalConfig: {}", generalConfig.getSelfServerId());
             LOG.info("getSelfHost: {}", generalConfig.getSelfHost());
+            params.put("nID_HistoryEventType", nID_HistoryEventType.toString());
             
             try{
                 if(nID_Server == Integer.parseInt(sID_Order.split("-")[0])){
-                    params.put("nID_HistoryEventType", nID_HistoryEventType.toString());
+                    
                     LOG.info("addHistoryEvent make request...");
                     doRemoteRequest(URI_ADD_HISTORY_EVENT, params);
                 }
@@ -153,6 +154,13 @@ public class ActionEventHistoryService {
             boolean saveHistoryEvent,
             boolean saveSubjectMessage
     ) {
+        
+        LOG.info("newData in addActionStatus: " +  newData);
+        LOG.info("oldData in addActionStatus: " +  oldData);
+        LOG.info("sLogin in addActionStatus: " +  sLogin);
+        LOG.info("sLogin in addActionStatus: " +  nID_HistoryEventType);
+        
+                
         int dash_position = sID_Order.indexOf(DASH);
         int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
         Long nID_Order = Long.valueOf(sID_Order.substring(dash_position + 1));
@@ -200,7 +208,9 @@ public class ActionEventHistoryService {
                     LOG.info("can't get HistoryEvent_Service entity: {} ", e);
                 }
             }
-
+            
+            LOG.info("HistoryEventType.getById: " + HistoryEventType.getById(nID_HistoryEventType).getsName());
+                    
             if (oHistoryEvent_Service != null) {
                 setHistoryEvent(HistoryEventType.getById(nID_HistoryEventType), nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
             }
