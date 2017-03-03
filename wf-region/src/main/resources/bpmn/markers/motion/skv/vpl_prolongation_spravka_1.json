@@ -8,34 +8,41 @@
 			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
 			"sCondition":	"[sClient] == 'Not_Correct'"
 		},
- 		"ShowFieldsOnCondition_1":
+		"ShowFieldsOnCondition_1":
+		{
+			"sNote":				["For Hide Invisible"],
+			"aField_ID":			["sMailClerk"],
+			"asID_Field":			{"sClient":"email"},
+			"sCondition":			"([sClient] == 'smoktii.igov@gmail.com' || [sClient] == 'autotestbeta@gmail.com')"
+		},
+ 		"ShowFieldsOnCondition_2":
 		{
 			"sNote":		["For Show Enum"],
 			"aField_ID":	["asEnumExist_Flat","asEnumExist_Deposit"],
 			"asID_Field":	{"sClient":"asEnumGet_Help"},
 			"sCondition":	"[sClient] == 'sEnumElement_Yes'"
 		},
-		"RequiredFieldsOnCondition_1": 
+		"RequiredFieldsOnCondition_2": 
 		{
 			"aField_ID":	["asEnumExist_Flat","asEnumExist_Deposit"],
 			"asID_Field":	{"sClient":"asEnumGet_Help"},
 			"sCondition":	"[sClient] == 'sEnumElement_Yes'"
 		},
- 		"ShowFieldsOnCondition_2":
+ 		"ShowFieldsOnCondition_3":
 		{
 			"sNote":		["For Show NOT GET HELP"],
 			"aField_ID":	["sLabelFailure"],
 			"asID_Field":	{"sClient":"asEnumExist_Flat","sReason":"asEnumExist_Deposit","sGetHelp":"asEnumGet_Help"},
 			"sCondition":	"[sGetHelp] == 'sEnumElement_Yes' && ([sClient] == 'sEnumElement_ExistFlat_Yes' || [sReason] == 'sEnumElement_ExistDeposit_Yes')"
 		},
- 		"ShowFieldsOnCondition_3":
+ 		"ShowFieldsOnCondition_4":
 		{
 			"sNote":		["For Show uploud Files"],
 			"aField_ID":	["sLabelInfo_1","nFile_Zayava","nFile_SvodoztvoOdruzennya","nFile_SvodoztvoNarodzennya"],
 			"asID_Field":	{"sClient":"asEnumExist_Flat","sReason":"asEnumExist_Deposit","sGetHelp":"asEnumGet_Help"},
 			"sCondition":	"[sGetHelp] == 'sEnumElement_Yes' && [sClient] == 'sEnumElement_ExistFlat_No' && [sReason] == 'sEnumElement_ExistDeposit_No'"
 		},
-		"RequiredFieldsOnCondition_3": 
+		"RequiredFieldsOnCondition_5": 
 		{
 			"aField_ID":	["nFile_Zayava"],
 			"asID_Field":	{"sClient":"asEnumExist_Flat","sReason":"asEnumExist_Deposit","sGetHelp":"asEnumGet_Help"},

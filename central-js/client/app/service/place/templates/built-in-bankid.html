@@ -105,7 +105,7 @@
               <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
                 <table style="width: 100%">
                   <tr ng-if="insertSeparator(property.id).sText.length > 0" style="width: 100%">
-                    <td style="width: 30%; display: table-cell">
+                    <!--<td style="width: 30%; display: table-cell">
                       <table style="width: 100%">
                         <tr>
                           <td style="width: 100%; margin-top: 30px; margin-bottom: 30px; height: 1px; display: block;
@@ -116,11 +116,11 @@
                           </td>
                         </tr>
                       </table>
+                    </td>-->
+                    <td style="max-width: 40%; margin-top: 30px; margin-bottom: 30px; text-align: center">
+                      <span style="position: relative"><b>{{insertSeparator(property.id).sText}}</b></span>
                     </td>
-                    <td rowspan="3" style="max-width: 40%; margin-top: 30px; margin-bottom: 30px; text-align: center">
-                      <span style="position: relative">{{insertSeparator(property.id).sText}}</span>
-                    </td>
-                    <td style="width: 30%; display: table-cell">
+                    <td style="width: 58%; display: table-cell">
                       <table style="width: 100%">
                         <tr>
                           <td style="width: 100%; margin-top: 30px; margin-bottom: 30px; height: 1px; display: block;
@@ -488,7 +488,7 @@
                   </table>
 
                   <div style="text-align: left; margin-top: 3px">
-                    <input type="button" ng-hide="rowLengthCheckLimit(property)" class="add-row-button" ng-click="addRow(form[tableName], property.id, tableName)" value="Додати рядок">
+                    <a ng-hide="rowLengthCheckLimit(property)" ng-click="addRow(form[tableName], property.id, tableName)">+ Додати рядок</a>
                   </div>
                 </div>
 
@@ -500,7 +500,29 @@
                        ng-required="isFieldRequired(property)"
                        ng-class="getBpAndFieldID(property)"
                        class="form-control"
+                       ng-if="!isOKPOField(property.id)"
                        value="">
+
+                <!--field for OKPO search start-->
+                <div ng-switch-when="string" ng-if="isOKPOField(property.id)">
+                  <div class="okpo" ng-if="isOKPOField(property.id)">
+                    <input type="text"
+                           name="{{property.id}}"
+                           ng-model="data.formData.params[property.id].value"
+                           ng-required="isFieldRequired(property)"
+                           ng-class="getBpAndFieldID(property)"
+                           ng-change="getOrgData(data.formData.params[property.id].value, property.id)"
+                           class="form-control okpo-field"
+                           ng-model-options="{debounce:1000}"
+                           value="">
+                    <p style="font-size: 14px;">Після того, як Ви напишете ЗКПО, поля нижче будуть заповнені автоматично.
+                                                Дані юрособи можуть бути застарілими (затримка до одного тижня), тому
+                                                Ви маєте можливість їх редагувати.</p>
+                    <span class="small-loading okpo-spinner"
+                          ng-if="orgIsLoading.status && orgIsLoading.field === property.id"></span>
+                  </div>
+                </div>
+                <!--field for OKPO search end-->
 
                 <button ng-switch-when="string"
                         type="button"
