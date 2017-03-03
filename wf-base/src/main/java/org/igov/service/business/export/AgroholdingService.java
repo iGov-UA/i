@@ -17,7 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException; 
 /**
  *
  * @author olga
@@ -27,7 +32,7 @@ public class AgroholdingService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AgroholdingService.class);
 
-    private final static String documentVacation = "<?xml version='1.0' encoding='windows-1251'?>"
+    private final static String documentVacation = "<?xml version='1.0' encoding='UTF-8'?>"
             + "<feed xmlns='http://www.w3.org/2005/Atom' xmlns:at='http://purl.org/atompub/tombstones/1.0' xmlns:d='http://schemas.microsoft.com/ado/2007/08/dataservices' xmlns:m='http://schemas.microsoft.com/ado/2007/08/dataservices/metadata' xml:base='http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/'>"
             + "<entry>"
             + "<id></id>"
@@ -82,12 +87,26 @@ public class AgroholdingService {
         httpRequester.setsLogin(generalConfig.getsLogin_Auth_Agroholding());
         httpRequester.setsPassword(generalConfig.getsPassword_Auth_Agroholding());
         String sURL = generalConfig.getsURL_Agroholding() + "/Document_ОтпускаОрганизаций";
+        
+        File fileDir = new File("data/test1C.txt");
+
+        BufferedReader in = new BufferedReader(
+           new InputStreamReader(new FileInputStream(fileDir), "UTF-8"));
+
+        String str = "";
+        String nstr = "";
+        while ((nstr = in.readLine()) != null) {
+            nstr = nstr + str;
+        }
+
+        in.close();
+        
         LOG.info("sURL: " + sURL);
         //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
-        String result = httpRequester.postInside(sURL, null, new String(documentVacation.getBytes("UTF-8"), "cp1251"), "application/atom+xml;type=entry;charset=windows-1251");
-        //String result = "none";
-        //result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
-        //LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
+        //String result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
+        String result = "none";
+        result = httpRequester.postInside(sURL, null, str, "application/atom+xml;type=entry;charset=utf-8");
+        LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
         return result;
     }
 
