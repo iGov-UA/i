@@ -2,10 +2,9 @@ package org.igov.service.business.action.task.systemtask.export;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
+import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.delegate.TaskListener;
-import org.igov.io.GeneralConfig;
-import org.igov.io.web.HttpRequester;
 import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
 import org.igov.service.business.export.AgroholdingService;
 import org.slf4j.Logger;
@@ -25,6 +24,20 @@ public class Transfer_DocumentVacation implements JavaDelegate, TaskListener {
    
     @Autowired
     AgroholdingService agroholdingService;
+    
+    public Expression sDateVacationBegin;
+    
+    public Expression sDateVacationEnd;
+    
+    public Expression sTypeVacation;
+    
+    public Expression sNote;
+    
+    public Expression sKeyResponsible;
+    
+    public Expression sKeyOrgan;
+    
+    public Expression sKeySubjectType;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
@@ -34,6 +47,7 @@ public class Transfer_DocumentVacation implements JavaDelegate, TaskListener {
     @Override
     public void notify(DelegateTask delegateTask) {
         try {
+            //по ид вытащить того, кто отрабатывает и достать кеш человека ..
             agroholdingService.transferDocumentVacation();
         } catch (Exception ex) {
             LOG.info(EVENTNAME_CREATE);
