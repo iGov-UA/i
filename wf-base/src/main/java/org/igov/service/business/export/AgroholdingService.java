@@ -91,7 +91,7 @@ public class AgroholdingService {
         httpRequester.setsPassword(generalConfig.getsPassword_Auth_Agroholding());
         String sURL = generalConfig.getsURL_Agroholding() + "/Document_ОтпускаОрганизаций";
         
-        File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, "test1C.txt");
+        File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, "1C.txt");
                 
         BufferedReader in = new BufferedReader(
            new InputStreamReader(new FileInputStream(oFile), "windows-1251"));
