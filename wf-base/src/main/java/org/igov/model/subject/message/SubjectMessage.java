@@ -1,23 +1,22 @@
 package org.igov.model.subject.message;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.Type;
-import org.igov.model.subject.Subject;
-import org.joda.time.DateTime;
-import org.igov.model.core.AbstractEntity;
-import org.igov.util.JSON.JsonDateTimeDeserializer;
-import org.igov.util.JSON.JsonDateTimeSerializer;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Type;
+import org.igov.model.core.AbstractEntity;
+import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectContact;
+import org.igov.util.JSON.JsonDateTimeDeserializer;
+import org.igov.util.JSON.JsonDateTimeSerializer;
+import org.joda.time.DateTime;
+
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @javax.persistence.Entity
 public class SubjectMessage extends AbstractEntity {
@@ -60,7 +59,7 @@ public class SubjectMessage extends AbstractEntity {
     private String contacts;
 
     @JsonProperty(value = "sData")
-    @Column(name = "sData", length = 200)
+    @Column(name = "sData")
     private String data;
 
     @JsonProperty(value = "oSubjectMessageType")
@@ -196,5 +195,24 @@ public class SubjectMessage extends AbstractEntity {
 	public void setsID_DataLink(String sID_DataLink) {
 		this.sID_DataLink = sID_DataLink;
 	}
-    
+
+    @Override
+    public String toString() {
+        return "SubjectMessage{" +
+                "head='" + head + '\'' +
+                ", body='" + body + '\'' +
+                ", date=" + date +
+                ", id_subject=" + id_subject +
+                ", mail='" + mail + '\'' +
+                ", oMail=" + oMail +
+                ", contacts='" + contacts + '\'' +
+                ", data='" + data + '\'' +
+                ", subjectMessageType=" + subjectMessageType +
+                ", sBody_Indirectly='" + sBody_Indirectly + '\'' +
+                ", nID_HistoryEvent_Service=" + nID_HistoryEvent_Service +
+                ", sSubjectInfo='" + sSubjectInfo + '\'' +
+                ", oSubject=" + oSubject +
+                ", sID_DataLink='" + sID_DataLink + '\'' +
+                "} " + super.toString();
+    }
 }

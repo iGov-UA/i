@@ -142,8 +142,13 @@ module.exports.getScanContentRequest = function (documentScanLink, accessToken) 
 };
 
 module.exports.cacheCustomer = function (customer, callback) {
-  var url = '/object/file/upload_file_to_redis';
-  activiti.upload(url, {}, 'customerData.json', JSON.stringify(customer), callback);
+  // var url = '/object/file/upload_file_to_redis';
+  var url = '/object/file/setProcessAttach';
+  var params = {
+    sID_StorageType: 'Redis',
+    sFileNameAndExt: 'customerData.json'
+  };
+  activiti.upload(url, params, 'customerData.json', JSON.stringify(customer), callback);
 };
 
 module.exports.syncWithSubject = function (accessToken, done) {
@@ -180,7 +185,8 @@ module.exports.syncWithSubject = function (accessToken, done) {
         if (error || body.code) {
           callback(createError(body, 'error while caching data. ' + body.message, response), null);
         } else {
-          result.usercacheid = body;
+          // result.usercacheid = body;
+          result.usercacheid = body.sKey;
 
           if(result.customer.inn){
             result.customer.inn = bankidUtil.decryptField(result.customer.inn);

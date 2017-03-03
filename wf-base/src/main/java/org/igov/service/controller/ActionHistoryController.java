@@ -44,8 +44,11 @@ public class ActionHistoryController {
             @ApiParam(value = "номер-ид запущенного процесса для обработки фидбеков (issue 962)", required = false) @RequestParam(value = "nID_Proccess_Feedback", required = false) Long nID_Proccess_Feedback,
             @ApiParam(value = "номер-ид бп эсклации (поле на перспективу для следующего тз по эскалации)", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation,
             @ApiParam(value = "числовой код, который соответсвует статусу", required = false) @RequestParam(value = "nID_StatusType", required = false) Long nID_StatusType,
-            @ApiParam(value = "числовой код, который соответсвует типу события", required = false) @RequestParam(value = "nID_HistoryEventType", required = false) Long nID_HistoryEventType
-    ) {
+            @ApiParam(value = "числовой код, который соответсвует типу события", required = false) @RequestParam(value = "nID_HistoryEventType", required = false) Long nID_HistoryEventType,
+            @ApiParam(value = "новые данные после редактирвоание", required = false) @RequestParam(value = "newData", required = false) String newData,
+            @ApiParam(value = "старые данные до редактирвоания", required = false) @RequestParam(value = "oldData", required = false) String oldData,
+            @ApiParam(value = "логин или ФИО", required = false) @RequestParam(value = "sLogin", required = false) String sLogin)
+    {
         LOG.info("addHistoryEvent was started with params: sID_Order: {} nID_Subject : {} sUserTaskName: {} "
                 + "nID_Service: {} nID_ServiceData: {} nID_ServiceData: {} nID_Region: {} sID_UA: {} soData: {} "
                 + "sToken: {} sHead: {} sBody: nID_Proccess_Feedback: {} nID_Proccess_Escalation: {} nID_StatusType: {}",
@@ -68,6 +71,9 @@ public class ActionHistoryController {
                 nID_Proccess_Escalation,
                 nID_StatusType,
                 nID_HistoryEventType,
+                newData,
+                oldData,
+                sLogin,
                 true,
                 true,
                 false
