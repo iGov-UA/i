@@ -4,7 +4,7 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport" name="Ваш документ; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -14,16 +14,18 @@
         <activiti:formProperty id="sCompPlase" name="Адреса місцезнаходження юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон юридичної особи" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA3" name="Прізвище керівника юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA3" name="Ім'я керівника юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA3" name="Ім’я керівника юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По батькові керівника юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище відповідальної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я відповідальної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім’я відповідальної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові відповідальної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яку плануєте запрошувати"></activiti:formProperty>
         <activiti:formProperty id="sPersonLastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPersonFirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPersonLastNameEng" name="Прізвище англійською; згідно з документом" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім’я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstEng" name="Ім’я та по батькові англійською; згідно з документом" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPersonDOB" name="Дата народження;Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPersonPOB" name="Місце народження;Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPersonDocNum" name="Серія та номер документа іноземця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asCountVizit" name="Кількість візитів" type="enum" required="true">
           <activiti:value id="sVizOne" name="одноразовий в’їзд"></activiti:value>
@@ -39,13 +41,12 @@
           <activiti:value id="sChildYes" name="так"></activiti:value>
           <activiti:value id="sChildNo" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPersonChild" name="Прізвища, ім'я, по батькові (за наявності) та дата народження дітей до 18 років" type="textArea" default="-------------------------" required="true"></activiti:formProperty>
-        <activiti:formProperty id="slabelSize" name="Зверніть увагу" type="label" default="Якщо у документі декілька сторінок об'єднайте у pdf-файл або zip архів, розмір не може перевищувати 5Мб"></activiti:formProperty>
-        <activiti:formProperty id="nVytjag" name="Витяг з Єдиного державного реєстру юридичних осіб та ФОП" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocOs" name="Документ про призначення відповідального співробітника за оформллення документів іноземцям" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nPassOs" name="Паспортний документ керівника чи уповноваженої особи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nPassInozem" name="Паспортного документа іноземця або особи без громадянства з особистими даними та переклад цієї сторінки українською мової; travel-документи біженців не приймаються" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocChild" name="Документи дітей іноземця або особи без громадянства з особистими даними та переклад цієї сторінки українською мової; travel-документи біженців не приймаються" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPersonChild" name="Прізвища, ім’я, по батькові (за наявності) та дата народження дітей до 18 років" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nVytjag" name="Витяг з Єдиного державного реєстру юридичних осіб та ФОП; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocOs" name="Документ про призначення відповідального співробітника за оформллення документів іноземцям; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPassOs" name="Паспортний документ керівника чи уповноваженої особи; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPassInozem" name="Паспортний документ іноземця або особи без громадянства з особистими даними та переклад цієї сторінки українською мової;travel-документи біженців не приймаються;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocChild" name="Документи дітей іноземця або особи без громадянства з особистими даними та переклад цих сторінок українською мової;travel-документи біженців не приймаються;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Державна міграційна служба у Дніпропетровській області"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible" default="(056) 745-35-59"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Тип органу" type="invisible" default="м. Дніпро, вул. Короленко, буд.4, каб. 421"></activiti:formProperty>
@@ -134,9 +135,12 @@
         <activiti:formProperty id="sUserFio" name="Дані відповідальної особи" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яку планується запрошувати"></activiti:formProperty>
         <activiti:formProperty id="sPersonLastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonFirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonDOB" name="Дата народження;Формат - ДД.ММ.PPPP" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonPOB" name="Місце народження;Країна, область, район і населений пункт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonLastNameEng" name="Прізвище англійською" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstEng" name="Ім’я та по батькові англійською" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPersonDOB" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPOB" name="Місце народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonDocNum" name="Серія та номер документа іноземця" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asCountVizit" name="Кількість візитів" type="enum" writable="false">
           <activiti:value id="sVizOne" name="одноразовий в’їзд"></activiti:value>
@@ -165,10 +169,15 @@
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_inozem_UOBack.html]" type="invisible" default="Клопотання зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dms/Guarantee.html]" type="invisible" default="Гарантійний лист" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/InozemAdminUO.html]" type="invisible" default="Заява на платну послугу" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dms/zajava_inozem_UOFront.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dms/zajava_inozem_UOBack.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/dms/Guarantee.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/dms/InozemAdminUO.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_inozem_UOFront.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_inozem_UOBack.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/Guarantee.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/InozemAdminUO.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nVytjag" name="Витяг з Єдиного державного реєстру юридичних осіб та ФОП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocOs" name="Документ про призначення відповідального співробітника за оформллення документів іноземцям; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPassOs" name="Паспортний документ керівника чи уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPassInozem" name="Паспортний документ іноземця або особи без громадянства з особистими даними та переклад цієї сторінки українською мової;travel-документи біженців не приймаються;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocChild" name="Документи дітей іноземця або особи без громадянства з особистими даними та переклад цих сторінок українською мової;travel-документи біженців не приймаються;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -243,7 +252,7 @@
 										Для того щоб закінчити процедуру подання заяви необхідно:<br>
 										<ul>
 										<li>У будь-якому банку сплатити необхідні платежі і отримати квитанцію про сплату.</li>
-										<li>Прийти до підрозділу ДМС за адресою: ${sAddress} з необхідними документами.</li>
+										<li>Прийти протягом 10 робочіх днів з моменту отримання цього листа до підрозділу ДМС за адресою: ${sAddress} з необхідними документами.</li>
 										</ul>
 									</p>
 									<p>
@@ -303,9 +312,12 @@
         <activiti:formProperty id="sUserFio" name="Дані відповідальної особи" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яку планується запрошувати"></activiti:formProperty>
         <activiti:formProperty id="sPersonLastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonFirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonDOB" name="Дата народження;Формат - ДД.ММ.PPPP" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonPOB" name="Місце народження;Країна, область, район і населений пункт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonLastNameEng" name="Прізвище англійською" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonFirstEng" name="Ім’я та по батькові англійською" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPersonDOB" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonPOB" name="Місце народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonDocNum" name="Серія та номер документа іноземця" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asCountVizit" name="Кількість візитів" type="enum" writable="false">
           <activiti:value id="sVizOne" name="одноразовий в’їзд"></activiti:value>
@@ -331,11 +343,11 @@
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_inozem_UOBack.html]" type="invisible" default="Клопотання зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dms/Guarantee.html]" type="invisible" default="Гарантійний лист" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/InozemAdminUO.html]" type="invisible" default="Заява на платну послугу" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nVytjag},${nDocOs},${nPassOs},${nPassInozem},{nDocChild}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="nVytjag" name="Витяг з Єдиного державного реєстру юридичних осіб та ФОП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocOs" name="Документ про призначення відповідального співробітника за оформллення документів іноземцям; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPassOs" name="Паспортний документ керівника чи уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPassInozem" name="Паспортний документ іноземця або особи без громадянства з особистими даними та переклад цієї сторінки українською мової;travel-документи біженців не приймаються;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocChild" name="Документи дітей іноземця або особи без громадянства з особистими даними та переклад цих сторінок українською мової;travel-документи біженців не приймаються;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow28" sourceRef="usertask2_red" targetRef="exclusivegateway2"></sequenceFlow>
@@ -362,7 +374,7 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                              		Ви не з'явились у обраний час або скасували заявку.<br>
+                              		Ви не з'явились для оформлення запрошення у термін 10 робочіх днів з моменту погодження документів.<br>
                               		При необхідності оформлення запрошення іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
 									</p>
 									[pattern/mail/_common_signature_start.html]
@@ -412,11 +424,11 @@
         <activiti:formProperty id="sPersonDms" name="Прізвище та ініціали посадової особи ДМС" type="string" default="С.А. Сімон"></activiti:formProperty>
         <activiti:formProperty id="sDateResult" name="Дата друку запрошення у форматі ДД/ММ/РРРР" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dms/InviteInoz.html]" type="invisible" default="Запрошення" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nVytjag},${nDocOs},${nPassOs},${nPassInozem},{nDocChild}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="nVytjag" name="Витяг з Єдиного державного реєстру юридичних осіб та ФОП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocOs" name="Документ про призначення відповідального співробітника за оформллення документів іноземцям; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPassOs" name="Паспортний документ керівника чи уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPassInozem" name="Паспортний документ іноземця або особи без громадянства з особистими даними та переклад цієї сторінки українською мової;travel-документи біженців не приймаються;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocChild" name="Документи дітей іноземця або особи без громадянства з особистими даними та переклад цих сторінок українською мової;travel-документи біженців не приймаються;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow32" sourceRef="usertask2_green" targetRef="servicetask9"></sequenceFlow>
