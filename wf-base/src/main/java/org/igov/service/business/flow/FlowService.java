@@ -302,6 +302,7 @@ public class FlowService implements ApplicationContextAware {
         DateTimeFormatter format = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
         SimpleDateFormat rangeformat = new SimpleDateFormat("dd.MM.yyyy");
         
+        
         List<FlowProperty> aoFlowPropertyGroup = flowPropertyDao.findAllBy("sGroup", flow.getsGroup());
                 
         for (FlowProperty flowProperty : aoFlowPropertyGroup){
@@ -405,6 +406,26 @@ public class FlowService implements ApplicationContextAware {
                         
                     BaseFlowSlotScheduler handler = getFlowPropertyHandlerInstance(
                     flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
+                    
+                    try{
+                    
+                        if (startDate.isBefore(format.parseDateTime(flowProperty.getsDateTimeAt()))||
+                            startDate.isAfter(format.parseDateTime(flowProperty.getsDateTimeTo())))
+                        {
+                            startDate = format.parseDateTime(flowProperty.getsDateTimeAt());
+                        }
+
+                        if (stopDate.isAfter(format.parseDateTime(flowProperty.getsDateTimeTo()))||
+                            stopDate.isBefore(format.parseDateTime(flowProperty.getsDateTimeAt())))
+                        {
+                            stopDate = format.parseDateTime(flowProperty.getsDateTimeTo());
+                        }
+                    }
+                    catch(IllegalArgumentException ex){
+                        LOG.info("Illegal date format in flowProperty");
+                    }
+                    
+                    
                     handler.setStartDate(startDate);
                     handler.setEndDate(stopDate);
                     handler.setFlow(flow);

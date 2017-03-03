@@ -63,10 +63,11 @@ public class ActionEventHistoryService {
             LOG.info("nID_Server by sID_order {}", Integer.parseInt(sID_Order.split("-")[0]));
             LOG.info("nID_Server by generalConfig: {}", generalConfig.getSelfServerId());
             LOG.info("getSelfHost: {}", generalConfig.getSelfHost());
+            params.put("nID_HistoryEventType", nID_HistoryEventType.toString());
             
             try{
                 if(nID_Server == Integer.parseInt(sID_Order.split("-")[0])){
-                    params.put("nID_HistoryEventType", nID_HistoryEventType.toString());
+                    
                     LOG.info("addHistoryEvent make request...");
                     doRemoteRequest(URI_ADD_HISTORY_EVENT, params);
                 }
@@ -99,6 +100,9 @@ public class ActionEventHistoryService {
                     nID_Proccess_Escalation,
                     nID_StatusType,
                     nID_HistoryEventType,
+                    params.get("newData"),
+                    params.get("oldData"),
+                    params.get("sLogin"),
                     true,
                     true,
                     false
@@ -143,10 +147,20 @@ public class ActionEventHistoryService {
             Long nID_Proccess_Escalation,
             Long nID_StatusType,
             Long nID_HistoryEventType,
+            String newData,
+            String oldData,
+            String sLogin,
             boolean saveHistoryEventService,
             boolean saveHistoryEvent,
             boolean saveSubjectMessage
     ) {
+        
+        LOG.info("newData in addActionStatus: " +  newData);
+        LOG.info("oldData in addActionStatus: " +  oldData);
+        LOG.info("sLogin in addActionStatus: " +  sLogin);
+        LOG.info("sLogin in addActionStatus: " +  nID_HistoryEventType);
+        
+                
         int dash_position = sID_Order.indexOf(DASH);
         int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
         Long nID_Order = Long.valueOf(sID_Order.substring(dash_position + 1));
@@ -181,7 +195,12 @@ public class ActionEventHistoryService {
             Map<String, String> mParamMessage = new HashMap<>();
             mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
+            mParamMessage.put(HistoryEventMessage.ORDER_ID, sID_Order);
+            mParamMessage.put(HistoryEventMessage.FIO, sLogin);
+            mParamMessage.put(HistoryEventMessage.NEW_DATA, newData);
+            mParamMessage.put(HistoryEventMessage.OLD_DATA, oldData);
 
+            
             if (oHistoryEvent_Service == null) {
                 try {
                     oHistoryEvent_Service = getHistoryEventService(sID_Order);
@@ -189,7 +208,9 @@ public class ActionEventHistoryService {
                     LOG.info("can't get HistoryEvent_Service entity: {} ", e);
                 }
             }
-
+            
+            LOG.info("HistoryEventType.getById: " + HistoryEventType.getById(nID_HistoryEventType).getsName());
+                    
             if (oHistoryEvent_Service != null) {
                 setHistoryEvent(HistoryEventType.getById(nID_HistoryEventType), nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
             }

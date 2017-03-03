@@ -302,4 +302,13 @@ angular.module('app').service('ServiceService', function ($http, $q, FeedbackSer
       });
   };
 
+  this.getOrganizationData = function (code) {
+    if(code)
+      return $http.get('./api/organization-info', {
+        params : {
+          code : code
+        }
+      })
+  }
+
 });

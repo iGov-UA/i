@@ -488,7 +488,7 @@
                   </table>
 
                   <div style="text-align: left; margin-top: 3px">
-                    <a ng-hide="rowLengthCheckLimit(property)" ng-click="addRow(form[tableName], property.id, tableName)">+</a>
+                    <a ng-hide="rowLengthCheckLimit(property)" ng-click="addRow(form[tableName], property.id, tableName)">+ Додати рядок</a>
                   </div>
                 </div>
 
@@ -500,7 +500,29 @@
                        ng-required="isFieldRequired(property)"
                        ng-class="getBpAndFieldID(property)"
                        class="form-control"
+                       ng-if="!isOKPOField(property.id)"
                        value="">
+
+                <!--field for OKPO search start-->
+                <div ng-switch-when="string" ng-if="isOKPOField(property.id)">
+                  <div class="okpo" ng-if="isOKPOField(property.id)">
+                    <input type="text"
+                           name="{{property.id}}"
+                           ng-model="data.formData.params[property.id].value"
+                           ng-required="isFieldRequired(property)"
+                           ng-class="getBpAndFieldID(property)"
+                           ng-change="getOrgData(data.formData.params[property.id].value, property.id)"
+                           class="form-control okpo-field"
+                           ng-model-options="{debounce:1000}"
+                           value="">
+                    <p style="font-size: 14px;">Після того, як Ви напишете ЗКПО, поля нижче будуть заповнені автоматично.
+                                                Дані юрособи можуть бути застарілими (затримка до одного тижня), тому
+                                                Ви маєте можливість їх редагувати.</p>
+                    <span class="small-loading okpo-spinner"
+                          ng-if="orgIsLoading.status && orgIsLoading.field === property.id"></span>
+                  </div>
+                </div>
+                <!--field for OKPO search end-->
 
                 <button ng-switch-when="string"
                         type="button"

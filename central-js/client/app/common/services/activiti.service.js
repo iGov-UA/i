@@ -172,7 +172,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
   };
 
   this.getSignFormPath = function (oServiceData, formID, oService, formDataParams, bConvertToPDF) {
-    var formKey;
+    var formKey, isNewService;
     if(formID && formID.indexOf('sKey') > -1) {
       try {
         formKey = JSON.parse(formID).sKey;
@@ -180,9 +180,11 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     }
     var path = formKey ? formKey : formID;
     if(formDataParams.hasOwnProperty('form_signed')){
-      return '/api/process-form/sign?formID=' + path + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName + '&bConvertToPDF=' + bConvertToPDF;
+      isNewService = formDataParams['form_signed'].newAttach ? '&isNew=true' : '';
+      return '/api/process-form/sign?formID=' + path + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName + '&bConvertToPDF=' + bConvertToPDF + isNewService;
     } else if (formDataParams.hasOwnProperty('form_signed_all')) {
-      return '/api/process-form/signMultiple?formID=' + path + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName;
+      isNewService = formDataParams['form_signed_all'].newAttach ? '&isNew=true' : '';
+      return '/api/process-form/signMultiple?formID=' + path + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName + isNewService;
     }
   };
 

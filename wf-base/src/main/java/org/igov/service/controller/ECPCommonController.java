@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-@Api(tags = { "ECPController -- наложение электронной подписи" })
+@Api(tags = { "ECPCommonController -- наложение электронной подписи" })
 @Controller
 @RequestMapping(value = "/ecp")
-public class ECPController {
+public class ECPCommonController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ECPController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ECPCommonController.class);
 
     @Autowired
     ECPService ecpService;
