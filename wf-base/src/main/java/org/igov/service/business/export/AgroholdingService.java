@@ -11,6 +11,7 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.web.RestRequest;
 import org.igov.util.ToolWeb;
+import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +90,7 @@ public class AgroholdingService {
         httpRequester.setsPassword(generalConfig.getsPassword_Auth_Agroholding());
         String sURL = generalConfig.getsURL_Agroholding() + "/Document_ОтпускаОрганизаций";
         
-        File fileDir = ToolFS.aFile("pattern/xml/test1C.txt");
+        File fileDir = ToolFS.aFile(Paths.get("pattern/xml/test1C.txt"));
                 
         BufferedReader in = new BufferedReader(
            new InputStreamReader(new FileInputStream(fileDir), "UTF-8"));
