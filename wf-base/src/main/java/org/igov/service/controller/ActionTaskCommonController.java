@@ -1787,7 +1787,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				long totalNumber = 0;
 				Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
 						sFilterStatus, groupsIds, soaFilterField);
-                LOG.info("taskQuery = {}", taskQuery );
+                LOG.info("taskQuery = {}", taskQuery.toString() );
 				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
 				LOG.info("Total number of tasks:{}", totalNumber);
