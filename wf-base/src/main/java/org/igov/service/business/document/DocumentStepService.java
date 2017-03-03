@@ -57,7 +57,8 @@ public class DocumentStepService {
     @Autowired
     private IdentityService oIdentityService;
 
-    public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
+    //public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
+    public void setDocumentSteps(String snID_Process_Activiti, String soJSON) {
         JSONObject oJSON = new JSONObject(soJSON);
         List<DocumentStep> aDocumentStep = new ArrayList<>();
         //process common step if it exists
@@ -90,7 +91,7 @@ public class DocumentStepService {
         }
         LOG.info("Result list of steps: {}", aDocumentStep);
         
-        return aDocumentStep;
+        //return aDocumentStep;
         
     }
 
@@ -672,7 +673,8 @@ public class DocumentStepService {
         return mReturn;
     }
 
-    public List<DocumentStep> checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {//JSONObject
+    //public List<DocumentStep> checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {//JSONObject
+    public void checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {//JSONObject    
         //assume that we can have only one active task per process at the same time
         List<DocumentStep> aResDocumentStep = new ArrayList<>();
         String snID_Process_Activiti = execution.getId();
@@ -707,7 +709,8 @@ public class DocumentStepService {
                 soJSON = Tool.sData(aByteDocument);
                 LOG.info("soJSON={}", soJSON);
                 
-                aResDocumentStep = setDocumentSteps(snID_Process_Activiti, soJSON);
+                //aResDocumentStep = 
+                        setDocumentSteps(snID_Process_Activiti, soJSON);
 
                 List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
                 LOG.info("aDocumentStep={}", aDocumentStep);
@@ -730,7 +733,7 @@ public class DocumentStepService {
             }
         }
         
-        return aResDocumentStep;
+        //return aResDocumentStep;
     }
 
 //3.4) setDocumentStep(snID_Process_Activiti, bNext) //проставить номер шаг (bNext=true > +1 иначе -1) в поле таски с id=sKey_Step_Document    
