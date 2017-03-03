@@ -11,12 +11,21 @@
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateHolidayBegin" name="Дата початку відпустки" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDateHolidayEnd" name="Остання дата відпустки" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Електронна форма заяви; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
+       <activiti:formProperty id="asTypeHoliday" name="Тип відпустки" type="enum">
+          <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
+          <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Додаткова відпустка на дітей"></activiti:value>
+          <activiti:value id="cce0b4e5-4623-4edb-8c49-78829203392e" name="Основна щорічна відпустка"></activiti:value>
+          <activiti:value id="e8d50a27-8506-4dec-9584-531961cf445d" name="Відпустка за свій рахунок (обов'язкова)"></activiti:value>
+          <activiti:value id="9c5d9dcb-cb72-4431-bb6d-aed3244c975b" name="Відпустка за свій рахунок (за згодою сторін)"></activiti:value>
+          <activiti:value id="47bbd0bd-aed9-4b7d-9c9d-263095b53cff" name="Інша додаткова відпустка"></activiti:value>
+          <activiti:value id="7b77fc48-4feb-4a82-98ce-ef1dec8b0566" name="Учбова відпустка"></activiti:value>
+          <activiti:value id="813ade4b-40b0-43dc-8a29-50a876ebcd0f" name="Учбова відпустка без оплати"></activiti:value>
+          <activiti:value id="746cc7bf-a84c-4950-85b6-80dfd0bbd16b" name="Чорнобильська відпустка"></activiti:value>
+        </activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="User Task" activiti:candidateGroups="${sLogin_isExecute}">
+    <userTask id="usertask1" name="Прийняття рішення щодо відпустки співробітника" activiti:candidateGroups="${sLogin_isExecute}">
       <extensionElements>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
@@ -29,6 +38,17 @@
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateHolidayBegin" name="Дата початку відпустки" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateHolidayEnd" name="Остання дата відпустки" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeHoliday" name="Тип відпустки" type="enum" writable="false">
+          <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
+          <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Додаткова відпустка на дітей"></activiti:value>
+          <activiti:value id="cce0b4e5-4623-4edb-8c49-78829203392e" name="Основна щорічна відпустка"></activiti:value>
+          <activiti:value id="e8d50a27-8506-4dec-9584-531961cf445d" name="Відпустка за свій рахунок (обов'язкова)"></activiti:value>
+          <activiti:value id="9c5d9dcb-cb72-4431-bb6d-aed3244c975b" name="Відпустка за свій рахунок (за згодою сторін)"></activiti:value>
+          <activiti:value id="47bbd0bd-aed9-4b7d-9c9d-263095b53cff" name="Інша додаткова відпустка"></activiti:value>
+          <activiti:value id="7b77fc48-4feb-4a82-98ce-ef1dec8b0566" name="Учбова відпустка"></activiti:value>
+          <activiti:value id="813ade4b-40b0-43dc-8a29-50a876ebcd0f" name="Учбова відпустка без оплати"></activiti:value>
+          <activiti:value id="746cc7bf-a84c-4950-85b6-80dfd0bbd16b" name="Чорнобильська відпустка"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="saStatusTask" name="Статус рішення" type="enum" required="true">
           <activiti:value id="allowed" name="Дозволити"></activiti:value>
           <activiti:value id="notAllowed" name="Заборонити"></activiti:value>

@@ -94,7 +94,7 @@ public class AgroholdingService {
         File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, "test1C.txt");
                 
         BufferedReader in = new BufferedReader(
-           new InputStreamReader(new FileInputStream(oFile), "UTF-8"));
+           new InputStreamReader(new FileInputStream(oFile), "windows-1251"));
 
         String str = "";
         String nstr = "";
@@ -110,7 +110,7 @@ public class AgroholdingService {
         //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
         //String result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
         String result = "none";
-        result = httpRequester.postInside(sURL, null, str, "application/atom+xml;type=entry;charset=utf-8");
+        result = httpRequester.postInside(sURL, null, str, "application/atom+xml;type=entry;charset=windows-1251");
         LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
         return result;
     }
