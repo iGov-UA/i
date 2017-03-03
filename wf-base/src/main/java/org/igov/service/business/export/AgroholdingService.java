@@ -102,7 +102,7 @@ public class AgroholdingService {
             str = str + nstr;
         }
         
-        LOG.info("string in transferDocumentVacation: {} ", str);
+        LOG.info("string in transferDocumentVacation: {} ", str.substring(1));
                 
         in.close();
         
