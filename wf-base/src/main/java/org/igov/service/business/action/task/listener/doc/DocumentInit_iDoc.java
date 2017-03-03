@@ -50,9 +50,10 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
         
         DelegateExecution execution = delegateTask.getExecution();
         try {
-            List<DocumentStep> aResDocumentStep = oDocumentStepService.checkDocumentInit(execution);
+            //List<DocumentStep> aResDocumentStep = 
+                    oDocumentStepService.checkDocumentInit(execution);
             
-            List<String> asGroup = new ArrayList<>();
+            /*List<String> asGroup = new ArrayList<>();
             
             for(DocumentStep oDocumentStep : aResDocumentStep){
                 
@@ -66,7 +67,7 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
             
             LOG.info("asGroup in DocumentInit_iDoc {}", asGroup);
             
-            delegateTask.addCandidateGroups(asGroup);
+            delegateTask.addCandidateGroups(asGroup);*/
             
         } catch (Exception oException) {
             LOG.error("", oException);
