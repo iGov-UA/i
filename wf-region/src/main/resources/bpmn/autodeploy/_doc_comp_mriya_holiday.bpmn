@@ -4,6 +4,11 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку"></activiti:formProperty>
+        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key" type="invisible" default="c82f6314-6faa-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="invisible" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="invisible" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
@@ -42,7 +47,13 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Mriya_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
-        <activiti:formProperty id="asTypeHoliday" name="Тип відпустки" type="enum">
+        
+        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key" type="invisible" default="c82f6314-6faa-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="invisible" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="invisible" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum">
           <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
           <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Додаткова відпустка на дітей"></activiti:value>
           <activiti:value id="cce0b4e5-4623-4edb-8c49-78829203392e" name="Основна щорічна відпустка"></activiti:value>
@@ -53,8 +64,8 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="813ade4b-40b0-43dc-8a29-50a876ebcd0f" name="Учбова відпустка без оплати"></activiti:value>
           <activiti:value id="746cc7bf-a84c-4950-85b6-80dfd0bbd16b" name="Чорнобильська відпустка"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDateHolidayBegin" name="Дата початку відпустки" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sDateHolidayEnd" name="Остання дата відпустки" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd" name="Остання дата відпустки" type="date"></activiti:formProperty>
       
   
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" required="true"></activiti:formProperty>
@@ -74,7 +85,7 @@ execution.setVariable('processInstanceId', processInstanceId)
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[asTypeHoliday::${asTypeHoliday};;PrintForm_1::${PrintForm_1};;sDateHolidayBegin::${sDateHolidayBegin};;sDateHolidayEnd::${sDateHolidayEnd};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sNote::${sNote}]]></activiti:expression>
+            <activiti:expression><![CDATA[sTypeVacation::${sTypeVacation};;PrintForm_1::${PrintForm_1};;sDateVacationBegin::${sDateVacationBegin};;sDateVacationEnd::${sDateVacationEnd};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sNote::${sNote};;sKeyResponsible::${sKeyResponsible};;sKeyOrgan::${sKeyOrgan};;sKeySubjectType::${sKeySubjectType}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -87,7 +98,13 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" variable="sName_SubjectRole"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="3"></activiti:formProperty>
-        <activiti:formProperty id="asTypeHoliday" name="Тип відпустки" type="enum" writable="false">
+        
+        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="invisible"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum" writable="false">
           <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
           <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Додаткова відпустка на дітей"></activiti:value>
           <activiti:value id="cce0b4e5-4623-4edb-8c49-78829203392e" name="Основна щорічна відпустка"></activiti:value>
@@ -98,8 +115,8 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="813ade4b-40b0-43dc-8a29-50a876ebcd0f" name="Учбова відпустка без оплати"></activiti:value>
           <activiti:value id="746cc7bf-a84c-4950-85b6-80dfd0bbd16b" name="Чорнобильська відпустка"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDateHolidayBegin" name="Дата початку відпустки" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateHolidayEnd" name="Остання дата відпустки" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd" name="Остання дата відпустки" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/iDoc/mriya/holiday_print.html" type="file"></activiti:formProperty>
