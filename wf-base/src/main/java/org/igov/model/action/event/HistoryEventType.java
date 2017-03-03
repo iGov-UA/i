@@ -77,8 +77,8 @@ public enum HistoryEventType {
     CHANGE_DOCUMENT(14L,
             "DocumentChanged",
             "Внесены изменения в документ или задачу (Слушатель SetTask)",
-            HistoryEventMessage.FIO + " - документ відредаговано:\n" +
-            "<table border=\"1\"><tr><th>Було</th>Стало<th></th></tr>" +         
+            HistoryEventMessage.FIO + " - документ відредаговано:\n\n" +  
+            "<table width=\"30%\" cellspacing=\"0\" cellpadding=\"4\" border=\"1\"><tr><th>Було</th><th>Cтало</th></tr>" +         
             HistoryEventMessage.OLD_DATA + "\n" 
             + HistoryEventMessage.NEW_DATA + "</table>"),         
     CREATE_SUBDOCUMENT(15L,
