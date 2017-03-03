@@ -86,6 +86,19 @@ public class AgroholdingService {
         //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
         //String result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
         String result = "none";
+        result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
+        LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
+        return result;
+    }
+
+    /*public String transferDocumentVacation() throws Exception {
+        httpRequester.setsLogin(generalConfig.getsLogin_Auth_Agroholding());
+        httpRequester.setsPassword(generalConfig.getsPassword_Auth_Agroholding());
+        String sURL = generalConfig.getsURL_Agroholding() + "/Document_ОтпускаОрганизаций";
+        LOG.info("sURL: " + sURL);
+        //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
+        //String result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=entry;charset=utf-8");
+        String result = "none";
         try {
             result = httpRequester.postInside(sURL, null, URLEncoder.encode(documentVacation, "UTF-8"), "application/atom+xml;type=entry;charset=utf-8");
             LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
@@ -101,7 +114,7 @@ public class AgroholdingService {
             LOG.info("**result: " + result);
         }
         return result;
-    }
+    }*/
 }
 
 /*private final static String documentVacation = "<?xml version='1.0' encoding='UTF-8'?>"
