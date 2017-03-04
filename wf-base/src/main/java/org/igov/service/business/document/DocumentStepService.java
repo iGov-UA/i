@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
@@ -675,6 +676,24 @@ public class DocumentStepService {
         LOG.info("getDocumentStepRights 4th block time execution is: " + String.format("%,12d", (stopTime - startTime)));
         
         return mReturn;
+    }
+    
+    public void syncDocumentGroups(DelegateTask delegateTask, List<DocumentStep> aDocumentStep){
+        
+        List<String> asGroup = new ArrayList<>();
+        
+        for(DocumentStep oDocumentStep : aDocumentStep){
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
+            if(aDocumentStepSubjectRight != null){
+                
+                for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
+                   asGroup.add(oDocumentStepSubjectRight.getsKey_GroupPostfix()); 
+                }
+            }
+        }
+        
+        LOG.info("asGroup in DocumentInit_iDoc {}", asGroup);
+        delegateTask.addCandidateGroups(asGroup);
     }
 
     //public void checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {//JSONObject
