@@ -31,14 +31,11 @@ public class AgroholdingService {
     @Autowired
     GeneralConfig generalConfig;
 
-    public String transferDocumentVacation() throws Exception {
+    public String transferDocumentVacation(String documentVacation) throws Exception {
         httpRequester.setsLogin(generalConfig.getsLogin_Auth_Agroholding());
         httpRequester.setsPassword(generalConfig.getsPassword_Auth_Agroholding());
         String sURL = generalConfig.getsURL_Agroholding() + "/Document_ОтпускаОрганизаций";
-        String filePath = FileSystemData.SUB_PATH_XML + "agroholding/";
-        File oFile = FileSystemData.getFile(filePath, "documentVacation.xml");
-        String documentVacation = Files.toString(oFile, Charset.defaultCharset());
-        LOG.info("sURL: " + sURL + " filePath: " + filePath);
+        LOG.info("sURL: " + sURL);
         //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
         String result = "none";
         result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=feed;charset=utf-8");
