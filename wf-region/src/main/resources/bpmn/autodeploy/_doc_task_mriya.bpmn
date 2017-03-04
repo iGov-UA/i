@@ -43,8 +43,8 @@
         <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date" writable="false"></activiti:formProperty>
@@ -156,8 +156,8 @@ var dayE = inputEnd.substr(8,2)
 var outputBegin = dayB + '.' + (monthB&lt;10?'0':'') + monthB + '.' + yearB
 var outputEnd = dayE + '.' + (monthE&lt;10?'0':'') + monthE + '.' + yearE
 
-var outputBegin1C = yearB + '-' + (monthB&lt;10?'0':'') + monthB + '-' dayB + 'T00:00:00'
-var outputEnd1C = yearE + '-' + (monthE&lt;10?'0':'') + monthE + '-' dayE + 'T00:00:00'
+var outputBegin1C = yearB + '-' + (monthB&lt;10?'0':'') + monthB + '-' + dayB + 'T00:00:00'
+var outputEnd1C = yearE + '-' + (monthE&lt;10?'0':'') + monthE + '-' + dayE + 'T00:00:00'
 
 
 execution.setVariable('sDateVacationBegin', outputBegin)
