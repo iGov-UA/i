@@ -29,29 +29,34 @@ public class Transfer_DocumentVacation implements JavaDelegate {
     @Autowired
     AgroholdingService agroholdingService;
 
-    public Expression sDateVacationBegin;
+    private Expression sDateVacationBegin;
 
-    public Expression sDateVacationEnd;
+    private Expression sDateVacationEnd;
 
-    public Expression sTypeVacation;
+    private Expression sTypeVacation;
 
-    public Expression sNote;
+    private Expression sNote;
 
-    public Expression sKeyResponsible;
+    private Expression sKeyResponsible;
 
-    public Expression sKeyOrgan;
+    private Expression sKeyOrgan;
 
-    public Expression sKeySubjectType;
+    private Expression sKeySubjectType;
+    
+    private String symbol = "%";
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         try {
             //по ид вытащить того, кто отрабатывает и достать кеш человека ..
-            
+
             String filePath = FileSystemData.SUB_PATH_XML + "agroholding/";
             File oFile = FileSystemData.getFile(filePath, "documentVacation.xml");
             String documentVacation = Files.toString(oFile, Charset.defaultCharset());
             //подмена данных
+            String sDate = "";
+            String sCountDay = "";
+            String sKeyVacationer = "a807e909-abfb-11dc-aa58-00112f3000a2";
             agroholdingService.transferDocumentVacation(documentVacation);
         } catch (Exception ex) {
             LOG.error("transferDocumentVacation: ", ex);
