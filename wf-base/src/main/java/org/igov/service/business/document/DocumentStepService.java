@@ -10,10 +10,14 @@ import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.DocumentStep;
+import org.igov.model.document.DocumentStepDao;
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.model.document.DocumentStepSubjectRightField;
+import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.RecordNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,8 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.util.Tool;
+import org.joda.time.DateTime;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 
 @Component("documentStepService")
@@ -57,7 +63,8 @@ public class DocumentStepService {
     @Autowired
     private IdentityService oIdentityService;
 
-    public void setDocumentSteps(String snID_Process_Activiti, String soJSON) {
+    //public void setDocumentSteps(String snID_Process_Activiti, String soJSON) {
+    public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
         JSONObject oJSON = new JSONObject(soJSON);
         List<DocumentStep> aDocumentStep = new ArrayList<>();
         //process common step if it exists
@@ -88,6 +95,8 @@ public class DocumentStepService {
             aDocumentStep.add(oDocumentStep);
         }
         LOG.info("Result list of steps: {}", aDocumentStep);
+        
+        return aDocumentStep;
     }
 
     private DocumentStep mapToDocumentStep(Object oStep_JSON) {
@@ -668,9 +677,11 @@ public class DocumentStepService {
         return mReturn;
     }
 
-    public void checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {//JSONObject
-        //assume that we can have only one active task per process at the same time
+    //public void checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {//JSONObject
+    public List<DocumentStep> checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {
+    //assume that we can have only one active task per process at the same time
         String snID_Process_Activiti = execution.getId();
+        List<DocumentStep> aResDocumentStep = new ArrayList<>();
         LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
         String sID_BP = execution.getProcessDefinitionId();
         LOG.info("sID_BP={}", sID_BP);
@@ -702,8 +713,8 @@ public class DocumentStepService {
                 soJSON = Tool.sData(aByteDocument);
                 LOG.info("soJSON={}", soJSON);
                 
-                setDocumentSteps(snID_Process_Activiti, soJSON);
-
+                //setDocumentSteps(snID_Process_Activiti, soJSON);
+                aResDocumentStep = setDocumentSteps(snID_Process_Activiti, soJSON);
                 List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
                 LOG.info("aDocumentStep={}", aDocumentStep);
 
@@ -724,6 +735,7 @@ public class DocumentStepService {
                 runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
             }
         }
+        return aResDocumentStep;
     }
 
 //3.4) setDocumentStep(snID_Process_Activiti, bNext) //проставить номер шаг (bNext=true > +1 иначе -1) в поле таски с id=sKey_Step_Document    
@@ -800,4 +812,77 @@ public class DocumentStepService {
 
         return "";
     }
+    public Map<String, Boolean> isDocumentAllSigned(String nID_Process, String sLogin, String sKey_Step)
+			throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException,
+			RecordNotFoundException {
+		Map<String, Boolean> mReturn = new HashMap();
+		List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
+		Set<String> asID_Group = new HashSet<>();
+
+		if (aGroup != null) {
+			aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
+		}
+
+		LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
+		LOG.info("aGroup={}", aGroup);
+
+		List<DocumentStep> aDocumentStep = ((DocumentStepDao) documentStepDao).getStepForProcess(nID_Process);
+		LOG.info("The size of list" + aDocumentStep.size());
+		LOG.info("Result list of steps: {}", aDocumentStep);
+
+		DocumentStep oFindedDocumentStep = null;
+
+		for (DocumentStep oDocumentStep : aDocumentStep) {
+			if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
+				oFindedDocumentStep = oDocumentStep;
+				break;
+			}
+		}
+
+		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList<>();
+
+		if (oFindedDocumentStep != null) {
+			aDocumentStepSubjectRight.addAll(oFindedDocumentStep.getRights());
+			LOG.info("oFindedDocumentStep ={}", oFindedDocumentStep.getRights());
+		}
+
+		DocumentStepSubjectRight oTargetDocumentStepSubjectRight = null;
+
+		for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+
+			for (String sID_Group : asID_Group) {
+				if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sID_Group)) {
+					if (oTargetDocumentStepSubjectRight == null) {
+						oTargetDocumentStepSubjectRight = oDocumentStepSubjectRight;
+						LOG.info("oTargetDocumentStepSubjectRight={}", oTargetDocumentStepSubjectRight);
+					} else {
+						break;
+						// throw new RuntimeException("There are few target
+						// groups in the DocumentStep set");
+					}
+				}
+			}
+		}
+
+		if (oTargetDocumentStepSubjectRight != null) {
+			boolean bNeedECP = false;
+			if (oTargetDocumentStepSubjectRight.getbNeedECP() != null) {
+				bNeedECP = oTargetDocumentStepSubjectRight.getbNeedECP();
+			}
+
+			DateTime sDateECP = oTargetDocumentStepSubjectRight.getsDateECP();
+			LOG.info("sDateECP =", oTargetDocumentStepSubjectRight.getsDateECP());
+
+			if (bNeedECP && sDateECP == null) {
+				mReturn.put("bSigned:", false);// ецп не наложено
+			}
+
+			if (bNeedECP && sDateECP != null) {
+				mReturn.put("bSigned:", true); // ецп наложено
+			}
+		}
+
+		return mReturn;
+	}
+
 }
