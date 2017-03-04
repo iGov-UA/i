@@ -40,7 +40,7 @@ public class Transfer_DocumentVacation implements JavaDelegate {
 
     @Autowired
     private HistoryService oHistoryService;
-    
+
     @Autowired
     private SubjectAccountDao subjectAccountDao;
 
@@ -57,12 +57,12 @@ public class Transfer_DocumentVacation implements JavaDelegate {
         Map<String, Object> data = parseData(soData_Value);
         LOG.info("data: " + data);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         String sDate = sdf.format(new Date());
         Date oDateVacationBegin = sdf.parse((String) data.get("sDateVacationBegin"));
         Date oDateVacationEnd = sdf.parse((String) data.get("sDateVacationEnd"));
         String sCountDay = String.valueOf(getDateDiff(oDateVacationEnd, oDateVacationBegin));
-        String sKeyVacationer = getKeyUser(execution.getProcessInstanceId());
+        String sKeyVacationer = getLoginSubjectAccountByLoginIgovAccount(execution.getProcessInstanceId());
         data.put("sDate", sDate);
         data.put("sCountDay", sCountDay);
         data.put("sKeyVacationer", sKeyVacationer);
@@ -86,23 +86,44 @@ public class Transfer_DocumentVacation implements JavaDelegate {
         return Math.round((date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24));
     }
 
-    private String getKeyUser(String sID_Process) {
+    private String getLoginSubjectAccountByLoginIgovAccount(String sLoginIgovAccount) {
+        String result = "a807e909-abfb-11dc-aa58-00112f3000a2";
         try {
             List<HistoricTaskInstance> aHistoricTask = oHistoryService.createHistoricTaskInstanceQuery()
-                    .processInstanceId(sID_Process).orderByHistoricTaskInstanceStartTime().list();
-            if(aHistoricTask.size() > 0){
+                    .processInstanceId(sLoginIgovAccount).orderByHistoricTaskInstanceStartTime().list();
+            if (aHistoricTask.size() > 0) {
                 HistoricTaskInstance historicTaskInstance = aHistoricTask.get(0);
                 String assigneeUser = historicTaskInstance.getAssignee();
-                if(assigneeUser != null){
+                if (assigneeUser != null) {
                     Optional<SubjectAccount> subjectAccount = subjectAccountDao.findBy("sLogin", assigneeUser);
-                    if(subjectAccount.isPresent()){
+                    if (subjectAccount.isPresent()) {
                         Long nID_Subject = subjectAccount.get().getnID_Subject();
+                        if (nID_Subject != null) {
+                            List<SubjectAccount> aSubjectAccount = subjectAccountDao.findAllBy("nID_Subject", nID_Subject);
+                            if (aSubjectAccount.size() > 0) {
+                                for (SubjectAccount oSubjectAccount : aSubjectAccount) {
+                                    if (oSubjectAccount.getSubjectAccountType().getId() == 3) {
+                                        result = oSubjectAccount.getsLogin();
+                                    } else {
+                                        LOG.error("Can't find 1C account");
+                                    }
+                                }
+                            } else {
+                                LOG.error("Can't find SubjectAccount by Subject");
+                            }
+                        } else {
+                            LOG.error("Subject is null ");
+                        }
+                    } else {
+                        LOG.error("Can't find SubjectAccount by Login");
                     }
+                } else {
+                    LOG.error("Can't find assigneeUser");
                 }
             }
         } catch (Exception ex) {
-
+            LOG.error("getLoginSubjectAccountByLoginIgovAccount: ", ex);
         }
-        return "a807e909-abfb-11dc-aa58-00112f3000a2";
+        return result;
     }
 }
