@@ -124,11 +124,13 @@ public class HttpRequester {
             }
 
             oConnection.setDoOutput(true);
-            DataOutputStream oDataOutputStream = new DataOutputStream(oConnection.getOutputStream());
+            OutputStreamWriter writer = new OutputStreamWriter(oConnection.getOutputStream(), "UTF-8");
+            writer.write(saParam);
+            //DataOutputStream writer = new DataOutputStream(oConnection.getOutputStream());
             // Send post request
-            oDataOutputStream.writeBytes(saParam);
-            oDataOutputStream.flush();
-            oDataOutputStream.close();
+            //writer.writeBytes(saParam);
+            writer.flush();
+            writer.close();
 
             InputStream oInputStream;
             if (oConnection.getResponseCode() >= HttpStatus.BAD_REQUEST.value()) {
