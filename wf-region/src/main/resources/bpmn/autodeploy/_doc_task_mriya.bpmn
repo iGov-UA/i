@@ -74,7 +74,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -137,7 +137,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
-Вам надано вудпустку з ${sDateVacationBegin} по ${sDateVacationEnd}. <br>
+Вам надано відпустку з ${sDateVacationBegin} по ${sDateVacationEnd}. <br>
 Гарного відпочинку!]]></activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -148,11 +148,35 @@
     <sequenceFlow id="flow6" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Transform Date" activiti:autoStoreVariables="false">
+      <script>var inputBegin = execution.getVariable('sDateVacationBegin')
+var inputEnd = execution.getVariable('sDateVacationEnd')
+
+var yearB = inputBegin.slice(-4),
+    monthB = ['Jan','Feb','Mar','Apr','May','Jun',
+             'Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(inputBegin.substr(4,3))+1,
+    dayB = inputBegin.substr(8,2)
+
+var outputBegin = dayB + '.' + (monthB&lt;10?'0':'') + monthB + '.' + yearB
+
+var yearE = inputEnd.slice(-4),
+    monthE = ['Jan','Feb','Mar','Apr','May','Jun',
+             'Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(inputEnd.substr(4,3))+1,
+    dayE = inputEnd.substr(8,2)
+
+var outputBegin = dayB + '.' + (monthB&lt;10?'0':'') + monthB + '.' + yearB
+var outputEnd = dayE + '.' + (monthE&lt;10?'0':'') + monthE + '.' + yearE
+
+
+execution.setVariable('sDateVacationBegin', outputBegin)
+execution.setVariable('sDateVacationEnd', outputEnd)</script>
+    </scriptTask>
+    <sequenceFlow id="flow8" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_task_mriya">
     <bpmndi:BPMNPlane bpmnElement="_doc_task_mriya" id="BPMNPlane__doc_task_mriya">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="330.0" y="190.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="200.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="410.0" y="180.0"></omgdc:Bounds>
@@ -175,9 +199,12 @@
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="960.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="365.0" y="207.0"></omgdi:waypoint>
-        <omgdi:waypoint x="410.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="235.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="207.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="515.0" y="207.0"></omgdi:waypoint>
@@ -202,6 +229,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="915.0" y="207.0"></omgdi:waypoint>
         <omgdi:waypoint x="960.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="385.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="207.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
