@@ -704,8 +704,8 @@ public class DocumentStepService {
         LOG.info("asGroup in DocumentInit_iDoc {}", asGroup);
         
         Set<IdentityLink> groupsNew = delegateTask.getCandidates();
-                                        groupsNew.stream().forEach((groupOld) -> {
-						aGroup.add(groupOld.getGroupId());
+                                        groupsNew.stream().forEach((groupNew) -> {
+						aGroup.add(groupNew.getGroupId());
                                         });
                                         
         LOG.info("aGroup after setting: {}", aGroup);                                        
