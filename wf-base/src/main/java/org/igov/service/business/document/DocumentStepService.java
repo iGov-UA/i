@@ -693,7 +693,7 @@ public class DocumentStepService {
             }
         }
         
-        List<String> aGroup = new ArrayList<>();
+        /*List<String> aGroup = new ArrayList<>();
         
         Set<IdentityLink> groupsOld = delegateTask.getCandidates();
                                         groupsOld.stream().forEach((groupOld) -> {
@@ -708,7 +708,7 @@ public class DocumentStepService {
 						aGroup.add(groupNew.getGroupId());
                                         });
                                         
-        LOG.info("aGroup after setting: {}", aGroup);                                        
+        LOG.info("aGroup after setting: {}", aGroup);   */                                     
         delegateTask.addCandidateGroups(asGroup);
     }
 
