@@ -168,7 +168,7 @@ public class HttpRequester {
             LOG_BIG.debug("BREAKED:", oException);
             throw oException; //return null;
         }
-        if (nStatus != 200) {
+        if (nStatus >= HttpStatus.BAD_REQUEST.value()) {
             new Log(this.getClass(), LOG)
                     ._Case("Web_PostSelfNo200")
                     ._Head("[post]:nStatus!=200")
