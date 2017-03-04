@@ -1,16 +1,22 @@
 package org.igov.service.business.action.task.systemtask.export;
 
+import com.google.common.base.Optional;
 import com.google.common.io.Files;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.igov.io.fs.FileSystemData;
+import org.igov.model.subject.SubjectAccount;
+import org.igov.model.subject.SubjectAccountDao;
 import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
 import org.igov.service.business.export.AgroholdingService;
 import static org.igov.util.Tool.parseData;
@@ -32,6 +38,12 @@ public class Transfer_DocumentVacation implements JavaDelegate {
     @Autowired
     AgroholdingService agroholdingService;
 
+    @Autowired
+    private HistoryService oHistoryService;
+    
+    @Autowired
+    private SubjectAccountDao subjectAccountDao;
+
     private Expression sID_Pattern;
 
     private Expression soData;
@@ -45,7 +57,7 @@ public class Transfer_DocumentVacation implements JavaDelegate {
         Map<String, Object> data = parseData(soData_Value);
         LOG.info("data: " + data);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-ddTHH-mm-ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss");
         String sDate = sdf.format(new Date());
         Date oDateVacationBegin = sdf.parse((String) data.get("sDateVacationBegin"));
         Date oDateVacationEnd = sdf.parse((String) data.get("sDateVacationEnd"));
@@ -60,12 +72,12 @@ public class Transfer_DocumentVacation implements JavaDelegate {
         File oFile = FileSystemData.getFile(filePath, sID_Pattern + ".xml");
         String documentVacation = Files.toString(oFile, Charset.defaultCharset());
         LOG.info("Transfer_DocumentVacation documentVacation before: " + documentVacation);
-        
+
         for (Entry<String, Object> entry : data.entrySet()) {
             documentVacation = documentVacation.replaceAll(SYMBOL + entry.getKey(), String.valueOf(entry.getValue()));
         }
         LOG.info("Transfer_DocumentVacation documentVacation after: " + documentVacation);
-        
+
         String result = agroholdingService.transferDocumentVacation(documentVacation);
         LOG.info("Transfer_DocumentVacation result: " + result);
     }
@@ -75,6 +87,22 @@ public class Transfer_DocumentVacation implements JavaDelegate {
     }
 
     private String getKeyUser(String sID_Process) {
+        try {
+            List<HistoricTaskInstance> aHistoricTask = oHistoryService.createHistoricTaskInstanceQuery()
+                    .processInstanceId(sID_Process).orderByHistoricTaskInstanceStartTime().list();
+            if(aHistoricTask.size() > 0){
+                HistoricTaskInstance historicTaskInstance = aHistoricTask.get(0);
+                String assigneeUser = historicTaskInstance.getAssignee();
+                if(assigneeUser != null){
+                    Optional<SubjectAccount> subjectAccount = subjectAccountDao.findBy("sLogin", assigneeUser);
+                    if(subjectAccount.isPresent()){
+                        Long nID_Subject = subjectAccount.get().getnID_Subject();
+                    }
+                }
+            }
+        } catch (Exception ex) {
+
+        }
         return "a807e909-abfb-11dc-aa58-00112f3000a2";
     }
 }
