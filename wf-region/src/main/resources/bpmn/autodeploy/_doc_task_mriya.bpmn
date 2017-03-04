@@ -148,21 +148,19 @@
     <sequenceFlow id="flow6" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Transform Date" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Transform Date" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var inputBegin = execution.getVariable('sDateVacationBegin')
 var inputEnd = execution.getVariable('sDateVacationEnd')
 
-var yearB = inputBegin.slice(-4),
-    monthB = ['Jan','Feb','Mar','Apr','May','Jun',
-             'Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(inputBegin.substr(4,3))+1,
-    dayB = inputBegin.substr(8,2)
+var yearB = inputBegin.slice(-4)
+var monthB = ['Jan','Feb','Mar','Apr','May','Jun',
+             'Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(inputBegin.substr(4,3))+1
+var dayB = inputBegin.substr(8,2)
 
-var outputBegin = dayB + '.' + (monthB&lt;10?'0':'') + monthB + '.' + yearB
-
-var yearE = inputEnd.slice(-4),
-    monthE = ['Jan','Feb','Mar','Apr','May','Jun',
-             'Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(inputEnd.substr(4,3))+1,
-    dayE = inputEnd.substr(8,2)
+var yearE = inputEnd.slice(-4)
+var monthE = ['Jan','Feb','Mar','Apr','May','Jun',
+             'Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(inputEnd.substr(4,3))+1
+var dayE = inputEnd.substr(8,2)
 
 var outputBegin = dayB + '.' + (monthB&lt;10?'0':'') + monthB + '.' + yearB
 var outputEnd = dayE + '.' + (monthE&lt;10?'0':'') + monthE + '.' + yearE
