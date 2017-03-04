@@ -30,6 +30,7 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.task.IdentityLink;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.util.Tool;
 import org.joda.time.DateTime;
@@ -692,7 +693,22 @@ public class DocumentStepService {
             }
         }
         
+        List<String> aGroup = new ArrayList<>();
+        
+        Set<IdentityLink> groupsOld = delegateTask.getCandidates();
+                                        groupsOld.stream().forEach((groupOld) -> {
+						aGroup.add(groupOld.getGroupId());
+					});
+        
+        LOG.info("aGroup before setting: {}", aGroup);
         LOG.info("asGroup in DocumentInit_iDoc {}", asGroup);
+        
+        Set<IdentityLink> groupsNew = delegateTask.getCandidates();
+                                        groupsNew.stream().forEach((groupOld) -> {
+						aGroup.add(groupOld.getGroupId());
+                                        });
+                                        
+        LOG.info("aGroup after setting: {}", aGroup);                                        
         delegateTask.addCandidateGroups(asGroup);
     }
 
