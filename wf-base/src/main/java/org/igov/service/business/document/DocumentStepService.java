@@ -849,10 +849,10 @@ public class DocumentStepService {
         return "";
     }
 
-    public Boolean isDocumentAllSigned(String nID_Process, String sLogin, String sKey_Step)
+    public Map<String, Boolean> isDocumentAllSigned(String nID_Process, String sLogin, String sKey_Step)
             throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException,
             RecordNotFoundException {
-        Boolean result = false;
+        Map<String, Boolean> mReturn = new HashMap<>();
         List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
         Set<String> asID_Group = new HashSet<>();
 
@@ -902,27 +902,24 @@ public class DocumentStepService {
         }
 
         if (oTargetDocumentStepSubjectRight != null) {
-            /*boolean bNeedECP = false;
+            boolean bNeedECP = false;
             if (oTargetDocumentStepSubjectRight.getbNeedECP() != null) {
                 bNeedECP = oTargetDocumentStepSubjectRight.getbNeedECP();
-            }*/
+            }
 
             DateTime sDateECP = oTargetDocumentStepSubjectRight.getsDateECP();
             LOG.info("sDateECP =", oTargetDocumentStepSubjectRight.getsDateECP());
-
-            if (sDateECP != null) {
-                result = true;
+            
+            if (bNeedECP && sDateECP == null) {
+                mReturn.put("bSigned:", false);// ецп не наложено
             }
-            /*if (bNeedECP && sDateECP == null) {
-				mReturn.put("bSigned:", false);// ецп не наложено
-			}
 
-			if (bNeedECP && sDateECP != null) {
-				mReturn.put("bSigned:", true); // ецп наложено
-			}*/
+            if (bNeedECP && sDateECP != null) {
+                mReturn.put("bSigned:", true); // ецп наложено
+            }
         }
 
-        return result;
+        return mReturn;
     }
 
 }
