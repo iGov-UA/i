@@ -54,6 +54,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         
+        String sID_Pattern_Value = this.sID_Pattern.getExpressionText();
         String soData_Value = this.soData.getExpressionText();
         LOG.info("soData_Value before: " + soData_Value);
         String soData_Value_Result = replaceTags(soData_Value, execution);
@@ -73,7 +74,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         LOG.info("Transfer_DocumentVacation data: " + data);
 
         String filePath = FileSystemData.SUB_PATH_XML + "agroholding/";
-        File oFile = FileSystemData.getFile(filePath, sID_Pattern + ".xml");
+        File oFile = FileSystemData.getFile(filePath, sID_Pattern_Value + ".xml");
         String documentVacation = Files.toString(oFile, Charset.defaultCharset());
         LOG.info("Transfer_DocumentVacation documentVacation before: " + documentVacation);
 
