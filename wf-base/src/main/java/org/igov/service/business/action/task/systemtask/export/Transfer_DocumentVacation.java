@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
 @Component("Transfer_DocumentVacation")
 public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implements JavaDelegate {
 
-    private final static Logger LOG = LoggerFactory.getLogger(CreateDocument_UkrDoc.class);
+    private final static Logger LOG = LoggerFactory.getLogger(Transfer_DocumentVacation.class);
 
     @Autowired
     AgroholdingService agroholdingService;
@@ -48,16 +48,13 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
     private Expression sID_Pattern;
 
     private Expression soData;
-    
-    private Expression sNote;
 
     private final String SYMBOL = "%";
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        //по ид вытащить того, кто отрабатывает и достать кеш человека .
-        String sNote_Value = getStringFromFieldExpression(this.sNote, execution);
-        LOG.info("sNote_Value: " + sNote_Value);
+        
+        String sID_Pattern_Value = this.sID_Pattern.getExpressionText();
         String soData_Value = this.soData.getExpressionText();
         LOG.info("soData_Value before: " + soData_Value);
         String soData_Value_Result = replaceTags(soData_Value, execution);
@@ -69,7 +66,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         String sDate = sdf.format(new Date());
         Date oDateVacationBegin = sdf.parse((String) data.get("sDateVacationBegin"));
         Date oDateVacationEnd = sdf.parse((String) data.get("sDateVacationEnd"));
-        String sCountDay = String.valueOf(getDateDiff(oDateVacationEnd, oDateVacationBegin));
+        String sCountDay = String.valueOf(getDateDiff(oDateVacationBegin, oDateVacationEnd));
         String sKeyVacationer = getLoginSubjectAccountByLoginIgovAccount(execution.getProcessInstanceId());
         data.put("sDate", sDate);
         data.put("sCountDay", sCountDay);
@@ -77,7 +74,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         LOG.info("Transfer_DocumentVacation data: " + data);
 
         String filePath = FileSystemData.SUB_PATH_XML + "agroholding/";
-        File oFile = FileSystemData.getFile(filePath, sID_Pattern + ".xml");
+        File oFile = FileSystemData.getFile(filePath, sID_Pattern_Value + ".xml");
         String documentVacation = Files.toString(oFile, Charset.defaultCharset());
         LOG.info("Transfer_DocumentVacation documentVacation before: " + documentVacation);
 
@@ -98,7 +95,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         String result = "a807e909-abfb-11dc-aa58-00112f3000a2";
         try {
             List<HistoricTaskInstance> aHistoricTask = oHistoryService.createHistoricTaskInstanceQuery()
-                    .processInstanceId(sLoginIgovAccount).orderByHistoricTaskInstanceStartTime().list();
+                    .processInstanceId(sLoginIgovAccount).orderByHistoricTaskInstanceStartTime().asc().list();
             if (aHistoricTask.size() > 0) {
                 HistoricTaskInstance historicTaskInstance = aHistoricTask.get(0);
                 String assigneeUser = historicTaskInstance.getAssignee();

@@ -205,9 +205,14 @@ public class DocumentStepService {
         LOG.info("oDocumentStep_Active rights is {}", oDocumentStep_Active.getRights());
         
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Source = oDocumentStep_Active.getRights();
-        
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_SourceNew = new ArrayList<>();
+        aDocumentStepSubjectRight_SourceNew.addAll(aDocumentStepSubjectRight_Source);
         LOG.info("aDocumentStepSubjectRight_Source is {}", aDocumentStepSubjectRight_Source);
-        for(DocumentStepSubjectRight oDocumentStepSubjectRight_Source : aDocumentStepSubjectRight_Source){
+        //for(DocumentStepSubjectRight oDocumentStepSubjectRight_Source : aDocumentStepSubjectRight_Source){
+        Iterator<DocumentStepSubjectRight> oDocumentStepSubjectRightIterator = aDocumentStepSubjectRight_Source.iterator();
+	while (oDocumentStepSubjectRightIterator.hasNext()) {
+            DocumentStepSubjectRight oDocumentStepSubjectRight_Source = new DocumentStepSubjectRight();
+            oDocumentStepSubjectRight_Source = oDocumentStepSubjectRightIterator.next();
             if(sKey_GroupPostfix.equals(oDocumentStepSubjectRight_Source.getsKey_GroupPostfix())){
                 oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_GroupPostfix_New);
                 oDocumentStepSubjectRight.setbWrite(oDocumentStepSubjectRight_Source.getbWrite());
@@ -230,10 +235,15 @@ public class DocumentStepService {
                 oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
                 oDocumentStepSubjectRight.setDocumentStep(oDocumentStep_Active);
                 LOG.info("right for step: {}", oDocumentStepSubjectRight);
-                aDocumentStepSubjectRight_Source.add(oDocumentStepSubjectRight);        
+                aDocumentStepSubjectRight_SourceNew.add(oDocumentStepSubjectRight);        
                 
-                oDocumentStep_Active.setRights(aDocumentStepSubjectRight_Source);
-                documentStepDao.saveOrUpdate(oDocumentStep_Active);
+                oDocumentStep_Active.setRights(aDocumentStepSubjectRight_SourceNew);
+                
+//                try{
+                    documentStepDao.saveOrUpdate(oDocumentStep_Active);
+//                }catch(Exception ex){
+                    
+//                }
             }
             else{
                 LOG.info("sKey_GroupPostfix is not equal Key_GroupPostfix");
@@ -857,7 +867,7 @@ public class DocumentStepService {
 
         return "";
     }
-    public Map<String, Boolean> isDocumentAllSigned(String nID_Process, String sLogin, String sKey_Step)
+    public Map<String, Boolean> isDocumentStepSubmitedAll(String nID_Process, String sLogin, String sKey_Step)
 			throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException,
 			RecordNotFoundException {
 		Map<String, Boolean> mReturn = new HashMap();
@@ -869,11 +879,13 @@ public class DocumentStepService {
 		}
 
 		LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
+                //TODO: Сделать проверку доступа по параметру sLogin (на присутствие логина среди подписантов(не ознакамливающихся) или системного логина... может еще что-то)
+                
 		LOG.info("aGroup={}", aGroup);
 
 		List<DocumentStep> aDocumentStep = ((DocumentStepDao) documentStepDao).getStepForProcess(nID_Process);
-		LOG.info("The size of list" + aDocumentStep.size());
-		LOG.info("Result list of steps: {}", aDocumentStep);
+		LOG.info("The size of list" + (aDocumentStep!=null?aDocumentStep.size():null));
+		//LOG.info("Result list of steps: {}", aDocumentStep);
 
 		DocumentStep oFindedDocumentStep = null;
 
