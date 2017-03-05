@@ -1,6 +1,5 @@
 package org.igov.service.business.action.task.core;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Charsets;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RuntimeService;
@@ -29,26 +28,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
-import org.igov.util.VariableMultipartFile;
 
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
 import org.apache.commons.io.IOUtils;
-import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
-import org.igov.model.action.vo.TaskAttachVO;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.igov.service.business.object.ObjectFileService;
 import org.igov.service.conf.AttachmetService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.json.simple.JSONArray;
-import static org.igov.util.Tool.sTextTranslit;
 
 public abstract class AbstractModelTask {
 
