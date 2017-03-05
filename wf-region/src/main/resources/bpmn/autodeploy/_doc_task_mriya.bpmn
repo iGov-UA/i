@@ -9,6 +9,8 @@
         <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string"></activiti:formProperty>
@@ -36,11 +38,13 @@
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Mriya_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина!" type="invisible" default="3"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина!" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date" writable="false"></activiti:formProperty>
@@ -101,26 +105,11 @@
     <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Transfer_DocumentVacation" activiti:delegateExpression="#{Transfer_DocumentVacation}">
       <extensionElements>
-        <activiti:field name="sDateVacationBegin">
-          <activiti:expression><![CDATA[${sDateVacationBegin}]]></activiti:expression>
+        <activiti:field name="sID_Pattern">
+          <activiti:string><![CDATA[documentVacation]]></activiti:string>
         </activiti:field>
-        <activiti:field name="sDateVacationEnd">
-          <activiti:expression><![CDATA[${sDateVacationEnd}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sTypeVacation">
-          <activiti:expression><![CDATA[${sTypeVacation}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sNote">
-          <activiti:expression><![CDATA[${sNote}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sKeyResponsible">
-          <activiti:expression><![CDATA[${sKeyResponsible}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sKeyOrgan">
-          <activiti:expression><![CDATA[${sKeyOrgan}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sKeySubjectType">
-          <activiti:expression><![CDATA[${sKeySubjectType}]]></activiti:expression>
+        <activiti:field name="soData">
+          <activiti:string><![CDATA[sDateVacationBegin::value{[sDateVacationBegin1C]};;sDateVacationEnd::value{[sDateVacationEnd1C]};;sTypeVacation::value{[sTypeVacation]};;sNote::value{[sNote]};;sKeyResponsible::value{[sKeyResponsible]};;sKeyOrgan::value{[sKeyOrgan]};;sKeySubjectType::value{[sKeySubjectType]}]]></activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -152,6 +141,8 @@
       <script>var inputBegin = execution.getVariable('sDateVacationBegin')
 var inputEnd = execution.getVariable('sDateVacationEnd')
 
+var time
+
 var yearB = inputBegin.slice(-4)
 var monthB = ['Jan','Feb','Mar','Apr','May','Jun',
              'Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(inputBegin.substr(4,3))+1
@@ -165,9 +156,14 @@ var dayE = inputEnd.substr(8,2)
 var outputBegin = dayB + '.' + (monthB&lt;10?'0':'') + monthB + '.' + yearB
 var outputEnd = dayE + '.' + (monthE&lt;10?'0':'') + monthE + '.' + yearE
 
+var outputBegin1C = yearB + '-' + (monthB&lt;10?'0':'') + monthB + '-' + dayB + 'T00:00:00'
+var outputEnd1C = yearE + '-' + (monthE&lt;10?'0':'') + monthE + '-' + dayE + 'T00:00:00'
+
 
 execution.setVariable('sDateVacationBegin', outputBegin)
-execution.setVariable('sDateVacationEnd', outputEnd)</script>
+execution.setVariable('sDateVacationEnd', outputEnd)
+execution.setVariable('sDateVacationBegin1C', outputBegin1C)
+execution.setVariable('sDateVacationEnd1C', outputEnd1C)</script>
     </scriptTask>
     <sequenceFlow id="flow8" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
   </process>

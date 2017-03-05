@@ -2,6 +2,8 @@ package org.igov.service.business.action.task.listener.doc;
 
 
 import java.util.logging.Level;
+import java.util.List;
+import org.igov.model.document.DocumentStep;
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -46,7 +48,9 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
         
         DelegateExecution execution = delegateTask.getExecution();
         try {
-            oDocumentStepService.checkDocumentInit(execution);
+            List<DocumentStep> aResDocumentStep = oDocumentStepService.checkDocumentInit(execution);
+            oDocumentStepService.syncDocumentGroups(delegateTask, aResDocumentStep);
+            
         } catch (Exception oException) {
             LOG.error("", oException);
             try {
