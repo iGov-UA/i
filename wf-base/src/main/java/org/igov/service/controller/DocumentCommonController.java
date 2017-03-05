@@ -55,8 +55,9 @@ public class DocumentCommonController {
 	@Transactional
 	public DocumentStepSubjectRight cloneDocumentStepSubject(
 			@ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "snID_Process_Activiti") String snID_Process_Activiti,
-			@ApiParam(value = "группа", required = false) @RequestParam(required = false, value = "sKey_GroupPostfix") String sKey_GroupPostfix,
-			@ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sKey_GroupPostfix_New") String sKey_GroupPostfix_New) throws Exception {
+			@ApiParam(value = "группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix") String sKey_GroupPostfix,
+			@ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix_New") String sKey_GroupPostfix_New) throws Exception 
+        {
 
 		LOG.info("snID_Process_Activiti in cloneDocumentStepSubject: {}", snID_Process_Activiti);
 		LOG.info("sKey_GroupPostfix in cloneDocumentStepSubject: {}", sKey_GroupPostfix);
