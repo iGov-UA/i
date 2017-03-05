@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.igov.model.document.DocumentStepSubjectRight;
 
 
 @Controller
@@ -48,5 +49,21 @@ public class DocumentCommonController {
 		return documentStepService.isDocumentAllSigned(nID_Process, sLogin, sKey_Step);
 
 	}
+        
+        @ApiOperation(value = "Клонирование документа")
+	@RequestMapping(value = "/cloneDocumentStepSubject", method = RequestMethod.GET)
+	@Transactional
+	public DocumentStepSubjectRight cloneDocumentStepSubject(
+			@ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "snID_Process_Activiti") String snID_Process_Activiti,
+			@ApiParam(value = "группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix") String sKey_GroupPostfix,
+			@ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix_New") String sKey_GroupPostfix_New) throws Exception 
+        {
 
+		LOG.info("snID_Process_Activiti in cloneDocumentStepSubject: {}", snID_Process_Activiti);
+		LOG.info("sKey_GroupPostfix in cloneDocumentStepSubject: {}", sKey_GroupPostfix);
+		LOG.info("sKey_GroupPostfix_New in cloneDocumentStepSubject: {}", sKey_GroupPostfix_New);
+
+		return documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New);
+
+	}
 }
