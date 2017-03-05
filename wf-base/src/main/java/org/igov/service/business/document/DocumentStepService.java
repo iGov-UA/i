@@ -205,9 +205,13 @@ public class DocumentStepService {
         LOG.info("oDocumentStep_Active rights is {}", oDocumentStep_Active.getRights());
         
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Source = oDocumentStep_Active.getRights();
-        
+        //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_SourceNew = new ArrayList<>();
         LOG.info("aDocumentStepSubjectRight_Source is {}", aDocumentStepSubjectRight_Source);
-        for(DocumentStepSubjectRight oDocumentStepSubjectRight_Source : aDocumentStepSubjectRight_Source){
+        //for(DocumentStepSubjectRight oDocumentStepSubjectRight_Source : aDocumentStepSubjectRight_Source){
+        Iterator<DocumentStepSubjectRight> oDocumentStepSubjectRightIterator = aDocumentStepSubjectRight_Source.iterator();
+	while (oDocumentStepSubjectRightIterator.hasNext()) {
+            DocumentStepSubjectRight oDocumentStepSubjectRight_Source = new DocumentStepSubjectRight();
+            oDocumentStepSubjectRight_Source = oDocumentStepSubjectRightIterator.next();
             if(sKey_GroupPostfix.equals(oDocumentStepSubjectRight_Source.getsKey_GroupPostfix())){
                 oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_GroupPostfix_New);
                 oDocumentStepSubjectRight.setbWrite(oDocumentStepSubjectRight_Source.getbWrite());
