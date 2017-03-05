@@ -53,9 +53,10 @@ public class DocumentCommonController {
     }
 
     @ApiOperation(value = "Клонирование документа")
-    @RequestMapping(value = "/cloneDocumentStepSubject", method = RequestMethod.GET)
-    @Transactional
-    public String cloneDocumentStepSubject(
+    @RequestMapping(value = "/cloneDocumentStepSubject", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    //@Transactional
+    public @ResponseBody
+    String cloneDocumentStepSubject(
             @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "snID_Process_Activiti") String snID_Process_Activiti,
             @ApiParam(value = "группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix") String sKey_GroupPostfix,
             @ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix_New") String sKey_GroupPostfix_New) throws Exception {
@@ -65,7 +66,9 @@ public class DocumentCommonController {
         LOG.info("sKey_GroupPostfix_New in cloneDocumentStepSubject: {}", sKey_GroupPostfix_New);
 
         DocumentStepSubjectRight oDocumentStepSubjectRight = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New);
-
+        
+        LOG.info("oDocumentStepSubjectRight in cloneDocumentStepSubject is {}", oDocumentStepSubjectRight);
+        
         if (oDocumentStepSubjectRight != null) {
             return JSONValue.toJSONString(oDocumentStepSubjectRight);
         }

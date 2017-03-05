@@ -238,11 +238,12 @@ public class DocumentStepService {
                 aDocumentStepSubjectRight_SourceNew.add(oDocumentStepSubjectRight);        
                 
                 oDocumentStep_Active.setRights(aDocumentStepSubjectRight_SourceNew);
-                try{
+                
+//                try{
                     documentStepDao.saveOrUpdate(oDocumentStep_Active);
-                }catch(Exception ex){
+//                }catch(Exception ex){
                     
-                }
+//                }
             }
             else{
                 LOG.info("sKey_GroupPostfix is not equal Key_GroupPostfix");
