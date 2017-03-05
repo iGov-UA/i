@@ -35,10 +35,10 @@ public class DocumentCommonController {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentCommonController.class);
 
     @ApiOperation(value = "проверка подписано ли ЕЦП")
-    @RequestMapping(value = "/isDocumentAllSigned", method = RequestMethod.GET)
+    @RequestMapping(value = "/isDocumentStepSubmitedAll", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
-    Map<String, Boolean> isDocumentAllSigned(
+    Map<String, Boolean> isDocumentStepSubmitedAll(
             @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
             @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
             @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
@@ -48,7 +48,7 @@ public class DocumentCommonController {
         LOG.info("sLogin: " + sLogin);
         LOG.info("sKey_Step: " + sKey_Step);
 
-        return documentStepService.isDocumentAllSigned(nID_Process, sLogin, sKey_Step);
+        return documentStepService.isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step);
 
     }
 
