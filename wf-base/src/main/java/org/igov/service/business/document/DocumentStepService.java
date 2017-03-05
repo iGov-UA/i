@@ -693,7 +693,7 @@ public class DocumentStepService {
             }
         }
         
-        /*List<String> aGroup = new ArrayList<>();
+        List<String> aGroup = new ArrayList<>();
         
         Set<IdentityLink> groupsOld = delegateTask.getCandidates();
                                         groupsOld.stream().forEach((groupOld) -> {
@@ -702,14 +702,14 @@ public class DocumentStepService {
         
         LOG.info("aGroup before setting: {}", aGroup);
         LOG.info("asGroup in DocumentInit_iDoc {}", asGroup);
-        
+        delegateTask.addCandidateGroups(asGroup);
         Set<IdentityLink> groupsNew = delegateTask.getCandidates();
                                         groupsNew.stream().forEach((groupNew) -> {
 						aGroup.add(groupNew.getGroupId());
                                         });
                                         
-        LOG.info("aGroup after setting: {}", aGroup);   */                                     
-        delegateTask.addCandidateGroups(asGroup);
+        LOG.info("aGroup after setting: {}", aGroup);                                        
+        
     }
 
     //public void checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {//JSONObject
