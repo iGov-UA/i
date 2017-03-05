@@ -235,17 +235,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       }
 
-      // todo file in table
-      // function fixFileInTable (prop) {
-      //   angular.forEach(prop.aRow, function (fields) {
-      //     angular.forEach(fields.aField, function (item, key, obj) {
-      //       if(item.type === 'file' && item.props) {
-      //         obj[key].value = item.props.value.id;
-      //       }
-      //     })
-      //   })
-      // }
-
       iGovMarkers.validateMarkers(formFieldIDs);
       //save values for each property
       $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
@@ -296,7 +285,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
         angular.forEach($scope.activitiForm.formProperties, function (prop) {
           if (prop.type === 'table') {
-            // fixFileInTable(prop);
             $scope.data.formData.params[prop.id].value = prop;
           }
         });
