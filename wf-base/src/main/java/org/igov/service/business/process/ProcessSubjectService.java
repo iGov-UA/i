@@ -43,7 +43,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -51,12 +50,13 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import org.igov.io.GeneralConfig;
 import org.igov.service.business.action.event.ActionEventHistoryService;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author inna
  */
-@Service
+@Component("processSubjectService")
 public class ProcessSubjectService {
 
     private static final Log LOG = LogFactory.getLog(ProcessSubjectService.class);
@@ -473,7 +473,10 @@ public class ProcessSubjectService {
                     String sNewHistoryData = "<td>";
                     
                     if (!mParamDocumentNew.isEmpty()) {
-                            
+                        
+                        addEditHistoryEvent(processSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
+                                    processSubject.getsLogin(), processSubject.getProcessSubjectStatus().getId());
+                        
                         for (ProcessSubject oProcessSubject : aProcessSubject_Child) {
                             oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
 
@@ -504,10 +507,6 @@ public class ProcessSubjectService {
                             processSubjectDao.saveOrUpdate(oProcessSubject);
 
                         }
-                        
-                        /*addEditHistoryEvent(processSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
-                                    processSubject.getsLogin(), processSubject.getProcessSubjectStatus().getId());
-                    */
                     }
                 }
             }
@@ -587,26 +586,6 @@ public class ProcessSubjectService {
             Map<String, Object> mParamDocument = new HashMap<>();
             mParamDocument.putAll(mParam);
             
-            /*
-            mParamDocument.put("sTaskProcessDefinition", mParam.get("sTaskProcessDefinition"));
-            mParamDocument.put("sID_Attachment", mParam.get("sID_Attachment"));
-            mParamDocument.put("sContent", mParam.get("sContent"));
-            mParamDocument.put("sAutorResolution", mParam.get("sAutorResolution"));
-            mParamDocument.put("sName_SubjectRole", mParam.get("sName_SubjectRole"));
-            mParamDocument.put("sDateExecution", sFormatDateExecution);
-            mParamDocument.put("sTypeDoc", mParam.get("sTypeDoc"));
-            mParamDocument.put("sID_Order_GovPublic", mParam.get("sID_Order_GovPublic"));
-            mParamDocument.put("sDateRegistration", sFormatDateRegistration);
-            mParamDocument.put("sDateDoc", sFormatDateDoc);
-            mParamDocument.put("sApplicant", mParam.get("sApplicant"));
-            mParamDocument.put("nCountAttach", mParam.get("nCountAttach"));
-            mParamDocument.put("sNote", mParam.get("sNote"));
-            mParamDocument.put("asUrgently", mParam.get("asUrgently"));
-            mParamDocument.put("asTypeResolution", mParam.get("asTypeResolution"));
-            mParamDocument.put("sTextResolution", mParam.get("sTextResolution"));
-            mParamDocument.put("sDoc1", mParam.get("sDoc1"));
-            */
-
             //проверяем нет ли в базе такого объекта, если нет создаем, если есть - не создаем
             //иначе проверяем на необходимость редактирования
             if (oProcessSubjectParent == null) {

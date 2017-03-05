@@ -26,7 +26,7 @@ public class RestRequest {
             LOG.error("url: {}, clazz: {}", url, clazz);
             throw new IllegalArgumentException("url: " + url + " clazz: " + clazz);
         }
-        T xmlResponse = null;
+        T response = null;
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setErrorHandler(new ResponseErrHandler());
         restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
@@ -41,9 +41,9 @@ public class RestRequest {
         LOG.info("httpHeaders.contentType: " + httpHeaders.getContentType() + " httpHeaders.accept: " + httpHeaders.getAccept());
         HttpEntity httpEntity = new HttpEntity(requestBody, httpHeaders);
         LOG.info("Sending POST to rest resource:{}, HttpEntity:{}", url, httpEntity);
-        xmlResponse = restTemplate.postForObject(url, httpEntity, clazz);
-        LOG.info("xmlResponse:{}", xmlResponse);
-        return xmlResponse;
+        response = restTemplate.postForObject(url, httpEntity, clazz);
+        LOG.info("xmlResponse:{}", response);
+        return response;
 
     }
 

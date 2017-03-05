@@ -1,7 +1,11 @@
 package org.igov.service.controller;
 
+import com.google.common.io.Files;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.io.File;
+import java.nio.charset.Charset;
+import org.igov.io.fs.FileSystemData;
 
 import org.igov.service.business.export.AgroholdingService;
 import org.slf4j.Logger;
@@ -25,11 +29,14 @@ public class ExportCommonController {
     @ApiOperation(value = "/agroholding/transferDocumentVacation", notes = "##### Экспорт документа о отпуске в агрофирму. Примеры:\n"
             + "https://alpha.test.igov.org.ua/wf/service/export/agroholding/transferDocumentVacation")
     @RequestMapping(value = "/agroholding/transferDocumentVacation", method = RequestMethod.GET)
-    public @ResponseBody String transferDocumentVacation() throws Exception {
+    public @ResponseBody
+    String transferDocumentVacation() throws Exception {
         LOG.info("transferDocumentVacation...");
-        String result = agroholdingService.transferDocumentVacation();
+        String filePath = FileSystemData.SUB_PATH_XML + "agroholding/";
+        File oFile = FileSystemData.getFile(filePath, "documentVacation.xml");
+        String documentVacation = Files.toString(oFile, Charset.defaultCharset());
+        String result = agroholdingService.transferDocumentVacation(documentVacation);
         LOG.info("transferDocumentVacation result = " + result);
         return result;
     }
-
 }
