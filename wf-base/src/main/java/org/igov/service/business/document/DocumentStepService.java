@@ -204,7 +204,7 @@ public class DocumentStepService {
         DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
         LOG.info("oDocumentStep_Active rights is {}", oDocumentStep_Active.getRights());
         
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Source = new LinkedList(oDocumentStep_Active.getRights());
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Source = oDocumentStep_Active.getRights();
         
         LOG.info("aDocumentStepSubjectRight_Source is {}", aDocumentStepSubjectRight_Source);
         for(DocumentStepSubjectRight oDocumentStepSubjectRight_Source : aDocumentStepSubjectRight_Source){
