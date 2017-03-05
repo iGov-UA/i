@@ -18,6 +18,7 @@ import org.igov.io.fs.FileSystemData;
 import org.igov.model.subject.SubjectAccount;
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
+import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
 import org.igov.service.business.export.AgroholdingService;
 import static org.igov.util.Tool.parseData;
 import org.slf4j.Logger;
@@ -31,9 +32,9 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component("Transfer_DocumentVacation")
-public class Transfer_DocumentVacation implements JavaDelegate {
+public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implements JavaDelegate {
 
-    private final static Logger LOG = LoggerFactory.getLogger(CreateDocument_UkrDoc.class);
+    private final static Logger LOG = LoggerFactory.getLogger(Transfer_DocumentVacation.class);
 
     @Autowired
     AgroholdingService agroholdingService;
@@ -47,18 +48,17 @@ public class Transfer_DocumentVacation implements JavaDelegate {
     private Expression sID_Pattern;
 
     private Expression soData;
-    
-    private Expression sNote;
 
     private final String SYMBOL = "%";
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        //по ид вытащить того, кто отрабатывает и достать кеш человека .
-        String sNote_Value = this.sNote.getExpressionText();
-        LOG.info("sNote_Value: " + sNote_Value);
+        
         String soData_Value = this.soData.getExpressionText();
-        Map<String, Object> data = parseData(soData_Value);
+        LOG.info("soData_Value before: " + soData_Value);
+        String soData_Value_Result = replaceTags(soData_Value, execution);
+        LOG.info("soData_Value after: " + soData_Value_Result);
+        Map<String, Object> data = parseData(soData_Value_Result);
         LOG.info("data: " + data);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
