@@ -274,14 +274,41 @@ module.exports.signFormMultiple = function (req, res) {
   var callbackURL = url.resolve(originalURL(req, {}), '/api/process-form/signMultiple/callback?nID_Server=' + nID_Server + newService);
 
   function findFileFields(formData) {
+    var tableFiles = [];
     var fileFields = formData.activitiForm.formProperties.filter(function (property) {
       return property.type === 'file';
     });
+
+    var tables = formData.activitiForm.formProperties.filter(function (property) {
+      return property.type === 'table';
+    });
+
     fileFields.forEach(function (fileField) {
       if (formData.formData.params[fileField.id]) {
         fileField.value = formData.formData.params[fileField.id];
       }
     });
+
+    tables.forEach(function (table) {
+      if(formData.formData.params[table.id]) {
+        if(table.aRow) {
+          table.aRow.forEach(function (row) {
+            row.aField.forEach(function (field) {
+              if(field.type === 'file') {
+                tableFiles.push(field);
+              }
+            })
+          })
+        }
+      }
+    });
+
+    tableFiles.forEach(function (file) {
+      if(file.value && file.value.id) {
+        file.value = file.value.id;
+      }
+    });
+    fileFields = fileFields.concat(tableFiles);
 
     fileFields = fileFields.filter(function (fileField) {
       return fileField.value;
@@ -362,13 +389,20 @@ module.exports.signFormMultiple = function (req, res) {
       var params = {};
 
       if(fileField.value && fileField.value.indexOf('sKey') > -1) {
-        fileField.value = JSON.parse(fileField.value).sKey;
+        var obj = JSON.parse(fileField.value);
+        var nameAndExtForTableFile = obj.sFileNameAndExt;
+        fileField.value = obj.sKey;
       }
       params.ID = fileField.value;
       params.storageType = storageType;
       uploadFileService.downloadBuffer(params, function (error, response, buffer) {
-        var ext = formData.formData.files[fileField.id].split('.').pop().toLowerCase();
-        var fileName = fileField.id + (ext ? '.' + ext : '');
+        var fileName;
+        if(!formData.formData.files[fileField.id] && nameAndExtForTableFile) {
+          fileName = nameAndExtForTableFile;
+        } else {
+          var ext = formData.formData.files[fileField.id].split('.').pop().toLowerCase();
+          fileName = fileField.id + (ext ? '.' + ext : '');
+        }
         filesToSign.push({
           name: fileField.id,
           options: {
@@ -498,6 +532,20 @@ module.exports.signFormMultipleCallback = function (req, res) {
               var newID = uploadedFiles[formFieldKey];
               savedForm.formData.params[formFieldKey] = newID;
               console.log('[sign multiple callback] update fileids. was : ' + oldID + 'now : ' + newID);
+            }
+          }
+        }
+
+        for (var property in savedForm.formData.params) {
+          if(savedForm.formData.params.hasOwnProperty(property) && savedForm.formData.params[property] !== null && typeof savedForm.formData.params[property] === 'object') {
+            if('type' in savedForm.formData.params[property] && savedForm.formData.params[property].type === 'table' && savedForm.formData.params[property].aRow) {
+              savedForm.formData.params[property].aRow.forEach(function (row) {
+                row.aField.forEach(function (field) {
+                  if(field.type === 'file' && field.fileName && field.fileName.split('.')[0] in uploadedFiles) {
+                    field.value = uploadedFiles[field.fileName.split('.')[0]];
+                  }
+                })
+              })
             }
           }
         }

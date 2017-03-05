@@ -66,7 +66,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         String sDate = sdf.format(new Date());
         Date oDateVacationBegin = sdf.parse((String) data.get("sDateVacationBegin"));
         Date oDateVacationEnd = sdf.parse((String) data.get("sDateVacationEnd"));
-        String sCountDay = String.valueOf(getDateDiff(oDateVacationEnd, oDateVacationBegin));
+        String sCountDay = String.valueOf(getDateDiff(oDateVacationBegin, oDateVacationEnd));
         String sKeyVacationer = getLoginSubjectAccountByLoginIgovAccount(execution.getProcessInstanceId());
         data.put("sDate", sDate);
         data.put("sCountDay", sCountDay);
