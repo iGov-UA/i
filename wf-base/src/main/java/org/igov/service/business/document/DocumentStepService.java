@@ -878,8 +878,8 @@ public class DocumentStepService {
 		LOG.info("aGroup={}", aGroup);
 
 		List<DocumentStep> aDocumentStep = ((DocumentStepDao) documentStepDao).getStepForProcess(nID_Process);
-		LOG.info("The size of list" + aDocumentStep.size());
-		LOG.info("Result list of steps: {}", aDocumentStep);
+		LOG.info("The size of list" + (aDocumentStep!=null?aDocumentStep.size():null));
+		//LOG.info("Result list of steps: {}", aDocumentStep);
 
 		DocumentStep oFindedDocumentStep = null;
 
