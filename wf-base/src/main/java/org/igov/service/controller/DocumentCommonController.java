@@ -23,55 +23,54 @@ import org.igov.model.document.DocumentStepSubjectRight;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
-
 @Controller
 @Api(tags = {"DocumentCommonController -- Проверки наложености ЭЦП по строкам-подписантам"})
 @RequestMapping(value = "/common/document")
 
 public class DocumentCommonController {
 
-	@Autowired
-	private DocumentStepService documentStepService;
+    @Autowired
+    private DocumentStepService documentStepService;
 
-	private static final Logger LOG = LoggerFactory.getLogger(DocumentCommonController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DocumentCommonController.class);
 
-	@ApiOperation(value = "проверка подписано ли ЕЦП")
-	@RequestMapping(value = "/isDocumentAllSigned", method = RequestMethod.GET)
-	@Transactional
-	public @ResponseBody Map<String, Boolean> isDocumentAllSigned(
-			@ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
-			@ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
-			@ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
-			HttpServletResponse httpResponse) throws Exception {
+    @ApiOperation(value = "проверка подписано ли ЕЦП")
+    @RequestMapping(value = "/isDocumentAllSigned", method = RequestMethod.GET)
+    @Transactional
+    public @ResponseBody
+    Boolean isDocumentAllSigned(
+            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
+            @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
+            @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
+            HttpServletResponse httpResponse) throws Exception {
 
-		LOG.info("snID_Process_Activiti: " + nID_Process);
-		LOG.info("sLogin: " + sLogin);
-		LOG.info("sKey_Step: " + sKey_Step);
+        LOG.info("snID_Process_Activiti: " + nID_Process);
+        LOG.info("sLogin: " + sLogin);
+        LOG.info("sKey_Step: " + sKey_Step);
 
-		return documentStepService.isDocumentAllSigned(nID_Process, sLogin, sKey_Step);
+        return documentStepService.isDocumentAllSigned(nID_Process, sLogin, sKey_Step);
 
-	}
-        
-        @ApiOperation(value = "Клонирование документа")
-	@RequestMapping(value = "/cloneDocumentStepSubject", method = RequestMethod.GET)
-	@Transactional
-	public String cloneDocumentStepSubject(
-			@ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "snID_Process_Activiti") String snID_Process_Activiti,
-			@ApiParam(value = "группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix") String sKey_GroupPostfix,
-			@ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix_New") String sKey_GroupPostfix_New) throws Exception 
-        {
+    }
 
-		LOG.info("snID_Process_Activiti in cloneDocumentStepSubject: {}", snID_Process_Activiti);
-		LOG.info("sKey_GroupPostfix in cloneDocumentStepSubject: {}", sKey_GroupPostfix);
-		LOG.info("sKey_GroupPostfix_New in cloneDocumentStepSubject: {}", sKey_GroupPostfix_New);
-                
-                DocumentStepSubjectRight oDocumentStepSubjectRight = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New);
-                
-                if(oDocumentStepSubjectRight != null){
-                    return JSONValue.toJSONString(oDocumentStepSubjectRight);
-                }
-                
-		return "DocumentStepSubjectRight is null";
+    @ApiOperation(value = "Клонирование документа")
+    @RequestMapping(value = "/cloneDocumentStepSubject", method = RequestMethod.GET)
+    @Transactional
+    public String cloneDocumentStepSubject(
+            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix") String sKey_GroupPostfix,
+            @ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix_New") String sKey_GroupPostfix_New) throws Exception {
 
-	}
+        LOG.info("snID_Process_Activiti in cloneDocumentStepSubject: {}", snID_Process_Activiti);
+        LOG.info("sKey_GroupPostfix in cloneDocumentStepSubject: {}", sKey_GroupPostfix);
+        LOG.info("sKey_GroupPostfix_New in cloneDocumentStepSubject: {}", sKey_GroupPostfix_New);
+
+        DocumentStepSubjectRight oDocumentStepSubjectRight = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New);
+
+        if (oDocumentStepSubjectRight != null) {
+            return JSONValue.toJSONString(oDocumentStepSubjectRight);
+        }
+
+        return "DocumentStepSubjectRight is null";
+
+    }
 }
