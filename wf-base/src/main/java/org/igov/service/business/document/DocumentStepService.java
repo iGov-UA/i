@@ -873,6 +873,8 @@ public class DocumentStepService {
 		}
 
 		LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
+                //TODO: Сделать проверку доступа по параметру sLogin (на присутствие логина среди подписантов(не ознакамливающихся) или системного логина... может еще что-то)
+                
 		LOG.info("aGroup={}", aGroup);
 
 		List<DocumentStep> aDocumentStep = ((DocumentStepDao) documentStepDao).getStepForProcess(nID_Process);
