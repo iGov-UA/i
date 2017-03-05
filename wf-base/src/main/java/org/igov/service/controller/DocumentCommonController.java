@@ -20,6 +20,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.igov.model.document.DocumentStepSubjectRight;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
 
 
 @Controller
@@ -53,7 +55,7 @@ public class DocumentCommonController {
         @ApiOperation(value = "Клонирование документа")
 	@RequestMapping(value = "/cloneDocumentStepSubject", method = RequestMethod.GET)
 	@Transactional
-	public DocumentStepSubjectRight cloneDocumentStepSubject(
+	public String cloneDocumentStepSubject(
 			@ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "snID_Process_Activiti") String snID_Process_Activiti,
 			@ApiParam(value = "группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix") String sKey_GroupPostfix,
 			@ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix_New") String sKey_GroupPostfix_New) throws Exception 
@@ -62,8 +64,14 @@ public class DocumentCommonController {
 		LOG.info("snID_Process_Activiti in cloneDocumentStepSubject: {}", snID_Process_Activiti);
 		LOG.info("sKey_GroupPostfix in cloneDocumentStepSubject: {}", sKey_GroupPostfix);
 		LOG.info("sKey_GroupPostfix_New in cloneDocumentStepSubject: {}", sKey_GroupPostfix_New);
-
-		return documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New);
+                
+                DocumentStepSubjectRight oDocumentStepSubjectRight = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New);
+                
+                if(oDocumentStepSubjectRight != null){
+                    return JSONValue.toJSONString(oDocumentStepSubjectRight);
+                }
+                
+		return "DocumentStepSubjectRight is null";
 
 	}
 }
