@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
 @Component("Transfer_DocumentVacation")
 public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implements JavaDelegate {
 
-    private final static Logger LOG = LoggerFactory.getLogger(CreateDocument_UkrDoc.class);
+    private final static Logger LOG = LoggerFactory.getLogger(Transfer_DocumentVacation.class);
 
     @Autowired
     AgroholdingService agroholdingService;
@@ -48,16 +48,12 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
     private Expression sID_Pattern;
 
     private Expression soData;
-    
-    private Expression sNote;
 
     private final String SYMBOL = "%";
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        //по ид вытащить того, кто отрабатывает и достать кеш человека .
-        String sNote_Value = getStringFromFieldExpression(this.sNote, execution);
-        LOG.info("sNote_Value: " + sNote_Value);
+        
         String soData_Value = this.soData.getExpressionText();
         LOG.info("soData_Value before: " + soData_Value);
         String soData_Value_Result = replaceTags(soData_Value, execution);
