@@ -202,7 +202,11 @@ public class DocumentStepService {
                     + sKey_Step_Document);
         }
         DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
+        LOG.info("oDocumentStep_Active rights is {}", oDocumentStep_Active.getRights());
+        
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Source = new LinkedList(oDocumentStep_Active.getRights());
+        
+        LOG.info("aDocumentStepSubjectRight_Source is {}", aDocumentStepSubjectRight_Source);
         for(DocumentStepSubjectRight oDocumentStepSubjectRight_Source : aDocumentStepSubjectRight_Source){
             if(sKey_GroupPostfix.equals(oDocumentStepSubjectRight_Source.getsKey_GroupPostfix())){
                 oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_GroupPostfix_New);
@@ -230,6 +234,11 @@ public class DocumentStepService {
                 
                 oDocumentStep_Active.setRights(aDocumentStepSubjectRight_Source);
                 documentStepDao.saveOrUpdate(oDocumentStep_Active);
+            }
+            else{
+                LOG.info("sKey_GroupPostfix is not equal Key_GroupPostfix");
+                LOG.info("sKey_GroupPostfix is: {}",sKey_GroupPostfix);
+                LOG.info("Key_GroupPostfix is: {} ", oDocumentStepSubjectRight_Source.getsKey_GroupPostfix());
             }
             
         }
