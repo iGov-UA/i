@@ -205,7 +205,8 @@ public class DocumentStepService {
         LOG.info("oDocumentStep_Active rights is {}", oDocumentStep_Active.getRights());
         
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Source = oDocumentStep_Active.getRights();
-        //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_SourceNew = new ArrayList<>();
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_SourceNew = new ArrayList<>();
+        aDocumentStepSubjectRight_SourceNew.addAll(aDocumentStepSubjectRight_Source);
         LOG.info("aDocumentStepSubjectRight_Source is {}", aDocumentStepSubjectRight_Source);
         //for(DocumentStepSubjectRight oDocumentStepSubjectRight_Source : aDocumentStepSubjectRight_Source){
         Iterator<DocumentStepSubjectRight> oDocumentStepSubjectRightIterator = aDocumentStepSubjectRight_Source.iterator();
@@ -234,10 +235,14 @@ public class DocumentStepService {
                 oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
                 oDocumentStepSubjectRight.setDocumentStep(oDocumentStep_Active);
                 LOG.info("right for step: {}", oDocumentStepSubjectRight);
-                aDocumentStepSubjectRight_Source.add(oDocumentStepSubjectRight);        
+                aDocumentStepSubjectRight_SourceNew.add(oDocumentStepSubjectRight);        
                 
-                oDocumentStep_Active.setRights(aDocumentStepSubjectRight_Source);
-                documentStepDao.saveOrUpdate(oDocumentStep_Active);
+                oDocumentStep_Active.setRights(aDocumentStepSubjectRight_SourceNew);
+                try{
+                    documentStepDao.saveOrUpdate(oDocumentStep_Active);
+                }catch(Exception ex){
+                    
+                }
             }
             else{
                 LOG.info("sKey_GroupPostfix is not equal Key_GroupPostfix");
