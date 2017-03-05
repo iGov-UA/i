@@ -37,7 +37,7 @@ execution.setVariable('processInstanceId', processInstanceId)
 </script>
     </scriptTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <userTask id="usertask1" name="Подача заяви про відпустку" activiti:candidateGroups="mriya_common">
+    <userTask id="usertask1" name="Подача заяви про відпустку">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку" writable="false"></activiti:formProperty>
@@ -70,7 +70,7 @@ execution.setVariable('processInstanceId', processInstanceId)
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask2" name="Результати розгляду" activiti:candidateGroups="mriya_common">
+    <userTask id="usertask2" name="Результати розгляду">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
@@ -100,49 +100,63 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
+    <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId();
+var sKey_GroupPostfix = 'mriya_common'
+var sKey_GroupPostfix_New = execution.getVariable('Mriya_Top3')
+documentStepService.сloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New)</script>
+    </scriptTask>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_justice_setTasks">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_justice_setTasks" id="BPMNPlane__doc_test_justice_setTasks">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="150.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="130.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="150.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="290.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="510.0" y="150.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="440.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="150.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="590.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="810.0" y="160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="740.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="494.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="155.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="200.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="85.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="130.0" y="67.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="305.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="360.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="235.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="67.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="465.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="510.0" y="177.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="615.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="660.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="395.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="67.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="765.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="810.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="695.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="740.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="492.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="546.0" y="140.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="546.0" y="140.0"></omgdi:waypoint>
+        <omgdi:waypoint x="642.0" y="95.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
