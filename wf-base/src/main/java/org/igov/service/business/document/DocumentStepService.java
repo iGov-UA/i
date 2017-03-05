@@ -861,7 +861,7 @@ public class DocumentStepService {
 
         return "";
     }
-    public Map<String, Boolean> isDocumentAllSigned(String nID_Process, String sLogin, String sKey_Step)
+    public Map<String, Boolean> isDocumentStepSubmitedAll(String nID_Process, String sLogin, String sKey_Step)
 			throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException,
 			RecordNotFoundException {
 		Map<String, Boolean> mReturn = new HashMap();
