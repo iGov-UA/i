@@ -35,7 +35,7 @@ public class DocumentCommonController {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentCommonController.class);
 
     @ApiOperation(value = "проверка подписано ли ЕЦП")
-    @RequestMapping(value = "/isDocumentAllSigned", method = RequestMethod.GET)
+    @RequestMapping(value = "/isDocumentStepSubmitedAll", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
     Map<String, Boolean> isDocumentAllSigned(
