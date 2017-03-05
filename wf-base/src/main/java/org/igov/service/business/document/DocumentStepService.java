@@ -208,7 +208,7 @@ public class DocumentStepService {
         //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_SourceNew = new ArrayList<>();
         LOG.info("aDocumentStepSubjectRight_Source is {}", aDocumentStepSubjectRight_Source);
         //for(DocumentStepSubjectRight oDocumentStepSubjectRight_Source : aDocumentStepSubjectRight_Source){
-        Iterator<DocumentStepSubjectRight> oDocumentStepSubjectRightIterator = aDocumentStepSubjectRight_SourceNew.iterator();
+        Iterator<DocumentStepSubjectRight> oDocumentStepSubjectRightIterator = aDocumentStepSubjectRight_Source.iterator();
 	while (oDocumentStepSubjectRightIterator.hasNext()) {
             DocumentStepSubjectRight oDocumentStepSubjectRight_Source = new DocumentStepSubjectRight();
             oDocumentStepSubjectRight_Source = oDocumentStepSubjectRightIterator.next();
