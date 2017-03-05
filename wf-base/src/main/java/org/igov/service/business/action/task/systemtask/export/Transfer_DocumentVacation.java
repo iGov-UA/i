@@ -95,7 +95,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         String result = "a807e909-abfb-11dc-aa58-00112f3000a2";
         try {
             List<HistoricTaskInstance> aHistoricTask = oHistoryService.createHistoricTaskInstanceQuery()
-                    .processInstanceId(sLoginIgovAccount).orderByHistoricTaskInstanceStartTime().list();
+                    .processInstanceId(sLoginIgovAccount).orderByHistoricTaskInstanceStartTime().asc().list();
             if (aHistoricTask.size() > 0) {
                 HistoricTaskInstance historicTaskInstance = aHistoricTask.get(0);
                 String assigneeUser = historicTaskInstance.getAssignee();
