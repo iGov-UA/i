@@ -223,24 +223,19 @@ execution.setVariable('processInstanceId', processInstanceId)
       <script>var inputBegin = execution.getVariable('sDateVacationBegin')
 var inputEnd = execution.getVariable('sDateVacationEnd')
 
-var time
+var dayB = inputBegin.substr(0,2)
+var monthB = inputBegin.substr(3,2)
+var yearB = inputBegin.substr(6,4)
 
-var yearB = inputBegin.slice(-4)
-var monthB = ['Jan','Feb','Mar','Apr','May','Jun',
-             'Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(inputBegin.substr(4,3))+1
-var dayB = inputBegin.substr(8,2)
+var dayE = inputEnd.substr(0,2)
+var monthE = inputEnd.substr(3,2)
+var yearE = inputEnd.substr(6,4)
 
-var yearE = inputEnd.slice(-4)
-var monthE = ['Jan','Feb','Mar','Apr','May','Jun',
-             'Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(inputEnd.substr(4,3))+1
-var dayE = inputEnd.substr(8,2)
+var outputBegin = dayB + '.' + monthB + '.' + yearB
+var outputEnd = dayE + '.' + monthE + '.' + yearE
 
-var outputBegin = dayB + '.' + (monthB&lt;10?'0':'') + monthB + '.' + yearB
-var outputEnd = dayE + '.' + (monthE&lt;10?'0':'') + monthE + '.' + yearE
-
-var outputBegin1C = yearB + '-' + (monthB&lt;10?'0':'') + monthB + '-' + dayB + 'T00:00:00'
-var outputEnd1C = yearE + '-' + (monthE&lt;10?'0':'') + monthE + '-' + dayE + 'T00:00:00'
-
+var outputBegin1C = yearB + '-' + monthB + '-' + dayB + 'T00:00:00'
+var outputEnd1C = yearE + '-' + monthE + '-' + dayE + 'T00:00:00'
 
 execution.setVariable('sDateVacationBegin', outputBegin)
 execution.setVariable('sDateVacationEnd', outputEnd)
