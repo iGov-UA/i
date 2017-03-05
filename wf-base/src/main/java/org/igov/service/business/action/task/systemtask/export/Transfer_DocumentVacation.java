@@ -47,12 +47,16 @@ public class Transfer_DocumentVacation implements JavaDelegate {
     private Expression sID_Pattern;
 
     private Expression soData;
+    
+    private Expression sNote;
 
     private final String SYMBOL = "%";
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         //по ид вытащить того, кто отрабатывает и достать кеш человека .
+        String sNote_Value = this.sNote.getExpressionText();
+        LOG.info("sNote_Value: " + sNote_Value);
         String soData_Value = this.soData.getExpressionText();
         Map<String, Object> data = parseData(soData_Value);
         LOG.info("data: " + data);
