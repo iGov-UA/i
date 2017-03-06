@@ -326,8 +326,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                         FormProperty formProperty = mProperty.get(form_ID);
                         LOG.info("Found form property : {}", formProperty);
                         if (formProperty != null) {
-                            if (formProperty.getValue() != null) {
+                            if (formProperty.getValue() != null && !"null".equalsIgnoreCase(formProperty.getValue().trim()) 
+                                    && !"".equalsIgnoreCase(formProperty.getValue().trim())) {
                                 replacement = formProperty.getValue();
+                                LOG.info("(formVariable={})", formProperty.getValue());
                             } else {
                                 List<String> aID = new ArrayList<>();
                                 aID.add(formProperty.getId());
