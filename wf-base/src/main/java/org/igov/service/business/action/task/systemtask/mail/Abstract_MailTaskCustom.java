@@ -330,7 +330,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                             LOG.info("(formVariable={})", formProperty.getValue());
                         } else {
                             List<String> aID = new ArrayList<>();
-                            aID.add(formProperty.getId());
+                            aID.add(form_ID);
                             List<String> proccessVariable = AbstractModelTask
                                     .getVariableValues(execution, aID);
                             LOG.info("(proccessVariable={})",
