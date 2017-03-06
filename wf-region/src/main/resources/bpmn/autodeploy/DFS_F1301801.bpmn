@@ -16,10 +16,34 @@
         <activiti:formProperty id="sNameCity" name="Назва населеного пункту;за місцем реєстрації ;writable=true,sID_Field_SWinEd=HCITY" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameStreet" name="Назва вулиці ;за місцем реєстрації;writable=true,sID_Field_SWinEd=HSTREET" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberBuild" name="Номер будинку;за місцем реєстрації;writable=true,sID_Field_SWinEd=HBUILD" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sStartPeriod" name="Квартал;початок періоду;writable=true,sID_Field_SWinEd=R01G01" type="string" default="4"></activiti:formProperty>
-        <activiti:formProperty id="sStartYear" name="Рік;початок періоду;writable=true,sID_Field_SWinEd=R01G02" type="string" default="2015"></activiti:formProperty>
-        <activiti:formProperty id="sEndPeriod" name="Квартал;кінець періоду;writable=true,sID_Field_SWinEd=R02G01" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="sEndYear" name="Рік;кінець періоду;writable=true,sID_Field_SWinEd=R02G02" type="string" default="2016"></activiti:formProperty>
+        
+        <activiti:formProperty id="sHSHOT" name="Додаток до номеру будинку;за місцем реєстрації;writable=true,sID_Field_SWinEd=HSHOT" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHCORP" name="Корпус;за місцем реєстрації;writable=true,sID_Field_SWinEd=HCORP" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHAPT" name="Номер квартири;за місцем реєстрації;writable=true,sID_Field_SWinEd=HAPT" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="asStartPeriod" name="Квартал;початок періоду;writable=true,sID_Field_SWinEd=R01G01" type="enum" required="true">
+                 <activiti:value id="1" name="1"></activiti:value>
+                 <activiti:value id="2" name="2"></activiti:value>
+                 <activiti:value id="3" name="3"></activiti:value>
+                 <activiti:value id="4" name="4"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asStartYear" name="Рік;початок періоду;writable=true,sID_Field_SWinEd=R01G02" type="enum" required="true">
+                 <activiti:value id="2014" name="2014"></activiti:value>
+                 <activiti:value id="2015" name="2015"></activiti:value>
+                 <activiti:value id="2016" name="2016"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEndPeriod" name="Квартал;кінець періоду;writable=true,sID_Field_SWinEd=R02G01" type="enum" required="true">
+                 <activiti:value id="1" name="1"></activiti:value>
+                 <activiti:value id="2" name="2"></activiti:value>
+                 <activiti:value id="3" name="3"></activiti:value>
+                 <activiti:value id="4" name="4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEndYear" name="Рік;кінець періоду;writable=true,sID_Field_SWinEd=R02G02" type="enum" required="true">
+                 <activiti:value id="2014" name="2014"></activiti:value>
+                 <activiti:value id="2015" name="2015"></activiti:value>
+                 <activiti:value id="2016" name="2016"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG" type="string" default="04"></activiti:formProperty>
         <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ" type="string" default="63"></activiti:formProperty>
         <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field_SWinEd=TIN" type="string"></activiti:formProperty>
@@ -198,7 +222,7 @@ src=(+src + +1)
 execution.setVariable('sCounter', src)</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="scripttask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 15}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 205}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Негативна відповідь" activiti:delegateExpression="#{MailTaskWithAttachments}">
@@ -264,7 +288,7 @@ execution.setVariable('sCounter', src)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter == 15}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter == 205}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent3" name="End">
       <extensionElements>
@@ -285,6 +309,9 @@ execution.setVariable('sCounter', src)</script>
           </activiti:field>
           <activiti:field name="snCountYear">
             <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sFile_XML_SWinEd_Filter">
+            <activiti:string><![CDATA[ ]]></activiti:string>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
