@@ -341,17 +341,17 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                             }
                         }
 
-                        String sType = formProperty.getType().getName();
-                        if ("date".equals(sType)) {
-                            if (formProperty.getValue() != null) {
-                                LOG.info(
-                                        "formProperty.getValue() getFormattedDateS : {}",
-                                        formProperty.getValue());
-                                replacement = getFormattedDateS(formProperty
-                                        .getValue());
+                        if (formProperty != null) {
+                            String sType = formProperty.getType().getName();
+                            if ("date".equals(sType)) {
+                                if (formProperty.getValue() != null) {
+                                    LOG.info(
+                                            "formProperty.getValue() getFormattedDateS : {}",
+                                            formProperty.getValue());
+                                    replacement = getFormattedDateS(formProperty
+                                            .getValue());
+                                }
                             }
-                        } else {
-                            //replacement = formProperty.getValue();
                         }
                     }
                 }
