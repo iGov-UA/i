@@ -61,17 +61,30 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         LOG.info("soData_Value after: " + soData_Value_Result);
         Map<String, Object> data = parseData(soData_Value_Result);
         LOG.info("data: " + data);
-
+        
+        Date oDateVacationBegin = (Date)execution.getVariable("sDateVacationBegin");
+        LOG.info("oDateVacationBegin: " + oDateVacationBegin.getClass() + " oDateVacationBegin: " + oDateVacationBegin);
+        Date oDateVacationEnd = (Date)execution.getVariable("sDateVacationEnd");
+        
+        
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat sdf_short = new SimpleDateFormat("dd.MM.yyyy");
         String sDate = sdf.format(new Date());
-        Date oDateVacationBegin = sdf.parse((String) data.get("sDateVacationBegin"));
-        Date oDateVacationEnd = sdf.parse((String) data.get("sDateVacationEnd"));
+        //Date oDateVacationBegin = sdf_short.parse((String) data.get("sDateVacationBegin"));
+        //Date oDateVacationEnd = sdf_short.parse((String) data.get("sDateVacationEnd"));
         String sCountDay = String.valueOf(getDateDiff(oDateVacationBegin, oDateVacationEnd));
         String sKeyVacationer = getLoginSubjectAccountByLoginIgovAccount(execution.getProcessInstanceId());
         data.put("sDate", sDate);
         data.put("sCountDay", sCountDay);
         data.put("sKeyVacationer", sKeyVacationer);
+        data.put("sDateVacationBegin", sdf.format(oDateVacationBegin));
+        data.put("sDateVacationEnd", sdf.format(oDateVacationEnd));
         LOG.info("Transfer_DocumentVacation data: " + data);
+        
+        String sDateVacationBegin_Email = sdf_short.format(oDateVacationBegin);
+        String sDateVacationEnd_Email = sdf_short.format(oDateVacationEnd);
+        execution.setVariable("sDateVacationBegin_Email", sDateVacationBegin_Email);
+        execution.setVariable("sDateVacationEnd_Email", sDateVacationEnd_Email);
 
         String filePath = FileSystemData.SUB_PATH_XML + "agroholding/";
         File oFile = FileSystemData.getFile(filePath, sID_Pattern_Value + ".xml");
