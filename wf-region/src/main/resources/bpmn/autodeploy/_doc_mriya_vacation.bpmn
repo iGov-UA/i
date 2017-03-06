@@ -64,8 +64,6 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Остання дата відпустки" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="string"></activiti:formProperty>
         <activiti:formProperty id="sChoiceSectionChief" name="Оберіть начальника підрозділу (цеху)" type="enum" required="true">
           <activiti:value id="Mriya_Top3" name="Казакова Жанна Викторовна (Цех 1)"></activiti:value>
           <activiti:value id="Mriya_Top4" name="Улаева Анастасия Геннадьевна (Цех 2)"></activiti:value>
@@ -175,15 +173,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
-Вам не затверджена відпустка з ${sDateVacationBegin} по ${sDateVacationEnd}. <br>
-Коментар: ${sNote}]]></activiti:expression>
+          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
+Вам не затверджена відпустка з ${sDateVacationBegin} по ${sDateVacationEnd}. &lt;br&gt;
+Коментар: ${sNote}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -209,30 +207,30 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
-Вам надано відпустку з ${sDateVacationBegin} по ${sDateVacationEnd}. <br>
-Гарного відпочинку!]]></activiti:expression>
+          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
+Вам надано відпустку з ${sDateVacationBegin} по ${sDateVacationEnd}. &lt;br&gt;
+Гарного відпочинку!</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow13" sourceRef="servicetask3" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask2" name="Transform Date" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var inputBegin = execution.getVariable('sDateVacationBegin')
-var inputEnd = execution.getVariable('sDateVacationEnd')
+      <script>var inputBegin = execution.getVariable('sDateVacationBegin');
+var inputEnd = execution.getVariable('sDateVacationEnd');
 
 
 // Begin
 var dateBegin = new Date(inputBegin);
 
 var dayB = dateBegin.getDate();
-var monthB = dateBegin.getMonth() + 1;
+var monthB = dateBegin.getMonth();
 var yearB = dateBegin.getFullYear();
 var outputBegin1C = yearB + "-"+ (monthB&lt;10?'0':'') + monthB + "-" + (dayB&lt;10?'0':'') + dayB + 'T00:00:00';
 var outputBegin = (dayB&lt;10?'0':'') + dayB + '.' + (monthB&lt;10?'0':'') + monthB + '.' + yearB;
@@ -248,10 +246,10 @@ var outputEnd1C = yearE + "-"+ (monthE&lt;10?'0':'') + monthE + "-" + (dayE&lt;1
 var outputEnd = (dayE&lt;10?'0':'') + dayE + '.' + (monthE&lt;10?'0':'') + monthE + '.' + yearE;
 
 
-execution.setVariable('sDateVacationBegin', outputBegin)
-execution.setVariable('sDateVacationEnd', outputEnd)
-execution.setVariable('sDateVacationBegin1C', outputBegin1C)
-execution.setVariable('sDateVacationEnd1C', outputEnd1C)
+execution.setVariable('sDateVacationBeginEmail', outputBegin);
+execution.setVariable('sDateVacationEndEmail', outputEnd);
+execution.setVariable('sDateVacationBegin1C', outputBegin1C);
+execution.setVariable('sDateVacationEnd1C', outputEnd1C);
 </script>
     </scriptTask>
     <serviceTask id="servicetask5" name="Service Task" activiti:delegateExpression="#{Transfer_DocumentVacation}">
@@ -260,11 +258,13 @@ execution.setVariable('sDateVacationEnd1C', outputEnd1C)
           <activiti:string><![CDATA[documentVacation]]></activiti:string>
         </activiti:field>
         <activiti:field name="soData">
-          <activiti:string><![CDATA[sDateVacationBegin::value{[sDateVacationBegin]};;sDateVacationEnd::value{[sDateVacationEnd]};;sTypeVacation::value{[sTypeVacation]};;sNote::value{[sNote]};;sKeyResponsible::value{[sKeyResponsible]};;sKeyOrgan::value{[sKeyOrgan]};;sKeySubjectType::value{[sKeySubjectType]}]]></activiti:string>
+          <activiti:string><![CDATA[sDateVacationBegin::value{[sDateVacationBegin]};;sDateVacationEnd::value{[sDateVacationEnd]};;;sDateVacationBegin1C::value{[sDateVacationBegin1C]};;sDateVacationEnd1C::value{[sDateVacationEnd1C]}]]></activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow16" sourceRef="scripttask2" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="scripttask2" targetRef="servicetask5"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow17" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_mriya_vacation">
     <bpmndi:BPMNPlane bpmnElement="_doc_mriya_vacation" id="BPMNPlane__doc_mriya_vacation">
@@ -314,7 +314,10 @@ execution.setVariable('sDateVacationEnd1C', outputEnd1C)
         <omgdc:Bounds height="55.0" width="105.0" x="560.0" y="146.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="560.0" y="40.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="567.0" y="249.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="607.0" y="350.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="115.0" y="173.0"></omgdi:waypoint>
@@ -377,8 +380,12 @@ execution.setVariable('sDateVacationEnd1C', outputEnd1C)
         <omgdi:waypoint x="1420.0" y="180.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="665.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="690.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="612.0" y="201.0"></omgdi:waypoint>
+        <omgdi:waypoint x="619.0" y="249.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="619.0" y="304.0"></omgdi:waypoint>
+        <omgdi:waypoint x="624.0" y="350.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
