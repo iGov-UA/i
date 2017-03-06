@@ -50,8 +50,6 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key" type="invisible" default="c82f6314-6faa-11d9-ac6c-0080482454f7"></activiti:formProperty>
         <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="invisible" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
         <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="invisible" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum" required="true">
           <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
@@ -171,15 +169,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
-Вам не затверджена відпустка з ${sDateVacationBegin} по ${sDateVacationEnd}. <br>
-Коментар: ${sNote}]]></activiti:expression>
+          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
+Вам не затверджена відпустка з ${sDateVacationBegin} по ${sDateVacationEnd}. &lt;br&gt;
+Коментар: ${sNote}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -205,15 +203,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
-Вам надано відпустку з ${sDateVacationBegin} по ${sDateVacationEnd}. <br>
-Гарного відпочинку!]]></activiti:expression>
+          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
+Вам надано відпустку з ${sDateVacationBegin} по ${sDateVacationEnd}. &lt;br&gt;
+Гарного відпочинку!</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
