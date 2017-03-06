@@ -80,7 +80,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -94,39 +94,21 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>Вітаємо, Ви отримали  віповідь на запит про суми виплачених доходів та утриманих податків від ДФС.<br >
-Для того, щоб подивитися результати Вам необхідно розшифрувати відповідь за допомогою свого сертифіката ЕЦП. Це можна зробити  двома шляхами. </p>
-<br >
-<b> <i> Перший спосіб: </b> </i>
+<p>Вітаємо, Ви отримали  віповідь на запит про суми виплачених доходів та утриманих податків від ДФС.  Щоб переглянути відповідь, Вам потрібно: </p>
+
 <br >
 <ul>
-<li> перейти за    <a href="https://igov.org.ua/journal">посиланням у розділ Мій Журнал</a>; </li>
+<li> <b> Крок 1.</b> Перейти на сторінку Вашого звернення   <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>. </li>
 <br >
-<li>авторизуватися за допомогою свого ЕЦП, що ви використали під час подання запиту; </li>
+<li><b> Крок 2.</b>Увійти в систему за допомогою свого електронно-цифрового підпису (ЕЦП).</li>
 <br >
-<li>знайти зверення за яким була отримана вдповідь, зайти в нього; </li>
+<li><b> Крок 3.</b>Натиснути на "Переглянути відповідь", обрати свій ЕЦП та ввести пароль до нього.
+ </li>
 <br >
-<li>натиснути на кнопку "Завантажити" біля файлу Відповідь ДФС, обрати  свій ЕЦП та ввести пароль до нього ; </li>
-<br >
-<li>натиснути кнопку "Показати". </li>
 </ul>
 
-<b> <i> Другий спосіб: </b> </i>
-<br >
-<ul>
-<li>зберегти файл , який знаходиться у додатках до цього листа, на Ваш комп'ютер;</li>
-<br >
-<li> перейти за    <a href="https://igov.org.ua/journal/answer/DFS">посиланням</a> ;</li>
-<br >
-<li>авторизуватися за допомогою свого ЕЦП, що ви використали під час подання запиту; </li>
-<br >
-<li>натиснути на кнопку "Розшифрувати файл з ДФС", обрати файл, який Ви зберегли ; </li>
-<br >
-<li>обрати  сертифікат ЕЦП, який Ви використовували під час Запиту та ввести пароль до нього ; </li>
-<br >
-<li>натиснути кнопку "Показати". </li>
-</ul>
-Дякуємо, що скористалися нашим сервісом!
+
+Дякуємо, що скористалися сервісом iGov.
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -135,6 +117,12 @@
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${anID_Attach_Dfs}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vy otrymaly vidpovid' na Vash zapyt u reyestr dokhodiv na Vash Email. Nomer zayavky  [sID_Order]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -185,7 +173,7 @@
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow18" sourceRef="escalationTimer1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="${MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -210,7 +198,7 @@
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-         <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -232,7 +220,7 @@ execution.setVariable('sCounter', src)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 205}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Негативна відповідь" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask4" name="Негативна відповідь" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -246,43 +234,23 @@ execution.setVariable('sCounter', src)</script>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
+<p>
+Раніше Ви подавали запит у Державний реєстр фізичних осіб – платників податків про суми виплачених доходів та утриманих податків. На жаль, Державна фіскальна служба відмовилась надати Вам відповідь. <br>
+ Щоб переглянути підстави для відмови, Вам потрібно:</p>
 
-<p>На жаль, Ви не отримали  віповідь на запит про суми виплачених доходів та утриманих податків від ДФС.<br >
-Для того, щоб подивитися причину, Вам необхідно розшифрувати відповідь за допомогою свого сертифіката ЕЦП. Це можна зробити  двома шляхами. </p>
-<br >
-<b> <i> Перший спосіб: </b> </i>
 <br >
 <ul>
-<li> перейти за    <a href="https://igov.org.ua/journal">посиланням у розділ Мій Журнал</a>; </li>
+<li> <b> Крок 1.</b> Перейти на сторінку Вашого звернення   <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>. </li>
 <br >
-<li>авторизуватися за допомогою свого ЕЦП, що ви використали під час подання запиту; </li>
+<li><b> Крок 2.</b>Увійти в систему за допомогою свого електронно-цифрового підпису (ЕЦП).</li>
 <br >
-<li>знайти зверення за яким була отримана вдповідь, зайти в нього; </li>
+<li><b> Крок 3.</b>Натиснути на "Переглянути відповідь", обрати свій ЕЦП та ввести пароль до нього.
+ </li>
 <br >
-<li>натиснути на кнопку "Завантажити" біля файлу Відповідь ДФС, обрати  свій ЕЦП та ввести пароль до нього ; </li>
-<br >
-<li>натиснути кнопку "Показати"; </li>
-<li>У полі "Результат" буде описана причина відмови. </li>
 </ul>
 
-<b> <i> Другий спосіб: </b> </i>
-<br >
-<ul>
-<li>зберегти файл , який знаходиться у додатках до цього листа, на Ваш комп'ютер;</li>
-<br >
-<li> перейти за    <a href="https://igov.org.ua/journal/answer/DFS">посиланням</a> ;</li>
-<br >
-<li>авторизуватися за допомогою свого ЕЦП, що ви використали під час подання запиту; </li>
-<br >
-<li>натиснути на кнопку "Розшифрувати файл з ДФС", обрати файл, який Ви зберегли ; </li>
-<br >
-<li>обрати  сертифікат ЕЦП, який Ви використовували під час Запиту та ввести пароль до нього ; </li>
-<br >
-<li>натиснути кнопку "Показати". </li>
-<li>У полі "Результат" буде описана причина відмови. </li>
-</ul>
-<br >
- Якщо Ви бажаєте зробити ще один Запит, перейдіть, будь ласка, за <a href="https://igov.org.ua/service/1561/general">посиланням</a>
+
+Дякуємо, що скористалися сервісом iGov.
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -291,6 +259,12 @@ execution.setVariable('sCounter', src)</script>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${anID_Attach_Dfs}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vy otrymaly vidpovid' na Vash zapyt u reyestr dokhodiv na Vash Email. Nomer zayavky [sID_Order]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
