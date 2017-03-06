@@ -61,7 +61,12 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         LOG.info("soData_Value after: " + soData_Value_Result);
         Map<String, Object> data = parseData(soData_Value_Result);
         LOG.info("data: " + data);
-
+        
+        Object sDateVacationBegin = execution.getVariable("sDateVacationBegin");
+        LOG.info("sDateVacationBegin: " + sDateVacationBegin.getClass() + " sDateVacationBegin: " + sDateVacationBegin);
+        
+        
+        
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat sdf_short = new SimpleDateFormat("yyyy-MM-dd");
         String sDate = sdf.format(new Date());
