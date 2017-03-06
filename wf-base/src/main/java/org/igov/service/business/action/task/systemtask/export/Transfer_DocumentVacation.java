@@ -105,23 +105,32 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
     }
 
     private String getLoginSubjectAccountByLoginIgovAccount(String sLoginIgovAccount) {
-        String result = "a807e909-abfb-11dc-aa58-00112f3000a2";
+        String result = "a807e915-abfb-11dc-aa58-00112f3000a2";
         try {
             List<HistoricTaskInstance> aHistoricTask = oHistoryService.createHistoricTaskInstanceQuery()
                     .processInstanceId(sLoginIgovAccount).orderByHistoricTaskInstanceStartTime().asc().list();
+            LOG.info("aHistoricTask: " + aHistoricTask);
             if (aHistoricTask.size() > 0) {
+                LOG.info("aHistoricTask.size: " + aHistoricTask.size());
                 HistoricTaskInstance historicTaskInstance = aHistoricTask.get(0);
+                LOG.info("historicTaskInstance.getName(): " + historicTaskInstance.getName());
                 String assigneeUser = historicTaskInstance.getAssignee();
+                LOG.info("assigneeUser: " + assigneeUser);
                 if (assigneeUser != null) {
                     Optional<SubjectAccount> subjectAccount = subjectAccountDao.findBy("sLogin", assigneeUser);
                     if (subjectAccount.isPresent()) {
+                        LOG.info("subjectAccount: " + subjectAccount);
                         Long nID_Subject = subjectAccount.get().getnID_Subject();
+                        LOG.info("nID_Subject: " + nID_Subject);
                         if (nID_Subject != null) {
                             List<SubjectAccount> aSubjectAccount = subjectAccountDao.findAllBy("nID_Subject", nID_Subject);
                             if (aSubjectAccount.size() > 0) {
+                                LOG.info("aSubjectAccount: " + aSubjectAccount);
                                 for (SubjectAccount oSubjectAccount : aSubjectAccount) {
+                                    LOG.info("oSubjectAccount.getSubjectAccountType().getId(): " + oSubjectAccount.getSubjectAccountType().getId());
                                     if (oSubjectAccount.getSubjectAccountType().getId() == 3) {
                                         result = oSubjectAccount.getsLogin();
+                                        LOG.info("result: " + result);
                                     } else {
                                         LOG.error("Can't find 1C account");
                                     }
