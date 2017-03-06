@@ -75,6 +75,11 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         data.put("sDateVacationBegin", sdf.format(oDateVacationBegin));
         data.put("sDateVacationEnd", sdf.format(oDateVacationEnd));
         LOG.info("Transfer_DocumentVacation data: " + data);
+        
+        String sDateVacationBegin_Email = (String) data.get("sDateVacationBegin");
+        String sDateVacationEnd_Email = (String) data.get("sDateVacationEnd");
+        execution.setVariable("sDateVacationBegin_Email", sDateVacationBegin_Email);
+        execution.setVariable("sDateVacationEnd_Email", sDateVacationEnd_Email);
 
         String filePath = FileSystemData.SUB_PATH_XML + "agroholding/";
         File oFile = FileSystemData.getFile(filePath, sID_Pattern_Value + ".xml");

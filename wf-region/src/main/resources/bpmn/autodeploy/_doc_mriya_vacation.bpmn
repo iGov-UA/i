@@ -11,8 +11,8 @@
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd" name="Дата кінця відпустки" type="date"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}">
@@ -94,8 +94,6 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Остання дата відпустки" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum" writable="false">
           <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
           <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Додаткова відпустка на дітей"></activiti:value>
@@ -138,8 +136,6 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Остання дата відпустки" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum" writable="false">
           <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
           <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Додаткова відпустка на дітей"></activiti:value>
@@ -179,7 +175,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
-Вам не затверджена відпустка з ${sDateVacationBegin} по ${sDateVacationEnd}. &lt;br&gt;
+Вам не затверджена відпустка. &lt;br&gt;
 Коментар: ${sNote}</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -213,7 +209,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
-Вам надано відпустку з ${sDateVacationBeginl} по ${sDateVacationEnd}. &lt;br&gt;
+Вам надано відпустку з ${sDateVacationBegin_Emaill} по ${sDateVacationEnd_Email}. &lt;br&gt;
 Гарного відпочинку!</activiti:expression>
         </activiti:field>
       </extensionElements>
