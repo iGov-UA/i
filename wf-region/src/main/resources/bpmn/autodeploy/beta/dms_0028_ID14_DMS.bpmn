@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="kiev_dms-205ID" name="Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки" isExecutable="true">
+  <process id="dms_0028_ID14_DMS" name="Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -41,9 +41,9 @@
     <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('visitDay')
-var date_of_visit=src.substr(27,16)
-var tickNum=src.substr(99,3)
-var tickCode=src.substr(119,9)
+var date_of_visit=src.substr(src.indexOf('"sDate":"')+9,16);
+var tickNum=src.substr(src.indexOf('"ticket_number":"')+17,3);
+var tickCode=src.substr(src.indexOf('"ticket_code":"')+15,src.indexOf('"',src.indexOf('"ticket_code":"')+15)-(src.indexOf('"ticket_code":"')+15));
 execution.setVariable('sNotification_day', date_of_visit)
 execution.setVariable('sTicketNumber', tickNum)
 execution.setVariable('sTicketCode', tickCode)
@@ -187,8 +187,8 @@ execution.setVariable('sNotification_day', timer)
     </boundaryEvent>
     <sequenceFlow id="flow30" sourceRef="scripttask2" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_dms-205ID">
-    <bpmndi:BPMNPlane bpmnElement="kiev_dms-205ID" id="BPMNPlane_kiev_dms-205ID">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dms_0028_ID14_DMS">
+    <bpmndi:BPMNPlane bpmnElement="dms_0028_ID14_DMS" id="BPMNPlane_dms_0028_ID14_DMS">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="16.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

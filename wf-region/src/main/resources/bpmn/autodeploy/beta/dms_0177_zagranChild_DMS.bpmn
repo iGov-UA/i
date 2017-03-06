@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="kiev_dms-288" name="Паспорт громадянина для виїзду за кордон для дитини" isExecutable="true">
+  <process id="dms_0177_zagranChild_DMS" name="Паспорт громадянина для виїзду за кордон для дитини" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -21,7 +21,6 @@
         <activiti:formProperty id="sAddress" name="Адреса ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocChild" name="Документи у регіоні" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTicketCode" name="Код талону" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTicketNumber" name="Номер талону" type="invisible"></activiti:formProperty>
@@ -39,9 +38,9 @@
     <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('visitDay')
-var date_of_visit=src.substr(27,16)
-var tickNum=src.substr(99,3)
-var tickCode=src.substr(119,9)
+var date_of_visit=src.substr(src.indexOf('"sDate":"')+9,16);
+var tickNum=src.substr(src.indexOf('"ticket_number":"')+17,3);
+var tickCode=src.substr(src.indexOf('"ticket_code":"')+15,src.indexOf('"',src.indexOf('"ticket_code":"')+15)-(src.indexOf('"ticket_code":"')+15));
 execution.setVariable('sNotification_day', date_of_visit)
 execution.setVariable('sTicketNumber', tickNum)
 execution.setVariable('sTicketCode', tickCode)
@@ -144,7 +143,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 <li>Паспорт для виїзду за кордон, оформлений особі у віці від 12 до 16 років, може бути виданий особі, уповноваженій на це законним представником на підставі довіреності, засвідченої в установленому порядку, за умови присутності особи, на ім’я якої оформлено паспорт для виїзду за кордон.</li>
 </ul>
 </p>
-<p>Якщо Вам потрібно скасувати заявку,  зверніться,  будь ласка, за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
+<p>Якщо Вам потрібно скасувати заявку, зверніться, будь ласка, за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
 								При цьому потрібно буде вказати код талону = ${sTicketCode}.                    
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -157,7 +156,6 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Заявка прийнята ДМС" activiti:candidateGroups="id_card_kiev">
       <extensionElements>
-        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -231,8 +229,8 @@ execution.setVariable('sEndDay', timerEnd)</script>
     </endEvent>
     <sequenceFlow id="flow43" sourceRef="scripttask2" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_dms-288">
-    <bpmndi:BPMNPlane bpmnElement="kiev_dms-288" id="BPMNPlane_kiev_dms-288">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dms_0177_zagranChild_DMS">
+    <bpmndi:BPMNPlane bpmnElement="dms_0177_zagranChild_DMS" id="BPMNPlane_dms_0177_zagranChild_DMS">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="16.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

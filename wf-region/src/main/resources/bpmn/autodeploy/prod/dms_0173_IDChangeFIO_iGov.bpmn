@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-227ID" name="Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові" isExecutable="true">
+  <process id="dms_0173_IDChangeFIO_iGov" name="Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -338,9 +338,9 @@ ${sNameOrgan},<br>
     </sequenceFlow>
     <scriptTask id="scripttask3" name="Отримання дати" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('visitDay1')
-var date_of_visit=src.substr(27,16)
-var tickNum=src.substr(99,3)
-var tickCode=src.substr(119,9)
+var date_of_visit=src.substr(src.indexOf('"sDate":"')+9,16);
+var tickNum=src.substr(src.indexOf('"ticket_number":"')+17,3);
+var tickCode=src.substr(src.indexOf('"ticket_code":"')+15,src.indexOf('"',src.indexOf('"ticket_code":"')+15)-(src.indexOf('"ticket_code":"')+15));
 execution.setVariable('sNotification_day', date_of_visit)
 execution.setVariable('sTicketNumber', tickNum)
 execution.setVariable('sTicketCode', tickCode)
@@ -444,7 +444,6 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow46" sourceRef="scripttask3" targetRef="servicetask7"></sequenceFlow>
     <userTask id="usertask1" name="Заявка принята ДМС" activiti:candidateGroups="id_card_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay1" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport" name="Ваш старий документ; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
@@ -471,8 +470,8 @@ ${sNameOrgan},<br>
     </boundaryEvent>
     <sequenceFlow id="flow48" sourceRef="escalationTimer1" targetRef="endevent4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-227ID">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-227ID" id="BPMNPlane_dnepr_dms-227ID">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dms_0173_IDChangeFIO_iGov">
+    <bpmndi:BPMNPlane bpmnElement="dms_0173_IDChangeFIO_iGov" id="BPMNPlane_dms_0173_IDChangeFIO_iGov">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

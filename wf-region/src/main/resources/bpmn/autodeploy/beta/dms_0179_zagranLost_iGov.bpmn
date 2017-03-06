@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-835" name="Отримання паспорта громадянина України для виїзду за кордон замість втраченого чи викраденого" isExecutable="true">
+  <process id="dms_0179_zagranLost_iGov" name="Отримання паспорта громадянина України для виїзду за кордон замість втраченого чи викраденого" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -201,6 +201,7 @@ ${sNameOrgan},<br>
 								<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
 								<p>Якщо Вам потрібно скасувати заявку,  зверніться,  будь ласка, за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
 								При цьому потрібно буде вказати код талону = ${sTicketCode}.
+								</p>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
@@ -219,7 +220,7 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asKind_passport" name="Паспорт будете отримувати замість" type="enum" required="true">
+        <activiti:formProperty id="asKind_passport" name="Паспорт будете отримувати замість" type="enum" writable="false">
           <activiti:value id="sLost" name="втраченого"></activiti:value>
           <activiti:value id="sStolen" name="викраденого"></activiti:value>
         </activiti:formProperty>
@@ -326,9 +327,9 @@ ${sNameOrgan},<br>
     </sequenceFlow>
     <scriptTask id="scripttask4" name="Отримання дати" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('visitDay1')
-var date_of_visit=src.substr(27,16)
-var tickNum=src.substr(99,3)
-var tickCode=src.substr(119,9)
+var date_of_visit=src.substr(src.indexOf('"sDate":"')+9,16);
+var tickNum=src.substr(src.indexOf('"ticket_number":"')+17,3);
+var tickCode=src.substr(src.indexOf('"ticket_code":"')+15,src.indexOf('"',src.indexOf('"ticket_code":"')+15)-(src.indexOf('"ticket_code":"')+15));
 execution.setVariable('sNotification_day', date_of_visit)
 execution.setVariable('sTicketNumber', tickNum)
 execution.setVariable('sTicketCode', tickCode)
@@ -433,18 +434,17 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow51" sourceRef="scripttask4" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask2" name="Заявка прийнята ДМС" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Прізвище дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Ім'я дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="По батькові дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Date_of_birth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visitDay1" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asKind_passport" name="Паспорт будете отримувати замість" type="enum" writable="false">
+          <activiti:value id="sLost" name="втраченого"></activiti:value>
+          <activiti:value id="sStolen" name="викраденого"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат візиту" type="enum" required="true">
           <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
@@ -461,8 +461,8 @@ ${sNameOrgan},<br>
     </boundaryEvent>
     <sequenceFlow id="flow54" sourceRef="escalationTimer1" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-835">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-835" id="BPMNPlane_dnepr_dms-835">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dms_0179_zagranLost_iGov">
+    <bpmndi:BPMNPlane bpmnElement="dms_0179_zagranLost_iGov" id="BPMNPlane_dms_0179_zagranLost_iGov">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="98.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
