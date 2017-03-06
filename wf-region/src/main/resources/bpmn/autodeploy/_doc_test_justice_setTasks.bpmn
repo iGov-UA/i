@@ -7,10 +7,9 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="sID_Order_GovPublic" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string"></activiti:formProperty>
-       
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="крок 1 - призначення виконавців" activiti:candidateGroups="justice_common">
+    <userTask id="usertask1" name="крок 1 - призначення виконавців">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
@@ -54,6 +53,7 @@
             <activiti:expression><![CDATA[sDoc1::${sDoc1};;sContent::${sContent};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+            
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -63,7 +63,7 @@ var processInstanceId= execution.getProcessInstanceId()
 execution.setVariable('processInstanceId', processInstanceId)
 </script>
     </scriptTask>
-    <userTask id="usertask2" name="крок 2 - закриття процесу" activiti:candidateGroups="justice_common">
+    <userTask id="usertask2" name="крок 2 - закриття процесу">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string" writable="false"></activiti:formProperty>
@@ -97,10 +97,18 @@ execution.setVariable('processInstanceId', processInstanceId)
             <activiti:string><![CDATA[unactual]]></activiti:string>
           </activiti:field>
         </activiti:taskListener>
+       <activiti:taskListener event="create" delegateExpression="${CloneDocumentRights}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[justice_common]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:string><![CDATA[MJU_Dnipro_Top1_Dep1_Exec1]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-       <serviceTask id="servicetask1" name="письмецо" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-    <extensionElements>
+    <serviceTask id="servicetask1" name="письмецо" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
@@ -129,9 +137,14 @@ execution.setVariable('processInstanceId', processInstanceId)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asCreateOutcomingLetter == 'sEnumCreateOutcomingLetter'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
- 
     <sequenceFlow id="flow30" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId();
+var sKey_GroupPostfix = 'justice_common'
+var sKey_GroupPostfix_New = execution.getVariable('MJU_Dnipro_Top1_Dep1_Exec1')
+var obj = documentStepService.сloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New)</script>
+    </scriptTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_justice_setTasks">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_justice_setTasks" id="BPMNPlane__doc_test_justice_setTasks">
@@ -142,23 +155,26 @@ execution.setVariable('processInstanceId', processInstanceId)
         <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="67.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="606.0" y="77.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="740.0" y="77.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="92.0" y="67.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="466.0" y="67.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="370.0" y="74.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="600.0" y="67.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="105.0" x="74.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="370.0" y="74.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="430.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="571.0" y="94.0"></omgdi:waypoint>
-        <omgdi:waypoint x="606.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="705.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="740.0" y="94.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="325.0" y="94.0"></omgdi:waypoint>
@@ -166,7 +182,7 @@ execution.setVariable('processInstanceId', processInstanceId)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="410.0" y="94.0"></omgdi:waypoint>
-        <omgdi:waypoint x="466.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="94.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
         <omgdi:waypoint x="390.0" y="74.0"></omgdi:waypoint>

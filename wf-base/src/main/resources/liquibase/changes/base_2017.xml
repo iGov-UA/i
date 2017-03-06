@@ -24,14 +24,14 @@
             </column>
         </addColumn>
     </changeSet>
-    <!-- -->
+    <!-- 
     <changeSet id="issue-1385-subjectAddColums_3" author="olga">
         <sql splitStatements="true" dbms="postgresql">
             update "Subject" s set "nID_SubjectOrgan" = (select so."nID" from "SubjectOrgan" so where so."nID_Subject" = s."nID") ;
             update "Subject" s set "nID_SubjectHuman" = (select sh."nID" from "SubjectHuman" sh where sh."nID_Subject" = s."nID") ;
         </sql>
     </changeSet>
-     
+     -->
     
     <changeSet id="issue-1488-rename-Flow_ServiceData" author="Kovylin Yegor">
         
@@ -215,6 +215,22 @@
         <addForeignKeyConstraint constraintName="FK_Document_HistoryEvent" baseTableName="HistoryEvent" baseColumnNames="nID_Document"
                                  referencedTableName="Document" referencedColumnNames="nID"
                                  deleteCascade="false" />
+    </changeSet>
+    
+    <changeSet id="modify-type-of-sData-for-SubjectMessage" author="Kovylin Yegor">
+        <modifyDataType tableName="SubjectMessage" columnName="sData" newDataType="varchar(6000)" />
+    </changeSet>
+    
+    <changeSet id="modify-type-of-soData-for-HistoryEvent_Service" author="Kovylin Yegor" failOnError="false">
+        <modifyDataType tableName="HistoryEvent_Service" columnName="soData" newDataType="varchar(6000)" />
+    </changeSet>
+    
+    <changeSet id="modify-type-of-soData-for-HistoryEvent_Service_new" author="Kovylin Yegor" failOnError="false">
+        <modifyDataType tableName="HistoryEvent_Service" columnName="soData" newDataType="clob" />
+    </changeSet>
+    
+    <changeSet id="modify-type-of-soData-for-SubjectMessage_new_" author="olga">
+        <modifyDataType tableName="SubjectMessage" columnName="sData" newDataType="clob" />
     </changeSet>
     
 </databaseChangeLog>

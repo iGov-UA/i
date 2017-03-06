@@ -235,17 +235,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       }
 
-      // todo file in table
-      // function fixFileInTable (prop) {
-      //   angular.forEach(prop.aRow, function (fields) {
-      //     angular.forEach(fields.aField, function (item, key, obj) {
-      //       if(item.type === 'file' && item.props) {
-      //         obj[key].value = item.props.value.id;
-      //       }
-      //     })
-      //   })
-      // }
-
       iGovMarkers.validateMarkers(formFieldIDs);
       //save values for each property
       $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
@@ -296,7 +285,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
         angular.forEach($scope.activitiForm.formProperties, function (prop) {
           if (prop.type === 'table') {
-            // fixFileInTable(prop);
             $scope.data.formData.params[prop.id].value = prop;
           }
         });
@@ -352,6 +340,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
                   $scope.activitiForm,
                   $scope.data.formData
               ).then(function (result) {
+                if(result.formID && result.formID.indexOf('sKey') > -1) {
+                  try {
+                    result.formID = JSON.parse(result.formID).sKey;
+                  } catch(e) {}
+                }
                 $window.location.href =
                     $location.protocol() + '://' +
                     $location.host() + ':' +
@@ -1051,5 +1044,39 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       $rootScope.queue = {
         previousOrganJoin: {}
+      };
+
+      $scope.getOrgData = function (code, id) {
+        var fieldPostfix = id.replace('sID_SubjectOrgan_OKPO_', '');
+        var keys = {activities:'sActivitiesKVED',ceo_name:'sCEOName',database_date:'sDateActual',full_name:'sFullName',location:'sLocation',short_name:'sShortName'};
+        if(code) {
+          $scope.orgIsLoading = {status:true,field:id};
+          ServiceService.getOrganizationData(code).then(function (res) {
+            $scope.orgIsLoading = {status:false,field:id};
+            if (!res.data.error) {
+              angular.forEach(res.data, function (i, key, obj) {
+                if (key in keys) {
+                  for (var prop in $scope.data.formData.params) {
+                    if ($scope.data.formData.params.hasOwnProperty(prop) && prop.indexOf(keys[key]) === 0) {
+                      var checkPostfix = prop.split(/_/),
+                        elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
+                      if (elementPostfix !== null && elementPostfix === fieldPostfix)
+                        $scope.data.formData.params[prop].value = i;
+                    }
+                  }
+                }
+              })
+            }
+          });
+        }
+      };
+
+      $scope.isOKPOField = function (i) {
+        if(i){
+          var splitID = i.split(/_/);
+          if (splitID.length === 4 && splitID[1] === 'SubjectOrgan' && splitID[2] === 'OKPO') {
+            return true
+          }
+        }
       }
 });

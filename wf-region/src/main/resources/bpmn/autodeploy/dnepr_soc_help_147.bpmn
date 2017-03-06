@@ -31,8 +31,9 @@
         <activiti:formProperty id="mfo" name="МФО банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileSocAccount" name="Довідка про відкриття соц.рахунку у банку" type="file"></activiti:formProperty>
 
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileScanPassport" name="Сканований паспорт громадянина;Сторінки 1, 2, та сторінка з останньою пропискою. Скан копії можуть бути завантажені у вигляді одного ZIP-архіву чи pdf-файлу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileRishennja" name="Рішення районної, держадміністрації, виконавчого органу міської, районної у місті ради про влаштування дитини до дитячого будинку сімейного типу або прийомної сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileStatusChild" name="Документи, що підтверджують статус дитини;(Рішення про надання статусу дитини-сироти або дитини, позбавленої батьківського піклування. У рішенні зазначаються прізвище, ім'я, по батькові дитини, дата народження, обставини, за яких вона залишилась без батьківського піклування, документи, які підтверджують ці обставини, та форма влаштування дитини. Приймається місцевою чи районною радою)" type="file" required="true"></activiti:formProperty>
@@ -43,7 +44,7 @@
         <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailCler1k" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
 
@@ -53,7 +54,6 @@
         <activiti:formProperty id="markersAdressTransfer" name="Маркер адреса и выбора типа передачи помощи" type="markers" default="${markerService.loadFromFile('soczah/soc_help_adress_transfer.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <userTask id="usertask1" name="Обробка Управлінням (1 етап)" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Відділення" type="string" writable="false"></activiti:formProperty>
@@ -78,8 +78,6 @@
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р); ;writable=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="string" default="9" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="asNumberApplication" name="Це перше звернення?" type="enum" default="sFirst" required="true">
           <activiti:value id="sFirst" name="первинне"></activiti:value>
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
@@ -93,35 +91,13 @@
         <activiti:formProperty id="sComment1" name="Будь ласка, укажіть причину Вашого рішення" type="textArea"></activiti:formProperty>
         
         <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="cc_7" name="Категорія компенсацій (галочка на формі)" type="invisible"></activiti:formProperty>
 
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_147_user.json')}"></activiti:formProperty>
-        <activiti:formProperty id="cc_7" name="Категорія компенсацій (галочка на формі)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="7"></activiti:formProperty>
         
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileRishennja},${nFileStatusChild},${nFileAliment},${nFileStudy},${nFileMedicine},${bankId_scan_passport},${bankId_scan_inn}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener> 
-
       </extensionElements>
     </userTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
-    <sequenceFlow id="flow4" sourceRef="servicetask5" targetRef="servicetask7"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow6" name="asDecision1=='reject1'" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='reject1'}]]></conditionExpression>
-    </sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow7" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask2_green" name="Обробка Управлінням (2 етап)" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Відділення" type="string" writable="false"></activiti:formProperty>
@@ -157,9 +133,32 @@
           <activiti:value id="reject2" name="Рішення отримане, в допомозі відмовлено"></activiti:value>
         </activiti:formProperty>
         
+        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="cc_7" name="Категорія компенсацій (галочка на формі)" type="invisible"></activiti:formProperty>
+        
         <activiti:formProperty id="nFileDecision" name="Сканована копія рішення" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
+    
+    
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="servicetask5" targetRef="servicetask7"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow6" name="asDecision1=='reject1'" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='reject1'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow7" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
+
     <sequenceFlow id="flow8" name="asDecision1=='accept1'" sourceRef="exclusivegateway1" targetRef="usertask2_green">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='accept1'}]]></conditionExpression>
     </sequenceFlow>
@@ -171,7 +170,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailCler1k}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам.]]></activiti:string>
