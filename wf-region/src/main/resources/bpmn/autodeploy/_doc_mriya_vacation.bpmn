@@ -11,6 +11,8 @@
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}">
@@ -62,6 +64,8 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Остання дата відпустки" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="string"></activiti:formProperty>
         <activiti:formProperty id="sChoiceSectionChief" name="Оберіть начальника підрозділу (цеху)" type="enum" required="true">
           <activiti:value id="Mriya_Top3" name="Казакова Жанна Викторовна (Цех 1)"></activiti:value>
           <activiti:value id="Mriya_Top4" name="Улаева Анастасия Геннадьевна (Цех 2)"></activiti:value>
@@ -92,6 +96,8 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Остання дата відпустки" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum" writable="false">
           <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
           <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Додаткова відпустка на дітей"></activiti:value>
@@ -135,6 +141,8 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Остання дата відпустки" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки в 1С" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd1C" name="Дата кінця відпустки в 1С" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum" writable="false">
           <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
           <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Додаткова відпустка на дітей"></activiti:value>
@@ -167,15 +175,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
-Вам не затверджена відпустка з ${sDateVacationBegin} по ${sDateVacationEnd}. &lt;br&gt;
-Коментар: ${sNote}</activiti:expression>
+          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
+Вам не затверджена відпустка з ${sDateVacationBegin} по ${sDateVacationEnd}. <br>
+Коментар: ${sNote}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -201,15 +209,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
-Вам надано відпустку з ${sDateVacationBegin} по ${sDateVacationEnd}. &lt;br&gt;
-Гарного відпочинку!</activiti:expression>
+          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
+Вам надано відпустку з ${sDateVacationBegin} по ${sDateVacationEnd}. <br>
+Гарного відпочинку!]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -219,24 +227,32 @@ execution.setVariable('processInstanceId', processInstanceId)
       <script>var inputBegin = execution.getVariable('sDateVacationBegin')
 var inputEnd = execution.getVariable('sDateVacationEnd')
 
-//var dayB = inputBegin.substr(8,2)
-//var monthB = inputBegin.substr(5,2)
-//var yearB = inputBegin.substr(0,4)
 
-//var dayE = inputEnd.substr(8,2)
-//var monthE = inputEnd.substr(5,2)
-//var yearE = inputEnd.substr(0,4)
+// Begin
+var dateBegin = new Date(inputBegin);
 
-//var outputBegin = dayB + '.' + monthB + '.' + yearB
-//var outputEnd = dayE + '.' + monthE + '.' + yearE
+var dayB = dateBegin.getDate();
+var monthB = dateBegin.getMonth() + 1;
+var yearB = dateBegin.getFullYear();
+var outputBegin1C = yearB + "-"+ (monthB&lt;10?'0':'') + monthB + "-" + (dayB&lt;10?'0':'') + dayB + 'T00:00:00';
+var outputBegin = (dayB&lt;10?'0':'') + dayB + '.' + (monthB&lt;10?'0':'') + monthB + '.' + yearB;
 
-var outputBegin1C = inputBegin + 'T00:00:00'
-var outputEnd1C = inputEnd + 'T00:00:00'
+// End
 
-//execution.setVariable('sDateVacationBegin', outputBegin)
-//execution.setVariable('sDateVacationEnd', outputEnd)
+var dateEnd = new Date(inputEnd);
+
+var dayE = dateEnd.getDate();
+var monthE = dateEnd.getMonth() + 1;
+var yearE = dateEnd.getFullYear();
+var outputEnd1C = yearE + "-"+ (monthE&lt;10?'0':'') + monthE + "-" + (dayE&lt;10?'0':'') + dayE + 'T00:00:00';
+var outputEnd = (dayE&lt;10?'0':'') + dayE + '.' + (monthE&lt;10?'0':'') + monthE + '.' + yearE;
+
+
+execution.setVariable('sDateVacationBegin', outputBegin)
+execution.setVariable('sDateVacationEnd', outputEnd)
 execution.setVariable('sDateVacationBegin1C', outputBegin1C)
-execution.setVariable('sDateVacationEnd1C', outputEnd1C)</script>
+execution.setVariable('sDateVacationEnd1C', outputEnd1C)
+</script>
     </scriptTask>
     <serviceTask id="servicetask5" name="Service Task" activiti:delegateExpression="#{Transfer_DocumentVacation}">
       <extensionElements>
