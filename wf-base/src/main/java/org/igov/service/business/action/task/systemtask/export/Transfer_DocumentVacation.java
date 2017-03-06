@@ -73,7 +73,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         data.put("sCountDay", sCountDay);
         data.put("sKeyVacationer", sKeyVacationer);
         data.put("sDateVacationBegin", sdf.format(oDateVacationBegin));
-        data.put("sDateVacationEnd", sdfformat(oDateVacationEnd));
+        data.put("sDateVacationEnd", sdf.format(oDateVacationEnd));
         LOG.info("Transfer_DocumentVacation data: " + data);
 
         String filePath = FileSystemData.SUB_PATH_XML + "agroholding/";
