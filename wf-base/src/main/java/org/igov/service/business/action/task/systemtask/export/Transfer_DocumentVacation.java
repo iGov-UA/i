@@ -62,16 +62,16 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         Map<String, Object> data = parseData(soData_Value_Result);
         LOG.info("data: " + data);
         
-        Object sDateVacationBegin = execution.getVariable("sDateVacationBegin");
-        LOG.info("sDateVacationBegin: " + sDateVacationBegin.getClass() + " sDateVacationBegin: " + sDateVacationBegin);
-        
+        Date oDateVacationBegin = (Date)execution.getVariable("sDateVacationBegin");
+        LOG.info("oDateVacationBegin: " + oDateVacationBegin.getClass() + " oDateVacationBegin: " + oDateVacationBegin);
+        Date oDateVacationEnd = (Date)execution.getVariable("sDateVacationEnd");
         
         
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        SimpleDateFormat sdf_short = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf_short = new SimpleDateFormat("dd.MM.yyyy");
         String sDate = sdf.format(new Date());
-        Date oDateVacationBegin = sdf_short.parse((String) data.get("sDateVacationBegin"));
-        Date oDateVacationEnd = sdf_short.parse((String) data.get("sDateVacationEnd"));
+        //Date oDateVacationBegin = sdf_short.parse((String) data.get("sDateVacationBegin"));
+        //Date oDateVacationEnd = sdf_short.parse((String) data.get("sDateVacationEnd"));
         String sCountDay = String.valueOf(getDateDiff(oDateVacationBegin, oDateVacationEnd));
         String sKeyVacationer = getLoginSubjectAccountByLoginIgovAccount(execution.getProcessInstanceId());
         data.put("sDate", sDate);
@@ -81,8 +81,8 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         data.put("sDateVacationEnd", sdf.format(oDateVacationEnd));
         LOG.info("Transfer_DocumentVacation data: " + data);
         
-        String sDateVacationBegin_Email = (String) data.get("sDateVacationBegin");
-        String sDateVacationEnd_Email = (String) data.get("sDateVacationEnd");
+        String sDateVacationBegin_Email = sdf_short.format(oDateVacationBegin);
+        String sDateVacationEnd_Email = sdf_short.format(oDateVacationEnd);
         execution.setVariable("sDateVacationBegin_Email", sDateVacationBegin_Email);
         execution.setVariable("sDateVacationEnd_Email", sDateVacationEnd_Email);
 
