@@ -35,6 +35,7 @@ import org.activiti.engine.task.IdentityLink;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.model.document.DocumentStepSubjectRightFieldDao;
+import org.igov.service.business.subject.SubjectGroupTreeService;
 import org.igov.util.Tool;
 import org.joda.time.DateTime;
 import org.json.simple.parser.ParseException;
@@ -73,6 +74,9 @@ public class DocumentStepService {
 
     @Autowired
     private IdentityService oIdentityService;
+    
+    @Autowired
+    private SubjectGroupTreeService oSubjectGroupTreeService;
 
     //public void setDocumentSteps(String snID_Process_Activiti, String soJSON) {
     public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
@@ -198,6 +202,10 @@ public class DocumentStepService {
             //        " Process variable sKey_Step_Document is empty.");
             //sKey_Step_Document="1";
         }*/
+        
+        String sSubjectType = oSubjectGroupTreeService.getSubjectType(sKey_GroupPostfix);
+        LOG.info("sSubjectType in cloneRights is {}", sSubjectType);
+        
         List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.info("aDocumentStep={}", aDocumentStep);
 

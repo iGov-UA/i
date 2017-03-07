@@ -32,6 +32,9 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import org.igov.model.core.GenericEntityDao;
+import org.igov.model.subject.SubjectHumanDao;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -57,7 +60,14 @@ public class SubjectGroupTreeService {
 
 	@Autowired
 	private IdentityService identityService;
-	
+        
+        @Autowired
+	private SubjectHumanDao SubjectHumanDao;
+        
+        @Autowired
+        @Qualifier("subjectGroupDao")
+         private GenericEntityDao<Long, SubjectGroup> subjectGroupDao;
+        
 	//Мапа для укладывания ид родителя и его детей в методе получения иерархии  getChildrenTree
     Map<Long, List<SubjectGroup>> getChildrenTreeRes = new HashMap<>();
 
@@ -450,5 +460,19 @@ public class SubjectGroupTreeService {
 		}
 		return rootElement;
 	}
-
+        
+        public String getSubjectType(String sID_Group_Activiti)
+        {
+            SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+            Long subjectGroupId = oSubjectGroup.getId();
+            LOG.info("oSubjectGroup in getSubjectType is " + oSubjectGroup.getId());
+            SubjectHuman oSubjectHuman = SubjectHumanDao.findByExpected("nID_Subject", subjectGroupId);
+            LOG.info("oSubjectHuman in getSubjectType is " + oSubjectHuman.getName());
+            
+            if(oSubjectHuman != null){
+                return HUMAN;
+            }else{
+                return ORGAN;
+            }
+        }
 }
