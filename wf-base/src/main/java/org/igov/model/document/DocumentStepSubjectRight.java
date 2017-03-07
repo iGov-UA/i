@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.igov.model.core.AbstractEntity;
 import org.joda.time.DateTime;
@@ -59,6 +61,7 @@ public class DocumentStepSubjectRight extends AbstractEntity {
 	private DateTime sDateECP;
 
 	@OneToMany(mappedBy = "documentStepSubjectRight", cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<DocumentStepSubjectRightField> documentStepSubjectRightFields;
 
 	public List<DocumentStepSubjectRightField> getDocumentStepSubjectRightFields() {

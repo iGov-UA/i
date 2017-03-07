@@ -215,6 +215,7 @@ function FieldAttributesService(MarkersFactory) {
         if(markers[i].aElement_ID[j] === sID){
           return {
             bShow: true,
+						sLinkedFieldID: sID,
             sText: markers[i].sValue ? markers[i].sValue : ''
           }
         }
@@ -222,6 +223,7 @@ function FieldAttributesService(MarkersFactory) {
     }
     return {
       bShow: false,
+      sLinkedFieldID: null,
       sText: ''
     };
   };

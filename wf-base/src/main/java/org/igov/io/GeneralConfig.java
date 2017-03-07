@@ -191,6 +191,20 @@ public class GeneralConfig {
     
     @Value("${general.Object.SubPlace.sURL_Send}")
     private String sObjectSubPlace_sURL_Send;
+   
+    @Value("${general.ECP.Self.sSubPathFile}")
+    private String sECPKeystoreFilename;
+    
+    @Value("${general.ECP.Self.sPassword}")
+    private String sECPKeystorePasswd;
+    
+    @Value("${general.Export.Agroholding.sURL}")
+    private String sURL_Agroholding;
+    @Value("${general.Export.Agroholding.Auth.sLogin}")
+    private String sLogin_Auth_Agroholding;
+    @Value("${general.Export.Agroholding.Auth.sPassword}")
+    private String sPassword_Auth_Agroholding;
+
     
     public String getObjectSubPlace_Auth_sLogin() {
         return sObjectSubPlace_Auth_sLogin;
@@ -204,8 +218,14 @@ public class GeneralConfig {
     public String getObjectSubPlace_sURL_Send() {
         return sObjectSubPlace_sURL_Send;
     }
-    
-    public boolean isSelfTest() {
+	
+	public String getsECPKeystoreFilename() {
+		return sECPKeystoreFilename;
+	}
+	public String getsECPKeystorePasswd() {
+		return sECPKeystorePasswd;
+	}
+	public boolean isSelfTest() {
         boolean b = true;
         try {
             b = (sbTest_Self == null ? b : Boolean.valueOf(sbTest_Self));
@@ -580,6 +600,18 @@ public class GeneralConfig {
             LOG.debug("FAIL:", oException);
         }
         return b;
+    }
+
+    public String getsURL_Agroholding() {
+        return sURL_Agroholding;
+    }
+
+    public String getsLogin_Auth_Agroholding() {
+        return sLogin_Auth_Agroholding;
+    }
+
+    public String getsPassword_Auth_Agroholding() {
+        return sPassword_Auth_Agroholding;
     }
     
 }
