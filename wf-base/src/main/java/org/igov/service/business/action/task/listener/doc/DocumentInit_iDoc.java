@@ -1,6 +1,8 @@
 package org.igov.service.business.action.task.listener.doc;
 
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.List;
 import org.igov.model.document.DocumentStep;
@@ -36,9 +38,6 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
 
     @Autowired
     FormService formService;
-
-    @Autowired
-    TaskService taskService;
     
     @Autowired
     HttpRequester httpRequester;
@@ -51,11 +50,11 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
             List<DocumentStep> aResDocumentStep = oDocumentStepService.checkDocumentInit(execution);
             oDocumentStepService.syncDocumentGroups(delegateTask, aResDocumentStep);
             
-        } catch (Exception oException) {
-            LOG.error("", oException);
+        } catch (IOException | URISyntaxException oException) {
+            LOG.error("DocumentInit_iDoc: ", oException);
             try {
                 throw oException;
-            } catch (Exception ex) {
+            } catch (IOException | URISyntaxException ex) {
                 java.util.logging.Logger.getLogger(DocumentInit_iDoc.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
