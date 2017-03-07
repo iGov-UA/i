@@ -469,7 +469,7 @@ public class SubjectGroupTreeService {
         SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
         Long subjectGroupId = oSubjectGroup.getId();
         LOG.info("oSubjectGroup in getSubjectType is " + oSubjectGroup.getId());
-        SubjectHuman oSubjectHuman = SubjectHumanDao.findByExpected("nID_Subject", subjectGroupId);
+        SubjectHuman oSubjectHuman = SubjectHumanDao.findByExpected("oSubject.id", subjectGroupId);
         LOG.info("oSubjectHuman in getSubjectType is " + oSubjectHuman.getName());
 
         if (oSubjectHuman != null) {
