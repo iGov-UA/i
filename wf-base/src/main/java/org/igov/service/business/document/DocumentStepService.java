@@ -271,14 +271,9 @@ public class DocumentStepService {
                         oDocumentStepSubjectRight.setsName((String) sName);
                     }
 
-                    //oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
-                    oDocumentStepSubjectRight.setDocumentStep(oDocumentStep_Active);
-                    LOG.info("right for step: {}", oDocumentStepSubjectRight);
-                    aDocumentStepSubjectRight_SourceNew.add(oDocumentStepSubjectRight);
 
-
-                    oDocumentStepSubjectRight = oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
-                    LOG.info("oDocumentStepSubjectRight id is {}", oDocumentStepSubjectRight.getId());
+                    //oDocumentStepSubjectRight = oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                    //LOG.info("oDocumentStepSubjectRight id is {}", oDocumentStepSubjectRight.getId());
                     //List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
                     List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = new LinkedList();
 
@@ -287,15 +282,19 @@ public class DocumentStepService {
                         oDocumentStepSubjectRightField.setbWrite(oDocumentStepSubjectRightField_Source.getbWrite());
                         oDocumentStepSubjectRightField.setsMask_FieldID(oDocumentStepSubjectRightField_Source.getsMask_FieldID());
                         oDocumentStepSubjectRightField.setDocumentStepSubjectRight(oDocumentStepSubjectRight);
-                        oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField);
+                        //oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField);
                         //oDocumentStepSubjectRightField_Source.getsMask_FieldID();
+                        aDocumentStepSubjectRightField.add(oDocumentStepSubjectRightField);
                     }
-
-
-                    //oDocumentStep_Active.setRights(aDocumentStepSubjectRight_SourceNew);
+                    
+                    oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
+                    oDocumentStepSubjectRight.setDocumentStep(oDocumentStep_Active);
+                    LOG.info("right for step: {}", oDocumentStepSubjectRight);
+                    aDocumentStepSubjectRight_SourceNew.add(oDocumentStepSubjectRight);
+                    oDocumentStep_Active.setRights(aDocumentStepSubjectRight_SourceNew);
 
     //                try{
-                    //documentStepDao.saveOrUpdate(oDocumentStep_Active);
+                    documentStepDao.saveOrUpdate(oDocumentStep_Active);
     //                }catch(Exception ex){
 
     //                }
