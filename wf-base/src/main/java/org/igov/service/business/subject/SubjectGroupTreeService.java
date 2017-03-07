@@ -33,6 +33,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import org.igov.model.core.GenericEntityDao;
+import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectHumanDao;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -467,9 +468,9 @@ public class SubjectGroupTreeService {
     public String getSubjectType(String sID_Group_Activiti) 
     {
         SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
-        Long subjectGroupId = oSubjectGroup.getId();
-        LOG.info("oSubjectGroup in getSubjectType is " + oSubjectGroup.getId());
-        SubjectHuman oSubjectHuman = SubjectHumanDao.findByExpected("oSubject.id", subjectGroupId);
+        Subject oSubject = oSubjectGroup.getoSubject();
+        LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
+        SubjectHuman oSubjectHuman = SubjectHumanDao.findByExpected("oSubject", oSubject);
         LOG.info("oSubjectHuman in getSubjectType is " + oSubjectHuman.getName());
 
         if (oSubjectHuman != null) {
