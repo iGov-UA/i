@@ -1,8 +1,10 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
@@ -60,8 +62,16 @@ public class CloneDocumentRights implements TaskListener {
             LOG.error("sKey_GroupPostfix_New_Value: ", ex);
         }
         
-       List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepService.cloneDocumentStepSubject(delegateTask.getProcessInstanceId(), sKey_GroupPostfix_Value, sKey_GroupPostfix_New_Value, sKey_Step_Value);
-       LOG.info("aDocumentStepSubjectRight in listenet is: {} ", aDocumentStepSubjectRight);
-       LOG.info("CloneDocumentRights finished");
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepService.cloneDocumentStepSubject(delegateTask.getProcessInstanceId(), sKey_GroupPostfix_Value, sKey_GroupPostfix_New_Value, sKey_Step_Value);
+        Set<String> asGroup = new HashSet<>();
+       
+        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                    asGroup.add(oDocumentStepSubjectRight.getsKey_GroupPostfix());
+        }
+       
+        delegateTask.addCandidateGroups(asGroup);
+        
+        LOG.info("aDocumentStepSubjectRight in listenet is: {} ", aDocumentStepSubjectRight);
+        LOG.info("CloneDocumentRights finished");
     }
 }
