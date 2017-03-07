@@ -730,7 +730,7 @@ public class DocumentStepService {
         groupsOld.stream().forEach((groupOld) -> {
             asGroup_Old.add(groupOld.getGroupId());
         });
-        LOG.info("asGroup_Old before setting: {}", asGroup_Old);
+        LOG.info("asGroup_Old before setting: {} delegateTask: {}", asGroup_Old, delegateTask.getId());
 
         delegateTask.addCandidateGroups(asGroup);
         
@@ -739,7 +739,7 @@ public class DocumentStepService {
         groupsNew.stream().forEach((groupNew) -> {
             asGroup_New.add(groupNew.getGroupId());
         });
-        LOG.info("asGroup_New after setting: {}", asGroup_New);
+        LOG.info("asGroup_New after setting: {} delegateTask: {}", asGroup_New, delegateTask.getId());
     }
 
     //public void checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {//JSONObject

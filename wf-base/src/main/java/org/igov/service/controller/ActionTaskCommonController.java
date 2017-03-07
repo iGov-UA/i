@@ -71,8 +71,6 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.igov.model.action.event.HistoryEventType;
-import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
