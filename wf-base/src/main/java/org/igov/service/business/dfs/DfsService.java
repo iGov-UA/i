@@ -110,8 +110,7 @@ public class DfsService {
                                         String sMail = "";
                                         BufferedInputStream oBufferedInputStream = new BufferedInputStream(oByteArrayMultipartFile.getInputStream());
                                         byte[] aByte = IOUtils.toByteArray(oBufferedInputStream);
-                                        saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби", "Отримана відповідь від Державної Фіскальної "
-                                                + "Служби у вигляді криптопакету: " + sFileName, aByte, sID_Order, sMail, sFileName, sFileContentType);
+                                        saveServiceMessage_EncryptedFile("Отримана відповідь від Державної Фіскальної Служби", "Отримана відповідь від Державної фіскальної служби за Вашим запитом.", aByte, sID_Order, sMail, sFileName, sFileContentType);
                                     } catch (Exception ex) {
                                         LOG.error("ToJournal sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document + ":" + ex.getMessage());
                                         java.util.logging.Logger.getLogger(ActionTaskCommonController.class.getName()).log(Level.SEVERE, null, ex);
