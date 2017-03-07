@@ -131,6 +131,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
                                     if (oSubjectAccount.getSubjectAccountType().getId() == 3) {
                                         result = oSubjectAccount.getsLogin();
                                         LOG.info("result: " + result);
+                                        break;
                                     } else {
                                         LOG.error("Can't find 1C account");
                                     }
