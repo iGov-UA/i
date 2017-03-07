@@ -35,6 +35,8 @@ import org.activiti.engine.task.IdentityLink;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.model.document.DocumentStepSubjectRightFieldDao;
+import org.igov.model.subject.SubjectGroup;
+import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.service.business.subject.SubjectGroupTreeService;
 import org.igov.util.Tool;
 import org.joda.time.DateTime;
@@ -203,8 +205,32 @@ public class DocumentStepService {
             //sKey_Step_Document="1";
         }*/
         
-        String sSubjectType = oSubjectGroupTreeService.getSubjectType(sKey_GroupPostfix);
+        String sSubjectType = oSubjectGroupTreeService.getSubjectType(sKey_GroupPostfix_New);
         LOG.info("sSubjectType in cloneRights is {}", sSubjectType);
+        
+        SubjectGroupResultTree oSubjectGroupResultTree = null;
+        
+        if(sSubjectType.equals("Organ")){
+            try {
+    		oSubjectGroupResultTree = oSubjectGroupTreeService.getCatalogSubjectGroupsTree(sKey_GroupPostfix_New, 0L, null, false, 0L, "Human");
+            } catch (Exception e) {
+                     LOG.error("subjectGroupResultTree FAIL during cloning: {}", e);
+            }
+        }
+        
+        List<String> asResultGroup = new ArrayList<>();
+        
+        if (oSubjectGroupResultTree != null)
+        {
+            List<SubjectGroup> aSubjectGroups = oSubjectGroupResultTree.getaSubjectGroupTree();
+            for(SubjectGroup oSubjectGroup : aSubjectGroups){
+                asResultGroup.add(oSubjectGroup.getsID_Group_Activiti());
+            }
+        }else{
+            asResultGroup.add(sKey_GroupPostfix_New);
+        }
+        
+        LOG.info("asResultGroup is {}", asResultGroup);
         
         List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.info("aDocumentStep={}", aDocumentStep);
