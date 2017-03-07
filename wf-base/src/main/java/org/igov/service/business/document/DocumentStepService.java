@@ -32,6 +32,7 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.task.IdentityLink;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.util.Tool;
 import org.joda.time.DateTime;
 import org.json.simple.parser.ParseException;
@@ -46,6 +47,9 @@ public class DocumentStepService {
     @Autowired
     @Qualifier("documentStepDao")
     private GenericEntityDao<Long, DocumentStep> documentStepDao;
+    
+    @Autowired
+    private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
 
     @Autowired
     private TaskService oTaskService;
@@ -145,8 +149,9 @@ public class DocumentStepService {
 //setDocumentStep(snID_Process_Activiti[, sKey_Step)]    
 //3.1) setDocumentStepSubjectRight(snID_Process_Activiti, sKey_GroupPostfix, bWrite) //Установить право записи, равное bWrite, для ветки к путем sKey_Step/sKey_GroupPostfix
 //3.2) cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New) //Клонировать ветку права записи с путем sKey_Step/sKey_GroupPostfix в ветку с путем 
-    public DocumentStepSubjectRight cloneDocumentStepSubject(String snID_Process_Activiti, String sKey_GroupPostfix, String sKey_GroupPostfix_New) {//JSONObject //Map<String, Object>
-        LOG.info("cloneDocumentStepSubject started...");
+    public DocumentStepSubjectRight cloneDocumentStepSubject(String snID_Process_Activiti, String sKey_GroupPostfix, String sKey_GroupPostfix_New, 
+            String sKey_Step_Document) {//JSONObject //Map<String, Object>
+        /*LOG.info("cloneDocumentStepSubject started...");
         LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sKey_GroupPostfix_New={}", sKey_GroupPostfix, snID_Process_Activiti, sKey_GroupPostfix_New);
         List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
         if (aTaskActive.size() < 1 || aTaskActive.get(0) == null) {
@@ -178,10 +183,11 @@ public class DocumentStepService {
         List<FormProperty> aProperty = oFormService.getTaskFormData(snID_Task).getFormProperties();                    
         for (FormProperty oProperty : aProperty) {
             mProcessVariable.put(oProperty.getId(), oProperty.getValue());
-            //String sID = oProperty.getId();
+            //String sID = oProperty.getId(); 
         }
-        LOG.info("mProcessVariable(added)={}", mProcessVariable);
-        String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document");
+        LOG.info("mProcessVariable(added)={}", mProcessVariable);*/
+        //String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document");
+        
         /*if (StringUtils.isEmpty(sKey_Step_Document)) {
             throw new IllegalStateException("There is no active Document Step! mProcessVariable=" + mProcessVariable +
             //        " Process variable sKey_Step_Document is empty.");
@@ -220,7 +226,9 @@ public class DocumentStepService {
                 if (sName != null) {
                     oDocumentStepSubjectRight.setsName((String) sName);
                 }
-
+                
+                oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                
                 //List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
                 List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = new LinkedList();
                 
