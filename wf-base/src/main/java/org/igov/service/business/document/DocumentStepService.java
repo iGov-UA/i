@@ -862,55 +862,43 @@ public class DocumentStepService {
     }
 
     public Map<String, Boolean> isDocumentStepSubmitedAll(String nID_Process, String sLogin, String sKey_Step)
-            throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException,
-            RecordNotFoundException {
-        Map<String, Boolean> mReturn = new HashMap();
+			throws Exception {
+		Map<String, Boolean> mReturn = new HashMap();
 
-        List<DocumentStep> aDocumentStep = ((DocumentStepDao) documentStepDao).getStepForProcess(nID_Process);
-        LOG.info("The size of list" + (aDocumentStep != null ? aDocumentStep.size() : null));
-        // LOG.info("Result list of steps: {}", aDocumentStep);
+		List<DocumentStep> aDocumentStep = ((DocumentStepDao) documentStepDao).getStepForProcess(nID_Process);
+		LOG.info("The size of list" + (aDocumentStep != null ? aDocumentStep.size() : null));
+		// LOG.info("Result list of steps: {}", aDocumentStep);
 
-        DocumentStep oFindedDocumentStep = null;
+		DocumentStep oFindedDocumentStep = null;
 
-        for (DocumentStep oDocumentStep : aDocumentStep) {
-            if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
-                oFindedDocumentStep = oDocumentStep;
-                break;
-            }
-        }
+		for (DocumentStep oDocumentStep : aDocumentStep) {
+			if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
+				oFindedDocumentStep = oDocumentStep;
+				break;
+			} else
+				throw new Exception("oFindedDocumentStep not found");
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList<>();
+		}
 
-        if (oFindedDocumentStep != null) {
-            aDocumentStepSubjectRight.addAll(oFindedDocumentStep.getRights());
-            LOG.info("oFindedDocumentStep ={}", oFindedDocumentStep.getRights());
-        }
+		boolean checkSubmited = true;
 
-        boolean check = true;
+		for (DocumentStepSubjectRight oDocumentStepSubjectRight : oFindedDocumentStep.getRights()) {
 
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+			if (oDocumentStepSubjectRight != null) {
 
-            if (oDocumentStepSubjectRight != null) {
-                boolean bNeedECP = false;
-                if (oDocumentStepSubjectRight.getbNeedECP() != null) {
-                    bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
-                }
+				DateTime sDate = oDocumentStepSubjectRight.getsDate();
+				LOG.info("sDate =", oDocumentStepSubjectRight.getsDate());
 
-                DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
-                LOG.info("sDateECP =", oDocumentStepSubjectRight.getsDateECP());
+				if (sDate == null) {
+					checkSubmited = false;
+					break;
+				}
 
-                if (bNeedECP && sDateECP == null) {
-                    check = false;
-                    break;
-                }
+				mReturn.put("Submited:", checkSubmited);
+			} else
+				LOG.error("oDocumentStepSubjectRight is null");
+		}
 
-            }
-        }
-        if (check) {
-            mReturn.put("bSigned:", true);
-        } else {
-            mReturn.put("bSigned:", false);
-        }
-        return mReturn;
-    }
+		return mReturn;
+	}
 }
