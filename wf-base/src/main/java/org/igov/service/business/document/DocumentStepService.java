@@ -227,7 +227,7 @@ public class DocumentStepService {
                     oDocumentStepSubjectRight.setsName((String) sName);
                 }
 
-                oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                //oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
 
                 //List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
                 List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = new LinkedList();
