@@ -64,7 +64,7 @@ public class DocumentStepService {
 
     @Autowired
     private IdentityService oIdentityService;
-
+    
     //public void setDocumentSteps(String snID_Process_Activiti, String soJSON) {
     public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
         JSONObject oJSON = new JSONObject(soJSON);
@@ -867,25 +867,15 @@ public class DocumentStepService {
 
         return "";
     }
+   
     public Map<String, Boolean> isDocumentStepSubmitedAll(String nID_Process, String sLogin, String sKey_Step)
 			throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException,
 			RecordNotFoundException {
 		Map<String, Boolean> mReturn = new HashMap();
-		List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
-		Set<String> asID_Group = new HashSet<>();
-
-		if (aGroup != null) {
-			aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
-		}
-
-		LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
-                //TODO: Сделать проверку доступа по параметру sLogin (на присутствие логина среди подписантов(не ознакамливающихся) или системного логина... может еще что-то)
-                
-		LOG.info("aGroup={}", aGroup);
 
 		List<DocumentStep> aDocumentStep = ((DocumentStepDao) documentStepDao).getStepForProcess(nID_Process);
-		LOG.info("The size of list" + (aDocumentStep!=null?aDocumentStep.size():null));
-		//LOG.info("Result list of steps: {}", aDocumentStep);
+		LOG.info("The size of list" + (aDocumentStep != null ? aDocumentStep.size() : null));
+		// LOG.info("Result list of steps: {}", aDocumentStep);
 
 		DocumentStep oFindedDocumentStep = null;
 
@@ -903,43 +893,33 @@ public class DocumentStepService {
 			LOG.info("oFindedDocumentStep ={}", oFindedDocumentStep.getRights());
 		}
 
-		DocumentStepSubjectRight oTargetDocumentStepSubjectRight = null;
+		boolean check = true;
 
 		for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
 
-			for (String sID_Group : asID_Group) {
-				if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sID_Group)) {
-					if (oTargetDocumentStepSubjectRight == null) {
-						oTargetDocumentStepSubjectRight = oDocumentStepSubjectRight;
-						LOG.info("oTargetDocumentStepSubjectRight={}", oTargetDocumentStepSubjectRight);
-					} else {
-						break;
-						// throw new RuntimeException("There are few target
-						// groups in the DocumentStep set");
-					}
+			if (oDocumentStepSubjectRight != null) {
+				boolean bNeedECP = false;
+				if (oDocumentStepSubjectRight.getbNeedECP() != null) {
+					bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
 				}
+
+				DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
+				LOG.info("sDateECP =", oDocumentStepSubjectRight.getsDateECP());
+
+				if (bNeedECP && sDateECP == null) {
+					check = false;
+					break;
+				}
+
 			}
 		}
-
-		if (oTargetDocumentStepSubjectRight != null) {
-			boolean bNeedECP = false;
-			if (oTargetDocumentStepSubjectRight.getbNeedECP() != null) {
-				bNeedECP = oTargetDocumentStepSubjectRight.getbNeedECP();
-			}
-
-			DateTime sDateECP = oTargetDocumentStepSubjectRight.getsDateECP();
-			LOG.info("sDateECP =", oTargetDocumentStepSubjectRight.getsDateECP());
-
-			if (bNeedECP && sDateECP == null) {
-				mReturn.put("bSigned:", false);// ецп не наложено
-			}
-
-			if (bNeedECP && sDateECP != null) {
-				mReturn.put("bSigned:", true); // ецп наложено
-			}
+		if (check) {
+			mReturn.put("bSigned:", true);
 		}
 
+		else {
+			mReturn.put("bSigned:", false);
+		}
 		return mReturn;
 	}
-
 }
