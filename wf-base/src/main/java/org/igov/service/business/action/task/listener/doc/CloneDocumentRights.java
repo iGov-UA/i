@@ -51,7 +51,7 @@ public class CloneDocumentRights implements TaskListener {
             LOG.error("sKey_GroupPostfix_New_Value: ", ex);
         }
         
-       DocumentStepSubjectRight oDocumentStepSubjectRight = oDocumentStepService.cloneDocumentStepSubject(delegateTask.getProcessInstanceId(), sKey_GroupPostfix_Value, sKey_GroupPostfix_New_Value);
+       DocumentStepSubjectRight oDocumentStepSubjectRight = oDocumentStepService.cloneDocumentStepSubject(delegateTask.getProcessInstanceId(), sKey_GroupPostfix_Value, sKey_GroupPostfix_New_Value, "stepname");
        delegateTask.addCandidateGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix());
        LOG.info("CloneDocumentRights finished");
     }

@@ -59,13 +59,14 @@ public class DocumentCommonController {
     String cloneDocumentStepSubject(
             @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "snID_Process_Activiti") String snID_Process_Activiti,
             @ApiParam(value = "группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix") String sKey_GroupPostfix,
-            @ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix_New") String sKey_GroupPostfix_New) throws Exception {
+            @ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix_New") String sKey_GroupPostfix_New,
+            @ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sID_Step") String sID_Step) throws Exception {
 
         LOG.info("snID_Process_Activiti in cloneDocumentStepSubject: {}", snID_Process_Activiti);
         LOG.info("sKey_GroupPostfix in cloneDocumentStepSubject: {}", sKey_GroupPostfix);
         LOG.info("sKey_GroupPostfix_New in cloneDocumentStepSubject: {}", sKey_GroupPostfix_New);
 
-        DocumentStepSubjectRight oDocumentStepSubjectRight = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New);
+        DocumentStepSubjectRight oDocumentStepSubjectRight = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sID_Step);
         
         LOG.info("oDocumentStepSubjectRight in cloneDocumentStepSubject is {}", oDocumentStepSubjectRight);
         
