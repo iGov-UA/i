@@ -6,14 +6,9 @@ import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.List;
 import org.igov.model.document.DocumentStep;
-import org.activiti.engine.FormService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
-import org.igov.io.GeneralConfig;
-import org.igov.io.web.HttpRequester;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.document.DocumentStepService;
 
@@ -29,18 +24,6 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
 
     @Autowired
     private DocumentStepService oDocumentStepService;
-    
-    @Autowired
-    GeneralConfig generalConfig;
-
-    @Autowired
-    RuntimeService runtimeService;
-
-    @Autowired
-    FormService formService;
-    
-    @Autowired
-    HttpRequester httpRequester;
     
     @Override
     public void notify(DelegateTask delegateTask) {
