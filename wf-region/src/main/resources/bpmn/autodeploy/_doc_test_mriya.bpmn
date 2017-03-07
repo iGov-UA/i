@@ -59,8 +59,10 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="813ade4b-40b0-43dc-8a29-50a876ebcd0f" name="Учбова відпустка без оплати"></activiti:value>
           <activiti:value id="746cc7bf-a84c-4950-85b6-80dfd0bbd16b" name="Чорнобильська відпустка"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationEnd1C" name="Остання дата відпустки" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd" name="Остання дата відпустки" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки_1C" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd1C" name="Остання дата відпустки1_C" type="date"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_mriyaHoliday.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
@@ -91,8 +93,10 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="813ade4b-40b0-43dc-8a29-50a876ebcd0f" name="Учбова відпустка без оплати"></activiti:value>
           <activiti:value id="746cc7bf-a84c-4950-85b6-80dfd0bbd16b" name="Чорнобильська відпустка"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationEnd1C" name="Остання дата відпустки" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd" name="Остання дата відпустки" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin1C" name="Дата початку відпустки" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd1C" name="Остання дата відпустки" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/iDoc/mriya/holiday_print.html" type="file"></activiti:formProperty>
@@ -140,8 +144,7 @@ execution.setVariable('sDateVacationEnd1C', outputEnd1C)</script>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow8" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
-    <sequenceFlow id="flow9" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_mriya">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_mriya" id="BPMNPlane__doc_test_mriya">
@@ -164,7 +167,7 @@ execution.setVariable('sDateVacationEnd1C', outputEnd1C)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="970.0" y="101.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="550.0" y="91.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="570.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="160.0"></omgdc:Bounds>
@@ -187,10 +190,6 @@ execution.setVariable('sDateVacationEnd1C', outputEnd1C)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="495.0" y="118.0"></omgdi:waypoint>
-        <omgdi:waypoint x="550.0" y="118.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="655.0" y="118.0"></omgdi:waypoint>
         <omgdi:waypoint x="810.0" y="118.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
