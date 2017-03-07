@@ -34,7 +34,6 @@ import org.activiti.engine.identity.User;
 import org.activiti.engine.task.IdentityLink;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.model.document.DocumentStepSubjectRightDao;
-import org.igov.model.document.DocumentStepSubjectRightFieldDao;
 import org.igov.util.Tool;
 import org.joda.time.DateTime;
 import org.json.simple.parser.ParseException;
@@ -52,9 +51,6 @@ public class DocumentStepService {
 
     @Autowired
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
-    
-    @Autowired
-    private DocumentStepSubjectRightFieldDao oDocumentStepSubjectRightFieldDao;
 
     @Autowired
     private TaskService oTaskService;
@@ -230,16 +226,8 @@ public class DocumentStepService {
                 if (sName != null) {
                     oDocumentStepSubjectRight.setsName((String) sName);
                 }
-                
-                //oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
-                oDocumentStepSubjectRight.setDocumentStep(oDocumentStep_Active);
-                LOG.info("right for step: {}", oDocumentStepSubjectRight);
-                aDocumentStepSubjectRight_SourceNew.add(oDocumentStepSubjectRight);
-                oDocumentStep_Active.setRights(aDocumentStepSubjectRight_SourceNew);
 
-                
-                oDocumentStepSubjectRight = oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
-                LOG.info("oDocumentStepSubjectRight id is: {}", oDocumentStepSubjectRight.getId());
+                //oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
 
                 //List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
                 List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = new LinkedList();
@@ -249,12 +237,18 @@ public class DocumentStepService {
                     oDocumentStepSubjectRightField.setbWrite(oDocumentStepSubjectRightField_Source.getbWrite());
                     oDocumentStepSubjectRightField.setsMask_FieldID(oDocumentStepSubjectRightField_Source.getsMask_FieldID());
                     oDocumentStepSubjectRightField.setDocumentStepSubjectRight(oDocumentStepSubjectRight);
-                    oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField);
                     //oDocumentStepSubjectRightField_Source.getsMask_FieldID();
                 }
 
+                oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
+                oDocumentStepSubjectRight.setDocumentStep(oDocumentStep_Active);
+                LOG.info("right for step: {}", oDocumentStepSubjectRight);
+                aDocumentStepSubjectRight_SourceNew.add(oDocumentStepSubjectRight);
+
+                oDocumentStep_Active.setRights(aDocumentStepSubjectRight_SourceNew);
+
 //                try{
-//                documentStepDao.saveOrUpdate(oDocumentStep_Active);
+                documentStepDao.saveOrUpdate(oDocumentStep_Active);
 //                }catch(Exception ex){
 
 //                }
@@ -868,55 +862,43 @@ public class DocumentStepService {
     }
 
     public Map<String, Boolean> isDocumentStepSubmitedAll(String nID_Process, String sLogin, String sKey_Step)
-            throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException,
-            RecordNotFoundException {
-        Map<String, Boolean> mReturn = new HashMap();
+			throws Exception {
+		Map<String, Boolean> mReturn = new HashMap();
 
-        List<DocumentStep> aDocumentStep = ((DocumentStepDao) documentStepDao).getStepForProcess(nID_Process);
-        LOG.info("The size of list" + (aDocumentStep != null ? aDocumentStep.size() : null));
-        // LOG.info("Result list of steps: {}", aDocumentStep);
+		List<DocumentStep> aDocumentStep = ((DocumentStepDao) documentStepDao).getStepForProcess(nID_Process);
+		LOG.info("The size of list" + (aDocumentStep != null ? aDocumentStep.size() : null));
+		// LOG.info("Result list of steps: {}", aDocumentStep);
 
-        DocumentStep oFindedDocumentStep = null;
+		DocumentStep oFindedDocumentStep = null;
 
-        for (DocumentStep oDocumentStep : aDocumentStep) {
-            if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
-                oFindedDocumentStep = oDocumentStep;
-                break;
-            }
-        }
+		for (DocumentStep oDocumentStep : aDocumentStep) {
+			if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
+				oFindedDocumentStep = oDocumentStep;
+				break;
+			} else
+				throw new Exception("oFindedDocumentStep not found");
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList<>();
+		}
 
-        if (oFindedDocumentStep != null) {
-            aDocumentStepSubjectRight.addAll(oFindedDocumentStep.getRights());
-            LOG.info("oFindedDocumentStep ={}", oFindedDocumentStep.getRights());
-        }
+		boolean checkSubmited = true;
 
-        boolean check = true;
+		for (DocumentStepSubjectRight oDocumentStepSubjectRight : oFindedDocumentStep.getRights()) {
 
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+			if (oDocumentStepSubjectRight != null) {
 
-            if (oDocumentStepSubjectRight != null) {
-                boolean bNeedECP = false;
-                if (oDocumentStepSubjectRight.getbNeedECP() != null) {
-                    bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
-                }
+				DateTime sDate = oDocumentStepSubjectRight.getsDate();
+				LOG.info("sDate =", oDocumentStepSubjectRight.getsDate());
 
-                DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
-                LOG.info("sDateECP =", oDocumentStepSubjectRight.getsDateECP());
+				if (sDate == null) {
+					checkSubmited = false;
+					break;
+				}
 
-                if (bNeedECP && sDateECP == null) {
-                    check = false;
-                    break;
-                }
+				mReturn.put("Submited:", checkSubmited);
+			} else
+				LOG.error("oDocumentStepSubjectRight is null");
+		}
 
-            }
-        }
-        if (check) {
-            mReturn.put("bSigned:", true);
-        } else {
-            mReturn.put("bSigned:", false);
-        }
-        return mReturn;
-    }
+		return mReturn;
+	}
 }
