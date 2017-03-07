@@ -3,12 +3,12 @@
   <process id="odes_archiv_392" name="Заява про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" readable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації (за паспортом)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRealAdress" name="Поштова адреса для зворотнього зв’язку; за якою зараз проживаєте" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="privateMail" name="Електронна пошта (е-mail)" type="string" readable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="privateMail" name="Електронна пошта (е-mail)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="asApplication" name="Прошу видати архівну довідку про" type="enum" required="true">
           <activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
@@ -23,10 +23,15 @@
         <activiti:formProperty id="sDateRegistration" name="Дата (рік) реєстрації (або дата події); формат ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceRegistration" name="Місце реєстрації події; Для дорадянського періоду: назва церкви, волость, повіт, губернія. Для радянського періоду: район, область" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCoustForDocument" name="Укажіть будь ласка причину для чого вам потрібен документ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nVukidTable" name="Викиди яких забруднюючих речовин плануэться здійснювати" type="table" default="${markerService.loadFromFile('test_folder/ecotest_1565_Zabrud_table.json')}" readable="false"></activiti:formProperty>
-        
+        <activiti:formProperty id="nVukidTable" name="Викиди яких забруднюючих речовин плануэться здійснювати" type="table" default="${markerService.loadFromFile('test_folder/ecotest_1565_Zabrud_table.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPosition" name="Должность" type="invisible" default="Директору Державного архіву Одеської області"></activiti:formProperty>
         <activiti:formProperty id="sNameDirector" name="Прізвище директора архіву" type="invisible" default="Левчуку В.В."></activiti:formProperty>
+      <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${fileObgrunt},${fileMDA_Povid}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -114,6 +119,13 @@
           <activiti:value id="accept" name="Сповістити громадянина про можливість отримання довідки"></activiti:value>
           <activiti:value id="decline" name="Сповістити громадянина, що довідка не може бути надана"></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${fileObgrunt},${fileMDA_Povid},${nVukidTable}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+   
         <activiti:formProperty id="decisionComment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBodyArchiv" name="[pattern/print/archiv/odessa_archiv_392_print.html]" type="invisible" default="Заявка громадянина" writable="false"></activiti:formProperty>
       </extensionElements>
