@@ -34,6 +34,7 @@ import org.activiti.engine.identity.User;
 import org.activiti.engine.task.IdentityLink;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.model.document.DocumentStepSubjectRightDao;
+import org.igov.model.document.DocumentStepSubjectRightFieldDao;
 import org.igov.util.Tool;
 import org.joda.time.DateTime;
 import org.json.simple.parser.ParseException;
@@ -54,7 +55,10 @@ public class DocumentStepService {
 
     @Autowired
     private TaskService oTaskService;
-
+    
+    @Autowired
+    private DocumentStepSubjectRightFieldDao oDocumentStepSubjectRightFieldDao;
+    
     @Autowired
     private IdentityService identityService;
 
@@ -226,29 +230,32 @@ public class DocumentStepService {
                 if (sName != null) {
                     oDocumentStepSubjectRight.setsName((String) sName);
                 }
+                
+                //oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
+                oDocumentStepSubjectRight.setDocumentStep(oDocumentStep_Active);
+                LOG.info("right for step: {}", oDocumentStepSubjectRight);
+                aDocumentStepSubjectRight_SourceNew.add(oDocumentStepSubjectRight);
 
-                //oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
-
+                
+                oDocumentStepSubjectRight = oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                LOG.info("oDocumentStepSubjectRight id is {}", oDocumentStepSubjectRight.getId());
                 //List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
                 List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = new LinkedList();
-
+                
                 for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_Source : oDocumentStepSubjectRight_Source.getDocumentStepSubjectRightFields()) {
                     DocumentStepSubjectRightField oDocumentStepSubjectRightField = new DocumentStepSubjectRightField();
                     oDocumentStepSubjectRightField.setbWrite(oDocumentStepSubjectRightField_Source.getbWrite());
                     oDocumentStepSubjectRightField.setsMask_FieldID(oDocumentStepSubjectRightField_Source.getsMask_FieldID());
                     oDocumentStepSubjectRightField.setDocumentStepSubjectRight(oDocumentStepSubjectRight);
+                    oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField);
                     //oDocumentStepSubjectRightField_Source.getsMask_FieldID();
                 }
 
-                oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
-                oDocumentStepSubjectRight.setDocumentStep(oDocumentStep_Active);
-                LOG.info("right for step: {}", oDocumentStepSubjectRight);
-                aDocumentStepSubjectRight_SourceNew.add(oDocumentStepSubjectRight);
-
-                oDocumentStep_Active.setRights(aDocumentStepSubjectRight_SourceNew);
+                
+                //oDocumentStep_Active.setRights(aDocumentStepSubjectRight_SourceNew);
 
 //                try{
-                documentStepDao.saveOrUpdate(oDocumentStep_Active);
+                //documentStepDao.saveOrUpdate(oDocumentStep_Active);
 //                }catch(Exception ex){
 
 //                }
