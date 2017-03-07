@@ -1,6 +1,7 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
@@ -59,7 +60,8 @@ public class CloneDocumentRights implements TaskListener {
             LOG.error("sKey_GroupPostfix_New_Value: ", ex);
         }
         
-       oDocumentStepService.cloneDocumentStepSubject(delegateTask.getProcessInstanceId(), sKey_GroupPostfix_Value, sKey_GroupPostfix_New_Value, sKey_Step_Value);
+       List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepService.cloneDocumentStepSubject(delegateTask.getProcessInstanceId(), sKey_GroupPostfix_Value, sKey_GroupPostfix_New_Value, sKey_Step_Value);
+       LOG.info("aDocumentStepSubjectRight in listenet is: {} ", aDocumentStepSubjectRight);
        LOG.info("CloneDocumentRights finished");
     }
 }
