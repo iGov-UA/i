@@ -8,6 +8,7 @@ import java.util.Set;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.task.IdentityLink;
 import org.igov.model.document.DocumentStepSubjectRight;
 
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
@@ -63,11 +64,19 @@ public class CloneDocumentRights implements TaskListener {
         }
         
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepService.cloneDocumentStepSubject(delegateTask.getProcessInstanceId(), sKey_GroupPostfix_Value, sKey_GroupPostfix_New_Value, sKey_Step_Value);
-        Set<String> asGroup = new HashSet<>();
+        /*Set<String> asGroup = new HashSet<>();
        
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
                     asGroup.add(oDocumentStepSubjectRight.getsKey_GroupPostfix());
-        }
+        }*/
+        
+        
+        Set<String> asGroup_New = new HashSet<>();
+        Set<IdentityLink> groupsNew = delegateTask.getCandidates();
+        groupsNew.stream().forEach((groupNew) -> {
+            asGroup_New.add(groupNew.getGroupId());
+        });
+        LOG.info("asGroup in clonedocument: {}", asGroup_New, delegateTask.getId());
         
         /*void addCandidateStarterGroup(String processDefinitionId,
                               String groupId)*/
