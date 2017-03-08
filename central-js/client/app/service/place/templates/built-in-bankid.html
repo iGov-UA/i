@@ -100,7 +100,8 @@
 
             <div class="row"
                  ng-repeat="property in activitiForm.formProperties track by property.id"
-                 ng-if="isFieldVisible(property)">
+                 ng-if="isFieldVisible(property)"
+                 ng-class="{'central-igov-okpo-block':isOKPOAutocompleteFields(property.id) === 'okpo_field' || isOKPOAutocompleteFields(property.id) === 'okpo_autocomplete'}">
 
               <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
                 <table style="width: 100%; margin-bottom: 5px">
@@ -500,12 +501,12 @@
                        ng-required="isFieldRequired(property)"
                        ng-class="getBpAndFieldID(property)"
                        class="form-control"
-                       ng-if="!isOKPOField(property.id)"
+                       ng-if="isOKPOAutocompleteFields(property.id) !== 'okpo_field'"
                        value="">
 
                 <!--field for OKPO search start-->
-                <div ng-switch-when="string" ng-if="isOKPOField(property.id)">
-                  <div class="okpo" ng-if="isOKPOField(property.id)">
+                <div ng-switch-when="string" ng-if="isOKPOAutocompleteFields(property.id)">
+                  <div class="okpo" ng-if="isOKPOAutocompleteFields(property.id) === 'okpo_field'">
                     <input type="text"
                            name="{{property.id}}"
                            ng-model="data.formData.params[property.id].value"
