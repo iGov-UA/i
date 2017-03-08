@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.List;
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
@@ -66,12 +67,12 @@ public class DocumentCommonController {
         LOG.info("sKey_GroupPostfix in cloneDocumentStepSubject: {}", sKey_GroupPostfix);
         LOG.info("sKey_GroupPostfix_New in cloneDocumentStepSubject: {}", sKey_GroupPostfix_New);
 
-        DocumentStepSubjectRight oDocumentStepSubjectRight = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sID_Step);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sID_Step);
         
-        LOG.info("oDocumentStepSubjectRight in cloneDocumentStepSubject is {}", oDocumentStepSubjectRight);
+        LOG.info("oDocumentStepSubjectRight in cloneDocumentStepSubject is {}", aDocumentStepSubjectRight);
         
-        if (oDocumentStepSubjectRight != null) {
-            return JSONValue.toJSONString(oDocumentStepSubjectRight);
+        if (aDocumentStepSubjectRight != null) {
+            return JSONValue.toJSONString(aDocumentStepSubjectRight);
         }
 
         return "DocumentStepSubjectRight is null";
