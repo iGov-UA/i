@@ -5,6 +5,7 @@
                 <decrypt-file on-file-upload-success="onFileUploadSuccess($file)"
                               options="vm.options"
                               o-service-data="{}">{{vm.options.text}}</decrypt-file>
+                <span> (після кліку на це посилання Вам знадобиться Ваш електронно-цифровий підпис)</span>
                 <!--Розшифрувати файл з ДФС-->
             </div>
 
@@ -17,11 +18,11 @@
                             data-toggle="modal"
                             data-target="#myModal"
                             ng-click="vm.onView()">
-                        <span class="glyphicon glyphicon-eye-open"></span> Показати
+                        <span class="glyphicon glyphicon-eye-open" ng-hide="vm.options.hideIcon"></span> {{vm.options.text}}
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal fade dfs-file-viewer" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
