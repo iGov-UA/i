@@ -279,8 +279,8 @@ public class DocumentStepService {
 
                     for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_Source : oDocumentStepSubjectRight_Source.getDocumentStepSubjectRightFields()) {
                         DocumentStepSubjectRightField oDocumentStepSubjectRightField = new DocumentStepSubjectRightField();
-                        oDocumentStepSubjectRightField.setbWrite(oDocumentStepSubjectRightField_Source.getbWrite());
-                        oDocumentStepSubjectRightField.setsMask_FieldID(oDocumentStepSubjectRightField_Source.getsMask_FieldID());
+                        oDocumentStepSubjectRightField.setbWrite(true);
+                        oDocumentStepSubjectRightField.setsMask_FieldID("*");
                         oDocumentStepSubjectRightField.setDocumentStepSubjectRight(oDocumentStepSubjectRight);
                         //oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField);
                         //oDocumentStepSubjectRightField_Source.getsMask_FieldID();
@@ -295,6 +295,7 @@ public class DocumentStepService {
 
     //                try{
                     documentStepDao.saveOrUpdate(oDocumentStep_Active);
+                    
     //                }catch(Exception ex){
 
     //                }
