@@ -822,7 +822,7 @@ public class DocumentStepService {
                 LOG.info("soJSON={}", soJSON);
 
                 //setDocumentSteps(snID_Process_Activiti, soJSON);
-                aResDocumentStep = setDocumentSteps(snID_Process_Activiti, soJSON);
+                setDocumentSteps(snID_Process_Activiti, soJSON);
                 List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
                 LOG.info("aDocumentStep={}", aDocumentStep);
 
@@ -842,6 +842,20 @@ public class DocumentStepService {
                 runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
             }
         }
+        
+        List<DocumentStep> aResultDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        
+        LOG.info("aResultDocumentStep in initDocChecker is {}", aResultDocumentStep);
+        
+        for(DocumentStep oDocumentStep : aResultDocumentStep){
+            if(oDocumentStep.getsKey_Step().equals(sKey_Step_Document)){
+                LOG.info("founded DocumentStep in initDocChecker is {}", oDocumentStep);
+                aResDocumentStep.add(oDocumentStep);
+            }
+        }
+        
+         LOG.info("aResDocumentStep in initDocChecker is {}", aResDocumentStep);
+        
         return aResDocumentStep;
     }
 
