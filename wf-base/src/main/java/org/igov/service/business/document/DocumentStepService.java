@@ -69,6 +69,9 @@ public class DocumentStepService {
     private RuntimeService runtimeService;
 
     @Autowired
+    private RepositoryService repositoryService;
+    
+    @Autowired
     private HistoryService historyService;
 
     @Autowired
@@ -295,8 +298,10 @@ public class DocumentStepService {
 
     //                try{
                     documentStepDao.saveOrUpdate(oDocumentStep_Active);
+                    
     //                }catch(Exception ex){
-
+                //oTaskService.addCandidateGroup(snID_Task, oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                repositoryService.addCandidateStarterGroup(snID_Process_Activiti, oDocumentStepSubjectRight.getsKey_GroupPostfix());
     //                }
                 } else {
                     LOG.info("sKey_GroupPostfix is not equal Key_GroupPostfix");
