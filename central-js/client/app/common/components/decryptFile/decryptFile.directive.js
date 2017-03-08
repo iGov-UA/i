@@ -117,6 +117,10 @@
       var path = $location.path();
       var restoreUrl = hostUrl + path + (sID_Order ? '?sID_Order=' + sID_Order : '');
 
+      if(vm.options.openModalViewer){
+        window.localStorage.setItem("openDfsAnswerModalViewer", angular.toJson(vm.options.openModalViewer));
+      }
+
       $window.location.href = hostUrl + '/api/sign-content/decrypt?formID=' +
         params.file.value.id + '&nID_Server=' +
         nID_Server + '&sName=' + params.file.fileName + '&nID=' + params.id + '&restoreUrl=' + restoreUrl;
