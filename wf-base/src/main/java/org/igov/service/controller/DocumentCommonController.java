@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.List;
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
@@ -59,18 +60,19 @@ public class DocumentCommonController {
     String cloneDocumentStepSubject(
             @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "snID_Process_Activiti") String snID_Process_Activiti,
             @ApiParam(value = "группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix") String sKey_GroupPostfix,
-            @ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix_New") String sKey_GroupPostfix_New) throws Exception {
+            @ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix_New") String sKey_GroupPostfix_New,
+            @ApiParam(value = "степ документа", required = false) @RequestParam(required = false, value = "sID_Step") String sID_Step) throws Exception {
 
         LOG.info("snID_Process_Activiti in cloneDocumentStepSubject: {}", snID_Process_Activiti);
         LOG.info("sKey_GroupPostfix in cloneDocumentStepSubject: {}", sKey_GroupPostfix);
         LOG.info("sKey_GroupPostfix_New in cloneDocumentStepSubject: {}", sKey_GroupPostfix_New);
 
-        DocumentStepSubjectRight oDocumentStepSubjectRight = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sID_Step);
         
-        LOG.info("oDocumentStepSubjectRight in cloneDocumentStepSubject is {}", oDocumentStepSubjectRight);
+        LOG.info("oDocumentStepSubjectRight in cloneDocumentStepSubject is {}", aDocumentStepSubjectRight);
         
-        if (oDocumentStepSubjectRight != null) {
-            return JSONValue.toJSONString(oDocumentStepSubjectRight);
+        if (aDocumentStepSubjectRight != null) {
+            return JSONValue.toJSONString(aDocumentStepSubjectRight);
         }
 
         return "DocumentStepSubjectRight is null";

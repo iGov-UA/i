@@ -32,7 +32,7 @@
 
     vm.isLoggedIn = false;
     vm.getRedirectURI = getRedirectURI;
-    vm.decryptedIsPresent;
+    vm.decryptedIsPresent = false;
     vm.onDownload = onDownload;
     vm.onView = onView;
     vm.parseDate = parseDate;
@@ -52,6 +52,10 @@
       $scope.$on('event.logout', function () {
         vm.isLoggedIn = false;
       });
+
+      if(vm.decryptedIsPresent && vm.options.openModalViewer){
+        onView(true);
+      }
     }
 
     function onDownload() {
@@ -60,10 +64,10 @@
       downloadFile(meta.fileId, meta.fileName);
     }
 
-    function onView() {
+    function onView(bOpenViewer) {
       var meta = getFileMetadata();
 
-      viewContent(meta.fileId, meta.fileName);
+      viewContent(meta.fileId, meta.fileName, bOpenViewer);
     }
 
     function getFileMetadata() {
@@ -119,7 +123,7 @@
       });
     }
 
-    function viewContent(fileId, fileName){
+    function viewContent(fileId, fileName, bOpenViewer){
       $http({
         method: 'GET',
         url: '/api/answer/DFS/decrypted/json?signedFileID=' + fileId + '&fileName=' + fileName
@@ -129,6 +133,12 @@
         }
 
         vm.viewContent = angular.copy(response.data);
+        if(window.localStorage.getItem("openDfsAnswerModalViewer")){
+          if(bOpenViewer){
+            $('.dfs-file-viewer').modal('toggle');
+          }
+          window.localStorage.removeItem("openDfsAnswerModalViewer");
+        }
       }, function errorCallback(response) {
         console.log(response);
       });

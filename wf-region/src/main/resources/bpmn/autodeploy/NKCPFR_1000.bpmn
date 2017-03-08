@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="NKCPFR_1000" name="Подання адміністративних даних на основі специфікації XML до Національної комісіїз цінних паперів та фондового ринку" isExecutable="true">
+  <process id="NKCPFR_1000" name="Подання даних на основі специфікації XML до Національної комісіїз цінних паперів та фондового ринку" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="asOrgType" name="Тип суб’єкта подання даних" type="enum" required="true">
+        <activiti:formProperty id="asTypeInfo" name="Тип даних для передачі" type="enum" required="true">
+          <activiti:value id="sAdmData" name="Адміністративні дані"></activiti:value>
+          <activiti:value id="sReestrData" name="Реєстраційні дані"></activiti:value>
+          <activiti:value id="sTakeInfo" name="Подання інформації"></activiti:value>
+          <activiti:value id="sOpenInfo" name="Розкриття інформації"></activiti:value>
+          <activiti:value id="sPlaseInfo" name="Розміщення інформації"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOrgAdmData" name="Тип суб’єкта подання даних" type="enum" required="true">
           <activiti:value id="sDU" name="Депозитарна установа"></activiti:value>
           <activiti:value id="sKU" name="Клірингова установа"></activiti:value>
           <activiti:value id="sSO" name="Саморегулівна організація та об'єднання професійних учасників"></activiti:value>
@@ -11,12 +18,16 @@
           <activiti:value id="sTCP" name="Торговець цінними паперами"></activiti:value>
           <activiti:value id="sUIP" name="Управитель іпотечним покриттям"></activiti:value>
           <activiti:value id="sCD" name="Центральний депозитарій"></activiti:value>
-          <activiti:value id="sECP" name="Емітент цінних паперів"></activiti:value>
-          <activiti:value id="sKUA" name="Компанія з управління активами, управляюча активами НПФ"></activiti:value>
-          <activiti:value id="sURA" name="Уповноважене рейтингове агентство"></activiti:value>
-          <activiti:value id="sFB" name="Торговець цінними паперами, фондова біржа"></activiti:value>
-          <activiti:value id="sAF" name="Аудиторська фірма"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asOrgTakeInfo" name="Тип суб’єкта подання даних" type="enum" required="true">
+         <activiti:value id="sKUA" name="Компанія з управління активами, управляюча активами НПФ"></activiti:value>
+          <activiti:value id="sURA" name="Уповноважене рейтингове агентство"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOrgPlaseInfo" name="Тип суб’єкта подання даних" type="enum" required="true">
+          <activiti:value id="sTCP" name="Торговець цінними паперами"></activiti:value>
+          <activiti:value id="sFB" name="Фондова біржа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOrgOther" name="Зверніть увагу" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="asDUType" name="Тип даних, які передає депозитарна установа" type="enum" required="true">
           <activiti:value id="sDUDay" name="щоденні"></activiti:value>
           <activiti:value id="sDUMonth" name="щомісячні"></activiti:value>
@@ -63,9 +74,29 @@
           <activiti:value id="sURAYear" name="щоpiчні"></activiti:value>
           <activiti:value id="sURAUnreg" name="нерегулярні"></activiti:value>
         </activiti:formProperty>
-        
-        <activiti:formProperty id="nWorksNotif" name="Файл зі звітом" type="file" required="true"></activiti:formProperty>
-        
+        <activiti:formProperty id="asKUAInfo" name="Тип інформації, яку подає Компанія з управління активами, управляюча активами НПФ" type="enum" required="true">
+          <activiti:value id="sKUAFin" name="інформація щодо фінансового стану Компанії"></activiti:value>
+          <activiti:value id="sKUARes" name="про результати діяльності"></activiti:value>
+          <activiti:value id="sKUAMan" name="про управління активами"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asKUAFinType" name="Тип інформації щодо фінансового стану Компанії" type="enum" required="true">
+          <activiti:value id="sKUAFinMonth" name="щомісячна"></activiti:value>
+          <activiti:value id="sKUAFinQuat" name="щоквартальна"></activiti:value>
+          <activiti:value id="sKUAFinYear" name="щоpiчні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asKUAResType" name="Тип інформації про результати діяльності Компанії" type="enum" required="true">
+          <activiti:value id="sKUAResDay" name="щоденні"></activiti:value>
+          <activiti:value id="sKUAResMonth" name="щомісячна"></activiti:value>
+          <activiti:value id="sKUAResQuat" name="щоквартальна"></activiti:value>
+          <activiti:value id="sKUAResYear" name="щоpiчні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asKUAManType" name="Тип інформації про управління активами Компанії" type="enum" required="true">
+          <activiti:value id="sKUAManMonth" name="щомісячна"></activiti:value>
+          <activiti:value id="sKUAManQuat" name="щоквартальна"></activiti:value>
+          <activiti:value id="sKUAManYear" name="щоpiчні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sInfoVersion" name="Зверніть увагу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nReport" name="Файл зі звітом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('NKCPFR/NKCPFR_1000.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
