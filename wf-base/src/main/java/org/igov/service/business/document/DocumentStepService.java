@@ -164,10 +164,12 @@ public class DocumentStepService {
 //3.1) setDocumentStepSubjectRight(snID_Process_Activiti, sKey_GroupPostfix, bWrite) //Установить право записи, равное bWrite, для ветки к путем sKey_Step/sKey_GroupPostfix
 //3.2) cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New) //Клонировать ветку права записи с путем sKey_Step/sKey_GroupPostfix в ветку с путем 
     public List<DocumentStepSubjectRight> cloneDocumentStepSubject(String snID_Process_Activiti, String sKey_GroupPostfix, String sKey_GroupPostfix_New,
-            String _sKey_Step_Document) {//JSONObject //Map<String, Object>
+            String sKey_Step_Document) {//JSONObject //Map<String, Object>
         LOG.info("cloneDocumentStepSubject started...");
-        LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sKey_GroupPostfix_New={}", sKey_GroupPostfix, snID_Process_Activiti, sKey_GroupPostfix_New);
-        List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
+        LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sKey_GroupPostfix_New={}, sKey_Step_Document={}", 
+                sKey_GroupPostfix, snID_Process_Activiti, sKey_GroupPostfix_New, sKey_Step_Document);
+        
+        /*List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
         if (aTaskActive.size() < 1 || aTaskActive.get(0) == null) {
             throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
         }
@@ -200,7 +202,7 @@ public class DocumentStepService {
             //String sID = oProperty.getId(); 
         }
         LOG.info("mProcessVariable(added)={}", mProcessVariable);
-        String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document");
+        String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document"); */
 
         /*if (StringUtils.isEmpty(sKey_Step_Document)) {
             throw new IllegalStateException("There is no active Document Step! mProcessVariable=" + mProcessVariable +
