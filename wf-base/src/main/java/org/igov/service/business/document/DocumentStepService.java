@@ -301,7 +301,7 @@ public class DocumentStepService {
                     
     //                }catch(Exception ex){
                 //oTaskService.addCandidateGroup(snID_Task, oDocumentStepSubjectRight.getsKey_GroupPostfix());
-                repositoryService.addCandidateStarterGroup(snID_Process_Activiti, oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                //repositoryService.addCandidateStarterGroup(snID_Process_Activiti, oDocumentStepSubjectRight.getsKey_GroupPostfix());
     //                }
                 } else {
                     LOG.info("sKey_GroupPostfix is not equal Key_GroupPostfix");
@@ -770,7 +770,11 @@ public class DocumentStepService {
             asGroup_Old.add(groupOld.getGroupId());
         });
         LOG.info("asGroup_Old before setting: {} delegateTask: {}", asGroup_Old, delegateTask.getId());
-
+        
+        if(!asGroup_Old.isEmpty()){
+            asGroup.addAll(asGroup_Old);
+        }
+        
         delegateTask.addCandidateGroups(asGroup);
         
         Set<String> asGroup_New = new HashSet<>();
