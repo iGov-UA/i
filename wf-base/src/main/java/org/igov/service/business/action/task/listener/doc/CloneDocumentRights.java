@@ -69,7 +69,7 @@ public class CloneDocumentRights implements TaskListener {
                     asGroup.add(oDocumentStepSubjectRight.getsKey_GroupPostfix());
         }
        
-        delegateTask.addCandidateGroups(asGroup);
+        //delegateTask.addCandidateGroups(asGroup);
         
         LOG.info("aDocumentStepSubjectRight in listenet is: {} ", aDocumentStepSubjectRight);
         LOG.info("CloneDocumentRights finished");

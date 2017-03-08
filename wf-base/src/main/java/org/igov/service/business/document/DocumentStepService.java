@@ -297,7 +297,7 @@ public class DocumentStepService {
                     documentStepDao.saveOrUpdate(oDocumentStep_Active);
                     
     //                }catch(Exception ex){
-
+                oTaskService.addCandidateGroup(snID_Task, oDocumentStepSubjectRight.getsKey_GroupPostfix());
     //                }
                 } else {
                     LOG.info("sKey_GroupPostfix is not equal Key_GroupPostfix");
