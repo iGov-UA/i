@@ -857,7 +857,10 @@ public class FlowService implements ApplicationContextAware {
      */
     public List<Map<String, String>> getFlowSlotTickets(String sLogin, Boolean bEmployeeUnassigned, String sDateFilter)
             throws ParseException {
+    
         List<Map<String, String>> mReturn = new LinkedList<>();
+    try{
+        
         SimpleDateFormat oDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date oDateFilter = null;
         if (sDateFilter != null) {
@@ -957,6 +960,11 @@ public class FlowService implements ApplicationContextAware {
                 }
             }            
         }
+        }
+        catch(Exception ex){
+            LOG.info("Error during gettion of flowservice: {}", ex);
+        }
+        
         return mReturn;
     }
 

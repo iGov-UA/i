@@ -746,6 +746,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           $scope.data.formData.params[property.id].value = null;
         }
 
+        if(property.options && property.options.hasOwnProperty('bVisible')){
+          bVisible = bVisible && property.options['bVisible'];
+        }
+
         return bVisible;
       };
 
