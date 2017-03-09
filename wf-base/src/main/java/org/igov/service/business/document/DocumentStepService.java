@@ -544,7 +544,9 @@ public class DocumentStepService {
         }
 
         //DocumentStep = oDocumentStep_Active = oDocumentStep_Active(snID_Process_Activiti);
+        LOG.info("sLogin in getDocumentStepRights is {}", sLogin);       
         List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
+        LOG.info("aGroup in getDocumentStepRights is {}", aGroup);
         Set<String> asID_Group = new HashSet<>();
         if (aGroup != null) {
             aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
