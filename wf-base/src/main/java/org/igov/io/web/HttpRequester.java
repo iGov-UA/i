@@ -35,19 +35,51 @@ public class HttpRequester {
     @Autowired
     GeneralConfig generalConfig;
 
+    private String sLogin;
+    private String sPassword;
+    private Integer nResponseCode;
+
+    public String getsUser() {
+        return sLogin;
+    }
+
+    public void setsLogin(String sLogin) {
+        this.sLogin = sLogin;
+    }
+
+    public String getsPassword() {
+        return sPassword;
+    }
+
+    public void setsPassword(String sPassword) {
+        this.sPassword = sPassword;
+    }
+
+    public Integer getnResponseCode() {
+        return nResponseCode;
+    }
+
     private final boolean bExceptionOnNorSuccess = true;
 
     public String postInside(String sURL, Map<String, Object> mParam)
             throws Exception {
         return postInside(sURL, mParam, null, null);
     }
-    
+
     public String postInside(String sURL, Map<String, Object> mParam, String sParam, String contentType)
             throws Exception {
-        String sUser = generalConfig.getAuthLogin();
-        String sPassword = generalConfig.getAuthPassword();
-        
-        return postInside(sURL, mParam, sParam, contentType, sUser, sPassword);
+        String sLogin, sPassword;
+        if (this.sLogin != null) {
+            sLogin = this.sLogin;
+        } else {
+            sLogin = generalConfig.getAuthLogin();
+        }
+        if (this.sPassword != null) {
+            sPassword = this.sPassword;
+        } else {
+            sPassword = generalConfig.getAuthPassword();
+        }
+        return postInside(sURL, mParam, sParam, contentType, sLogin, sPassword);
     }
 
     public String postInside(String sURL, Map<String, Object> mParam, String sParam, String contentType, String sUser, String sPassword)
@@ -79,18 +111,18 @@ public class HttpRequester {
         StringBuilder osReturn = new StringBuilder();
         try {
             HttpURLConnection oConnection = (HttpURLConnection) oURL.openConnection();
-            if(sUser != null && sPassword != null){
+            if (sUser != null && sPassword != null) {
                 String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
                 oConnection.setRequestProperty("authorization", "Basic " + sAuth);
             }
 
             oConnection.setRequestMethod(RequestMethod.POST.name());
-            if(contentType != null){
+            if (contentType != null) {
                 oConnection.setRequestProperty("Content-Type", contentType);
-            } else{
+            } else {
                 oConnection.setRequestProperty("Content-Type", "text/plain");
             }
-            
+
             oConnection.setDoOutput(true);
             DataOutputStream oDataOutputStream = new DataOutputStream(oConnection.getOutputStream());
             // Send post request
@@ -106,6 +138,7 @@ public class HttpRequester {
             }
             BufferedReader oBufferedReader_InputStream = new BufferedReader(new InputStreamReader(oInputStream));
             nStatus = oConnection.getResponseCode();
+            this.nResponseCode = nStatus;
             String sLine;
 
             while ((sLine = oBufferedReader_InputStream.readLine()) != null) {
@@ -176,18 +209,11 @@ public class HttpRequester {
         BufferedReader oBufferedReader_InputStream;
         HttpURLConnection oConnection;
 
-        //HttpsURLConnection.verify(
         Integer nStatus;
         StringBuilder osReturn = new StringBuilder();
         try {
 
             URLConnection oConnectAbstract = oURL.openConnection();
-            /*if (oConnectAbstract instanceof HttpsURLConnection) {
-                //simplifySSLConnection(bSkipValidationSSL ? null : (HttpsURLConnection) oConnectAbstract);
-                simplifySSLConnection(bSkipValidationSSL, (HttpsURLConnection) oConnectAbstract);
-            }*/
-
-            //oConnection = (HttpURLConnection) oURL.openConnection();
             oConnection = (HttpURLConnection) oConnectAbstract;
 
             String sUser = generalConfig.getAuthLogin();
@@ -256,6 +282,7 @@ public class HttpRequester {
 
     /**
      * Method works only with GET http method
+     *
      * @param sURL
      * @param mParam
      * @param multipleParam
@@ -265,9 +292,9 @@ public class HttpRequester {
     public String getInside(String sURL, Map<String, String> mParam, Map<String, List<String>> multipleParam) throws Exception {
         sURL = getFullURL(sURL, mParam);
         StringBuilder multipleKeyValues = new StringBuilder();
-        for (Map.Entry<String, List<String>> entry :multipleParam.entrySet()) {
+        for (Map.Entry<String, List<String>> entry : multipleParam.entrySet()) {
             String key = entry.getKey();
-            for (String value : entry.getValue()){
+            for (String value : entry.getValue()) {
                 multipleKeyValues.append("&");
                 multipleKeyValues.append(key);
                 multipleKeyValues.append("=");
@@ -286,30 +313,9 @@ public class HttpRequester {
      * @param oConnectHTTPS соединение (если null, то верификация будет
      * пропущенна)
      */
-    //public void simplifySSLConnection(HttpsURLConnection oConnectHTTPS) {
-    //public void simplifySSLConnection(boolean bSkip, HttpsURLConnection oConnectHTTPS) {
     public void simplifySSLConnection(boolean bSkip) {
         if (bSkip) {
             LOG.info("Skip Sertificate!");
-            /*javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
-                new javax.net.ssl.HostnameVerifier(){
-
-                    public boolean verify(String hostname,
-                            javax.net.ssl.SSLSession sslSession) {
-                        //if (hostname.equals("localhost")) {
-                            return true;
-                        //}
-                        //return false;
-                    }
-                });            
-             */
- /*oConnectHTTPS.setHostnameVerifier(new HostnameVerifier() {
-                @Override
-                public boolean verify(String arg0, SSLSession arg1) {
-                    return true;
-                }
-            });*/
-
             TrustManager[] trustAllCerts = {
                 new X509TrustManager() {
                     public X509Certificate[] getAcceptedIssuers() {
@@ -341,43 +347,6 @@ public class HttpRequester {
             HttpsURLConnection.setDefaultHostnameVerifier(oHostnameVerifier);
 
         }
-        /*if (oConnectHTTPS != null) {
-            //HttpsURLConnection oConnectHTTPS = (HttpsURLConnection) oConnectAbstract;
-            oConnectHTTPS.setHostnameVerifier(new HostnameVerifier() {
-                @Override
-                public boolean verify(String arg0, SSLSession arg1) {
-                    return true;
-                }
-            });
-        } else {
-            TrustManager[] trustAllCerts = {
-                new X509TrustManager() {
-                    public X509Certificate[] getAcceptedIssuers() {
-                        return null;
-                    }
-
-                    public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                    }
-
-                    public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                    }
-                }
-            };
-            try {
-                SSLContext oSSLContext = SSLContext.getInstance("SSL");
-                oSSLContext.init(null, trustAllCerts, new SecureRandom());
-                HttpsURLConnection.setDefaultSSLSocketFactory(oSSLContext.getSocketFactory());
-            } catch (Exception oException) {
-                _RiseWarn(oException, "simplifySSLConnection", "", "Fail getting SSLContext");
-            }
-            HostnameVerifier oHostnameVerifier = new HostnameVerifier() {
-                public boolean verify(String urlHostName, SSLSession session) {
-                    _RiseWarn("simplifySSLConnection", "URL Host(urlHostName)=" + urlHostName, " vs. " + session.getPeerHost());
-                    return true;
-                }
-            };
-            HttpsURLConnection.setDefaultHostnameVerifier(oHostnameVerifier);
-        }*/
     }
 
     public byte[] getInsideBytes(String sURL, Map<String, String> mParam) throws Exception {

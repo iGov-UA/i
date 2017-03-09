@@ -197,6 +197,13 @@ public class GeneralConfig {
     
     @Value("${general.ECP.Self.sPassword}")
     private String sECPKeystorePasswd;
+    
+    @Value("${general.Export.Agroholding.sURL}")
+    private String sURL_Agroholding;
+    @Value("${general.Export.Agroholding.Auth.sLogin}")
+    private String sLogin_Auth_Agroholding;
+    @Value("${general.Export.Agroholding.Auth.sPassword}")
+    private String sPassword_Auth_Agroholding;
 
     
     public String getObjectSubPlace_Auth_sLogin() {
@@ -593,6 +600,18 @@ public class GeneralConfig {
             LOG.debug("FAIL:", oException);
         }
         return b;
+    }
+
+    public String getsURL_Agroholding() {
+        return sURL_Agroholding;
+    }
+
+    public String getsLogin_Auth_Agroholding() {
+        return sLogin_Auth_Agroholding;
+    }
+
+    public String getsPassword_Auth_Agroholding() {
+        return sPassword_Auth_Agroholding;
     }
     
 }
