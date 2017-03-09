@@ -978,8 +978,11 @@ public class DocumentStepService {
 
 		for (DocumentStep oDocumentStep : aDocumentStep) {
 			if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
+				LOG.info("getsKey_Step from oDocumentStep is ", oDocumentStep.getsKey_Step());
 				oFindedDocumentStep = oDocumentStep;
+				LOG.info("oFindedDocumentStep = {}", oFindedDocumentStep);
 				} else
+					throw new Exception("DocumentStep not found");
 				LOG.info("oFindedDocumentStep not found");
 		}
 
