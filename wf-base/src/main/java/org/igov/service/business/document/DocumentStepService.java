@@ -984,13 +984,28 @@ public class DocumentStepService {
 		return mReturn;
 	}
 
-	public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin)
+    public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin)
 			throws JsonProcessingException, RecordNotFoundException {
 
 		List<DocumentSubmitedUnsignedVO> aResDocumentSubmitedUnsigned = new ArrayList<>();
+		
+		 List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
+	        // получаю все группы
+	        List<String> asID_Group = new ArrayList<>();
+	        
+	        if (aGroup != null) {
+	            aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
+	        }
 
-		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
-				sLogin);
+	        LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
+	        LOG.info("aGroup={}", aGroup);
+	        
+	
+	         	
+	        	
+	        
+		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllByInValues("sKey_GroupPostfix",
+				asID_Group);
 		LOG.info("methodgetDocumentSubmitedUnsigned...  sLogin is ", sLogin);
 		DocumentStepSubjectRight oFindedDocumentStepSubjectRight = null;
 
@@ -1044,10 +1059,7 @@ public class DocumentStepService {
 						oDocumentSubmitedUnsignedVO.setsDateSubmit(sDate);
 						oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
 
-						// String soDocumentSubmitedUnsignedVO_Fields =
-						// JsonRestUtils.toJson((Object)
-						// oDocumentSubmitedUnsignedVO);
-
+						
 						aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
 					} else {
 						LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", snID_Process));
