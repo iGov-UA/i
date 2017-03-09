@@ -958,7 +958,7 @@ public class DocumentStepService {
 				oFindedDocumentStep = oDocumentStep;
 				break;
 			} else
-				throw new Exception("oFindedDocumentStep not found");
+				LOG.info("oFindedDocumentStep not found");
 
 		}
 
