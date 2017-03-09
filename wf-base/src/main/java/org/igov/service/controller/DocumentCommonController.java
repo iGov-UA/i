@@ -20,6 +20,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.List;
+
+import org.igov.model.action.vo.DocumentSubmitedUnsignedVO;
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
@@ -78,4 +80,27 @@ public class DocumentCommonController {
         return "DocumentStepSubjectRight is null";
 
     }
+    
+	@ApiOperation(value = "Получение списка подписанных документов без ЕЦП")
+	@RequestMapping(value = "/getDocumentSubmitedUnsigned", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	// @Transactional
+	public @ResponseBody String getDocumentSubmitedUnsigned(
+			@ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
+			throws Exception {
+
+		LOG.info("sLogin: ", sLogin);
+
+		List<DocumentSubmitedUnsignedVO> aDocumentSubmitedUnsignedVO = documentStepService
+				.getDocumentSubmitedUnsigned(sLogin);
+
+		LOG.info("aDocumentSubmitedUnsignedVO in getDocumentSubmitedUnsigned is {}", aDocumentSubmitedUnsignedVO);
+
+		if (aDocumentSubmitedUnsignedVO != null) {
+			return JSONValue.toJSONString(aDocumentSubmitedUnsignedVO);
+		}
+
+		return "aDocumentSubmitedUnsignedVO is null";
+
+	}
+    
 }
