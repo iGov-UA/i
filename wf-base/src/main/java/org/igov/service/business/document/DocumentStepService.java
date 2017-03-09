@@ -978,14 +978,16 @@ public class DocumentStepService {
 		DocumentStep oFindedDocumentStep = null;
 
 		for (DocumentStep oDocumentStep : aDocumentStep) {
-			if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
-				LOG.info("getsKey_Step from oDocumentStep is ", oDocumentStep.getsKey_Step());
-				oFindedDocumentStep = oDocumentStep;
-				LOG.info("oFindedDocumentStep = {}", oFindedDocumentStep);
-
-			} else
-				throw new Exception("DocumentStep not found");
-			LOG.info("oFindedDocumentStep not found");
+			
+			   if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
+			    LOG.info("getsKey_Step from oDocumentStep is ", oDocumentStep.getsKey_Step());
+			    oFindedDocumentStep = oDocumentStep;
+			    LOG.info("oFindedDocumentStep = {}", oFindedDocumentStep);
+			    break;
+			   }
+			   } 
+		if (oFindedDocumentStep == null){
+			    throw new Exception("DocumentStep not found");
 		}
 		boolean checkSubmited = true;
 
