@@ -969,23 +969,24 @@ public class DocumentStepService {
 			throws Exception {
 		Map<String, Boolean> mReturn = new HashMap();
 
-		List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", nID_Process);// oDocumentStepDao.//getStepForProcess(nID_Process);
+		List<DocumentStep> aDocumentStep = documentStepDao.findAll();// .findAllBy("snID_Process_Activiti",
+																		// nID_Process);//
+																		// oDocumentStepDao.//getStepForProcess(nID_Process);
 		LOG.info("aDocumentStep in isDocumentStepSubmitedAll: {}", aDocumentStep);
 		LOG.info("The size of list aDocumentStep is {}", (aDocumentStep != null ? aDocumentStep.size() : null));
 		// LOG.info("Result list of steps: {}", aDocumentStep);
 
 		DocumentStep oFindedDocumentStep = null;
-
 		for (DocumentStep oDocumentStep : aDocumentStep) {
-			if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
-				LOG.info("getsKey_Step from oDocumentStep is ", oDocumentStep.getsKey_Step());
-				oFindedDocumentStep = oDocumentStep;
-				LOG.info("oFindedDocumentStep = {}", oFindedDocumentStep);
-				} else
-					throw new Exception("DocumentStep not found");
-				LOG.info("oFindedDocumentStep not found");
+			if (!aDocumentStep.isEmpty() && oDocumentStep != null) {
+				if (oDocumentStep.getSnID_Process_Activiti().equals(nID_Process)
+						&& oDocumentStep.getsKey_Step().equals(sKey_Step)) {
+					oFindedDocumentStep = oDocumentStep;
+				}
+			} else
+				throw new Exception("DocumentStep not found");
+			LOG.info("oFindedDocumentStep not found");
 		}
-
 		boolean checkSubmited = true;
 
 		for (DocumentStepSubjectRight oDocumentStepSubjectRight : oFindedDocumentStep.getRights()) {
