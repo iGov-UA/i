@@ -3,6 +3,11 @@
   <process id="NKCPFR_1000" name="Подання даних на основі специфікації XML до Національної комісії з цінних паперів та фондового ринку" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="asFormat" name="Формат передачі даних" type="enum" required="true">
+          <activiti:value id="sFile" name="завантаження XML-файлу"></activiti:value>
+          <activiti:value id="sForm" name="заповнення форми для створення XML-файлу"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sFormVersion" name="Зверніть увагу" type="label" default="Даний функціонал у розробці"></activiti:formProperty>
         <activiti:formProperty id="asTypeInfo" name="Тип даних для передачі" type="enum" required="true">
           <activiti:value id="sAdmData" name="Адміністративні дані"></activiti:value>
           <activiti:value id="sReestrData" name="Реєстраційні дані"></activiti:value>
@@ -134,12 +139,7 @@
           <activiti:value id="sKUAManYear" name="щоpiчні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sInfoVersion" name="Зверніть увагу" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="asFormat" name="Формат передачі даних" type="enum" required="true">
-          <activiti:value id="sFile" name="завантаження XML-файлу"></activiti:value>
-          <activiti:value id="sForm" name="заповнення форми для створення XML-файлу"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="nReport" name="Файл зі звітом" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFormVersion" name="Зверніть увагу" type="label" default="Даний функціонал у розробці"></activiti:formProperty>
         <activiti:formProperty id="form_signed_all" name="поле для наложения ЭЦП (должно быть скрыто); ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
