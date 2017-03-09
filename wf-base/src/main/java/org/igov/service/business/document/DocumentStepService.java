@@ -477,6 +477,8 @@ public class DocumentStepService {
             LOG.info("getDocumentStepLogins sID_Group={}, aUser={}", sID_Group, aUser);
             List<Map<String, Object>> amUserProperty = new LinkedList();
             for (User oUser : aUser) {
+                LOG.info("oDocumentStepSubjectRight.getsLogin() is {}", oDocumentStepSubjectRight.getsLogin());
+                LOG.info("oUser.getId() is {}", oUser.getId());
                 if(oUser.getId().equals(oDocumentStepSubjectRight.getsLogin())){
                     Map<String, Object> mUser = new HashMap();
                     mUser.put("sLogin", oUser.getId());
