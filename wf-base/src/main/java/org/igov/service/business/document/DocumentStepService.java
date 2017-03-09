@@ -159,6 +159,7 @@ public class DocumentStepService {
             List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
             oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
             oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
+            oDocumentStepSubjectRight.setsLogin(sKey_Group);
             LOG.info("right for step: {}", oDocumentStepSubjectRight);
             aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
         }
@@ -476,10 +477,12 @@ public class DocumentStepService {
             LOG.info("getDocumentStepLogins sID_Group={}, aUser={}", sID_Group, aUser);
             List<Map<String, Object>> amUserProperty = new LinkedList();
             for (User oUser : aUser) {
-                Map<String, Object> mUser = new HashMap();
-                mUser.put("sLogin", oUser.getId());
-                mUser.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
-                amUserProperty.add(mUser);
+                if(oUser.getId().equals(oDocumentStepSubjectRight.getsLogin())){
+                    Map<String, Object> mUser = new HashMap();
+                    mUser.put("sLogin", oUser.getId());
+                    mUser.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
+                    amUserProperty.add(mUser);
+                }
             }
             mParamDocumentStepSubjectRight.put("aUser", amUserProperty);
             LOG.info("amUserProperty={}", amUserProperty);
