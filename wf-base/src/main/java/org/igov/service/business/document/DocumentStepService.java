@@ -998,15 +998,13 @@ public class DocumentStepService {
 		for (DocumentStepSubjectRight oDocumentStepSubjectRight : oFindedDocumentStep.getRights()) {
 
 			if (oDocumentStepSubjectRight != null) {
-
 				DateTime sDate = oDocumentStepSubjectRight.getsDate();
-				LOG.info("sDate =", sDate);
+				LOG.info("sDate ={}", oDocumentStepSubjectRight.getsDate());
 
 				if (sDate == null) {
 					checkSubmited = false;
 					break;
-				}
-
+				} 
 				mReturn.put("bSubmitedAll", checkSubmited);
 			} else
 				LOG.error("oDocumentStepSubjectRight is null");
