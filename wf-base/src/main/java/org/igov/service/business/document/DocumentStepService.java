@@ -54,6 +54,9 @@ public class DocumentStepService {
     private GenericEntityDao<Long, DocumentStep> documentStepDao;
 
     @Autowired
+    private DocumentStepDao oDocumentStepDao;
+    
+    @Autowired
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
 
     @Autowired
@@ -939,7 +942,7 @@ public class DocumentStepService {
 			throws Exception {
 		Map<String, Boolean> mReturn = new HashMap();
 
-		List<DocumentStep> aDocumentStep = ((DocumentStepDao) documentStepDao).getStepForProcess(nID_Process);
+		List<DocumentStep> aDocumentStep = oDocumentStepDao.getStepForProcess(nID_Process);
 		LOG.info("The size of list" + (aDocumentStep != null ? aDocumentStep.size() : null));
 		// LOG.info("Result list of steps: {}", aDocumentStep);
 
