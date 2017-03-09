@@ -305,7 +305,30 @@ public class DocumentStepService {
                     oDocumentStep_Active.setRights(aDocumentStepSubjectRight_SourceNew);
 
     //                try{
-                    documentStepDao.saveOrUpdate(oDocumentStep_Active);
+                    List<DocumentStep> aCheckDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+                    
+                    boolean saveflag = true;
+                    
+                    for(DocumentStep oDocumentStep : aCheckDocumentStep){
+                        List<DocumentStepSubjectRight> aoDocumentStepRights = oDocumentStep.getRights();
+                        
+                        for(DocumentStepSubjectRight right : aoDocumentStepRights)
+                        {
+                            if(right.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)){
+                                oDocumentStepSubjectRight = right;
+                                saveflag = false;
+                                break;
+                            }
+                        }
+                        
+                        if(!saveflag){
+                            break;
+                        }
+                    }
+                    
+                    if(saveflag){
+                        documentStepDao.saveOrUpdate(oDocumentStep_Active);
+                    }
                     
     //                }catch(Exception ex){
                 //oTaskService.addCandidateGroup(snID_Task, oDocumentStepSubjectRight.getsKey_GroupPostfix());
