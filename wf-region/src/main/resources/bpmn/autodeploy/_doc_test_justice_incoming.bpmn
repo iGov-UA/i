@@ -32,8 +32,8 @@
     <scriptTask id="scripttask2" name="клонирование прав" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       	var snID_Process_Activiti = execution.getProcessInstanceId();
-		var sKey_GroupPostfix = 'justice_common'
-		var sKey_GroupPostfix_New = 'MJU_Dnipro_Top1_Dep1'
+		var sKey_GroupPostfix = 'MJU_Dnipro_Top1_Dep1'
+		var sKey_GroupPostfix_New = 'MJU_Dnipro_Top1_Dep1_Exec9'
 		var sKey_Step_Document = 'decisioners'
 		var obj1 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document)
 		execution.setVariable('obj1', obj1)
@@ -57,17 +57,6 @@
           <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
           <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${CloneDocumentRights}">
-          <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[MJU_Dnipro_Top1_Dep1]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:string><![CDATA[MJU_Dnipro_Top1_Dep1_Exec10]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sKey_Step">
-            <activiti:string><![CDATA[decisioners]]></activiti:string>
-          </activiti:field>
-        </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -117,10 +106,10 @@
     <sequenceFlow id="flow30" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow33" sourceRef="usertask2" targetRef="scripttask3"></sequenceFlow>
-    <sequenceFlow id="flow34" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="usertask2" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="usertask3" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow36" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_justice_incoming">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_justice_incoming" id="BPMNPlane__doc_test_justice_incoming">
@@ -164,11 +153,7 @@
         <omgdi:waypoint x="200.0" y="95.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="455.0" y="270.0"></omgdi:waypoint>
-        <omgdi:waypoint x="490.0" y="270.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="542.0" y="298.0"></omgdi:waypoint>
+        <omgdi:waypoint x="402.0" y="298.0"></omgdi:waypoint>
         <omgdi:waypoint x="542.0" y="333.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
@@ -176,7 +161,11 @@
         <omgdi:waypoint x="630.0" y="360.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="254.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="307.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="402.0" y="205.0"></omgdi:waypoint>
         <omgdi:waypoint x="402.0" y="243.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
