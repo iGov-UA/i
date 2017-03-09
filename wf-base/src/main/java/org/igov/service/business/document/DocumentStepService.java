@@ -978,9 +978,11 @@ public class DocumentStepService {
 
 		for (DocumentStep oDocumentStep : aDocumentStep) {
 			if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
+				LOG.info("getsKey_Step from oDocumentStep is ", oDocumentStep.getsKey_Step());
 				oFindedDocumentStep = oDocumentStep;
-				break;
-			} else
+				LOG.info("oFindedDocumentStep = {}", oFindedDocumentStep);
+				} else
+					throw new Exception("DocumentStep not found");
 				LOG.info("oFindedDocumentStep not found");
 		}
 
@@ -991,14 +993,14 @@ public class DocumentStepService {
 			if (oDocumentStepSubjectRight != null) {
 
 				DateTime sDate = oDocumentStepSubjectRight.getsDate();
-				LOG.info("sDate =", oDocumentStepSubjectRight.getsDate());
+				LOG.info("sDate =", sDate);
 
 				if (sDate == null) {
 					checkSubmited = false;
 					break;
 				}
 
-				mReturn.put("Submited:", checkSubmited);
+				mReturn.put("bSubmitedAll", checkSubmited);
 			} else
 				LOG.error("oDocumentStepSubjectRight is null");
 		}
