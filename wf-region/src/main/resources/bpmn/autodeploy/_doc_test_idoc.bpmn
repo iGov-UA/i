@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_test_justice_incoming" name="130" isExecutable="true">
+  <process id="_doc_test_justice_setTasks" name="155" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
@@ -15,7 +15,7 @@
 		execution.setVariable('processInstanceId', processInstanceId)
 	</script>
     </scriptTask>
-    <userTask id="usertask1" name=" 1 - назначение руководителя">
+    <userTask id="usertask1" name=" 1 - назначение руководителя" activiti:candidateGroups="justice_common">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
@@ -29,16 +29,16 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <scriptTask id="scripttask2" name="клонирование прав" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="переключение степа" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       	var snID_Process_Activiti = execution.getProcessInstanceId();
-		var sKey_GroupPostfix = 'MJU_Dnipro_Top1_Dep1'
-		var sKey_GroupPostfix_New = execution.getVariable('sName_SubjectRole')
-		var sKey_Step_Document = execution.getVariable('sKey_Step_Document')
-		var obj1 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document)
-	 </script>
+
+		var sKey_Step= 'sender'
+		var obj1 = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+		
+	  </script>
     </scriptTask>
-    <userTask id="usertask2" name="2 - подпись руководителя">
+    <userTask id="usertask2" name="2 - подпись руководителя" activiti:candidateGroups="justice_common">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string" writable="false"></activiti:formProperty>
@@ -59,16 +59,15 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <scriptTask id="scripttask3" name="проверка подписей всех" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-		var nID_Process = execution.getProcessInstanceId();
-		var sLogin = execution.getVariable(sName_SubjectRole)
-		var sKey_Step = execution.getVariable(sKey_Step_Document)
-		var obj2 = documentStepService.isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step)
-		execution.setVariable('obj2', obj2)
+    <scriptTask id="scripttask3" name="переключение степа" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>	var snID_Process_Activiti = execution.getProcessInstanceId();
+
+		var sKey_Step= 'checker'
+		var obj1 = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+		
 	  </script>
     </scriptTask>
-    <userTask id="usertask3" name="3 - проверка все ли подписали">
+    <userTask id="usertask3" name="3 - проверка все ли подписали" activiti:candidateGroups="justice_common">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string" writable="false"></activiti:formProperty>
@@ -105,13 +104,14 @@
     <sequenceFlow id="flow30" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow33" sourceRef="usertask2" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="usertask2" targetRef="scripttask3"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="usertask3" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_justice_incoming">
-    <bpmndi:BPMNPlane bpmnElement="_doc_test_justice_incoming" id="BPMNPlane__doc_test_justice_incoming">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_justice_setTasks">
+    <bpmndi:BPMNPlane bpmnElement="_doc_test_justice_setTasks" id="BPMNPlane__doc_test_justice_setTasks">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="22.0" y="78.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -152,7 +152,11 @@
         <omgdi:waypoint x="200.0" y="95.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="402.0" y="298.0"></omgdi:waypoint>
+        <omgdi:waypoint x="455.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="270.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="542.0" y="298.0"></omgdi:waypoint>
         <omgdi:waypoint x="542.0" y="333.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
