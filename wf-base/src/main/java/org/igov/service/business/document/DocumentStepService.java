@@ -305,7 +305,30 @@ public class DocumentStepService {
                     oDocumentStep_Active.setRights(aDocumentStepSubjectRight_SourceNew);
 
     //                try{
-                    documentStepDao.saveOrUpdate(oDocumentStep_Active);
+                    List<DocumentStep> aCheckDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+                    
+                    boolean saveflag = true;
+                    
+                    for(DocumentStep oDocumentStep : aCheckDocumentStep){
+                        List<DocumentStepSubjectRight> aoDocumentStepRights = oDocumentStep.getRights();
+                        
+                        for(DocumentStepSubjectRight right : aoDocumentStepRights)
+                        {
+                            if(right.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)){
+                                oDocumentStepSubjectRight = right;
+                                saveflag = false;
+                                break;
+                            }
+                        }
+                        
+                        if(!saveflag){
+                            break;
+                        }
+                    }
+                    
+                    if(saveflag){
+                        documentStepDao.saveOrUpdate(oDocumentStep_Active);
+                    }
                     
     //                }catch(Exception ex){
                 //oTaskService.addCandidateGroup(snID_Task, oDocumentStepSubjectRight.getsKey_GroupPostfix());
@@ -447,7 +470,8 @@ public class DocumentStepService {
             mParamDocumentStepSubjectRight.put("sDate", oDocumentStepSubjectRight.getsDate() == null ? "" : oDocumentStepSubjectRight.getsDate().toString());//"2016-05-15 12:12:34"
             mParamDocumentStepSubjectRight.put("bWrite", oDocumentStepSubjectRight.getbWrite());//false
             mParamDocumentStepSubjectRight.put("sName", oDocumentStepSubjectRight.getsName() == null ? "" : oDocumentStepSubjectRight.getsName());//"Главный контроллирующий"
-            String sID_Group = new StringBuilder(sGroupPrefix).append(oDocumentStepSubjectRight.getsKey_GroupPostfix()).toString();
+            //String sID_Group = new StringBuilder(sGroupPrefix).append(oDocumentStepSubjectRight.getsKey_GroupPostfix()).toString();
+            String sID_Group = oDocumentStepSubjectRight.getsKey_GroupPostfix().toString();
             List<User> aUser = oIdentityService.createUserQuery().memberOfGroup(sID_Group).list();
             LOG.info("getDocumentStepLogins sID_Group={}, aUser={}", sID_Group, aUser);
             List<Map<String, Object>> amUserProperty = new LinkedList();
@@ -957,7 +981,7 @@ public class DocumentStepService {
 				oFindedDocumentStep = oDocumentStep;
 				break;
 			} else
-				throw new Exception("oFindedDocumentStep not found");
+				LOG.info("oFindedDocumentStep not found");
 
 		}
 
@@ -983,56 +1007,55 @@ public class DocumentStepService {
 		return mReturn;
 	}
 
-	public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin)
-			throws JsonProcessingException, RecordNotFoundException {
-
+public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin) throws JsonProcessingException, RecordNotFoundException {
+		
 		List<DocumentSubmitedUnsignedVO> aResDocumentSubmitedUnsigned = new ArrayList<>();
-
+		// Через дао получаем список DocumentStepSubjectRight по фильтру sLogin
 		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
 				sLogin);
-		LOG.info("methodgetDocumentSubmitedUnsigned...  sLogin is ", sLogin);
+
 		DocumentStepSubjectRight oFindedDocumentStepSubjectRight = null;
-
+		// Проходим по листу и для каждого
 		for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-
+			// Проверяем на налл
 			if (oDocumentStepSubjectRight != null) {
-
+				// Получаем дату ецп и дату подписания
 				DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
-				LOG.info("methodgetDocumentSubmitedUnsigned...  sDateECP is ", oDocumentStepSubjectRight.getsDateECP());
 				DateTime sDate = oDocumentStepSubjectRight.getsDate();
-				LOG.info("methodgetDocumentSubmitedUnsigned...  sDate is ", oDocumentStepSubjectRight.getsDate());
+				// проверяем, если даты ецп нет, но есть дата подписания - нашли
+				// нужный объект, который кладем в VO-обьект-обертку
 				if (sDateECP == null) {
 					if (sDate != null)
 						oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
-					LOG.info("methodgetDocumentSubmitedUnsigned...  sDate is {}", oFindedDocumentStepSubjectRight);
+
 				} else {
 					LOG.info("oFindedDocumentStepSubjectRight not found");
 				}
 
+				// Достаем nID_Process у найденного oDocumentStepSubjectRight через DocumentStep
 				String snID_Process = oFindedDocumentStepSubjectRight.getDocumentStep().getSnID_Process_Activiti();
-				LOG.info("methodgetDocumentSubmitedUnsigned...  snID_Process", snID_Process);
+
 				String sID_Order = oFindedDocumentStepSubjectRight.getDocumentStep().getnOrder().toString();
-				LOG.info("methodgetDocumentSubmitedUnsigned...  sID_Order", sID_Order);
+				// через апи активити по nID_Process 
 				HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
 						.processInstanceId(snID_Process).singleResult();
 
 				if (oProcessInstance != null) {
-
+					//вытаскиваем дату создания процесса
 					Date sDateCreateProcess = oProcessInstance.getStartTime();
-					LOG.info("methodgetDocumentSubmitedUnsigned...  sDateCreateProcess", sDateCreateProcess);
+					//вытаскиваем название бп
 					String sNameBP = oProcessInstance.getName();
-					LOG.info("methodgetDocumentSubmitedUnsigned...  sNameBP", sNameBP);
-
+					//вытаскиваем список тасок по процесу
 					List<Task> tasks = oTaskService.createTaskQuery().processInstanceId(snID_Process).active().list();
-					if (tasks != null || !tasks.isEmpty()) {
-
+					if(tasks != null || !tasks.isEmpty()){
+						// берем первую
 						Task oFirstTask = tasks.get(0);
-						LOG.info("methodgetDocumentSubmitedUnsigned...  oFirstTask {}", oFirstTask);
+						// вытаскиваем дату создания таски
 						Date sDateCreateUserTask = oFirstTask.getCreateTime();
-						LOG.info("methodgetDocumentSubmitedUnsigned...  sDateCreateUserTask", sDateCreateUserTask);
+						//и ее название
 						String sUserTaskName = oFirstTask.getName();
-						LOG.info("methodgetDocumentSubmitedUnsigned...  sUserTaskName", sUserTaskName);
 
+						// Создаем обьект=обертку, в который сетим нужные полученные поля
 						DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
 
 						oDocumentSubmitedUnsignedVO.setoDocumentStepSubjectRight(oFindedDocumentStepSubjectRight);
@@ -1042,24 +1065,21 @@ public class DocumentStepService {
 						oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
 						oDocumentSubmitedUnsignedVO.setsDateSubmit(sDate);
 						oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
-
-						// String soDocumentSubmitedUnsignedVO_Fields =
-						// JsonRestUtils.toJson((Object)
-						// oDocumentSubmitedUnsignedVO);
-
+						
 						aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
 					} else {
 						LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", snID_Process));
 						throw new RecordNotFoundException();
 					}
-
+			
 				} else {
-					LOG.error(String.format("oProcessInstance [id = '%s']  is null", snID_Process));
+					LOG.error(String.format("oProcessInstance [id = '%s']  is null", snID_Process ));
 				}
-
+				
 			}
-
+			
 		}
 		return aResDocumentSubmitedUnsigned;
 	}
+
 }
