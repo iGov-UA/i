@@ -1019,16 +1019,16 @@ public class DocumentStepService {
 			throws JsonProcessingException, RecordNotFoundException {
 
 		List<DocumentSubmitedUnsignedVO> aResDocumentSubmitedUnsigned = new ArrayList<>();
-		
+
 		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
 				sLogin);
-LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
+		LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
 		DocumentStepSubjectRight oFindedDocumentStepSubjectRight = null;
-		
+
 		for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-			
+
 			if (oDocumentStepSubjectRight != null) {
-				
+
 				DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
 				DateTime sDate = oDocumentStepSubjectRight.getsDate();
 				LOG.info("sDateECP in method getDocumentSubmitedUnsigned is", sDateECP);
