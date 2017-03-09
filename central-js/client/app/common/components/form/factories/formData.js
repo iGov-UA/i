@@ -58,16 +58,41 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
       params[property.id].required = property.required;
       params[property.id].writable = property.hasOwnProperty('writable') ? property.writable : true;
 
+      var i, source, equalsIndex, key, val;
+
       if(property.name && property.name.indexOf(';;') >= 0){
         var as = property.name.split(';;');
         property.name = as[0];
-        for(var i = 1; i < as.length; i++){
-          var source = as[i];
-          var equalsIndex = source.indexOf('=');
-          var key = source.substr(0, equalsIndex).trim();
-          var val = source.substr(equalsIndex + 1).trim();
+        for(i = 1; i < as.length; i++){
+          source = as[i];
+          equalsIndex = source.indexOf('=');
+          key = source.substr(0, equalsIndex).trim();
           if(!property.options) property.options = {};
-          property.options[key] = source.substr(equalsIndex + 1).trim();
+          try {
+            val = angular.fromJson(source.substr(equalsIndex + 1).trim())
+          } catch (e){
+            val = source.substr(equalsIndex + 1).trim();
+          }
+          property.options[key] = val;
+        }
+      }
+
+      if(property.name && property.name.indexOf(';') >= 0){
+        var sOldOptions = property.name.split(';')[2];
+        if(sOldOptions){
+          var aOptions = sOldOptions.split(',');
+          for(i = 0; i < aOptions.length; i++){
+            source = aOptions[i];
+            equalsIndex = source.indexOf('=');
+            key = source.substr(0, equalsIndex).trim();
+            if(!property.options) property.options = {};
+            try {
+              val = angular.fromJson(source.substr(equalsIndex + 1).trim())
+            } catch (e){
+              val = source.substr(equalsIndex + 1).trim();
+            }
+            property.options[key] = val;
+          }
         }
       }
 
