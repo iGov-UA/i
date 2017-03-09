@@ -146,7 +146,7 @@ public class DocumentStepService {
             if (bWrite == null) {
                 throw new IllegalArgumentException("Group " + sKey_Group + " hasn't property bWrite.");
             }
-            
+
             DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
             oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group);
             oDocumentStepSubjectRight.setbWrite(bWrite);
@@ -155,11 +155,10 @@ public class DocumentStepService {
             if (sName != null) {
                 oDocumentStepSubjectRight.setsName((String) sName);
             }
-            
+
             List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
             oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
             oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
-            oDocumentStepSubjectRight.setsLogin(sKey_Group);
             LOG.info("right for step: {}", oDocumentStepSubjectRight);
             aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
         }
@@ -477,12 +476,10 @@ public class DocumentStepService {
             LOG.info("getDocumentStepLogins sID_Group={}, aUser={}", sID_Group, aUser);
             List<Map<String, Object>> amUserProperty = new LinkedList();
             for (User oUser : aUser) {
-                if(oUser.getId().equals(oDocumentStepSubjectRight.getsLogin())){
-                    Map<String, Object> mUser = new HashMap();
-                    mUser.put("sLogin", oUser.getId());
-                    mUser.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
-                    amUserProperty.add(mUser);
-                }
+                Map<String, Object> mUser = new HashMap();
+                mUser.put("sLogin", oUser.getId());
+                mUser.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
+                amUserProperty.add(mUser);
             }
             mParamDocumentStepSubjectRight.put("aUser", amUserProperty);
             LOG.info("amUserProperty={}", amUserProperty);
@@ -981,14 +978,15 @@ public class DocumentStepService {
 		DocumentStep oFindedDocumentStep = null;
 
 		for (DocumentStep oDocumentStep : aDocumentStep) {
-			if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
-				LOG.info("getsKey_Step from oDocumentStep is ", oDocumentStep.getsKey_Step());
-				oFindedDocumentStep = oDocumentStep;
-				LOG.info("oFindedDocumentStep = {}", oFindedDocumentStep);
-
-			} else
-				throw new Exception("DocumentStep not found");
-			LOG.info("oFindedDocumentStep not found");
+			   if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
+			    LOG.info("getsKey_Step from oDocumentStep is ", oDocumentStep.getsKey_Step());
+			    oFindedDocumentStep = oDocumentStep;
+			    LOG.info("oFindedDocumentStep = {}", oFindedDocumentStep);
+			    break;
+			   }
+			   } 
+		if (oFindedDocumentStep == null){
+			    throw new Exception("DocumentStep not found");
 		}
 		boolean checkSubmited = true;
 
