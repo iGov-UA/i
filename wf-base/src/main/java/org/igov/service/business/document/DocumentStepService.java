@@ -53,6 +53,9 @@ public class DocumentStepService {
     @Qualifier("documentStepDao")
     private GenericEntityDao<Long, DocumentStep> documentStepDao;
 
+    /*@Autowired
+    private DocumentStepDao oDocumentStepDao;*/
+    
     @Autowired
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
 
@@ -939,8 +942,9 @@ public class DocumentStepService {
 			throws Exception {
 		Map<String, Boolean> mReturn = new HashMap();
 
-		List<DocumentStep> aDocumentStep = ((DocumentStepDao) documentStepDao).getStepForProcess(nID_Process);
-		LOG.info("The size of list" + (aDocumentStep != null ? aDocumentStep.size() : null));
+		List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", nID_Process);// oDocumentStepDao.//getStepForProcess(nID_Process);
+		LOG.info("aDocumentStep in isDocumentStepSubmitedAll: {}", aDocumentStep);
+                LOG.info("The size of list aDocumentStep is {}", (aDocumentStep != null ? aDocumentStep.size() : null));
 		// LOG.info("Result list of steps: {}", aDocumentStep);
 
 		DocumentStep oFindedDocumentStep = null;
