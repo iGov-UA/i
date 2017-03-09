@@ -90,7 +90,8 @@ public class DocumentCommonController {
 
 		LOG.info("sLogin: ", sLogin);
 
-		List<DocumentSubmitedUnsignedVO> aDocumentSubmitedUnsignedVO = documentStepService.getDocumentSubmitedUnsigned(sLogin);
+		List<DocumentSubmitedUnsignedVO> aDocumentSubmitedUnsignedVO = documentStepService
+				.getDocumentSubmitedUnsigned(sLogin);
 
 		LOG.info("aDocumentSubmitedUnsignedVO in getDocumentSubmitedUnsigned is {}", aDocumentSubmitedUnsignedVO);
 
@@ -101,5 +102,5 @@ public class DocumentCommonController {
 		return "aDocumentSubmitedUnsignedVO is null";
 
 	}
-    
+
 }

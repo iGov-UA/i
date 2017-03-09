@@ -965,13 +965,13 @@ public class DocumentStepService {
         return "";
     }
 
-    public Map<String, Boolean> isDocumentStepSubmitedAll(String nID_Process, String sLogin, String sKey_Step)
+	public Map<String, Boolean> isDocumentStepSubmitedAll(String nID_Process, String sLogin, String sKey_Step)
 			throws Exception {
 		Map<String, Boolean> mReturn = new HashMap();
 
 		List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", nID_Process);// oDocumentStepDao.//getStepForProcess(nID_Process);
 		LOG.info("aDocumentStep in isDocumentStepSubmitedAll: {}", aDocumentStep);
-                LOG.info("The size of list aDocumentStep is {}", (aDocumentStep != null ? aDocumentStep.size() : null));
+		LOG.info("The size of list aDocumentStep is {}", (aDocumentStep != null ? aDocumentStep.size() : null));
 		// LOG.info("Result list of steps: {}", aDocumentStep);
 
 		DocumentStep oFindedDocumentStep = null;
@@ -982,7 +982,6 @@ public class DocumentStepService {
 				break;
 			} else
 				LOG.info("oFindedDocumentStep not found");
-
 		}
 
 		boolean checkSubmited = true;
@@ -1007,8 +1006,9 @@ public class DocumentStepService {
 		return mReturn;
 	}
 
-public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin) throws JsonProcessingException, RecordNotFoundException {
-		
+	public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin)
+			throws JsonProcessingException, RecordNotFoundException {
+
 		List<DocumentSubmitedUnsignedVO> aResDocumentSubmitedUnsigned = new ArrayList<>();
 		// Через дао получаем список DocumentStepSubjectRight по фильтру sLogin
 		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
@@ -1032,30 +1032,32 @@ public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogi
 					LOG.info("oFindedDocumentStepSubjectRight not found");
 				}
 
-				// Достаем nID_Process у найденного oDocumentStepSubjectRight через DocumentStep
+				// Достаем nID_Process у найденного oDocumentStepSubjectRight
+				// через DocumentStep
 				String snID_Process = oFindedDocumentStepSubjectRight.getDocumentStep().getSnID_Process_Activiti();
 
 				String sID_Order = oFindedDocumentStepSubjectRight.getDocumentStep().getnOrder().toString();
-				// через апи активити по nID_Process 
+				// через апи активити по nID_Process
 				HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
 						.processInstanceId(snID_Process).singleResult();
 
 				if (oProcessInstance != null) {
-					//вытаскиваем дату создания процесса
+					// вытаскиваем дату создания процесса
 					Date sDateCreateProcess = oProcessInstance.getStartTime();
-					//вытаскиваем название бп
+					// вытаскиваем название бп
 					String sNameBP = oProcessInstance.getName();
-					//вытаскиваем список тасок по процесу
+					// вытаскиваем список тасок по процесу
 					List<Task> tasks = oTaskService.createTaskQuery().processInstanceId(snID_Process).active().list();
-					if(tasks != null || !tasks.isEmpty()){
+					if (tasks != null || !tasks.isEmpty()) {
 						// берем первую
 						Task oFirstTask = tasks.get(0);
 						// вытаскиваем дату создания таски
 						Date sDateCreateUserTask = oFirstTask.getCreateTime();
-						//и ее название
+						// и ее название
 						String sUserTaskName = oFirstTask.getName();
 
-						// Создаем обьект=обертку, в который сетим нужные полученные поля
+						// Создаем обьект=обертку, в который сетим нужные
+						// полученные поля
 						DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
 
 						oDocumentSubmitedUnsignedVO.setoDocumentStepSubjectRight(oFindedDocumentStepSubjectRight);
@@ -1065,19 +1067,19 @@ public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogi
 						oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
 						oDocumentSubmitedUnsignedVO.setsDateSubmit(sDate);
 						oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
-						
+
 						aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
 					} else {
 						LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", snID_Process));
 						throw new RecordNotFoundException();
 					}
-			
+
 				} else {
-					LOG.error(String.format("oProcessInstance [id = '%s']  is null", snID_Process ));
+					LOG.error(String.format("oProcessInstance [id = '%s']  is null", snID_Process));
 				}
-				
+
 			}
-			
+
 		}
 		return aResDocumentSubmitedUnsigned;
 	}
