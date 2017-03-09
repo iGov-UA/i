@@ -1,5 +1,6 @@
 package org.igov.service.business.document;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mongodb.util.Hash;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -12,6 +13,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.model.action.vo.DocumentSubmitedUnsignedVO;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.DocumentStep;
 import org.igov.model.document.DocumentStepDao;
@@ -39,6 +41,7 @@ import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.service.business.subject.SubjectGroupTreeService;
 import org.igov.util.Tool;
+import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
@@ -53,8 +56,8 @@ public class DocumentStepService {
     @Qualifier("documentStepDao")
     private GenericEntityDao<Long, DocumentStep> documentStepDao;
 
-    @Autowired
-    private DocumentStepDao oDocumentStepDao;
+    /*@Autowired
+    private DocumentStepDao oDocumentStepDao;*/
     
     @Autowired
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
@@ -942,8 +945,9 @@ public class DocumentStepService {
 			throws Exception {
 		Map<String, Boolean> mReturn = new HashMap();
 
-		List<DocumentStep> aDocumentStep = oDocumentStepDao.getStepForProcess(nID_Process);
-		LOG.info("The size of list" + (aDocumentStep != null ? aDocumentStep.size() : null));
+		List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", nID_Process);// oDocumentStepDao.//getStepForProcess(nID_Process);
+		LOG.info("aDocumentStep in isDocumentStepSubmitedAll: {}", aDocumentStep);
+                LOG.info("The size of list aDocumentStep is {}", (aDocumentStep != null ? aDocumentStep.size() : null));
 		// LOG.info("Result list of steps: {}", aDocumentStep);
 
 		DocumentStep oFindedDocumentStep = null;
@@ -977,5 +981,79 @@ public class DocumentStepService {
 		}
 
 		return mReturn;
+	}
+public List<Object> getDocumentSubmitedUnsigned(String sLogin) throws JsonProcessingException, RecordNotFoundException {
+		
+		List<Object> aResDocumentSubmitedUnsigned = new ArrayList<>();
+		
+		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
+				sLogin);
+
+		DocumentStepSubjectRight oFindedDocumentStepSubjectRight = null;
+		
+		for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+			
+			if (oDocumentStepSubjectRight != null) {
+				
+				DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
+				DateTime sDate = oDocumentStepSubjectRight.getsDate();
+				
+				if (sDateECP == null) {
+					if (sDate != null)
+						oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
+
+				} else {
+					LOG.info("oFindedDocumentStepSubjectRight not found");
+				}
+
+				
+				String snID_Process = oFindedDocumentStepSubjectRight.getDocumentStep().getSnID_Process_Activiti();
+
+				String sID_Order = oFindedDocumentStepSubjectRight.getDocumentStep().getnOrder().toString();
+				
+				HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
+						.processInstanceId(snID_Process).singleResult();
+
+				if (oProcessInstance != null) {
+					
+					Date sDateCreateProcess = oProcessInstance.getStartTime();
+					
+					String sNameBP = oProcessInstance.getName();
+					
+					List<Task> tasks = oTaskService.createTaskQuery().processInstanceId(snID_Process).active().list();
+					if(tasks != null || !tasks.isEmpty()){
+						
+						Task oFirstTask = tasks.get(0);
+						
+						Date sDateCreateUserTask = oFirstTask.getCreateTime();
+						
+						String sUserTaskName = oFirstTask.getName();
+
+						
+						DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
+
+						oDocumentSubmitedUnsignedVO.setoDocumentStepSubjectRight(oFindedDocumentStepSubjectRight);
+						oDocumentSubmitedUnsignedVO.setsNameBP(sNameBP);
+						oDocumentSubmitedUnsignedVO.setsUserTaskName(sUserTaskName);
+						oDocumentSubmitedUnsignedVO.setsDateCreateProcess(sDateCreateProcess);
+						oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
+						oDocumentSubmitedUnsignedVO.setsDateSubmit(sDate);
+						oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
+
+						String soDocumentSubmitedUnsignedVO_Fields = JsonRestUtils.toJson((Object) oDocumentSubmitedUnsignedVO);
+						aResDocumentSubmitedUnsigned.add(soDocumentSubmitedUnsignedVO_Fields);
+					} else {
+						LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", snID_Process));
+						throw new RecordNotFoundException();
+					}
+			
+				} else {
+					LOG.error(String.format("oProcessInstance [id = '%s']  is null", snID_Process ));
+				}
+				
+			}
+			
+		}
+		return aResDocumentSubmitedUnsigned;
 	}
 }
