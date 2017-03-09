@@ -81,26 +81,26 @@ public class DocumentCommonController {
 
     }
     
-    @ApiOperation(value = "Получение списка подписанных документов без ЕЦП")
-    @RequestMapping(value = "/getDocumentSubmitedUnsigned", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    //@Transactional
-    public @ResponseBody
-    String getDocumentSubmitedUnsigned(
-            @ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin )     throws Exception {
+	@ApiOperation(value = "Получение списка подписанных документов без ЕЦП")
+	@RequestMapping(value = "/getDocumentSubmitedUnsigned", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	// @Transactional
+	public @ResponseBody String getDocumentSubmitedUnsigned(
+			@ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
+			throws Exception {
 
+		LOG.info("sLogin: ", sLogin);
 
-        LOG.info("sLogin: ", sLogin);
+		List<DocumentSubmitedUnsignedVO> aDocumentSubmitedUnsignedVO = documentStepService
+				.getDocumentSubmitedUnsigned(sLogin);
 
-        List<DocumentSubmitedUnsignedVO> aDocumentSubmitedUnsignedVO = documentStepService.getDocumentSubmitedUnsigned(sLogin);
-        
-        LOG.info("aDocumentSubmitedUnsignedVO in getDocumentSubmitedUnsigned is {}", aDocumentSubmitedUnsignedVO);
-        
-        if (aDocumentSubmitedUnsignedVO != null) {
-            return JSONValue.toJSONString(aDocumentSubmitedUnsignedVO);
-        }
+		LOG.info("aDocumentSubmitedUnsignedVO in getDocumentSubmitedUnsigned is {}", aDocumentSubmitedUnsignedVO);
 
-        return "aDocumentSubmitedUnsignedVO is null";
+		if (aDocumentSubmitedUnsignedVO != null) {
+			return JSONValue.toJSONString(aDocumentSubmitedUnsignedVO);
+		}
 
-    }
+		return "aDocumentSubmitedUnsignedVO is null";
+
+	}
     
 }
