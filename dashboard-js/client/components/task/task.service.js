@@ -684,7 +684,11 @@ angular.module('dashboardJsApp')
             if (i < print.length) {
               return $http.post('/api/tasks/' + task.processInstanceId + '/upload_content_as_attachment', print[i].data)
                 .then(function (uploadResult) {
-                  results[i].fileField.value = uploadResult.data;
+                  if(results[i].fileField && results[i].fileField.value){
+                    results[i].fileField.value = uploadResult.data;
+                  } else {
+                    results[i]['uploadDefaultPrintForm'] = uploadResult.data;
+                  }
                   defs[i].resolve();
                   return asyncPrintUpload(i+1, print, defs);
                 });

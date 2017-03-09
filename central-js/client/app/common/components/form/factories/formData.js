@@ -70,6 +70,14 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
           property.options[key] = source.substr(equalsIndex + 1).trim();
         }
       }
+
+      if(property.id === 'bankId_scan_passport' || property.id === 'bankId_scan_inn' || property.id === 'form_signed' || property.id === 'form_signed_all') {
+        var isNew = property.name.split(';');
+        if(isNew.length === 3 && isNew[2].indexOf('bNew') > -1) {
+          params[property.id].newAttach = true;
+        }
+      }
+
     }
   };
 
@@ -246,7 +254,11 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     for (var key in self.params) {
       var param = self.params[key];
       if (param instanceof ScanFactory && !param.value) {
-        paramsForUpload.push({key: key, scan: param.getScan()});
+        if(param.newAttach) {
+          paramsForUpload.push({key: key, scan: param.getScan(), isNew: true});
+        } else {
+          paramsForUpload.push({key: key, scan: param.getScan()});
+        }
       }
     }
 
