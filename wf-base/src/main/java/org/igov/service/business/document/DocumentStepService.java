@@ -305,31 +305,8 @@ public class DocumentStepService {
                     oDocumentStep_Active.setRights(aDocumentStepSubjectRight_SourceNew);
 
     //                try{
+                    documentStepDao.saveOrUpdate(oDocumentStep_Active);
                     
-                    List<DocumentStep> aCheckDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
-                    
-                    boolean saveflag = true;
-                    
-                    for(DocumentStep oDocumentStep : aCheckDocumentStep){
-                        List<DocumentStepSubjectRight> aoDocumentStepRights = oDocumentStep.getRights();
-                        
-                        for(DocumentStepSubjectRight right : aoDocumentStepRights)
-                        {
-                            if(right.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)){
-                                oDocumentStepSubjectRight = right;
-                                saveflag = false;
-                                break;
-                            }
-                        }
-                        
-                        if(!saveflag){
-                            break;
-                        }
-                    }
-                    
-                    if(saveflag){
-                        documentStepDao.saveOrUpdate(oDocumentStep_Active);
-                    }
     //                }catch(Exception ex){
                 //oTaskService.addCandidateGroup(snID_Task, oDocumentStepSubjectRight.getsKey_GroupPostfix());
                 //repositoryService.addCandidateStarterGroup(snID_Process_Activiti, oDocumentStepSubjectRight.getsKey_GroupPostfix());
@@ -476,12 +453,10 @@ public class DocumentStepService {
             LOG.info("getDocumentStepLogins sID_Group={}, aUser={}", sID_Group, aUser);
             List<Map<String, Object>> amUserProperty = new LinkedList();
             for (User oUser : aUser) {
-                if(oUser.getId().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
-                    Map<String, Object> mUser = new HashMap();
-                    mUser.put("sLogin", oUser.getId());
-                    mUser.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
-                    amUserProperty.add(mUser);
-                }
+                Map<String, Object> mUser = new HashMap();
+                mUser.put("sLogin", oUser.getId());
+                mUser.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
+                amUserProperty.add(mUser);
             }
             mParamDocumentStepSubjectRight.put("aUser", amUserProperty);
             LOG.info("amUserProperty={}", amUserProperty);
@@ -983,7 +958,7 @@ public class DocumentStepService {
 				oFindedDocumentStep = oDocumentStep;
 				break;
 			} else
-				throw new Exception("oFindedDocumentStep not found");
+				LOG.info("oFindedDocumentStep not found");
 
 		}
 
@@ -1009,13 +984,28 @@ public class DocumentStepService {
 		return mReturn;
 	}
 
-	public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin)
+    public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin)
 			throws JsonProcessingException, RecordNotFoundException {
 
 		List<DocumentSubmitedUnsignedVO> aResDocumentSubmitedUnsigned = new ArrayList<>();
+		
+		 List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
+	        // получаю все группы
+	        List<String> asID_Group = new ArrayList<>();
+	        
+	        if (aGroup != null) {
+	            aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
+	        }
 
-		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
-				sLogin);
+	        LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
+	        LOG.info("aGroup={}", aGroup);
+	        
+	
+	         	
+	        	
+	        
+		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllByInValues("sKey_GroupPostfix",
+				asID_Group);
 		LOG.info("methodgetDocumentSubmitedUnsigned...  sLogin is ", sLogin);
 		DocumentStepSubjectRight oFindedDocumentStepSubjectRight = null;
 
@@ -1069,10 +1059,7 @@ public class DocumentStepService {
 						oDocumentSubmitedUnsignedVO.setsDateSubmit(sDate);
 						oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
 
-						// String soDocumentSubmitedUnsignedVO_Fields =
-						// JsonRestUtils.toJson((Object)
-						// oDocumentSubmitedUnsignedVO);
-
+						
 						aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
 					} else {
 						LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", snID_Process));
