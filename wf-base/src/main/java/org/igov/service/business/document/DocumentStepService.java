@@ -978,7 +978,6 @@ public class DocumentStepService {
 		DocumentStep oFindedDocumentStep = null;
 
 		for (DocumentStep oDocumentStep : aDocumentStep) {
-			
 			   if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
 			    LOG.info("getsKey_Step from oDocumentStep is ", oDocumentStep.getsKey_Step());
 			    oFindedDocumentStep = oDocumentStep;
