@@ -982,13 +982,13 @@ public class DocumentStepService {
 
 		return mReturn;
 	}
-public List<Object> getDocumentSubmitedUnsigned(String sLogin) throws JsonProcessingException, RecordNotFoundException {
+public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin) throws JsonProcessingException, RecordNotFoundException {
 		
-		List<Object> aResDocumentSubmitedUnsigned = new ArrayList<>();
+		List<DocumentSubmitedUnsignedVO> aResDocumentSubmitedUnsigned = new ArrayList<>();
 		
 		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
 				sLogin);
-
+LOG.info("methodgetDocumentSubmitedUnsigned...  sLogin is ", sLogin);
 		DocumentStepSubjectRight oFindedDocumentStepSubjectRight = null;
 		
 		for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
@@ -996,39 +996,41 @@ public List<Object> getDocumentSubmitedUnsigned(String sLogin) throws JsonProces
 			if (oDocumentStepSubjectRight != null) {
 				
 				DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
+				LOG.info("methodgetDocumentSubmitedUnsigned...  sDateECP is ", oDocumentStepSubjectRight.getsDateECP());
 				DateTime sDate = oDocumentStepSubjectRight.getsDate();
-				
+				LOG.info("methodgetDocumentSubmitedUnsigned...  sDate is ", oDocumentStepSubjectRight.getsDate());
 				if (sDateECP == null) {
 					if (sDate != null)
 						oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
-
+				LOG.info("methodgetDocumentSubmitedUnsigned...  sDate is {}", oFindedDocumentStepSubjectRight );
 				} else {
 					LOG.info("oFindedDocumentStepSubjectRight not found");
 				}
 
 				
 				String snID_Process = oFindedDocumentStepSubjectRight.getDocumentStep().getSnID_Process_Activiti();
-
+				LOG.info("methodgetDocumentSubmitedUnsigned...  snID_Process", snID_Process);
 				String sID_Order = oFindedDocumentStepSubjectRight.getDocumentStep().getnOrder().toString();
-				
+				LOG.info("methodgetDocumentSubmitedUnsigned...  sID_Order", sID_Order);
 				HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
 						.processInstanceId(snID_Process).singleResult();
 
 				if (oProcessInstance != null) {
 					
 					Date sDateCreateProcess = oProcessInstance.getStartTime();
-					
+					LOG.info("methodgetDocumentSubmitedUnsigned...  sDateCreateProcess", sDateCreateProcess);
 					String sNameBP = oProcessInstance.getName();
+					LOG.info("methodgetDocumentSubmitedUnsigned...  sNameBP", sNameBP);
 					
 					List<Task> tasks = oTaskService.createTaskQuery().processInstanceId(snID_Process).active().list();
 					if(tasks != null || !tasks.isEmpty()){
 						
 						Task oFirstTask = tasks.get(0);
-						
+						LOG.info("methodgetDocumentSubmitedUnsigned...  oFirstTask {}", oFirstTask);
 						Date sDateCreateUserTask = oFirstTask.getCreateTime();
-						
+						LOG.info("methodgetDocumentSubmitedUnsigned...  sDateCreateUserTask", sDateCreateUserTask);
 						String sUserTaskName = oFirstTask.getName();
-
+						LOG.info("methodgetDocumentSubmitedUnsigned...  sUserTaskName", sUserTaskName);
 						
 						DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
 
@@ -1040,8 +1042,9 @@ public List<Object> getDocumentSubmitedUnsigned(String sLogin) throws JsonProces
 						oDocumentSubmitedUnsignedVO.setsDateSubmit(sDate);
 						oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
 
-						String soDocumentSubmitedUnsignedVO_Fields = JsonRestUtils.toJson((Object) oDocumentSubmitedUnsignedVO);
-						aResDocumentSubmitedUnsigned.add(soDocumentSubmitedUnsignedVO_Fields);
+					//	String soDocumentSubmitedUnsignedVO_Fields = JsonRestUtils.toJson((Object) oDocumentSubmitedUnsignedVO);
+						
+						aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
 					} else {
 						LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", snID_Process));
 						throw new RecordNotFoundException();
