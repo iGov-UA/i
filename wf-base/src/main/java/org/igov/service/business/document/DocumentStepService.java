@@ -831,7 +831,7 @@ public class DocumentStepService {
         }
         LOG.info("asGroup in DocumentInit_iDoc {}", asGroup);
 
-        Set<String> asGroup_Old = new HashSet<>();
+        List<String> asGroup_Old = new ArrayList<>();
         Set<IdentityLink> groupsOld = delegateTask.getCandidates();
         groupsOld.stream().forEach((groupOld) -> {
             asGroup_Old.add(groupOld.getGroupId());
@@ -844,7 +844,7 @@ public class DocumentStepService {
         
         delegateTask.addCandidateGroups(asGroup);
         
-        Set<String> asGroup_New = new HashSet<>();
+        List<String> asGroup_New = new ArrayList<>();
         Set<IdentityLink> groupsNew = delegateTask.getCandidates();
         groupsNew.stream().forEach((groupNew) -> {
             asGroup_New.add(groupNew.getGroupId());
