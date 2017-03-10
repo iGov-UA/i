@@ -482,7 +482,7 @@ public class DocumentStepService {
                 if(oUser.getId().equals(oDocumentStepSubjectRight.getsLogin())){
                     Map<String, Object> mUser = new HashMap();
                     mUser.put("sLogin", oUser.getId());
-                    mUser.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
+                    mUser.put("sFIO", oUser.getLastName() + " " + oUser.getFirstName());
                     amUserProperty.add(mUser);
                 }
             }
@@ -492,9 +492,11 @@ public class DocumentStepService {
             LOG.info("sLogin={}", sLogin);
             if (sLogin != null) {
                 User oUser = oIdentityService.createUserQuery().userId(sLogin).singleResult();
-                mParamDocumentStepSubjectRight.put("sLogin", oUser.getId());
-                mParamDocumentStepSubjectRight.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
-                //mReturn.put(sLogin, mParamDocumentStepSubjectRight);
+                if(oUser != null){
+                    mParamDocumentStepSubjectRight.put("sLogin", oUser.getId());
+                    mParamDocumentStepSubjectRight.put("sFIO", oUser.getLastName() + " " + oUser.getFirstName());
+                    //mReturn.put(sLogin, mParamDocumentStepSubjectRight);
+                }
             }
             LOG.info("mParamDocumentStepSubjectRight={}", mParamDocumentStepSubjectRight);
             amReturn.add(mParamDocumentStepSubjectRight);
