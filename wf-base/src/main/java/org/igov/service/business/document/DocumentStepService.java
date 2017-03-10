@@ -826,11 +826,12 @@ public class DocumentStepService {
 
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
                     asGroup.add(oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                    delegateTask.deleteCandidateGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix());
                 }
             }
         }
         LOG.info("asGroup in DocumentInit_iDoc {}", asGroup);
-
+        
         List<String> asGroup_Old = new ArrayList<>();
         Set<IdentityLink> groupsOld = delegateTask.getCandidates();
         groupsOld.stream().forEach((groupOld) -> {
@@ -841,6 +842,7 @@ public class DocumentStepService {
         /*if(!asGroup_Old.isEmpty()){
             asGroup.addAll(asGroup_Old);
         }*/
+        
         
         delegateTask.addCandidateGroups(asGroup);
         
