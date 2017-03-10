@@ -186,8 +186,15 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("-----------------------------------------------");
                 if(omResponseBody != null && omResponseBody.containsKey("processDefinitionId")&&
                    ((String)omResponseBody.get("processDefinitionId")).startsWith("_doc")){
-                    LOG.info("It is a SUBMIIIIIT!!!! YEEESS!");        
+                    LOG.info("It is a SUBMIIIIIT (ECP)!!!! YEEESS!");        
                 }
+                
+                if(omRequestBody != null && omRequestBody.containsKey("taskId")){
+                    String sTaskId = (String)omRequestBody.get("taskId");
+                    String sTaskName = taskService.createTaskQuery().taskId(sTaskId).active().singleResult().getName();
+                    LOG.info("AAAAAAAAAAA!!!!!!!! TASK NAME PLEASE BE HERE PLEASE PLEASE PLEASEEEEEE!!!!! {}", sTaskName);
+                }
+                
             }
             
             if(((mRequestParam.containsKey("sID_BP")||mRequestParam.containsKey("snID_Process_Activiti"))&&
