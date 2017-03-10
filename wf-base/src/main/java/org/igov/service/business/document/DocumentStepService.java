@@ -327,6 +327,10 @@ public class DocumentStepService {
                     boolean saveflag = true;
                     
                     for(DocumentStep oDocumentStep : aCheckDocumentStep){
+                        if(!oDocumentStep.getsKey_Step().equals(sDefault_Key_Step_Document)){
+                            continue;
+                        }
+                        
                         List<DocumentStepSubjectRight> aoDocumentStepRights = oDocumentStep.getRights();
                         LOG.info("oDocumentStep is {}", oDocumentStep);
                         LOG.info("aoDocumentStepRights is {}", aoDocumentStepRights);
@@ -349,6 +353,9 @@ public class DocumentStepService {
                     }
                     
                     if(saveflag){
+                        LOG.info("saveflag is: {}", saveflag);
+                        LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix is: {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                        LOG.info("sKey_GroupPostfix: {}", sKey_GroupPostfix);
                         documentStepDao.saveOrUpdate(oDocumentStep_Active);
                     }
                     
