@@ -492,9 +492,11 @@ public class DocumentStepService {
             LOG.info("sLogin={}", sLogin);
             if (sLogin != null) {
                 User oUser = oIdentityService.createUserQuery().userId(sLogin).singleResult();
-                mParamDocumentStepSubjectRight.put("sLogin", oUser.getId());
-                mParamDocumentStepSubjectRight.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
-                //mReturn.put(sLogin, mParamDocumentStepSubjectRight);
+                if(oUser != null){
+                    mParamDocumentStepSubjectRight.put("sLogin", oUser.getId());
+                    mParamDocumentStepSubjectRight.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
+                    //mReturn.put(sLogin, mParamDocumentStepSubjectRight);
+                }
             }
             LOG.info("mParamDocumentStepSubjectRight={}", mParamDocumentStepSubjectRight);
             amReturn.add(mParamDocumentStepSubjectRight);
