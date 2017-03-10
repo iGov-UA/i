@@ -128,11 +128,12 @@ var m = dateBegin.getMonth()
 var m = (+m + +1)
 if (m &lt; 10) m = "0"+m
 
-var new_year = dateBegin.getFullYear()
+var new_year = String(dateBegin.getFullYear()
+var new_year1 = String(new_year)
+var d1 = String(d)
 
-
-var outputBegin1C = String(new_year) + '-' + String(m) + '-' + String(d)  + 'T00:00:00'
-var outputBegin =  d + '.' + m + '.' + new_year
+var outputBegin1C = new_year1 + '-' + m+ '-' + d1 + 'T00:00:00'
+var outputBegin =  d1 + '.' + m + '.' + new_year1 + typeof(d) + typeof(new_year)
 
 
 //var dayB = dateBegin.getDate();
@@ -147,10 +148,10 @@ var outputBegin =  d + '.' + m + '.' + new_year
 var dateEnd = new Date(inputEnd)
 
 var dayE = dateEnd.getDate()
-var monthE = dateEnd.getMonth() + 1
+var monthE = +dateEnd.getMonth() + +1
 var yearE = dateEnd.getFullYear()
 var outputEnd1C = yearE + "-"+ (monthE&lt;10?'0':'') + monthE + "-" + (dayE&lt;10?'0':'') + dayE + 'T00:00:00'
-var outputEnd = (dayE&lt;10?'0':'') + dayE + '.' + (monthE&lt;10?'0':'') + monthE + '.' + yearE
+var outputEnd = (dayE&lt;10?'0':'') + dayE + '.' + (monthE&lt;10?'0':'') + monthE + '.' + yearE + typeof(dayE) + typeof(yearE) + typeof(monthE)
 
 
 execution.setVariable('sDateVacationBeginEmail', outputBegin)
@@ -188,9 +189,6 @@ execution.setVariable('sDateVacationBeginYear', new_year)</script>
         <activiti:field name="text">
           <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
 Вам надано відпустку з ${sDateVacationBegin} по ${sDateVacationEnd}. <br>
-День ${sDateVacationBeginDay}<br>
-Месяц ${sDateVacationBeginMounth}<br>
-Год ${sDateVacationBeginYear}<br>
 Гарного відпочинку!]]></activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -209,7 +207,10 @@ execution.setVariable('sDateVacationBeginYear', new_year)</script>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
-Вам надано відпустку з ${sDateVacationBeginEmail} <br>
+Вам надано відпустку з ${sDateVacationBeginEmail} по ${sDateVacationEndEmail}<br>
+День ${sDateVacationBeginDay} <b>${sDateVacationEnd1C}</b><br>
+Месяц ${sDateVacationBeginMounth} <b>${sDateVacationBegin1C}</b><br>
+Год ${sDateVacationBeginYear}<br>
 Гарного відпочинку!]]></activiti:expression>
         </activiti:field>
       </extensionElements>
