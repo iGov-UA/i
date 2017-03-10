@@ -113,6 +113,7 @@ public class DocumentStepService {
                 .collect(Collectors.toList());
         long i = 1L;
         for (String sKey_Step : asKey_Step) {
+            LOG.info("sKey_Step in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
             oDocumentStep.setnOrder(i++);
             oDocumentStep.setsKey_Step(sKey_Step);
@@ -176,6 +177,7 @@ public class DocumentStepService {
         LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sKey_GroupPostfix_New={}, sKey_Step_Document={}", 
                 sKey_GroupPostfix, snID_Process_Activiti, sKey_GroupPostfix_New, sKey_Step_Document);
         
+        
         /*List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
         if (aTaskActive.size() < 1 || aTaskActive.get(0) == null) {
             throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
@@ -216,6 +218,11 @@ public class DocumentStepService {
             //        " Process variable sKey_Step_Document is empty.");
             //sKey_Step_Document="1";
         }*/
+        
+        if(sKey_GroupPostfix.startsWith("defaul")){
+            sKey_Step_Document = "_";
+        }
+        
         
         String sSubjectType = oSubjectGroupTreeService.getSubjectType(sKey_GroupPostfix_New);
         LOG.info("sSubjectType in cloneRights is {}", sSubjectType);
