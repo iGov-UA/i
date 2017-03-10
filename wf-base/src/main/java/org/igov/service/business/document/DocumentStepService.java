@@ -819,7 +819,7 @@ public class DocumentStepService {
 
     public void syncDocumentGroups(DelegateTask delegateTask, List<DocumentStep> aDocumentStep) {
 
-        Set<String> asGroup = new HashSet<>();
+        /*Set<String> asGroup = new HashSet<>();
         for (DocumentStep oDocumentStep : aDocumentStep) {
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
             if (aDocumentStepSubjectRight != null) {
@@ -849,7 +849,7 @@ public class DocumentStepService {
         groupsNew.stream().forEach((groupNew) -> {
             asGroup_New.add(groupNew.getGroupId());
         });
-        LOG.info("asGroup_New after setting: {} delegateTask: {}", asGroup_New, delegateTask.getId());
+        LOG.info("asGroup_New after setting: {} delegateTask: {}", asGroup_New, delegateTask.getId());*/
     }
 
     //public void checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {//JSONObject
