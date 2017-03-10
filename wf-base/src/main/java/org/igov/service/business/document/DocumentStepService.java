@@ -88,6 +88,8 @@ public class DocumentStepService {
     
     @Autowired
     private SubjectGroupTreeService oSubjectGroupTreeService;
+    
+    private static final String STARTED_TEP = "_";
 
     //public void setDocumentSteps(String snID_Process_Activiti, String soJSON) {
     public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
@@ -218,11 +220,14 @@ public class DocumentStepService {
             //        " Process variable sKey_Step_Document is empty.");
             //sKey_Step_Document="1";
         }*/
+        final String sDefault_Key_Step_Document;
         
         if(sKey_GroupPostfix.startsWith("defaul")){
-            sKey_Step_Document = "_";
+            sDefault_Key_Step_Document = "_";
         }
-        
+        else{
+            sDefault_Key_Step_Document = sKey_Step_Document;
+        }
         
         String sSubjectType = oSubjectGroupTreeService.getSubjectType(sKey_GroupPostfix_New);
         LOG.info("sSubjectType in cloneRights is {}", sSubjectType);
@@ -256,7 +261,7 @@ public class DocumentStepService {
 
         DocumentStep oDocumentStep_Active = aDocumentStep
                 .stream()
-                .filter(o -> sKey_Step_Document == null ? o.getnOrder().equals(1) : o.getsKey_Step().equals(sKey_Step_Document))
+                .filter(o -> sKey_Step_Document == null ? o.getnOrder().equals(1) : o.getsKey_Step().equals(sDefault_Key_Step_Document))
                 .findAny()
                 .orElse(null);
         LOG.info("oDocumentStep_Active={}", oDocumentStep_Active);
