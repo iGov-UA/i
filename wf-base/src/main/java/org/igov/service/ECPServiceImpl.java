@@ -50,7 +50,7 @@ public class ECPServiceImpl implements ECPService {
 			
 			LOG.info("Signing the document. Size of original document:"
 					+ (content != null ? content.length : "0"));
-			final byte[] signedDoc = CryptoniteX.cmsSignData(keyStore, content, dataCert);
+			final byte[] signedDoc = CryptoniteX.cmsSignHash(keyStore, content, dataCert, true, null, true);
 
 			LOG.info("Signed the document. Size of signed document:"
 					+ (signedDoc != null ? signedDoc.length : "0"));

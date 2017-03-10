@@ -949,7 +949,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       };
 
       $scope.getFullCellId = function(field, column, row){
-        return this.oServiceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.id + "_--_" + "COL_" + column + "_--_" + "ROW_" + row;
+        return this.oServiceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
       };
 
       // https://github.com/e-government-ua/i/issues/1326

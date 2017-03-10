@@ -159,6 +159,7 @@ public class DocumentStepService {
             List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
             oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
             oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
+            oDocumentStepSubjectRight.setsLogin(sKey_Group);
             LOG.info("right for step: {}", oDocumentStepSubjectRight);
             aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
         }
@@ -476,10 +477,14 @@ public class DocumentStepService {
             LOG.info("getDocumentStepLogins sID_Group={}, aUser={}", sID_Group, aUser);
             List<Map<String, Object>> amUserProperty = new LinkedList();
             for (User oUser : aUser) {
-                Map<String, Object> mUser = new HashMap();
-                mUser.put("sLogin", oUser.getId());
-                mUser.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
-                amUserProperty.add(mUser);
+                LOG.info("oDocumentStepSubjectRight.getsLogin() is {}", oDocumentStepSubjectRight.getsLogin());
+                LOG.info("oUser.getId() is {}", oUser.getId());
+                if(oUser.getId().equals(oDocumentStepSubjectRight.getsLogin())){
+                    Map<String, Object> mUser = new HashMap();
+                    mUser.put("sLogin", oUser.getId());
+                    mUser.put("sFIO", oUser.getLastName() + " " + oUser.getFirstName());
+                    amUserProperty.add(mUser);
+                }
             }
             mParamDocumentStepSubjectRight.put("aUser", amUserProperty);
             LOG.info("amUserProperty={}", amUserProperty);
@@ -487,9 +492,11 @@ public class DocumentStepService {
             LOG.info("sLogin={}", sLogin);
             if (sLogin != null) {
                 User oUser = oIdentityService.createUserQuery().userId(sLogin).singleResult();
-                mParamDocumentStepSubjectRight.put("sLogin", oUser.getId());
-                mParamDocumentStepSubjectRight.put("sFIO", oUser.getLastName() + "" + oUser.getFirstName());
-                //mReturn.put(sLogin, mParamDocumentStepSubjectRight);
+                if(oUser != null){
+                    mParamDocumentStepSubjectRight.put("sLogin", oUser.getId());
+                    mParamDocumentStepSubjectRight.put("sFIO", oUser.getLastName() + " " + oUser.getFirstName());
+                    //mReturn.put(sLogin, mParamDocumentStepSubjectRight);
+                }
             }
             LOG.info("mParamDocumentStepSubjectRight={}", mParamDocumentStepSubjectRight);
             amReturn.add(mParamDocumentStepSubjectRight);
@@ -965,11 +972,12 @@ public class DocumentStepService {
         return "";
     }
 
-	public Map<String, Boolean> isDocumentStepSubmitedAll(String nID_Process, String sLogin, String sKey_Step)
+    public Map<String, Boolean> isDocumentStepSubmitedAll(String nID_Process, String sLogin, String sKey_Step)
 			throws Exception {
 		Map<String, Boolean> mReturn = new HashMap();
 
-		List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", nID_Process);// oDocumentStepDao.//getStepForProcess(nID_Process);
+		List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", nID_Process);//
+		// oDocumentStepDao.//getStepForProcess(nID_Process);
 		LOG.info("aDocumentStep in isDocumentStepSubmitedAll: {}", aDocumentStep);
 		LOG.info("The size of list aDocumentStep is {}", (aDocumentStep != null ? aDocumentStep.size() : null));
 		// LOG.info("Result list of steps: {}", aDocumentStep);
@@ -977,30 +985,30 @@ public class DocumentStepService {
 		DocumentStep oFindedDocumentStep = null;
 
 		for (DocumentStep oDocumentStep : aDocumentStep) {
+
 			if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
-				LOG.info("getsKey_Step from oDocumentStep is ", oDocumentStep.getsKey_Step());
+				LOG.info("getsKey_Step from oDocumentStep is = {}", oDocumentStep.getsKey_Step());
 				oFindedDocumentStep = oDocumentStep;
 				LOG.info("oFindedDocumentStep = {}", oFindedDocumentStep);
-				} else
-					throw new Exception("DocumentStep not found");
-				LOG.info("oFindedDocumentStep not found");
+			}
 		}
-
+		if (oFindedDocumentStep == null) {
+			throw new Exception("DocumentStep not found");
+		}
 		boolean checkSubmited = true;
 
 		for (DocumentStepSubjectRight oDocumentStepSubjectRight : oFindedDocumentStep.getRights()) {
 
 			if (oDocumentStepSubjectRight != null) {
-
 				DateTime sDate = oDocumentStepSubjectRight.getsDate();
-				LOG.info("sDate =", sDate);
+				LOG.info("sDate ={}", oDocumentStepSubjectRight.getsDate());
 
 				if (sDate == null) {
 					checkSubmited = false;
+					mReturn.put("bSubmitedAll", checkSubmited);
 					break;
-				}
-
-				mReturn.put("bSubmitedAll", checkSubmited);
+				} else
+					mReturn.put("bSubmitedAll", checkSubmited);
 			} else
 				LOG.error("oDocumentStepSubjectRight is null");
 		}
@@ -1012,18 +1020,20 @@ public class DocumentStepService {
 			throws JsonProcessingException, RecordNotFoundException {
 
 		List<DocumentSubmitedUnsignedVO> aResDocumentSubmitedUnsigned = new ArrayList<>();
-		// Через дао получаем список DocumentStepSubjectRight по фильтру sLogin
+
 		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
 				sLogin);
-
+		LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
 		DocumentStepSubjectRight oFindedDocumentStepSubjectRight = null;
-		// Проходим по листу и для каждого
+
 		for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-			// Проверяем на налл
+
 			if (oDocumentStepSubjectRight != null) {
-				// Получаем дату ецп и дату подписания
+
 				DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
 				DateTime sDate = oDocumentStepSubjectRight.getsDate();
+				LOG.info("sDateECP in method getDocumentSubmitedUnsigned is", sDateECP);
+				LOG.info("sDate in method getDocumentSubmitedUnsigned is", sDateECP);
 				// проверяем, если даты ецп нет, но есть дата подписания - нашли
 				// нужный объект, который кладем в VO-обьект-обертку
 				if (sDateECP == null) {
