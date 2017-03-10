@@ -488,6 +488,11 @@
           return false;
         };
 
+        $scope.correctSignName = function (name) {
+          var splitName = name.split(';');
+          return splitName.length !== 1 ? splitName[0] : name;
+        };
+
         $scope.clarify = false;
 
         $scope.clarifyToggle = function () {
