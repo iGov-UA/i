@@ -838,9 +838,9 @@ public class DocumentStepService {
         });
         LOG.info("asGroup_Old before setting: {} delegateTask: {}", asGroup_Old, delegateTask.getId());
         
-        if(!asGroup_Old.isEmpty()){
+        /*if(!asGroup_Old.isEmpty()){
             asGroup.addAll(asGroup_Old);
-        }
+        }*/
         
         delegateTask.addCandidateGroups(asGroup);
         
