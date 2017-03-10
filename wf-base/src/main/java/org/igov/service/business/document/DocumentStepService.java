@@ -89,7 +89,6 @@ public class DocumentStepService {
     @Autowired
     private SubjectGroupTreeService oSubjectGroupTreeService;
     
-    private static final String STARTED_TEP = "_";
 
     //public void setDocumentSteps(String snID_Process_Activiti, String soJSON) {
     public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
@@ -110,12 +109,12 @@ public class DocumentStepService {
         //first of all we filter common step with name "_" and then just convert each step from JSON to POJO
         List<String> asKey_Step = Arrays.asList(JSONObject.getNames(oJSON));
         LOG.info("List of steps: {}", asKey_Step);
-        asKey_Step = asKey_Step.stream().
+        /*asKey_Step = asKey_Step.stream().
                 filter(sKey_Step -> !"_".equals(sKey_Step))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
         long i = 1L;
         for (String sKey_Step : asKey_Step) {
-            LOG.info("sKey_Step in setDocumentSteps is: {}", sKey_Step);
+            LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
             oDocumentStep.setnOrder(i++);
             oDocumentStep.setsKey_Step(sKey_Step);
@@ -139,6 +138,11 @@ public class DocumentStepService {
         String[] asKey_Group = JSONObject.getNames(oStep);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList<>();
         for (String sKey_Group : asKey_Group) {
+            
+            if(sKey_Group.startsWith("_defaul")){
+                continue;
+            }
+            
             JSONObject oGroup = oStep.optJSONObject(sKey_Group);
             LOG.info("group for step: {}", oGroup);
 
@@ -222,7 +226,7 @@ public class DocumentStepService {
         }*/
         final String sDefault_Key_Step_Document;
         
-        if(sKey_GroupPostfix.startsWith("defaul")){
+        if(sKey_GroupPostfix.startsWith("_defaul")){
             sDefault_Key_Step_Document = "_";
         }
         else{
@@ -324,12 +328,17 @@ public class DocumentStepService {
                     
                     for(DocumentStep oDocumentStep : aCheckDocumentStep){
                         List<DocumentStepSubjectRight> aoDocumentStepRights = oDocumentStep.getRights();
+                        LOG.info("oDocumentStep is {}", oDocumentStep);
+                        LOG.info("aoDocumentStepRights is {}", aoDocumentStepRights);
                         
                         for(DocumentStepSubjectRight right : aoDocumentStepRights)
                         {
+                            LOG.info("right.getsKey_GroupPostfix() is {}", right.getsKey_GroupPostfix());
+                            LOG.info("sKey_GroupPostfix_New is {}", sKey_GroupPostfix_New);
                             if(right.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)){
                                 oDocumentStepSubjectRight = right;
                                 saveflag = false;
+                                LOG.info("oDocumentStepSubjectRight in chek loop is {}", oDocumentStepSubjectRight);
                                 break;
                             }
                         }
