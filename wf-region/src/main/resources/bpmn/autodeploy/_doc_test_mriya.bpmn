@@ -119,21 +119,22 @@ execution.setVariable('processInstanceId', processInstanceId)
 var inputEnd = execution.getVariable('sDateVacationEnd');
 
 
+
 // Begin
 var dateBegin = new Date(inputBegin);
 
-var d = dateBegin.getDate()
-if (d &lt; 10) d = "0"+d
-var m = dateBegin.getMonth()
-var m = (+m + +1)
-if (m &lt; 10) m = "0"+m
+var d = dateBegin.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = dateBegin.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
 
-var new_year = String(dateBegin.getFullYear()
-var new_year1 = String(new_year)
-var d1 = String(d)
+var new_year = dateBegin.getFullYear();
+var new_year1 = String(new_year);
+var d1 = String(d);
 
-var outputBegin1C = new_year1 + '-' + m+ '-' + d1 + 'T00:00:00'
-var outputBegin =  d1 + '.' + m + '.' + new_year1 + typeof(d) + typeof(new_year)
+var outputBegin1C = new_year1 + '-' + m+ '-' + d1 + 'T00:00:00';
+//var outputBegin =  d1 + '.' + m + '.' + new_year1 + typeof(inputBegin);
 
 
 //var dayB = dateBegin.getDate();
@@ -145,15 +146,23 @@ var outputBegin =  d1 + '.' + m + '.' + new_year1 + typeof(d) + typeof(new_year)
 
 // End
 
-var dateEnd = new Date(inputEnd)
+var dateEnd = new Date(inputEnd);
 
-var dayE = dateEnd.getDate()
-var monthE = +dateEnd.getMonth() + +1
-var yearE = dateEnd.getFullYear()
-var outputEnd1C = yearE + "-"+ (monthE&lt;10?'0':'') + monthE + "-" + (dayE&lt;10?'0':'') + dayE + 'T00:00:00'
-var outputEnd = (dayE&lt;10?'0':'') + dayE + '.' + (monthE&lt;10?'0':'') + monthE + '.' + yearE + typeof(dayE) + typeof(yearE) + typeof(monthE)
+var dayE = dateEnd.getDate();
+var monthE = +dateEnd.getMonth() + +1;
+var yearE = dateEnd.getFullYear();
+var outputEnd1C = yearE + "-"+ (monthE&lt;10?'0':'') + monthE + "-" + (dayE&lt;10?'0':'') + dayE + 'T00:00:00';
+//var outputEnd = (dayE&lt;10?'0':'') + dayE + '.' + (monthE&lt;10?'0':'') + monthE + '.' + yearE +  typeof(inputEnd);
 
+var outputBegin =  '';
+var outputEnd = '';
 
+for (var key in inputEnd) {
+  outputEnd += outputEnd + "Ключ: " + key + " значение: " + inputEnd[key]
+}
+for (var key in inputBegin) {
+  outputBegin += outputBegin + "Ключ: " + key + " значение: " + inputBegin[key]
+}
 execution.setVariable('sDateVacationBeginEmail', outputBegin)
 execution.setVariable('sDateVacationEndEmail', outputEnd)
 execution.setVariable('sDateVacationBegin1C', outputBegin1C)
