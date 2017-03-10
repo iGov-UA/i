@@ -88,6 +88,7 @@ public class DocumentStepService {
     
     @Autowired
     private SubjectGroupTreeService oSubjectGroupTreeService;
+    
 
     //public void setDocumentSteps(String snID_Process_Activiti, String soJSON) {
     public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
@@ -108,11 +109,12 @@ public class DocumentStepService {
         //first of all we filter common step with name "_" and then just convert each step from JSON to POJO
         List<String> asKey_Step = Arrays.asList(JSONObject.getNames(oJSON));
         LOG.info("List of steps: {}", asKey_Step);
-        asKey_Step = asKey_Step.stream().
+        /*asKey_Step = asKey_Step.stream().
                 filter(sKey_Step -> !"_".equals(sKey_Step))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
         long i = 1L;
         for (String sKey_Step : asKey_Step) {
+            LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
             oDocumentStep.setnOrder(i++);
             oDocumentStep.setsKey_Step(sKey_Step);
@@ -136,6 +138,11 @@ public class DocumentStepService {
         String[] asKey_Group = JSONObject.getNames(oStep);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList<>();
         for (String sKey_Group : asKey_Group) {
+            
+            if(sKey_Group.startsWith("_defaul")){
+                continue;
+            }
+            
             JSONObject oGroup = oStep.optJSONObject(sKey_Group);
             LOG.info("group for step: {}", oGroup);
 
@@ -175,6 +182,7 @@ public class DocumentStepService {
         LOG.info("cloneDocumentStepSubject started...");
         LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sKey_GroupPostfix_New={}, sKey_Step_Document={}", 
                 sKey_GroupPostfix, snID_Process_Activiti, sKey_GroupPostfix_New, sKey_Step_Document);
+        
         
         /*List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
         if (aTaskActive.size() < 1 || aTaskActive.get(0) == null) {
@@ -216,6 +224,14 @@ public class DocumentStepService {
             //        " Process variable sKey_Step_Document is empty.");
             //sKey_Step_Document="1";
         }*/
+        final String sDefault_Key_Step_Document;
+        
+        if(sKey_GroupPostfix.startsWith("_defaul")){
+            sDefault_Key_Step_Document = "_";
+        }
+        else{
+            sDefault_Key_Step_Document = sKey_Step_Document;
+        }
         
         String sSubjectType = oSubjectGroupTreeService.getSubjectType(sKey_GroupPostfix_New);
         LOG.info("sSubjectType in cloneRights is {}", sSubjectType);
@@ -249,7 +265,7 @@ public class DocumentStepService {
 
         DocumentStep oDocumentStep_Active = aDocumentStep
                 .stream()
-                .filter(o -> sKey_Step_Document == null ? o.getnOrder().equals(1) : o.getsKey_Step().equals(sKey_Step_Document))
+                .filter(o -> sKey_Step_Document == null ? o.getnOrder().equals(1) : o.getsKey_Step().equals(sDefault_Key_Step_Document))
                 .findAny()
                 .orElse(null);
         LOG.info("oDocumentStep_Active={}", oDocumentStep_Active);
@@ -311,13 +327,22 @@ public class DocumentStepService {
                     boolean saveflag = true;
                     
                     for(DocumentStep oDocumentStep : aCheckDocumentStep){
+                        if(!oDocumentStep.getsKey_Step().equals(sDefault_Key_Step_Document)){
+                            continue;
+                        }
+                        
                         List<DocumentStepSubjectRight> aoDocumentStepRights = oDocumentStep.getRights();
+                        LOG.info("oDocumentStep is {}", oDocumentStep);
+                        LOG.info("aoDocumentStepRights is {}", aoDocumentStepRights);
                         
                         for(DocumentStepSubjectRight right : aoDocumentStepRights)
                         {
+                            LOG.info("right.getsKey_GroupPostfix() is {}", right.getsKey_GroupPostfix());
+                            LOG.info("sKey_GroupPostfix_New is {}", sKey_GroupPostfix_New);
                             if(right.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)){
                                 oDocumentStepSubjectRight = right;
                                 saveflag = false;
+                                LOG.info("oDocumentStepSubjectRight in chek loop is {}", oDocumentStepSubjectRight);
                                 break;
                             }
                         }
@@ -328,6 +353,9 @@ public class DocumentStepService {
                     }
                     
                     if(saveflag){
+                        LOG.info("saveflag is: {}", saveflag);
+                        LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix is: {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                        LOG.info("sKey_GroupPostfix: {}", sKey_GroupPostfix);
                         documentStepDao.saveOrUpdate(oDocumentStep_Active);
                     }
                     
