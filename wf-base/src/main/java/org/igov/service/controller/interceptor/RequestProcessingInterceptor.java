@@ -101,7 +101,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         LOG_BIG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
-        documentHistoryProcessing(oRequest, response);
+        //documentHistoryProcessing(oRequest, response);
         return true;
 }
 
@@ -175,9 +175,23 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("sRequestBody is: {}", sResponseBody);
             }
             
-            if (isUpdateTask(oRequest)) {
+            if (isSaveTask(oRequest, sResponseBody)) {
                 
-                LOG.info("--------------ALL PARAMS IN SUBMIT--------------");
+                LOG.info("--------------ALL PARAMS IN SUBMIT (CENTRAL)--------------");
+                LOG.info("protocolize sURL is: " + sURL);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sRequestBody: {}", sRequestBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sResponseBody: {}", sResponseBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("mRequestParam {}", mRequestParam);        
+                LOG.info("-----------------------------------------------");
+            }
+                    
+            
+            if (isDocumentSubmit(oRequest)) {
+                
+                LOG.info("--------------ALL PARAMS IN SUBMIT(REGION)--------------");
                 LOG.info("protocolize sURL is: " + sURL);
                 LOG.info("-----------------------------------------------");
                 LOG.info("sRequestBody: {}", sRequestBody);
@@ -187,13 +201,18 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("mRequestParam {}", mRequestParam);        
                 LOG.info("-----------------------------------------------");
                 
-                if(omResponseBody != null && omResponseBody.containsKey("processDefinitionId")&&
+                /*if(omResponseBody != null && omResponseBody.containsKey("processDefinitionId")&&
                    ((String)omResponseBody.get("processDefinitionId")).startsWith("_doc")){
                     LOG.info("It is a SUBMIIIIIT (ECP)!!!! YEEESS!");        
-                }
+                }*/
                 
                 if(omRequestBody != null && omRequestBody.containsKey("taskId")){
                     String sTaskId = (String)omRequestBody.get("taskId");
+                    LOG.info("sTaskId is: {}", sTaskId);
+                    HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
+                    String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+                    LOG.info("ProcessInstanceId is: {}", processInstanceId);
+                    
                     String sTaskName = taskService.createTaskQuery().taskId(sTaskId).active().singleResult().getName();
                     LOG.info("Task name is {}", sTaskName);
                 }
@@ -663,6 +682,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim());
     }
+    
+    private boolean isDocumentSubmit(HttpServletRequest oRequest) {
+        return (oRequest != null && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                && POST.equalsIgnoreCase(oRequest.getMethod().trim()));
+    }
+    
     
     private boolean isSetDocumentService(HttpServletRequest oRequest, String sResponseBody) {
         boolean isNewDocument = (bFinish && sResponseBody != null && !"".equals(sResponseBody))
