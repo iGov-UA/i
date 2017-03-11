@@ -31,6 +31,7 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
         DelegateExecution execution = delegateTask.getExecution();
         try {
             List<DocumentStep> aResDocumentStep = oDocumentStepService.checkDocumentInit(execution);
+            LOG.info("aResDocumentStep in DocumentInit_iDoc is {}", aResDocumentStep);
             oDocumentStepService.syncDocumentGroups(delegateTask, aResDocumentStep);
             
         } catch (IOException | URISyntaxException oException) {

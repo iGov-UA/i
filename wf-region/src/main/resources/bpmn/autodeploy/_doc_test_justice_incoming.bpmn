@@ -62,8 +62,8 @@
     <scriptTask id="scripttask3" name="проверка подписей всех" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 		var nID_Process = execution.getProcessInstanceId();
-		var sLogin = execution.getVariable(sName_SubjectRole)
-		var sKey_Step = execution.getVariable(sKey_Step_Document)
+		var sLogin = execution.getVariable('sName_SubjectRole')
+		var sKey_Step = execution.getVariable('sKey_Step_Document')
 		var obj2 = documentStepService.isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step)
 		execution.setVariable('obj2', obj2)
 	  </script>

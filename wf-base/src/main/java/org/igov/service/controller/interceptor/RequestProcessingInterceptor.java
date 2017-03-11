@@ -101,6 +101,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         LOG_BIG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
+        //documentHistoryProcessing(oRequest, response);
         return true;
 }
 
@@ -148,20 +149,93 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             String sRequestBody = osRequestBody.toString();
             String sResponseBody = !bFinish ? "" : oResponse.toString();
             
-                        LOG.info("Befor ");
-            LOG.info("--------------ALL PARAMS--------------");
             String sURL = oRequest.getRequestURL().toString();
-            LOG.info("protocolize sURL is: " + sURL);
-            LOG.info("-----------------------------------------------");
-            LOG.info("sRequestBody: {}", sRequestBody);
-            LOG.info("-----------------------------------------------");
-            LOG.info("sResponseBody: {}", sResponseBody);
-            LOG.info("-----------------------------------------------");
-            LOG.info("mRequestParam {}", mRequestParam);        
-            LOG.info("-----------------------------------------------");
             
-            if((mRequestParam.containsKey("sID_BP")||mRequestParam.containsKey("snID_Process_Activiti"))&&
-               mRequestParam.get("sID_BP").startsWith("_doc"))
+            JSONObject omRequestBody = null;
+            JSONObject omResponseBody = null;
+            
+            try
+            {
+                if(!sRequestBody.trim().equals("")){
+                    omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+                }
+            }
+            catch(Exception ex){
+                LOG.info("Error parsing sRequestBody: {}", ex);
+                LOG.info("sRequestBody is: {}", sRequestBody);
+            }
+            
+            try{
+                if(!sResponseBody.trim().equals("")){
+                    omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
+                }
+            }
+            catch(Exception ex){
+                LOG.info("Error parsing sRequestBody: {}", ex);
+                LOG.info("sRequestBody is: {}", sResponseBody);
+            }
+            
+            if (isSaveTask(oRequest, sResponseBody)) {
+                
+                LOG.info("--------------ALL PARAMS IN SUBMIT (CENTRAL)--------------");
+                LOG.info("protocolize sURL is: " + sURL);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sRequestBody: {}", sRequestBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sResponseBody: {}", sResponseBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("mRequestParam {}", mRequestParam);        
+                LOG.info("-----------------------------------------------");
+            }
+                    
+            
+            if (isDocumentSubmit(oRequest)) {
+                
+                LOG.info("--------------ALL PARAMS IN SUBMIT(REGION)--------------");
+                LOG.info("protocolize sURL is: " + sURL);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sRequestBody: {}", sRequestBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sResponseBody: {}", sResponseBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("mRequestParam {}", mRequestParam);        
+                LOG.info("-----------------------------------------------");
+                
+                /*if(omResponseBody != null && omResponseBody.containsKey("processDefinitionId")&&
+                   ((String)omResponseBody.get("processDefinitionId")).startsWith("_doc")){
+                    LOG.info("It is a SUBMIIIIIT (ECP)!!!! YEEESS!");        
+                }*/
+                
+                if(omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty())
+                {
+                    String sTaskId = (String)omRequestBody.get("taskId");
+                    LOG.info("sTaskId is: {}", sTaskId);
+                    HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
+                    String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+                    
+                    LOG.info("oHistoricTaskInstance.getName {}", oHistoricTaskInstance.getName());
+
+                    LOG.info("ProcessInstanceId is: {}", processInstanceId);
+                    List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
+                    LOG.info("aTask is: {}", aTask);
+                    String sTaskName = "";
+                    
+                    for(Task oTask : aTask)
+                    {
+                        if(oTask.getId().equals(sTaskId))
+                        {
+                            sTaskName = oTask.getName();
+                            break;
+                        }
+                    }
+                    
+                    LOG.info("Task name is {}", sTaskName);
+                }
+                
+            }
+            
+            if(((mRequestParam.containsKey("sID_BP")||mRequestParam.containsKey("snID_Process_Activiti"))&&
+               mRequestParam.get("sID_BP").startsWith("_doc")))
             {
                 LOG.info("We found a document! Uhhuu!!");
                 LOG.info("--------------NEW DOCUMENT PARAMS--------------");
@@ -175,16 +249,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("mRequestParam {}", mRequestParam);        
                 LOG.info("-----------------------------------------------");
             
-                JSONObject omRequestBody = null;
-                JSONObject omResponseBody = null;
                 
-                if(!sRequestBody.trim().equals("")){
-                    omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
-                }
-                
-                if(!sResponseBody.trim().equals("")){
-                    omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
-                }
                 
                 String sID_Process = null;
                 String sID_Order = null;
@@ -632,6 +697,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim());
     }
+    
+    private boolean isDocumentSubmit(HttpServletRequest oRequest) {
+        return (oRequest != null && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                && POST.equalsIgnoreCase(oRequest.getMethod().trim()));
+    }
+    
     
     private boolean isSetDocumentService(HttpServletRequest oRequest, String sResponseBody) {
         boolean isNewDocument = (bFinish && sResponseBody != null && !"".equals(sResponseBody))
