@@ -174,7 +174,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("sRequestBody is: {}", sResponseBody);
             }
             
-            if (isSaveTask(oRequest, sResponseBody)) {
+            if (isUpdateTask(oRequest)) {
+                
                 LOG.info("--------------ALL PARAMS IN SUBMIT--------------");
                 LOG.info("protocolize sURL is: " + sURL);
                 LOG.info("-----------------------------------------------");
@@ -184,6 +185,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("-----------------------------------------------");
                 LOG.info("mRequestParam {}", mRequestParam);        
                 LOG.info("-----------------------------------------------");
+                
                 if(omResponseBody != null && omResponseBody.containsKey("processDefinitionId")&&
                    ((String)omResponseBody.get("processDefinitionId")).startsWith("_doc")){
                     LOG.info("It is a SUBMIIIIIT (ECP)!!!! YEEESS!");        
@@ -192,7 +194,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 if(omRequestBody != null && omRequestBody.containsKey("taskId")){
                     String sTaskId = (String)omRequestBody.get("taskId");
                     String sTaskName = taskService.createTaskQuery().taskId(sTaskId).active().singleResult().getName();
-                    LOG.info("AAAAAAAAAAA!!!!!!!! TASK NAME PLEASE BE HERE PLEASE PLEASE PLEASEEEEEE!!!!! {}", sTaskName);
+                    LOG.info("Task name is {}", sTaskName);
                 }
                 
             }
