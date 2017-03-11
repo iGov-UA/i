@@ -217,7 +217,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
                     LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
                     
-                    if(oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc")){
+                    if(oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")){
                         LOG.info("We catch document submit (ECP)");
                         JSONArray properties = (JSONArray) omRequestBody.get("properties");
                         
@@ -229,7 +229,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                             String sId = (String) jsonObject.get("id");
                             String sValue = (String) jsonObject.get("value");
                             
-                            if ("comment".equals("sKey_Step_Document")) {
+                            if (sId.equals("sKey_Step_Document")) {
                                     sKey_Step_Document = sValue;
                                     break;
                             }
