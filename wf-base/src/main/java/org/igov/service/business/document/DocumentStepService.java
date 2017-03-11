@@ -166,7 +166,8 @@ public class DocumentStepService {
             List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
             oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
             oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
-            oDocumentStepSubjectRight.setsLogin(sKey_Group);
+            Group oRequestGroup = oIdentityService.createGroupQuery().groupId(sKey_Group).singleResult();
+            oDocumentStepSubjectRight.setsLogin(oRequestGroup.getId());
             LOG.info("right for step: {}", oDocumentStepSubjectRight);
             aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
         }
