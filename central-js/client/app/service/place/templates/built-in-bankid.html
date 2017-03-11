@@ -501,12 +501,12 @@
                        ng-required="isFieldRequired(property)"
                        ng-class="getBpAndFieldID(property)"
                        class="form-control"
-                       ng-if="isOKPOAutocompleteFields(property.id) !== 'okpo_field'"
+                       ng-if="!isOKPOField(property.id)"
                        value="">
 
                 <!--field for OKPO search start-->
-                <div ng-switch-when="string" ng-if="isOKPOAutocompleteFields(property.id)">
-                  <div class="okpo" ng-if="isOKPOAutocompleteFields(property.id) === 'okpo_field'">
+                <div ng-switch-when="string" ng-if="isOKPOField(property.id)">
+                  <div class="okpo" ng-if="isOKPOField(property.id)">
                     <input type="text"
                            name="{{property.id}}"
                            ng-model="data.formData.params[property.id].value"
