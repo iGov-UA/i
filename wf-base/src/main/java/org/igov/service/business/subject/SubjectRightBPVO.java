@@ -8,7 +8,7 @@ import org.igov.model.subject.SubjectRightBP;
 */
 public class SubjectRightBPVO {
 	
-	SubjectRightBP oSubjectRightBP;
+	private SubjectRightBP oSubjectRightBP;
 
 	private String sName_BP;
 

@@ -111,6 +111,11 @@ public class DocumentStepService {
 	Set asKey_Step_Sort = new TreeSet(asKey_Step);
         asKey_Step = new ArrayList(asKey_Step_Sort);
         LOG.info("List of steps: {}", asKey_Step);
+        asKey_Step = asKey_Step.stream().
+                filter(sKey_Step -> !"_".equals(sKey_Step))
+                .collect(Collectors.toList());
+	
+        LOG.info("List of steps: {}", asKey_Step);
         /*asKey_Step = asKey_Step.stream().
                 filter(sKey_Step -> !"_".equals(sKey_Step))
                 .collect(Collectors.toList());*/

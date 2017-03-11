@@ -47,37 +47,24 @@ public class SubjectRightBPService {
 		List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("sID_Group", asID_Group);
 		LOG.info("In the method getSubjectRightBPs aSubjectRightBP {}", aSubjectRightBP);
 		
-		/*List<SubjectRightBP> aSubjectRightBP1 = subjectRightBPDao.findAll();
-		
-		LOG.info("In the method getSubjectRightBPs aSubjectRightBP findAll = {}", aSubjectRightBP1);
-
-		for (SubjectRightBP oSubjectRightBP : aSubjectRightBP1){
-			oSubjectRightBP.getsID_BP();
-			oSubjectRightBP.getsID_Group();
-			oSubjectRightBP.getsID_Place_UA();
-			LOG.info("sID_BP = {} sID_Group = {}  sID_Place_UA = {}" , oSubjectRightBP.getsID_BP(), oSubjectRightBP.getsID_Group(), oSubjectRightBP.getsID_Place_UA());
-			
-		}*/
-		
-		SubjectRightBP oFindedSubjectRightBP = null;
-
+				
 		for (SubjectRightBP oSubjectRightBP : aSubjectRightBP) {
 
-			if (oFindedSubjectRightBP != null) {
-				oFindedSubjectRightBP = oSubjectRightBP;
-				LOG.info("In the method getSubjectRightBPs oFindedSubjectRightBP {}", oFindedSubjectRightBP);
+			if (oSubjectRightBP != null) {
+				String sID_BP = oSubjectRightBP.getsID_BP();
+				LOG.info("In the method getSubjectRightBPs oFindedSubjectRightBP {}", oSubjectRightBP.getsID_BP());
 
 				List<ProcessDefinition> aProcessDefinition = oRepositoryService.createProcessDefinitionQuery()
-						.processDefinitionKeyLike(oFindedSubjectRightBP.getsID_BP()).active().latestVersion().list();
+						.processDefinitionKeyLike(sID_BP).active().latestVersion().list();
 				String sName_BP = aProcessDefinition.get(0).getName();
 				SubjectRightBPVO oSubjectRightBP_VO = new SubjectRightBPVO();
 
-				oSubjectRightBP_VO.setoSubjectRightBP(oFindedSubjectRightBP);
+				oSubjectRightBP_VO.setoSubjectRightBP(oSubjectRightBP);
 				oSubjectRightBP_VO.setsName_BP(sName_BP);
 
 				aResSubjectRightBPVO.add(oSubjectRightBP_VO);
 			}
-			LOG.info("In the method getSubjectRightBPs oFindedSubjectRightBP is null");
+			LOG.info("In the method getSubjectRightBPs oSubjectRightBP is null");
 		}
 		return aResSubjectRightBPVO;
 	}
