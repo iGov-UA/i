@@ -51,6 +51,14 @@ public class SubjectRightBPService {
 		
 		LOG.info("In the method getSubjectRightBPs aSubjectRightBP findAll = {}", aSubjectRightBP1);
 
+		for (SubjectRightBP oSubjectRightBP : aSubjectRightBP1){
+			oSubjectRightBP.getsID_BP();
+			oSubjectRightBP.getsID_Group();
+			oSubjectRightBP.getsID_Place_UA();
+			LOG.info("sID_BP = {} sID_Group = {}  sID_Place_UA = {}" , oSubjectRightBP.getsID_BP(), oSubjectRightBP.getsID_Group(), oSubjectRightBP.getsID_Place_UA());
+			
+		}
+		
 		SubjectRightBP oFindedSubjectRightBP = null;
 
 		for (SubjectRightBP oSubjectRightBP : aSubjectRightBP) {

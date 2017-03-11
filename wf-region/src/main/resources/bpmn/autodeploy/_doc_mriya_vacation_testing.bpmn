@@ -39,7 +39,7 @@ execution.setVariable('processInstanceId', processInstanceId)
 </script>
     </scriptTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <userTask id="usertask1" name="Подача заяви про відпустку">
+    <userTask id="usertask1" name="Подача заяви про відпустку" activiti:candidateGroups="Mriya_Top3_Exec1">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку" writable="false"></activiti:formProperty>
@@ -156,15 +156,15 @@ execution.setVariable('processInstanceId', processInstanceId)
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'matching'
+var sKey_Step= 'step_2'
 var obj1 = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав
 
 var snID_Process_Activiti = execution.getProcessInstanceId();
-var sKey_GroupPostfix = 'matching'
+var sKey_GroupPostfix = 'step_2'
 var sKey_GroupPostfix_New = execution.getVariable('sName_SubjectRole')
-var sKey_Step_Document = 'matching'
+var sKey_Step_Document = 'step_2'
 var obj2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document)
 execution.setVariable('sCloningOfLaw', obj2)</script>
     </scriptTask>
