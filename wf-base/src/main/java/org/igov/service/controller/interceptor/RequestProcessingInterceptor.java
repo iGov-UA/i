@@ -20,11 +20,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.identity.Group;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.apache.commons.mail.EmailException;
@@ -35,6 +37,7 @@ import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.DocumentStep;
+import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.event.CloseTaskEvent;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -85,6 +88,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private RepositoryService repositoryService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private IdentityService identityService;
     @Autowired
     private HistoryEventService historyEventService;
     @Autowired
@@ -215,6 +220,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     LOG.info("sTaskId is: {}", sTaskId);
                     HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
                     String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+                    
+                    String sAssignLogin = oHistoricTaskInstance.getAssignee();
+                    LOG.info("sAssignLogin in interceptor is {}", sAssignLogin);
+                    List<Group> aUserGroup = identityService.createGroupQuery().groupMember(sAssignLogin).list();
+                    LOG.info("aUserGroup is {}", aUserGroup);
                     LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
                     
                     if(oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")){
@@ -254,6 +264,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                             LOG.info("oCurrDocumentStep in interceptor is {}", oCurrDocumentStep);
                             
                             if(oCurrDocumentStep != null){
+                                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oCurrDocumentStep.getRights();
+                                for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
+                                    //if(oDocumentStepSubjectRight)
+                                    oDocumentStepSubjectRight.setsDate();
+                                    
+                                }
                                 LOG.info("oCurrDocumentStep.getRights() in interceptor is {}", oCurrDocumentStep.getRights());
                             }
                         }        
