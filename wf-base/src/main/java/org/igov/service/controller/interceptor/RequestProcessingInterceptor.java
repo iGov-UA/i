@@ -175,7 +175,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("sRequestBody is: {}", sResponseBody);
             }
             
-            if (isUpdateTask(oRequest)) {
+            if (isDocumentSubmit(oRequest)) {
                 
                 LOG.info("--------------ALL PARAMS IN SUBMIT--------------");
                 LOG.info("protocolize sURL is: " + sURL);
@@ -187,10 +187,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("mRequestParam {}", mRequestParam);        
                 LOG.info("-----------------------------------------------");
                 
-                if(omResponseBody != null && omResponseBody.containsKey("processDefinitionId")&&
+                /*if(omResponseBody != null && omResponseBody.containsKey("processDefinitionId")&&
                    ((String)omResponseBody.get("processDefinitionId")).startsWith("_doc")){
                     LOG.info("It is a SUBMIIIIIT (ECP)!!!! YEEESS!");        
-                }
+                }*/
                 
                 if(omRequestBody != null && omRequestBody.containsKey("taskId")){
                     String sTaskId = (String)omRequestBody.get("taskId");
@@ -663,6 +663,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim());
     }
+    
+    private boolean isDocumentSubmit(HttpServletRequest oRequest) {
+        return (oRequest != null && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                && POST.equalsIgnoreCase(oRequest.getMethod().trim()));
+    }
+    
     
     private boolean isSetDocumentService(HttpServletRequest oRequest, String sResponseBody) {
         boolean isNewDocument = (bFinish && sResponseBody != null && !"".equals(sResponseBody))
