@@ -101,7 +101,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         LOG_BIG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
-        documentHistoryProcessing(oRequest, response);
+        //documentHistoryProcessing(oRequest, response);
         return true;
 }
 
