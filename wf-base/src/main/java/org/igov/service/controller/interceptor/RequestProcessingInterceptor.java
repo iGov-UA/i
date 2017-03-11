@@ -206,14 +206,29 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     LOG.info("It is a SUBMIIIIIT (ECP)!!!! YEEESS!");        
                 }*/
                 
-                if(omRequestBody != null && omRequestBody.containsKey("taskId")){
+                if(omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty())
+                {
                     String sTaskId = (String)omRequestBody.get("taskId");
                     LOG.info("sTaskId is: {}", sTaskId);
                     HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
                     String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
-                    LOG.info("ProcessInstanceId is: {}", processInstanceId);
                     
-                    String sTaskName = taskService.createTaskQuery().taskId(sTaskId).active().singleResult().getName();
+                    LOG.info("oHistoricTaskInstance.getName {}", oHistoricTaskInstance.getName());
+
+                    LOG.info("ProcessInstanceId is: {}", processInstanceId);
+                    List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
+                    LOG.info("aTask is: {}", aTask);
+                    String sTaskName = "";
+                    
+                    for(Task oTask : aTask)
+                    {
+                        if(oTask.getId().equals(sTaskId))
+                        {
+                            sTaskName = oTask.getName();
+                            break;
+                        }
+                    }
+                    
                     LOG.info("Task name is {}", sTaskName);
                 }
                 

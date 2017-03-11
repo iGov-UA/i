@@ -1075,15 +1075,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       };
 
-      $scope.isOKPOAutocompleteFields = function (i) {
+      $scope.isOKPOField = function (i) {
         if(i){
           var splitID = i.split(/_/);
           if (splitID.length === 4 && splitID[1] === 'SubjectOrgan' && splitID[2] === 'OKPO') {
-            return 'okpo_field'
-          } else if(splitID.length === 3 && splitID[1] === 'SubjectOrgan') {
-            return 'okpo_autocomplete'
-          } else {
-            return false
+            return true
           }
         }
       }
