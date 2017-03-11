@@ -14,6 +14,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,12 +39,14 @@ import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.DocumentStep;
 import org.igov.model.document.DocumentStepSubjectRight;
+import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.event.CloseTaskEvent;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.escalation.EscalationHistoryService;
 import org.igov.service.exception.TaskAlreadyUnboundException;
+import org.joda.time.DateTime;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -101,6 +104,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     @Autowired
     @Qualifier("documentStepDao")
     private GenericEntityDao<Long, DocumentStep> documentStepDao;
+    @Autowired
+    private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
 
     private JSONParser oJSONParser = new JSONParser();
 
@@ -221,10 +226,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
                     String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
                     
-                    String sAssignLogin = oHistoricTaskInstance.getAssignee();
-                    LOG.info("sAssignLogin in interceptor is {}", sAssignLogin);
-                    List<Group> aUserGroup = identityService.createGroupQuery().groupMember(sAssignLogin).list();
-                    LOG.info("aUserGroup is {}", aUserGroup);
                     LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
                     
                     if(oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")){
@@ -263,14 +264,34 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                             
                             LOG.info("oCurrDocumentStep in interceptor is {}", oCurrDocumentStep);
                             
+                            String sAssignLogin = oHistoricTaskInstance.getAssignee();
+                            LOG.info("sAssignLogin in interceptor is {}", sAssignLogin);
+                            List<Group> aUserGroup = identityService.createGroupQuery().groupMember(sAssignLogin).list();
+
+                            LOG.info("aUserGroup is {}", aUserGroup);
+                            
                             if(oCurrDocumentStep != null){
                                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oCurrDocumentStep.getRights();
                                 for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
-                                    //if(oDocumentStepSubjectRight)
-                               //     oDocumentStepSubjectRight.setsDate();
-                                    
+                                    for(Group oGroup : aUserGroup){
+                                        LOG.info("oGroup name: {}", oGroup.getName());
+                                        LOG.info("oGroup id: {}", oGroup.getId());
+                                        if(oGroup.getName().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
+                                            oDocumentStepSubjectRight.setsDate(new DateTime());
+                                            oDocumentStepSubjectRight.setsLogin(sAssignLogin);
+                                            oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                                            break;
+                                        }
+                                    }
                                 }
                                 LOG.info("oCurrDocumentStep.getRights() in interceptor is {}", oCurrDocumentStep.getRights());
+                            }
+                            
+                            List<DocumentStep> aNewDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", processInstanceId);
+                            LOG.info("aDocumentStep new in interceptor is {}", aNewDocumentStep);
+                            
+                            for(DocumentStep oNewCurrDocumentStep: aNewDocumentStep){
+                                LOG.info("aDocumentStep new rights  in interceptor is {}", oNewCurrDocumentStep.getRights());
                             }
                         }        
                     }
