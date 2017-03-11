@@ -51,4 +51,5 @@ public class SubjectRightBPVO {
 	public void setsName_BP(String sName_BP) {
 		this.sName_BP = sName_BP;
 	}
+
 }
