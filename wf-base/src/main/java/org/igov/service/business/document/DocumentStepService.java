@@ -108,6 +108,13 @@ public class DocumentStepService {
         //process all other steps
         //first of all we filter common step with name "_" and then just convert each step from JSON to POJO
         List<String> asKey_Step = Arrays.asList(JSONObject.getNames(oJSON));
+	Set asKey_Step_Sort = new TreeSet(asKey_Step);
+        asKey_Step = new ArrayList(asKey_Step_Sort);
+        LOG.info("List of steps: {}", asKey_Step);
+        asKey_Step = asKey_Step.stream().
+                filter(sKey_Step -> !"_".equals(sKey_Step))
+                .collect(Collectors.toList());
+	
         LOG.info("List of steps: {}", asKey_Step);
         /*asKey_Step = asKey_Step.stream().
                 filter(sKey_Step -> !"_".equals(sKey_Step))
@@ -166,8 +173,7 @@ public class DocumentStepService {
             List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
             oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
             oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
-            List<User> aUser = oIdentityService.createUserQuery().memberOfGroup(sKey_Group).list();
-            oDocumentStepSubjectRight.setsLogin(aUser.get(0).getId());
+            //oDocumentStepSubjectRight.setsLogin(sKey_Group);
             LOG.info("right for step: {}", oDocumentStepSubjectRight);
             aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
         }
@@ -501,14 +507,14 @@ public class DocumentStepService {
             mParamDocumentStepSubjectRight.put("bWrite", oDocumentStepSubjectRight.getbWrite());//false
             mParamDocumentStepSubjectRight.put("sName", oDocumentStepSubjectRight.getsName() == null ? "" : oDocumentStepSubjectRight.getsName());//"Главный контроллирующий"
             //String sID_Group = new StringBuilder(sGroupPrefix).append(oDocumentStepSubjectRight.getsKey_GroupPostfix()).toString();
-            String sID_Group = oDocumentStepSubjectRight.getsKey_GroupPostfix().toString();
+            String sID_Group = oDocumentStepSubjectRight.getsKey_GroupPostfix();
             List<User> aUser = oIdentityService.createUserQuery().memberOfGroup(sID_Group).list();
             LOG.info("getDocumentStepLogins sID_Group={}, aUser={}", sID_Group, aUser);
             List<Map<String, Object>> amUserProperty = new LinkedList();
             for (User oUser : aUser) {
                 LOG.info("oDocumentStepSubjectRight.getsLogin() is {}", oDocumentStepSubjectRight.getsLogin());
                 LOG.info("oUser.getId() is {}", oUser.getId());
-                if(oUser.getId().equals(oDocumentStepSubjectRight.getsLogin())){
+                if(oUser.getId().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
                     Map<String, Object> mUser = new HashMap();
                     mUser.put("sLogin", oUser.getId());
                     mUser.put("sFIO", oUser.getLastName() + " " + oUser.getFirstName());
@@ -522,8 +528,8 @@ public class DocumentStepService {
             if (sLogin != null) {
                 User oUser = oIdentityService.createUserQuery().userId(sLogin).singleResult();
                 if(oUser != null){
-                    mParamDocumentStepSubjectRight.put("sLogin", oUser.getId());
-                    mParamDocumentStepSubjectRight.put("sFIO", oUser.getLastName() + " " + oUser.getFirstName());
+                    mParamDocumentStepSubjectRight.put("sLogin_Referent", oUser.getId());
+                    mParamDocumentStepSubjectRight.put("sFIO_Referent", oUser.getLastName() + " " + oUser.getFirstName());
                     //mReturn.put(sLogin, mParamDocumentStepSubjectRight);
                 }
             }
