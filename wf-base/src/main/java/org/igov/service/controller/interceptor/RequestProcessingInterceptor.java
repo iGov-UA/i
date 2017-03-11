@@ -212,6 +212,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     LOG.info("sTaskId is: {}", sTaskId);
                     HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
                     String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+                    LOG.info("oHistoricTaskInstance {}", oHistoricTaskInstance);
+                    LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
                     HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     LOG.info("oHistoricProcessInstance.getName {}", oHistoricProcessInstance);
 
