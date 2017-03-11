@@ -44,7 +44,7 @@ public class SubjectRightBPService {
 		}
 		LOG.info("In the method getSubjectRightBPs sLogin={}, asID_Group={}", sLogin, asID_Group);
 
-		List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("sID_BP", asID_Group);
+		List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("sID_Group_Activiti", asID_Group);
 		LOG.info("In the method getSubjectRightBPs aSubjectRightBP {}", aSubjectRightBP);
 		
 		List<SubjectRightBP> aSubjectRightBP1 = subjectRightBPDao.findAll();
