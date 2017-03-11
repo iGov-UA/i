@@ -101,6 +101,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         LOG_BIG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
+        //documentHistoryProcessing(oRequest, response);
         return true;
 }
 
@@ -174,7 +175,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("sRequestBody is: {}", sResponseBody);
             }
             
-            if (isSaveTask(oRequest, sResponseBody)) {
+            if (isDocumentSubmit(oRequest)) {
+                
                 LOG.info("--------------ALL PARAMS IN SUBMIT--------------");
                 LOG.info("protocolize sURL is: " + sURL);
                 LOG.info("-----------------------------------------------");
@@ -184,15 +186,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("-----------------------------------------------");
                 LOG.info("mRequestParam {}", mRequestParam);        
                 LOG.info("-----------------------------------------------");
-                if(omResponseBody != null && omResponseBody.containsKey("processDefinitionId")&&
+                
+                /*if(omResponseBody != null && omResponseBody.containsKey("processDefinitionId")&&
                    ((String)omResponseBody.get("processDefinitionId")).startsWith("_doc")){
                     LOG.info("It is a SUBMIIIIIT (ECP)!!!! YEEESS!");        
-                }
+                }*/
                 
                 if(omRequestBody != null && omRequestBody.containsKey("taskId")){
                     String sTaskId = (String)omRequestBody.get("taskId");
                     String sTaskName = taskService.createTaskQuery().taskId(sTaskId).active().singleResult().getName();
-                    LOG.info("AAAAAAAAAAA!!!!!!!! TASK NAME PLEASE BE HERE PLEASE PLEASE PLEASEEEEEE!!!!! {}", sTaskName);
+                    LOG.info("Task name is {}", sTaskName);
                 }
                 
             }
@@ -660,6 +663,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim());
     }
+    
+    private boolean isDocumentSubmit(HttpServletRequest oRequest) {
+        return (oRequest != null && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                && POST.equalsIgnoreCase(oRequest.getMethod().trim()));
+    }
+    
     
     private boolean isSetDocumentService(HttpServletRequest oRequest, String sResponseBody) {
         boolean isNewDocument = (bFinish && sResponseBody != null && !"".equals(sResponseBody))
