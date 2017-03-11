@@ -267,7 +267,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oCurrDocumentStep.getRights();
                                 for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
                                     //if(oDocumentStepSubjectRight)
-                                    oDocumentStepSubjectRight.setsDate();
+                               //     oDocumentStepSubjectRight.setsDate();
                                     
                                 }
                                 LOG.info("oCurrDocumentStep.getRights() in interceptor is {}", oCurrDocumentStep.getRights());
