@@ -175,9 +175,23 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("sRequestBody is: {}", sResponseBody);
             }
             
+            if (isSaveTask(oRequest, sResponseBody)) {
+                
+                LOG.info("--------------ALL PARAMS IN SUBMIT (CENTRAL)--------------");
+                LOG.info("protocolize sURL is: " + sURL);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sRequestBody: {}", sRequestBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sResponseBody: {}", sResponseBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("mRequestParam {}", mRequestParam);        
+                LOG.info("-----------------------------------------------");
+            }
+                    
+            
             if (isDocumentSubmit(oRequest)) {
                 
-                LOG.info("--------------ALL PARAMS IN SUBMIT--------------");
+                LOG.info("--------------ALL PARAMS IN SUBMIT(REGION)--------------");
                 LOG.info("protocolize sURL is: " + sURL);
                 LOG.info("-----------------------------------------------");
                 LOG.info("sRequestBody: {}", sRequestBody);
@@ -194,6 +208,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 
                 if(omRequestBody != null && omRequestBody.containsKey("taskId")){
                     String sTaskId = (String)omRequestBody.get("taskId");
+                    LOG.info("sTaskId is: {}", sTaskId);
+                    HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
+                    String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+                    LOG.info("ProcessInstanceId is: {}", processInstanceId);
+                    
                     String sTaskName = taskService.createTaskQuery().taskId(sTaskId).active().singleResult().getName();
                     LOG.info("Task name is {}", sTaskName);
                 }
