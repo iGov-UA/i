@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.igov.model.subject.SubjectGroupAndUser;
 import org.igov.model.subject.SubjectGroupResultTree;
-import org.igov.model.subject.SubjectRightBP;
 import org.igov.service.business.subject.SubjectGroupService;
 import org.igov.service.business.subject.SubjectGroupTreeService;
 import org.igov.service.business.subject.SubjectRightBPService;
