@@ -1052,7 +1052,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       $scope.getOrgData = function (code, id) {
         var fieldPostfix = id.replace('sID_SubjectOrgan_OKPO_', '');
-        var keys = {activities:'sActivitiesKVED',ceo_name:'sCEOName',database_date:'sDateActual',full_name:'sFullName',location:'sLocation',short_name:'sShortName'};
+        var keys = {activities:'sID_SubjectActionKVED',ceo_name:'sCEOName',database_date:'sDateActual',full_name:'sFullName',location:'sLocation',short_name:'sShortName'};
         if(code) {
           $scope.orgIsLoading = {status:true,field:id};
           ServiceService.getOrganizationData(code).then(function (res) {
