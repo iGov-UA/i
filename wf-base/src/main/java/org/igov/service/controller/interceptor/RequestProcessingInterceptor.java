@@ -277,6 +277,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                         LOG.info("oGroup name: {}", oGroup.getName());
                                         LOG.info("oGroup id: {}", oGroup.getId());
                                         if(oGroup.getId().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
+                                            LOG.info("We set date for login: {}", sAssignLogin);
                                             oDocumentStepSubjectRight.setsDate(new DateTime());
                                             oDocumentStepSubjectRight.setsLogin(sAssignLogin);
                                             oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
