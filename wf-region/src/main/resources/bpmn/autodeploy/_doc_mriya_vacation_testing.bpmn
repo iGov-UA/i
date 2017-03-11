@@ -39,7 +39,7 @@ execution.setVariable('processInstanceId', processInstanceId)
 </script>
     </scriptTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <userTask id="usertask1" name="Подача та обробка заяви про відпустку" activiti:candidateGroups="mriya_common">
+    <userTask id="usertask1" name="Подача та обробка заяви про відпустку">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку" writable="false"></activiti:formProperty>
@@ -65,8 +65,22 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Остання дата відпустки" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChoiceSectionChief" name="Оберіть начальника підрозділу (цеху); ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sChoiceSectionChief" name="Оберіть начальника підрозділу (цеху) - узгодження; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sChoicePredicating" name="Оберіть хто затверджує відпустку; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующий шаг" type="string"></activiti:formProperty>
+        <activiti:formProperty id="obj1" name="obj1" type="string"></activiti:formProperty>
+        <activiti:formProperty id="obj2" name="obj2" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sDecisionSectionChief" name="Статус рішення" type="enum">
+          <activiti:value id="allowed" name="Дозволити"></activiti:value>
+          <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sDecisionPredicating" name="Статус рішення" type="enum" required="true">
+          <activiti:value id="allowed" name="Дозволити"></activiti:value>
+          <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
+        </activiti:formProperty>
+        
         <activiti:formProperty id="sNote" name="Коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -152,7 +166,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="scripttask3"></sequenceFlow>
     <scriptTask id="scripttask2" name="Script Task Переключение степов" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId();
 
@@ -161,6 +175,19 @@ execution.setVariable('processInstanceId', processInstanceId)
     </scriptTask>
     <sequenceFlow id="flow22" sourceRef="scripttask2" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="servicetask5" targetRef="scripttask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <scriptTask id="scripttask3" name="Script Task Проверка подписей" activiti:autoStoreVariables="false">
+      <script>
+		var nID_Process = execution.getProcessInstanceId();
+		var sLogin = execution.getVariable('sName_SubjectRole')
+		var sKey_Step = execution.getVariable('sKey_Step_Document')
+		var obj2 = documentStepService.isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step)
+		execution.setVariable('obj2', obj2)
+	  </script>
+    </scriptTask>
+    <sequenceFlow id="flow24" sourceRef="scripttask3" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="exclusivegateway3" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="exclusivegateway3" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_mriya_vacation_testing">
     <bpmndi:BPMNPlane bpmnElement="_doc_mriya_vacation_testing" id="BPMNPlane__doc_mriya_vacation_testing">
@@ -177,22 +204,22 @@ execution.setVariable('processInstanceId', processInstanceId)
         <omgdc:Bounds height="71.0" width="105.0" x="450.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="1300.0" y="160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1140.0" y="153.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="68.0" width="105.0" x="1268.0" y="243.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="105.0" x="1108.0" y="236.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="1303.0" y="360.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1143.0" y="353.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="68.0" width="105.0" x="1381.0" y="147.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="105.0" x="1221.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="1690.0" y="163.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1530.0" y="156.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="68.0" width="105.0" x="1541.0" y="147.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="105.0" x="1381.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="770.0" y="153.0"></omgdc:Bounds>
@@ -202,6 +229,12 @@ execution.setVariable('processInstanceId', processInstanceId)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="71.0" width="105.0" x="450.0" y="22.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="1020.0" y="153.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="71.0" width="105.0" x="860.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="115.0" y="173.0"></omgdi:waypoint>
@@ -216,24 +249,24 @@ execution.setVariable('processInstanceId', processInstanceId)
         <omgdi:waypoint x="450.0" y="173.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="1340.0" y="180.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1381.0" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1180.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1221.0" y="174.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="1320.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1320.0" y="243.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1160.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1160.0" y="236.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="1320.0" y="311.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1320.0" y="360.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1160.0" y="304.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1160.0" y="353.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="1486.0" y="181.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1541.0" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1326.0" y="174.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1381.0" y="174.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="1646.0" y="181.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1690.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1486.0" y="174.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1530.0" y="173.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="555.0" y="173.0"></omgdi:waypoint>
@@ -246,7 +279,7 @@ execution.setVariable('processInstanceId', processInstanceId)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="810.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1300.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="860.0" y="173.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="502.0" y="93.0"></omgdi:waypoint>
@@ -255,6 +288,20 @@ execution.setVariable('processInstanceId', processInstanceId)
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="610.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="555.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="965.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1020.0" y="173.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="1060.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1140.0" y="173.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="1040.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1040.0" y="273.0"></omgdi:waypoint>
+        <omgdi:waypoint x="502.0" y="273.0"></omgdi:waypoint>
+        <omgdi:waypoint x="502.0" y="209.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
