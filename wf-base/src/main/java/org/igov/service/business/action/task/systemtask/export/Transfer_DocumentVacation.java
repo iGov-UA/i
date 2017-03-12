@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component("Transfer_DocumentVacation")
-public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implements JavaDelegate {
+public class Transfer_DocumentVacation extends Abstract_MailTaskCustom implements JavaDelegate {
 
     private final static Logger LOG = LoggerFactory.getLogger(Transfer_DocumentVacation.class);
 
@@ -52,7 +52,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        
+
         String sID_Pattern_Value = this.sID_Pattern.getExpressionText();
         String soData_Value = this.soData.getExpressionText();
         LOG.info("soData_Value before: " + soData_Value);
@@ -60,12 +60,11 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         LOG.info("soData_Value after: " + soData_Value_Result);
         Map<String, Object> data = parseData(soData_Value_Result);
         LOG.info("data: " + data);
-        
-        Date oDateVacationBegin = (Date)execution.getVariable("sDateVacationBegin");
+
+        Date oDateVacationBegin = (Date) execution.getVariable("sDateVacationBegin");
         LOG.info("oDateVacationBegin: " + oDateVacationBegin.getClass() + " oDateVacationBegin: " + oDateVacationBegin);
-        Date oDateVacationEnd = (Date)execution.getVariable("sDateVacationEnd");
-        
-        
+        Date oDateVacationEnd = (Date) execution.getVariable("sDateVacationEnd");
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat sdf_short = new SimpleDateFormat("dd.MM.yyyy");
         String sDate = sdf.format(new Date());
@@ -79,7 +78,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         data.put("sDateVacationBegin", sdf.format(oDateVacationBegin));
         data.put("sDateVacationEnd", sdf.format(oDateVacationEnd));
         LOG.info("Transfer_DocumentVacation data: " + data);
-        
+
         String sDateVacationBegin_Email = sdf_short.format(oDateVacationBegin);
         String sDateVacationEnd_Email = sdf_short.format(oDateVacationEnd);
         execution.setVariable("sDateVacationBegin_Email", sDateVacationBegin_Email);
