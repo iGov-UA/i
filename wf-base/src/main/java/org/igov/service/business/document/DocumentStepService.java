@@ -865,7 +865,7 @@ public class DocumentStepService {
     }
 
     //public void checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {//JSONObject
-    public List<DocumentStep> checkDocumentInit(DelegateExecution execution, String sKey_GroupPostfix) throws IOException, URISyntaxException {
+    public List<DocumentStep> checkDocumentInit(DelegateExecution execution, String sKey_GroupPostfix, String sKey_GroupPostfix_New) throws IOException, URISyntaxException {
         //assume that we can have only one active task per process at the same time
         String snID_Process_Activiti = execution.getId();
         List<DocumentStep> aResDocumentStep = new ArrayList<>();
@@ -921,14 +921,19 @@ public class DocumentStepService {
                 runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
             }
             
-            if(sKey_GroupPostfix != null && !sKey_GroupPostfix.trim().equals("")){
+            if(sKey_GroupPostfix != null && !sKey_GroupPostfix.trim().equals("")&&
+               sKey_GroupPostfix_New != null && !sKey_GroupPostfix_New.trim().equals("")     ){
                 
-                HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().
-                processInstanceId(execution.getProcessInstanceId()).singleResult();
+               // HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().
+               // processInstanceId(execution.getProcessInstanceId()).singleResult();
             
-                String sKey_GroupPostfix_New = oHistoricProcessInstance.getStartUserId();
+                /*ProcessInstance oProcessInstance = execution.getEngineServices().getRuntimeService()
+                .createProcessInstanceQuery().processInstanceId(execution.getProcessInstanceId()).singleResult();
+               
+                String sKey_GroupPostfix_New = oProcessInstance.getStartUserId();*/
                 LOG.info("start user id is {}", sKey_GroupPostfix_New);
                 LOG.info("sKey_GroupPostfix is {}", sKey_GroupPostfix);
+                
                 
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight = 
                         cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document);

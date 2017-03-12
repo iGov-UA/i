@@ -2880,6 +2880,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }*/
         //return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
         Map<String, Object> mParam = new HashMap<>();
+        mParam.put("sLoginAuthor", sLogin);
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
         Map<String, Object> mReturn = new HashMap<>();
         
