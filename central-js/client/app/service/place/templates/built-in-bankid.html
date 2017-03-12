@@ -762,7 +762,7 @@
                              on-select="onSelectDataList($item)">
 
                     <ui-select-match>
-                      {{$select.selected[property.autocompleteData.valueProperty]}}
+                      {{$select.selected[property.autocompleteData.valueProperty] || data.formData.params[property.id].value}}
                     </ui-select-match>
 
                     <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"

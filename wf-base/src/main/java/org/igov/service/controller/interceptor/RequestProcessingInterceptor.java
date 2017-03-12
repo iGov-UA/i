@@ -28,6 +28,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.apache.commons.mail.EmailException;
@@ -277,9 +278,18 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                         LOG.info("oGroup name: {}", oGroup.getName());
                                         LOG.info("oGroup id: {}", oGroup.getId());
                                         if(oGroup.getId().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
-                                            oDocumentStepSubjectRight.setsDate(new DateTime());
-                                            oDocumentStepSubjectRight.setsLogin(sAssignLogin);
-                                            oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                                            List<User> aUser = identityService.createUserQuery().memberOfGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix()).list();
+                                            LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                                            for(User oUser : aUser){
+                                                LOG.info("oUser id is {}", oUser.getId());
+                                                if(oUser.getId().equals(sAssignLogin)){
+                                                    LOG.info("We set date for login: {}", sAssignLogin);
+                                                    oDocumentStepSubjectRight.setsDate(new DateTime());
+                                                    oDocumentStepSubjectRight.setsLogin(sAssignLogin);
+                                                    oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                                                }
+                                                break;
+                                            }
                                             break;
                                         }
                                     }
