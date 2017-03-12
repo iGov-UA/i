@@ -51,6 +51,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
         <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum" required="true">
           <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
           <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Додаткова відпустка на дітей"></activiti:value>
@@ -82,9 +83,6 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:string><![CDATA[ ]]></activiti:string>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -183,7 +181,13 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)
 var sKey_GroupPostfix_New = execution.getVariable('sChoicePredicating')
 sKey_GroupPostfix = '_default_Chief'
 oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Predicating', oResult)</script>
+execution.setVariable('sCloningOfLaw_Predicating', oResult)
+
+// ФИО заявителя
+
+var sLoginAuthor = execution.getVariable('sLoginAuthor')
+var sAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
+execution.setVariable('sAuthorName', sAuthorName)</script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="servicetask5" targetRef="scripttask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -211,6 +215,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key" type="string" default="c82f6314-6faa-11d9-ac6c-0080482454f7"></activiti:formProperty>
         <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
         <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum" writable="false">
           <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
