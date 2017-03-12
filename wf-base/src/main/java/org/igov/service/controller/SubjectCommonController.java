@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.igov.model.subject.Subject;
+import org.igov.model.subject.SubjectHuman;
 import org.igov.service.business.subject.SubjectService;
 
 @Controller
@@ -31,7 +32,7 @@ public class SubjectCommonController {
     )
     @RequestMapping(value = "/getSubjectByLoginAccount", method = RequestMethod.GET)
     @ResponseBody
-    public Subject getSubjectByLoginAccount(@ApiParam(value = "логин", required = true) @RequestParam(value = "sLogin") String sLogin)
+    public SubjectHuman getSubjectByLoginAccount(@ApiParam(value = "логин", required = true) @RequestParam(value = "sLogin") String sLogin)
             throws Exception {
         return oSubjectService.getSubjectByLoginAccount(sLogin);
     }

@@ -59,7 +59,7 @@ public class SubjectService {
     @Autowired
     private SubjectAccountDao subjectAccountDao;
 
-    public Subject getSubjectByLoginAccount(String sLogin) {
+    public SubjectHuman getSubjectByLoginAccount(String sLogin) {
         SubjectHuman result = null;
         Optional<SubjectAccount> subjectAccount = subjectAccountDao.findBy("sLogin", sLogin);
         if (subjectAccount.isPresent()) {
