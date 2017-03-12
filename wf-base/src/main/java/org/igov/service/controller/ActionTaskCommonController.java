@@ -2938,9 +2938,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        StartFormData formData = formService.getStartFormData(piList.get(0).getProcessDefinitionId());
 	        
 	        LOG.info("Received form " + formData);
+	        Map<String, Object> formDataDTO = new HashMap<String, Object>();
+	        formDataDTO.put("formKey", formData.getFormKey());
+	        formDataDTO.put("deploymentId", formData.getDeploymentId());
+	        formDataDTO.put("formProperties", formData.getFormProperties());
+	        formDataDTO.put("processDefinitionId", formData.getProcessDefinition().getId());
 	
-	        FormData[] res = new FormData[1];
-	        res[0] = formData;
+	        Map[] res = new Map[1];
+	        res[0] = formDataDTO;
 	        mReturn.put("data", res);
 	        mReturn.put("total", 1);
 	        mReturn.put("start", 0);
