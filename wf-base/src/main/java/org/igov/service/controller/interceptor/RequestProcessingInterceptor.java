@@ -279,7 +279,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                         LOG.info("oGroup id: {}", oGroup.getId());
                                         if(oGroup.getId().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
                                             List<User> aUser = identityService.createUserQuery().memberOfGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix()).list();
-                                            
+                                            LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                                            LOG.info("aUser in interceptor is {}", aUser);
                                             for(User oUser : aUser){
                                                 if(oUser.getId().equals(sAssignLogin)){
                                                     LOG.info("We set date for login: {}", sAssignLogin);
