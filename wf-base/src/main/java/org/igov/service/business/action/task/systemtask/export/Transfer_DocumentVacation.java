@@ -17,7 +17,6 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.igov.io.fs.FileSystemData;
 import org.igov.model.subject.SubjectAccount;
 import org.igov.model.subject.SubjectAccountDao;
-import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
 import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
 import org.igov.service.business.export.AgroholdingService;
 import static org.igov.util.Tool.parseData;
@@ -32,7 +31,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component("Transfer_DocumentVacation")
-public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implements JavaDelegate {
+public class Transfer_DocumentVacation extends Abstract_MailTaskCustom implements JavaDelegate {
 
     private final static Logger LOG = LoggerFactory.getLogger(Transfer_DocumentVacation.class);
 
@@ -53,7 +52,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        
+
         String sID_Pattern_Value = this.sID_Pattern.getExpressionText();
         String soData_Value = this.soData.getExpressionText();
         LOG.info("soData_Value before: " + soData_Value);
@@ -62,16 +61,28 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
         Map<String, Object> data = parseData(soData_Value_Result);
         LOG.info("data: " + data);
 
+        Date oDateVacationBegin = (Date) execution.getVariable("sDateVacationBegin");
+        LOG.info("oDateVacationBegin: " + oDateVacationBegin.getClass() + " oDateVacationBegin: " + oDateVacationBegin);
+        Date oDateVacationEnd = (Date) execution.getVariable("sDateVacationEnd");
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat sdf_short = new SimpleDateFormat("dd.MM.yyyy");
         String sDate = sdf.format(new Date());
-        Date oDateVacationBegin = sdf.parse((String) data.get("sDateVacationBegin"));
-        Date oDateVacationEnd = sdf.parse((String) data.get("sDateVacationEnd"));
+        //Date oDateVacationBegin = sdf_short.parse((String) data.get("sDateVacationBegin"));
+        //Date oDateVacationEnd = sdf_short.parse((String) data.get("sDateVacationEnd"));
         String sCountDay = String.valueOf(getDateDiff(oDateVacationBegin, oDateVacationEnd));
         String sKeyVacationer = getLoginSubjectAccountByLoginIgovAccount(execution.getProcessInstanceId());
         data.put("sDate", sDate);
         data.put("sCountDay", sCountDay);
         data.put("sKeyVacationer", sKeyVacationer);
+        data.put("sDateVacationBegin", sdf.format(oDateVacationBegin));
+        data.put("sDateVacationEnd", sdf.format(oDateVacationEnd));
         LOG.info("Transfer_DocumentVacation data: " + data);
+
+        String sDateVacationBegin_Email = sdf_short.format(oDateVacationBegin);
+        String sDateVacationEnd_Email = sdf_short.format(oDateVacationEnd);
+        execution.setVariable("sDateVacationBegin_Email", sDateVacationBegin_Email);
+        execution.setVariable("sDateVacationEnd_Email", sDateVacationEnd_Email);
 
         String filePath = FileSystemData.SUB_PATH_XML + "agroholding/";
         File oFile = FileSystemData.getFile(filePath, sID_Pattern_Value + ".xml");
@@ -92,23 +103,33 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom  implemen
     }
 
     private String getLoginSubjectAccountByLoginIgovAccount(String sLoginIgovAccount) {
-        String result = "a807e909-abfb-11dc-aa58-00112f3000a2";
+        String result = "a807e915-abfb-11dc-aa58-00112f3000a2";
         try {
             List<HistoricTaskInstance> aHistoricTask = oHistoryService.createHistoricTaskInstanceQuery()
                     .processInstanceId(sLoginIgovAccount).orderByHistoricTaskInstanceStartTime().asc().list();
+            LOG.info("aHistoricTask: " + aHistoricTask);
             if (aHistoricTask.size() > 0) {
+                LOG.info("aHistoricTask.size: " + aHistoricTask.size());
                 HistoricTaskInstance historicTaskInstance = aHistoricTask.get(0);
+                LOG.info("historicTaskInstance.getName(): " + historicTaskInstance.getName());
                 String assigneeUser = historicTaskInstance.getAssignee();
+                LOG.info("assigneeUser: " + assigneeUser);
                 if (assigneeUser != null) {
                     Optional<SubjectAccount> subjectAccount = subjectAccountDao.findBy("sLogin", assigneeUser);
                     if (subjectAccount.isPresent()) {
+                        LOG.info("subjectAccount: " + subjectAccount);
                         Long nID_Subject = subjectAccount.get().getnID_Subject();
+                        LOG.info("nID_Subject: " + nID_Subject);
                         if (nID_Subject != null) {
                             List<SubjectAccount> aSubjectAccount = subjectAccountDao.findAllBy("nID_Subject", nID_Subject);
                             if (aSubjectAccount.size() > 0) {
+                                LOG.info("aSubjectAccount: " + aSubjectAccount);
                                 for (SubjectAccount oSubjectAccount : aSubjectAccount) {
+                                    LOG.info("oSubjectAccount.getSubjectAccountType().getId(): " + oSubjectAccount.getSubjectAccountType().getId());
                                     if (oSubjectAccount.getSubjectAccountType().getId() == 3) {
                                         result = oSubjectAccount.getsLogin();
+                                        LOG.info("result: " + result);
+                                        break;
                                     } else {
                                         LOG.error("Can't find 1C account");
                                     }

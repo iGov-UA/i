@@ -10,6 +10,7 @@
     position:fixed;
     top: 130px;
     right: 10px;
+    z-index: 100;
   }
   .open-full-info a {
     font-size: 24px;
@@ -303,31 +304,40 @@
 
       <!--document users role-->
       <div class="documentUsers">
-        <div ng-if="documentLogins" ng-repeat="users in documentLogins">
+        <hr class="hr-divider" ng-if="documentLogins && documentLogins.length !== 0">
+        <div ng-if="documentLogins" ng-repeat="users in documentLogins" class="users-list">
           <div ng-if="users.aUser.length !== 0">
 
-            <div ng-if="users.bWrite">
-              <span class="documentRole">{{users.sName}}:</span>
-              <span ng-repeat="user in users.aUser">
+            <div ng-if="users.bWrite" class="col-xs-12 user-in-users-list" style="margin-bottom: 10px">
+              <div class="col-xs-8">
+                <span class="documentRole">{{users.sName}}:</span><br>
+                <span ng-repeat="user in users.aUser">
                 <span title="{{user.sLogin}}">
                   <span ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}">
                     {{ user.sFIO }}{{$last ? '' : ', '}}
                   </span>
                 </span>
               </span>
-              <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису/Немає ознайомлення'}}</span>
+              </div>
+              <div class="col-xs-4">
+                <span class="documentDate">{{users.sDate ? (users.sDate | splitDateByT) : 'Немає підпису'}}</span>
+              </div>
             </div>
 
-            <div ng-if="!users.bWrite">
-              <span class="documentRole">{{users.sName}}:</span>
-              <span ng-repeat="user in users.aUser">
+            <div ng-if="!users.bWrite" class="col-xs-12" style="margin-bottom: 10px">
+              <div class="col-xs-8">
+                <span class="documentRole">{{users.sName}}:</span><br>
+                <span ng-repeat="user in users.aUser">
                 <span title="{{user.sLogin}}">
                   <span ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}">
                     {{ user.sFIO }}{{$last ? '' : ', '}}
                   </span>
                 </span>
               </span>
-              <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису/Немає ознайомлення'}}</span>
+              </div>
+              <div class="col-xs-4">
+                <span class="documentDate">{{users.sDate ? (users.sDate | splitDateByT) : 'Немає ознайомлення'}}</span>
+              </div>
             </div>
 
           </div>

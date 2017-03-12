@@ -71,8 +71,6 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.igov.model.action.event.HistoryEventType;
-import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
@@ -1787,7 +1785,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				long totalNumber = 0;
 				Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
 						sFilterStatus, groupsIds, soaFilterField);
-                LOG.info("taskQuery = {}", taskQuery.toString() );
+                LOG.info("taskQuery = {}", taskQuery );
 				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
 				LOG.info("Total number of tasks:{}", totalNumber);
@@ -2867,7 +2865,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly);
     }
 
-    @ApiOperation(value = "/setDocument", notes = "##### Получение списка прав у логина по документу#####\n\n")
+    @ApiOperation(value = "/setDocument", notes = "##### Создание документа (позже будет заменен на универсальній сервис /setProcess)#####\n\n")
     @RequestMapping(value = "/setDocument", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> setDocument(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
@@ -2882,6 +2880,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }*/
         //return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
         Map<String, Object> mParam = new HashMap<>();
+        mParam.put("sLoginAuthor", sLogin);
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
         Map<String, Object> mReturn = new HashMap<>();
         
@@ -2908,8 +2907,68 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("HistoryEvent_Service elem in setDocument: {}", oHistoryEvent_Service.toString());*/
         
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
-        LOG.info("mReturn in setDocument: ", mReturn);
+        LOG.info("mReturn={}", mReturn);
         
         return mReturn;
     }
+
+    @ApiOperation(value = "/getProcessTemplate", notes = "##### Получение шаблона процесса#####\n\n")
+    @RequestMapping(value = "/getProcessTemplate", method = RequestMethod.GET)
+    public @ResponseBody
+    Map<String, Object> setProcess(
+            @ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
+            @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
+    ) throws Exception {
+
+        //Map<String, Object> mParam = new HashMap<>();
+        //mParam.put("sLoginAuthor", sLogin);
+        //ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+        Map<String, Object> mReturn = new HashMap<>();
+          
+        
+        //TODO: отдать стандартный обьект со стартформой
+        
+        //mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
+        LOG.info("mReturn={}", mReturn);
+        
+        return mReturn;
+    }
+    
+    @ApiOperation(value = "/startProcess", notes = "##### Старт процесса#####\n\n")
+    @RequestMapping(value = "/startProcess", method = RequestMethod.POST)
+    public @ResponseBody
+    Map<String, Object> startProcess(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
+            @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
+            @ApiParam(value = "JSON-щбъект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
+    ) throws Exception {
+
+        Map<String, Object> mParam = new HashMap<>();
+        Map<String, Object> mJsonBody;
+        try {
+            mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
+            if(mJsonBody != null){
+                if (mJsonBody.containsKey("params")) {
+                    mParam = (Map) mJsonBody.get("params");
+
+                }
+            }
+        } catch (Exception e){
+            throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
+        }
+        
+        /*if (sID_BP.startsWith("_doc_")||ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(sID_BP)) {
+                Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, sID_BP, null);
+                LOG.info("SetDocument process count: " + count.intValue());
+        }*/
+        //return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
+        mParam.put("sLoginAuthor", sLogin);
+        ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+        Map<String, Object> mReturn = new HashMap<>();
+                
+        mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
+        LOG.info("mReturn={}", mReturn);
+        
+        return mReturn;
+    }    
+    
 }

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_autotest_dashboard" name="Тестування різних типів даних + дашборд чиновника" isExecutable="true">
+    <documentation>Смоктій К.В. Тестирование разніх типов данных</documentation>
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить Ваше нове місце реєстрації" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name=" " type="label" default="Типові типи даних"></activiti:formProperty>
+        <activiti:formProperty id="sVarString" name="Тип даних string" type="string" default="Тип даних string"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextArea" name="Тип даних textArea" type="textArea" default="Тип даних textArea"></activiti:formProperty>
+        <activiti:formProperty id="sVarlong" name="Тип даних long" type="long" default="1234567890"></activiti:formProperty>
+        <activiti:formProperty id="sVarDouble" name="Тип даних double" type="double" default="1234.56789"></activiti:formProperty>
+        <activiti:formProperty id="sVarDate" name="Тип даних date" type="date"></activiti:formProperty>
+        <activiti:formProperty id="nVarFile" name="Тип даних File;Завантажте файл;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asEnumType" name="Тип даних enum" type="enum" default="sElementEnum_3">
+          <activiti:value id="sElementEnum_1" name="Значення 1 для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_2" name="Значення 2 для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_3" name="Значення 3 для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_4" name="Значення 4 для Enum"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeCheckbox" name="Тип даних enum (checkbox); ;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="warning_visitDay" name="Зверніть увагу" type="label" default="&lt;b&gt;УВАГА!&lt;/b&gt; Електронна черга тестується для sID_Public_SubjectOrganJoin = Тест _test_all_case (код черги щодо додавання слотів 408)"></activiti:formProperty>
+        <activiti:formProperty id="lable2" name=" " type="label" default="table і різні типи даних"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Інформація в таблиці 1" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables1FieldA&quot;,&quot;name&quot;:&quot;Найменування товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;300&quot;},{&quot;id&quot;:&quot;sTables1FieldB&quot;,&quot;name&quot;:&quot;Код товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1FieldC&quot;,&quot;name&quot;:&quot;Одиниця виміру (тип enum)&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;default&quot;:&quot;kilogram&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;kilogram&quot;,&quot;name&quot;:&quot;кілограм|кг&quot;},{&quot;id&quot;:&quot;gram&quot;,&quot;name&quot;:&quot;грам|г&quot;},{&quot;id&quot;:&quot;gram_izotop&quot;,&quot;name&quot;:&quot;грам подільних ізотопів|г поділ. Ізотоп&quot;},{&quot;id&quot;:&quot;matrichnyi&quot;,&quot;name&quot;:&quot;карат метричний (= 200 мг)|кар&quot;},{&quot;id&quot;:&quot;square&quot;,&quot;name&quot;:&quot;квадратний метр|кв.м&quot;},{&quot;id&quot;:&quot;cub_meter&quot;,&quot;name&quot;:&quot;кубічний метр|куб.м&quot;},{&quot;id&quot;:&quot;ltr&quot;,&quot;name&quot;:&quot;літр|л&quot;},{&quot;id&quot;:&quot;meter&quot;,&quot;name&quot;:&quot;метр|м метр&quot;}]},{&quot;id&quot;:&quot;sTables1FieldD&quot;,&quot;name&quot;:&quot;Кількість товару (тип long)&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1FieldE&quot;,&quot;name&quot;:&quot;Вартість товару (тип string);дані потрібно подавати з точністю до 5 знаків після коми&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1FieldF&quot;,&quot;name&quot;:&quot;Вартість товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1FieldG&quot;,&quot;name&quot;:&quot;Додаткове найменування (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Інформація в таблиці 2" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables2FieldA&quot;,&quot;name&quot;:&quot;Назва документа (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables2FieldB&quot;,&quot;name&quot;:&quot;Файл документу (тип file - NEW); ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables2FieldC&quot;,&quot;name&quot;:&quot;Дата укладання (тип date)&quot;,&quot;type&quot;:&quot;date&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="[Етап I] Перевірка даних" activiti:candidateGroups="tester">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить Ваше нове місце реєстрації; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name=" " type="label" default="Типові типи даних"></activiti:formProperty>
+        <activiti:formProperty id="sVarString" name="Тип даних string" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextArea" name="Тип даних textArea" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarlong" name="Тип даних long" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarDouble" name="Тип даних double" type="double" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarDate" name="Тип даних date" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nVarFile" name="Тип даних File;Завантажте файл;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType" name="Тип даних enum" type="enum" writable="false">
+          <activiti:value id="sElementEnum_1" name="Значення 1 для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_2" name="Значення 2 для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_3" name="Значення 3 для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_4" name="Значення 4 для Enum"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeCheckbox" name="Тип даних enum (checkbox); ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="warning_visitDay" name="Зверніть увагу" type="label" default="&lt;b&gt;УВАГА!&lt;/b&gt; Електронна черга тестується для sID_Public_SubjectOrganJoin = Тест _test_all_case (код черги щодо додавання слотів 408)"></activiti:formProperty>
+        <activiti:formProperty id="lable2" name=" " type="label" default="table і різні типи даних"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Інформація в таблиці 1" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Інформація в таблиці 2" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable20" name=" " type="label" default="====== Типові типи даних на дашборді ========"></activiti:formProperty>
+        <activiti:formProperty id="sVarStringDashboard" name="Тип даних string (на дашборді)" type="string" default="Тип даних string"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextAreaDashboard" name="Тип даних textArea  (на дашборді)" type="textArea" default="Тип даних textArea"></activiti:formProperty>
+        <activiti:formProperty id="sVarlongDashboard" name="Тип даних long  (на дашборді)" type="long" default="12345678901234567890"></activiti:formProperty>
+        <activiti:formProperty id="sVarDoubleDashboard" name="Тип даних double  (на дашборді)" type="double" default="1234.56789"></activiti:formProperty>
+        <activiti:formProperty id="sVarDateDashboard" name="Тип даних date  (на дашборді)" type="date"></activiti:formProperty>
+        <activiti:formProperty id="nVarFileDashboard" name="Тип даних File  (на дашборді);Завантажте файл;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeDashboard" name="Тип даних enum  (на дашборді)" type="enum" default="sElementEnum_3">
+          <activiti:value id="sElementEnum_1_Dashboard" name="Значення 1 (на дашборді) для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_2_Dashboard" name="Значення 2 (на дашборді) для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_3_Dashboard" name="Значення 3 (на дашборді) для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_4_Dashboard" name="Значення 4 (на дашборді) для Enum"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeCheckboxDashboard" name="Тип даних enum (checkbox) (на дашборді); ;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes_Dashboard" name="так"></activiti:value>
+          <activiti:value id="no_Dashboard" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lable21" name=" " type="label" default="table і різні типи даних (на дашборді)"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Інформація в таблиці 3 (на дашборді)" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables1Field1&quot;,&quot;name&quot;:&quot;Найменування товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;300&quot;},{&quot;id&quot;:&quot;sTables1Field2&quot;,&quot;name&quot;:&quot;Код товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1Field3&quot;,&quot;name&quot;:&quot;Одиниця виміру (тип enum)&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;default&quot;:&quot;kilogram&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;kilogram&quot;,&quot;name&quot;:&quot;кілограм|кг&quot;},{&quot;id&quot;:&quot;gram&quot;,&quot;name&quot;:&quot;грам|г&quot;},{&quot;id&quot;:&quot;gram_izotop&quot;,&quot;name&quot;:&quot;грам подільних ізотопів|г поділ. Ізотоп&quot;},{&quot;id&quot;:&quot;matrichnyi&quot;,&quot;name&quot;:&quot;карат метричний (= 200 мг)|кар&quot;},{&quot;id&quot;:&quot;square&quot;,&quot;name&quot;:&quot;квадратний метр|кв.м&quot;},{&quot;id&quot;:&quot;cub_meter&quot;,&quot;name&quot;:&quot;кубічний метр|куб.м&quot;},{&quot;id&quot;:&quot;ltr&quot;,&quot;name&quot;:&quot;літр|л&quot;},{&quot;id&quot;:&quot;meter&quot;,&quot;name&quot;:&quot;метр|м метр&quot;}]},{&quot;id&quot;:&quot;sTables1Field4&quot;,&quot;name&quot;:&quot;Кількість товару (тип long)&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1Field5&quot;,&quot;name&quot;:&quot;Вартість товару (тип string);дані потрібно подавати з точністю до 5 знаків після коми&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1Field6&quot;,&quot;name&quot;:&quot;Вартість товару (тип double);дані потрібно подавати з точністю до 5 знаків після коми&quot;,&quot;type&quot;:&quot;double&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1Field7&quot;,&quot;name&quot;:&quot;Додаткове найменування (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable4" name="Інформація в таблиці 4 (на дашборді)" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables2Field1&quot;,&quot;name&quot;:&quot;Назва документа (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables2Field2&quot;,&quot;name&quot;:&quot;Файл документу (тип file - NEW); ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables2Field3&quot;,&quot;name&quot;:&quot;Дата укладання (тип date)&quot;,&quot;type&quot;:&quot;date&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html]; ;bVisible=false" type="string" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask2" name="[Етап II] Прийняття рішення " activiti:candidateGroups="tester">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить Ваше нове місце реєстрації; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name=" " type="label" default="Типові типи даних"></activiti:formProperty>
+        <activiti:formProperty id="sVarString" name="Тип даних string" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextArea" name="Тип даних textArea" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarlong" name="Тип даних long" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarDouble" name="Тип даних double" type="double" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarDate" name="Тип даних date" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nVarFile" name="Тип даних File;Завантажте файл;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType" name="Тип даних enum" type="enum" writable="false">
+          <activiti:value id="sElementEnum_1" name="Значення 1 для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_2" name="Значення 2 для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_3" name="Значення 3 для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_4" name="Значення 4 для Enum"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeCheckbox" name="Тип даних enum (checkbox); ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html]; ;bVisible=false" type="string" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow92" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow95" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent6" name="End"></endEvent>
+    <sequenceFlow id="flow96" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow97" sourceRef="usertask2" targetRef="endevent6"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_autotest_dashboard">
+    <bpmndi:BPMNPlane bpmnElement="_test_autotest_dashboard" id="BPMNPlane__test_autotest_dashboard">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="98.0" y="37.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="68.0" width="137.0" x="330.0" y="22.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="68.0" width="137.0" x="510.0" y="21.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="68.0" width="138.0" x="160.0" y="21.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror2" id="BPMNShape_boundaryerror2">
+        <omgdc:Bounds height="30.0" width="30.0" x="161.0" y="61.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="158.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
+        <omgdc:Bounds height="35.0" width="35.0" x="680.0" y="38.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="133.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="55.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow92" id="BPMNEdge_flow92">
+        <omgdi:waypoint x="467.0" y="56.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="55.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow95" id="BPMNEdge_flow95">
+        <omgdi:waypoint x="176.0" y="91.0"></omgdi:waypoint>
+        <omgdi:waypoint x="175.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow96" id="BPMNEdge_flow96">
+        <omgdi:waypoint x="298.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="56.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow97" id="BPMNEdge_flow97">
+        <omgdi:waypoint x="647.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="55.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

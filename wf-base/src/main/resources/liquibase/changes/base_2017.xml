@@ -229,4 +229,34 @@
         <modifyDataType tableName="HistoryEvent_Service" columnName="soData" newDataType="clob" />
     </changeSet>
     
+    <changeSet id="modify-type-of-soData-for-SubjectMessage_new_" author="olga">
+        <modifyDataType tableName="SubjectMessage" columnName="sData" newDataType="clob" />
+   
+    </changeSet>
+    
+     <changeSet id="issue-1563-create_table_SubjectRightBP" author="Elena">
+        
+        <createTable tableName="SubjectRightBP">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID_BP" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sID_Place_UA" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sID_Group" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>    
+        </createTable>
+         
+        <addAutoIncrement tableName="SubjectRightBP" columnName="nID" startWith="1000" columnDataType="bigint"/>
+  
+    </changeSet>
+
+    <changeSet id="FlowProperty-autoIncrement" author="brunneng">
+        <addAutoIncrement tableName="FlowProperty" columnName="nID" startWith="1" columnDataType="bigint"/>
+    </changeSet>
+    
 </databaseChangeLog>

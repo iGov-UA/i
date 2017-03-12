@@ -381,6 +381,49 @@
           });
         }
 
+        extractFieldOption($scope.taskForm);
+
+        function extractFieldOption(aProperties) {
+          angular.forEach(aProperties, function (property) {
+            var i, source, equalsIndex, key, val;
+            if(!property.options) property.options = {};
+
+            if(property.name && property.name.indexOf(';;') >= 0){
+              var as = property.name.split(';;');
+              property.name = as[0];
+              for(i = 1; i < as.length; i++){
+                source = as[i];
+                equalsIndex = source.indexOf('=');
+                key = source.substr(0, equalsIndex).trim();
+                try {
+                  val = angular.fromJson(source.substr(equalsIndex + 1).trim())
+                } catch (e){
+                  val = source.substr(equalsIndex + 1).trim();
+                }
+                property.options[key] = val;
+              }
+            }
+
+            if(property.name && property.name.indexOf(';') >= 0){
+              var sOldOptions = property.name.split(';')[2];
+              if(sOldOptions){
+                var aOptions = sOldOptions.split(',');
+                for(i = 0; i < aOptions.length; i++){
+                  source = aOptions[i];
+                  equalsIndex = source.indexOf('=');
+                  key = source.substr(0, equalsIndex).trim();
+                  try {
+                    val = angular.fromJson(source.substr(equalsIndex + 1).trim())
+                  } catch (e){
+                    val = source.substr(equalsIndex + 1).trim();
+                  }
+                  property.options[key] = val;
+                }
+              }
+            }
+          })
+        }
+
         function fillArrayWithNewAttaches() {
           angular.forEach($scope.taskForm, function (item) {
             if(item.type === 'file' || item.type === 'table') {
@@ -443,6 +486,11 @@
               return true;
           }
           return false;
+        };
+
+        $scope.correctSignName = function (name) {
+          var splitName = name.split(';');
+          return splitName.length !== 1 ? splitName[0] : name;
         };
 
         $scope.clarify = false;
@@ -1077,8 +1125,12 @@
         $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
         $scope.isFieldVisible = function(item) {
-          return item.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(item.id) ?
+          var bVisible = item.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(item.id) ?
               FieldMotionService.isFieldVisible(item.id, $scope.taskForm) : true);
+          if(item.options && item.options.hasOwnProperty('bVisible')){
+            bVisible = bVisible && item.options['bVisible'];
+          }
+          return bVisible;
         };
 
         $scope.creationDateFormatted = function (date) {

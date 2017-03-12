@@ -35,4 +35,15 @@ angular.module('dashboardJsApp')
         }
       }
     }
+  })
+
+  // YYYY-MM-DDTHH:MM:SS.MS+TZ отображает данный формат даты как yyyy-mm-dd
+  .filter('splitDateByT', function () {
+    return function (value) {
+      var date = value.split('T');
+      if(date.length !== 2) return value;
+      else if(date.length === 2){
+        return date[0];
+      }
+    }
   });

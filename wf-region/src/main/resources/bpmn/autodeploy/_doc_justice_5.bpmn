@@ -20,6 +20,10 @@
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asSex" name="asSex" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSubject" name="asSubject" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asCategory" name="asCategory" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSocialStatus" name="asSocialStatus" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNumberPrevious" name="Вхідний № попереднього звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
@@ -151,15 +155,12 @@
           <activiti:value id="sEnumJustified" name="Обґрунтовано"></activiti:value>
           <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html]" type="invisible" default="РКК1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html]" type="invisible" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html]" type="invisible" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк колегії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -177,6 +178,10 @@
         <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asSex" name="asSex" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSubject" name="asSubject" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asCategory" name="asCategory" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSocialStatus" name="asSocialStatus" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberPrevious" name="Вхідний № попереднього звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
@@ -320,22 +325,19 @@
         <activiti:formProperty id="sTable1" name="Структурний підрозділ, що здійснює розгляд; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_justice_7.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html]" type="invisible" default="РКК1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html]" type="invisible" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html]" type="invisible" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк колегії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cloneDocumentStepSubject" name="cloneDocumentStepSubject" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
-            <activiti:string><![CDATA[system_task]]></activiti:string>
+            <activiti:string><![CDATA[_task_justice]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
             <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
@@ -358,6 +360,10 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSex" name="asSex" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSubject" name="asSubject" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asCategory" name="asCategory" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSocialStatus" name="asSocialStatus" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberPrevious" name="Вхідний № попереднього звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
@@ -516,15 +522,12 @@
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMainExecutor" name="Основний виконавець логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html]" type="invisible" default="РКК1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html]" type="invisible" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html]" type="invisible" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк колегії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -539,6 +542,10 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSex" name="asSex" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSubject" name="asSubject" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asCategory" name="asCategory" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSocialStatus" name="asSocialStatus" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberPrevious" name="Вхідний № попереднього звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
@@ -704,15 +711,12 @@
         <activiti:formProperty id="markers5" name="Якщо доопрацювання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;asDecisionNoText&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDecisionNo'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string"></activiti:formProperty>
         <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html]" type="invisible" default="РКК1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html]" type="invisible" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html]" type="invisible" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк колегії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -737,6 +741,10 @@
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів" type="invisible" default="MJU_Dnipro_0"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSex" name="asSex" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSubject" name="asSubject" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asCategory" name="asCategory" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asSocialStatus" name="asSocialStatus" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberPrevious" name="Вхідний № попереднього звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
@@ -881,7 +889,7 @@
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" required="true">
+        <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" writable="false">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
           <activiti:value id="sEnum2" name="нарочно"></activiti:value>
           <activiti:value id="sEnum3" name="самостійно"></activiti:value>
@@ -897,7 +905,7 @@
           <activiti:value id="sEnumDecisionNo" name="Повернути документ на доопрацювання"></activiti:value>
           <activiti:value id="sEnumDecisionYesBut" name="Завдання виконано - не формувати вихідний документ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sExecutor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sMainExecutor" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sExecutor" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPrepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sAutorResolution" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date"></activiti:formProperty>
@@ -911,19 +919,14 @@
           <activiti:value id="sEnumResultBelong" name="за належністю"></activiti:value>
           <activiti:value id="sEnumResultNoConsider" name="не підлягає розгляду"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMainExecutor" name="Основний виконавець" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="Якщо доопрацювання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;asDecisionNoText&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDecisionNo'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html]" type="invisible" default="РКК1" writable="false"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html]" type="invisible" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html]" type="invisible" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк колегії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -1002,7 +1005,7 @@ execution.setVariable('sExecutor', sExecutor)</script>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="usertask3" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="scripttask5">
+    <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="usertask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision =='sEnumDecisionYes'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="usertask2_yellow" targetRef="usertask3"></sequenceFlow>
@@ -1022,12 +1025,6 @@ execution.setVariable('sExecutor', sExecutor)</script>
     <sequenceFlow id="flow57" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="usertask2" targetRef="scripttask4"></sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="scripttask4" targetRef="usertask2_yellow"></sequenceFlow>
-    <scriptTask id="scripttask5" name="перетворення вхідного номера для передачі в вихідний шаблон" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//1. преобразование входящего номера для передачи в исходящий шаблон
-var number=execution.getVariable('sID_Custom_GovPublic')
-execution.setVariable('sIncomingNumber',sID_Custom_GovPublic)</script>
-    </scriptTask>
-    <sequenceFlow id="flow61" sourceRef="scripttask5" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow62" sourceRef="usertask4" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_5">
@@ -1048,28 +1045,25 @@ execution.setVariable('sIncomingNumber',sID_Custom_GovPublic)</script>
         <omgdc:Bounds height="84.0" width="130.0" x="236.0" y="295.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="84.0" width="130.0" x="87.0" y="498.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="130.0" x="87.0" y="388.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="280.0" y="409.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="283.0" y="522.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="283.0" y="480.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="84.0" width="121.0" x="240.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="83.0" width="132.0" x="389.0" y="175.0"></omgdc:Bounds>
+        <omgdc:Bounds height="83.0" width="132.0" x="551.0" y="295.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="84.0" width="116.0" x="94.0" y="61.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="596.0" y="81.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
-        <omgdc:Bounds height="84.0" width="130.0" x="87.0" y="388.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="361.0" y="102.0"></omgdi:waypoint>
@@ -1118,27 +1112,24 @@ execution.setVariable('sIncomingNumber',sID_Custom_GovPublic)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
         <omgdi:waypoint x="300.0" y="449.0"></omgdi:waypoint>
-        <omgdi:waypoint x="300.0" y="522.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="480.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
         <omgdi:waypoint x="520.0" y="102.0"></omgdi:waypoint>
         <omgdi:waypoint x="596.0" y="101.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="551.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="521.0" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="616.0" y="259.0"></omgdi:waypoint>
+        <omgdi:waypoint x="617.0" y="295.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
-        <omgdi:waypoint x="455.0" y="258.0"></omgdi:waypoint>
-        <omgdi:waypoint x="454.0" y="295.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
-        <omgdi:waypoint x="152.0" y="472.0"></omgdi:waypoint>
-        <omgdi:waypoint x="152.0" y="498.0"></omgdi:waypoint>
+        <omgdi:waypoint x="551.0" y="336.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="337.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
-        <omgdi:waypoint x="217.0" y="540.0"></omgdi:waypoint>
-        <omgdi:waypoint x="283.0" y="539.0"></omgdi:waypoint>
+        <omgdi:waypoint x="152.0" y="472.0"></omgdi:waypoint>
+        <omgdi:waypoint x="152.0" y="497.0"></omgdi:waypoint>
+        <omgdi:waypoint x="283.0" y="497.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

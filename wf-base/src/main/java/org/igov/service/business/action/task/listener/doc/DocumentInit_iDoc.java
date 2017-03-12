@@ -1,17 +1,17 @@
 package org.igov.service.business.action.task.listener.doc;
 
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.List;
+import org.activiti.engine.HistoryService;
 import org.igov.model.document.DocumentStep;
-import org.activiti.engine.FormService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
+import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
-import org.igov.io.GeneralConfig;
-import org.igov.io.web.HttpRequester;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.document.DocumentStepService;
 
@@ -28,34 +28,39 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
     @Autowired
     private DocumentStepService oDocumentStepService;
     
-    @Autowired
-    GeneralConfig generalConfig;
-
-    @Autowired
-    RuntimeService runtimeService;
-
-    @Autowired
-    FormService formService;
-
-    @Autowired
-    TaskService taskService;
+    private Expression sKey_GroupPostfix;
     
-    @Autowired
-    HttpRequester httpRequester;
+    private Expression sKey_GroupPostfix_New;
     
     @Override
     public void notify(DelegateTask delegateTask) {
         
         DelegateExecution execution = delegateTask.getExecution();
+
+        String sKey_GroupPostfix_Value = null;
+        String sKey_GroupPostfix_New_Value = null;
+        
         try {
-            List<DocumentStep> aResDocumentStep = oDocumentStepService.checkDocumentInit(execution);
+            sKey_GroupPostfix_Value
+                    = (this.sKey_GroupPostfix != null) ? getStringFromFieldExpression(this.sKey_GroupPostfix, delegateTask.getExecution()) : "";
+            LOG.info("sKey_GroupPostfix_Value in clone listener is {}", sKey_GroupPostfix_Value);
+            
+            sKey_GroupPostfix_New_Value = (this.sKey_GroupPostfix_New != null) ? getStringFromFieldExpression(this.sKey_GroupPostfix_New, delegateTask.getExecution()) : "";
+            LOG.info("sKey_GroupPostfix_New_Value in clone listener is {}", sKey_GroupPostfix_New_Value);
+        } catch (Exception ex) {
+            LOG.error("sKey_GroupPostfix_Value error: {}", ex);
+        }
+        
+        try {
+            List<DocumentStep> aResDocumentStep = oDocumentStepService.checkDocumentInit(execution, sKey_GroupPostfix_Value, sKey_GroupPostfix_New_Value);
+            LOG.info("aResDocumentStep in DocumentInit_iDoc is {}", aResDocumentStep);
             oDocumentStepService.syncDocumentGroups(delegateTask, aResDocumentStep);
             
-        } catch (Exception oException) {
-            LOG.error("", oException);
+        } catch (IOException | URISyntaxException oException) {
+            LOG.error("DocumentInit_iDoc: ", oException);
             try {
                 throw oException;
-            } catch (Exception ex) {
+            } catch (IOException | URISyntaxException ex) {
                 java.util.logging.Logger.getLogger(DocumentInit_iDoc.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
