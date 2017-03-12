@@ -41,7 +41,7 @@ execution.setVariable('processInstanceId', processInstanceId)
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Подача заяви про відпустку" activiti:candidateGroups="Mriya_Top3_Exec1">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
@@ -192,7 +192,7 @@ var sLoginAuthor = execution.getVariable('sLoginAuthor')
 var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
 execution.setVariable('sAuthorName', oResultAuthorName.sLabel)</script>
     </scriptTask>
-    <sequenceFlow id="flow23" sourceRef="servicetask5" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <scriptTask id="scripttask3" name="Script Task Проверка подписей" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
@@ -207,7 +207,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     <sequenceFlow id="flow26" sourceRef="exclusivegateway3" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'false'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Обробка заяви про відпустку">
+    <userTask id="usertask2" name="Обробка заяви про відпустку" activiti:candidateGroups="Mriya_Top3_Exec1">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку" writable="false"></activiti:formProperty>
@@ -256,8 +256,8 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow27" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow28" sourceRef="usertask1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="scripttask2" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="usertask2" targetRef="scripttask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_mriya_vacation_testing">
@@ -293,10 +293,10 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdc:Bounds height="68.0" width="105.0" x="1511.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="71.0" width="105.0" x="600.0" y="138.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="730.0" y="137.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="71.0" width="105.0" x="740.0" y="138.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="580.0" y="137.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
         <omgdc:Bounds height="40.0" width="40.0" x="1150.0" y="153.0"></omgdc:Bounds>
@@ -340,8 +340,8 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdi:waypoint x="1660.0" y="173.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="705.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="740.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="835.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="870.0" y="173.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="1106.0" y="173.0"></omgdi:waypoint>
@@ -358,12 +358,12 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdi:waypoint x="922.0" y="208.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="845.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="870.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="685.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="555.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="600.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="580.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
         <omgdi:waypoint x="975.0" y="173.0"></omgdi:waypoint>
