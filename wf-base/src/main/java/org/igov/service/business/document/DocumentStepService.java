@@ -236,7 +236,7 @@ public class DocumentStepService {
             //sKey_Step_Document="1";
         }*/
        
-        if(sKey_GroupPostfix.startsWith("_defaul_")){
+        if(sKey_GroupPostfix.startsWith("_default_")){
             sKey_Step_Document_From = "_";
         }
         
