@@ -2868,12 +2868,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ApiOperation(value = "/setDocument", notes = "##### Создание документа (позже будет заменен на универсальній сервис /setProcess)#####\n\n")
     @RequestMapping(value = "/setDocument", method = RequestMethod.GET)
     public @ResponseBody
-    Map<String, Object> setDocument(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
+    Map<String, Object> setDocument(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
     ) throws Exception {
 
         LOG.info("SetDocument in ActionTaskCommonController started...");
-        
+        LOG.info("sLogin in setDocument is {}", sLogin);
         /*if (sID_BP.startsWith("_doc_")||ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(sID_BP)) {
                 Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, sID_BP, null);
                 LOG.info("SetDocument process count: " + count.intValue());
