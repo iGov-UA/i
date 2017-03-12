@@ -67,7 +67,7 @@ exports.getBPs = function (req, res) {
         }
       };
       activiti.get({
-        path: '/action/task/getBPs',
+        path: 'subject/group/getSubjectRightBPs',
         query: req.query
       }, callback)
     }
@@ -75,9 +75,13 @@ exports.getBPs = function (req, res) {
 };
 
 exports.setDocument = function (req, res) {
+  var user = JSON.parse(req.cookies.user);
   activiti.get({
     path: '/action/task/setDocument',
-    query: req.query
+    query: {
+      sID_BP: req.query.sID_BP,
+      sLogin: user.id
+    }
   }, function (error, statusCode, result) {
     res.statusCode = statusCode;
     res.send(result);

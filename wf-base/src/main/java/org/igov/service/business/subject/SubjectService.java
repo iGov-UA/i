@@ -49,9 +49,6 @@ public class SubjectService {
 
     @Autowired
     private SubjectHumanDao subjectHumanDao;
-    
-    @Autowired
-    private SubjectDao subjectDao;
 
     @Autowired
     private SubjectContactTypeDao subjectContactTypeDao;
