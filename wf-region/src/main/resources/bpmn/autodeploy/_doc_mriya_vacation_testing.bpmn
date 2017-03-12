@@ -76,8 +76,6 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующий шаг" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="obj1" name="obj1 - переключение степов" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCloningOfLaw_Chief" name=" клонирование прав Chief" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCloningOfLaw_Predicating" name=" клонирование прав Predicating" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -155,7 +153,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення про відпустку]]></activiti:string>
@@ -168,29 +166,13 @@ execution.setVariable('processInstanceId', processInstanceId)
       </extensionElements>
     </serviceTask>
     <scriptTask id="scripttask2" name="Script Task Переключение степов + клонирование прав" activiti:autoStoreVariables="false">
-      <script>//переключение степа
+      <script>
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_2'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав на согласующего и утверждающего
-
-var sKey_GroupPostfix_New = execution.getVariable('sChoiceSectionChief')
-var sKey_GroupPostfix = '_default_Chief'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document)
-execution.setVariable('sCloningOfLaw_Chief', oResult)
-
-var sKey_GroupPostfix_New = execution.getVariable('sChoicePredicating')
-sKey_GroupPostfix = '_default_Chief'
-oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Predicating', oResult)
-
-// ФИО заявителя
-
-var sLoginAuthor = execution.getVariable('sLoginAuthor')
-var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
-execution.setVariable('sAuthorName', oResultAuthorName.sLabel)</script>
+</script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -245,8 +227,6 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
           <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sCloningOfLaw_Chief" name=" клонирование прав Chief" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCloningOfLaw_Predicating" name=" клонирование прав Predicating" type="string"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -296,7 +276,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdc:Bounds height="71.0" width="105.0" x="730.0" y="137.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="71.0" width="105.0" x="580.0" y="137.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="590.0" y="137.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
         <omgdc:Bounds height="40.0" width="40.0" x="1150.0" y="153.0"></omgdc:Bounds>
@@ -358,12 +338,12 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdi:waypoint x="922.0" y="208.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="685.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="695.0" y="172.0"></omgdi:waypoint>
         <omgdi:waypoint x="730.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="555.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="580.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
         <omgdi:waypoint x="975.0" y="173.0"></omgdi:waypoint>
