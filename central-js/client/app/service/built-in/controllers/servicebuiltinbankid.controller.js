@@ -1064,7 +1064,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
                   var checkPostfix = prop.split(/_/),
                     elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
                   if (elementPostfix !== null && elementPostfix === fieldPostfix)
-                    $scope.data.formData.params[prop].value = i;
+                    if(prop.indexOf('sID_SubjectActionKVED') > -1) {
+                      var onlyKVEDNum = i.match(/\d{1,2}[\.]\d{1,2}/);
+                      onlyKVEDNum.length !== 0 ? $scope.data.formData.params[prop].value = onlyKVEDNum[0] : $scope.data.formData.params[prop].value = i
+                    } else {
+                      $scope.data.formData.params[prop].value = i;
+                    }
                 }
               }
             }
