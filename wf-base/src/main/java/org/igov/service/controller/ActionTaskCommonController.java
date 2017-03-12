@@ -2932,20 +2932,31 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
           
         
         LOG.info("Trying to get start form with ID " + sID_BP);
-        StartFormData formData = formService.getStartFormData(sID_BP);
+        List<ProcessInstance> piList = runtimeService.createProcessInstanceQuery().processDefinitionKey(sID_BP).active().list();
         
-        LOG.info("Received form " + formData);
-
-        StartFormData[] res = new StartFormData[1];
-        res[0] = formData;
-        mReturn.put("data", res);
-        mReturn.put("total", 1);
-        mReturn.put("start", 0);
-        mReturn.put("sort", "name");
-        mReturn.put("order", "asc");
-        mReturn.put("size", 1);
-
-        LOG.info("mReturn={}", mReturn);
+        if (piList != null && piList.size() > 0){
+	        StartFormData formData = formService.getStartFormData(piList.get(0).getProcessDefinitionId());
+	        
+	        LOG.info("Received form " + formData);
+	
+	        FormData[] res = new FormData[1];
+	        res[0] = formData;
+	        mReturn.put("data", res);
+	        mReturn.put("total", 1);
+	        mReturn.put("start", 0);
+	        mReturn.put("sort", "name");
+	        mReturn.put("order", "asc");
+	        mReturn.put("size", 1);
+	
+	        LOG.info("mReturn={}", mReturn);
+        } else {
+        	mReturn.put("data", new String[0]);
+            mReturn.put("total", 0);
+            mReturn.put("start", 0);
+            mReturn.put("sort", "name");
+            mReturn.put("order", "asc");
+            mReturn.put("size", 0);
+        }
         
         return mReturn;
     }
