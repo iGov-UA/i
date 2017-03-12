@@ -10,13 +10,12 @@ import org.igov.model.subject.SubjectRightBPDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.repository.ProcessDefinition;
 
 
-@Component("subjectRightBPService")
+
 @Service
 public class SubjectRightBPService {
 
