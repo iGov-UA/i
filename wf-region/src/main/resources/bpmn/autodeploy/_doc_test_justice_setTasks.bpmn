@@ -27,6 +27,9 @@
         <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующую ЮТ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="sID_Order_GovPublic" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[ ]]></activiti:string>
           </activiti:field>
@@ -63,6 +66,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll" name="bSubmitedAll" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[ ]]></activiti:string>
           </activiti:field>
@@ -90,6 +96,9 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
         <activiti:formProperty id="bSubmitedAll" name="bSubmitedAll" type="string"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="string" default="раз вы здесь, значит все подписали"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[ ]]></activiti:string>
           </activiti:field>
