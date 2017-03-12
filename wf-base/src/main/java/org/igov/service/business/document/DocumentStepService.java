@@ -922,7 +922,7 @@ public class DocumentStepService {
             }
             
             HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().
-                processInstanceId(snID_Process_Activiti).singleResult();
+                processInstanceId(execution.getProcessInstanceId()).singleResult();
             
             String sKey_GroupPostfix_New = oHistoricProcessInstance.getStartUserId();
             LOG.info("start user id is {}", sKey_GroupPostfix_New);
