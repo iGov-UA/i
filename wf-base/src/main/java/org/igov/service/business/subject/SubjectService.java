@@ -9,8 +9,6 @@ import com.google.common.base.Optional;
 import java.util.ArrayList;
 import java.util.List;
 import org.igov.model.subject.Subject;
-import org.igov.model.subject.SubjectActionKVED;
-import org.igov.model.subject.SubjectActionKVEDDao;
 import org.igov.model.subject.SubjectContact;
 import org.igov.model.subject.SubjectContactDao;
 import org.igov.model.subject.SubjectContactType;
@@ -47,8 +45,6 @@ public class SubjectService {
     private SubjectHumanDao subjectHumanDao;
     @Autowired
     private SubjectContactTypeDao subjectContactTypeDao;
-    @Autowired
-    private SubjectActionKVEDDao subjectActionKVEDDao;
     @Autowired
     private SubjectHumanRoleDao subjectHumanRoleDao;
    
@@ -339,13 +335,6 @@ public class SubjectService {
        return nID;
     } 
 
-    public List<SubjectActionKVED> getSubjectActionKVED(String sID, String sNote) {
-	return subjectActionKVEDDao.getSubjectActionKVED(sID, sNote);
-    }
-    
-    public List<SubjectActionKVED> getSubjectActionKVED(String sFind ) {
-	return subjectActionKVEDDao.getSubjectActionKVED(sFind);
-    }
     public String setSubjectHumanRole(Long nID_SubjectHuman, Long nID_SubjectHumanRole) {
         
         try {
