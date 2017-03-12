@@ -1,11 +1,14 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
@@ -66,11 +69,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
@@ -2926,10 +2931,37 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> mReturn = new HashMap<>();
           
         
-        //TODO: отдать стандартный обьект со стартформой
+        LOG.info("Trying to get start form with ID " + sID_BP);
+        List<ProcessInstance> piList = runtimeService.createProcessInstanceQuery().processDefinitionKey(sID_BP).active().list();
         
-        //mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
-        LOG.info("mReturn={}", mReturn);
+        if (piList != null && piList.size() > 0){
+	        StartFormData formData = formService.getStartFormData(piList.get(0).getProcessDefinitionId());
+	        
+	        LOG.info("Received form " + formData);
+	        Map<String, Object> formDataDTO = new HashMap<String, Object>();
+	        formDataDTO.put("formKey", formData.getFormKey());
+	        formDataDTO.put("deploymentId", formData.getDeploymentId());
+	        formDataDTO.put("formProperties", formData.getFormProperties());
+	        formDataDTO.put("processDefinitionId", formData.getProcessDefinition().getId());
+	
+	        Map[] res = new Map[1];
+	        res[0] = formDataDTO;
+	        mReturn.put("data", res);
+	        mReturn.put("total", 1);
+	        mReturn.put("start", 0);
+	        mReturn.put("sort", "name");
+	        mReturn.put("order", "asc");
+	        mReturn.put("size", 1);
+	
+	        LOG.info("mReturn={}", mReturn);
+        } else {
+        	mReturn.put("data", new String[0]);
+            mReturn.put("total", 0);
+            mReturn.put("start", 0);
+            mReturn.put("sort", "name");
+            mReturn.put("order", "asc");
+            mReturn.put("size", 0);
+        }
         
         return mReturn;
     }
@@ -2947,9 +2979,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         try {
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
             if(mJsonBody != null){
-                if (mJsonBody.containsKey("params")) {
-                    mParam = (Map) mJsonBody.get("params");
-
+            	if (mJsonBody.containsKey("properties")) {
+                    LOG.info("Parsing properties: " + mJsonBody.get("properties"));
+                    
+                    for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")){
+                    	LOG.info("Parsing param: " + param);
+                    	mParam.put((String)param.get("id"), param.get("value"));
+                    }
                 }
             }
         } catch (Exception e){

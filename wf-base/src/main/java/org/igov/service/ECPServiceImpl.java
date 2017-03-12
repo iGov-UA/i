@@ -61,5 +61,30 @@ public class ECPServiceImpl implements ECPService {
 		}
 		return null;
 	}
+    
+	@Override
+	public byte[] signFileByCustomSign(byte[] content, byte[] keyFile, byte[] certFile, String sPassword) throws Exception {
+		LOG.info("Creating KeyStore with parameters. FileName:" + (environment.getProperty("catalina.home") + "/conf/" + generalConfig.getsECPKeystoreFilename()) + " Passwd:"
+				+ generalConfig.getsECPKeystorePasswd());
+		//File certFile = new File(environment.getProperty("catalina.home") + "/conf/" + generalConfig.getsECPSelfCertPathFile());
 
+
+		if (keyFile!=null && keyFile.length>0 && certFile!=null && certFile.length>0) {
+
+			final KeyStore keyStore = new KeyStore(keyFile, sPassword);
+			final byte[] dataCert = certFile;
+			
+			LOG.info("Signing the document. Size of original document:"
+					+ (content != null ? content.length : "0"));
+			final byte[] signedDoc = CryptoniteX.cmsSignHash(keyStore, content, dataCert, true, null, true);
+
+			LOG.info("Signed the document. Size of signed document:"
+					+ (signedDoc != null ? signedDoc.length : "0"));
+
+			return signedDoc;
+		} else {
+			LOG.info("Either KeyStore file or certificate sign file are not found in classpath. ");
+		}
+		return null;
+	}
 }
