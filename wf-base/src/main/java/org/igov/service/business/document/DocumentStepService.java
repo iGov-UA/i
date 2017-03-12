@@ -386,9 +386,9 @@ public class DocumentStepService {
                         LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix is: {}", 
                                 oDocumentStepSubjectRight_New.getsKey_GroupPostfix());
                         LOG.info("sKey_GroupPostfix: {}", sKey_GroupPostfix);
-                        
+                        documentStepDao.saveOrUpdate(oDocumentStep_To);
                     }
-                    documentStepDao.saveOrUpdate(oDocumentStep_To);
+                    
     //                }catch(Exception ex){
                 //oTaskService.addCandidateGroup(snID_Task, oDocumentStepSubjectRight.getsKey_GroupPostfix());
                 //repositoryService.addCandidateStarterGroup(snID_Process_Activiti, oDocumentStepSubjectRight.getsKey_GroupPostfix());
