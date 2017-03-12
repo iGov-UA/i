@@ -1050,26 +1050,44 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         previousOrganJoin: {}
       };
 
+      /*
+        *поиски организации по окпо начало
+      */
       $scope.getOrgData = function (code, id) {
         var fieldPostfix = id.replace('sID_SubjectOrgan_OKPO_', '');
         var keys = {activities:'sID_SubjectActionKVED',ceo_name:'sCEOName',database_date:'sDateActual',full_name:'sFullName',location:'sLocation',short_name:'sShortName'};
+        function findAndFillOKPOFields(res) {
+          angular.forEach(res.data, function (i, key, obj) {
+            if (key in keys) {
+              for (var prop in $scope.data.formData.params) {
+                if ($scope.data.formData.params.hasOwnProperty(prop) && prop.indexOf(keys[key]) === 0) {
+                  var checkPostfix = prop.split(/_/),
+                    elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
+                  if (elementPostfix !== null && elementPostfix === fieldPostfix)
+                    $scope.data.formData.params[prop].value = i;
+                }
+              }
+            }
+          })
+        }
+        function clearFieldsWhenError() {
+          for (var prop in $scope.data.formData.params) {
+            if ($scope.data.formData.params.hasOwnProperty(prop) && prop.indexOf('_SubjectOrgan_') > -1) {
+              var checkPostfix = prop.split(/_/),
+                elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
+              if (elementPostfix !== null && elementPostfix === fieldPostfix && prop.indexOf('sID_SubjectOrgan_OKPO') === -1)
+                $scope.data.formData.params[prop].value = '';
+            }
+          }
+        }
         if(code) {
           $scope.orgIsLoading = {status:true,field:id};
           ServiceService.getOrganizationData(code).then(function (res) {
             $scope.orgIsLoading = {status:false,field:id};
-            if (!res.data.error) {
-              angular.forEach(res.data, function (i, key, obj) {
-                if (key in keys) {
-                  for (var prop in $scope.data.formData.params) {
-                    if ($scope.data.formData.params.hasOwnProperty(prop) && prop.indexOf(keys[key]) === 0) {
-                      var checkPostfix = prop.split(/_/),
-                        elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
-                      if (elementPostfix !== null && elementPostfix === fieldPostfix)
-                        $scope.data.formData.params[prop].value = i;
-                    }
-                  }
-                }
-              })
+            if (res.data === '' || res.data.error) {
+              clearFieldsWhenError();
+            } else {
+              findAndFillOKPOFields(res);
             }
           });
         }
@@ -1082,5 +1100,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
             return true
           }
         }
-      }
+      };
+    /*
+     *поиски организации по окпо конец
+    */
 });
