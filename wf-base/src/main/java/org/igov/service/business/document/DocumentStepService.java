@@ -921,7 +921,7 @@ public class DocumentStepService {
                 runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
             }
             
-            if(sKey_GroupPostfix != null && !sKey_GroupPostfix.equals("")){
+            if(sKey_GroupPostfix != null && !sKey_GroupPostfix.trim().equals("")){
                 
                 HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().
                 processInstanceId(execution.getProcessInstanceId()).singleResult();
