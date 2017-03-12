@@ -72,7 +72,11 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sCloningOfLaw" name="obj2 - клонирование прав" type="string"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_Mriya]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
@@ -224,7 +228,11 @@ execution.setVariable('bVerificationSignatures', obj3.bSubmitedAll.toString())</
         </activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:expression><![CDATA[' ']]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow27" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
