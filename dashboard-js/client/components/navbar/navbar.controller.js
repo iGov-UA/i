@@ -182,8 +182,8 @@
         tasks.isUserHasDocuments(user).then(function (res) {
           if(Array.isArray(res) && res.length > 0) {
             $scope.usersDocumentsBPs = res.filter(function (item) {
-              return item.oSubjectRightBP.sID_BP.charAt(0) === '_' && item.oSubjectRightBP.sID_BP.split('_')[1] === 'doc';
-            });
+              return item.sID.charAt(0) === '_' && item.sID.split('_')[1] === 'doc';
+            })
           }
         })
       }
@@ -204,7 +204,7 @@
     };
 
     $scope.onSelectDocList = function (item) {
-      tasks.createNewDocument(item.oSubjectRightBP.sID_BP).then(function (res) {
+      tasks.createNewDocument(item.sID).then(function (res) {
         if(res.snID_Process) {
           tempCountValue = 0;
           var val = res.snID_Process + lunaService.getLunaValue(res.snID_Process);

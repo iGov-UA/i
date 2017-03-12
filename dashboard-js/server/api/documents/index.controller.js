@@ -67,7 +67,7 @@ exports.getBPs = function (req, res) {
         }
       };
       activiti.get({
-        path: 'subject/group/getSubjectRightBPs',
+        path: 'action/task/getBPs',
         query: req.query
       }, callback)
     }
