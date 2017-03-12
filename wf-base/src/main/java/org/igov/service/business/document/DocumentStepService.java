@@ -113,9 +113,9 @@ public class DocumentStepService {
 	Set asKey_Step_Sort = new TreeSet(asKey_Step);
         asKey_Step = new ArrayList(asKey_Step_Sort);
         LOG.info("List of steps: {}", asKey_Step);
-        asKey_Step = asKey_Step.stream().
+        /*asKey_Step = asKey_Step.stream().
                 filter(sKey_Step -> !"_".equals(sKey_Step))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
 	
         LOG.info("List of steps: {}", asKey_Step);
         /*asKey_Step = asKey_Step.stream().
@@ -386,9 +386,9 @@ public class DocumentStepService {
                         LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix is: {}", 
                                 oDocumentStepSubjectRight_New.getsKey_GroupPostfix());
                         LOG.info("sKey_GroupPostfix: {}", sKey_GroupPostfix);
-                        documentStepDao.saveOrUpdate(oDocumentStep_To);
+                        
                     }
-                    
+                    documentStepDao.saveOrUpdate(oDocumentStep_To);
     //                }catch(Exception ex){
                 //oTaskService.addCandidateGroup(snID_Task, oDocumentStepSubjectRight.getsKey_GroupPostfix());
                 //repositoryService.addCandidateStarterGroup(snID_Process_Activiti, oDocumentStepSubjectRight.getsKey_GroupPostfix());
