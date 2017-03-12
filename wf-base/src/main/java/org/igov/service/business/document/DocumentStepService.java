@@ -146,38 +146,40 @@ public class DocumentStepService {
         DocumentStep oDocumentStep = new DocumentStep();
         String[] asKey_Group = JSONObject.getNames(oStep);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList<>();
-        for (String sKey_Group : asKey_Group) {
-            
-            if(sKey_Group.startsWith("_defaul")){
-                continue;
-            }
-            
-            JSONObject oGroup = oStep.optJSONObject(sKey_Group);
-            LOG.info("group for step: {}", oGroup);
+        if (asKey_Group != null) {
+            for (String sKey_Group : asKey_Group) {
 
-            if (oGroup == null) {
-                continue;
-            }
-            Boolean bWrite = (Boolean) oGroup.opt("bWrite");
-            if (bWrite == null) {
-                throw new IllegalArgumentException("Group " + sKey_Group + " hasn't property bWrite.");
-            }
+                if (sKey_Group.startsWith("_defaul")) {
+                    continue;
+                }
 
-            DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
-            oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group);
-            oDocumentStepSubjectRight.setbWrite(bWrite);
+                JSONObject oGroup = oStep.optJSONObject(sKey_Group);
+                LOG.info("group for step: {}", oGroup);
 
-            Object sName = oGroup.opt("sName");
-            if (sName != null) {
-                oDocumentStepSubjectRight.setsName((String) sName);
+                if (oGroup == null) {
+                    continue;
+                }
+                Boolean bWrite = (Boolean) oGroup.opt("bWrite");
+                if (bWrite == null) {
+                    throw new IllegalArgumentException("Group " + sKey_Group + " hasn't property bWrite.");
+                }
+
+                DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
+                oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group);
+                oDocumentStepSubjectRight.setbWrite(bWrite);
+
+                Object sName = oGroup.opt("sName");
+                if (sName != null) {
+                    oDocumentStepSubjectRight.setsName((String) sName);
+                }
+
+                List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
+                oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
+                oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
+                //oDocumentStepSubjectRight.setsLogin(sKey_Group);
+                LOG.info("right for step: {}", oDocumentStepSubjectRight);
+                aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
             }
-
-            List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
-            oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
-            oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
-            //oDocumentStepSubjectRight.setsLogin(sKey_Group);
-            LOG.info("right for step: {}", oDocumentStepSubjectRight);
-            aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
         }
         oDocumentStep.setRights(aDocumentStepSubjectRight);
         return oDocumentStep;
