@@ -74,10 +74,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[ ]]></activiti:string>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -93,15 +90,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
-Вам не затверджена відпустка. <br>
-Коментар: ${sNote}]]></activiti:expression>
+          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
+Вам не затверджена відпустка. &lt;br&gt;
+Коментар: ${sNote}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -127,15 +124,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
-Вам надано відпустку з ${sDateVacationBegin_Email} по ${sDateVacationEnd_Email}. <br>
-Гарного відпочинку!]]></activiti:expression>
+          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
+Вам надано відпустку з ${sDateVacationBegin_Email} по ${sDateVacationEnd_Email}. &lt;br&gt;
+Гарного відпочинку!</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -153,9 +150,9 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[Нове звернення про відпустку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<b>Шановний колего!</b><br>
-У вас на черзі нове звернення на відпустку.<br> 
-Опрацюйте його.<br>]]></activiti:expression>
+          <activiti:expression>&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br&gt;
+У вас на черзі нове звернення на відпустку.&lt;br&gt; 
+Опрацюйте його.&lt;br&gt;</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -164,25 +161,27 @@ execution.setVariable('processInstanceId', processInstanceId)
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_2'
-var obj1 = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав
+// клонирование прав на согласующего и утверждающего
 
-var snID_Process_Activiti = execution.getProcessInstanceId();
-var sKey_GroupPostfix = 'step_2'
-var sKey_GroupPostfix_New = execution.getVariable('sName_SubjectRole')
-var sKey_Step_Document = 'step_2'
-var obj2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document)
-execution.setVariable('sCloningOfLaw', obj2)</script>
+var sKey_GroupPostfix_New = execution.getVariable('sChoiceSectionChief')
+var sKey_GroupPostfix = '_default_Chief'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document)
+execution.setVariable('sCloningOfLaw_Chief', oResult)
+
+var sKey_GroupPostfix_New = execution.getVariable('sChoicePredicating')
+sKey_GroupPostfix = '_default_Chief'
+oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Predicating', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="servicetask5" targetRef="scripttask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <scriptTask id="scripttask3" name="Script Task Проверка подписей" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
-var sLogin = execution.getVariable('sName_SubjectRole')
 var sKey_Step = execution.getVariable('sKey_Step_Document')
-var obj3 = documentStepService.isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step)
-execution.setVariable('bVerificationSignatures', obj3.bSubmitedAll.toString())</script>
+var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, '', sKey_Step)
+execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
     </scriptTask>
     <sequenceFlow id="flow24" sourceRef="scripttask3" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow25" sourceRef="exclusivegateway3" targetRef="exclusivegateway1">
@@ -219,13 +218,13 @@ execution.setVariable('bVerificationSignatures', obj3.bSubmitedAll.toString())</
         <activiti:formProperty id="sComment" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующий шаг" type="string"></activiti:formProperty>
         <activiti:formProperty id="obj1" name="obj1 - переключение степов" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCloningOfLaw" name="obj2 - клонирование прав" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Chief" name="obj2 - клонирование прав" type="string"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDecisionSectionChief" name="Статус рішення" type="enum">
+        <activiti:formProperty id="sDecisionSectionChief" name="Статус рішення" type="enum" required="true">
           <activiti:value id="allowed" name="Дозволити"></activiti:value>
           <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionPredicating" name="Статус рішення" type="enum">
+        <activiti:formProperty id="sDecisionPredicating" name="Статус рішення" type="enum" required="true">
           <activiti:value id="allowed" name="Дозволити"></activiti:value>
           <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
         </activiti:formProperty>
@@ -233,10 +232,7 @@ execution.setVariable('bVerificationSignatures', obj3.bSubmitedAll.toString())</
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[ ]]></activiti:string>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
