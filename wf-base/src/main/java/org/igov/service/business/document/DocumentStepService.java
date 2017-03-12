@@ -118,9 +118,9 @@ public class DocumentStepService {
                 .collect(Collectors.toList());*/
 	
         LOG.info("List of steps: {}", asKey_Step);
-        /*asKey_Step = asKey_Step.stream().
+        asKey_Step = asKey_Step.stream().
                 filter(sKey_Step -> !"_".equals(sKey_Step))
-                .collect(Collectors.toList());*/
+                .collect(Collectors.toList());
         long i = 1L;
         for (String sKey_Step : asKey_Step) {
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
@@ -149,9 +149,9 @@ public class DocumentStepService {
         if (asKey_Group != null) {
             for (String sKey_Group : asKey_Group) {
 
-                if (sKey_Group.startsWith("_defaul")) {
+                /*if (sKey_Group.startsWith("_defaul")) {
                     continue;
-                }
+                }*/
 
                 JSONObject oGroup = oStep.optJSONObject(sKey_Group);
                 LOG.info("group for step: {}", oGroup);
