@@ -921,14 +921,15 @@ public class DocumentStepService {
                 runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
             }
             
-            HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().
+            if(sKey_GroupPostfix != null){
+                
+                HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().
                 processInstanceId(execution.getProcessInstanceId()).singleResult();
             
-            String sKey_GroupPostfix_New = oHistoricProcessInstance.getStartUserId();
-            LOG.info("start user id is {}", sKey_GroupPostfix_New);
-            LOG.info("sKey_GroupPostfix is {}", sKey_GroupPostfix);
-            
-            if(sKey_GroupPostfix != null){
+                String sKey_GroupPostfix_New = oHistoricProcessInstance.getStartUserId();
+                LOG.info("start user id is {}", sKey_GroupPostfix_New);
+                LOG.info("sKey_GroupPostfix is {}", sKey_GroupPostfix);
+                
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight = 
                         cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document);
                 LOG.info("aDocumentStepSubjectRight in checkDocumentInit is {}", aDocumentStepSubjectRight);
