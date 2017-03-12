@@ -43,6 +43,8 @@ import org.igov.service.business.subject.SubjectGroupTreeService;
 import org.igov.util.Tool;
 import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 
@@ -500,10 +502,11 @@ public class DocumentStepService {
         }
 
         final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
-
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy hh:MM");
+        
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             Map<String, Object> mParamDocumentStepSubjectRight = new HashMap();
-            mParamDocumentStepSubjectRight.put("sDate", oDocumentStepSubjectRight.getsDate() == null ? "" : oDocumentStepSubjectRight.getsDate().toString());//"2016-05-15 12:12:34"
+            mParamDocumentStepSubjectRight.put("sDate", oDocumentStepSubjectRight.getsDate() == null ? "" : formatter.print(oDocumentStepSubjectRight.getsDate()));//"2016-05-15 12:12:34"
             mParamDocumentStepSubjectRight.put("bWrite", oDocumentStepSubjectRight.getbWrite());//false
             mParamDocumentStepSubjectRight.put("sName", oDocumentStepSubjectRight.getsName() == null ? "" : oDocumentStepSubjectRight.getsName());//"Главный контроллирующий"
             //String sID_Group = new StringBuilder(sGroupPrefix).append(oDocumentStepSubjectRight.getsKey_GroupPostfix()).toString();
