@@ -58,6 +58,8 @@ public class ECPCommonController {
     	return new ResponseEntity<byte[]>(res, responseHeaders, HttpStatus.OK);
     }
     
+    //ТОЛЬКО для тестов и технических целей!!
+    @Deprecated
     @ApiOperation(value = "/applyCustom", notes = "#####Накладівание кастомной ЄЦП.  Файл передается в теле запроса (POST) с именем параметра file. Примеры:\n"
             + "https://alpha.test.igov.org.ua/wf/service/ecp/applyCustom")
     @RequestMapping(value = "/applyCustom", method = RequestMethod.POST)
