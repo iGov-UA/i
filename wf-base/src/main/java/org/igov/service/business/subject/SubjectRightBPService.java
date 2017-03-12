@@ -55,16 +55,19 @@ public class SubjectRightBPService {
 
 				List<ProcessDefinition> aProcessDefinition = oRepositoryService.createProcessDefinitionQuery()
 						.processDefinitionKeyLike(sID_BP).active().latestVersion().list();
-				String sName_BP = aProcessDefinition.get(0).getName();
-				SubjectRightBPVO oSubjectRightBP_VO = new SubjectRightBPVO();
+				
+                                if(!aProcessDefinition.isEmpty()){
+                                    String sName_BP = aProcessDefinition.get(0).getName();
+                                    SubjectRightBPVO oSubjectRightBP_VO = new SubjectRightBPVO();
 
-				/*oSubjectRightBP_VO.setsID_BP(oSubjectRightBP.getsID_BP());
-				oSubjectRightBP_VO.setsID_Place_UA(oSubjectRightBP.getsID_Place_UA());
-				oSubjectRightBP_VO.setsID_Group(oSubjectRightBP.getsID_Group());*/
-				oSubjectRightBP_VO.setoSubjectRightBP(oSubjectRightBP);
-				oSubjectRightBP_VO.setsName_BP(sName_BP);
+                                    /*oSubjectRightBP_VO.setsID_BP(oSubjectRightBP.getsID_BP());
+                                    oSubjectRightBP_VO.setsID_Place_UA(oSubjectRightBP.getsID_Place_UA());
+                                    oSubjectRightBP_VO.setsID_Group(oSubjectRightBP.getsID_Group());*/
+                                    oSubjectRightBP_VO.setoSubjectRightBP(oSubjectRightBP);
+                                    oSubjectRightBP_VO.setsName_BP(sName_BP);
 
-				aResSubjectRightBPVO.add(oSubjectRightBP_VO);
+                                    aResSubjectRightBPVO.add(oSubjectRightBP_VO);
+                                }
 			}
 			LOG.info("In the method getSubjectRightBPs oSubjectRightBP is null");
 		}
