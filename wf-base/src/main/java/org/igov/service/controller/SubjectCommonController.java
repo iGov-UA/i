@@ -32,7 +32,7 @@ public class SubjectCommonController {
     )
     @RequestMapping(value = "/getSubjectByLoginAccount", method = RequestMethod.GET)
     @ResponseBody
-    public SubjectHuman getSubjectByLoginAccount(@ApiParam(value = "логин", required = true) @RequestParam(value = "sLogin") String sLogin)
+    public Subject getSubjectByLoginAccount(@ApiParam(value = "логин", required = true) @RequestParam(value = "sLogin") String sLogin)
             throws Exception {
         return oSubjectService.getSubjectByLoginAccount(sLogin);
     }

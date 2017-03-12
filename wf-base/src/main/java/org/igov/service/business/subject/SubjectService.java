@@ -49,6 +49,9 @@ public class SubjectService {
 
     @Autowired
     private SubjectHumanDao subjectHumanDao;
+    
+    @Autowired
+    private SubjectDao subjectDao;
 
     @Autowired
     private SubjectContactTypeDao subjectContactTypeDao;
@@ -59,15 +62,15 @@ public class SubjectService {
     @Autowired
     private SubjectAccountDao subjectAccountDao;
 
-    public SubjectHuman getSubjectByLoginAccount(String sLogin) {
-        SubjectHuman result = null;
+    public Subject getSubjectByLoginAccount(String sLogin) {
+        Subject result = null;
         Optional<SubjectAccount> subjectAccount = subjectAccountDao.findBy("sLogin", sLogin);
         if (subjectAccount.isPresent()) {
             LOG.info("subjectAccount: " + subjectAccount);
             Long nID_Subject = subjectAccount.get().getnID_Subject();
             LOG.info("nID_Subject: " + nID_Subject);
             if (nID_Subject != null) {
-                result = subjectHumanDao.findByExpected("oSubject.id", nID_Subject);
+                result = subjectDao.findByIdExpected(nID_Subject);
             }
         }
         return result;
