@@ -58,9 +58,10 @@ public class SubjectRightBPService {
 				String sName_BP = aProcessDefinition.get(0).getName();
 				SubjectRightBPVO oSubjectRightBP_VO = new SubjectRightBPVO();
 
-				oSubjectRightBP_VO.setsID_BP(oSubjectRightBP.getsID_BP());
+				/*oSubjectRightBP_VO.setsID_BP(oSubjectRightBP.getsID_BP());
 				oSubjectRightBP_VO.setsID_Place_UA(oSubjectRightBP.getsID_Place_UA());
-				oSubjectRightBP_VO.setsID_Group(oSubjectRightBP.getsID_Group());;
+				oSubjectRightBP_VO.setsID_Group(oSubjectRightBP.getsID_Group());*/
+				oSubjectRightBP_VO.setoSubjectRightBP(oSubjectRightBP);
 				oSubjectRightBP_VO.setsName_BP(sName_BP);
 
 				aResSubjectRightBPVO.add(oSubjectRightBP_VO);
