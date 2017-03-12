@@ -24,7 +24,12 @@ public class SubjectRightBP extends AbstractEntity {
     private String sID_Group;
     
 
-    public String getsID_BP() {
+        
+    public SubjectRightBP() {
+		
+	}
+
+	public String getsID_BP() {
 		return sID_BP;
 	}
 
