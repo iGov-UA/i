@@ -19,6 +19,7 @@
         <activiti:formProperty id="sHSHOT" name="Додаток до номеру будинку;за місцем реєстрації;writable=true,sID_Field_SWinEd=HSHOT" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHCORP" name="Корпус;за місцем реєстрації;writable=true,sID_Field_SWinEd=HCORP" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHAPT" name="Номер квартири;за місцем реєстрації;writable=true,sID_Field_SWinEd=HAPT" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Період відомостей" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;asStartPeriod&quot;],&quot;sValue&quot;:&quot;Період, за який будуть надані відомості&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asStartPeriod" name="Квартал;початок періоду;writable=true,sID_Field_SWinEd=R01G01" type="enum" required="true">
           <activiti:value id="1" name="1"></activiti:value>
           <activiti:value id="2" name="2"></activiti:value>
@@ -290,9 +291,6 @@ execution.setVariable('sCounter', src)</script>
           </activiti:field>
           <activiti:field name="snCountYear">
             <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sFile_XML_SWinEd_Filter">
-            <activiti:expression><![CDATA[ ]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
