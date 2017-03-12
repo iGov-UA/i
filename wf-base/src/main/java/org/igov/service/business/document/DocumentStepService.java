@@ -43,6 +43,8 @@ import org.igov.service.business.subject.SubjectGroupTreeService;
 import org.igov.util.Tool;
 import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 
@@ -500,10 +502,11 @@ public class DocumentStepService {
         }
 
         final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
-
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy hh:MM");
+        
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             Map<String, Object> mParamDocumentStepSubjectRight = new HashMap();
-            mParamDocumentStepSubjectRight.put("sDate", oDocumentStepSubjectRight.getsDate() == null ? "" : oDocumentStepSubjectRight.getsDate().toString());//"2016-05-15 12:12:34"
+            mParamDocumentStepSubjectRight.put("sDate", oDocumentStepSubjectRight.getsDate() == null ? "" : formatter.print(oDocumentStepSubjectRight.getsDate()));//"2016-05-15 12:12:34"
             mParamDocumentStepSubjectRight.put("bWrite", oDocumentStepSubjectRight.getbWrite());//false
             mParamDocumentStepSubjectRight.put("sName", oDocumentStepSubjectRight.getsName() == null ? "" : oDocumentStepSubjectRight.getsName());//"Главный контроллирующий"
             //String sID_Group = new StringBuilder(sGroupPrefix).append(oDocumentStepSubjectRight.getsKey_GroupPostfix()).toString();
@@ -862,7 +865,7 @@ public class DocumentStepService {
     }
 
     //public void checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {//JSONObject
-    public List<DocumentStep> checkDocumentInit(DelegateExecution execution) throws IOException, URISyntaxException {
+    public List<DocumentStep> checkDocumentInit(DelegateExecution execution, String sKey_GroupPostfix, String sKey_GroupPostfix_New) throws IOException, URISyntaxException {
         //assume that we can have only one active task per process at the same time
         String snID_Process_Activiti = execution.getId();
         List<DocumentStep> aResDocumentStep = new ArrayList<>();
@@ -917,6 +920,26 @@ public class DocumentStepService {
                 LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
                 runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
             }
+            
+            if(sKey_GroupPostfix != null && !sKey_GroupPostfix.trim().equals("")&&
+               sKey_GroupPostfix_New != null && !sKey_GroupPostfix_New.trim().equals("")     ){
+                
+               // HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().
+               // processInstanceId(execution.getProcessInstanceId()).singleResult();
+            
+                /*ProcessInstance oProcessInstance = execution.getEngineServices().getRuntimeService()
+                .createProcessInstanceQuery().processInstanceId(execution.getProcessInstanceId()).singleResult();
+               
+                String sKey_GroupPostfix_New = oProcessInstance.getStartUserId();*/
+                LOG.info("start user id is {}", sKey_GroupPostfix_New);
+                LOG.info("sKey_GroupPostfix is {}", sKey_GroupPostfix);
+                
+                
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = 
+                        cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document);
+                LOG.info("aDocumentStepSubjectRight in checkDocumentInit is {}", aDocumentStepSubjectRight);
+            }
+            
         }
         
         List<DocumentStep> aResultDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);

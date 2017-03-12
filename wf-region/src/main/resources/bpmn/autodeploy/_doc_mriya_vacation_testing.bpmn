@@ -72,7 +72,14 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sCloningOfLaw" name="obj2 - клонирование прав" type="string"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[ ]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
@@ -175,7 +182,7 @@ execution.setVariable('sCloningOfLaw', obj2)</script>
 var sLogin = execution.getVariable('sName_SubjectRole')
 var sKey_Step = execution.getVariable('sKey_Step_Document')
 var obj3 = documentStepService.isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step)
-execution.setVariable('bVerificationSignatures', obj3.bSubmitedAll)</script>
+execution.setVariable('bVerificationSignatures', obj3.bSubmitedAll.toString())</script>
     </scriptTask>
     <sequenceFlow id="flow24" sourceRef="scripttask3" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow25" sourceRef="exclusivegateway3" targetRef="exclusivegateway1">
@@ -224,7 +231,14 @@ execution.setVariable('bVerificationSignatures', obj3.bSubmitedAll)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[ ]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow27" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
