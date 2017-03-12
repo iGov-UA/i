@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.igov.model.subject.*;
 import org.igov.model.subject.SubjectHumanRoleDao;
 import org.igov.model.subject.organ.*;
-import org.igov.service.business.subject.SubjectService;
+import org.igov.service.business.subject.SubjectActionKVEDService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.JSON.JsonRestUtils;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import org.igov.io.GeneralConfig;
+import org.igov.service.business.subject.SubjectService;
 
 import static org.igov.util.ToolJS.getCalculatedFormulaValue;
 
@@ -70,6 +71,9 @@ public class SubjectController {
 
     @Autowired
     private SubjectService subjectService;
+    
+    @Autowired
+    private SubjectActionKVEDService subjectActionKVEDService;
 
     /**
      * получение субъекта, если таков найден, или добавление субъекта в
@@ -829,12 +833,12 @@ public class SubjectController {
         LOG.info("saLogin: " + saLogin);
         if (saLogin != null) {
             Set<String> asLogin = JsonRestUtils.readObject(saLogin, Set.class);
-            LOG.info("000000000000000000000saLogin: " + saLogin);
+            LOG.info("saLogin: " + saLogin);
             for (String login : asLogin) {
-                LOG.info("1111111111111111111login: "+login+" nID_Server: "+nID_Server+" nID_SubjectAccountType: "+nID_SubjectAccountType);
+                LOG.info("login: "+login+" nID_Server: "+nID_Server+" nID_SubjectAccountType: "+nID_SubjectAccountType);
                 List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, nID_SubjectAccountType);
-                LOG.info("2222222222222222222login: "+login+" nID_Server: "+nID_Server+" nID_SubjectAccountType: "+nID_SubjectAccountType);
-                LOG.info("3333333333333333333subjectAccounts: " + subjectAccounts);
+                LOG.info("login: "+login+" nID_Server: "+nID_Server+" nID_SubjectAccountType: "+nID_SubjectAccountType);
+                LOG.info("subjectAccounts: " + subjectAccounts);
                 for (SubjectAccount subjectAccount : subjectAccounts) {
                     LOG.info("subjectAccount: "+subjectAccount);
                 }
@@ -842,10 +846,10 @@ public class SubjectController {
                     for (SubjectAccount subjectAccount : subjectAccounts) {
                         nID_Subject = subjectAccount.getnID_Subject();
                         
-                        LOG.info("5555555555555555nID_Subject: " + nID_Subject);
+                        LOG.info("nID_Subject: " + nID_Subject);
                         subject = subjectDao.getSubject(nID_Subject);
                         List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
-                        LOG.info("6666666666666666subjectContacts: " + subjectContacts);
+                        LOG.info("subjectContacts: " + subjectContacts);
                         subject.setaSubjectAccountContact(subjectContacts);
                         SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
                         SubjectOrgan subjectOrgan = subjectOrganDao.getSubjectOrgan(subject);
@@ -880,7 +884,7 @@ public class SubjectController {
     List<SubjectActionKVED> getActionKVED(
             @ApiParam(value = "sFind - кретерий поиска в sID или sNote (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sFind", required = true) String sFind)
         	    throws CommonServiceException {
-	return subjectService.getSubjectActionKVED(sFind); 
+	return subjectActionKVEDService.getSubjectActionKVED(sFind); 
     }
 
     @ApiOperation(value = "Получение данных из справочника КВЕД", notes = "Получаем данные из справочника КВЕД. "
@@ -907,7 +911,7 @@ public class SubjectController {
             @ApiParam(value = "sID - кретерий поиска в sID (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sID", required = false) String sID,
             @ApiParam(value = "sNote - кретерий поиска в sNote (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sNote", required = false) String sNote)
         	    throws CommonServiceException {
-	return subjectService.getSubjectActionKVED(sID, sNote); 
+	return subjectActionKVEDService.getSubjectActionKVED(sID, sNote); 
     }
     @ApiOperation(value = "Предоставление сабджекту роли",notes = "Предоставление сабджекту роли")
     @RequestMapping(value = "/setSubjectHumanRole", method = RequestMethod.GET, headers = {JSON_TYPE})
