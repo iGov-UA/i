@@ -515,7 +515,7 @@ public class DocumentStepService {
         }
 
         final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy hh:MM");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             Map<String, Object> mParamDocumentStepSubjectRight = new HashMap();
