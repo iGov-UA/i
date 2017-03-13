@@ -1454,6 +1454,19 @@
             .catch(defaultErrorHandler);
         };
 
+        $scope.isDocumentNotSigned = function () {
+          if(!documentRights) return true;
+          var notSigned = $scope.documentLogins.filter(function (login) {
+            return !login.sDate && login.aUser.length > 0;
+          });
+          var currentUser = $scope.getCurrentUserLogin();
+          for(var i=0; i<notSigned.length; i++) {
+            if(notSigned[i].aUser[0].sLogin === currentUser) {
+              return true;
+            }
+          }
+        };
+
         // блокировка кнопок выбора файлов на время выполнения процесса загрузки ранее выбранного файла
         $rootScope.isFileProcessUploading = {
           bState: false

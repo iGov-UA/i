@@ -18,6 +18,7 @@ import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskInfo;
@@ -2348,8 +2349,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     String changePassword(
             @ApiParam(value = "Строка логин пользователя, меняющего пароль", required = true) @RequestParam(value = "sLoginOwner", required = true) String sLogin,
-            @ApiParam(value = "Строка старый пароль", required = true) @RequestParam(value = "sPasswordOld", required = true) String sPasswordOld,
-            @ApiParam(value = "Строка новый пароль", required = true) @RequestParam(value = "sPasswordNew", required = true) String sPasswordNew
+            @ApiParam(value = "Строка старый пароль", required = true) @RequestBody (required = true) String sPasswordOld,
+            @ApiParam(value = "Строка новый пароль", required = true) @RequestBody(required = true)  String sPasswordNew
     ) throws CommonServiceException, RuntimeException {
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
         IdentityService identityService = processEngine.getIdentityService();
@@ -2932,10 +2933,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
           
         
         LOG.info("Trying to get start form with ID " + sID_BP);
-        List<ProcessInstance> piList = runtimeService.createProcessInstanceQuery().processDefinitionKey(sID_BP).active().list();
+        List<ProcessDefinition> resProcessDefinitions = repositoryService.createProcessDefinitionQuery().processDefinitionKey(sID_BP).active().latestVersion().list();
         
-        if (piList != null && piList.size() > 0){
-	        StartFormData formData = formService.getStartFormData(piList.get(0).getProcessDefinitionId());
+        LOG.info("Loaded process definition ID from repository service:" + resProcessDefinitions);
+        
+        if (resProcessDefinitions != null && resProcessDefinitions.size() > 0){
+        	 LOG.info("Processing start form of process defiition:" + resProcessDefinitions.get(0).getKey() + ":" + resProcessDefinitions.get(0).getId());
+	        StartFormData formData = formService.getStartFormData(resProcessDefinitions.get(0).getId());
 	        
 	        LOG.info("Received form " + formData);
 	        Map<String, Object> formDataDTO = new HashMap<String, Object>();
