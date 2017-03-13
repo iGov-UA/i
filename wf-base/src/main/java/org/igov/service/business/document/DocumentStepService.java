@@ -1059,6 +1059,7 @@ public class DocumentStepService {
             if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
                 LOG.info("snID_Process {} getsKey_Step from oDocumentStep is = {} ", snID_Process, oDocumentStep.getsKey_Step());
                 oFindedDocumentStep = oDocumentStep;
+                break;
             }
         }
         
