@@ -41,17 +41,17 @@ execution.setVariable('processInstanceId', processInstanceId)
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Подача заяви про відпустку" activiti:candidateGroups="Mriya_Top3_Exec1">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="Mriya_" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="2" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key" type="string" default="c82f6314-6faa-11d9-ac6c-0080482454f7" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы; ;bVisible=false" type="string" default="Mriya_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина; ;bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key; ;bVisible=false" type="string" default="c82f6314-6faa-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeyOrgan" name="Организация_Key; ;bVisible=false" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key; ;bVisible=false" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAuthorName" name="ПІБ заявника" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum" required="true">
           <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
           <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Додаткова відпустка на дітей"></activiti:value>
@@ -74,16 +74,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="Mriya_" name="Тимофеенко Владимир Павлович (директор)"></activiti:value>
           <activiti:value id="Mriya_Top1" name="Кротенко Николай Алексеевич (зам. директора)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующий шаг" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="obj1" name="obj1 - переключение степов" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующий шаг; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Author]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -99,15 +98,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
-Вам не затверджена відпустка. &lt;br&gt;
-Коментар: ${sNote}</activiti:expression>
+          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
+Вам не затверджена відпустка. <br>
+Коментар: ${sNote}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -133,15 +132,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
-Вам надано відпустку з ${sDateVacationBegin_Email} по ${sDateVacationEnd_Email}. &lt;br&gt;
-Гарного відпочинку!</activiti:expression>
+          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
+Вам надано відпустку з ${sDateVacationBegin_Email} по ${sDateVacationEnd_Email}. <br>
+Гарного відпочинку!]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -153,23 +152,18 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення про відпустку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br&gt;
-У вас на черзі нове звернення на відпустку.&lt;br&gt; 
-Опрацюйте його.&lt;br&gt;</activiti:expression>
+          <activiti:expression><![CDATA[<b>Шановний колего!</b><br>
+У вас на черзі нове звернення на відпустку.<br> 
+Опрацюйте його.<br>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <scriptTask id="scripttask2" name="Script Task Переключение степов + клонирование прав" activiti:autoStoreVariables="false">
-      <script>var snID_Process_Activiti = execution.getProcessInstanceId();
-var sKey_Step= 'step_2';
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step);</script>
-    </scriptTask>
     <sequenceFlow id="flow23" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <scriptTask id="scripttask3" name="Script Task Проверка подписей" activiti:autoStoreVariables="false">
@@ -187,15 +181,15 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     </sequenceFlow>
     <userTask id="usertask2" name="Обробка заяви про відпустку" activiti:candidateGroups="Mriya_Top3_Exec1">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="2"></activiti:formProperty>
-        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key" type="string" default="c82f6314-6faa-11d9-ac6c-0080482454f7"></activiti:formProperty>
-        <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
-        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="string; ;bVisible=false" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key; ;bVisible=false" type="string" default="c82f6314-6faa-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeyOrgan" name="Организация_Key; ;bVisible=false" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key; ;bVisible=false" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum" writable="false">
@@ -223,11 +217,11 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
           <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -235,7 +229,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     <sequenceFlow id="flow27" sourceRef="scripttask4" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="usertask1" targetRef="scripttask4"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="usertask2" targetRef="scripttask3"></sequenceFlow>
-    <scriptTask id="scripttask4" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask4" name="Script Task Переключение степов + клонирование прав" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
@@ -250,7 +244,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 execution.setVariable('sCloningOfLaw_Chief', oResult)
 
 var sKey_GroupPostfix_New = execution.getVariable('sChoicePredicating')
-sKey_GroupPostfix = '_default_Chief'
+sKey_GroupPostfix = '_default_Predicating'
 oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Predicating', oResult)
 
@@ -264,16 +258,16 @@ execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_mriya_vacation_testing">
     <bpmndi:BPMNPlane bpmnElement="_doc_mriya_vacation_testing" id="BPMNPlane__doc_mriya_vacation_testing">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="80.0" y="156.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="81.0" y="155.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="150.0" y="138.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="151.0" y="137.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="300.0" y="138.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="301.0" y="137.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="450.0" y="138.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="451.0" y="137.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="1270.0" y="153.0"></omgdc:Bounds>
@@ -296,9 +290,6 @@ execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="71.0" width="105.0" x="730.0" y="137.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="71.0" width="105.0" x="590.0" y="40.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
         <omgdc:Bounds height="40.0" width="40.0" x="1150.0" y="153.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -309,19 +300,19 @@ execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
         <omgdc:Bounds height="69.0" width="105.0" x="870.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="590.0" y="249.0"></omgdc:Bounds>
+        <omgdc:Bounds height="69.0" width="105.0" x="590.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="115.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="150.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="116.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="151.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="255.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="300.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="256.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="301.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="405.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="450.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="406.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="451.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="1310.0" y="173.0"></omgdi:waypoint>
@@ -362,12 +353,12 @@ execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
         <omgdi:waypoint x="922.0" y="208.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="642.0" y="249.0"></omgdi:waypoint>
-        <omgdi:waypoint x="782.0" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="695.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="502.0" y="209.0"></omgdi:waypoint>
-        <omgdi:waypoint x="642.0" y="249.0"></omgdi:waypoint>
+        <omgdi:waypoint x="556.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
         <omgdi:waypoint x="975.0" y="173.0"></omgdi:waypoint>
