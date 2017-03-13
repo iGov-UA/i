@@ -18,6 +18,7 @@ import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskInfo;
@@ -2932,10 +2933,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
           
         
         LOG.info("Trying to get start form with ID " + sID_BP);
-        List<ProcessInstance> piList = runtimeService.createProcessInstanceQuery().processDefinitionKey(sID_BP).active().list();
+        List<ProcessDefinition> resProcessDefinitions = repositoryService.createProcessDefinitionQuery().processDefinitionKey(sID_BP).active().latestVersion().list();
         
-        if (piList != null && piList.size() > 0){
-	        StartFormData formData = formService.getStartFormData(piList.get(0).getProcessDefinitionId());
+        LOG.info("Loaded process definition ID from repository service:" + resProcessDefinitions);
+        
+        if (resProcessDefinitions != null && resProcessDefinitions.size() > 0){
+        	 LOG.info("Processing start form of process defiition:" + resProcessDefinitions.get(0).getKey() + ":" + resProcessDefinitions.get(0).getId());
+	        StartFormData formData = formService.getStartFormData(resProcessDefinitions.get(0).getId());
 	        
 	        LOG.info("Received form " + formData);
 	        Map<String, Object> formDataDTO = new HashMap<String, Object>();
