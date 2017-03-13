@@ -48,15 +48,139 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sFilia" name="Філія" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDepartment" name="Організаційна одиниця" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEmployee" name="Табельний номер і прізвище" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nNumber" name="Номер наказу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nText" name="Текст ініціативного листа" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="Узгодження службової  - Директор напрямку"></userTask>
-    <userTask id="usertask3" name="Узгодження службової  - Директор персоналу"></userTask>
-    <userTask id="usertask4" name="Узгодження службової  - Фін.директор та голова правління"></userTask>
-    <userTask id="usertask5" name="Створення наказу відділом мотивації"></userTask>
-    <userTask id="usertask6" name="Канцелярія - створення паперової копії"></userTask>
-    <userTask id="usertask7" name="Відділ мотивації та бухгалтерія помічають виконання"></userTask>
+    <userTask id="usertask2" name="Узгодження службової  - Директор напрямку">
+    	<extensionElements>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="OE_Dnipro_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFilia" name="Філія" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDepartment" name="Організаційна одиниця" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployee" name="Табельний номер і прізвище" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nText" name="Текст ініціативного листа" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDecideDirection" name="Резолюція директору напрямку" type="enum" required="true">
+          <activiti:value id="sEnumDirAccept" name="Узгоджено"></activiti:value>
+          <activiti:value id="sEnumDirDeny" name="Не узгоджено"></activiti:value>
+        </activiti:formProperty>  
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask3" name="Узгодження службової  - Директор персоналу">
+    	<extensionElements>
+	        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+	        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="OE_Dnipro_"></activiti:formProperty>
+	        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+	        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
+	        <activiti:formProperty id="sFilia" name="Філія" type="select" writable="false"></activiti:formProperty>
+	        <activiti:formProperty id="sDepartment" name="Організаційна одиниця" type="select" writable="false"></activiti:formProperty>
+	        <activiti:formProperty id="sEmployee" name="Табельний номер і прізвище" type="select" writable="false"></activiti:formProperty>
+	        <activiti:formProperty id="nText" name="Текст ініціативного листа" type="textArea" writable="false"></activiti:formProperty>
+	        <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"
+      		<activiti:formProperty id="asDecideDirection" name="Резолюція директору напрямку" type="enum" writable="false">
+	          <activiti:value id="sEnumDirAccept" name="Узгоджено"></activiti:value>
+	          <activiti:value id="sEnumDirDeny" name="Не узгоджено"></activiti:value>
+	        </activiti:formProperty>  
+      		<activiti:formProperty id="asDecidePersonnel" name="Резолюція директору персоналу" type="enum" required="true">
+	          <activiti:value id="sEnumPersAccept" name="Узгоджено"></activiti:value>
+	          <activiti:value id="sEnumPersDeny" name="Не узгоджено"></activiti:value>
+	        </activiti:formProperty>  
+      
+      	</extensionElements>
+      </userTask>
+    <userTask id="usertask4" name="Узгодження службової  - Фін.директор та голова правління">
+    	<extensionElements>
+	        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+	        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="OE_Dnipro_"></activiti:formProperty>
+	        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+	        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
+	        <activiti:formProperty id="sFilia" name="Філія" type="select" required="true"></activiti:formProperty>
+	        <activiti:formProperty id="sDepartment" name="Організаційна одиниця" type="select" required="true"></activiti:formProperty>
+	        <activiti:formProperty id="sEmployee" name="Табельний номер і прізвище" type="select" required="true"></activiti:formProperty>
+	        <activiti:formProperty id="nText" name="Текст ініціативного листа" type="textArea" writable="false"></activiti:formProperty>
+	        <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        	<activiti:formProperty id="asDecideDirection" name="Резолюція директору напрямку" type="enum" writable="false">
+	          <activiti:value id="sEnumDirAccept" name="Узгоджено"></activiti:value>
+	          <activiti:value id="sEnumDirDeny" name="Не узгоджено"></activiti:value>
+	        </activiti:formProperty>  
+      		<activiti:formProperty id="asDecidePersonnel" name="Резолюція директору персоналу" type="enum" writable="false">
+	          <activiti:value id="sEnumPersAccept" name="Узгоджено"></activiti:value>
+	          <activiti:value id="sEnumPersDeny" name="Не узгоджено"></activiti:value>
+	        </activiti:formProperty>  
+      
+      	</extensionElements>
+      </userTask>
+    <userTask id="usertask5" name="Створення наказу відділом мотивації">
+    	<extensionElements>
+	        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+	        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="OE_Dnipro_"></activiti:formProperty>
+	        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+	        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
+	        <activiti:formProperty id="sFilia" name="Філія" type="select" required="true"></activiti:formProperty>
+	        <activiti:formProperty id="sDepartment" name="Організаційна одиниця" type="select" required="true"></activiti:formProperty>
+	        <activiti:formProperty id="sEmployee" name="Табельний номер і прізвище" type="select" required="true"></activiti:formProperty>
+	        <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        	<activiti:formProperty id="nNumber" name="Номер наказу" type="string"></activiti:formProperty>
+	        <activiti:formProperty id="sAutor" name="Автор наказу; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        
+      	</extensionElements>
+      </userTask>
+    <userTask id="usertask6" name="Канцелярія - створення паперової копії">
+    	<extensionElements>
+	        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+	        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="OE_Dnipro_"></activiti:formProperty>
+	        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+	        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
+	        <activiti:formProperty id="sFilia" name="Філія" type="select" required="true"></activiti:formProperty>
+	        <activiti:formProperty id="sDepartment" name="Організаційна одиниця" type="select" required="true"></activiti:formProperty>
+	        <activiti:formProperty id="sEmployee" name="Табельний номер і прізвище" type="select" required="true"></activiti:formProperty>
+	        <activiti:formProperty id="nNumber" name="Номер наказу" type="string"></activiti:formProperty>
+	        <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        
+      	</extensionElements>
+      </userTask>
+    <userTask id="usertask7" name="Відділ мотивації та бухгалтерія помічають виконання">
+    	<extensionElements>
+	        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+	        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="OE_Dnipro_"></activiti:formProperty>
+	        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+	        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+	        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
+	        <activiti:formProperty id="sFilia" name="Філія" type="select" required="true"></activiti:formProperty>
+	        <activiti:formProperty id="sDepartment" name="Організаційна одиниця" type="select" required="true"></activiti:formProperty>
+	        <activiti:formProperty id="sEmployee" name="Табельний номер і прізвище" type="select" required="true"></activiti:formProperty>
+	        <activiti:formProperty id="nNumber" name="Номер наказу" type="string"></activiti:formProperty>
+	        <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        
+      	</extensionElements>
+      </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <endEvent id="endevent1" name="End"></endEvent>
