@@ -868,6 +868,41 @@ angular.module('dashboardJsApp')
           }
         })
       },
+      createNewTask: function (bpID) {
+        return simpleHttpPromise({
+          method: 'POST',
+          url: 'api/create-task/createTask',
+          params: {
+            sID_BP: bpID
+          }
+        })
+      },
+      tryToSubmit: function (task) {
+        var createProperties = function (formProperties) {
+          var properties = [];
+          for (var i = 0; i < formProperties.length; i++) {
+            var formProperty = formProperties[i];
+            if (formProperty && formProperty.writable) {
+              properties.push({
+                id: formProperty.id,
+                value: formProperty.value
+              });
+            }
+          }
+          return properties;
+        };
+
+        var submitTaskFormData = {
+          'processDefinitionId': task.processDefinitionId,
+          'properties': createProperties(task.formProperties)
+        };
+
+        return simpleHttpPromise({
+          method: 'POST',
+          url: '/api/tasks/' + task.deploymentId + '/form',
+          data: submitTaskFormData
+        })
+      },
       getFilterFieldsList: function (login) {
         return simpleHttpPromise({
           method: 'GET',
