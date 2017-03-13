@@ -2349,9 +2349,41 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     String changePassword(
             @ApiParam(value = "Строка логин пользователя, меняющего пароль", required = true) @RequestParam(value = "sLoginOwner", required = true) String sLogin,
-            @ApiParam(value = "Строка старый пароль", required = true) @RequestBody (required = true) String sPasswordOld,
-            @ApiParam(value = "Строка новый пароль", required = true) @RequestBody(required = true)  String sPasswordNew
+            @ApiParam(value = "JSON-cnрока с двумя параметрами: sPasswordOld - Строка старый пароль; sPasswordNew - Строка новый пароль", required = true) @RequestBody (required = true) String sPasswords
     ) throws CommonServiceException, RuntimeException {
+
+        String sPasswordOld = null;
+        String sPasswordNew = null;
+
+        if(sPasswords != null){
+            Map<String, String> mBody;
+            try {
+                mBody = JsonRestUtils.readObject(sPasswords, Map.class);
+            } catch (Exception e){
+                throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
+            }
+            if(mBody != null){
+                if (mBody.containsKey("sPasswordOld")) {
+                    sPasswordOld = (String) mBody.get("sPasswordOld");
+                } else {
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "Error! The sPasswordOld is undefined in request body",
+                            HttpStatus.FORBIDDEN
+                    );
+                }
+                if (mBody.containsKey("sPasswordNew")) {
+                    sPasswordNew = (String) mBody.get("sPasswordNew");
+                } else {
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "Error! The sPasswordNew is undefined in request body",
+                            HttpStatus.FORBIDDEN
+                    );
+                }
+            }
+        }
+
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
         IdentityService identityService = processEngine.getIdentityService();
         User user = null;
