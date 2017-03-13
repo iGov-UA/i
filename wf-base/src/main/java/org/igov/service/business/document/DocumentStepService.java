@@ -1054,7 +1054,7 @@ public class DocumentStepService {
         List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process);//
         LOG.info("The size of list aDocumentStep is {}", (aDocumentStep != null ? aDocumentStep.size() : null));
         DocumentStep oFindedDocumentStep = null;
-        
+
         for (DocumentStep oDocumentStep : aDocumentStep) {
             if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
                 LOG.info("snID_Process {} getsKey_Step from oDocumentStep is = {} ", snID_Process, oDocumentStep.getsKey_Step());
@@ -1062,29 +1062,30 @@ public class DocumentStepService {
                 break;
             }
         }
-        
+
         if (oFindedDocumentStep == null) {
             throw new Exception("DocumentStep not found");
-        }
-        
-        boolean bSubmitedAll = true;
-
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : oFindedDocumentStep.getRights()) {
-            if (oDocumentStepSubjectRight != null) {
-                LOG.info("oDocumentStepSubjectRight: " + oDocumentStepSubjectRight.getsKey_GroupPostfix() 
-                        + " sDate: " + oDocumentStepSubjectRight.getsDate());
-                DateTime sDate = oDocumentStepSubjectRight.getsDate();
-                LOG.info("sDate ={}", oDocumentStepSubjectRight.getsDate());
-                if (sDate == null) {
-                    bSubmitedAll = false;
-                    break;
+        } else {
+            boolean bSubmitedAll = true;
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight : oFindedDocumentStep.getRights()) {
+                if (oDocumentStepSubjectRight != null) {
+                    LOG.info("oDocumentStepSubjectRight: " + oDocumentStepSubjectRight.getsKey_GroupPostfix()
+                            + " sDate: " + oDocumentStepSubjectRight.getsDate());
+                    DateTime sDate = oDocumentStepSubjectRight.getsDate();
+                    LOG.info("sDate ={}", oDocumentStepSubjectRight.getsDate());
+                    if (sDate == null) {
+                        bSubmitedAll = false;
+                        LOG.info("oDocumentStepSubjectRight: " + oDocumentStepSubjectRight.getsKey_GroupPostfix()
+                            + " sDate: " + oDocumentStepSubjectRight.getsDate() + "bSubmitedAll: " + bSubmitedAll);
+                        break;
+                    }
+                } else {
+                    LOG.error("oDocumentStepSubjectRight is null");
                 }
-            } else {
-                LOG.error("oDocumentStepSubjectRight is null");
             }
+            mReturn.put("bSubmitedAll", bSubmitedAll);
+            return mReturn;
         }
-        mReturn.put("bSubmitedAll", bSubmitedAll);
-        return mReturn;
     }
 
     public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin)
