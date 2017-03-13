@@ -29,12 +29,12 @@
         <activiti:formProperty id="sFile3" name="Переліково-оцінювальна відомість" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFile4" name="Карта технологічного процесу розробки лісосіки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFile5" name="План лісосіки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органа в емейл" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="шапка" type="invisible" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа в емейл; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка; ;bVisible=false" type="string" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
         <activiti:formProperty id="marker_ur" name="Поля Юридичної особи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sImya_ur&quot;,&quot;edrpou&quot;,&quot;sPib_ur&quot;,&quot;sAdres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumUr'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -99,18 +99,18 @@
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_ur" name="П.І.Б. керівника юридичної особи або уповноваженої особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи, адреса електронної поштової скриньки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdres_0" name="місце проживання фізичної особи–підприємця, адреса електронної поштової скриньки" type="invisible" default="${bankIdAddressFactual}, ${email} " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_0" name="місце проживання фізичної особи–підприємця, адреса електронної поштової скриньки; ;bVisible=false" type="string" default="${bankIdAddressFactual}, ${email} " writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат надання послуги" type="enum" required="true">
           <activiti:value id="sEnumApprove" name="надано лісорубний квиток"></activiti:value>
           <activiti:value id="sEnumDeny" name="відмовлено у видачі лісорубного квитка"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="шапка" type="invisible" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка; ;bVisible=false" type="string" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers_pf" name="юр-физ" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_416_pf.json')}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/ULMG/cherkasy_lmg_416_z.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody2" name="[pattern/print/ULMG/cherkasy_lmg_416_z.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/ULMG/cherkasy_lmg_416_z.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
