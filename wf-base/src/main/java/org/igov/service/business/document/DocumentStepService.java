@@ -723,6 +723,7 @@ public class DocumentStepService {
                                 bNot = true;
                                 sMask = sMask.substring(1);
                             }
+                            Boolean bEqual = false;
                             Boolean bEndsWith = false;
                             Boolean bStartWith = false;
                             Boolean bAll = "*".equals(sMask);
@@ -734,6 +735,9 @@ public class DocumentStepService {
                                 if (sMask.endsWith("*")) {
                                     bStartWith = true;
                                     sMask = sMask.substring(0, sMask.length() - 1);
+                                }
+                                if(!bStartWith&&!bEndsWith&&sMask.length()>0){
+                                    bEqual = true;
                                 }
                             }
                             LOG.info("bEndsWith={},bStartWith={},bAll={},bNot={}", bEndsWith, bStartWith, bAll, bNot);
@@ -748,6 +752,8 @@ public class DocumentStepService {
                                 bFound = sID.startsWith(sMask);
                             } else if (bEndsWith) {
                                 bFound = sID.endsWith(sMask);
+                            } else if (bEqual) {
+                                bFound = sID.equalsIgnoreCase(sMask);
                             }
 
                             LOG.info("sID={},bFound={},bAll={}", sID, bFound, bAll);
