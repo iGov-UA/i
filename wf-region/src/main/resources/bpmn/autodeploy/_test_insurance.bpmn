@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="_test_insurance" name="Страхування цивільної відповідальності власника зброї" isExecutable="true">
-    <textAnnotation id="textannotation0">
-      <text>Тестовая услуга</text>
-    </textAnnotation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -16,7 +13,6 @@
         <activiti:formProperty id="email" name="Ваш e-mail; для зворотнього зв'язку та оцінювання якості наданої послуги " type="string" required="true"></activiti:formProperty>
 		</extensionElements>
     </startEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
     <userTask id="usertask1" name="Страхування громадянської відповідальності" activiti:candidateGroups="weapon_insurance">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -36,14 +32,6 @@
         <activiti:formProperty id="sDescription_1" name="строка-описание платежа" type="invisible"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <serviceTask id="servicetask3" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask3">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow25" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow26" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <serviceTask id="servicetask5" name="Повідомлення громадянина про страхування" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -70,6 +58,14 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <serviceTask id="servicetask3" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask3">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow25" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="usertask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
@@ -77,6 +73,7 @@
       <script>execution.setVariable('sID_Merchant_1','i38613227067')
 execution.setVariable('sSum_1','51.92')</script>
     </scriptTask>
+    <endEvent id="endevent1" name="End"></endEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_insurance">
     <bpmndi:BPMNPlane bpmnElement="_test_insurance" id="BPMNPlane__test_insurance">
