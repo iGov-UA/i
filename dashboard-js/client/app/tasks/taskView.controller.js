@@ -1455,6 +1455,7 @@
         };
 
         $scope.isDocumentNotSigned = function () {
+          if(!documentRights) return true;
           var notSigned = $scope.documentLogins.filter(function (login) {
             return !login.sDate && login.aUser.length > 0;
           });
