@@ -166,7 +166,7 @@ execution.setVariable('processInstanceId', processInstanceId)
     </serviceTask>
     <sequenceFlow id="flow23" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <scriptTask id="scripttask3" name="Script Task Проверка подписей" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask3" name="Script Task Проверка подписей" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
 var sKey_Step = execution.getVariable('sKey_Step_Document')
 var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, '', sKey_Step)
