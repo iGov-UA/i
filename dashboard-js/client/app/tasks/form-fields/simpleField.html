@@ -7,7 +7,7 @@
       <input ng-if="!isFormPropertyDisabled(item) && isDocumentWritable(item)"
              name="{{item.id}}"
              style="width:100%;"
-             ng-readonly="isFormPropertyDisabled(item)"
+             ng-readonly="isFormPropertyDisabled(item) || !isDocumentNotSigned()"
              ng-required="isRequired(item)"
              ng-model="item.value"
              ng-class="{submitted: isRequired(item) && isTaskSubmitted()}"/>
