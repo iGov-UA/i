@@ -1049,42 +1049,40 @@ public class DocumentStepService {
 
     public Map<String, Boolean> isDocumentStepSubmitedAll(String nID_Process, String sLogin, String sKey_Step)
             throws Exception {
+        
         Map<String, Boolean> mReturn = new HashMap();
-
         List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", nID_Process);//
-        // oDocumentStepDao.//getStepForProcess(nID_Process);
         LOG.info("aDocumentStep in isDocumentStepSubmitedAll: {}", aDocumentStep);
         LOG.info("The size of list aDocumentStep is {}", (aDocumentStep != null ? aDocumentStep.size() : null));
-        // LOG.info("Result list of steps: {}", aDocumentStep);
-
         DocumentStep oFindedDocumentStep = null;
 
         for (DocumentStep oDocumentStep : aDocumentStep) {
-
             if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
                 LOG.info("getsKey_Step from oDocumentStep is = {}", oDocumentStep.getsKey_Step());
                 oFindedDocumentStep = oDocumentStep;
                 LOG.info("oFindedDocumentStep = {}", oFindedDocumentStep);
             }
         }
+        
         if (oFindedDocumentStep == null) {
             throw new Exception("DocumentStep not found");
         }
-        boolean isDocumentStepSubmitedAll = true;
+        
+        boolean bSubmitedAll = true;
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : oFindedDocumentStep.getRights()) {
             if (oDocumentStepSubjectRight != null) {
                 DateTime sDate = oDocumentStepSubjectRight.getsDate();
                 LOG.info("sDate ={}", oDocumentStepSubjectRight.getsDate());
                 if (sDate == null) {
-                    isDocumentStepSubmitedAll = false;
+                    bSubmitedAll = false;
                     break;
                 }
             } else {
                 LOG.error("oDocumentStepSubjectRight is null");
             }
         }
-        mReturn.put("bSubmitedAll", isDocumentStepSubmitedAll);
+        mReturn.put("bSubmitedAll", bSubmitedAll);
         return mReturn;
     }
 
