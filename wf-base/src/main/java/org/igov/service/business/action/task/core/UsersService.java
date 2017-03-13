@@ -43,7 +43,7 @@ public class UsersService {
             Map<String, String> mUserInfo = new LinkedHashMap();
 
             mUserInfo.put("sLogin", oUser.getId() == null ? "" : oUser.getId());
-            mUserInfo.put("sPassword", oUser.getPassword() == null ? "" : oUser.getPassword());
+           // mUserInfo.put("sPassword", oUser.getPassword() == null ? "" : oUser.getPassword());
             mUserInfo.put("sFirstName", oUser.getFirstName() == null ? "" : oUser.getFirstName());
             mUserInfo.put("sLastName", oUser.getLastName() == null ? "" : oUser.getLastName());
             mUserInfo.put("sEmail", oUser.getEmail() == null ? "" : oUser.getEmail());

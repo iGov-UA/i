@@ -2349,8 +2349,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     String changePassword(
             @ApiParam(value = "Строка логин пользователя, меняющего пароль", required = true) @RequestParam(value = "sLoginOwner", required = true) String sLogin,
-            @ApiParam(value = "Строка старый пароль", required = true) @RequestParam(value = "sPasswordOld", required = true) String sPasswordOld,
-            @ApiParam(value = "Строка новый пароль", required = true) @RequestParam(value = "sPasswordNew", required = true) String sPasswordNew
+            @ApiParam(value = "Строка старый пароль", required = true) @RequestBody (required = true) String sPasswordOld,
+            @ApiParam(value = "Строка новый пароль", required = true) @RequestBody(required = true)  String sPasswordNew
     ) throws CommonServiceException, RuntimeException {
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
         IdentityService identityService = processEngine.getIdentityService();
