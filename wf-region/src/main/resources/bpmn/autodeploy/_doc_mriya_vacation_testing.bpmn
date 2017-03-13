@@ -179,7 +179,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     <sequenceFlow id="flow26" sourceRef="exclusivegateway3" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'false'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Обробка заяви про відпустку" activiti:candidateGroups="Mriya_Top3_Exec1">
+    <userTask id="usertask2" name="Обробка заяви про відпустку">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку" writable="false"></activiti:formProperty>
@@ -208,11 +208,11 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <activiti:formProperty id="sComment" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующий шаг" type="string"></activiti:formProperty>
         <activiti:formProperty id="obj1" name="obj1 - переключение степов; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDecisionSectionChief" name="Статус рішення" type="enum" required="true">
+        <activiti:formProperty id="sDecisionSectionChief" name="Статус рішення" type="enum">
           <activiti:value id="allowed" name="Дозволити"></activiti:value>
           <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionPredicating" name="Статус рішення" type="enum" required="true">
+        <activiti:formProperty id="sDecisionPredicating" name="Статус рішення" type="enum">
           <activiti:value id="allowed" name="Дозволити"></activiti:value>
           <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
         </activiti:formProperty>
@@ -273,7 +273,7 @@ execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
         <omgdc:Bounds height="40.0" width="40.0" x="1270.0" y="153.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="68.0" width="105.0" x="1238.0" y="236.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="105.0" x="1238.0" y="240.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="1273.0" y="353.0"></omgdc:Bounds>
@@ -320,10 +320,10 @@ execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="1290.0" y="193.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1290.0" y="236.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1290.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="1290.0" y="304.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1290.0" y="308.0"></omgdi:waypoint>
         <omgdi:waypoint x="1290.0" y="353.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
