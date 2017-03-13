@@ -236,8 +236,12 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     <sequenceFlow id="flow28" sourceRef="usertask1" targetRef="scripttask4"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="usertask2" targetRef="scripttask3"></sequenceFlow>
     <scriptTask id="scripttask4" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-var oResult = ddocumentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+      <script>//переключение степа
+
+var snID_Process_Activiti = execution.getProcessInstanceId();
+var sKey_Step= 'step_2';
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step);
+
 
 
 </script>
