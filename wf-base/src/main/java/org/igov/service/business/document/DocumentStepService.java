@@ -1047,20 +1047,18 @@ public class DocumentStepService {
         return "";
     }
 
-    public Map<String, Boolean> isDocumentStepSubmitedAll(String nID_Process, String sLogin, String sKey_Step)
+    public Map<String, Boolean> isDocumentStepSubmitedAll(String snID_Process, String sLogin, String sKey_Step)
             throws Exception {
-        
+        LOG.info("isDocumentStepSubmitedAll: snID_Process {}, sKey_Step {} ...", snID_Process, sKey_Step);
         Map<String, Boolean> mReturn = new HashMap();
-        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", nID_Process);//
-        LOG.info("aDocumentStep in isDocumentStepSubmitedAll: {}", aDocumentStep);
+        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process);//
         LOG.info("The size of list aDocumentStep is {}", (aDocumentStep != null ? aDocumentStep.size() : null));
         DocumentStep oFindedDocumentStep = null;
-
+        
         for (DocumentStep oDocumentStep : aDocumentStep) {
             if (oDocumentStep.getsKey_Step().equals(sKey_Step)) {
-                LOG.info("getsKey_Step from oDocumentStep is = {}", oDocumentStep.getsKey_Step());
+                LOG.info("snID_Process {} getsKey_Step from oDocumentStep is = {} ", snID_Process, oDocumentStep.getsKey_Step());
                 oFindedDocumentStep = oDocumentStep;
-                LOG.info("oFindedDocumentStep = {}", oFindedDocumentStep);
             }
         }
         
@@ -1072,6 +1070,8 @@ public class DocumentStepService {
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : oFindedDocumentStep.getRights()) {
             if (oDocumentStepSubjectRight != null) {
+                LOG.info("oDocumentStepSubjectRight: " + oDocumentStepSubjectRight.getsKey_GroupPostfix() 
+                        + " sDate: " + oDocumentStepSubjectRight.getsDate());
                 DateTime sDate = oDocumentStepSubjectRight.getsDate();
                 LOG.info("sDate ={}", oDocumentStepSubjectRight.getsDate());
                 if (sDate == null) {
