@@ -88,7 +88,7 @@ execution.setVariable('processInstanceId', processInstanceId)
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3">
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="endevent4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecisionSectionChief=='allowed'&&sDecisionPredicating=='allowed'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -110,7 +110,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow11" sourceRef="exclusivegateway1" targetRef="servicetask2">
+    <sequenceFlow id="flow11" sourceRef="exclusivegateway1" targetRef="endevent3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecisionSectionChief=='notAllowed'||sDecisionPredicating=='notAllowed'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -254,6 +254,8 @@ var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
 execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
 </script>
     </scriptTask>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <endEvent id="endevent4" name="End"></endEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_mriya_vacation_testing">
     <bpmndi:BPMNPlane bpmnElement="_doc_mriya_vacation_testing" id="BPMNPlane__doc_mriya_vacation_testing">
@@ -273,7 +275,7 @@ execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
         <omgdc:Bounds height="40.0" width="40.0" x="1270.0" y="153.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="68.0" width="105.0" x="1238.0" y="236.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="105.0" x="1238.0" y="240.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="1273.0" y="353.0"></omgdc:Bounds>
@@ -302,6 +304,12 @@ execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="69.0" width="105.0" x="590.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="1210.0" y="194.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="1310.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="116.0" y="172.0"></omgdi:waypoint>
         <omgdi:waypoint x="151.0" y="172.0"></omgdi:waypoint>
@@ -315,15 +323,15 @@ execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
         <omgdi:waypoint x="451.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="1310.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1351.0" y="174.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1290.0" y="153.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1327.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="1290.0" y="193.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1290.0" y="236.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1270.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1227.0" y="194.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="1290.0" y="304.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1290.0" y="308.0"></omgdi:waypoint>
         <omgdi:waypoint x="1290.0" y="353.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
