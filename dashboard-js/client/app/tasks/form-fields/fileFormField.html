@@ -11,7 +11,7 @@
 
   <div class="col-sm-6" style="margin-bottom: 15px">
     <file-field name="{{item.id}}"
-                ng-disabled="isFormPropertyDisabled(item)"
+                ng-disabled="isFormPropertyDisabled(item) || !isDocumentNotSigned()"
                 ng-model="item.value"
                 ng-required="isRequired(item)">Add File
     </file-field>

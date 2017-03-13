@@ -12,7 +12,7 @@
                             ng-required="isRequired(item)"
                             ng-model="item.value"
                             ng-change="updateAssigneeName(item)"
-                            ng-disabled="isFormPropertyDisabled(item) !isDocumentWritable(item) && isDocumentReadable(item)"
+                            ng-disabled="!isDocumentNotSigned() || isFormPropertyDisabled(item) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                             ng-class="{submitted:isRequired(item) && isTaskSubmitted()}">
                     </select>
                   </div>
