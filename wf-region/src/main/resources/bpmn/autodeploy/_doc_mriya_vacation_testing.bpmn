@@ -82,13 +82,13 @@ execution.setVariable('processInstanceId', processInstanceId)
             <activiti:string><![CDATA[_default_Author]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="endevent4">
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecisionSectionChief=='allowed'&&sDecisionPredicating=='allowed'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -98,19 +98,19 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
-Вам не затверджена відпустка. &lt;br&gt;
-Коментар: ${sNote}</activiti:expression>
+          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
+Вам не затверджена відпустка. <br>
+Коментар: ${sNote}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow11" sourceRef="exclusivegateway1" targetRef="endevent3">
+    <sequenceFlow id="flow11" sourceRef="exclusivegateway1" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecisionSectionChief=='notAllowed'||sDecisionPredicating=='notAllowed'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -132,15 +132,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
-Вам надано відпустку з ${sDateVacationBegin_Email} по ${sDateVacationEnd_Email}. &lt;br&gt;
-Гарного відпочинку!</activiti:expression>
+          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
+Вам надано відпустку з ${sDateVacationBegin_Email} по ${sDateVacationEnd_Email}. <br>
+Гарного відпочинку!]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -152,15 +152,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення про відпустку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br&gt;
-У вас на черзі нове звернення на відпустку.&lt;br&gt; 
-Опрацюйте його.&lt;br&gt;</activiti:expression>
+          <activiti:expression><![CDATA[<b>Шановний колего!</b><br>
+У вас на черзі нове звернення на відпустку.<br> 
+Опрацюйте його.<br>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -221,7 +221,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -254,8 +254,6 @@ var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
 execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
 </script>
     </scriptTask>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <endEvent id="endevent4" name="End"></endEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_mriya_vacation_testing">
     <bpmndi:BPMNPlane bpmnElement="_doc_mriya_vacation_testing" id="BPMNPlane__doc_mriya_vacation_testing">
@@ -304,12 +302,6 @@ execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="69.0" width="105.0" x="590.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="1210.0" y="194.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="1310.0" y="90.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="116.0" y="172.0"></omgdi:waypoint>
         <omgdi:waypoint x="151.0" y="172.0"></omgdi:waypoint>
@@ -323,12 +315,12 @@ execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
         <omgdi:waypoint x="451.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="1290.0" y="153.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1327.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1310.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1351.0" y="174.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="1270.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1227.0" y="194.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1290.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1290.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="1290.0" y="308.0"></omgdi:waypoint>
