@@ -238,10 +238,21 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     <scriptTask id="scripttask4" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
-var snID_Process_Activiti = execution.getProcessInstanceId();
-var sKey_Step= 'step_2';
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step);
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_2'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
+// клонирование прав на согласующего и утверждающего
+
+var sKey_GroupPostfix_New = execution.getVariable('sChoiceSectionChief')
+var sKey_GroupPostfix = '_default_Chief'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Chief', oResult)
+
+var sKey_GroupPostfix_New = execution.getVariable('sChoicePredicating')
+sKey_GroupPostfix = '_default_Chief'
+oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Predicating', oResult)
 
 
 </script>
