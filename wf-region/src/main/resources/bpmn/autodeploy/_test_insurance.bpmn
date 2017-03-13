@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_insurance" name="Страхування цивільної відповідальності власника зброї" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; зазначена в паспорті" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; для зворотнього зв'язку та оцінювання якості наданої послуги " type="string" required="true"></activiti:formProperty>
+		</extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="Страхування громадянської відповідальності" activiti:candidateGroups="weapon_insurance">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; зазначена в паспорті" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInsuranceContract" name="Номер договора" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment_1" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject_1" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant_1" name="ИД-строковой мерчанта (магазина)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSum_1" name="сумма платежа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency_1" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription_1" name="строка-описание платежа" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask5" name="Повідомлення громадянина про страхування" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:expression>norepy@igov.org.ua</activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему: Отримання дозволу на зброю. Договір страхування.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+
+Ваш договір страхування громадянської відповідальності  успішно підготовлено. Завантажити  шаблон договору можна за &lt;a href='pb.ua' target='_blank'&gt;посиланням&lt;/a&gt; &lt;br&gt; 
+Номер договору страхування  ${sInsuranceContract}&lt;br&gt; &lt;br&gt; 
+Для вступу договору в дію Вам потрібно сплатити вартість  договору страхування, що становить 51 грн (додатково утримується комісія liqPay в розмірі 1.8% )
+[paymentButton_LiqPay_1] &lt;br&gt;&lt;br&gt;
+&lt;br/&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask3" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask3">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow25" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow31" sourceRef="usertask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Формування реквізитів для сплати" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>execution.setVariable('sID_Merchant_1','i38613227067')
+execution.setVariable('sSum_1','51.92')</script>
+    </scriptTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_insurance">
+    <bpmndi:BPMNPlane bpmnElement="_test_insurance" id="BPMNPlane__test_insurance">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="88.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="81.0" width="125.0" x="290.0" y="65.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="760.0" y="88.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="149.0" x="100.0" y="78.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="103.0" y="119.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="81.0" width="138.0" x="590.0" y="65.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="81.0" width="105.0" x="450.0" y="65.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation2" id="BPMNShape_textannotation2">
+        <omgdc:Bounds height="50.0" width="100.0" x="109.0" y="1210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="75.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="105.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="103.0" y="134.0"></omgdi:waypoint>
+        <omgdi:waypoint x="117.0" y="160.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="249.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="105.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="728.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="105.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="415.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="450.0" y="105.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="555.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="105.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
