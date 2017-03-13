@@ -320,11 +320,11 @@
               </span>
               </div>
               <div class="col-xs-4">
-                <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису'}}</span>
+                <span class="documentDate">{{users.sDate ? (users.sDate | splitDateByT) : 'Немає підпису'}}</span>
               </div>
             </div>
 
-            <div ng-if="!users.bWrite" class="col-xs-12 ratatat" style="margin-bottom: 10px">
+            <div ng-if="!users.bWrite" class="col-xs-12" style="margin-bottom: 10px">
               <div class="col-xs-8">
                 <span class="documentRole">{{users.sName}}:</span><br>
                 <span ng-repeat="user in users.aUser">
@@ -336,7 +336,7 @@
               </span>
               </div>
               <div class="col-xs-4">
-                <span class="documentDate">{{users.sDate ? users.sDate : 'Немає ознайомлення'}}</span>
+                <span class="documentDate">{{users.sDate ? (users.sDate | splitDateByT) : 'Немає ознайомлення'}}</span>
               </div>
             </div>
 

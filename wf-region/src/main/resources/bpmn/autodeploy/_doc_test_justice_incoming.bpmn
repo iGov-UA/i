@@ -26,7 +26,14 @@
         <activiti:formProperty id="sAutorResolution" name="Кому дать права на следующую ЮТ; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующую ЮТ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="sID_Order_GovPublic" type="string"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[ ]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask2" name="клонирование прав" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -45,7 +52,7 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="5" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логин руководителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логин руководителя" type="string"></activiti:formProperty>
         <activiti:formProperty id="obj1" name="obj1" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
@@ -56,7 +63,14 @@
           <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
           <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[ ]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask3" name="проверка подписей всех" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -78,7 +92,14 @@
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="obj2" name="obj2" type="string"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="string" default="раз вы здесь, значит все подписали"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[ ]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask1" name="письмецо" activiti:delegateExpression="#{MailTaskWithoutAttachment}">

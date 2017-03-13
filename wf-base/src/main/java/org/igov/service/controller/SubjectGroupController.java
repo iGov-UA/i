@@ -1,11 +1,11 @@
 
 package org.igov.service.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.igov.model.subject.SubjectGroupAndUser;
 import org.igov.model.subject.SubjectGroupResultTree;
-import org.igov.model.subject.SubjectRightBP;
 import org.igov.service.business.subject.SubjectGroupService;
 import org.igov.service.business.subject.SubjectGroupTreeService;
 import org.igov.service.business.subject.SubjectRightBPService;
@@ -106,7 +106,7 @@ public class SubjectGroupController {
 
 	@RequestMapping(value = "/getSubjectRightBPs", method = RequestMethod.GET)
 	@ResponseBody
-	public String getSubjectRightBPs(
+	public List<SubjectRightBPVO> getSubjectRightBPs(
 			@ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
 			throws Exception {
 
@@ -117,9 +117,9 @@ public class SubjectGroupController {
 		LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
 
 		if (aResSubjectRightBPVO != null) {
-			return JSONValue.toJSONString(aResSubjectRightBPVO);
+			return aResSubjectRightBPVO;
 		}
 
-		return "aResSubjectRightBPVO is null";
+		return new ArrayList<>();
 	}
 }

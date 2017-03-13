@@ -26,7 +26,14 @@
         <activiti:formProperty id="sAutorResolution" name="Кому дать права на следующую ЮТ; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующую ЮТ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="sID_Order_GovPublic" type="string"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[ ]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask2" name="клонирование прав" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -57,8 +64,15 @@
           <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
           <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sbSubmitedAll" name="sbSubmitedAll" type="string"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:formProperty id="bSubmitedAll" name="bSubmitedAll" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[ ]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask3" name="проверка подписей всех" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -66,7 +80,8 @@
 		var nID_Process = execution.getProcessInstanceId();
 		var sLogin = execution.getVariable('sName_SubjectRole')
 		var sKey_Step = execution.getVariable('sKey_Step_Document')
-		var sbSubmitedAll= documentStepService.isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step).bSubmitedAll
+		var obj3= documentStepService.isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step)
+execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
 		
 	  </script>
     </scriptTask>
@@ -78,9 +93,16 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="5" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sbSubmitedAll" name="sbSubmitedAll" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll" name="bSubmitedAll" type="string"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="string" default="раз вы здесь, значит все подписали"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[ ]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask1" name="письмецо" activiti:delegateExpression="#{MailTaskWithoutAttachment}">

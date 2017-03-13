@@ -59,6 +59,7 @@
             DELETE FROM "AccessServiceRoleRight";
             DELETE FROM "AccessServiceRole";
             DELETE FROM "AccessServiceRight";
+            DELETE FROM "SubjectRightBP";
 
         ]]></sql>
 
@@ -540,7 +541,14 @@
             <column name="nID_HistoryEvent_Service" type="NUMERIC"/>
             <column name="nID_Document" type="NUMERIC"/>
             <column name="sSubjectInfo" type="STRING"/>
-        </loadUpdateData>        
+        </loadUpdateData>
+        
+        <loadData encoding="UTF-8" file="data/SubjectRightBP.csv" tableName="SubjectRightBP" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID_BP" type="STRING"/>
+            <column name="sID_Place_UA" type="STRING"/>
+            <column name="sID_Group" type="STRING"/>
+        </loadData>        
         
     </changeSet>
 

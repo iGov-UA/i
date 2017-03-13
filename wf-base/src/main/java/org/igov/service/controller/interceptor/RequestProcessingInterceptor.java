@@ -12,18 +12,23 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.identity.Group;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.apache.commons.mail.EmailException;
@@ -32,18 +37,25 @@ import org.igov.io.Log;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.model.core.GenericEntityDao;
+import org.igov.model.document.DocumentStep;
+import org.igov.model.document.DocumentStepSubjectRight;
+import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.event.CloseTaskEvent;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.escalation.EscalationHistoryService;
 import org.igov.service.exception.TaskAlreadyUnboundException;
+import org.joda.time.DateTime;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -81,6 +93,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     @Autowired
     private TaskService taskService;
     @Autowired
+    private IdentityService identityService;
+    @Autowired
     private HistoryEventService historyEventService;
     @Autowired
     private EscalationHistoryService escalationHistoryService;
@@ -88,6 +102,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private CloseTaskEvent closeTaskEvent;
     @Autowired
     private ActionEventHistoryService oActionEventHistoryService;
+    @Autowired
+    @Qualifier("documentStepDao")
+    private GenericEntityDao<Long, DocumentStep> documentStepDao;
+    @Autowired
+    private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
 
     private JSONParser oJSONParser = new JSONParser();
 
@@ -201,35 +220,91 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("mRequestParam {}", mRequestParam);        
                 LOG.info("-----------------------------------------------");
                 
-                /*if(omResponseBody != null && omResponseBody.containsKey("processDefinitionId")&&
-                   ((String)omResponseBody.get("processDefinitionId")).startsWith("_doc")){
-                    LOG.info("It is a SUBMIIIIIT (ECP)!!!! YEEESS!");        
-                }*/
-                
                 if(omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty())
                 {
                     String sTaskId = (String)omRequestBody.get("taskId");
                     LOG.info("sTaskId is: {}", sTaskId);
                     HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
                     String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
-                    HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-                    LOG.info("oHistoricProcessInstance.getName {}", oHistoricProcessInstance.getName());
+                    
+                    LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
+                    
+                    if(oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")){
+                        LOG.info("We catch document submit (ECP)");
+                        JSONArray properties = (JSONArray) omRequestBody.get("properties");
+                        
+                        Iterator<JSONObject> iterator = properties.iterator();
+                        String sKey_Step_Document = null;
+                        while (iterator.hasNext()) {
+                            JSONObject jsonObject = iterator.next();
 
-                    LOG.info("ProcessInstanceId is: {}", processInstanceId);
-                    List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
-                    LOG.info("aTask is: {}", aTask);
-                    String sTaskName = "";
-                    
-                    for(Task oTask : aTask)
-                    {
-                        if(oTask.getId().equals(sTaskId))
-                        {
-                            sTaskName = oTask.getName();
-                            break;
+                            String sId = (String) jsonObject.get("id");
+                            String sValue = (String) jsonObject.get("value");
+                            
+                            if (sId.equals("sKey_Step_Document")) {
+                                    sKey_Step_Document = sValue;
+                                    break;
+                            }
                         }
+                        
+                        LOG.info("sKey_Step_Document is {}", sKey_Step_Document);
+                        
+                        if(sKey_Step_Document != null){
+                            List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", processInstanceId);
+                            LOG.info("aDocumentStep in interceptor is {}", aDocumentStep);
+                            
+                            DocumentStep oCurrDocumentStep = null;
+                            
+                            for(DocumentStep oDocumentStep : aDocumentStep){
+                            
+                                if(oDocumentStep.getsKey_Step().equals(sKey_Step_Document)){
+                                   oCurrDocumentStep = oDocumentStep;
+                                   break;
+                                }
+                            }
+                            
+                            LOG.info("oCurrDocumentStep in interceptor is {}", oCurrDocumentStep);
+                            
+                            String sAssignLogin = oHistoricTaskInstance.getAssignee();
+                            LOG.info("sAssignLogin in interceptor is {}", sAssignLogin);
+                            List<Group> aUserGroup = identityService.createGroupQuery().groupMember(sAssignLogin).list();
+
+                            LOG.info("aUserGroup is {}", aUserGroup);
+                            
+                            if(oCurrDocumentStep != null){
+                                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oCurrDocumentStep.getRights();
+                                for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
+                                    for(Group oGroup : aUserGroup){
+                                        LOG.info("oGroup name: {}", oGroup.getName());
+                                        LOG.info("oGroup id: {}", oGroup.getId());
+                                        if(oGroup.getId().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
+                                            List<User> aUser = identityService.createUserQuery().memberOfGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix()).list();
+                                            LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                                            for(User oUser : aUser){
+                                                LOG.info("oUser id is {}", oUser.getId());
+                                                if(oUser.getId().equals(sAssignLogin)){
+                                                    LOG.info("We set date for login: {}", sAssignLogin);
+                                                    oDocumentStepSubjectRight.setsDate(new DateTime());
+                                                    oDocumentStepSubjectRight.setsLogin(sAssignLogin);
+                                                    oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                                                }
+                                                break;
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                                LOG.info("oCurrDocumentStep.getRights() in interceptor is {}", oCurrDocumentStep.getRights());
+                            }
+                            
+                            List<DocumentStep> aNewDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", processInstanceId);
+                            LOG.info("aDocumentStep new in interceptor is {}", aNewDocumentStep);
+                            
+                            for(DocumentStep oNewCurrDocumentStep: aNewDocumentStep){
+                                LOG.info("aDocumentStep new rights  in interceptor is {}", oNewCurrDocumentStep.getRights());
+                            }
+                        }        
                     }
-                    
-                    LOG.info("Task name is {}", sTaskName);
                 }
                 
             }
