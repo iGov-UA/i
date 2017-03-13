@@ -184,6 +184,7 @@
             $scope.usersDocumentsBPs = res.filter(function (item) {
               return item.oSubjectRightBP.sID_BP.charAt(0) === '_' && item.oSubjectRightBP.sID_BP.split('_')[1] === 'doc';
             });
+
             $scope.userTasksBPs = res.filter(function (item) {
               return item.oSubjectRightBP.sID_BP.indexOf('_doc_') !== 0;
             })
