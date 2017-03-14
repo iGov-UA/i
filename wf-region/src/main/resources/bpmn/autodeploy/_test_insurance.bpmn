@@ -10,6 +10,8 @@
 		<activiti:formProperty id="marker_inn" name="для правки ИНН" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_inn&quot;:{&quot;aField_ID&quot;:[&quot;bankIdinn&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sOverload]!='null'&quot;}}}"></activiti:formProperty>
 		<activiti:formProperty id="markerDateBirth" name="для правки DateBirth" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_DateBirth&quot;:{&quot;aField_ID&quot;:[&quot;bankIdbirthDay&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sOverload]!='null'&quot;}}}"></activiti:formProperty>
 
+		<activiti:formProperty id="markerDateBirthValid" name="валідатор до ДН" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_DateBirthValid&quot;:{&quot;aField_ID&quot;:[&quot;bankIdbirthDay&quot;],&quot;sFormat&quot;:&quot;##.##.####&quot;,&quot;sMessage&quot;:&quot;Невірний формат дати. Дата має складатися з двох знаків числа, двох знаків місяця та чотирьох знаків року з крапкою між ними. Наприклад 12.01.2017&quot;}}}"></activiti:formProperty>
+
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -21,7 +23,7 @@
 
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; зазначена в паспорті" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження;у форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; для зворотнього зв'язку та оцінювання якості наданої послуги " type="string" required="true"></activiti:formProperty>
 		</extensionElements>
     </startEvent>
