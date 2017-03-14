@@ -35,13 +35,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFileBirthCertificates" name="Копія свідоцтв про народження дітей; якщо копій більше ніж одна, то запакуйте в архів *.zip" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileDecisionHousingForEmployee" name="Рішення підприємства про закріплення службового житла за працівником" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sFlag407" name="флаг для Новопскова" type="invisible" default="easy"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="график работы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес органа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sFlag407" name="флаг для Новопскова; ;bVisible=false" type="string" default="easy"></activiti:formProperty>
         <activiti:formProperty id="familyStatus" name="Сімейний стан" type="markers" default="${markerService.loadFromFile('mvk/familyStatus.json')}"></activiti:formProperty> 
       </extensionElements>
     </startEvent>
@@ -134,8 +134,8 @@
           <activiti:value id="NO" name="Надані дані НЕ відповідають законодавству"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="В разі відмови в наданні послуги зазначте підставу для відмови (дані будуть надіслані громадянинові по електронній пошті)*" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]; ;bVisible=false" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
         
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -268,8 +268,8 @@
           <activiti:value id="Not" name="Відмовити у видачі ордеру"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні згоди &lt;br /&gt; АБО &lt;br /&gt; Деталі отримання документу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]; ;bVisible=false" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
