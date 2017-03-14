@@ -26,7 +26,7 @@
         <activiti:formProperty id="copy_doc" name="Копії документів (завірені згідно чинного законодавства)" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="file4" name="Документів, що підтверджують правомірність придбання чи використання технологічного транспортного засобу, вузлів і агрегатів, які мають ідентифікаційні номери, у тому числі довідки про встановлення вузла або агрегату з обмінного чи резервного фонду суб'єкта господарювання, скріпленої його печаткою" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="file5" name="Документу, що підтверджує оплату вартості бланків, номерних знаків, виданих під час перереєстрації, та послуг за проведення технічного огляду" type="file" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="sBody" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="sBody; ;bVisible=false" type="string" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -168,7 +168,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="file6" name="Якщо з документами все гаразд - завантажте скановану копію описа документів, надісланих громадянином" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_cnap_46_ur_print.html]" type="invisible" default="${sBody}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_cnap_46_ur_print.html]; ;bVisible=false" type="string" default="${sBody}" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
