@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_velta_contract" name="172 - Вхідний лист-відповідь" isExecutable="true">
+  <process id="_doc_velta_contract" name="Роспорядження про створення контракту" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Роспорядження про створення контракту"></activiti:formProperty>
@@ -34,7 +34,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="3"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст контракту" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asTypical" name="Типовий контракт; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" default="sEnumTypical" required="true">
+        <activiti:formProperty id="asTypical" name="Типовий контракт; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" default="sEnumNotTypical" required="true">
           <activiti:value id="sEnumTypical" name="типовий"></activiti:value>
           <activiti:value id="sEnumNotTypical" name="не типовий"></activiti:value>
         </activiti:formProperty>
@@ -68,7 +68,7 @@ var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
 execution.setVariable('sEscalationDay', timer)
 </script>
     </scriptTask>
-    <sequenceFlow id="flow44" sourceRef="scripttask3" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow44" sourceRef="scripttask3" targetRef="usertask2"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow27" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="ЮрОтдел" activiti:candidateGroups="Velta_Justice">
@@ -172,9 +172,9 @@ execution.setVariable('sEscalationDay', timer)
         <activiti:formProperty id="lastName_UA3" name="Прізвище керівника контрагента" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я керівника контрагента" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По батькові керівника контрагента" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sTaxType" name="Тип платнику податку" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" default=" "></activiti:formProperty>
-		<activiti:formProperty id="privatePhone" name="Телефон контрагента" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTaxType" name="Тип платнику податку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон контрагента" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="E-mail контрагента" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" default="sEnumNotUrgentDoc">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
@@ -190,7 +190,7 @@ execution.setVariable('sEscalationDay', timer)
     <sequenceFlow id="flow37" sourceRef="escalationTimer2" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="scripttask2" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="usertask3" targetRef="parallelgateway2"></sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="usertask2" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="usertask2" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="usertask4" targetRef="parallelgateway2"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow31" sourceRef="parallelgateway2" targetRef="usertask5"></sequenceFlow>
@@ -210,11 +210,11 @@ execution.setVariable('sEscalationDay', timer)
         <activiti:formProperty id="lastName_UA3" name="Прізвище керівника контрагента" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я керівника контрагента" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По батькові керівника контрагента" type="string" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="sTaxType" name="Тип платнику податку" type="string" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="privatePhone" name="Телефон контрагента" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTaxType" name="Тип платнику податку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон контрагента" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="E-mail контрагента" type="string" writable="false"></activiti:formProperty>
-         <activiti:formProperty id="asReady" name="Ступінь готовності контратку" type="enum">
+        <activiti:formProperty id="asReady" name="Ступінь готовності контратку" type="enum">
           <activiti:value id="sGood" name="контракт готовий, передати на затвердження"></activiti:value>
           <activiti:value id="sMistake" name="потрібно виправити помилку"></activiti:value>
         </activiti:formProperty>
@@ -309,7 +309,7 @@ execution.setVariable('sEscalationDay', timer)
         <omgdc:Bounds height="71.0" width="105.0" x="324.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="356.0" y="141.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="388.0" y="121.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="324.0" y="210.0"></omgdc:Bounds>
@@ -319,6 +319,12 @@ execution.setVariable('sEscalationDay', timer)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
         <omgdc:Bounds height="30.0" width="30.0" x="606.0" y="238.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="61.0" width="105.0" x="544.0" y="280.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="70.0" width="105.0" x="525.0" y="65.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="55.0" width="105.0" x="460.0" y="210.0"></omgdc:Bounds>
@@ -332,26 +338,20 @@ execution.setVariable('sEscalationDay', timer)
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
         <omgdc:Bounds height="55.0" width="105.0" x="324.0" y="370.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="61.0" width="105.0" x="544.0" y="280.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="70.0" width="105.0" x="525.0" y="65.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="356.0" y="450.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="324.0" y="510.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="428.0" y="443.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="428.0" y="581.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="324.0" y="510.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="356.0" y="590.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="428.0" y="581.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="579.0" y="591.0"></omgdc:Bounds>
@@ -373,42 +373,20 @@ execution.setVariable('sEscalationDay', timer)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="376.0" y="101.0"></omgdi:waypoint>
-        <omgdi:waypoint x="376.0" y="141.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="376.0" y="181.0"></omgdi:waypoint>
         <omgdi:waypoint x="376.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="396.0" y="161.0"></omgdi:waypoint>
-        <omgdi:waypoint x="512.0" y="161.0"></omgdi:waypoint>
-        <omgdi:waypoint x="512.0" y="210.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="408.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="376.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="396.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="428.0" y="141.0"></omgdi:waypoint>
         <omgdi:waypoint x="664.0" y="161.0"></omgdi:waypoint>
         <omgdi:waypoint x="664.0" y="210.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="512.0" y="265.0"></omgdi:waypoint>
-        <omgdi:waypoint x="512.0" y="377.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="492.0" y="397.0"></omgdi:waypoint>
-        <omgdi:waypoint x="429.0" y="397.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="376.0" y="265.0"></omgdi:waypoint>
-        <omgdi:waypoint x="512.0" y="377.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="621.0" y="268.0"></omgdi:waypoint>
         <omgdi:waypoint x="596.0" y="280.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="664.0" y="265.0"></omgdi:waypoint>
-        <omgdi:waypoint x="664.0" y="396.0"></omgdi:waypoint>
-        <omgdi:waypoint x="532.0" y="397.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="596.0" y="280.0"></omgdi:waypoint>
@@ -418,6 +396,11 @@ execution.setVariable('sEscalationDay', timer)
         <omgdi:waypoint x="577.0" y="135.0"></omgdi:waypoint>
         <omgdi:waypoint x="664.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="428.0" y="141.0"></omgdi:waypoint>
+        <omgdi:waypoint x="512.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="512.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="550.0" y="268.0"></omgdi:waypoint>
         <omgdi:waypoint x="596.0" y="280.0"></omgdi:waypoint>
@@ -426,13 +409,30 @@ execution.setVariable('sEscalationDay', timer)
         <omgdi:waypoint x="577.0" y="135.0"></omgdi:waypoint>
         <omgdi:waypoint x="512.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="512.0" y="265.0"></omgdi:waypoint>
+        <omgdi:waypoint x="512.0" y="377.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="376.0" y="265.0"></omgdi:waypoint>
+        <omgdi:waypoint x="376.0" y="370.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="664.0" y="265.0"></omgdi:waypoint>
+        <omgdi:waypoint x="664.0" y="396.0"></omgdi:waypoint>
+        <omgdi:waypoint x="532.0" y="397.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="492.0" y="397.0"></omgdi:waypoint>
+        <omgdi:waypoint x="429.0" y="397.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
         <omgdi:waypoint x="376.0" y="425.0"></omgdi:waypoint>
         <omgdi:waypoint x="376.0" y="450.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="376.0" y="490.0"></omgdi:waypoint>
-        <omgdi:waypoint x="376.0" y="510.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="396.0" y="470.0"></omgdi:waypoint>
+        <omgdi:waypoint x="428.0" y="470.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="480.0" y="443.0"></omgdi:waypoint>
@@ -443,9 +443,9 @@ execution.setVariable('sEscalationDay', timer)
         <omgdi:waypoint x="633.0" y="470.0"></omgdi:waypoint>
         <omgdi:waypoint x="664.0" y="265.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="396.0" y="470.0"></omgdi:waypoint>
-        <omgdi:waypoint x="428.0" y="470.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="376.0" y="490.0"></omgdi:waypoint>
+        <omgdi:waypoint x="376.0" y="510.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
         <omgdi:waypoint x="376.0" y="565.0"></omgdi:waypoint>

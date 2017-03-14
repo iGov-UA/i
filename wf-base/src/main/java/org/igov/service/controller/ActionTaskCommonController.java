@@ -2296,8 +2296,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      *
      * @param sLogin - Строка логин пользователя, меняющего пароль
-     * @param sPasswordOld - Строка старый пароль
-     * @param sPasswordNew - Строка новый пароль
+     * //@param sPasswordOld - Строка старый пароль
+     * //@param sPasswordNew - Строка новый пароль
      * @return
      * @throws CommonServiceException
      * @throws RuntimeException
@@ -2356,9 +2356,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String sPasswordNew = null;
 
         if(sPasswords != null){
-            Map<String, String> mBody;
+            Map<String, Object> mBody;
             try {
-                mBody = JsonRestUtils.readObject(sPasswords, Map.class);
+                //mBody = JsonRestUtils.readObject(sPasswords, Map.class);
+                mBody = (Map<String, Object>) JSONValue.parse(sPasswords);
             } catch (Exception e){
                 throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
             }
@@ -2951,7 +2952,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     @ApiOperation(value = "/getProcessTemplate", notes = "##### Получение шаблона процесса#####\n\n")
-    @RequestMapping(value = "/getProcessTemplate", method = RequestMethod.GET)
+    @RequestMapping(value = "/getProcessTemplate", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public @ResponseBody
     Map<String, Object> setProcess(
             @ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
@@ -3033,7 +3034,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	}
 
 	@ApiOperation(value = "/startProcess", notes = "##### Старт процесса#####\n\n")
-    @RequestMapping(value = "/startProcess", method = RequestMethod.POST)
+    @RequestMapping(value = "/startProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     public @ResponseBody
     Map<String, Object> startProcess(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
