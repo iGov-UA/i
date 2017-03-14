@@ -37,6 +37,7 @@
             DELETE FROM "SubjectOrganJoin";
             DELETE FROM "SubjectAccount" where "nID" < 20000;
             DELETE FROM "SubjectContact" where "nID" < 20000;
+            DELETE FROM "HistoryEvent" where "nID" < 31;
             DELETE FROM "Subject" where "nID" < 20000;
             DELETE FROM "Service";
             DELETE FROM "ServiceData";
@@ -493,7 +494,54 @@
             <column name="nID_SubjectHumanRole" type="NUMERIC"/>
             <column name="nID_SubjectHuman" type="NUMERIC"/>
         </loadUpdateData>
-
+        
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/DocumentContentType.csv" tableName="DocumentContentType" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/DocumentType.csv" tableName="DocumentType" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="bHidden" type="BOOLEAN"/>
+        </loadUpdateData>
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/DocumentOperator_SubjectOrgan.csv" tableName="DocumentOperator_SubjectOrgan" separator=";">
+            <column name="nID"              type="NUMERIC"/>
+            <column name="sName"            type="STRING"/>
+            <column name="nID_SubjectOrgan" type="NUMERIC"/>
+            <column name="sHandlerClass"    type="String"/>
+        </loadUpdateData>
+      
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Document.csv" tableName="Document" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="nID_DocumentType" type="NUMERIC"/>
+            <column name="sID_Content" type="STRING"/>
+            <column name="nID_ContentType" type="NUMERIC"/>
+            <column name="sFile" type="STRING"/>
+            <column name="sID_Subject_Upload" type="STRING"/>
+            <column name="sSubjectName_Upload" type="STRING"/>
+            <column name="sDate_Upload" type="STRING"/>
+            <column name="sContentType" type="STRING"/>
+            <column name="nID_Subject" type="NUMERIC"/>
+            <column name="nID_Subject_Upload" type="NUMERIC"/>
+            <column name="oSignData" type="STRING"/>
+        </loadUpdateData>
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/HistoryEvent.csv" tableName="HistoryEvent" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_Subject" type="NUMERIC"/>
+            <column name="nID_HistoryEventType" type="NUMERIC"/>
+            <column name="sEventName_Custom" type="STRING"/>
+            <column name="sMessage" type="STRING"/>
+            <column name="sDate" type="STRING"/>
+            <column name="nID_HistoryEvent_Service" type="NUMERIC"/>
+            <column name="nID_Document" type="NUMERIC"/>
+            <column name="sSubjectInfo" type="STRING"/>
+        </loadUpdateData>        
+        
     </changeSet>
 
 </databaseChangeLog>

@@ -197,7 +197,6 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
                       if (immediateValidation === true) tableField.$validate();
                     }
                   }
-                  break
                 }
               }
             })
@@ -762,9 +761,12 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     		options.nMax = 10000000;  
     	}
     	
-    	var parsedFloat = parseFloat(modelValue); 
+    	var parsedFloat = parseFloat(modelValue);
+    	var parsedLong = parseInt(modelValue);
     	
-    	var bValid = (parsedFloat - Math.floor(modelValue) != 0) && (parsedFloat > options.nMin) && (parsedFloat < options.nMax);   
+    	var bValid = (parsedFloat - Math.floor(modelValue) != 0) && (parsedFloat > options.nMin) && (parsedFloat < options.nMax) ||
+            (parsedLong == options.nMin && ('' + modelValue).length == ('' + options.nMin).length) ||
+            (parsedLong == options.nMax && ('' + modelValue).length == ('' + options.nMax).length);
 
     	if(bValid === null || bValid === false) { 
     		options.lastError = options.sMessage || ('Подільне число має бути між ' + options.nMin + ' та ' + options.nMax); 
@@ -968,6 +970,17 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
               break;
             }
         }      
+      }
+
+      if(sFileName === "" && modelValue && typeof modelValue === 'string') {
+        try {
+          var isNewAttaches = JSON.parse(modelValue);
+          if(typeof isNewAttaches === 'object' && isNewAttaches.sFileNameAndExt) {
+            sFileName = isNewAttaches.sFileNameAndExt;
+          }
+        }catch (e) {
+          console.info(e)
+        }
       }
 
       var aExtensions = options.saExtension.split(',');

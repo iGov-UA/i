@@ -173,56 +173,56 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       }
     },
 
-    /** 
-     * function populateTableField (printTemplate, printFormTableObject) 
-     *  Searches printTemplate for [oTableName.sTableField] and replaces 
-     *   with data of specified row of printFormTableObject.nRowIndex 
-     * 
-     * @returns original template with replaced values   
-     * @author Sysprog   
+    /**
+     * function populateTableField (printTemplate, printFormTableObject)
+     *  Searches printTemplate for [oTableName.sTableField] and replaces
+     *   with data of specified row of printFormTableObject.nRowIndex
+     *
+     * @returns original template with replaced values
+     * @author Sysprog
      */
-    populateTableField: function( printTemplate, printFormTableObject ) { 
-    	
+    populateTableField: function( printTemplate, printFormTableObject ) {
+
       var replacement;
     	var tag;
-      var templateString = ""; 
+      var templateString = "";
 
-      if( printTemplate.length ) { 
+      if( printTemplate.length ) {
          templateString = printTemplate;
       }
-      else { 
+      else {
          templateString = $sce.getTrustedHtml( printTemplate );
-      } 
+      }
 
       if(printFormTableObject.oRow) {
 
-        for ( var fieldIndex in printFormTableObject.oRow.aField ) { 
+        for ( var fieldIndex in printFormTableObject.oRow.aField ) {
 
           var field = printFormTableObject.oRow.aField[fieldIndex];
 
-          if( field.type === "enum") { 
-             var enumItem = FieldMotionService.getEnumItemById( field, field.value ); 
-             if( enumItem != null) { 
-               replacement = enumItem.name; 
-             } 
-          } 
-          else { 
-            replacement = field.value; 
-          } 
+          if( field.type === "enum") {
+             var enumItem = FieldMotionService.getEnumItemById( field, field.value );
+             if( enumItem != null) {
+               replacement = enumItem.name;
+             }
+          }
+          else {
+            replacement = field.value;
+          }
 
     		  tag = "["+ printFormTableObject.sTableName + "." + field.id + "]";
 
-      	  templateString = templateString.replace(new RegExp(this.escapeRegExp(tag)), replacement); 
+      	  templateString = templateString.replace(new RegExp(this.escapeRegExp(tag)), replacement);
 
         }
-      } 
-      
-      if( printTemplate.length ) { 
-         return templateString; 
       }
-      else { 
-         return $sce.trustAsHtml( templateString ); 
-      } 
+
+      if( printTemplate.length ) {
+         return templateString;
+      }
+      else {
+         return $sce.trustAsHtml( templateString );
+      }
     },
     escapeRegExp: function (str) {
       return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
@@ -244,7 +244,8 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
             else {
               return enumItemNameArray[0];
             }
-          }
+          } else
+            return '';
         }
         else {
           return item.value;

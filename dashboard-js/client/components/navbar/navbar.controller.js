@@ -5,9 +5,9 @@
     .module('dashboardJsApp')
     .controller('NavbarCtrl', navbarCtrl);
 
-  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService',
+  navbarCtrl.$inject = ['$scope', '$rootScope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService',
                         '$state', 'tasks', 'lunaService', 'Modal', '$stateParams'];
-  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService,
+  function navbarCtrl($scope, $rootScope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService,
                       $state, tasks, lunaService, Modal, $stateParams) {
     $scope.menu = [{
       'title': 'Задачі',
@@ -216,5 +216,28 @@
         }
       });
     };
+
+    function setEcpStatusToLS(status) {
+      var stringifyStatus = JSON.stringify(status);
+      localStorage.setItem('auto-ecp-status', stringifyStatus);
+    }
+
+    var ecpStatusInLS = localStorage.getItem('auto-ecp-status');
+
+    if(ecpStatusInLS !== null) {
+      $rootScope.checkboxForAutoECP = JSON.parse(ecpStatusInLS);
+    }else {
+      $rootScope.checkboxForAutoECP = {status : true};
+      setEcpStatusToLS($rootScope.checkboxForAutoECP);
+    }
+
+    $scope.$watch('checkboxForAutoECP.status', function (newVal) {
+      var savedStatus = localStorage.getItem('auto-ecp-status');
+      var res = savedStatus !== null ? JSON.parse(savedStatus) : null;
+      if(res && newVal !== undefined && res.status !== newVal) {
+        setEcpStatusToLS($rootScope.checkboxForAutoECP);
+      }
+    })
+
   }
 })();

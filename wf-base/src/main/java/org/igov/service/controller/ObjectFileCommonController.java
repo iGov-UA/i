@@ -3,11 +3,9 @@ package org.igov.service.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
@@ -18,19 +16,24 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
+import org.igov.io.fs.FileSystemData;
+import org.igov.io.web.HttpRequester;
 import org.igov.model.action.task.core.AttachmentCover;
 import org.igov.model.action.task.core.BuilderAttachModelCover;
 import org.igov.model.action.task.core.entity.AttachmentEntityI;
-//import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.access.BankIDUtils;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.FileTaskUpload;
-import org.igov.service.conf.AttachmetService;
 import org.igov.service.business.object.ObjectFileService;
+import org.igov.service.conf.AttachmetService;
+import org.igov.service.controller.interceptor.ActionProcessCountUtils;
+import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
+import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.VariableMultipartFile;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,32 +44,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import org.igov.io.fs.FileSystemData;
+import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
-import org.igov.io.web.HttpRequester;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
-import org.igov.service.controller.interceptor.ActionProcessCountUtils;
-import org.igov.service.exception.CRCInvalidException;
-import org.igov.service.exception.RecordNotFoundException;
 import static org.igov.util.Tool.sTextTranslit;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+
+//import org.igov.service.business.access.BankIDConfig;
 
 /**
  * @author BW
@@ -78,7 +68,7 @@ public class ObjectFileCommonController {
 
     public static final String PATTERN_DEFAULT_CONTENT_TYPE = "text/plain";
     private static final Logger LOG = LoggerFactory.getLogger(ObjectFileCommonController.class);
-    
+
     @Autowired
     private TaskService taskService;
 
@@ -107,7 +97,7 @@ public class ObjectFileCommonController {
 
     @Autowired
     private ObjectFileService oObjectFileService;
-    
+
     @Autowired
     protected AttachmetService attachmetService;
 
@@ -184,7 +174,7 @@ public class ObjectFileCommonController {
 
         return upload;
     }
-    
+
     @ApiOperation(value = "checkProcessAttach", notes
             = "##### проверка ЭЦП по новому концепту")
     @RequestMapping(value = "/checkProcessAttach", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
@@ -193,21 +183,21 @@ public class ObjectFileCommonController {
     String checkProcessAttach(
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
             @ApiParam(value = "название и расширение файла", required = false) @RequestParam(value = "sFileNameAndExt", required = false) String sFileNameAndExt,
-            @ApiParam(value = "ид процесса", required = false) @RequestParam(value = "sID_Process", required =  false) String sID_Process,
-            @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required =  false) String sID_Field,
-            @ApiParam(value = "ключ в базе данных", required = false)@RequestParam(value = "sKey", required =  false) String sKey) throws IOException, ParseException, RecordInmemoryException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
-        
-            MultipartFile multipartFile = attachmetService.getAttachment(sID_Process, sID_Field, sKey, sID_StorageType);
-            
-            if(sFileNameAndExt == null){
-                sFileNameAndExt = multipartFile.getOriginalFilename();
-            }
-            
-            String soSignData = BankIDUtils.checkECP(generalConfig, multipartFile.getBytes(), sFileNameAndExt);
-            
-            return soSignData;
+            @ApiParam(value = "ид процесса", required = false) @RequestParam(value = "sID_Process", required = false) String sID_Process,
+            @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field,
+            @ApiParam(value = "ключ в базе данных", required = false) @RequestParam(value = "sKey", required = false) String sKey) throws IOException, ParseException, RecordInmemoryException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
+
+        MultipartFile multipartFile = attachmetService.getAttachment(sID_Process, sID_Field, sKey, sID_StorageType);
+
+        if (sFileNameAndExt == null) {
+            sFileNameAndExt = multipartFile.getOriginalFilename();
+        }
+
+        String soSignData = BankIDUtils.checkECP(generalConfig, multipartFile.getBytes(), sFileNameAndExt);
+
+        return soSignData;
     }
-    
+
     @ApiOperation(value = "Проверка ЭЦП на файле хранящемся в Redis", notes = "#####  Примеры:\n"
             + "https://test.region.igov.org.ua/wf/service/object/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
             + "Ответ json описывающий ЭЦП:\n\n"
@@ -322,7 +312,7 @@ public class ObjectFileCommonController {
             HttpServletResponse httpResponse) throws IOException {
 
         VariableMultipartFile multipartFile = oObjectFileService.download_file_from_db(taskId, attachmentId, nFile);
-        
+
         httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + multipartFile.getOriginalFilename());
         httpResponse.setHeader("Content-Type", "application/octet-stream");
@@ -578,7 +568,7 @@ public class ObjectFileCommonController {
         Attachment oAttachment = taskService.createAttachment(file.getContentType() + ";" + oActionTaskService.getFileExtention(file), taskId,
                 processInstanceId, sFilename,// file.getOriginalFilename()
                 description, file.getInputStream());
-        if(oAttachment != null && sID_Field != null && !"".equals(sID_Field.trim())){
+        if (oAttachment != null && sID_Field != null && !"".equals(sID_Field.trim())) {
             //oRuntimeService.setVariable(processInstanceId, sID_Field, oAttachment.getId());
             LOG.debug("setVariable: processInstanceId = {}, sID_Field = {}, attachmentId = {}", processInstanceId, sID_Field, oAttachment.getId());
         }
@@ -635,8 +625,8 @@ public class ObjectFileCommonController {
 
         }
 
-        identityService.setAuthenticatedUserId(assignee);        
-                
+        identityService.setAuthenticatedUserId(assignee);
+
         String sFilename = sFileName;
         LOG.debug("sFilename={}", sFileName);
         sFilename = sTextTranslit(sFilename);
@@ -648,7 +638,7 @@ public class ObjectFileCommonController {
                 + oActionTaskService.getFileExtention(sFileName), taskId, processInstanceId,
                 sFilename, description,
                 new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
-        if(attachment != null && sID_Field != null && !"".equals(sID_Field.trim())){
+        if (attachment != null && sID_Field != null && !"".equals(sID_Field.trim())) {
             //oRuntimeService.setVariable(processInstanceId, sID_Field, attachment.getId());
             LOG.debug("setVariable: processInstanceId = {}, sID_Field = {}, attachmentId = {}", processInstanceId, sID_Field, attachment.getId());
         }
@@ -772,22 +762,22 @@ public class ObjectFileCommonController {
 
         //mField.get("C_DOC_CNT").trim()
         Integer nCountYear = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, "AlienBP_" + sID_Pattern, null);//Long.valueOf(snID_Service)
-        String snCountYear = nCountYear + "";
-        LOG.info("snCountYear(before)=", snCountYear);
+        LOG.info("snCountYear(before)=" + nCountYear);
+        String snCountYear = String.valueOf(nCountYear);
         if (nCountYear != null && nCountYear > 0) {
             Integer nDigits = 7;
             if (snCountYear.length() < nDigits) {
                 snCountYear = "0000000".substring(0, nDigits - snCountYear.length()) + snCountYear;
-                LOG.info("snCountYear(after)=", snCountYear);
+                LOG.info("snCountYear(after)=" + snCountYear);
             }
             mField.put("C_DOC_CNT", snCountYear);
         }
-
         LOG.info("mField: " + mField);
         File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, sID_Pattern + ".xml");
         String sContentReturn = Files.toString(oFile, Charset.defaultCharset());
         LOG.info("Created document with customer info: {}", sContentReturn);
         String sRegex, sReplacement;
+
         for (Map.Entry<String, String> oField : mField.entrySet()) {
             sRegex = "<" + oField.getKey().trim().toUpperCase() + ">";
             if (oField.getValue() != null) {
@@ -800,6 +790,8 @@ public class ObjectFileCommonController {
         LOG.info("sContentReturn: " + sContentReturn);
         mReturn.put("soPatternFilled", sContentReturn.replaceAll(System.getProperty("line.separator"), ""));
         mReturn.put("sFileName", buildFileName(mField));
+        mReturn.put("C_DOC_CNT", snCountYear);
+        //httpResponse.setContentType("application/json;charset=windows-1251");
         return mReturn;
     }
 
@@ -843,7 +835,7 @@ public class ObjectFileCommonController {
         return declarContent;
         //D_FILL=HFILL=01012016
     }
-    
+
     @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
     @RequestMapping(value = "/getProcessAttach", method = RequestMethod.GET)
     @Transactional
@@ -854,29 +846,53 @@ public class ObjectFileCommonController {
             @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = false, value = "sKey") String sKey,
             @ApiParam(value = "Тип БД", required = false) @RequestParam(required = false, value = "sID_StorageType") String sID_StorageType,
             HttpServletResponse httpResponse) throws Exception {
-        
+
         LOG.info("nID_Process: " + nID_Process);
         LOG.info("sID_Field: " + sID_Field);
-        
+
         MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
-        
+
         //byte[] aRes = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
         httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + multipartFile.getOriginalFilename());
         httpResponse.setHeader("Content-Type", "application/octet-stream");
 
         httpResponse.setContentLength(multipartFile.getBytes().length);
-       
+
         /*httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + "test.txt");
         httpResponse.setHeader("Content-Type", "application/octet-stream");
 
         httpResponse.setContentLength(aRes.length);*/
+        return multipartFile.getBytes();
+    }
+
+    @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
+    @RequestMapping(value = "/getDocumentImage", method = RequestMethod.GET)
+    @Transactional
+    public @ResponseBody
+    byte[] getDocumentImage(
+            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
+            @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
+            @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
+                   HttpServletResponse httpResponse) throws Exception {
+
+        LOG.info("snID_Process_Activiti: " + nID_Process);
+        LOG.info("sLogin: " + sLogin);
+        LOG.info("sKey_Step: " + sKey_Step);
+
+        MultipartFile multipartFile = attachmetService.getDocumentImage(nID_Process, sLogin, sKey_Step);
+
+        httpResponse.setHeader("Content-disposition", "attachment; filename="
+                + "ecp_Attach.pdf" );
+        httpResponse.setHeader("Content-Type", "application/octet-stream");
+
+        httpResponse.setContentLength(multipartFile.getBytes().length);
 
         return multipartFile.getBytes();
     }
+
     
-   
     @ApiOperation(value = "setProcessAttach", notes
             = "##### загрузка файла-атачмента по новому концепту")
     @RequestMapping(value = "/setProcessAttach", method = RequestMethod.POST, produces = "application/json")
@@ -887,41 +903,40 @@ public class ObjectFileCommonController {
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
             @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
-            @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
+            @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
-            @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
-            @ApiParam(value = "файл для сохранения в БД", required = true)@RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
-            ) throws JsonProcessingException, IOException, CRCInvalidException, RecordNotFoundException
-            {
-        
-            LOG.info("setAttachment nID_Process: " + nID_Process);
-            LOG.info("setAttachment bSigned: " + bSigned);
-            LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
-            LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
-            LOG.info("setAttachment file: " + file);
-            LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
-            LOG.info("setAttachment sID_Field: " + sID_Field);
-            LOG.info("setAttachment sContentType: " + sContentType);
+            @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field,
+            @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
+    ) throws JsonProcessingException, IOException, CRCInvalidException, RecordNotFoundException {
 
-            if (aAttribute == null){
-               aAttribute = new ArrayList<>();
-            }
-            
-            if(file != null && "Mongo".equals(sID_StorageType)){
-                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
-                        sContentType, aAttribute, file.getBytes(), true);
-            }
-            else if(file != null && "Redis".equals(sID_StorageType)){
-                byte[] aContent = AbstractModelTask.multipartFileToByteArray(file, file.getOriginalFilename()).toByteArray();
-                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
-                       sContentType, aAttribute, aContent, true);
-            }
-            else{
-                return "data is null";
-            }
-            //AttachmentCover oAttachmentCover = new AttachmentCover();
-            //return oAttachmentCover.apply(attachment);
+        LOG.info("setAttachment nID_Process: " + nID_Process);
+        LOG.info("setAttachment bSigned: " + bSigned);
+        LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
+        LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
+        LOG.info("setAttachment file: " + file);
+        LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
+        LOG.info("setAttachment sID_Field: " + sID_Field);
+        LOG.info("setAttachment sContentType: " + sContentType);
+
+        if (aAttribute == null) {
+            aAttribute = new ArrayList<>();
+        }
+
+        if (file != null && "Mongo".equals(sID_StorageType)) {
+            return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
+                    sContentType, aAttribute, file.getBytes(), true);
+        } else if (file != null && "Redis".equals(sID_StorageType)) {
+            byte[] aContent = AbstractModelTask.multipartFileToByteArray(file, file.getOriginalFilename()).toByteArray();
+            return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
+                    sContentType, aAttribute, aContent, true);
+        } else {
+            return "data is null";
+        }
+        //AttachmentCover oAttachmentCover = new AttachmentCover();
+        //return oAttachmentCover.apply(attachment);
     }
+
+   
     
     @ApiOperation(value = "setProcessAttachText", notes
             = "##### загрузка body-атачмента по новому концепту")
@@ -934,36 +949,86 @@ public class ObjectFileCommonController {
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
             @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
-            @ApiParam(value = "ид поля", required = false)@RequestParam(value = "sID_Field", required = false) String sID_Field,
-            @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false)@RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
-            @ApiParam(value = "контент файла в виде строки", required = true)@RequestBody String sData) throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException {        
-            
-            LOG.info("setAttachment nID_Process: " + nID_Process);
-            LOG.info("setAttachment bSigned: " + bSigned);
-            LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
-            LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
-            LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
-            LOG.info("setAttachment sID_Field: " + sID_Field);
-            LOG.info("setAttachment sContentType: " + sContentType);
-            LOG.info("setAttachment sData: " + sData);
-            
-           if (aAttribute == null){
-               aAttribute = new ArrayList<>();
+            @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field,
+            @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
+            @ApiParam(value = "контент файла в виде строки", required = true) @RequestBody String sData) throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException {
+
+        LOG.info("setAttachment nID_Process: " + nID_Process);
+        LOG.info("setAttachment bSigned: " + bSigned);
+        LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
+        LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
+        LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
+        LOG.info("setAttachment sID_Field: " + sID_Field);
+        LOG.info("setAttachment sContentType: " + sContentType);
+        LOG.info("setAttachment sData: " + sData);
+
+        if (aAttribute == null) {
+            aAttribute = new ArrayList<>();
+        }
+
+        if (sData != null && "Mongo".equals(sID_StorageType)) {
+            return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
+                    sContentType, aAttribute, sData.getBytes(Charsets.UTF_8), true);
+        } else if (sData != null && "Redis".equals(sID_StorageType)) {
+            throw new RuntimeException("There is no suitable metod for string data for redis");
+        } else {
+            return "data is null";
+        }
+
+        //AttachmentCover oAttachmentCover = new AttachmentCover();
+        //return oAttachmentCover.apply(attachment);
+    }
+    
+    @ApiOperation(value = "setDocumentImage", notes
+            = "##### загрузка body-атачмента по новому концепту(PDF)")
+    @RequestMapping(value = "/setDocumentImage", method = RequestMethod.POST, produces = "application/json")
+    @Transactional
+    public @ResponseBody
+    String setDocumentImage(
+            @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
+            @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
+            @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
+            @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
+            @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
+            @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field,
+            @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
+            @ApiParam(value = "Логин подписанта", required = true) @RequestParam(required = true, value = "sLogin") String sLogin,
+            @ApiParam(value = "Ключ шага документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step,
+            @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = false) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            @ApiParam(value = "контент файла в виде строки", required = false) @RequestBody String sData)
+            throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException
+        {
+
+            if(file != null){
+                sData = new String(file.getBytes());
+            } else if (sData == null || sData.equals("")){
+                throw new IllegalArgumentException("Bad request! Context not found");
             }
-            
-            if(sData != null && "Mongo".equals(sID_StorageType)){
-                return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
-                        sContentType, aAttribute, sData.getBytes(Charsets.UTF_8), true);
-            }
-            else if(sData != null && "Redis".equals(sID_StorageType)){
-                throw new RuntimeException("There is no suitable metod for string data for redis");   
-            }
-            else{
-                return "data is null";
-            }
-            
-            //AttachmentCover oAttachmentCover = new AttachmentCover();
-            //return oAttachmentCover.apply(attachment);
+        
+        LOG.info("setAttachment nID_Process: " + nID_Process);
+        LOG.info("setAttachment bSigned: " + bSigned);
+        LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
+        LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
+        LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
+        LOG.info("setAttachment sID_Field: " + sID_Field);
+        LOG.info("setAttachment sContentType: " + sContentType);
+        LOG.info("setAttachment sData: " + sData);
+        LOG.info("setAttachment sLogin: " + sLogin);
+        LOG.info("setAttachment sKey_Step: " + sKey_Step);
+
+        if (aAttribute == null) {
+            aAttribute = new ArrayList<>();
+        }
+
+        if (sData != null && "Mongo".equals(sID_StorageType)) {
+            return attachmetService.setDocumentImage(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
+                    sContentType, aAttribute, sData.getBytes(Charsets.UTF_8), true, sKey_Step, sLogin);
+        } else if (sData != null && "Redis".equals(sID_StorageType)) {
+            throw new RuntimeException("There is no suitable metod for string data for redis");
+        } else {
+            return "data is null";
+        }
+
     }
 
     
@@ -1022,6 +1087,24 @@ public class ObjectFileCommonController {
         AttachmentCover oAttachmentCover = new AttachmentCover();
 
         return oAttachmentCover.apply(attachment);
+    }
+    @ApiOperation(value = "проверка подписано ли ЕЦП")
+    @RequestMapping(value = "/isDocumentAllSigned", method = RequestMethod.GET)
+    @Transactional
+    public @ResponseBody
+    Map<String, Boolean> isDocumentAllSigned(
+            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
+            @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
+            @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
+                   HttpServletResponse httpResponse) throws Exception {
+
+        LOG.info("snID_Process_Activiti: " + nID_Process);
+        LOG.info("sLogin: " + sLogin);
+        LOG.info("sKey_Step: " + sKey_Step);
+        
+        return attachmetService.isDocumentAllSigned(nID_Process, sLogin, sKey_Step);
+
+        
     }
 
 }

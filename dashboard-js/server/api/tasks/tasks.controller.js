@@ -451,18 +451,39 @@ exports.upload_content_as_attachment = function (req, res) {
             quality: 100
           }
         };
+        if(req.body.isSendDefaultPrintForm){
+          req.body.url = "setDocumentImage";
+        } else {
+          req.body.url = 'setProcessAttach';
+        }
         pdfConversion(options, function (err, pdf) {
-          callback(err, {content: pdf.stream, contentType: 'application/json', url: 'setProcessAttach'});
+          callback(err, {content: pdf.stream, contentType: 'application/json'});
         });
       },
       function (data, callback) {
-        if (data.url === 'setProcessAttach') {
+        if (req.body.url === 'setProcessAttach') {
           activiti.uploadStream({
-            path: 'object/file/' + data.url,
+            path: 'object/file/' + req.body.url,
             nID_Process: req.params.taskId,
             stream: data.content,
             sFileNameAndExt: req.body.sFileNameAndExt,
             sID_Field: req.body.sID_Field,
+            headers: {
+              'Content-Type': data.contentType + ';charset=utf-8'
+            }
+          }, function (error, statusCode, result) {
+            pdfConversion.kill();
+            error ? res.send(error) : res.status(statusCode).json(result);
+          });
+        } else if(req.body.url === "setDocumentImage"){
+          var user = JSON.parse(req.cookies.user);
+          activiti.uploadStream({
+            path: 'object/file/' + req.body.url,
+            nID_Process: req.params.taskId,
+            stream: data.content,
+            sFileNameAndExt: req.body.sFileNameAndExt,
+            sKey_Step: req.body.sKey_Step,
+            sLogin: user.id,
             headers: {
               'Content-Type': data.contentType + ';charset=utf-8'
             }
@@ -492,13 +513,29 @@ exports.upload_content_as_attachment = function (req, res) {
 };
 
 exports.setTaskQuestions = function (req, res) {
-  activiti.get({
+  var query = {
+    nID_Process: req.body.nID_Process,
+    sMail: req.body.sMail,
+    sHead: req.body.sHead,
+    sSubjectInfo: req.body.sSubjectInfo,
+    nID_Subject: req.body.nID_Subject
+  };
+
+  var data = {
+    saField : req.body.saField,
+    soParams : req.body.soParams,
+    sBody : req.body.sBody
+  };
+
+  activiti.post({
     path: 'action/task/setTaskQuestions',
-    query: req.body
+    query: query,
+    headers: {
+      'Content-Type': 'text/html;charset=utf-8'
+    }
   }, function (error, statusCode, result) {
-    res.statusCode = statusCode;
-    res.send(result);
-  });
+    error ? res.send(error) : res.status(statusCode).json(result);
+  }, data);
 };
 
 // отправка комментария от чиновника, сервис работает на централе, поэтому с env конфигов берем урл.

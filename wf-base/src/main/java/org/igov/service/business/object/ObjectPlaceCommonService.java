@@ -22,8 +22,10 @@ import org.springframework.stereotype.Service;
 public class ObjectPlaceCommonService {
     private static final Logger LOG = LoggerFactory.getLogger(ObjectPlaceCommonService.class);
 
-    private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
-    private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
+//    private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
+//    private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
+    private static final String SUB_URL_ADDRESS_BY_TYPE = "/listAddressByType.do";
+    private static final String SUB_URL_ADDRESS_BY_NAME = "/searchByName.do";
     private static final String NULL_RESPONSE = "{}";
 
     @Autowired
@@ -69,8 +71,8 @@ public class ObjectPlaceCommonService {
 	    LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
 	    return;
 	}
-	sURLSendAddressByType = sURL_Send + "/" + SUB_URL_ADDRESS_BY_TYPE;
-	sURLSendAddressByName = sURL_Send + "/" + SUB_URL_ADDRESS_BY_NAME;
+	sURLSendAddressByType = sURL_Send + SUB_URL_ADDRESS_BY_TYPE;
+	sURLSendAddressByName = sURL_Send + SUB_URL_ADDRESS_BY_NAME;
 	
 	isReadyWork = true;
     }
@@ -106,10 +108,15 @@ public class ObjectPlaceCommonService {
 	try {
 	    sessionId = prominSession_Singleton.getSid_Auth_PB_ObjectSubPlace();
 	} catch (Exception e) {
-	    LOG.error("Error get Session ID", e);
+	    LOG.error("Error get Promin session id", e);
 	    return NULL_RESPONSE;
 	}
-	LOG.debug("Session ID={}", sessionId);
+	LOG.debug("Promin session id={}", sessionId);
+	
+	if (sessionId == null) {
+	    LOG.error("Promin session id is null");
+	    return NULL_RESPONSE;
+	}
 
 	String ret = "";
 	HttpURLConnection oHttpURLConnection = null;

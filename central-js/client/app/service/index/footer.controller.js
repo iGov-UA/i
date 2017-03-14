@@ -73,12 +73,12 @@ angular.module('app').controller('FooterController', function ($scope) {
       image: 'assets/images/ads/fabrikant.png',
       height: 50
     }*/
-    /*,{
+    ,{
       url: 'http://www.lun.ua',
       alt: 'lun',
       image: 'assets/images/ads/lun.png',
       height: 50
-    }*/
+    }
     ,{
       url: 'http://www.rbt.te.ua',
       alt: 'ternopil',

@@ -20,6 +20,10 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         scope.selected.slot = null;
       });
 
+      scope.getSelectorsBpAndFieldId = function (field) {
+        return this.serviceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.property.id + "_--_"
+      };
+
       var resetData = function()
       {
         scope.slotsData = {};
@@ -78,6 +82,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 reserve_id: data.reserve_id,
                 interval: data.interval
               });
+              if(scope.$parent.slotsCache.showConfirm){
+                dialogs.notify('Зарезервовано', 'Талон електронної черги зарезервовано');
+              };
               console.info('Reserved slot: ' + angular.toJson(data));
             }).
             error(function(data, status, headers, config) {
@@ -102,11 +109,21 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           }
         } else if (isQueueDataType.iGov) {
           if (newValue) {
-            var setFlowUrl = '/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server;
+            var baseURL = '/api/service/flow/set/';
+            var setFlowUrl = baseURL + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server;
             if (nSlotsParam) {
               var nSlots = parseInt(nSlotsParam.value) || 0;
               if (nSlots > 1)
                 setFlowUrl += '&nSlots=' + nSlots;
+            }
+            if(checkParamsOfSlot(newValue.nID)){
+
+            } else {
+              resetData();
+              scope.loadList();
+              scope.$parent.slotsCache.showConfirm = true;
+              dialogs.error('Помилка', 'Під час реєстрації талону електронної черги, були змінені реєстраційні дані. Будь ласка, повторіть свій вибір дати та часу і дочекайтесь підтвердження успішної реєстрації талону.');
+              return;
             }
             $http.post(setFlowUrl).then(function (response) {
               scope.ngModel = JSON.stringify({
@@ -114,13 +131,42 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 nID_FlowSlotTicket: response.data.nID_Ticket,
                 sDate: scope.selected.date.sDate + ' ' + scope.selected.slot.sTime + ':00.00'
               });
+              var slotId = response.config.url.substring(baseURL.length, response.config.url.indexOf('?'));
+              scope.$parent.slotsCache.iGov[response.data.nID_Ticket] = scope.$parent.slotsCache.loadedList[slotId];
+              if(scope.$parent.slotsCache.showConfirm){
+                dialogs.notify('Зареєстровано', 'Талон електронної черги зареєстровано');
+              }
             }, function () {
               scope.selected.date.aSlot.splice(scope.selected.date.aSlot.indexOf(scope.selected.slot), 1);
               scope.selected.slot = null;
+              scope.$parent.slotsCache.showConfirm = true;
               dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
             });
           }
         }
+      }
+      function checkParamsOfSlot(slotId){
+        var bValid = true;
+        if(!scope.$parent.slotsCache.loadedList[slotId]){
+          return false;
+        }
+        bValid = bValid && scope.$parent.slotsCache.loadedList[slotId].nID_Server === scope.serviceData.nID_Server;
+        if(bValid && scope.service && scope.service.nID && scope.$parent.slotsCache.loadedList[slotId].nID_Service){
+          bValid = bValid && (""+scope.service.nID) === (""+scope.$parent.slotsCache.loadedList[slotId].nID_Service);
+        }
+        if(bValid && scope.formData.params.sID_Public_SubjectOrganJoin && scope.formData.params.sID_Public_SubjectOrganJoin.nID && scope.$parent.slotsCache.loadedList[slotId].sID_Public_SubjectOrganJoin){
+          bValid = bValid && (""+scope.formData.params.sID_Public_SubjectOrganJoin.nID) === (""+scope.$parent.slotsCache.loadedList[slotId].sID_Public_SubjectOrganJoin);
+        }
+        if(bValid && scope.formData.params.nID_SubjectOrganDepartment && scope.formData.params.nID_SubjectOrganDepartment.value && scope.$parent.slotsCache.loadedList[slotId].nID_SubjectOrganDepartment){
+          bValid = bValid && (""+scope.formData.params.nID_SubjectOrganDepartment.value) === (""+scope.$parent.slotsCache.loadedList[slotId].nID_SubjectOrganDepartment);
+        }
+        if(bValid && nSlotsParam && nSlotsParam.value && scope.$parent.slotsCache.loadedList[slotId].nSlots){
+          bValid = bValid && (""+nSlotsParam.value) === (""+scope.$parent.slotsCache.loadedList[slotId].nSlots);
+        }
+        if(bValid && nDiffDaysParam && nDiffDaysParam.value && scope.$parent.slotsCache.loadedList[slotId].nDiffDays){
+          bValid = bValid && (""+nDiffDaysParam.value) === (""+scope.$parent.slotsCache.loadedList[slotId].nDiffDays);
+        }
+        return bValid;
       }
 
       function updateReservedSlot(newValue) {
@@ -161,7 +207,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
         if (isQueueDataType.DMS){
 
-          if (isInvalidServiceCustomPrivate()) return;
+          if (isInvalidServiceCustomPrivate()) {
+            return;
+          }
 
           data = {
             nID_Server: scope.serviceData.nID_Server,
@@ -170,6 +218,10 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           sURL = '/api/service/flow/DMS/getSlots';
 
         } else if (isQueueDataType.iGov) {
+          data = {
+            nID_Server: scope.serviceData.nID_Server,
+            nID_Service: (scope && scope.service && scope.service!==null ? scope.service.nID : null)
+          };
 
           if (parseInt(departmentParam.value) > 0 && scope.formData.params.sID_Public_SubjectOrganJoin && scope.formData.params.sID_Public_SubjectOrganJoin.nID){
             console.log('data.nID_SubjectOrganDepartment = ' + parseInt(departmentParam.value) + '; sID_Public_SubjectOrganJoin = ' + scope.formData.params.sID_Public_SubjectOrganJoin.nID);
@@ -186,17 +238,15 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               }
               scope.$root.queue.previousOrganJoin[scope.formData.params.sID_Public_SubjectOrganJoin.nID] = departmentParam.value;
             }
+            data.sID_Public_SubjectOrganJoin = scope.formData.params.sID_Public_SubjectOrganJoin.nID;
           }
-
-          data = {
-            nID_Server: scope.serviceData.nID_Server,
-            nID_Service: (scope && scope.service && scope.service!==null ? scope.service.nID : null)
-          };
 
           if (departmentParam) {
             if (parseInt(departmentParam.value) > 0)
               data.nID_SubjectOrganDepartment = departmentParam.value;
-            else return;
+            else {
+              return;
+            }
           }
 
           if (nSlotsParam && parseInt(nSlotsParam.value) > 1) {
@@ -225,6 +275,23 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             scope.slotsData = convertSlotsDataDMS(response.data);
           } else if (isQueueDataType.iGov) {
             scope.slotsData = response.data;
+            if(response.data.aDay){
+              angular.forEach(response.data.aDay, function (day) {
+                angular.forEach(day.aSlot, function (slot) {
+                  if(slot.nID && !scope.$parent.slotsCache.loadedList[slot.nID]){
+                    scope.$parent.slotsCache.loadedList[slot.nID] = {
+                      nID_Server: response.config.params.nID_Server,
+                      nID_Service: response.config.params.nID_Service,
+                      nID_SubjectOrganDepartment: response.config.params.nID_SubjectOrganDepartment,
+                      sID_Public_SubjectOrganJoin: response.config.params.sID_Public_SubjectOrganJoin,
+                      nSlots: response.config.params.nSlots,
+                      nDiffDays: response.config.params.nDiffDays,
+                      sDepartmentField: departmentProperty
+                    }
+                  }
+                })
+              })
+            }
           }
           scope.slotsLoading = false;
         });
@@ -261,6 +328,14 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           return Date.parse(a.sDate) - Date.parse(b.sDate);
         });
         return result;
+      }
+
+      if(angular.isDefined(scope.formData.params.sID_Public_SubjectOrganJoin && angular.isDefined(departmentParam))){
+        scope.$watch('formData.params.sID_Public_SubjectOrganJoin.value', function (newValue, oldValue) {
+          if (newValue == oldValue)
+            return;
+          resetData();
+        });
       }
 
       if (angular.isDefined(departmentParam)) {
@@ -334,6 +409,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue, oldValue) {
         if (newValue == oldValue)
           return;
+        resetData();
+        scope.loadList();
+      });
+
+      scope.$on('reset-slot-picker', function () {
         resetData();
         scope.loadList();
       });

@@ -27,11 +27,16 @@ angular.module('autocompleteService')
                         el.sFind = el.sName_UA + " " + el.sID_UA;
                     }
                 });
-            } else if(typeof res.data === 'object' && res.data.aSubjectGroupTree) {
-                var response = subjectUserFilter(res.data.aSubjectGroupTree);
-                angular.forEach(response, function (user) {
-                    user.sName = user.sFirstName + " " + user.sLastName;
-                })
+            } else if(typeof res.data === 'object' && res.config.params.sID_SubjectRole) {
+                var response;
+                if(res.config.params.sID_SubjectRole === 'Executor') {
+                    response = subjectUserFilter(res.data.aSubjectGroupTree);
+                    angular.forEach(response, function (user) {
+                        user.sName = user.sFirstName + " " + user.sLastName;
+                    })
+                } else if(res.config.params.sID_SubjectRole === 'ExecutorDepart') {
+                    response = departmentFilter(res.data.aSubjectGroupTree);
+                }
             }
             return res;
         });
@@ -39,11 +44,9 @@ angular.module('autocompleteService')
 
     // filter for resp from getSubjectGroupsTree, with tree list
     var subjectUserFilter = function (arr) {
-        var allUsers = [],
-            filteredUsers = [],
-            logins = [];
+        var allUsers = [], filteredUsers = [], logins = [];
 
-        function loop(arr) {
+        (function loop(arr) {
             angular.forEach(arr, function(item) {
                 if(item.aUser) {
                     angular.forEach(item.aUser, function(user) {
@@ -54,9 +57,7 @@ angular.module('autocompleteService')
                     loop(item.aSubjectGroupChilds)
                 }
             })
-        }
-
-        loop(arr);
+        })(arr);
 
         for(var i=0; i<allUsers.length; i++) {
             if(logins.indexOf(allUsers[i].sLogin) === -1) {
@@ -65,6 +66,28 @@ angular.module('autocompleteService')
             }
         }
         return filteredUsers;
+    };
+
+    //filter with departments from resp
+    var departmentFilter = function (arr) {
+        var allDeps = [], filteredDeps = [], logins = [];
+
+        (function loop(arr) {
+            angular.forEach(arr, function(item) {
+                allDeps.push({sID_Group_Activiti:item.sID_Group_Activiti, sName:item.sName});
+                if(item.aSubjectGroupChilds && item.aSubjectGroupChilds.length > 0){
+                    loop(item.aSubjectGroupChilds)
+                }
+            })
+        })(arr);
+
+        for(var i=0; i<allDeps.length; i++) {
+            if(logins.indexOf(allDeps[i].sID_Group_Activiti) === -1) {
+                filteredDeps.push(allDeps[i]);
+                logins.push(allDeps[i].sID_Group_Activiti);
+            }
+        }
+        return filteredDeps;
     };
 
     var getAdditionalPropertyName = function() {
@@ -83,8 +106,10 @@ angular.module('autocompleteService')
         return ($scope.autocompleteData ? getInfinityScrollChunk() : $timeout(getInfinityScrollChunk, 200))
             .then(function(response) {
                 var resp = response.data.aSubjectGroupTree ? response.data.aSubjectGroupTree : response.data;
-                if(response.data.aSubjectGroupTree) {
+                if(response.config.params.sID_SubjectRole === 'Executor') {
                     resp = subjectUserFilter(response.data.aSubjectGroupTree);
+                } else if(response.config.params.sID_SubjectRole === 'ExecutorDepart') {
+                    resp = departmentFilter(response.data.aSubjectGroupTree);
                 }
                 Array.prototype.push.apply(collection, $filter('orderBy')(resp, $scope.autocompleteData.orderBy));
                 if (!$scope.autocompleteData.hasPaging || response.data.length < count) {
@@ -115,9 +140,15 @@ angular.module('autocompleteService')
             $scope.isRequestMoreItems = false;
             hasNextChunk = true;
             var ps = params ? params.split(';')[2] : null;
-            if(ps && ps.indexOf('sID_SubjectRole=Executor') > -1) {
+            if(ps && ps.indexOf('sID_SubjectRole') > -1) {
                 var param = ps.split(',');
                 angular.forEach(param, function (p) {
+
+                    if(p.indexOf('sID_SubjectRole') > -1) {
+                        var role = p.split('=');
+                        queryParams.params[role[0]] = role[1];
+                    }
+
                     angular.forEach($scope.taskForm, function (field, key) {
                         if('aRow' in field) {
                             angular.forEach(field.aRow, function (row, rkey) {
@@ -158,7 +189,7 @@ angular.module('autocompleteService')
                 var filtered = null;
                 if(queryValue && isNaN(queryValue)){
                    filtered = items.filter(function(i){
-                        var name = i.sName_UA ? i.sName_UA : i.sNameShort_UA;
+                        var name = i.sName_UA ? i.sName_UA : (i.sNameShort_UA ? i.sNameShort_UA : i.sName);
                         return name.toLowerCase().indexOf(queryValue.toLowerCase()) !== -1;
                     });  
                 }
@@ -187,8 +218,11 @@ angular.module('autocompleteService')
                             }
                         }
                         if(nameWithPostFix && nameWithPostFix[1]) {
-                            if(isNaN(parseInt(nameWithPostFix[1])) && nameWithPostFix[1] === field.id.split('_')[1]) {
-                                obj[key].value = item[field.id.split('_')[0]];
+                            var splited = field.id.split(/_/),
+                                postfix = splited.pop(),
+                                anotherPart =  splited.join('_');
+                            if(isNaN(parseInt(nameWithPostFix[1])) && nameWithPostFix[1] === postfix) {
+                                obj[key].value = item[anotherPart];
                             }
                         }
                     });

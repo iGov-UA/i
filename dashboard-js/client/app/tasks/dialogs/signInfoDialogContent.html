@@ -2,7 +2,7 @@
   <div ng-show="!checkSignState.signInfo.customer"class="sign-info-content" style="padding: 10px;">
     Немає підпису
   </div>
-  <div ng-show="checkSignState.signInfo.customer" class="sign-info-content full-sign-info-content" style="padding: 10px;">
+  <div ng-if="checkSignState.signInfo.customer && (!checkSignState.signInfo.customers || checkSignState.signInfo.customers.length < 2)" class="sign-info-content full-sign-info-content" style="padding: 10px;">
     <h2>Файл: {{checkSignState.attachmentName}}</h2>
     <h2>Дані електроного підпису</h2>
     <table>
@@ -70,5 +70,78 @@
         </tr>
       </table>
     </div>
+  </div>
+  <div ng-if="checkSignState.signInfo.customers && checkSignState.signInfo.customers.length > 1" class="sign-info-content full-sign-info-content" style="padding: 10px;">
+    <h2>Файл: {{checkSignState.attachmentName}}</h2>
+
+    <div ng-repeat="customer in checkSignState.signInfo.customers" ng-init="signIndex=$index">
+      <h2>{{"Дані електроного підпису №" + (signIndex + 1)}}</h2>
+      <table>
+        <tr>
+          <th>ІНН:</th>
+          <td>{{customer.inn}}</td>
+        </tr>
+        <tr>
+          <th>Ім'я:</th>
+          <td>{{customer.fullName}}</td>
+        </tr>
+        <tr>
+          <th>Дійсний з:</th>
+          <td>{{customer.signatureData.dateFrom}}</td>
+        </tr>
+        <tr>
+          <th>Дійснйи до:</th>
+          <td>{{customer.signatureData.dateTo}}</td>
+        </tr>
+        <tr>
+          <th>Опис:</th>
+          <td>{{customer.signatureData.desc}}</td>
+        </tr>
+        <tr>
+          <th>Назва:</th>
+          <td>{{customer.signatureData.name}}</td>
+        </tr>
+        <tr>
+          <th>Серійний номер:</th>
+          <td>{{customer.signatureData.serialNumber}}</td>
+        </tr>
+        <tr>
+          <th>Серійний номер 2:</th>
+          <td>{{customer.signatureData.sn}}</td>
+        </tr>
+        <tr>
+          <th>Часова відмітка:</th>
+          <td>{{customer.signatureData.timestamp}}</td>
+        </tr>
+      </table>
+
+      <h2>Установи</h2>
+
+      <div ng-repeat="organization in customer.organizations" style="margin-bottom: 20px;">
+        <table>
+          <tr>
+            <th>Найменування:</th>
+            <td>{{organization.name}}</td>
+          </tr>
+          <tr>
+            <th>Адреса:</th>
+            <td>{{organization.address.state}} обл., м. {{organization.address.city}}</td>
+          </tr>
+          <tr ng-if="organization.mfo">
+            <th>МФО:</th>
+            <td>{{organization.mfo}}</td>
+          </tr>
+          <tr ng-if="organization.ownerDesc">
+            <th>Опис:</th>
+            <td>{{organization.ownerDesc}}</td>
+          </tr>
+          <tr ng-if="organization.position">
+            <th>Позиція:</th>
+            <td>{{organization.position}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
   </div>
 </sign-info-dialog>

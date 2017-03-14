@@ -65,4 +65,168 @@
         <dropForeignKeyConstraint baseTableName="SubjectOrgan" constraintName="FK_Subject_SubjectOrgan"/>
     </changeSet> -->
     
+     <changeSet id="issue-1522-Add-fields" author="Elena Shebaldenkova">
+        <addColumn tableName="DocumentStepSubjectRight">
+            <column name="sDateECP" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sID_File_ForSign" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="bNeedECP" type="boolean" defaultValue="false">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1503-move-History" author="Kovylin Yegor" failOnError="false">
+        
+        <createTable tableName="DocumentContentType">
+            <column name="nID" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+	
+        <addAutoIncrement tableName="DocumentContentType" columnName="nID" startWith="1000" columnDataType="bigint"/>
+	
+        <createTable tableName="DocumentType">
+            <column name="nID" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bHidden" type="boolean" defaultValue="false">
+            </column>
+        </createTable>
+
+        <addAutoIncrement tableName="DocumentType" columnName="nID" startWith="1000" columnDataType="bigint"/>	
+
+        <createTable tableName="DocumentOperator_SubjectOrgan">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_SubjectOrgan" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sHandlerClass" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addAutoIncrement tableName="DocumentOperator_SubjectOrgan" startWith="1000" columnName="nID" columnDataType="bigint"/>
+        	
+        <createTable tableName="Document">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_DocumentType" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_Document_DocumentType"
+                             referencedTableName="DocumentType" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="sID_Content" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_ContentType" type="int">
+                <constraints foreignKeyName="FK_Document_DocumentContentType"
+                             referencedTableName="DocumentContentType" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="sFile" type="varchar(150)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sDate_Upload" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sID_Subject_Upload" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sSubjectName_Upload" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sContentType" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Subject" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Subject_Upload" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_Document_Subject_Upload"
+                             referencedTableName="Subject" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="oSignData" type="varchar" defaultValue="{}">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addAutoIncrement tableName="Document" columnName="nID" startWith="1000" columnDataType="bigint"/>
+
+        <addForeignKeyConstraint constraintName="FK_Document_Subject" referencedTableName="Subject" referencedColumnNames="nID"
+                                 baseTableName="Document" baseColumnNames="nID_Subject"
+                                 deleteCascade="false"/>
+
+        <createTable tableName="HistoryEvent">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Subject" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_HistoryEventType" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sEventName_Custom" type="varchar(1500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sMessage" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sDate" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_HistoryEvent_Service" type="bigint" defaultValue="null">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Document" type="bigint" defaultValue="null">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sSubjectInfo" type="varchar(255)">
+            </column>
+        </createTable>
+        
+        <addAutoIncrement tableName="HistoryEvent" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        
+        <addForeignKeyConstraint constraintName="FK_HistoryEventService_HistoryEvent" referencedTableName="HistoryEvent_Service" referencedColumnNames="nID"
+                                 baseColumnNames="nID_HistoryEvent_Service" baseTableName="HistoryEvent" onDelete="CASCADE"/>
+   
+        <addForeignKeyConstraint constraintName="FK_Subject_HistoryEvent" baseTableName="HistoryEvent" baseColumnNames="nID_Subject"
+                                 referencedTableName="Subject" referencedColumnNames="nID"
+                                 deleteCascade="false"/>
+
+        <addForeignKeyConstraint constraintName="FK_Document_HistoryEvent" baseTableName="HistoryEvent" baseColumnNames="nID_Document"
+                                 referencedTableName="Document" referencedColumnNames="nID"
+                                 deleteCascade="false" />
+    </changeSet>
+    
+    <changeSet id="modify-type-of-sData-for-SubjectMessage" author="Kovylin Yegor">
+        <modifyDataType tableName="SubjectMessage" columnName="sData" newDataType="varchar(6000)" />
+    </changeSet>
+    
+    <changeSet id="modify-type-of-soData-for-HistoryEvent_Service" author="Kovylin Yegor" failOnError="false">
+        <modifyDataType tableName="HistoryEvent_Service" columnName="soData" newDataType="varchar(6000)" />
+    </changeSet>
+    
+    <changeSet id="modify-type-of-soData-for-HistoryEvent_Service_new" author="Kovylin Yegor" failOnError="false">
+        <modifyDataType tableName="HistoryEvent_Service" columnName="soData" newDataType="clob" />
+    </changeSet>
+    
 </databaseChangeLog>

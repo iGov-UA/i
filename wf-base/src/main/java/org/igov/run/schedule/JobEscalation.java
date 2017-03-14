@@ -11,20 +11,19 @@ import org.activiti.engine.HistoryService;
 
 import java.util.Date;
 import org.activiti.engine.RuntimeService;
+import org.igov.io.GeneralConfig;
 
 public class JobEscalation extends IAutowiredSpringJob {
 
     private final static Logger LOG = LoggerFactory.getLogger(JobEscalation.class);
     @Autowired
-    private EscalationService escalationService;
+    GeneralConfig oGeneralConfig;
     @Autowired
-    private HistoryService historyService;
+    private EscalationService escalationService;
     @Autowired
     protected RuntimeService runtimeService;
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
-
-        
 
         LOG.info("In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
                 new Date(), context.getTrigger().getName());

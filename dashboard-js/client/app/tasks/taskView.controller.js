@@ -248,9 +248,18 @@
                     item.autocompleteName += match[2];
                   item.autocompleteData = autocompletesDataFactory[match[1]];
                 } else if (!match && isExecutorSelect.indexOf('SubjectRole') > -1) {
+                  var props = isExecutorSelect.split(','), role;
                   item.type = 'select';
                   item.selectType = 'autocomplete';
-                  item.autocompleteName = 'SubjectRole';
+                  for(var i=0; i<props.length; i++) {
+                    if(props[i].indexOf('sID_SubjectRole') > -1) {
+                      role = props[i];
+                      break;
+                    }
+                  }
+                  var roleValue = role ? role.split('=')[1] : null;
+                  if(roleValue && roleValue === 'Executor') item.autocompleteName = 'SubjectRole';
+                  if(roleValue && roleValue === 'ExecutorDepart') item.autocompleteName = 'SubjectRoleDept';
                   item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
                 }
               }
@@ -774,6 +783,16 @@
             $scope.taskForm.isInProcess = true;
 
             rollbackReadonlyEnumFields();
+            if($scope.model.printTemplate){
+              $scope.taskForm.sendDefaultPrintForm = false;
+            } else {
+              var sKey_Step_field = $scope.taskForm.filter(function (item) {
+                return item.id === "sKey_Step_Document";
+              })[0];
+              if(sKey_Step_field){
+                $scope.taskForm.sendDefaultPrintForm = !!sKey_Step_field.value;
+              }
+            }
             tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment)
               .then(function (result) {
                 if(result.status == 500){

@@ -36,10 +36,13 @@ public class ProminSession_Singleton {
     private String sid_Auth_UkrDoc_SED;
     private String sid_Auth_Receipt_PB_Bank;
     private String aSID_Auth_PB_SMS;
-    private String sid_Auth_PB_ObjectSubPlace;
+    private String sid_Auth_PB_ObjectSubPlace = null;
     
     private long nTimeCreatedMS;
     private final long nTimeLiveLimitMS = 1000 * 60 * 20;
+
+    private long nTimeCreatedMS_PB_ObjectSubPlace = 0;
+    private final long nTimeLiveLimitMS_PB_ObjectSubPlace = 1000 * 60 * 20;
     
     @Autowired
     GeneralConfig generalConfig;
@@ -63,7 +66,21 @@ public class ProminSession_Singleton {
     }
     
     public String getSid_Auth_PB_ObjectSubPlace() {
-        checkAndUpdateSid();
+        LOG.info("Auth Promin begin. sid_Auth_PB_ObjectSubPlace={}, nTimeCreatedMS_PB_ObjectSubPlace={}, nTimeLiveLimitMS_PB_ObjectSubPlace={}", 
+        	sid_Auth_PB_ObjectSubPlace, nTimeCreatedMS_PB_ObjectSubPlace, nTimeLiveLimitMS_PB_ObjectSubPlace);
+        if (sid_Auth_PB_ObjectSubPlace == null || (System.currentTimeMillis() - nTimeCreatedMS_PB_ObjectSubPlace) > nTimeLiveLimitMS_PB_ObjectSubPlace) {
+            nTimeCreatedMS_PB_ObjectSubPlace = System.currentTimeMillis();
+
+            LOG.debug("Auth Promin, sid refresh");
+            
+            sid_Auth_PB_ObjectSubPlace= getSessionId(generalConfig.getObjectSubPlace_Auth_sLogin(),
+                    generalConfig.getObjectSubPlace_Auth_sPassword(),
+                    generalConfig.getObjectSubPlace_Auth_sURL_GenerateSID() + "?lang=UA");            
+        }
+        LOG.info("Auth Promin end. sid_Auth_PB_ObjectSubPlace={}, nTimeCreatedMS_PB_ObjectSubPlace={}, nTimeLiveLimitMS_PB_ObjectSubPlace={}", 
+        	sid_Auth_PB_ObjectSubPlace, nTimeCreatedMS_PB_ObjectSubPlace, nTimeLiveLimitMS_PB_ObjectSubPlace);
+//	sid_Auth_PB_ObjectSubPlace = getSID_Auth_PB_SMS();
+	
         return sid_Auth_PB_ObjectSubPlace;
     }
     
@@ -80,9 +97,6 @@ public class ProminSession_Singleton {
             aSID_Auth_PB_SMS = getSessionId(generalConfig.getLogin_Auth_PB_SMS(),
                     generalConfig.getPassword_Auth_PB_SMS(),
                     generalConfig.getURL_GenerateSID_Auth_PB_SMS() + "?lang=UA");
-            sid_Auth_PB_ObjectSubPlace= getSessionId(generalConfig.getObjectSubPlace_Auth_sLogin(),
-                    generalConfig.getObjectSubPlace_Auth_sPassword(),
-                    generalConfig.getObjectSubPlace_Auth_sURL_GenerateSID() + "?lang=UA");
         }
         LOG.info(toString() + " ok!");
     }

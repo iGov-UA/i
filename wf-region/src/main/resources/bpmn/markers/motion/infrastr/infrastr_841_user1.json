@@ -1,18 +1,25 @@
 {
 	"motion" : {
-		"ShowFieldsOnCondition_u1" : {
+		"RequiredFieldsOnCondition_u1" : {
 			"aField_ID" : ["sComment1"], 
 			"asID_Field" : {
 				"sClient" : "asDecide1"
 			}, 
-			"sCondition" : "[sClient] == 'reject'"
+			"sCondition" : "[sClient] == 'Повідомити громадянина про відмову в наданні послуги' || [sClient] == 'sReject'"
 		}, 
 		"ShowFieldsOnCondition_u2" : {
 			"aField_ID" : ["nBill"], 
 			"asID_Field" : {
 				"sClient" : "asDecide1"
 			}, 
-			"sCondition" : "[sClient] == 'accept'"
+			"sCondition" : "[sClient] == 'Повідимити громадянина, що заявка прийнята до опрацювання' || [sClient] == 'sAccept'"
+		}, 
+		"ShowFieldsOnCondition_u3" : {
+			"aField_ID" : ["sDate"], 
+			"asID_Field" : {
+				"sClient" : "asGetResult"
+			}, 
+			"sCondition" : "[sClient] == 'особисто' || [sClient] == 'sOffline'"
 		}, 
 		"ShowFieldsOnCondition_uinv01" : {
 			"aField_ID" : ["markersUser1"], 
@@ -20,6 +27,16 @@
 				
 			}, 
 			"sCondition" : "false"
+		}
+	},
+	"attributes" : {
+		"Line_1" : {
+			"aElement_ID" : ["asOwnerType"], 
+			"sValue" : "Дані щодо власника/судновласника"
+		}, 
+		"Line_2" : {
+			"aElement_ID" : ["sShipName"], 
+			"sValue" : "Дані щодо судна"
 		}
 	}
 }

@@ -2,15 +2,17 @@ package org.igov.service.business.action.event;
 
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.service.business.access.AccessDataService;
+import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
-import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 
 @Service
 public class HistoryEventServiceImpl implements HistoryEventService {
@@ -63,6 +65,34 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     }
 
     @Override
+    public String updateHistoryEvent(Map<String, String> params, Map<String, Object> body)  throws Exception {
+        String soResponse = "";
+        if (params == null) {
+            params = new HashMap<>();
+        }
+        String sAccessKey_HistoryEvent = accessDataDao.setAccessData(
+                httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params));
+        params.put("sAccessKey", sAccessKey_HistoryEvent);
+        params.put("sAccessContract", "Request");
+
+        if (!generalConfig.getSelfHostCentral().contains("ksds.nads.gov.ua") && !generalConfig.getSelfHostCentral().contains("staff.igov.org.ua")) {
+            String sURL = generalConfig.getSelfHostCentral() + httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params);
+            String json = JSONValue.toJSONString(body);
+            String reqBody = URLEncoder.encode(json, "UTF-8");
+            LOG.info("START POST Request updateHistoryEvent (sURL={}, body={})", sURL, body);
+            try {
+                soResponse = httpRequester.postInside(sURL, null, reqBody, "text/html;charset=utf-8");
+                LOG.info("(FINISH POST Request updateHistoryEvent soResponse={})", soResponse);
+            } catch (Exception e){
+                LOG.error("REJECTED POST Request updateHistoryEvent soResponse={})", soResponse);
+                throw new Exception(e.getMessage());
+            }
+        }
+
+        return soResponse;
+    }
+
+    @Override
     public String updateHistoryEvent(String sID_order, HistoryEvent_Service_StatusType statusType,
             Map<String, String> mParam) throws Exception {
         if (mParam == null) {
@@ -76,6 +106,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     @Override
     public void addHistoryEvent(String sID_Order, String sUserTaskName, Map<String, String> params)
             throws Exception {
+        LOG.info("addHistoryEvent params {}", params);
         doRemoteRequest(URI_ADD_HISTORY_EVENT, params, sID_Order, sUserTaskName);
     }
 

@@ -3,23 +3,51 @@
   <process id="_test_sandbox" name="_test_sandbox" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="email" name="Адреса особистої електронної пошти (e-mail)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Документ №1" type="file" required="true"></activiti:formProperty>
-      </extensionElements>
+        
+        <activiti:formProperty id="info_01" name="" type="label" default="== ОКПО 01 =="></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="ОКПО" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Наименование полное" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Наименование краткое" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Местонахождение" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО директора" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_01" name="КВЕДы" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата информации" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="info_02" name="" type="label" default="== ОКПО 02 =="></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="ОКПО" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Наименование полное" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Наименование краткое" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Местонахождение" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФИО директора" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_02" name="КВЕДы" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_02" name="Дата информации" type="string" writable="false"></activiti:formProperty>
+		
+		</extensionElements>
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Cassation">
       <extensionElements>
-        <activiti:formProperty id="email" name="Адреса особистої електронної пошти (e-mail)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Документ №1" type="file" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="info_01" name="" type="label" default="== ОКПО 01 =="></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="ОКПО" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Наименование полное" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Наименование краткое" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Местонахождение" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО директора" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_01" name="КВЕДы" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата информации" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="info_02" name="" type="label" default="== ОКПО 02 =="></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="ОКПО" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Наименование полное" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Наименование краткое" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Местонахождение" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФИО директора" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_02" name="КВЕДы" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_02" name="Дата информации" type="string" writable="false"></activiti:formProperty>
+		
         <activiti:formProperty id="sBody_1" name="[pattern/print/_test_sandbox_print.html]" type="invisible" default="Супровідний лист" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/CourtOfCassation_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDoc1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+  
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="повідомлення громадянина про реєстрацію документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -40,9 +68,9 @@
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
- </activiti:field>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1},${sDoc1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

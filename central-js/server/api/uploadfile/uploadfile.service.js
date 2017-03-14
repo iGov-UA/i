@@ -5,10 +5,16 @@ var url = require('url')
   , config = require('../../config/environment');
 
 var apiURLS = {
-  upload: '/object/file/upload_file_to_redis',
-  download: '/object/file/download_file_from_redis_bytes'
+  upload: '/object/file/setProcessAttach',
+  download: '/object/file/getProcessAttach'
 };
 
+var oldApiURLS = {
+    upload: '/object/file/upload_file_to_redis',
+    download: '/object/file/download_file_from_redis_bytes'
+};
+
+var path = apiURLS;
 function fixHost(sHost){
   if(sHost){
     sHost = sHost + '/service'
@@ -25,9 +31,11 @@ module.exports.getAPIEndpoints = function () {
  * @param contentToUpload object {name, request|text|file, [options : {filename, contentType}]}
  * @param callback is called on response
  * @param sHost [optional]. If it's not specified, url from central host is used
+ * @param isNew is check what we should use old or new upload service
  */
-module.exports.upload = function (contentToUpload, callback, sHost) {
-  activiti.uploadContent(apiURLS.upload, {}, contentToUpload, function (error, response, body) {
+module.exports.upload = function (contentToUpload, callback, sHost, isNew) {
+  path = isNew !== undefined && isNew === false ? oldApiURLS : apiURLS;
+  activiti.uploadContent(path.upload, {}, contentToUpload, function (error, response, body) {
 //code = "SYSTEM_ERR"
 //message = "Could not parse multipart servlet request; nested exception is org.apache.commons.fileupload.FileUploadBase$IOFileUploadException: Processing of multipart/form-data request failed. Stream ended unexpectedly"
     var object;
@@ -54,8 +62,8 @@ module.exports.download = function (fileID, callback, sHost, session) {
   activiti.get(apiURLS.download, {key: fileID}, callback, fixHost(sHost), session);
 };
 
-module.exports.downloadBuffer = function (fileID, callback, sHost, session) {
-  activiti.get(apiURLS.download, {key: fileID}, callback, fixHost(sHost), session, true);
+module.exports.downloadBuffer = function (params, callback, sHost, session) {
+  activiti.get(apiURLS.download, {sKey: params.ID, sID_StorageType: params.storageType}, callback, fixHost(sHost), session, true);
 };
 
 module.exports.uploadHTMLForm = function (fullUploadURL, formToUpload, headers, callback) {

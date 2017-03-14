@@ -21,26 +21,29 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
 
       // for file in table
       if(!oFile && ngModel.$name) {
-        angular.forEach(scope.activitiForm.formProperties, function (prop) {
-          if('aRow' in prop) {
-            angular.forEach(prop.aRow, function (row) {
-              angular.forEach(row.aField, function (field) {
-                if(field.id === ngModel.$name){
-                  oFile = field;
-                  oFileField = {
-                    id:field.id,
-                    isNew:true
+        function setFileInTable() {
+          angular.forEach(scope.activitiForm.formProperties, function (prop) {
+            if('aRow' in prop) {
+              angular.forEach(prop.aRow, function (row) {
+                angular.forEach(row.aField, function (field) {
+                  if(ngModel.$name.indexOf(field.id) === 0){
+                    oFile = field;
+                    oFileField = {
+                      id:field.id,
+                      isNew:true
+                    }
                   }
-                }
+                })
               })
-            })
-          }
-        })
+            }
+          })
+        } setFileInTable();
+
       }
 
       var nMaxFileSizeLimit = 10; // max upload file size = 10 MB
       var aAvailableFileExtensions = ["bmp", "gif", "jpeg", "jpg", "png", "tif", "doc", "docx", "odt", "rtf", "pdf"
-        , "xls", "xlsx", "xlsm", "ods", "sxc", "wks", "csv", "zip", "rar", "7z", "p7s"];
+        , "xls", "xlsx", "xlsm", "xml", "ods", "sxc", "wks", "csv", "zip", "rar", "7z", "p7s"];
 
       try {
         console.log('scope.data.formData.params[ngModel.$name].fileName=' + scope.data.formData.params[ngModel.$name].fileName);
@@ -76,6 +79,7 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
             if(aFilteredFiles.length > 0){
               scope.switchProcessUploadingState();
               console.log("Start uploading " + aFilteredFiles.length + " file(s)");
+              if(!oFile) {setFileInTable()}
               oFile.setFiles(aFilteredFiles);
               if(oFileField.isNew) {
                 oFile.upload(scope.oServiceData, oFileField.id);
@@ -136,7 +140,7 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
     '  <input type="file" style="display:none"  ng-disabled="isFileProcessUploading.bState">' +
     ' </button>' +
     ' <br ng-if="!item"/>' +
-    ' <label ng-if="data.formData.params[property.id].value && !item || item && item.value">Файл: {{data.formData.params[property.id].fileName || item.fileName}}</label>' +
+    ' <label style="word-break: break-word" ng-if="data.formData.params[property.id].value && !item || item && item.value">Файл: {{data.formData.params[property.id].fileName || item.fileName}}</label>' +
     ' <br/>' +
     ' <label ng-if="data.formData.params[property.id].value && data.formData.params[property.id].value.signInfo || item.value && item.signInfo"  class="form-control_"> ' +
     '    Підпис: {{data.formData.params[property.id].value.signInfo.name || item.signInfo.name}} ' +

@@ -13,6 +13,7 @@ import org.igov.model.subject.*;
 import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
 import org.igov.service.business.action.ActionEventService;
+import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
@@ -25,16 +26,16 @@ import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.NumberUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -66,6 +67,8 @@ public class ActionEventController implements ControllerConstants {
     private SubjectDao subjectDao;
     @Autowired
     private SubjectHumanDao subjectHumanDao;
+    @Autowired
+    private ActionEventHistoryService actionEventHistoryService;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -138,6 +141,12 @@ public class ActionEventController implements ControllerConstants {
             @ApiParam(value = "номер-ид бп эсклации (поле на перспективу для следующего тз по эскалации)", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation,
             @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType
     ) {
+        /*LOG.info("addHistoryEvent_Service was started with params: sID_Order: {} nID_Subject : {} sUserTaskName: {} "
+                + "nID_Service: {} nID_ServiceData: {} nID_ServiceData: {} nID_Region: {} sID_UA: {} soData: {} "
+                + "sToken: {} sHead: {} sBody: nID_Proccess_Feedback: {} nID_Proccess_Escalation: {} nID_StatusType: {}",
+        sID_Order, nID_Subject, sUserTaskName, nID_Service, nID_ServiceData, nID_ServiceData, nID_Region, 
+        sID_UA, soData, sToken, sHead, sBody, nID_Proccess_Feedback, nID_Proccess_Escalation, nID_StatusType);*/
+        
         return oActionEventService.addActionStatus_Central(
                 sID_Order,
                 nID_Subject,
@@ -163,10 +172,10 @@ public class ActionEventController implements ControllerConstants {
             + "- \"По заявці №[nID_Process] задане прохання уточнення: [sBody]\" (если sToken не пустой) -- согласно сервису запроса на уточнение\n"
             + "- \"По заявці №[nID_Process] дана відповідь громадянином: [sBody]\" (если sToken пустой) -- согласно сервису ответа на запрос по уточнению\n\n"
             + "плюс перечисление полей из soData в формате таблицы Поле / Тип / Текущее значение")
-    @RequestMapping(value = "/updateHistoryEvent_Service", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateHistoryEvent_Service", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody
     HistoryEvent_Service updateHistoryEvent_Service(
-            @ApiParam(value = "строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
+            @ApiParam(value = "строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected", required = true) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @ApiParam(value = "строка-статус", required = false) @RequestParam(value = "sUserTaskName", required = false) String sUserTaskName,
             @ApiParam(value = "строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "soData", required = false) String soData,
             @ApiParam(value = "строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sToken", required = false) String sToken,
@@ -176,10 +185,71 @@ public class ActionEventController implements ControllerConstants {
             @ApiParam(value = "номер-ид бп эсклации (поле на перспективу для следующего тз по эскалации)", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation,
             @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType,
             @ApiParam(value = "строка информация о субьекте", required = false) @RequestParam(value = "sSubjectInfo", required = false) String sSubjectInfo,
-            @ApiParam(value = "номер - ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
+            @ApiParam(value = "номер - ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "JSON-строка для передачи всех параметров в POST-запросе", required = false) @RequestBody(required = false) String body
     // @ApiParam(value = "дата создания таски", required = false) @RequestParam(value = "sDateCreate", required =false) String sDateCreate,
     // @ApiParam(value = "дата закрытия таски", required = false) @RequestParam(value = "sDateClosed", required = false) String sDateClosed
     ) throws CommonServiceException {
+        if(body != null){
+            Map<String, Object> mBody;
+            try {
+                String decoded = "";
+                try {
+                    decoded = URLDecoder.decode(body, "UTF-8");
+                } catch (UnsupportedEncodingException e){
+                    decoded = body;
+                }
+                mBody = (Map<String, Object>) JSONValue.parse(decoded);
+            } catch (Exception e){
+                throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
+            }
+            if(mBody != null){
+                if (mBody.containsKey("sID_Order")) {
+                    sID_Order = (String) mBody.get("sID_Order");
+                }
+                if (mBody.containsKey("sUserTaskName")) {
+                    sUserTaskName = (String) mBody.get("sUserTaskName");
+                }
+                if (mBody.containsKey("soData")) {
+                    soData = (String) mBody.get("soData");
+                }
+                if (mBody.containsKey("sToken")) {
+                    sToken = (String) mBody.get("sToken");
+                }
+                if (mBody.containsKey("sBody")) {
+                    sBody = (String) mBody.get("sBody");
+                }
+                if (mBody.containsKey("nTimeMinutes")) {
+                    nTimeMinutes = (String) mBody.get("nTimeMinutes");
+                }
+                if (mBody.containsKey("nID_Proccess_Feedback")) {
+                    nID_Proccess_Feedback = (Long) mBody.get("nID_Proccess_Feedback");
+                }
+                if (mBody.containsKey("nID_Proccess_Escalation")) {
+                    nID_Proccess_Escalation = (Long) mBody.get("nID_Proccess_Escalation");
+                }
+                if (mBody.containsKey("nID_StatusType")) {
+                    nID_StatusType = (Long) mBody.get("nID_StatusType");
+                }
+                if (mBody.containsKey("sSubjectInfo")) {
+                    sSubjectInfo = (String) mBody.get("sSubjectInfo");
+                }
+                if (mBody.containsKey("nID_Subject")) {
+                    nID_Subject = (Long) mBody.get("nID_Subject");
+                }
+            }
+        }
+
+        if(sID_Order == null || sID_Order.isEmpty() || sID_Order.equals("")){
+            throw new CommonServiceException(HttpStatus.BAD_REQUEST.toString(), "sID_Orfer is undefined");
+        }
+        if(nID_StatusType == null){
+            throw new CommonServiceException(HttpStatus.BAD_REQUEST.toString(), "nID_StatusType is undefined");
+        }
+
+        LOG.info("sBody = " + sBody);
+        LOG.info("soData = " + soData);
+
         return oActionEventService.updateActionStatus_Central(
                 sID_Order,
                 sUserTaskName,

@@ -71,8 +71,12 @@ module.exports.tryCache = function (req, res, next) {
       logger.info("[tryCache] doesn't have decrypt callback", {session_type: type});
     }
 
-    activiti.get('/object/file/download_file_from_redis_bytes', {
-      key: req.session.usercacheid
+    // activiti.get('/object/file/download_file_from_redis_bytes', {
+    //   key: req.session.usercacheid
+    // }, callback);
+    activiti.get('/object/file/getProcessAttach', {
+      sKey: req.session.usercacheid,
+      sID_StorageType : 'Redis'
     }, callback);
 
   } else {

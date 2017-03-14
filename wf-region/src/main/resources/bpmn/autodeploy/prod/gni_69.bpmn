@@ -3,12 +3,17 @@
   <process id="gni_69" name="ДФС - Надання витягу з реєстру платників єдиного податку" isExecutable="true">
     <documentation>
     	Рефакторинг: 28.04.2016. Аналитик: Ставицкий В.Д.
-    	Рефакторинг с 19.10.16 по 20.10.16 Ставицкий В.Д. - Перевод на подписание принтформы ЕЦП, добавление принтформы в дашборд + маркеры принтформы 
-    	Рефакторинг с 09.11.16 Ставицкий В.Д. - Переделка заявления под подпись ЕЦП   	    	
+    	Рефакторинг с 19.10.16 по 20.10.16 Ставицкий В.Д. - Перевод на подписание принтформы ЕЦП, добавление принтформы в дашборд + маркеры принтформы  
+    	Рефакторинг с 09.11.16 Ставицкий В.Д. - Переделка заявления под подпись ЕЦП   	
     </documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+
+        <activiti:formProperty id="infoZapit" name="Зверніть увагу" type="label" default="Для отримання послуги Вам необхідно:&lt;ol&gt;&lt;li&gt;Завантажити та роздрукувати &lt;a href=&quot;https://drive.google.com/uc?export=download&amp;id=0B91XFkuwrCQbLUFXazBpQnhndVE&quot; target=&quot;_blank&quot;&gt;бланк запиту&lt;/a&gt;&lt;/li&gt;&lt;li&gt;Заповнити відповідні поля, згідно &lt;a href=&quot;https://1drv.ms/i/s!AkxiXv48JoWulgOMiijWVFh0vo1B&quot; target=&quot;_blank&quot;&gt;зразка&lt;/a&gt;&lt;/li&gt;&lt;li&gt;Відсканувати та підписати документ за допомогою ЕЦП.&lt;/li&gt;&lt;li&gt;Прикріпити підписаний запит&lt;/li&gt;&lt;/ol&gt;&lt;br /&gt;Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;.&lt;br /&gt;Один з варіантів накладення ЕЦП на файл &lt;a href=&quot;https://papka24.com.ua/&quot; target=&quot;_blank&quot;&gt;papka24.com.ua&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;Додаткова інформація &lt;a href=&quot;https://docs.google.com/document/d/17kd6pC_2PwfDgk1zJpZ6D1BkTRMJqDQLIAYq_9Pvri0/edit&quot; target=&quot;_blank&quot;&gt;примітка&lt;/a&gt;"></activiti:formProperty>
+		<activiti:formProperty id="nFileZapit" name="Запит, підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
+      
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>        
+
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
 
@@ -57,9 +62,6 @@
 <!-  Вставка автоподписания ЭЦП конец  -->
 
         
-        <activiti:formProperty id="info_1" type="label" default="&lt;a href=&quot;https://docs.google.com/document/d/17kd6pC_2PwfDgk1zJpZ6D1BkTRMJqDQLIAYq_9Pvri0/edit&quot; target=&quot;_blank&quot;&gt;примітка&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="info_2" name="Заповніть бланк" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/uc?export=download&amp;id=0B91XFkuwrCQbLUFXazBpQnhndVE&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="zapit" name="Заповнений бланк" type="file" required="true"></activiti:formProperty>
 
 
       </extensionElements>
@@ -83,7 +85,7 @@
           <activiti:string><![CDATA[Нове звернення: Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -106,23 +108,26 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Запит про отримання витягу з реєстру платників єдиного податку. Реєстрація]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]  
 			<p>
-				Ваша заява № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> на отримання витягу з реєстру платників єдиного податку, передана в роботу.
+				Ваша заява на отримання витягу з реєстру платників єдиного податку, передана в роботу.
 			</p>			
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
-			${sPhoneOrgan}<br>
-			${sWorkTime}<br><br>
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			${sWorkTime}<br>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_feedback.html]   	
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -172,11 +177,6 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/gni_69_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${zapit}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -202,13 +202,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Запит про отримання витягу з реєстру платників єдиного податку. Відмовлено]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>                                    
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]                                     
 			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було оброблено.<br>
+				Ваше звернення було оброблено.<br>
 				На жаль, Вам відмовлено у наданні витягу з реєстру платників єдиного податку.<br/>
 				Підстава: enum{[decision_reject]}<br/>
 				<b>${comment_1}</b>
@@ -219,12 +219,14 @@
 			<br><br>
 			Для уточнення причини відказу скористуйтесь наступними контактами<br>
 			${sAddress}<br>
-			${sPhoneOrgan}<br>
-			${sWorkTime}<br><br>
-			[pattern/mail/_common_signature_start.html]
+			${sWorkTime}<br>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -250,13 +252,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Запит про отримання витягу з реєстру платників єдиного податку. Схвалено]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-          	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]  
           	<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> на отримання витягу з реєстру платників єдиного податку опрацьована. 
+				Ваше звернення на отримання витягу з реєстру платників єдиного податку опрацьоване. 
           	</p>			
 			<br><br>
 				Отримати витяг Ви зможете за наступними контактами:<br>
@@ -267,13 +269,14 @@
 				Щоб отримати витяг, при візиті до відділення фіскальної служби,<br> 
 				Вам необхідно мати при собі оригінал паспорта громадянина України<br> 
 				та назвати номер запиту №[sID_Order]
-			</p>			
-			<br><br>
-			[pattern/mail/_common_signature_start.html]
+			</p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_feedback.html]   	
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
-			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

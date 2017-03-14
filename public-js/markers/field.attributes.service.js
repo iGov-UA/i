@@ -57,7 +57,8 @@ function FieldAttributesService(MarkersFactory) {
 		  if( styles.oCommonStyle != null || styles["oCommonStyle"] != null ) { 
 			  commonStyle = styles.oCommonStyle; 
 			  
-			  console.log("iGovMarkers.enableStyles -> oCommonStyle for '" + styles + "' is set"); 
+			  console.log("iGovMarkers.enableStyles -> oCommonStyle for '" + styles.oCommonStyle + "' is set"); 
+			  console.log(styles); 
 		  }
 		  
 		  if( styles.oCentralStyle != null || styles["oCentralStyle"] != null ) { 
@@ -214,6 +215,7 @@ function FieldAttributesService(MarkersFactory) {
         if(markers[i].aElement_ID[j] === sID){
           return {
             bShow: true,
+						sLinkedFieldID: sID,
             sText: markers[i].sValue ? markers[i].sValue : ''
           }
         }
@@ -221,6 +223,7 @@ function FieldAttributesService(MarkersFactory) {
     }
     return {
       bShow: false,
+      sLinkedFieldID: null,
       sText: ''
     };
   };

@@ -15,27 +15,16 @@
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="sID_Custom_GovPublic" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-   
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы людей" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина людей" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів" type="invisible" default="MJU_Dnipro_1"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів" type="invisible" default="0"></activiti:formProperty>
-
-        <activiti:formProperty id="sPrepareted" name="Селект підрозділів; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
-       
+        <activiti:formProperty id="sTableDeps" name="sTableDeps; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isPrepareted&quot;,&quot;name&quot;:&quot;Селект підрозділів; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sID_Group_Activiti_isPrepareted&quot;,&quot;name&quot;:&quot;Автокомплит селекта підрозділів&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTableHumans" name="sTableHumans; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecutor&quot;,&quot;name&quot;:&quot;Селект людей; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_isExecutor&quot;,&quot;name&quot;:&quot;Автокомплит селекта людей&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sChangeDoc" name="Вносить зміни до наказу №" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCancelDoc" name="Скасовує наказ №" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Якщо validate" type="markers" default="{&quot;validate&quot;:{&quot;OrderValue1&quot;:{&quot;aField_ID&quot;:[&quot;sCancelDoc&quot;]}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
-          <activiti:field name="sTaskProcessDefinition">
-            <activiti:string><![CDATA[_doc_system_task_justice_incoming]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="processDefinitionId">
-            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="soData">
-            <activiti:expression><![CDATA[sExecutor::${sExecutor};;sPrepareted::${sPrepareted}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -58,15 +47,14 @@ documentStepService.СloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupP
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        
-         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
-    
-         <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы" type="invisible" default="MJU_Dnipro_1"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы" type="invisible" default="MJU_Dnipro_1"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevelDepart" name="глубина" type="invisible" default="0"></activiti:formProperty>
-        
-        <activiti:formProperty id="sExecutor" name="Селект людей; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPrepareted" name="Селект підрозділів; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTableDeps" name="sTableDeps; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isPrepareted&quot;,&quot;name&quot;:&quot;Селект підрозділів; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sID_Group_Activiti_isPrepareted&quot;,&quot;name&quot;:&quot;Автокомплит селекта підрозділів&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTableHumans" name="sTableHumans; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecutor&quot;,&quot;name&quot;:&quot;Селект людей; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_isExecutor&quot;,&quot;name&quot;:&quot;Автокомплит селекта людей&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sChangeDoc" name="Вносить зміни до наказу №" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCancelDoc" name="Скасовує наказ №" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>

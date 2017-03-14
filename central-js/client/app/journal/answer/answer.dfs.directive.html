@@ -8,7 +8,7 @@
                 <!--Розшифрувати файл з ДФС-->
             </div>
 
-            <div ng-if="vm.decryptedIsPresent">
+            <div ng-if="vm.decryptedIsPresent" class="answer-dfs">
                 <div class="col-sm-3">
 
                     <!-- Button trigger modal -->
@@ -22,13 +22,13 @@
 
                     <!-- Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
+                        <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <h4 class="modal-title" id="myModalLabel">Документ:</h4>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body" ng-if="vm.viewContent.DECLAR.DECLARBODY[0] && vm.viewContent.DECLAR.DECLARBODY[0].HDOCKOD[0]">
                                     <p>Код форми документу: {{::vm.viewContent.DECLAR.DECLARBODY[0].HDOCKOD[0]}}</p>
                                     <p>Назва документу звітності: {{::vm.viewContent.DECLAR.DECLARBODY[0].HDOCNAME[0]}}</p>
                                     <p>Ім'я файлу: {{::vm.viewContent.DECLAR.DECLARBODY[0].HFILENAME[0]}}</p>
@@ -50,9 +50,101 @@
                                     </p>
                                     <p>{{::vm.viewContent.DECLAR.DECLARBODY[0].TEXT[0]}}</p>
                                 </div>
+
+                                <div class="modal-body" ng-if="vm.viewContent.DECLAR.DECLARBODY[0] && !vm.viewContent.DECLAR.DECLARBODY[0].HDOCKOD[0]">
+                                  <h4 style="text-align: center; font-weight: bold">
+                                    Відповідь на запит від &nbsp;{{vm.parseDate(vm.viewContent.DECLAR.DECLARHEAD[0].D_FILL[0])}}<br>
+                                    про суми виплачених доходів та утриманих податків з Державного реєстру фізичних осіб – платників податків
+                                    для заповнення податкової декларації про майновий стан і доходи/декларації про доходи та витрати осіб, які звернулись за призначенням житлових субсидій
+                                  </h4>
+
+                                  <table class="tg">
+                                    <tr>
+                                      <th class="tg-s6z2" rowspan="8">Фізична особа – платник податків</th>
+                                      <th class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HLNAME[0]}}</b></th>
+                                    </tr>
+                                    <tr>
+                                      <td class="tg-s6z2" colspan="2">Прізвище</td>
+                                    </tr>
+                                    <tr>
+                                      <td class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HPNAME[0]}}</b></td>
+                                    </tr>
+                                    <tr>
+                                      <td class="tg-s6z2" colspan="2">Ім’я</td>
+                                    </tr>
+                                    <tr>
+                                      <td class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HFNAME[0]}}</b></td>
+                                    </tr>
+                                    <tr>
+                                      <td class="tg-s6z2" colspan="2">По батькові</td>
+                                    </tr>
+                                    <tr>
+                                      <td class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HTIN[0]}}</b></td>
+                                    </tr>
+                                    <tr>
+                                      <td class="tg-s6z2" colspan="2">Реєстраційний номер облікової картки платника податків/серія та номер паспорта*</td>
+                                    </tr>
+                                    <tr>
+                                    <tr style="display: none">
+                                      <td class="tg-s6z2">Електронна адреса фізичної особи</td>
+                                      <td class="tg-s6z2" colspan="2"><b>{{::vm.viewContent.DECLAR.DECLARBODY[0].HEMAIL[0]}}</b></td>
+                                    </tr>
+                                  </table>
+
+
+                                  <table class="dfs-response-modal-140">
+                                    <tr>
+                                      <th class="tg-kr94" rowspan="2">№ з/п</th>
+                                      <th class="tg-kr94" rowspan="2">Результат обробки запиту**</th>
+                                      <th class="tg-kr94" colspan="2">Джерела отримання доходів</th>
+                                      <th class="tg-kr94" rowspan="2">Сума доходу</th>
+                                      <th class="tg-kr94" rowspan="2">Сума податку</th>
+                                      <th class="tg-kr94" rowspan="2">Ознака доходу</th>
+                                      <th class="tg-kr94" rowspan="2">Коротка назва виду доходу</th>
+                                      <th class="tg-kr94" colspan="2">Період, за який надається інформація</th>
+                                    </tr>
+                                    <tr>
+                                      <td class="tg-kr94">Податковий номер/серія та номер,паспорта,податкового агента***</td>
+                                      <td class="tg-kr94">Назва юридичної особи/ПІБ фізичної особи –<br>підприємця</td>
+                                      <td class="tg-kr94">квартал</td>
+                                      <td class="tg-kr94">рік</td>
+                                    </tr>
+
+                                    <tr ng-repeat="row in vm.viewContent.DECLAR.DECLARBODY[0].T1RXXXXG2" ng-init="ind = $index; content = vm.viewContent.DECLAR.DECLARBODY[0]">
+                                      <td class="tg-s6z2">{{ ind + 1 }}</td>
+                                      <td class="tg-s6z2">{{ row._ }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG3S[ind]._ }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG4S[ind]._ }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG5[ind]._ }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG6[ind]._ }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG7[ind]._ }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG8S[ind]._ }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG9[ind]._ }}</td>
+                                      <td class="tg-s6z2">{{ content.T1RXXXXG10[ind]._ }}</td>
+                                    </tr>
+                                  </table>
+
+                                  <div style="font-size: 12px">
+                                    <h4 style="display: inline-block; font-weight: bold">Дата формування відповіді на запит </h4> <u style="font-size: 16px;font-weight: bold;"> &nbsp;&nbsp;{{vm.parseDate(vm.viewContent.DECLAR.DECLARHEAD[0].D_FILL[0])}}&nbsp;&nbsp; </u><br>
+                                    <b>*</b> серія та номер паспорта зазначають фізичні особи, які мають відмітку в паспорті про право здійснювати будь-які платежі за серією та номером паспорта;<br>
+                                    <b>**</b> Результат обробки запиту може приймати наступні значення:<br>
+                                    <b>Відповідь надано відповідно до:</b><br>
+                                    <b>1</b> –податковий  розрахунок сум доходу, нарахованого (сплаченого) на користь фізичних осіб, і сум утриманого з них податку, форма N 1ДФ (Наказ Міністерства фінансів України від 13.01.2015 № 4, зареєстровано в Міністерстві юстиції України 30 січня 2015 р. за № 111/26556), в графі «Сума доходу» зазначаються суми нарахованого доходу з графи 3а  ф.№1ДФ, в графі «Сума податку» зазначаються суми утриманого податку з графи 4а ф.№1ДФ;<br>
+                                    <b>2</b> –  податкова декларація платника єдиного податку фізичної особи–підприємця (Наказ Мінфіна України  від 21.12.2011 № 1688) - в графі «Сума доходу» зазначається значення рядка 21, в графі «Сума податку» зазначаються значення рядка 27 (поле ознака доходу по цім записям приймає значення 999);<br>
+                                    податкова декларації про майновий стан і доходи (Наказ Міндоходів 793 від 11.12.2013) в графі «Сума доходу» зазначаються значення  рядка 7  розділ І додатку 5 до розділу ІІІ/ рядка 06 розділу IV податкової декларації,  в графі «Сума податку» зазначаються значення  рядка 3  розділу  ІІ  додатку 5 до ІІІ розділу податкової декларації/рядка 07 розділу IV податкової декларації (поле ознака доходу по цім записям приймає значення 999);<br>
+                                    <b>Відповідь не надано з причини:</b><br>
+                                    <b>3</b> – інформація щодо сум виплачених доходів та утриманих податків за запитуваємий період в Державному реєстрі фізичних осіб – платників податків (далі – Державний реєстр)  відсутня;<br>
+                                    <b>4</b> – фізична особа в Державному реєстрі з вказаним реєстраційний номер облікової картки платника податків не зареєстрована/ фізична особа з вказаними серією та номером паспорта в Окремому реєстрі Державного реєстру не зареєстровано;<br>
+                                    <b>5</b> – незаповнені або некоректно заповнені поля, що обов’язкові для заповнення;<br>
+                                    <b>6</b> – реєстраційні дані фізичної особи  зазначені у запиті  не відповідають  інформації, яка міститься у  Державному реєстрі ( відповідно до пункту 70.7 статті 70 Податкового кодексу України всі фізичні особи- платникі податків зобов’язані подавать контролюючим органам відомості про зміну даних, які вносяться до облікової картки або  повідомлення. Необхідно  подати заяву про внесення змін до Державного реєстру);<br>
+                                    <b>7</b> – не вірно вказаний  період, за який запитується інформація;<br>
+                                    <b>***</b> Код ЄДРПОУ - для юридичних осіб, реєстраційний номер облікової картки платника податків – для фізичних осіб – підприємців або серія та номер паспорта фізичних осіб – підприємців,  які мають відмітку в паспорті про право здійснювати будь-які платежі за серією та номером паспорта.<br>
+                                  </div>
+                                </div>
+
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal"ng-click="vm.onDownload()">Зберегти</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.onDownload()">Зберегти оригiнал</button>
                                 </div>
                             </div>
                         </div>

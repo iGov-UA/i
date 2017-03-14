@@ -25,7 +25,13 @@
       });
 
       if (patternCode) {
-        json = createJSON(parameters);
+        var fixParams = angular.copy(parameters);
+        angular.forEach(fixParams.formProperties, function (param) {
+          for(var key in param.options) if (param.options.hasOwnProperty(key)){
+            param.name = param.name + ";;" + key + '=' + param.options[key];
+          }
+        });
+        json = createJSON(fixParams);
 
         $http.post('/api/service/getPatternFilled', {
           nID_Server: parameters.oServiceData.nID_Server,

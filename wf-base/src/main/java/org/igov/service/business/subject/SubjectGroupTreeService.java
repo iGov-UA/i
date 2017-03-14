@@ -32,12 +32,14 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import org.springframework.stereotype.Component;
 
 /**
  * Сервис получения полной организационной иерархии (родитель - ребенок)
  *
  * @author inna
  */
+@Component("subjectGroupTreeService")
 @Service
 public class SubjectGroupTreeService {
 
