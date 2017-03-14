@@ -2358,8 +2358,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if(sPasswords != null){
             Map<String, Object> mBody;
             try {
-                //mBody = JsonRestUtils.readObject(sPasswords, Map.class);
-                mBody = (Map<String, Object>) JSONValue.parse(sPasswords);
+                String decoded = "";
+                try {
+                    decoded = URLDecoder.decode(sPasswords, "UTF-8");
+                } catch (UnsupportedEncodingException e){
+                    decoded = sPasswords;
+                }
+                mBody = (Map<String, Object>) JSONValue.parse(decoded);
             } catch (Exception e){
                 throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
             }
@@ -2405,7 +2410,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.warn("The sPasswordOld parameter is not equal the user's password: {}");
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "Password " + sPasswordOld + " is wrong",
+                    "Password sPasswordOld = [" + sPasswordOld + "] is wrong. User = ["+user.getPassword()+"]",
                     HttpStatus.FORBIDDEN
             );
 
