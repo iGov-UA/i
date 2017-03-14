@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_oe_premium" name="My process" isExecutable="true">
+  <process id="_doc_oe_premium" name="Службова на доплату" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Службова на доплату"></activiti:formProperty>
@@ -35,7 +35,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
 </script>
     </scriptTask>
-    <userTask id="usertask1" name="Створення заявки - керівник підрозділу" activiti:candidateGroups="OE_Dnipro_">
+    <userTask id="usertask1" name="Створення заявки - керівник підрозділу">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
@@ -63,9 +63,17 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumCreateAccept" name="створити"></activiti:value>
           <activiti:value id="sEnumCreateDeny" name="відмінити"></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_Author]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="Узгодження службової  - Директор напрямку" activiti:candidateGroups="OE_Dnipro_">
+    <userTask id="usertask2" name="Узгодження службової  - Директор напрямку">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
@@ -93,9 +101,14 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumDirAccept" name="Узгоджено"></activiti:value>
           <activiti:value id="sEnumDirDeny" name="Не узгоджено"></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask3" name="Узгодження службової  - Директор персоналу" activiti:candidateGroups="OE_Dnipro_">
+    <userTask id="usertask3" name="Узгодження службової  - Директор персоналу">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
@@ -123,9 +136,14 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumPersAccept" name="Узгоджено"></activiti:value>
           <activiti:value id="sEnumPersDeny" name="Не узгоджено"></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask4" name="Узгодження службової  - Фін.директор" activiti:async="true" activiti:candidateGroups="OE_Dnipro_">
+    <userTask id="usertask4" name="Узгодження службової  - Фін.директор">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
@@ -153,9 +171,14 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumFinAccept" name="Узгоджено"></activiti:value>
           <activiti:value id="sEnumFinDeny" name="Не узгоджено"></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask5" name="Узгодження службової  - Голова правління" activiti:async="true" activiti:exclusive="false" activiti:candidateGroups="OE_Dnipro_">
+    <userTask id="usertask5" name="Узгодження службової  - Голова правління">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
@@ -183,9 +206,14 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumHeadAccept" name="Узгоджено"></activiti:value>
           <activiti:value id="sEnumHeadDeny" name="Не узгоджено"></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask6" name="Створення наказу відділом мотивації" activiti:candidateGroups="OE_Dnipro_">
+    <userTask id="usertask6" name="Створення наказу відділом мотивації">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
@@ -213,9 +241,15 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sBody_2" name="[pattern/print/iDoc/OE/_doc_oe_premium_order_print.html]" type="invisible" default="Наказ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Службова на доплату;Службова на доплату;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Наказ на доплату;Наказ на доплату;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_order_print.html" type="file"></activiti:formProperty>
+      	<activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
+      
     </userTask>
-    <userTask id="usertask7" name="Канцелярія - створення паперової копії" activiti:candidateGroups="OE_Dnipro_">
+    <userTask id="usertask7" name="Канцелярія - створення паперової копії">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
@@ -242,9 +276,14 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Службова на доплату;Службова на доплату;sPrintFormFileAsPDF=pattern/print/UPSZN/subsidy_zayava_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Наказ на доплату;Наказ на доплату;sPrintFormFileAsPDF=pattern/print/UPSZN/subsidy_zayava_1.html" type="file"></activiti:formProperty>
+      	<activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask8" name="Бухгалтерія помічає виконання" activiti:candidateGroups="OE_Dnipro_">
+    <userTask id="usertask8" name="Бухгалтерія помічає виконання">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
@@ -269,9 +308,14 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sText" name="Текст ініціативного листа" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер наказу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+      	<activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask9" name="Відділ мотивації помічає виконання" activiti:async="true" activiti:candidateGroups="OE_Dnipro_">
+    <userTask id="usertask9" name="Відділ мотивації помічає виконання">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
@@ -296,6 +340,11 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sText" name="Текст ініціативного листа" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер наказу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+      	<activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Лист керівнику підрозділу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
