@@ -66,13 +66,13 @@
         <activiti:formProperty id="middleName_UA8" name="По батькові" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="Birth8" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="Pasportyst" name="в прінтформу 1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="Nachalnyk" name="в прінтформу 2" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="До якого державного органу звертається заявник; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Pasportyst" name="в прінтформу 1; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Nachalnyk" name="в прінтформу 2; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo; ;bVisible=false" type="string" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/forma2.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -326,13 +326,13 @@
           <activiti:value id="reestr" name="Громадянин отримав довідку"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/forma2.html]" type="invisible" default="Довідка про склад сім'ї" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/forma2_lubin.html]" type="invisible" default="Довідка про склад сім'ї і прописку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Pasportyst" name="в прінтформу 1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="Nachalnyk" name="в прінтформу 2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/forma2.html]; ;bVisible=false" type="string" default="Довідка про склад сім'ї" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/forma2_lubin.html]; ;bVisible=false" type="string" default="Довідка про склад сім'ї і прописку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Pasportyst" name="в прінтформу 1; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Nachalnyk" name="в прінтформу 2; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hide fields 2" type="markers" default="${markerService.loadFromFile('dms/forma2_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="До якого державного органу звертається заявник; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
