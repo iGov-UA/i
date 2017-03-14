@@ -470,9 +470,16 @@ public class SubjectGroupTreeService {
         SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
         Subject oSubject = oSubjectGroup.getoSubject();
         LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
-        SubjectHuman oSubjectHuman = SubjectHumanDao.findByExpected("oSubject", oSubject);
+        
+        SubjectHuman oSubjectHuman = null;
+                
+        try{
+            oSubjectHuman = SubjectHumanDao.findByExpected("oSubject", oSubject);
         LOG.info("oSubjectHuman in getSubjectType is " + oSubjectHuman.getName());
-
+        }catch(NullPointerException ex){
+            LOG.info("oSubjectHuman not found");
+        }
+        
         if (oSubjectHuman != null) {
             return HUMAN;
         } else {
