@@ -34,6 +34,7 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.task.IdentityLink;
+import org.apache.commons.io.IOUtils;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.model.document.DocumentStepSubjectRightFieldDao;
@@ -45,6 +46,7 @@ import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 
@@ -196,6 +198,10 @@ public class DocumentStepService {
         oDocumentStep.setRights(aDocumentStepSubjectRight);
         return oDocumentStep;
     }
+    
+    
+    
+    
 
 //setDocumentStep(snID_Process_Activiti[, sKey_Step)]    
 //3.1) setDocumentStepSubjectRight(snID_Process_Activiti, sKey_GroupPostfix, bWrite) //Установить право записи, равное bWrite, для ветки к путем sKey_Step/sKey_GroupPostfix
@@ -410,6 +416,62 @@ public class DocumentStepService {
             resultList.add(oDocumentStepSubjectRight_New);
         }
 
+        return resultList;
+    }
+    
+    public List<DocumentStepSubjectRight> cloneDocumentStepFromTable (String snID_Process_Activiti, String sKey_GroupPostfix, String sID_Field,
+            String sKey_Step_Document_To) {//JSONObject //Map<String, Object>
+        LOG.info("cloneDocumentStepSubject started...");
+        LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sID_Field={}, sKey_Step_Document={}",
+                sKey_GroupPostfix, snID_Process_Activiti, sID_Field, sKey_Step_Document_To);
+        
+        List<DocumentStepSubjectRight> resultList = new ArrayList<>();
+        
+        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject)
+                runtimeService.getVariable(snID_Process_Activiti, sID_Field);
+        
+        LOG.info("oJSONObject in cloneDocumentStepFromTable is {}", oJSONObject.toJSONString());        
+        
+        org.json.simple.JSONArray aJsonRow = (org.json.simple.JSONArray) oJSONObject.get("aRow");
+        
+        if (aJsonRow != null) {
+            if (aJsonRow != null) {
+                for (int i = 0; i < aJsonRow.size(); i++) {
+
+                    Map<String, Object> mParamTask = new HashMap<>();
+                    org.json.simple.JSONObject oJsonField = (org.json.simple.JSONObject) aJsonRow.get(i);
+                    LOG.info("oJsonField in cloneDocumentStepFromTable is {}", oJsonField);
+                    if (oJsonField != null) {
+                        org.json.simple.JSONArray aJsonField = (org.json.simple.JSONArray) oJsonField.get("aField");
+                        LOG.info("aJsonField in cloneDocumentStepFromTable is {}", aJsonField);
+                        if (aJsonField != null) 
+                        {
+                            for (int j = 0; j < aJsonField.size(); j++) {
+                                org.json.simple.JSONObject oJsonMap = (org.json.simple.JSONObject) aJsonField.get(j);
+                                LOG.info("oJsonMap in cloneDocumentStepFromTable is {}", oJsonMap);
+                                if (oJsonMap != null) {
+                                    Object oId = oJsonMap.get("id");
+                                    Object oValue = oJsonMap.get("value");
+                                    if (oValue != null) {
+                                        LOG.info("oValue in cloneDocumentStepFromTable is {}", oValue);
+                                        resultList.addAll(cloneDocumentStepSubject(snID_Process_Activiti, 
+                                                sKey_GroupPostfix, (String)oValue, sKey_Step_Document_To));
+                                    } 
+                                    else 
+                                    {
+                                        LOG.info("oValue in cloneDocumentStepFromTable is null");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            LOG.info("JSON array is null in cloneDocumentStepFromTable is null");
+        }
+        
         return resultList;
     }
 
