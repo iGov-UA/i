@@ -3027,14 +3027,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         } catch (Exception e){
             throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
         }
-        
-        /*if (sID_BP.startsWith("_doc_")||ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(sID_BP)) {
-                Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, sID_BP, null);
-                LOG.info("SetDocument process count: " + count.intValue());
-        }*/
-        //return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
+
         mParam.put("sLoginAuthor", sLogin);
-        ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+        LOG.info("Processing process with key " + StringUtils.substringBefore(sID_BP, ":"));
+        ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(StringUtils.substringBefore(sID_BP, ":"), mParam);
         Map<String, Object> mReturn = new HashMap<>();
                 
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
