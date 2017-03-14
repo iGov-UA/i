@@ -20,7 +20,7 @@ angular.module('autocompleteService')
             if(angular.isDefined(res.config.params.sFind) && angular.isArray(res.data)){
                 angular.forEach(res.data, function (el) {
                     if(angular.isDefined(el.sID) && angular.isDefined(el.sNote)){
-                        el.sFind = el.sNote + " " + el.sID;
+                        el.sFind = el.sID + " " + el.sNote;
                     } else if (angular.isDefined(el.sID) && angular.isDefined(el.sName_UA)) {
                         el.sFind = el.sName_UA + " " + el.sID;
                     } else if (angular.isDefined(el.sID_UA) && angular.isDefined(el.sName_UA)) {
@@ -189,7 +189,7 @@ angular.module('autocompleteService')
                 var filtered = null;
                 if(queryValue && isNaN(queryValue)){
                    filtered = items.filter(function(i){
-                        var name = i.sName_UA ? i.sName_UA : (i.sNameShort_UA ? i.sNameShort_UA : i.sName);
+                        var name = i.sName_UA ? i.sName_UA : (i.sNameShort_UA ? i.sNameShort_UA : (i.sName ? i.sName : i.sNote));
                         return name.toLowerCase().indexOf(queryValue.toLowerCase()) !== -1;
                     });  
                 }
