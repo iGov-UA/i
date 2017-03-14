@@ -2977,7 +2977,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        Map<String, Object> formDataDTO = new HashMap<String, Object>();
 	        formDataDTO.put("formKey", formData.getFormKey());
 	        formDataDTO.put("deploymentId", formData.getDeploymentId());
-	        formDataDTO.put("formProperties", formData.getFormProperties());
+	        formDataDTO.put("formProperties", processFormProperties(formData.getFormProperties())); 
 	        formDataDTO.put("processDefinitionId", formData.getProcessDefinition().getId());
 	
 	        Map[] res = new Map[1];
@@ -3002,7 +3002,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return mReturn;
     }
     
-    @ApiOperation(value = "/startProcess", notes = "##### Старт процесса#####\n\n")
+    protected List<Map<String, Object>> processFormProperties(List<FormProperty> formProperties) {
+    	List<Map<String, Object>> res = new LinkedList<Map<String,Object>>();
+    	for (FormProperty property : formProperties) {
+    		Map<String, Object> currProperty = new HashMap<String, Object>();
+    		currProperty.put("id", property.getId());
+    		currProperty.put("name", property.getName());
+    		currProperty.put("type", property.getType().getName());
+    		currProperty.put("value", property.getValue());
+    		currProperty.put("required", property.isRequired());
+    		currProperty.put("readable", property.isReadable());
+    		currProperty.put("writable", property.isWritable());
+    		res.add(currProperty);
+    	}
+		return res;
+	}
+
+	@ApiOperation(value = "/startProcess", notes = "##### Старт процесса#####\n\n")
     @RequestMapping(value = "/startProcess", method = RequestMethod.POST)
     public @ResponseBody
     Map<String, Object> startProcess(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
