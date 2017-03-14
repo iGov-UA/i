@@ -3013,6 +3013,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     		currProperty.put("required", property.isRequired());
     		currProperty.put("readable", property.isReadable());
     		currProperty.put("writable", property.isWritable());
+    		if ("enum".equals(property.getType().getName())){
+    			Object oValues = property.getType().getInformation("values");
+    			List<Map> enumValuesPossible = new LinkedList<Map>();
+    			if (oValues instanceof Map) {
+    	            Map<String, String> mValue = (Map) oValues;
+    	            for (Map.Entry<String, String> mapEntry: mValue.entrySet()){
+    	            	Map<String, Object> currEnumValue = new HashMap<String, Object>();
+    	            	currEnumValue.put("id", mapEntry.getKey());
+    	            	currEnumValue.put("name", mapEntry.getValue());
+    	            	enumValuesPossible.add(currEnumValue);
+    	            }
+    			}
+    			currProperty.put("enumValues", enumValuesPossible);
+    		}
     		res.add(currProperty);
     	}
 		return res;
