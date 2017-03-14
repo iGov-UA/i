@@ -2296,8 +2296,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      *
      * @param sLogin - Строка логин пользователя, меняющего пароль
-     * @param sPasswordOld - Строка старый пароль
-     * @param sPasswordNew - Строка новый пароль
+     * //@param sPasswordOld - Строка старый пароль
+     * //@param sPasswordNew - Строка новый пароль
      * @return
      * @throws CommonServiceException
      * @throws RuntimeException
@@ -2356,9 +2356,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String sPasswordNew = null;
 
         if(sPasswords != null){
-            Map<String, String> mBody;
+            Map<String, Object> mBody;
             try {
-                mBody = JsonRestUtils.readObject(sPasswords, Map.class);
+                //mBody = JsonRestUtils.readObject(sPasswords, Map.class);
+                mBody = (Map<String, Object>) JSONValue.parse(sPasswords);
             } catch (Exception e){
                 throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
             }
