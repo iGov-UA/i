@@ -22,7 +22,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо електроний документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asEnumEdocs&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategoryIncoming&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumEdocs'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо службові листи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;asEnumOfficialLetters&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategoryIncoming&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOfficialLetters'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
@@ -60,11 +60,11 @@
         <activiti:formProperty id="sDoc1" name="Електронна форма документа" type="file"></activiti:formProperty>
        
         <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sFirstName_Executor&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_Executor&quot;,&quot;name&quot;:&quot;Логин&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;bVisible&quot;:&quot;false&quot;},{&quot;id&quot;:&quot;sEmail_Executor&quot;,&quot;name&quot;:&quot;Email&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="sID_Group_Activiti" type="invisible" default="MJU_Dnipro_Top1"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="nDeepLevel" type="invisible" default="3"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="sID_Group_Activiti; ;bVisible=false" type="string" default="MJU_Dnipro_Top1"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="nDeepLevel; ;bVisible=false" type="string" default="3"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="ФИО" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="ФИО; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateResolution" name="Дата резолюції" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asCreateOutcomingLetter" name="Сформувати вихідний документ; ;sID_CheckboxTrue=sEnumCreateOutcomingLetter" type="enum" default="sEnumNotCreateOutcomingLetter">
@@ -113,7 +113,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDateResolution" name="Дата резолюції" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="ФИО" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="ФИО; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>

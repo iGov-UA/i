@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="Zem_dil_Gusyatin_Pavlenko" name="Видача відомостей з документації із землеустрою, що включена до Державного фонду документації із землеустрою" isExecutable="true">
+  <process id="gusyatin_cnap_1088" name="Видача відомостей з документації із землеустрою, що включена до Державного фонду документації із землеустрою" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган у якому Ви збираєтесь отримувати відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я " type="string" required="true"></activiti:formProperty>
@@ -13,6 +14,7 @@
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sGOorgform&quot;],&quot;sValue&quot;:&quot;Інформація про земельну ділянку&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sAdres" name="Адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nKadastr_num" name="Кадастровий номер" type="long"></activiti:formProperty>
         <activiti:formProperty id="sPloscha" name="Площа (га)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="fPlan_Znah_Dil" name="Ситуаційний план щодо місцезнаходження земельної ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fKopiya_z_topo-geod_plany" name="Викопіювання з топографо-геодезичного плану м 1:2000" type="file" required="true"></activiti:formProperty>
@@ -69,13 +71,8 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sGOorgform&quot;],&quot;sValue&quot;:&quot;Інформація про громадську організацію&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sAdres" name="Адреса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nKadastr_num" name="Кадастровий номер" type="long" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sPloscha" name="Площа (га)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="fPlan_Znah_Dil" name="Ситуаційний план щодо місцезнаходження земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fKopiya_z_topo-geod_p" name="Викопіювання з топографо-геодезичного плану м 1:2000" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fKadastr_dovidka" name="Кадастрова довідка з містобудівного кадастру (при наявності)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fCherg_kadastr_plan" name="Черговий кадастровий план" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fFotofik_zem_dil" name="Фотофіксація земельної ділянки" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fRozrah_z_tech-ekon_pokaz" name="Містобудівний розрахунок з техніко-економічними показниками запланованого об'єкту будівництва" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно, надіслати листи заявнику та в ЦНАП"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
@@ -134,13 +131,13 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>noreply@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на опрацювані. ${sPosluga_name}</activiti:expression>
+          <activiti:expression>Ваше звернення попередньо перевірено та передано в обробку. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 Ваше звернення №[sID_Order] пройшло попередню перевірку в ЦНАПі.&lt;br /&gt;
-Документи передані в МінЮст.&lt;br /&gt;&lt;br /&gt;
+Документи передані для подальшого опрацювання.&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
@@ -168,8 +165,11 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Інформація про громадську організацію" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sGOorgform&quot;],&quot;sValue&quot;:&quot;Інформація про громадську організацію&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="decideMU" name="Рішення уповноваженого ограну містобудування та архітектури" type="enum" required="true">
+        <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sGOorgform&quot;],&quot;sValue&quot;:&quot;Інформація про громадську організацію&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sAdressa" name="Адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nKadasrt_num" name="Кадастровий номер" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPloscha" name="Площа (га)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decideMU" name="Рішення відділу Держгеокадастру" type="enum" required="true">
           <activiti:value id="accept" name="Звернення задоволено"></activiti:value>
           <activiti:value id="reject" name="ЦНАП виніс відмову по заяві"></activiti:value>
         </activiti:formProperty>
@@ -218,7 +218,7 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow11" name="ЦНАП відмова" sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideMU == 'reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="видача дозвілу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask6" name="видача відомостей" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -281,8 +281,8 @@ ${sNameOrgan}&lt;br/&gt;
     <sequenceFlow id="flow18" sourceRef="servicetask7" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="startevent1" targetRef="servicetask7"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_Zem_dil_Gusyatin_Pavlenko">
-    <bpmndi:BPMNPlane bpmnElement="Zem_dil_Gusyatin_Pavlenko" id="BPMNPlane_Zem_dil_Gusyatin_Pavlenko">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_gusyatin_cnap_1088">
+    <bpmndi:BPMNPlane bpmnElement="gusyatin_cnap_1088" id="BPMNPlane_gusyatin_cnap_1088">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="160.0" y="170.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
