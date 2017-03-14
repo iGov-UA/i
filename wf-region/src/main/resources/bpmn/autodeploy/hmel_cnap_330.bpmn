@@ -16,20 +16,20 @@
         <activiti:formProperty id="sPibChild" name="Укажіть Прізвище Ім'я По батькові дитини по відношенню до якої бажаєте припинити опіку (піклування)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDateBithdayChild" name="Укажіть рік народження дитини" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Укажіть причину припинення опіки (піклування); українською мовою" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka495" name="шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rNumber" name="номер району; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="район; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="remail" name="пошта району; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka495" name="шапка; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sShapka495" name="шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka495" name="шапка; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -48,7 +48,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_330_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_330_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_330_print.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -59,7 +59,7 @@
     </userTask>
     <userTask id="usertask2" name="прийняття рішення щодо постановки на облік" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sShapka495" name="шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka495" name="шапка; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -79,7 +79,7 @@
         <activiti:formProperty id="comment_2" name="У разі відмови - внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення для відправки заявнику" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_330_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_330_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_330_print.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
