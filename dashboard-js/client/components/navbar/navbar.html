@@ -63,15 +63,22 @@
 
         <div class="nav navbar-nav navbar-right right-menu-group">
 
-          <div class="nav navbar-nav document-button" ng-if="usersDocumentsBPs.length > 0 && showCreateDocButton()">
-            <a ng-click="openCloseUsersSelect()"
-               class="btn btn-info">Створити документ
-            </a>
-            <div class="document-select-block" ng-show="showOrHideSelect">
-                <ui-select style="border: 6px solid white; bottom: 6px; border-radius: 5px;"
+          <div class="nav navbar-nav document-button" ng-if="(userTasksBPs.length > 0 || usersDocumentsBPs.length > 0) && showCreateDocButton()">
+            <div class="btn-group-vertical" role="group" aria-label="...">
+              <a ng-click="openCloseUsersSelect('doc')"
+                 class="btn btn-default"
+                 ng-class="{'btn-md':userTasksBPs.length === 0, 'btn-xs':userTasksBPs.length > 0}"
+                 ng-if="usersDocumentsBPs.length > 0">Створити документ</a>
+              <a class="btn btn-default"
+                 ng-class="{'btn-md':usersDocumentsBPs.length === 0, 'btn-xs':usersDocumentsBPs.length > 0}"
+                 ng-click="openCloseUsersSelect('task')"
+                 ng-if="userTasksBPs.length > 0">Створити заявку</a>
+            </div>
+            <div class="document-select-block" ng-show="showOrHideSelect.show && showOrHideSelect.type === 'doc'">
+                <ui-select style="border: 3px solid white; bottom: 6px; border-radius: 5px;"
                            ng-model="document.selected"
                            theme="bootstrap"
-                           on-select="onSelectDocList($item)">
+                           on-select="onSelectDocument($item)">
 
                   <ui-select-match placeholder="Оберіть документ зі списку">
                     <span title="{{$select.selected.sName_BP}} ({{$select.selected.oSubjectRightBP.sID_BP}})">
@@ -85,6 +92,26 @@
                     </span>
                   </ui-select-choices>
                 </ui-select>
+            </div>
+
+            <div class="document-select-block" ng-show="showOrHideSelect.show && showOrHideSelect.type === 'task'">
+              <ui-select style="border: 3px solid white; bottom: 6px; border-radius: 5px;"
+                         ng-model="document.selected"
+                         theme="bootstrap"
+                         on-select="onSelectTask($item)">
+
+                <ui-select-match placeholder="Оберіть документ зі списку">
+                    <span title="{{$select.selected.sName_BP}} ({{$select.selected.oSubjectRightBP.sID_BP}})">
+                      {{$select.selected.sName_BP}}
+                    </span>
+                </ui-select-match>
+
+                <ui-select-choices repeat="doc in userTasksBPs | filter:$select.search">
+                    <span title="{{doc.sName_BP}} ({{doc.oSubjectRightBP.sID_BP}})">
+                      {{doc.sName_BP}} ({{doc.oSubjectRightBP.sID_BP}})
+                    </span>
+                </ui-select-choices>
+              </ui-select>
             </div>
           </div>
 
