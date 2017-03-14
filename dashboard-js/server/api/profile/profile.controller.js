@@ -49,7 +49,7 @@ exports.changePassword = function (req, res) {
     console.log(statusCode);
     console.log(result);
     error ? res.send(error) : res.status(statusCode).json(result);
-  }, JSON.toJSON({
+  }, JSON.stringify({
     sPasswordOld: req.body.sPasswordOld,
     sPasswordNew: req.body.sPasswordNew
   }), false);
