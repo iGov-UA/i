@@ -38,8 +38,8 @@
   		<activiti:formProperty id="markers2" name="категорія вже є" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;certificate_kategory&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;kategory&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'first' || [sClient] == 'higher' &quot;}}}"></activiti:formProperty>
  		<activiti:formProperty id="markers3" name="якщо змінював місця роботи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;report_other&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;change_job&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
       
-        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="район; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="remail" name="пошта району; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="health_${sID_Public_SubjectOrganJoin}">
@@ -70,7 +70,7 @@
         </activiti:formProperty>
  		<activiti:formProperty id="date_visit" name="Внесіть дату, час та місце проведення аттестації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар у це поле" type="textArea"></activiti:formProperty>
-       	<activiti:formProperty id="sBody_1" name="[pattern/print/HealthMinistry/health_ministry_10_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+       	<activiti:formProperty id="sBody_1" name="[pattern/print/HealthMinistry/health_ministry_10_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/HealthMinistry/health_ministry_10_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -96,7 +96,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте витяг з протоколу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови  внесіть, будь ласка, коментар" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/HealthMinistry/health_ministry_10_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/HealthMinistry/health_ministry_10_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦАК" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
