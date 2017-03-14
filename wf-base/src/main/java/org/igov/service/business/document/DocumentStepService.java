@@ -97,11 +97,23 @@ public class DocumentStepService {
         //process common step if it exists
         Object oStep_Common = oJSON.opt("_");
         LOG.info("Common step is - {}", oStep_Common);
+        
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRightToSet_Common = new ArrayList<>();
+        
         if (oStep_Common != null) {
             DocumentStep oDocumentStep_Common = mapToDocumentStep(oStep_Common);
             oDocumentStep_Common.setnOrder(0L);//common step with name "_" has order 0
             oDocumentStep_Common.setsKey_Step("_");
             oDocumentStep_Common.setSnID_Process_Activiti(snID_Process_Activiti);
+            
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRightToSet = oDocumentStep_Common.getRights();
+            if(aDocumentStepSubjectRightToSet != null){
+                for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRightToSet){
+                    if(!oDocumentStepSubjectRight.getsKey_GroupPostfix().startsWith("_default_")){
+                        aDocumentStepSubjectRightToSet_Common.add(oDocumentStepSubjectRight);
+                    }
+                }
+            }
             documentStepDao.saveOrUpdate(oDocumentStep_Common);
             aDocumentStep.add(oDocumentStep_Common);
         }
@@ -123,6 +135,9 @@ public class DocumentStepService {
         for (String sKey_Step : asKey_Step) {
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
+            aDocumentStepSubjectRightToSet_Common.addAll(oDocumentStep.getRights());
+            LOG.info("aDocumentStepSubjectRightToSet_Common is {}", aDocumentStepSubjectRightToSet_Common);
+            oDocumentStep.setRights(aDocumentStepSubjectRightToSet_Common);
             oDocumentStep.setnOrder(i++);
             oDocumentStep.setsKey_Step(sKey_Step);
             oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);

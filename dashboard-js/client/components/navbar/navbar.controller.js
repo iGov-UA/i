@@ -6,9 +6,9 @@
     .controller('NavbarCtrl', navbarCtrl);
 
   navbarCtrl.$inject = ['$scope', '$rootScope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService',
-                        '$state', 'tasks', 'lunaService', 'Modal', '$stateParams', 'processes', '$localStorage'];
+                        '$state', 'tasks', 'lunaService', 'Modal', '$stateParams'];
   function navbarCtrl($scope, $rootScope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService,
-                      $state, tasks, lunaService, Modal, $stateParams, processes, $localStorage) {
+                      $state, tasks, lunaService, Modal, $stateParams) {
     $scope.menu = [{
       'title': 'Задачі',
       'link': '/tasks'
@@ -175,7 +175,7 @@
     };
 
     $scope.usersDocumentsBPs = [];
-    $scope.showOrHideSelect = {show:false,type:''};
+    $scope.showOrHideSelect = false;
     $scope.hasDocuments = function () {
       var user = Auth.getCurrentUser().id;
       if(user) {
@@ -184,10 +184,6 @@
             $scope.usersDocumentsBPs = res.filter(function (item) {
               return item.oSubjectRightBP.sID_BP.charAt(0) === '_' && item.oSubjectRightBP.sID_BP.split('_')[1] === 'doc';
             });
-
-            $scope.userTasksBPs = res.filter(function (item) {
-              return item.oSubjectRightBP.sID_BP.indexOf('_doc_') !== 0;
-            })
           }
         })
       }
@@ -195,9 +191,8 @@
     $scope.hasDocuments();
 
     $scope.document = {};
-    $scope.openCloseUsersSelect = function (type) {
-      $scope.showOrHideSelect.type = type;
-      $scope.showOrHideSelect.show = !$scope.showOrHideSelect.show;
+    $scope.openCloseUsersSelect = function () {
+      $scope.showOrHideSelect = !$scope.showOrHideSelect;
     };
 
     $scope.showCreateDocButton = function () {
@@ -208,7 +203,7 @@
       return $location.path() === '/';
     };
 
-    $scope.onSelectDocument = function (item) {
+    $scope.onSelectDocList = function (item) {
       tasks.createNewDocument(item.oSubjectRightBP.sID_BP).then(function (res) {
         if(res.snID_Process) {
           tempCountValue = 0;
@@ -217,24 +212,7 @@
             .then(function(res) {
               $scope.assignTask(res.aIDs[0], val)
             });
-          $scope.showOrHideSelect.show = false;
-        }
-      });
-    };
-
-    $scope.onSelectTask = function (task) {
-      var id = processes.getProcessID(task.oSubjectRightBP.sID_BP);
-      tasks.createNewTask(id).then(function (res) {
-        if(res.deploymentId) {
-          tempCountValue = 0;
-          var val = res.deploymentId + lunaService.getLunaValue(res.deploymentId);
-          localStorage.setItem('creating', JSON.stringify(res));
-          $state.go('tasks.typeof.create');
-          // tasksSearchService.searchTaskByUserInput(val, 'documents')
-          //   .then(function(res) {
-          //     $scope.assignTask(res.aIDs[0], val)
-          //   });
-          $scope.showOrHideSelect.show = false;
+          $scope.showOrHideSelect = false;
         }
       });
     };

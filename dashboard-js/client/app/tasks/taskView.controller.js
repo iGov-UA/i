@@ -1478,7 +1478,6 @@
         };
 
         $rootScope.$broadcast("update-search-counter");
-        console.log($scope)
       }
     ])
 })();
