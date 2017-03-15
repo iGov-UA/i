@@ -201,7 +201,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         </activiti:formProperty>
         <activiti:formProperty id="sText" name="Текст ініціативного листа" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asDecideHead" name="Резолюція директору напрямку" type="enum">
+        <activiti:formProperty id="asDecideHead" name="Резолюція голови правління" type="enum">
           <activiti:value id="sEnumHeadAccept" name="Узгоджено"></activiti:value>
           <activiti:value id="sEnumHeadDeny" name="Не узгоджено"></activiti:value>
         </activiti:formProperty>
@@ -246,6 +246,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="PrintForm_1" name="Службова на доплату;Службова на доплату;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Наказ на доплату;Наказ на доплату;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_order_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="sAutorResolution" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер наказу" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -344,7 +345,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumEmployee2" name="№0002 Петров Петро Петрович"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sText" name="Текст ініціативного листа" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nNumber" name="Номер наказу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер наказу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="bVerificationSignatures" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -391,10 +392,10 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <sequenceFlow id="flow14" sourceRef="exclusivegateway1" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecideDirection =='sEnumDirDeny'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="exclusivegateway2" targetRef="usertask2">
+    <sequenceFlow id="flow15" sourceRef="exclusivegateway2" targetRef="scripttask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecidePersonnel == 'sEnumPersDeny'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow16" sourceRef="exclusivegateway3" targetRef="usertask3">
+    <sequenceFlow id="flow16" sourceRef="exclusivegateway3" targetRef="scripttask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecideFin == 'sEnumFinDeny' || asDecideHead =='sEnumHeadDeny'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="usertask6" targetRef="scripttask8"></sequenceFlow>
@@ -680,14 +681,15 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="720.0" y="333.0"></omgdi:waypoint>
         <omgdi:waypoint x="784.0" y="332.0"></omgdi:waypoint>
-        <omgdi:waypoint x="784.0" y="66.0"></omgdi:waypoint>
-        <omgdi:waypoint x="766.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="784.0" y="19.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="19.0"></omgdi:waypoint>
+        <omgdi:waypoint x="562.0" y="38.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="770.0" y="646.0"></omgdi:waypoint>
         <omgdi:waypoint x="617.0" y="645.0"></omgdi:waypoint>
-        <omgdi:waypoint x="617.0" y="259.0"></omgdi:waypoint>
-        <omgdi:waypoint x="635.0" y="258.0"></omgdi:waypoint>
+        <omgdi:waypoint x="617.0" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="648.0" y="180.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
         <omgdi:waypoint x="1051.0" y="646.0"></omgdi:waypoint>
@@ -731,7 +733,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
         <omgdi:waypoint x="790.0" y="543.0"></omgdi:waypoint>
-        <omgdi:waypoint x="788.0" y="471.0"></omgdi:waypoint>
+        <omgdi:waypoint x="789.0" y="471.0"></omgdi:waypoint>
         <omgdi:waypoint x="766.0" y="472.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
