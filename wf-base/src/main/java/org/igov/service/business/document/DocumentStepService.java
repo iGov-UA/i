@@ -164,6 +164,38 @@ public class DocumentStepService {
         LOG.info("Result list of steps: {}", aDocumentStep);
         return aDocumentStep;
     }
+    
+    private boolean isNewStepRights(String snID_Process_Activiti, String sKey_Step_Document_To, String sKey_GroupPostfix_New) 
+    {
+        List<DocumentStep> aCheckDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+
+        boolean saveflag = true;
+
+        for (DocumentStep oCheckDocumentStep : aCheckDocumentStep) {
+            if (!oCheckDocumentStep.getsKey_Step().equals(sKey_Step_Document_To)) {
+                continue;
+            }
+
+            List<DocumentStepSubjectRight> aCheckDocumentStepSubjectRight = oCheckDocumentStep.getRights();
+            LOG.info("oCheckDocumentStep is {}", oCheckDocumentStep);
+            LOG.info("aCheckDocumentStepRights is {}", aCheckDocumentStepSubjectRight);
+
+            for (DocumentStepSubjectRight oCheckDocumentStepSubjectRight : aCheckDocumentStepSubjectRight) 
+            {
+                LOG.info("right.getsKey_GroupPostfix() is {}", oCheckDocumentStepSubjectRight.getsKey_GroupPostfix());
+                LOG.info("sKey_GroupPostfix_New is {}", sKey_GroupPostfix_New);
+                if (oCheckDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
+                    saveflag = false;
+                    break;
+                }
+            }
+
+            if (!saveflag) {
+                break;
+            }
+        }
+        return saveflag;
+    }
 
     private List<DocumentStepSubjectRight> getCommon_DocumentStepSubjectRights(
             List<DocumentStepSubjectRight> aDocumentStepSubjectRightToSet_Common,
@@ -197,8 +229,13 @@ public class DocumentStepService {
                     //LOG.info("in adding field: {} ", aoDocumentStepSubjectRightField_New);
                 }
                 oDocumentStepSubjectRight_New.setDocumentStepSubjectRightFields(aoDocumentStepSubjectRightField_New);
-
-                aoDocumentStepSubjectRight_New.add(oDocumentStepSubjectRight_New);
+                
+                if(isNewStepRights(oDocumentStep.getSnID_Process_Activiti(), oDocumentStep.getsKey_Step(), 
+                        oDocumentStepSubjectRight_New.getsKey_GroupPostfix()))
+                {
+                    aoDocumentStepSubjectRight_New.add(oDocumentStepSubjectRight_New);
+                    LOG.info("oDocumentStepSubjectRight: {} is added", oDocumentStepSubjectRight_New);
+                }
                 
                 LOG.info("in adding: snID_Process_Activiti is: {} sKey_Step is: {} sKey_GroupPostfix is: {} right size is: {} ",
                         oDocumentStepSubjectRight_New.getDocumentStep().getSnID_Process_Activiti(), 
