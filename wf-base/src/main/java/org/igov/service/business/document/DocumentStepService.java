@@ -343,53 +343,11 @@ public class DocumentStepService {
                 sKey_GroupPostfix, snID_Process_Activiti, sKey_GroupPostfix_New, sKey_Step_Document_To);
 
         String sKey_Step_Document_From = sKey_Step_Document_To;
-        /*List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
-        if (aTaskActive.size() < 1 || aTaskActive.get(0) == null) {
-            throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
-        }
-        Task oTaskActive = aTaskActive.get(0);
-        String sID_BP = oTaskActive.getProcessDefinitionId();
-        LOG.info("sID_BP={}", sID_BP);
-        if (sID_BP != null && sID_BP.contains(":")) {
-            String[] as = sID_BP.split("\\:");
-            sID_BP = as[0];
-            LOG.info("FIX(:) sID_BP={}", sID_BP);
-        }
-        if (sID_BP != null && sID_BP.contains(".")) {
-            String[] as = sID_BP.split("\\.");
-            sID_BP = as[0];
-            LOG.info("FIX(.) sID_BP={}", sID_BP);
-        }
-
-        ProcessInstance oProcessInstance = runtimeService
-                .createProcessInstanceQuery()
-                .processInstanceId(snID_Process_Activiti)
-                .active()
-                .singleResult();
-        Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
-        LOG.info("mProcessVariable={}", mProcessVariable);
-        //Map<String, Object> mProcessVariable = new HashMap();
-        String snID_Task = oTaskActive.getId();
-        List<FormProperty> aProperty = oFormService.getTaskFormData(snID_Task).getFormProperties();                    
-        for (FormProperty oProperty : aProperty) {
-            mProcessVariable.put(oProperty.getId(), oProperty.getValue());
-            //String sID = oProperty.getId(); 
-        }
-        LOG.info("mProcessVariable(added)={}", mProcessVariable);
-        String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document"); */
-
- /*if (StringUtils.isEmpty(sKey_Step_Document)) {
-            throw new IllegalStateException("There is no active Document Step! mProcessVariable=" + mProcessVariable +
-            //        " Process variable sKey_Step_Document is empty.");
-            //sKey_Step_Document="1";
-        }*/
+        
         if (sKey_GroupPostfix.startsWith("_default_")) {
             sKey_Step_Document_From = "_";
         }
 
-        /*else{
-            sDefault_Key_Step_Document_From = sKey_Step_Document;
-        }*/
         String sSubjectType = oSubjectGroupTreeService.getSubjectType(sKey_GroupPostfix_New);
         LOG.info("sSubjectType in cloneRights is {}", sSubjectType);
 
@@ -464,18 +422,15 @@ public class DocumentStepService {
             //Iterator<DocumentStepSubjectRight> oDocumentStepSubjectRightIterator_From = aDocumentStepSubjectRight_From.iterator();
             //while (oDocumentStepSubjectRightIterator_From.hasNext()) {
             for (DocumentStepSubjectRight oDocumentStepSubjectRight_From : aDocumentStepSubjectRight_From) {
-                //DocumentStepSubjectRight oDocumentStepSubjectRight_From = oDocumentStepSubjectRightIterator_From.next();
-
-                if (sKey_GroupPostfix.equals(oDocumentStepSubjectRight_From.getsKey_GroupPostfix())) {
+                 if (sKey_GroupPostfix.equals(oDocumentStepSubjectRight_From.getsKey_GroupPostfix())) {
+                    LOG.info("!!! sKey_GroupPostfix: {} oDocumentStepSubjectRight_From.getsKey_GroupPostfix(): {}", 
+                            sKey_GroupPostfix, oDocumentStepSubjectRight_From.getsKey_GroupPostfix());
                     oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sResultGroup);
                     oDocumentStepSubjectRight_New.setbWrite(oDocumentStepSubjectRight_From.getbWrite());
                     Object sName = oDocumentStepSubjectRight_From.getsName(); //oGroup.opt("sName");
                     if (sName != null) {
                         oDocumentStepSubjectRight_New.setsName((String) sName);
                     }
-                    //oDocumentStepSubjectRight = oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
-                    //LOG.info("oDocumentStepSubjectRight id is {}", oDocumentStepSubjectRight.getId());
-                    //List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup, oDocumentStepSubjectRight);
                     List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField_New = new LinkedList();
 
                     for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_From
