@@ -135,24 +135,30 @@ public class DocumentStepService {
                 .collect(Collectors.toList());
         long i = 1L;
         for (String sKey_Step : asKey_Step) {
+            
             List<DocumentStepSubjectRight> aNewDocumentStepSubjectRight_Current = new ArrayList<>();
+            
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
             oDocumentStep.setnOrder(i++);
             oDocumentStep.setsKey_Step(sKey_Step);
             oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);
-            oDocumentStep = documentStepDao.saveOrUpdate(oDocumentStep);
-            aDocumentStep.add(oDocumentStep);
             
             if(!aDocumentStepSubjectRightToSet_Common.isEmpty()){
                 aNewDocumentStepSubjectRight_Current.addAll(aDocumentStepSubjectRightToSet_Common);
                 aNewDocumentStepSubjectRight_Current.addAll(oDocumentStep.getRights());
                 
-                for(DocumentStepSubjectRight oDocumentStepSubjectRightToSet_Common : aDocumentStepSubjectRightToSet_Common){
+                for(DocumentStepSubjectRight oDocumentStepSubjectRightToSet_Common : aNewDocumentStepSubjectRight_Current){
                     oDocumentStepSubjectRightToSet_Common.setDocumentStep(oDocumentStep);
-                    oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRightToSet_Common);
                 }
+                
+                oDocumentStep.setRights(aNewDocumentStepSubjectRight_Current);
             }
+            
+            oDocumentStep = documentStepDao.saveOrUpdate(oDocumentStep);
+            aDocumentStep.add(oDocumentStep);
+            
+            
         }
 
         LOG.info("Result list of steps: {}", aDocumentStep);
