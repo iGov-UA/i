@@ -343,9 +343,9 @@ public class DocumentStepService {
                 sKey_GroupPostfix, snID_Process_Activiti, sKey_GroupPostfix_New, sKey_Step_Document_To);
 
         String sKey_Step_Document_From = sKey_Step_Document_To;
-            List<DocumentStepSubjectRight> resultList = new ArrayList<>();
-        
-        try{
+        List<DocumentStepSubjectRight> resultList = new ArrayList<>();
+
+        try {
             if (sKey_GroupPostfix.startsWith("_default_")) {
                 sKey_Step_Document_From = "_";
             }
@@ -406,7 +406,8 @@ public class DocumentStepService {
                 throw new IllegalStateException("There is no active Document Step, process variable sKey_Step_Document="
                         + sKey_Step_Document_To);
             }
-
+            List<String> asResultGroup_Clone = new ArrayList<>();
+            asResultGroup_Clone.addAll(asResultGroup);
             for (String sResultGroup : asResultGroup) {
 
                 DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
@@ -422,10 +423,12 @@ public class DocumentStepService {
                 //Iterator<DocumentStepSubjectRight> oDocumentStepSubjectRightIterator_From = aDocumentStepSubjectRight_From.iterator();
                 //while (oDocumentStepSubjectRightIterator_From.hasNext()) {
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight_From : aDocumentStepSubjectRight_From) {
-                     if (sKey_GroupPostfix.equals(oDocumentStepSubjectRight_From.getsKey_GroupPostfix())) {
-                        LOG.info("!!! sKey_GroupPostfix: {} oDocumentStepSubjectRight_From.getsKey_GroupPostfix(): {}", 
+                    if (sKey_GroupPostfix.equals(oDocumentStepSubjectRight_From.getsKey_GroupPostfix())) {
+                        LOG.info("!!! sKey_GroupPostfix: {} oDocumentStepSubjectRight_From.getsKey_GroupPostfix(): {}",
                                 sKey_GroupPostfix, oDocumentStepSubjectRight_From.getsKey_GroupPostfix());
-                        oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sResultGroup);
+                        
+                        int index = asResultGroup_Clone.indexOf(sResultGroup);
+                        oDocumentStepSubjectRight_New.setsKey_GroupPostfix(asResultGroup_Clone.get(index));
                         oDocumentStepSubjectRight_New.setbWrite(oDocumentStepSubjectRight_From.getbWrite());
                         Object sName = oDocumentStepSubjectRight_From.getsName(); //oGroup.opt("sName");
                         if (sName != null) {
@@ -463,7 +466,7 @@ public class DocumentStepService {
                                         if (oCheckDocumentStepSubjectRight.getsKey_GroupPostfix().equalsIgnoreCase(sKey_GroupPostfix_New)) { //
                                             LOG.info("saveNewDocumentStepSubjectRight_IfNotExist skip sKey_GroupPostfix_New: {} in step {}"
                                                     + " becouse we have already have one in nID_CheckDocumentStep: {} sKey_GroupPostfix: {} nID_DocumentStepSubjectRight: {}",
-                                                    sKey_GroupPostfix_New, oDocumentStep_To.getsKey_Step(), oCheckDocumentStep.getId(), 
+                                                    sKey_GroupPostfix_New, oDocumentStep_To.getsKey_Step(), oCheckDocumentStep.getId(),
                                                     oCheckDocumentStepSubjectRight.getsKey_GroupPostfix(), oCheckDocumentStepSubjectRight.getId());
                                             break saveNewDocumentStepSubjectRight_IfNotExist;
                                         }
@@ -487,13 +490,13 @@ public class DocumentStepService {
                 }
                 resultList.add(oDocumentStepSubjectRight_New);
             }
-        }catch(Exception oException){
-            LOG.error("ERROR:"+oException.getMessage()+" ("
-                    + "snID_Process_Activiti="+snID_Process_Activiti+""
-                    + ",sKey_GroupPostfix="+sKey_GroupPostfix+""
-                    + ",sKey_GroupPostfix_New="+sKey_GroupPostfix_New+""
-                    + ",sKey_Step_Document_To="+sKey_Step_Document_To+")");
-            LOG.error("ERROR: ",oException);
+        } catch (Exception oException) {
+            LOG.error("ERROR:" + oException.getMessage() + " ("
+                    + "snID_Process_Activiti=" + snID_Process_Activiti + ""
+                    + ",sKey_GroupPostfix=" + sKey_GroupPostfix + ""
+                    + ",sKey_GroupPostfix_New=" + sKey_GroupPostfix_New + ""
+                    + ",sKey_Step_Document_To=" + sKey_Step_Document_To + ")");
+            LOG.error("ERROR: ", oException);
             throw oException;
         }
         return resultList;
