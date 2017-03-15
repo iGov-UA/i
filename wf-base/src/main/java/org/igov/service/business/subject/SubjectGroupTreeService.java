@@ -488,7 +488,7 @@ public class SubjectGroupTreeService {
             }
         }catch(Exception oException){
             LOG.error("ERROR:"+oException.getMessage()+" (sID_Group_Activiti="+sID_Group_Activiti+")");
-            LOG.error(oException);
+            LOG.error("ERROR: ",oException);
             throw oException;
         }
     }
