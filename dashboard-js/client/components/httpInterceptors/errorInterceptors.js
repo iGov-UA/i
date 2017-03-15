@@ -45,7 +45,11 @@
           } else if (rejection.data && rejection.data.statusCode == 401) {
             return $q.reject(rejection);
           }
-
+          try {
+            rejection.data = angular.fromJson(rejection.data);
+          } catch (e) {
+            
+          }
           Modal.inform.error()(rejection.data.message || rejection.data.serverMessage || (rejection.statusText === '' ? 'Виникла помилка: ' + rejection.status : rejection.statusText));
           return $q.reject(rejection);
         }
