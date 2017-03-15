@@ -137,9 +137,15 @@ public class DocumentStepService {
         for (String sKey_Step : asKey_Step) {
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
-            aDocumentStepSubjectRightToSet_Common.addAll(oDocumentStep.getRights());
-            LOG.info("aDocumentStepSubjectRightToSet_Common is {}", aDocumentStepSubjectRightToSet_Common);
-            oDocumentStep.setRights(aDocumentStepSubjectRightToSet_Common);
+            
+            if(!aDocumentStepSubjectRightToSet_Common.isEmpty()){
+                aDocumentStepSubjectRightToSet_Common.addAll(oDocumentStep.getRights());
+                LOG.info("aDocumentStepSubjectRightToSet_Common is {}", aDocumentStepSubjectRightToSet_Common);
+                oDocumentStep.setRights(
+                        oDocumentStepSubjectRightDao.saveOrUpdate(aDocumentStepSubjectRightToSet_Common));
+                LOG.info("aDocumentStepSubjectRightToSet_Common in oDocumentStep {}", oDocumentStep.getRights());
+            }
+            
             oDocumentStep.setnOrder(i++);
             oDocumentStep.setsKey_Step(sKey_Step);
             oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);
