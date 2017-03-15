@@ -421,7 +421,7 @@ public class DocumentStepService {
                             documentStepDao.saveOrUpdate(oDocumentStep_To);
                             resultList.add(oDocumentStepSubjectRight_New);
                         } else {
-                            LOG.info("saveNewDocumentStepSubjectRight_IfNotExist skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}",
+                            LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}",
                                     sKey_GroupPostfix_New, oDocumentStep_To.getsKey_Step());
                         }
                         /*saveNewDocumentStepSubjectRight_IfNotExist:
