@@ -223,7 +223,7 @@ public class DocumentStepService {
 
                 DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
                 oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep);
-                oDocumentStepSubjectRight_New.setsKey_GroupPostfix(oDocumentStep.getsKey_Step());
+                oDocumentStepSubjectRight_New.setsKey_GroupPostfix(oDocumentStepSubjectRightToSet_Common.getsKey_GroupPostfix());
                 oDocumentStepSubjectRight_New.setbWrite(oDocumentStepSubjectRightToSet_Common.getbWrite());
                 Object sName = oDocumentStepSubjectRightToSet_Common.getsName(); //oGroup.opt("sName");
                 if (sName != null) {
@@ -545,7 +545,7 @@ public class DocumentStepService {
             if (aJsonRow != null) {
                 for (int i = 0; i < aJsonRow.size(); i++) {
 
-                    Map<String, Object> mParamTask = new HashMap<>();
+                    //Map<String, Object> mParamTask = new HashMap<>();
                     org.json.simple.JSONObject oJsonField = (org.json.simple.JSONObject) aJsonRow.get(i);
                     LOG.info("oJsonField in cloneDocumentStepFromTable is {}", oJsonField);
                     if (oJsonField != null) {
@@ -694,7 +694,7 @@ public class DocumentStepService {
             //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common
         }
 
-        final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
+        //final String sGroupPrefix = new StringBuilder(sID_BP).append("_").toString();
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
