@@ -348,11 +348,14 @@ public class DocumentStepService {
 
             LOG.info("asResultGroup is {}", asResultGroup);
 
-            List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
-            LOG.info("aDocumentStep={}", aDocumentStep);
+            List<DocumentStep> aDocumentStep_From = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+            LOG.info("aDocumentStep={}", aDocumentStep_From);
+            
+            List<DocumentStep> aDocumentStep_To = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+            LOG.info("aDocumentStep={}", aDocumentStep_To);
 
             final String SKEY_STEP_DOCUMENT_FROM = sKey_Step_Document_From;
-            DocumentStep oDocumentStep_From = aDocumentStep
+            DocumentStep oDocumentStep_From = aDocumentStep_From
                     .stream()
                     .filter(o -> SKEY_STEP_DOCUMENT_FROM == null ? o.getnOrder().equals(1)
                             : o.getsKey_Step().equals(SKEY_STEP_DOCUMENT_FROM))
@@ -366,7 +369,7 @@ public class DocumentStepService {
             }
 
             final String SKEY_STEP_DOCUMENT_TO = sKey_Step_Document_To;
-            DocumentStep oDocumentStep_To = aDocumentStep
+            DocumentStep oDocumentStep_To = aDocumentStep_To
                     .stream()
                     .filter(o -> SKEY_STEP_DOCUMENT_TO == null ? o.getnOrder().equals(1)
                             : o.getsKey_Step().equals(SKEY_STEP_DOCUMENT_TO))
