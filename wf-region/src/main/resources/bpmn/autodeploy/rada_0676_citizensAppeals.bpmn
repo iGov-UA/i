@@ -505,9 +505,9 @@
           <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelApp" name="Канал звернення; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" required="true">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
@@ -524,16 +524,16 @@
           <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bReferent" name="Referent; ;bVisible=false" type="string" default="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/rada_0676_citizensAppeals_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/rada_0676_citizensAppeals_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/rada_0676_citizensAppeals_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('dneprMVK/rada_0676_citizensAppeals_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="hideShowFields5" type="markers" default="${markerService.loadFromFile('dneprMVK/rada_0676_citizensAppeals_5.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="hideShowFields6" type="markers" default="${markerService.loadFromFile('dneprMVK/rada_0676_citizensAppeals_6.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAnswerEmail" name="Отправка email" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateAppeal" name="Дата подачі; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerEmail" name="Отправка email; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task CreateDate" scriptFormat="groovy" activiti:autoStoreVariables="false">
@@ -582,7 +582,7 @@ execution.setVariable('sAnswerEmail', res)</script>
     <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="scripttask3"></sequenceFlow>
     <userTask id="usertask2" name="Обробка звернення бек-офіс" activiti:candidateGroups="dmr_operator">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;bVisible=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -1136,7 +1136,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="reject" name="Відмовити в реєстрації звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови в реєстрації звернення" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/rada_0676_citizensAppeals_1.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/rada_0676_citizensAppeals_1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dneprMVK/rada_0676_citizensAppeals_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/rada_0676_citizensAppeals_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/rada_0676_citizensAppeals_2.json')}"></activiti:formProperty>
