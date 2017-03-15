@@ -505,7 +505,7 @@ public class DocumentStepService {
                             if (oCheckDocumentStep.getsKey_Step().equalsIgnoreCase(oDocumentStep_To.getsKey_Step())) {
                                 for (DocumentStepSubjectRight oCheckDocumentStepSubjectRight : aCheckDocumentStepSubjectRight) {
                                     LOG.info("sKey_GroupPostfix: {} sKey_GroupPostfix_New: {}", oCheckDocumentStepSubjectRight.getsKey_GroupPostfix(), sKey_GroupPostfix_New);
-                                    if (oCheckDocumentStepSubjectRight.getsKey_GroupPostfix().equalsIgnoreCase(sKey_GroupPostfix_New)) {
+                                    if (oCheckDocumentStepSubjectRight.getsKey_GroupPostfix().equalsIgnoreCase(sKey_GroupPostfix_New)) { //
                                         LOG.info("saveNewDocumentStepSubjectRight_IfNotExist skip sKey_GroupPostfix_New: {} in step {}"
                                                 + " becouse we have already have one in nID_CheckDocumentStep: {} sKey_GroupPostfix: {} nID_DocumentStepSubjectRight: {}",
                                                 sKey_GroupPostfix_New, oDocumentStep_To.getsKey_Step(), oCheckDocumentStep.getId(), 
