@@ -2350,7 +2350,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     String changePassword(
             @ApiParam(value = "Строка логин пользователя, меняющего пароль", required = true) @RequestParam(value = "sLoginOwner", required = true) String sLogin,
             @ApiParam(value = "JSON-cnрока с двумя параметрами: sPasswordOld - Строка старый пароль; sPasswordNew - Строка новый пароль", required = true) @RequestBody (required = true) String sPasswords
-    ) throws CommonServiceException, RuntimeException {
+    ) throws Exception {
 
         String sPasswordOld = null;
         String sPasswordNew = null;
@@ -2358,13 +2358,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if(sPasswords != null){
             Map<String, Object> mBody;
             try {
-                String decoded = "";
-                try {
-                    decoded = URLDecoder.decode(sPasswords, "UTF-8");
-                } catch (UnsupportedEncodingException e){
-                    decoded = sPasswords;
-                }
-                mBody = (Map<String, Object>) JSONValue.parse(decoded);
+                mBody = (Map<String, Object>) JSONValue.parse(sPasswords);
             } catch (Exception e){
                 throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
             }
@@ -2372,20 +2366,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 if (mBody.containsKey("sPasswordOld")) {
                     sPasswordOld = (String) mBody.get("sPasswordOld");
                 } else {
-                    throw new CommonServiceException(
-                            ExceptionCommonController.BUSINESS_ERROR_CODE,
-                            "Error! The sPasswordOld is undefined in request body",
-                            HttpStatus.FORBIDDEN
-                    );
+                    throw new Exception("The sPasswordOld in RequestBody is not defined");
                 }
                 if (mBody.containsKey("sPasswordNew")) {
                     sPasswordNew = (String) mBody.get("sPasswordNew");
                 } else {
-                    throw new CommonServiceException(
-                            ExceptionCommonController.BUSINESS_ERROR_CODE,
-                            "Error! The sPasswordNew is undefined in request body",
-                            HttpStatus.FORBIDDEN
-                    );
+                    throw new Exception("The sPasswordNew in RequestBody is not defined");
                 }
             }
         }
@@ -2410,7 +2396,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.warn("The sPasswordOld parameter is not equal the user's password: {}");
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "Password sPasswordOld = [" + sPasswordOld + "] is wrong. User = ["+user.getPassword()+"]",
+                    "Password " + sPasswordOld + " is wrong",
                     HttpStatus.FORBIDDEN
             );
 
