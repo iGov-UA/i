@@ -414,7 +414,6 @@ public class DocumentStepService {
             asResultGroup_Clone.addAll(asResultGroup);
             for (String sResultGroup : asResultGroup) {
 
-                DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
                 LOG.info("oDocumentStep_From rights is {}", oDocumentStep_From.getRights());
 
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight_From = oDocumentStep_From.getRights();
@@ -431,8 +430,10 @@ public class DocumentStepService {
                         LOG.info("!!! sKey_GroupPostfix: {} oDocumentStepSubjectRight_From.getsKey_GroupPostfix(): {}",
                                 sKey_GroupPostfix, oDocumentStepSubjectRight_From.getsKey_GroupPostfix());
                         
-                        int index = asResultGroup_Clone.indexOf(sResultGroup);
-                        oDocumentStepSubjectRight_New.setsKey_GroupPostfix(asResultGroup_Clone.get(index));
+                        //int index = asResultGroup_Clone.indexOf(sResultGroup);
+                        //oDocumentStepSubjectRight_New.setsKey_GroupPostfix(asResultGroup_Clone.get(index));
+                        DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
+                        oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sResultGroup);
                         oDocumentStepSubjectRight_New.setbWrite(oDocumentStepSubjectRight_From.getbWrite());
                         Object sName = oDocumentStepSubjectRight_From.getsName(); //oGroup.opt("sName");
                         if (sName != null) {
