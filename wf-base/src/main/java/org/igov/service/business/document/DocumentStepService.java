@@ -481,7 +481,7 @@ public class DocumentStepService {
                             LOG.info("!!! before save oDocumentStep_To.getRights(): {}", oDocumentStep_To.getRights());
                             documentStepDao.saveOrUpdate(oDocumentStep_To);
                         }
-
+                        resultList.add(oDocumentStepSubjectRight_New);
                         //                }catch(Exception ex){
                         //oTaskService.addCandidateGroup(snID_Task, oDocumentStepSubjectRight.getsKey_GroupPostfix());
                         //repositoryService.addCandidateStarterGroup(snID_Process_Activiti, oDocumentStepSubjectRight.getsKey_GroupPostfix());
@@ -491,9 +491,8 @@ public class DocumentStepService {
                         LOG.info("sKey_GroupPostfix is: {}", sKey_GroupPostfix);
                         LOG.info("Key_GroupPostfix is: {} ", oDocumentStepSubjectRight_From.getsKey_GroupPostfix());
                     }
-
                 }
-                resultList.add(oDocumentStepSubjectRight_New);
+                
             }
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " ("
