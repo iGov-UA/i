@@ -350,7 +350,7 @@ public class DocumentStepService {
 
             List<DocumentStep> aDocumentStep_From = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
             LOG.info("aDocumentStep={}", aDocumentStep_From);
-            
+
             List<DocumentStep> aDocumentStep_To = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
             LOG.info("aDocumentStep={}", aDocumentStep_To);
 
@@ -415,39 +415,17 @@ public class DocumentStepService {
                                 oDocumentStepSubjectRightField_New.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
                                 aDocumentStepSubjectRightField_New.add(oDocumentStepSubjectRightField_New);
                             }
-
                             oDocumentStepSubjectRight_New.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField_New);
                             oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep_To);
                             LOG.info("right for step: {}", oDocumentStepSubjectRight_New);
                             aDocumentStepSubjectRight_To.add(oDocumentStepSubjectRight_New);
                             oDocumentStep_To.setRights(aDocumentStepSubjectRight_To);
-                            documentStepDao.saveOrUpdate(oDocumentStep_To);
+                            //documentStepDao.saveOrUpdate(oDocumentStep_To);
                             resultList.add(oDocumentStepSubjectRight_New);
                         } else {
                             LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}",
                                     sKey_GroupPostfix_New, oDocumentStep_To.getsKey_Step());
                         }
-                        /*saveNewDocumentStepSubjectRight_IfNotExist:
-                        {
-                            for (DocumentStep oCheckDocumentStep : aDocumentStep) {
-                                List<DocumentStepSubjectRight> aCheckDocumentStepSubjectRight = oCheckDocumentStep.getRights();
-                                LOG.info("oCheckDocumentStep: {} aCheckDocumentStepRights is {}", oCheckDocumentStep.getsKey_Step(), aCheckDocumentStepSubjectRight);
-                                if (oCheckDocumentStep.getsKey_Step().equalsIgnoreCase(oDocumentStep_To.getsKey_Step())) {
-                                    for (DocumentStepSubjectRight oCheckDocumentStepSubjectRight : aCheckDocumentStepSubjectRight) {
-                                        LOG.info("sKey_GroupPostfix: {} sKey_GroupPostfix_New: {}", oCheckDocumentStepSubjectRight.getsKey_GroupPostfix(), sKey_GroupPostfix_New);
-                                        if (oCheckDocumentStepSubjectRight.getsKey_GroupPostfix().equalsIgnoreCase(sKey_GroupPostfix_New)) { //
-                                            LOG.info("saveNewDocumentStepSubjectRight_IfNotExist skip sKey_GroupPostfix_New: {} in step {}"
-                                                    + " becouse we have already have one in nID_CheckDocumentStep: {} sKey_GroupPostfix: {} nID_DocumentStepSubjectRight: {}",
-                                                    sKey_GroupPostfix_New, oDocumentStep_To.getsKey_Step(), oCheckDocumentStep.getId(),
-                                                    oCheckDocumentStepSubjectRight.getsKey_GroupPostfix(), oCheckDocumentStepSubjectRight.getId());
-                                            break saveNewDocumentStepSubjectRight_IfNotExist;
-                                        }
-                                    }
-                                }
-                            }
-                            LOG.info("!!! before save oDocumentStep_To.getRights(): {}", oDocumentStep_To.getRights());
-                        }*/
-
                     } else {
                         LOG.info("sKey_GroupPostfix is not equal Key_GroupPostfix");
                         LOG.info("sKey_GroupPostfix is: {}", sKey_GroupPostfix);
@@ -456,6 +434,7 @@ public class DocumentStepService {
                 }
 
             }
+            documentStepDao.saveOrUpdate(oDocumentStep_To);
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " ("
                     + "snID_Process_Activiti=" + snID_Process_Activiti + ""
