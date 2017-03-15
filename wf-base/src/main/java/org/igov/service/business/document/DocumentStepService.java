@@ -470,6 +470,7 @@ public class DocumentStepService {
                                     }
                                 }
                             }
+                            LOG.info("!!! before save oDocumentStep_To.getRights(): {}", oDocumentStep_To.getRights());
                             documentStepDao.saveOrUpdate(oDocumentStep_To);
                         }
 
