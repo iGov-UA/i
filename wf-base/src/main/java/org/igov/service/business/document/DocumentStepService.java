@@ -383,45 +383,28 @@ public class DocumentStepService {
             }
             //List<String> asResultGroup_Clone = new ArrayList<>();
             //asResultGroup_Clone.addAll(asResultGroup);
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new LinkedList();
+            List<String> asResultGroup_Selected = new LinkedList();
+
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight_From = oDocumentStep_From.getRights();
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight_To = oDocumentStep_To.getRights();
+
+            LOG.info("aDocumentStepSubjectRight_From is {}", aDocumentStepSubjectRight_From);
+            LOG.info("aDocumentStepSubjectRight_To is {}", aDocumentStepSubjectRight_To);
+
             for (String sResultGroup : asResultGroup) {
 
                 LOG.info("oDocumentStep_From rights is {}", oDocumentStep_From.getRights());
-
-                List<DocumentStepSubjectRight> aDocumentStepSubjectRight_From = oDocumentStep_From.getRights();
-                List<DocumentStepSubjectRight> aDocumentStepSubjectRight_To = oDocumentStep_To.getRights();
-
-                LOG.info("aDocumentStepSubjectRight_From is {}", aDocumentStepSubjectRight_From);
-                LOG.info("aDocumentStepSubjectRight_To is {}", aDocumentStepSubjectRight_To);
 
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight_From : aDocumentStepSubjectRight_From) {
                     if (sKey_GroupPostfix.equals(oDocumentStepSubjectRight_From.getsKey_GroupPostfix())) {
                         LOG.info("!!! sKey_GroupPostfix: {} oDocumentStepSubjectRight_From.getsKey_GroupPostfix(): {}",
                                 sKey_GroupPostfix, oDocumentStepSubjectRight_From.getsKey_GroupPostfix());
                         if (isNewStepRights(snID_Process_Activiti, oDocumentStep_To.getsKey_Step(), sKey_GroupPostfix_New)) {
-                            DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
-                            oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sResultGroup);
-                            oDocumentStepSubjectRight_New.setbWrite(oDocumentStepSubjectRight_From.getbWrite());
-                            Object sName = oDocumentStepSubjectRight_From.getsName(); //oGroup.opt("sName");
-                            if (sName != null) {
-                                oDocumentStepSubjectRight_New.setsName((String) sName);
-                            }
-                            List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField_New = new LinkedList();
 
-                            for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_From
-                                    : oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields()) {
-                                DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
-                                oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField_From.getbWrite());
-                                oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField_From.getsMask_FieldID());
-                                oDocumentStepSubjectRightField_New.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
-                                aDocumentStepSubjectRightField_New.add(oDocumentStepSubjectRightField_New);
-                            }
-                            oDocumentStepSubjectRight_New.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField_New);
-                            oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep_To);
-                            LOG.info("right for step: {}", oDocumentStepSubjectRight_New);
-                            aDocumentStepSubjectRight_To.add(oDocumentStepSubjectRight_New);
-                            oDocumentStep_To.setRights(aDocumentStepSubjectRight_To);
-                            //documentStepDao.saveOrUpdate(oDocumentStep_To);
-                            resultList.add(oDocumentStepSubjectRight_New);
+                            aDocumentStepSubjectRight.add(oDocumentStepSubjectRight_From);
+                            asResultGroup_Selected.add(sResultGroup);
+
                         } else {
                             LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}",
                                     sKey_GroupPostfix_New, oDocumentStep_To.getsKey_Step());
@@ -434,7 +417,40 @@ public class DocumentStepService {
                 }
 
             }
-            documentStepDao.saveOrUpdate(oDocumentStep_To);
+
+            Integer n = 0;
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight_From : aDocumentStepSubjectRight) {
+                String sResultGroup = asResultGroup_Selected.get(n);
+                DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
+                oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sResultGroup);
+                oDocumentStepSubjectRight_New.setbWrite(oDocumentStepSubjectRight_From.getbWrite());
+                Object sName = oDocumentStepSubjectRight_From.getsName(); //oGroup.opt("sName");
+                if (sName != null) {
+                    oDocumentStepSubjectRight_New.setsName((String) sName);
+                }
+                List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField_New = new LinkedList();
+
+                for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_From
+                        : oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields()) {
+                    DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
+                    oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField_From.getbWrite());
+                    oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField_From.getsMask_FieldID());
+                    oDocumentStepSubjectRightField_New.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
+                    aDocumentStepSubjectRightField_New.add(oDocumentStepSubjectRightField_New);
+                }
+                oDocumentStepSubjectRight_New.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField_New);
+                oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep_To);
+                LOG.info("right for step: {}", oDocumentStepSubjectRight_New);
+
+                aDocumentStepSubjectRight_To.add(oDocumentStepSubjectRight_New);
+                oDocumentStep_To.setRights(aDocumentStepSubjectRight_To);
+                //documentStepDao.saveOrUpdate(oDocumentStep_To);
+                resultList.add(oDocumentStepSubjectRight_New);
+
+                documentStepDao.saveOrUpdate(oDocumentStep_To);
+                n++;
+            }
+
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " ("
                     + "snID_Process_Activiti=" + snID_Process_Activiti + ""
