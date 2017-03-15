@@ -16,15 +16,12 @@
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 
-//4. получение ИД БП
-var executeProcessDefinitionId = execution.getProcessDefinitionId();
-var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
-execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+
 
 </script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Керівник - виставлення завдання" activiti:candidateGroups="Velta_Head">
+    <userTask id="usertask1" name="Керівник - виставлення завдання">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
@@ -44,78 +41,18 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         </activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="е-мейл контролюючого виконання завдання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEscalationDay" name="Дата ескалації" type="invisible"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_Author]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow24" sourceRef="usertask1" targetRef="scripttask3"></sequenceFlow>
-    <scriptTask id="scripttask3" name="Определение даты эскалаций" activiti:autoStoreVariables="false">
-      <script>
-var urgent = execution.getVariable('asUrgently')
-if (urgent == 'sEnumUrgentDoc') {var delta='2';}
-if (urgent == 'sEnumNotUrgentDoc') {var delta='1000';}
-var unixdate= Math.round((new Date()).getTime());
-var unixdate=unixdate+86400*delta;
-var new_src = new Date(unixdate);
-var d = new_src.getDate();
-if (d &lt; 10) d = "0"+d;
-var m = new_src.getMonth();
-var m = (+m + +1);
-if (m &lt; 10) m = "0"+m;
-var new_year = new_src.getFullYear();
-var new_hour = new_src.getHours();
-var new_minutes = new_src.getMinutes();
-var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
-execution.setVariable('sEscalationDay', timer)
-</script>
-    </scriptTask>
-    <sequenceFlow id="flow44" sourceRef="scripttask3" targetRef="parallelgateway1"></sequenceFlow>
-    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <sequenceFlow id="flow27" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="ЮрОтдел" activiti:candidateGroups="Velta_Justice">
-      <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sContent" name="Короткий зміст контракту" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateDoc" name="Дата створення контракту" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sDateEnd" name="Термін дії контракту" type="date"></activiti:formProperty>
-        <activiti:formProperty id="asTypical" name="Типовий контракт; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" default="sEnumTypical" required="true">
-          <activiti:value id="sEnumTypical" name="типовий"></activiti:value>
-          <activiti:value id="sEnumNotTypical" name="не типовий"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" default="sEnumNotUrgentDoc">
-          <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
-          <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
-        </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <scriptTask id="scripttask2" name="Переопределение даты эскалаций" activiti:autoStoreVariables="false">
-      <script>
-var urgent = execution.getVariable('asUrgently')
-if (urgent == 'sEnumUrgentDoc') {var delta='2';}
-if (urgent == 'sEnumNotUrgentDoc') {var delta='1000';}
-var unixdate= Math.round((new Date()).getTime());
-var unixdate=unixdate+86400*delta;
-var new_src = new Date(unixdate);
-var d = new_src.getDate();
-if (d &lt; 10) d = "0"+d;
-var m = new_src.getMonth();
-var m = (+m + +1);
-if (m &lt; 10) m = "0"+m;
-var new_year = new_src.getFullYear();
-var new_hour = new_src.getHours();
-var new_minutes = new_src.getMinutes();
-var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
-execution.setVariable('sEscalationDay', timer)
-</script>
-    </scriptTask>
-    <sequenceFlow id="flow26" sourceRef="parallelgateway1" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask3" name="ФинОтдел" activiti:candidateGroups="Velta_Finance">
+    <sequenceFlow id="flow24" sourceRef="usertask1" targetRef="scripttask4"></sequenceFlow>
+    <userTask id="usertask3" name="Підготовка договору">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
@@ -139,14 +76,14 @@ execution.setVariable('sEscalationDay', timer)
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow29" sourceRef="usertask3" targetRef="parallelgateway2"></sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="usertask2" targetRef="parallelgateway2"></sequenceFlow>
-    <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
-    <sequenceFlow id="flow31" sourceRef="parallelgateway2" targetRef="usertask5"></sequenceFlow>
-    <userTask id="usertask5" name="ЮрОтделФиниш" activiti:candidateGroups="Velta_Justice">
+    <userTask id="usertask5" name="ЮрОтделФиниш">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
@@ -170,7 +107,11 @@ execution.setVariable('sEscalationDay', timer)
           <activiti:value id="sGood" name="контракт готовий, передати на затвердження"></activiti:value>
           <activiti:value id="sMistake" name="потрібно виправити помилку"></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow39" sourceRef="usertask5" targetRef="exclusivegateway1"></sequenceFlow>
@@ -194,11 +135,10 @@ execution.setVariable('sEscalationDay', timer)
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow41" sourceRef="servicetask2" targetRef="usertask3"></sequenceFlow>
-    <sequenceFlow id="flow40" sourceRef="exclusivegateway1" targetRef="usertask6">
+    <sequenceFlow id="flow40" sourceRef="exclusivegateway1" targetRef="scripttask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asReady=='sGood'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask6" name="НачальникФиниш" activiti:candidateGroups="Velta_Head">
+    <userTask id="usertask6" name="НачальникФиниш">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Роспорядження про створення контракту" writable="false"></activiti:formProperty>
@@ -216,7 +156,11 @@ execution.setVariable('sEscalationDay', timer)
           <activiti:value id="sSend" name="відправити на погодження контрагенту"></activiti:value>
           <activiti:value id="sPrint" name="роздрукувати для підпису"></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow45" sourceRef="usertask6" targetRef="exclusivegateway2"></sequenceFlow>
@@ -240,12 +184,92 @@ execution.setVariable('sEscalationDay', timer)
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow47" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow48" sourceRef="exclusivegateway2" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDone=='sPrint'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
+    <scriptTask id="scripttask4" name="переключение степа на 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_2'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав на согласующего и утверждающего
+
+var sKey_GroupPostfix_New = 'Velta_Justice'
+var sKey_GroupPostfix = '_default_Velta_Justice'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Justice', oResult)
+
+var sKey_GroupPostfix_New = 'Velta_Finance'
+sKey_GroupPostfix = '_default_Finance_Justice'
+oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Finance', oResult)
+
+var sKey_GroupPostfix_New = 'Velta_Tech'
+sKey_GroupPostfix = '_default_Tech_Justice'
+oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Tech', oResult)</script>
+    </scriptTask>
+    <sequenceFlow id="flow49" sourceRef="scripttask4" targetRef="usertask3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow50" sourceRef="usertask3" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow51" sourceRef="exclusivegateway3" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="exclusivegateway3" targetRef="scripttask5"></sequenceFlow>
+    <scriptTask id="scripttask5" name="переключение степа на 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_3'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав на согласующего и утверждающего
+
+var sKey_GroupPostfix_New = 'Velta_Justice'
+var sKey_GroupPostfix = '_default_Velta_Justice'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Justice', oResult)</script>
+    </scriptTask>
+    <sequenceFlow id="flow53" sourceRef="scripttask5" targetRef="usertask5"></sequenceFlow>
+    <scriptTask id="scripttask6" name="переключение степа на 4" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_4'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав на согласующего и утверждающего
+
+var sKey_GroupPostfix_New = 'Velta_Finance'
+sKey_GroupPostfix = '_default_Velta_Finance'
+oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Finance', oResult)
+
+var sKey_GroupPostfix_New = 'Velta_Tech'
+sKey_GroupPostfix = '_default_Velta_Tech'
+oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Tech', oResult)</script>
+    </scriptTask>
+    <sequenceFlow id="flow56" sourceRef="scripttask6" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow57" sourceRef="servicetask2" targetRef="scripttask6"></sequenceFlow>
+    <scriptTask id="scripttask7" name="переключение степа на 5" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+//переключение степа
+
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_5'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав на согласующего и утверждающего
+
+var sKey_GroupPostfix_New = 'Velta_Head'
+var sKey_GroupPostfix = '_default_Velta_head'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Justice', oResult)</script>
+    </scriptTask>
+    <sequenceFlow id="flow58" sourceRef="scripttask7" targetRef="usertask6"></sequenceFlow>
+    <sequenceFlow id="flow59" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_velta_contract">
     <bpmndi:BPMNPlane bpmnElement="_doc_velta_contract" id="BPMNPlane__doc_velta_contract">
@@ -258,47 +282,44 @@ execution.setVariable('sEscalationDay', timer)
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="71.0" width="105.0" x="182.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="71.0" width="105.0" x="324.0" y="30.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="356.0" y="125.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="106.0" y="210.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="70.0" width="105.0" x="770.0" y="13.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="324.0" y="210.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="356.0" y="320.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="324.0" y="400.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="390.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="356.0" y="512.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="362.0" y="512.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="511.0" y="505.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="442.0" y="505.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="324.0" y="590.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="677.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="356.0" y="684.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="362.0" y="771.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="495.0" y="677.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="740.0" y="687.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="840.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="252.0" y="687.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="258.0" y="774.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
+        <omgdc:Bounds height="71.0" width="105.0" x="330.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="362.0" y="224.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
+        <omgdc:Bounds height="61.0" width="105.0" x="330.0" y="290.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
+        <omgdc:Bounds height="61.0" width="105.0" x="442.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
+        <omgdc:Bounds height="61.0" width="105.0" x="329.0" y="580.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="36.0" y="65.0"></omgdi:waypoint>
@@ -310,66 +331,71 @@ execution.setVariable('sEscalationDay', timer)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="287.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="324.0" y="65.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="376.0" y="101.0"></omgdi:waypoint>
-        <omgdi:waypoint x="376.0" y="125.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="356.0" y="145.0"></omgdi:waypoint>
-        <omgdi:waypoint x="158.0" y="145.0"></omgdi:waypoint>
-        <omgdi:waypoint x="158.0" y="210.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="376.0" y="165.0"></omgdi:waypoint>
-        <omgdi:waypoint x="376.0" y="210.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="376.0" y="265.0"></omgdi:waypoint>
-        <omgdi:waypoint x="376.0" y="320.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="158.0" y="265.0"></omgdi:waypoint>
-        <omgdi:waypoint x="158.0" y="340.0"></omgdi:waypoint>
-        <omgdi:waypoint x="356.0" y="340.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="376.0" y="360.0"></omgdi:waypoint>
-        <omgdi:waypoint x="376.0" y="400.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="376.0" y="455.0"></omgdi:waypoint>
-        <omgdi:waypoint x="376.0" y="512.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="445.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="512.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="396.0" y="532.0"></omgdi:waypoint>
-        <omgdi:waypoint x="511.0" y="532.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="563.0" y="505.0"></omgdi:waypoint>
-        <omgdi:waypoint x="563.0" y="237.0"></omgdi:waypoint>
-        <omgdi:waypoint x="429.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="402.0" y="532.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="532.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="376.0" y="552.0"></omgdi:waypoint>
-        <omgdi:waypoint x="376.0" y="590.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="552.0"></omgdi:waypoint>
+        <omgdi:waypoint x="381.0" y="580.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="376.0" y="645.0"></omgdi:waypoint>
-        <omgdi:waypoint x="376.0" y="684.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="732.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="771.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="396.0" y="704.0"></omgdi:waypoint>
-        <omgdi:waypoint x="495.0" y="704.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
-        <omgdi:waypoint x="600.0" y="704.0"></omgdi:waypoint>
-        <omgdi:waypoint x="740.0" y="704.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="811.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="840.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
-        <omgdi:waypoint x="356.0" y="704.0"></omgdi:waypoint>
-        <omgdi:waypoint x="287.0" y="704.0"></omgdi:waypoint>
+        <omgdi:waypoint x="362.0" y="791.0"></omgdi:waypoint>
+        <omgdi:waypoint x="293.0" y="791.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="382.0" y="101.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="140.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="382.0" y="195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="224.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="362.0" y="244.0"></omgdi:waypoint>
+        <omgdi:waypoint x="229.0" y="243.0"></omgdi:waypoint>
+        <omgdi:waypoint x="229.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="382.0" y="264.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="290.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="382.0" y="351.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="390.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
+        <omgdi:waypoint x="494.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="494.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="435.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
+        <omgdi:waypoint x="494.0" y="505.0"></omgdi:waypoint>
+        <omgdi:waypoint x="494.0" y="311.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
+        <omgdi:waypoint x="381.0" y="641.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="677.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="330.0" y="867.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="867.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="809.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

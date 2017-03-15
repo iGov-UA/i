@@ -45,26 +45,34 @@ public class ActionIdentityCommonController {
      * Добавление/обновление пользователя.
      *
      * @param sLogin       строка текст, логин пользователя для определения наличия пользователя в базе
-     * @param sPassword    строка текст, логин пользователя для определения наличия пользователя в базе
-     * @param sName        строка текст, имя пользователя
-     * @param sDescription строка текст, фамилия пользователя
-     * @param sEmail       строка текст, имейл пользователя, опциональный параметр
+     * //@param sPassword    строка текст, логин пользователя для определения наличия пользователя в базе
+     * //@param sName        строка текст, имя пользователя
+     * //@param sDescription строка текст, фамилия пользователя
+     * //@param sEmail       строка текст, имейл пользователя, опциональный параметр
      */
     @ApiOperation(value = "Добавление/обновление пользователя. Если пользователь с указаным логином "
             + "существует, - то происходит перезапись существующих данных указанными."
             + "Если же пользователь с указанным логином не найден, - будет создана новая запись.")
-    @RequestMapping(value = "/setUser", method = { RequestMethod.GET, RequestMethod.POST })
+    @RequestMapping(value = "/setUser", method = { /*RequestMethod.GET,*/ RequestMethod.POST })
     @ResponseBody
     public void setUser(
             @ApiParam(value = "строка текст, логин пользователя для определения наличия пользователя в базе", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
-            @ApiParam(value = "строка текст, пароль для пользователя", required = true) @RequestParam(value = "sPassword", required = true) String sPassword,
-            @ApiParam(value = "строка текст, имя пользователя", required = true) @RequestParam(value = "sName", required = true) String sName,
-            @ApiParam(value = "строка текст, фамилия пользователя", required = true) @RequestParam(value = "sDescription", required = true) String sDescription,
-            @ApiParam(value = "строка текст, имейл пользователя, опциональный параметр", required = false) @RequestParam(value = "sEmail", required = false) String sEmail,
-            @ApiParam(value = "", required = false) @RequestBody(required = false) String body)
+            //@ApiParam(value = "строка текст, пароль для пользователя", required = true) @RequestParam(value = "sPassword", required = true) String sPassword,
+            //@ApiParam(value = "строка текст, имя пользователя", required = true) @RequestParam(value = "sName", required = true) String sName,
+            //@ApiParam(value = "строка текст, фамилия пользователя", required = true) @RequestParam(value = "sDescription", required = true) String sDescription,
+            //@ApiParam(value = "строка текст, имейл пользователя, опциональный параметр", required = false) @RequestParam(value = "sEmail", required = false) String sEmail,
+            @ApiParam(value = "JSON-объект с параметрами: " +
+                    "sPassword - (обязательный при создании нового пользователя) строка текст, логин пользователя для определения наличия пользователя в базе; " +
+                    "sName - (обязательный) строка текст, имя пользователя; " +
+                    "sDescription - (обязательный) строка текст, фамилия пользователя; " +
+                    "sEmail - строка текст, имейл пользователя, опциональный параметр", required = true) @RequestBody String body)
             throws Exception {
 
         log.info("Method setUser startred");
+        String sPassword = null;
+        String sName = null;
+        String sDescription = null;
+        String sEmail = null;
 
         if(body != null){
             Map<String, Object> mBody;
@@ -74,17 +82,18 @@ public class ActionIdentityCommonController {
                 throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
             }
             if(mBody != null){
-                if (mBody.containsKey("sLogin")) {
-                    sLogin = (String) mBody.get("sLogin");
-                }
                 if (mBody.containsKey("sPassword")) {
                     sPassword = (String) mBody.get("sPassword");
                 }
                 if (mBody.containsKey("sName")) {
                     sName = (String) mBody.get("sName");
+                } else {
+                    throw new Exception("The sName in RequestBody is not defined");
                 }
                 if (mBody.containsKey("sDescription")) {
                     sDescription = (String) mBody.get("sDescription");
+                } else {
+                    throw new Exception("The sDescription in RequestBody is not defined");
                 }
                 if (mBody.containsKey("sEmail")) {
                     sEmail = (String) mBody.get("sEmail");
@@ -97,7 +106,7 @@ public class ActionIdentityCommonController {
             log.info("Creating new user");
             oUser = identityService.newUser(sLogin);
             if(sPassword == null || sPassword.equals("")){
-                throw new Exception("The password foe new User is not defined");
+                throw new Exception("The password for new User is not defined");
             } else {
                 oUser.setPassword(sPassword);
             }
