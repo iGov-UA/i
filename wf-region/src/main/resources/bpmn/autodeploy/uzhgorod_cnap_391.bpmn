@@ -19,11 +19,11 @@
         <activiti:formProperty id="nfileProjectLand" name="Проект землеустрою щодо відведення земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="lInfo" name="Зверніть увагу" type="label" default="ви можете замовити Витяг з Державного земельного кадастру &lt;a href='https://igov.org.ua/service/101/general' title='Надання відомостей з Державного земельного кадастру у формі витягу з Державного земельного кадастру про земельну ділянку'&gt; за посиланням &lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="nfileExtractOfCadastr" name="Витяг з Державного земельного кадастру про земельну ділянку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="шапка принтформы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="график работы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес органа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersChangeProject" name="Change Project" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemlja.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -72,7 +72,7 @@
           <activiti:value id="decline" name="Відмовити в наданні послугу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Вкажіть причину неможливості отримання послуги(ця інформація буде відправлена на e-mail громадянина) *" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -170,7 +170,7 @@
           <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Ваша резолюція по данному питанню" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -201,8 +201,8 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="ssDecisionComment" name="Вкажіть причину неможливості отримання послуги (Ця інформація буде відправлена на e-mail заявника)*" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/zemlja/uzhgorod_cnap_391_print_card.html]" type="invisible" default="Реєстраційна карта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/zemlja/uzhgorod_cnap_391_print_card.html]; ;bVisible=false" type="string" default="Реєстраційна карта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -305,8 +305,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція Начальника відділу землекористування" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="У разі відмови обов'язково вкажіть причину неможливості отримання послуги (Ця інформація буде відправлена на e-mail громадянина) *" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/zemlja/uzhgorod_cnap_391_print_card.html]" type="invisible" default="Реєстраційна карта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/zemlja/uzhgorod_cnap_391_print_card.html]; ;bVisible=false" type="string" default="Реєстраційна карта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -338,8 +338,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="У разі відмови обов'язково вкажіть причину відмови про затвердження проекту землеустрою (Ця інформація буде відправлена на e-mail громадянину *" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileSolveSesion" name="Прикріпити рішення ради" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/zemlja/uzhgorod_cnap_391_print_card.html]" type="invisible" default="Реєстраційна карта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/zemlja/uzhgorod_cnap_391_print_card.html]; ;bVisible=false" type="string" default="Реєстраційна карта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -370,7 +370,7 @@
           <activiti:value id="no" name="негативне"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Укажіть час коли можна зарати готове рішення (Ця інформація буде відправлена на e-mail громадянину) *" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
