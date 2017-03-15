@@ -41,6 +41,11 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="е-мейл контролюючого виконання завдання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEscalationDay" name="Дата ескалації" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Justice" name="sCloningOfLaw_Justice" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Finance" name="sCloningOfLaw_Finance" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Tech" name="sCloningOfLaw_Tech" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Head" name="sCloningOfLaw_Head" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Author]]></activiti:string>
@@ -76,6 +81,11 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Justice" name="sCloningOfLaw_Justice" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Finance" name="sCloningOfLaw_Finance" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Tech" name="sCloningOfLaw_Tech" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Head" name="sCloningOfLaw_Head" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -107,6 +117,11 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="sGood" name="контракт готовий, передати на затвердження"></activiti:value>
           <activiti:value id="sMistake" name="потрібно виправити помилку"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Justice" name="sCloningOfLaw_Justice" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Finance" name="sCloningOfLaw_Finance" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Tech" name="sCloningOfLaw_Tech" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Head" name="sCloningOfLaw_Head" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -156,6 +171,11 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="sSend" name="відправити на погодження контрагенту"></activiti:value>
           <activiti:value id="sPrint" name="роздрукувати для підпису"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Justice" name="sCloningOfLaw_Justice" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Finance" name="sCloningOfLaw_Finance" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Tech" name="sCloningOfLaw_Tech" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Head" name="sCloningOfLaw_Head" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -214,9 +234,13 @@ execution.setVariable('sCloningOfLaw_Tech', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow49" sourceRef="scripttask4" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow50" sourceRef="usertask3" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow51" sourceRef="exclusivegateway3" targetRef="usertask3"></sequenceFlow>
-    <sequenceFlow id="flow52" sourceRef="exclusivegateway3" targetRef="scripttask5"></sequenceFlow>
+    <sequenceFlow id="flow50" sourceRef="usertask3" targetRef="scripttask8"></sequenceFlow>
+    <sequenceFlow id="flow51" sourceRef="exclusivegateway3" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'false'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="exclusivegateway3" targetRef="scripttask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'true'}]]></conditionExpression>
+    </sequenceFlow>
     <scriptTask id="scripttask5" name="переключение степа на 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
@@ -266,10 +290,17 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 var sKey_GroupPostfix_New = 'Velta_Head'
 var sKey_GroupPostfix = '_default_Velta_head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Justice', oResult)</script>
+execution.setVariable('sCloningOfLaw_Head', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow58" sourceRef="scripttask7" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
+    <scriptTask id="scripttask8" name="Проверка подписей" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKey_Step = execution.getVariable('sKey_Step_Document')
+var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
+execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
+    </scriptTask>
+    <sequenceFlow id="flow60" sourceRef="scripttask8" targetRef="exclusivegateway3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_velta_contract">
     <bpmndi:BPMNPlane bpmnElement="_doc_velta_contract" id="BPMNPlane__doc_velta_contract">
@@ -286,40 +317,43 @@ execution.setVariable('sCloningOfLaw_Justice', oResult)</script>
         <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="390.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="506.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="362.0" y="512.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="362.0" y="628.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="442.0" y="505.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="442.0" y="621.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="677.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="793.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="362.0" y="771.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="362.0" y="887.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="840.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="956.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="258.0" y="774.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="258.0" y="890.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="71.0" width="105.0" x="330.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="362.0" y="224.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="362.0" y="340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
-        <omgdc:Bounds height="61.0" width="105.0" x="330.0" y="290.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="105.0" x="330.0" y="406.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
         <omgdc:Bounds height="61.0" width="105.0" x="442.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
-        <omgdc:Bounds height="61.0" width="105.0" x="329.0" y="580.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="105.0" x="329.0" y="696.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="253.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="36.0" y="65.0"></omgdi:waypoint>
@@ -334,28 +368,28 @@ execution.setVariable('sCloningOfLaw_Justice', oResult)</script>
         <omgdi:waypoint x="330.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="382.0" y="445.0"></omgdi:waypoint>
-        <omgdi:waypoint x="382.0" y="512.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="561.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="628.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="402.0" y="532.0"></omgdi:waypoint>
-        <omgdi:waypoint x="442.0" y="532.0"></omgdi:waypoint>
+        <omgdi:waypoint x="402.0" y="648.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="648.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="382.0" y="552.0"></omgdi:waypoint>
-        <omgdi:waypoint x="381.0" y="580.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="668.0"></omgdi:waypoint>
+        <omgdi:waypoint x="381.0" y="696.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="382.0" y="732.0"></omgdi:waypoint>
-        <omgdi:waypoint x="382.0" y="771.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="848.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="887.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="382.0" y="811.0"></omgdi:waypoint>
-        <omgdi:waypoint x="382.0" y="840.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="927.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="956.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
-        <omgdi:waypoint x="362.0" y="791.0"></omgdi:waypoint>
-        <omgdi:waypoint x="293.0" y="791.0"></omgdi:waypoint>
+        <omgdi:waypoint x="362.0" y="907.0"></omgdi:waypoint>
+        <omgdi:waypoint x="293.0" y="907.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
         <omgdi:waypoint x="382.0" y="101.0"></omgdi:waypoint>
@@ -363,21 +397,21 @@ execution.setVariable('sCloningOfLaw_Justice', oResult)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="382.0" y="195.0"></omgdi:waypoint>
-        <omgdi:waypoint x="382.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="253.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="362.0" y="244.0"></omgdi:waypoint>
-        <omgdi:waypoint x="229.0" y="243.0"></omgdi:waypoint>
+        <omgdi:waypoint x="362.0" y="360.0"></omgdi:waypoint>
+        <omgdi:waypoint x="229.0" y="359.0"></omgdi:waypoint>
         <omgdi:waypoint x="229.0" y="167.0"></omgdi:waypoint>
         <omgdi:waypoint x="330.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="382.0" y="264.0"></omgdi:waypoint>
-        <omgdi:waypoint x="382.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="380.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="406.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
-        <omgdi:waypoint x="382.0" y="351.0"></omgdi:waypoint>
-        <omgdi:waypoint x="382.0" y="390.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="506.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
         <omgdi:waypoint x="494.0" y="250.0"></omgdi:waypoint>
@@ -385,17 +419,21 @@ execution.setVariable('sCloningOfLaw_Justice', oResult)</script>
         <omgdi:waypoint x="435.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="494.0" y="505.0"></omgdi:waypoint>
+        <omgdi:waypoint x="494.0" y="621.0"></omgdi:waypoint>
         <omgdi:waypoint x="494.0" y="311.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="381.0" y="641.0"></omgdi:waypoint>
-        <omgdi:waypoint x="382.0" y="677.0"></omgdi:waypoint>
+        <omgdi:waypoint x="381.0" y="757.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="793.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="330.0" y="867.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="956.0"></omgdi:waypoint>
         <omgdi:waypoint x="275.0" y="867.0"></omgdi:waypoint>
-        <omgdi:waypoint x="275.0" y="809.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="890.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
+        <omgdi:waypoint x="382.0" y="308.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="340.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
