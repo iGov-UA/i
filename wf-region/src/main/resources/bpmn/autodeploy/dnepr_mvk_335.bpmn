@@ -36,7 +36,7 @@
         <activiti:formProperty id="nFile4" name="Довідка з Державного земельного кадастру про наявність у Державному земельному кадастрі відомостей про отримання у власність земельної ділянки в межах норм безоплатної приватизації за певним видом її цільового призначення (використання)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile5" name="Технічні матеріали та документи, що підтверджують розмір земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile6" name="Довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку;(якщо клопотання подається представником)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDistr" name="Район" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDistr" name="Район; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -95,8 +95,8 @@
         <activiti:formProperty id="landNumb" name="Кадастровий номер;(формат 1210100000:ХХ:ХХХ:ХХХХ)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sListBuild" name="На ділянці розміщено;(індивідуальний житловий будинок, господарські будівлі і споруди, які належать мені на праві власності)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки;(обслуговування жилого будинку господарських будівель і споруд)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDistr" name="Район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_335_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDistr" name="Район; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_335_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
             <activiti:string><![CDATA[EO180277SMV]]></activiti:string>

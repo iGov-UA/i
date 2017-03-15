@@ -467,16 +467,29 @@ public class SubjectGroupTreeService {
     
     public String getSubjectType(String sID_Group_Activiti) 
     {
-        SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
-        Subject oSubject = oSubjectGroup.getoSubject();
-        LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
-        SubjectHuman oSubjectHuman = SubjectHumanDao.findByExpected("oSubject", oSubject);
-        LOG.info("oSubjectHuman in getSubjectType is " + oSubjectHuman.getName());
+        try{
+            SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+            Subject oSubject = oSubjectGroup.getoSubject();
+            LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
 
-        if (oSubjectHuman != null) {
-            return HUMAN;
-        } else {
-            return ORGAN;
+            SubjectHuman oSubjectHuman = null;
+
+            try{
+                oSubjectHuman = SubjectHumanDao.findByExpected("oSubject", oSubject);
+            LOG.info("oSubjectHuman in getSubjectType is " + oSubjectHuman.getName());
+            }catch(Exception ex){
+                LOG.info("oSubjectHuman not found");
+            }
+
+            if (oSubjectHuman != null) {
+                return HUMAN;
+            } else {
+                return ORGAN;
+            }
+        }catch(Exception oException){
+            LOG.error("ERROR:"+oException.getMessage()+" (sID_Group_Activiti="+sID_Group_Activiti+")");
+            LOG.error(oException);
+            throw oException;
         }
     }
 

@@ -287,8 +287,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                                     oDocumentStepSubjectRight.setsDate(new DateTime());
                                                     oDocumentStepSubjectRight.setsLogin(sAssignLogin);
                                                     oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                                                    break;
                                                 }
-                                                break;
                                             }
                                             break;
                                         }
