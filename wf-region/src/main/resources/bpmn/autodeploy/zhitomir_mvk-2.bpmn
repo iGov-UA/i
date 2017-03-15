@@ -19,13 +19,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Електронна копія паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('zhitomir_mvk_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>  
-        <activiti:formProperty id="sShapkaZt" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPlaseZt" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>    
+        <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>  
+        <activiti:formProperty id="sShapkaZt" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaseZt" name="Назва міськвиконкому; ;bVisible=false" type="string"></activiti:formProperty>    
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -93,9 +93,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="file10" name="Завантажте скановану копію довідки" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapkaZt" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPlaseZt" name="Назва міськвиконкому" type="invisible"></activiti:formProperty> 
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhitomir_1.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaZt" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaseZt" name="Назва міськвиконкому; ;bVisible=false" type="string"></activiti:formProperty> 
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhitomir_1.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/zhitomir/zhitomir_1.html" type="file"></activiti:formProperty>
          <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">

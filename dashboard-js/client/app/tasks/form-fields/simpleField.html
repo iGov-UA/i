@@ -4,15 +4,15 @@
       <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && item.writable" style="color: red">*</span></label>
     </span>
     <div class="col-sm-6">
-      <input ng-if="!isFormPropertyDisabled(item) && isDocumentWritable(item)"
+      <input ng-if="(!isFormPropertyDisabled(item) && isDocumentWritable(item)) && isDocumentNotSigned()"
              name="{{item.id}}"
              style="width:100%;"
-             ng-readonly="isFormPropertyDisabled(item) || !isDocumentNotSigned()"
+             ng-readonly="isFormPropertyDisabled(item)"
              ng-required="isRequired(item)"
              ng-model="item.value"
              ng-class="{submitted: isRequired(item) && isTaskSubmitted()}"/>
 
-      <div ng-if="showReadableField(item)">
+      <div ng-if="showReadableField(item) || !isDocumentNotSigned()">
         <span class="task-form-written-right-sight"
               style="white-space: pre-line"
               name="{{item.id}}"

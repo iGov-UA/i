@@ -2296,8 +2296,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      *
      * @param sLogin - Строка логин пользователя, меняющего пароль
-     * @param sPasswordOld - Строка старый пароль
-     * @param sPasswordNew - Строка новый пароль
+     * //@param sPasswordOld - Строка старый пароль
+     * //@param sPasswordNew - Строка новый пароль
      * @return
      * @throws CommonServiceException
      * @throws RuntimeException
@@ -2349,9 +2349,33 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     String changePassword(
             @ApiParam(value = "Строка логин пользователя, меняющего пароль", required = true) @RequestParam(value = "sLoginOwner", required = true) String sLogin,
-            @ApiParam(value = "Строка старый пароль", required = true) @RequestBody (required = true) String sPasswordOld,
-            @ApiParam(value = "Строка новый пароль", required = true) @RequestBody(required = true)  String sPasswordNew
-    ) throws CommonServiceException, RuntimeException {
+            @ApiParam(value = "JSON-cnрока с двумя параметрами: sPasswordOld - Строка старый пароль; sPasswordNew - Строка новый пароль", required = true) @RequestBody (required = true) String sPasswords
+    ) throws Exception {
+
+        String sPasswordOld = null;
+        String sPasswordNew = null;
+
+        if(sPasswords != null){
+            Map<String, Object> mBody;
+            try {
+                mBody = (Map<String, Object>) JSONValue.parse(sPasswords);
+            } catch (Exception e){
+                throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
+            }
+            if(mBody != null){
+                if (mBody.containsKey("sPasswordOld")) {
+                    sPasswordOld = (String) mBody.get("sPasswordOld");
+                } else {
+                    throw new Exception("The sPasswordOld in RequestBody is not defined");
+                }
+                if (mBody.containsKey("sPasswordNew")) {
+                    sPasswordNew = (String) mBody.get("sPasswordNew");
+                } else {
+                    throw new Exception("The sPasswordNew in RequestBody is not defined");
+                }
+            }
+        }
+
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
         IdentityService identityService = processEngine.getIdentityService();
         User user = null;
@@ -2919,7 +2943,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     @ApiOperation(value = "/getProcessTemplate", notes = "##### Получение шаблона процесса#####\n\n")
-    @RequestMapping(value = "/getProcessTemplate", method = RequestMethod.GET)
+    @RequestMapping(value = "/getProcessTemplate", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public @ResponseBody
     Map<String, Object> setProcess(
             @ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
@@ -2945,7 +2969,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        Map<String, Object> formDataDTO = new HashMap<String, Object>();
 	        formDataDTO.put("formKey", formData.getFormKey());
 	        formDataDTO.put("deploymentId", formData.getDeploymentId());
-	        formDataDTO.put("formProperties", formData.getFormProperties());
+	        formDataDTO.put("formProperties", processFormProperties(formData.getFormProperties())); 
 	        formDataDTO.put("processDefinitionId", formData.getProcessDefinition().getId());
 	
 	        Map[] res = new Map[1];
@@ -2970,8 +2994,38 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return mReturn;
     }
     
-    @ApiOperation(value = "/startProcess", notes = "##### Старт процесса#####\n\n")
-    @RequestMapping(value = "/startProcess", method = RequestMethod.POST)
+    protected List<Map<String, Object>> processFormProperties(List<FormProperty> formProperties) {
+    	List<Map<String, Object>> res = new LinkedList<Map<String,Object>>();
+    	for (FormProperty property : formProperties) {
+    		Map<String, Object> currProperty = new HashMap<String, Object>();
+    		currProperty.put("id", property.getId());
+    		currProperty.put("name", property.getName());
+    		currProperty.put("type", property.getType().getName());
+    		currProperty.put("value", property.getValue());
+    		currProperty.put("required", property.isRequired());
+    		currProperty.put("readable", property.isReadable());
+    		currProperty.put("writable", property.isWritable());
+    		if ("enum".equals(property.getType().getName())){
+    			Object oValues = property.getType().getInformation("values");
+    			List<Map> enumValuesPossible = new LinkedList<Map>();
+    			if (oValues instanceof Map) {
+    	            Map<String, String> mValue = (Map) oValues;
+    	            for (Map.Entry<String, String> mapEntry: mValue.entrySet()){
+    	            	Map<String, Object> currEnumValue = new HashMap<String, Object>();
+    	            	currEnumValue.put("id", mapEntry.getKey());
+    	            	currEnumValue.put("name", mapEntry.getValue());
+    	            	enumValuesPossible.add(currEnumValue);
+    	            }
+    			}
+    			currProperty.put("enumValues", enumValuesPossible);
+    		}
+    		res.add(currProperty);
+    	}
+		return res;
+	}
+
+	@ApiOperation(value = "/startProcess", notes = "##### Старт процесса#####\n\n")
+    @RequestMapping(value = "/startProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     public @ResponseBody
     Map<String, Object> startProcess(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
@@ -2995,14 +3049,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         } catch (Exception e){
             throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
         }
-        
-        /*if (sID_BP.startsWith("_doc_")||ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(sID_BP)) {
-                Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, sID_BP, null);
-                LOG.info("SetDocument process count: " + count.intValue());
-        }*/
-        //return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
+
         mParam.put("sLoginAuthor", sLogin);
-        ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+        LOG.info("Processing process with key " + StringUtils.substringBefore(sID_BP, ":"));
+        ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(StringUtils.substringBefore(sID_BP, ":"), mParam);
         Map<String, Object> mReturn = new HashMap<>();
                 
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());

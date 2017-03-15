@@ -67,9 +67,9 @@
         <activiti:formProperty id="scanMed" name="Копія висновку з медичної установи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="scanSum" name="Копія документу, що підтверджує суму завданих збитків" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="scanOth" name="Копія документу, що підтверджує скрутний матеріальний стан" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sOrganID" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrganID" name="До якого державного органу звертається заявник; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/helpODA.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -199,7 +199,7 @@ execution.setVariable('sMailClerk', per1)
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="docID" name="ID-номер заяви" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_raz_soc_helpFr.html]" type="invisible" default="Заява на отримання допомоги" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_raz_soc_helpFr.html]; ;bVisible=false" type="string" default="Заява на отримання допомоги" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

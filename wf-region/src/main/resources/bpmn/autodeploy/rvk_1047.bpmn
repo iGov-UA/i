@@ -69,19 +69,19 @@
         <activiti:formProperty id="nDocReestr" name="Копія довідки з відділу реєстрації або заяви про реєстрацію місця проживання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPenal" type="label" default="За несвоєчасне подання відомостей Ви можете отримати шртаф згідно &lt;a href=&quot;http://zakon3.rada.gov.ua/laws/show/80731-10/page14&quot;&gt;ст.210,211 КУпАП&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/registration.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="Назва РВК" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRozklad" name="Розклад роботи органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRekvVoen" name="Реквізити" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="0.01"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Тестовая транзакция (код платежу 21081100)"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Назва РВК; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRozklad" name="Розклад роботи органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRekvVoen" name="Реквізити; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина); ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа; ;bVisible=false" type="string" default="0.01"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string" default="Тестовая транзакция (код платежу 21081100)"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
@@ -217,15 +217,15 @@
         <activiti:formProperty id="sFine" name="Сума для сплати штрафу" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/registration.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="required fields" type="markers" default="${markerService.loadFromFile('rvk/registration_req.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sOficer" name="Телефон органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="РВК" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/rvk/zajava_regRVK.html]" type="invisible" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Тестовая транзакция (код платежу 21081100)"></activiti:formProperty>
+        <activiti:formProperty id="sOficer" name="Телефон органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="РВК; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума для сплати штрафу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/rvk/zajava_regRVK.html]; ;bVisible=false" type="string" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина); ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string" default="Тестовая транзакция (код платежу 21081100)"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -484,20 +484,20 @@
           <activiti:value id="accept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
           <activiti:value id="sPenalty" name="Повідомити громадянина про необхідність сплаті штрафу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума для сплати штрафу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ІД транзакції платежа при сплаті штрафу онлайн" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат зустрічі" type="enum" required="true">
           <activiti:value id="sReestr" name="Громадянин отримав послугу"></activiti:value>
           <activiti:value id="sNejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/registration.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sOficer" name="Телефон органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="РВК" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/rvk/zajava_regRVK.html]" type="invisible" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOficer" name="Телефон органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="РВК; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина); ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/rvk/zajava_regRVK.html]; ;bVisible=false" type="string" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

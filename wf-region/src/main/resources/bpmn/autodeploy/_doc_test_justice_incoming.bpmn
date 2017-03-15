@@ -32,7 +32,7 @@
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -40,9 +40,10 @@
     <scriptTask id="scripttask2" name="клонирование прав" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       	var snID_Process_Activiti = execution.getProcessInstanceId();
-		var sKey_GroupPostfix = 'MJU_Dnipro_Top1_Dep1'
+		var sKey_GroupPostfix = 'justice_common'
 		var sKey_GroupPostfix_New = execution.getVariable('sName_SubjectRole')
 		var sKey_Step_Document = execution.getVariable('sKey_Step_Document')
+              
 		var obj1 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document)
 	 </script>
     </scriptTask>
@@ -66,7 +67,7 @@
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -92,7 +93,7 @@
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="string" default="раз вы здесь, значит все подписали"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -100,7 +101,7 @@
     <serviceTask id="servicetask1" name="письмецо" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -109,11 +110,11 @@
           <activiti:string><![CDATA[Письмо justice_BACK]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/_common_header.html]
 тестовий лист
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
