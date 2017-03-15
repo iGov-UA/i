@@ -141,8 +141,7 @@ public class DocumentStepService {
             if(!aDocumentStepSubjectRightToSet_Common.isEmpty()){
                 aDocumentStepSubjectRightToSet_Common.addAll(oDocumentStep.getRights());
                 LOG.info("aDocumentStepSubjectRightToSet_Common is {}", aDocumentStepSubjectRightToSet_Common);
-                oDocumentStep.setRights(
-                        oDocumentStepSubjectRightDao.saveOrUpdate(aDocumentStepSubjectRightToSet_Common));
+                oDocumentStep.setRights(aDocumentStepSubjectRightToSet_Common);
                 LOG.info("aDocumentStepSubjectRightToSet_Common in oDocumentStep {}", oDocumentStep.getRights());
             }
             
