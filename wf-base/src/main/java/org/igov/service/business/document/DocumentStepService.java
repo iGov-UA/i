@@ -135,24 +135,27 @@ public class DocumentStepService {
                 .collect(Collectors.toList());
         long i = 1L;
         for (String sKey_Step : asKey_Step) {
+            List<DocumentStepSubjectRight> aNewDocumentStepSubjectRight_Current = new ArrayList<>();
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
-            
-            if(!aDocumentStepSubjectRightToSet_Common.isEmpty()){
-                aDocumentStepSubjectRightToSet_Common.addAll(oDocumentStep.getRights());
-                LOG.info("aDocumentStepSubjectRightToSet_Common is {}", aDocumentStepSubjectRightToSet_Common);
-                oDocumentStep.setRights(aDocumentStepSubjectRightToSet_Common);
-                LOG.info("aDocumentStepSubjectRightToSet_Common in oDocumentStep {}", oDocumentStep.getRights());
-            }
-            
             oDocumentStep.setnOrder(i++);
             oDocumentStep.setsKey_Step(sKey_Step);
             oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);
-            documentStepDao.saveOrUpdate(oDocumentStep);
+            oDocumentStep = documentStepDao.saveOrUpdate(oDocumentStep);
             aDocumentStep.add(oDocumentStep);
+            
+            if(!aDocumentStepSubjectRightToSet_Common.isEmpty()){
+                aNewDocumentStepSubjectRight_Current.addAll(aDocumentStepSubjectRightToSet_Common);
+                aNewDocumentStepSubjectRight_Current.addAll(oDocumentStep.getRights());
+                
+                for(DocumentStepSubjectRight oDocumentStepSubjectRightToSet_Common : aDocumentStepSubjectRightToSet_Common){
+                    oDocumentStepSubjectRightToSet_Common.setDocumentStep(oDocumentStep);
+                    oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRightToSet_Common);
+                }
+            }
         }
-        LOG.info("Result list of steps: {}", aDocumentStep);
 
+        LOG.info("Result list of steps: {}", aDocumentStep);
         return aDocumentStep;
     }
 
