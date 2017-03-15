@@ -467,23 +467,29 @@ public class SubjectGroupTreeService {
     
     public String getSubjectType(String sID_Group_Activiti) 
     {
-        SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
-        Subject oSubject = oSubjectGroup.getoSubject();
-        LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
-        
-        SubjectHuman oSubjectHuman = null;
-                
         try{
-            oSubjectHuman = SubjectHumanDao.findByExpected("oSubject", oSubject);
-        LOG.info("oSubjectHuman in getSubjectType is " + oSubjectHuman.getName());
-        }catch(NullPointerException ex){
-            LOG.info("oSubjectHuman not found");
-        }
-        
-        if (oSubjectHuman != null) {
-            return HUMAN;
-        } else {
-            return ORGAN;
+            SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+            Subject oSubject = oSubjectGroup.getoSubject();
+            LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
+
+            SubjectHuman oSubjectHuman = null;
+
+            try{
+                oSubjectHuman = SubjectHumanDao.findByExpected("oSubject", oSubject);
+            LOG.info("oSubjectHuman in getSubjectType is " + oSubjectHuman.getName());
+            }catch(Exception ex){
+                LOG.info("oSubjectHuman not found");
+            }
+
+            if (oSubjectHuman != null) {
+                return HUMAN;
+            } else {
+                return ORGAN;
+            }
+        }catch(Exception oException){
+            LOG.error("ERROR:"+oException.getMessage()+" (sID_Group_Activiti="+sID_Group_Activiti+")");
+            LOG.error(oException);
+            throw oException;
         }
     }
 
