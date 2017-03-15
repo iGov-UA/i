@@ -35,7 +35,7 @@ exports.getSubjects = function (req, res) {
 
 
 exports.changePassword = function (req, res) {
-  console.log(req.body);
+  //console.log(req.body);
   activiti.post({
     path: 'action/task/changePassword',
     query: {
