@@ -367,8 +367,12 @@ public class DocumentStepService {
 
             if (oSubjectGroupResultTree != null) {
                 List<SubjectGroup> aSubjectGroups = oSubjectGroupResultTree.getaSubjectGroupTree();
-                for (SubjectGroup oSubjectGroup : aSubjectGroups) {
-                    asResultGroup.add(oSubjectGroup.getsID_Group_Activiti());
+                if(aSubjectGroups==null||aSubjectGroups.isEmpty()){
+                    throw new Exception("aSubjectGroups="+aSubjectGroups+". Not found any SubjectGroup by sKey_GroupPostfix_New="+sKey_GroupPostfix_New+" (sSubjectType="+sSubjectType+")");
+                }else{
+                    for (SubjectGroup oSubjectGroup : aSubjectGroups) {
+                        asResultGroup.add(oSubjectGroup.getsID_Group_Activiti());
+                    }
                 }
             } else {
                 asResultGroup.add(sKey_GroupPostfix_New);
