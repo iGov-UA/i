@@ -497,38 +497,23 @@ public class DocumentStepService {
 
                     List<DocumentStep> aCheckDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
 
-                    boolean saveflag = true;
-
-                    for (DocumentStep oCheckDocumentStep : aCheckDocumentStep) {
-                        if (!oCheckDocumentStep.getsKey_Step().equals(sKey_Step_Document_To)) {
-                            continue;
-                        }
-
-                        List<DocumentStepSubjectRight> aCheckDocumentStepSubjectRight = oCheckDocumentStep.getRights();
-                        LOG.info("oCheckDocumentStep is {}", oCheckDocumentStep);
-                        LOG.info("aCheckDocumentStepRights is {}", aCheckDocumentStepSubjectRight);
-
-                        for (DocumentStepSubjectRight oCheckDocumentStepSubjectRight : aCheckDocumentStepSubjectRight) {
-                            LOG.info("right.getsKey_GroupPostfix() is {}", oCheckDocumentStepSubjectRight.getsKey_GroupPostfix());
-                            LOG.info("sKey_GroupPostfix_New is {}", sKey_GroupPostfix_New);
-                            if (oCheckDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
-                                oDocumentStepSubjectRight_New = oCheckDocumentStepSubjectRight;
-                                saveflag = false;
-                                LOG.info("oDocumentStepSubjectRight in chek loop is {}", oDocumentStepSubjectRight_New);
-                                break;
+                    saveNewDocumentStepSubjectRight_IfNotExist:
+                    {
+                        for (DocumentStep oCheckDocumentStep : aCheckDocumentStep) {
+                            List<DocumentStepSubjectRight> aCheckDocumentStepSubjectRight = oCheckDocumentStep.getRights();
+                            LOG.info("oCheckDocumentStep: {} aCheckDocumentStepRights is {}", oCheckDocumentStep.getsKey_Step(), aCheckDocumentStepSubjectRight);
+                            if (oCheckDocumentStep.getsKey_Step().equalsIgnoreCase(oDocumentStep_To.getsKey_Step())) {
+                                for (DocumentStepSubjectRight oCheckDocumentStepSubjectRight : aCheckDocumentStepSubjectRight) {
+                                    LOG.info("sKey_GroupPostfix: {} sKey_GroupPostfix_New: {}", oCheckDocumentStepSubjectRight.getsKey_GroupPostfix(), sKey_GroupPostfix_New);
+                                    if (oCheckDocumentStepSubjectRight.getsKey_GroupPostfix().equalsIgnoreCase(sKey_GroupPostfix_New)) {
+                                        LOG.info("saveNewDocumentStepSubjectRight_IfNotExist skip sKey_GroupPostfix_New: {} in step {}"
+                                                + " becouse we have already have one in nID_CheckDocumentStep: {} sKey_GroupPostfix: {}",
+                                                sKey_GroupPostfix_New, oDocumentStep_To.getsKey_Step(), oCheckDocumentStep.getId(), oCheckDocumentStepSubjectRight.getsKey_GroupPostfix());
+                                        break saveNewDocumentStepSubjectRight_IfNotExist;
+                                    }
+                                }
                             }
                         }
-
-                        if (!saveflag) {
-                            break;
-                        }
-                    }
-
-                    if (saveflag) {
-                        LOG.info("saveflag is: {}", saveflag);
-                        LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix is: {}",
-                                oDocumentStepSubjectRight_New.getsKey_GroupPostfix());
-                        LOG.info("sKey_GroupPostfix: {}", sKey_GroupPostfix);
                         documentStepDao.saveOrUpdate(oDocumentStep_To);
                     }
 
