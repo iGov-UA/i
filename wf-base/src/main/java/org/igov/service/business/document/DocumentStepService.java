@@ -432,14 +432,7 @@ public class DocumentStepService {
 
                                         oDocumentStepSubjectRight_To.setsDate(null);
                                         oDocumentStepSubjectRight_To.setsDateECP(null);
-                                        oDocumentStepSubjectRight_To.setDocumentStepSubjectRightFields(oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields());
                                         oDocumentStepSubjectRight_To = oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
-                                        
-                                        for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_From
-                                                : oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields()) {
-                                            oDocumentStepSubjectRightField_From.setDocumentStepSubjectRight(oDocumentStepSubjectRight_To);
-                                            oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField_From);
-                                        }
                                         
                                         break;
                                     }
