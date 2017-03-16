@@ -429,10 +429,20 @@ public class DocumentStepService {
 
                                         oDocumentStepSubjectRight_To.setsDate(null);
                                         oDocumentStepSubjectRight_To.setsDateECP(null);
-                                        /*List<DocumentStepSubjectRightField> a_ = oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields();
-                                        oDocumentStepSubjectRight_To.setDocumentStepSubjectRightFields();*/
-                                        //aDocumentStepSubjectRight_To.set(i, oDocumentStepSubjectRight_To);
-                                        //aDocumentStepSubjectRight.add(oDocumentStepSubjectRight_To);
+                                        
+                                        List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField_New = new LinkedList();
+
+                                        for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_From
+                                                : oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields()) {
+                                            DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
+                                            oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField_From.getbWrite());
+                                            oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField_From.getsMask_FieldID());
+                                            oDocumentStepSubjectRightField_New.setDocumentStepSubjectRight(oDocumentStepSubjectRight_To);
+                                            aDocumentStepSubjectRightField_New.add(oDocumentStepSubjectRightField_New);
+                                        }
+                                        
+                                        oDocumentStepSubjectRight_To.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField_New);
+                                        
                                         oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
                                         break;
                                     }
