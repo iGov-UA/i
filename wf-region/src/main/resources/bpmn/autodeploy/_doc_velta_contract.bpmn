@@ -39,7 +39,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="е-мейл контролюючого виконання завдання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="е-мейл контролюючого виконання завдання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEscalationDay" name="Дата ескалації" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -100,7 +100,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask5" name="ЮрОтделФиниш">
+    <userTask id="usertask5" name="Юридичний відділ. Остаточне погодження контракту">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
@@ -167,7 +167,7 @@ execution.setVariable('processInstanceId', processInstanceId)
     <sequenceFlow id="flow40" sourceRef="exclusivegateway1" targetRef="scripttask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asReady=='sGood'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask6" name="НачальникФиниш">
+    <userTask id="usertask6" name="Керівник. Погодження контракту">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Роспорядження про створення контракту" writable="false"></activiti:formProperty>
@@ -176,7 +176,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDocNubmber" name="Номер контракту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocNubmber" name="Номер контракту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocCity" name="Місто підписання контракту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата створення контракту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCompName" name="Повна назва контрагента" type="string" writable="false"></activiti:formProperty>
@@ -224,10 +224,19 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Ескалація. Роспорядження про створення контракту]]></activiti:string>
+          <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Погодження контракту]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[
+Шановні Колеги<br>
+Направляємо Вам на погодження контракт на поставку ${sGoodType}<br>
+Якщо будуть питання - з радістю відповімо.<br>
+<br>
+--
+ТОВ ВКФ «ВЕЛТА»<br>
+Тел./факс: (056) 370-93-93, 732-04-04<br>
+e-mail: office@velta-ua.com<br>          
+          ]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>

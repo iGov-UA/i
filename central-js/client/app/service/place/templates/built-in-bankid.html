@@ -156,6 +156,12 @@
                   {{property.sFieldNotes}}
                 </div>
 
+                <div ng-if="isOKPOField(property.id)">
+                  <p style="font-size: 12px;color: darkgrey">Після того, як Ви напишете ЄДРПОУ, поля нижче будуть заповнені автоматично.
+                    Дані юрособи можуть бути застарілими (затримка до одного тижня), тому
+                    Ви маєте можливість їх редагувати.</p>
+                </div>
+
                 <div class="inner-html s-field-notes" ng-if="property.options && (property.options.html || property.options.HTML)" ng-bind-html="property.options.html">
                 </div>
               </div>
@@ -516,10 +522,7 @@
                            class="form-control okpo-field"
                            ng-model-options="{debounce:1000}"
                            value="">
-                    <p style="font-size: 14px;">Після того, як Ви напишете ЗКПО, поля нижче будуть заповнені автоматично.
-                                                Дані юрособи можуть бути застарілими (затримка до одного тижня), тому
-                                                Ви маєте можливість їх редагувати.</p>
-                    <span class="small-loading okpo-spinner"
+                    <span class="small-loading-okpo okpo-spinner"
                           ng-if="orgIsLoading.status && orgIsLoading.field === property.id"></span>
                   </div>
                 </div>

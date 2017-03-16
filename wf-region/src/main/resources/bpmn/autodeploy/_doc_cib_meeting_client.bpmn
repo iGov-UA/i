@@ -25,7 +25,7 @@
         <activiti:formProperty id="sNameClient" name="Фамилия и Имя клиента" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Название компании" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeTask" name="Выберите статус задачи" type="enum" required="true">
-          <activiti:value id="sEnum1" name="назначена встреча с клиентом"></activiti:value>
+          <activiti:value id="sEnum1" name="встреча с клиентом назначена"></activiti:value>
           <activiti:value id="sEnum2" name="встреча с клиентом уже состоялась"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Дата встречи" type="date" required="true"></activiti:formProperty>
@@ -106,7 +106,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow43" sourceRef="exclusivegateway1" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asTypeTask == 'sEnum1'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="внесение отчета по результатам">
+    <userTask id="usertask3" name="внесение итогового отчета">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -116,10 +116,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sNameClient" name="Фамилия и Имя клиента" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Название компании" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Дата встречи" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asUrgently" name="Срочное рассмотрение; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
-          <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
-          <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sComent" name="Комментарий" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Итоговый отчет" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/CIB/meeting_client_print.html]" type="invisible" default="Бланк отчета" writable="false"></activiti:formProperty>
@@ -187,8 +183,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
                     <td style="padding: 35px 120px;">
 
 Уважаемый коллега!<br /><br />
-Поступил новый отчет о встрече с клиентом ${sNameClient}.<br />
-<a href="https://alpha-old.test.region.igov.org.ua/" target="_blank">Вход в документоооборот</a><br />]]></activiti:expression>
+Поступил <a href="https://alpha-old.test.region.igov.org.ua/" target="_blank">новый отчет</a> о встрече с клиентом: ${sNameClient}.<br />
+<br />]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
