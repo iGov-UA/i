@@ -20,33 +20,11 @@ import org.igov.model.core.NamedEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @javax.persistence.Entity
-@AttributeOverrides({
+/*@AttributeOverrides({
     @AttributeOverride(name = "name",
-            column = @Column(name = "sName", nullable = true))})
+            column = @Column(name = "sName", nullable = true))})*/
 public class SubjectHuman extends NamedEntity {
 
-    public static String getSubjectId(SubjectHumanIdType subjectHumanIdType, String sCode_Subject) {
-        String res = sCode_Subject;
-        if (subjectHumanIdType != SubjectHumanIdType.INN) {
-            res = String.format("_%s;%s", subjectHumanIdType.getId(), sCode_Subject);
-        }
-        return res;
-    }
-
-    public static NewSubjectHuman getNewSubjectHuman(SubjectHuman subjectHuman) {
-        NewSubjectHuman newSubjectHuman = new NewSubjectHuman();
-        newSubjectHuman.setsSurname(subjectHuman.getsSurname());
-        newSubjectHuman.setsFamily(subjectHuman.getsFamily());
-        newSubjectHuman.setsINN(subjectHuman.getsINN());
-        newSubjectHuman.setsSB(subjectHuman.getsSB());
-        newSubjectHuman.setsPassportSeria(subjectHuman.getsPassportSeria());
-        newSubjectHuman.setsPassportNumber(subjectHuman.getsPassportNumber());
-        newSubjectHuman.setDefaultEmail(SubjectContact
-                .getNewSubjectContact(subjectHuman.getDefaultEmail()));
-        newSubjectHuman.setDefaultPhone(SubjectContact
-                .getNewSubjectContact(subjectHuman.getDefaultPhone()));
-        return newSubjectHuman;
-    }
     
     @ManyToMany(targetEntity=SubjectHumanRole.class, mappedBy = "aSubjectHuman")
     private List<SubjectHumanRole> aSubjectHumanRole = new ArrayList<>();
@@ -206,6 +184,29 @@ public class SubjectHuman extends NamedEntity {
 
     public void setaSubjectHumanRole(List<SubjectHumanRole> aSubjectHumanRole) {
         this.aSubjectHumanRole = aSubjectHumanRole;
+    }
+    
+    public static String getSubjectId(SubjectHumanIdType subjectHumanIdType, String sCode_Subject) {
+        String res = sCode_Subject;
+        if (subjectHumanIdType != SubjectHumanIdType.INN) {
+            res = String.format("_%s;%s", subjectHumanIdType.getId(), sCode_Subject);
+        }
+        return res;
+    }
+
+    public static NewSubjectHuman getNewSubjectHuman(SubjectHuman subjectHuman) {
+        NewSubjectHuman newSubjectHuman = new NewSubjectHuman();
+        newSubjectHuman.setsSurname(subjectHuman.getsSurname());
+        newSubjectHuman.setsFamily(subjectHuman.getsFamily());
+        newSubjectHuman.setsINN(subjectHuman.getsINN());
+        newSubjectHuman.setsSB(subjectHuman.getsSB());
+        newSubjectHuman.setsPassportSeria(subjectHuman.getsPassportSeria());
+        newSubjectHuman.setsPassportNumber(subjectHuman.getsPassportNumber());
+        newSubjectHuman.setDefaultEmail(SubjectContact
+                .getNewSubjectContact(subjectHuman.getDefaultEmail()));
+        newSubjectHuman.setDefaultPhone(SubjectContact
+                .getNewSubjectContact(subjectHuman.getDefaultPhone()));
+        return newSubjectHuman;
     }
     
 }
