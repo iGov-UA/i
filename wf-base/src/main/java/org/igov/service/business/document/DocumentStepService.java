@@ -64,6 +64,9 @@ public class DocumentStepService {
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
     
     @Autowired
+    private DocumentStepSubjectRightFieldDao oDocumentStepSubjectRightFieldDao;
+    
+    @Autowired
     private AttachmetService oAttachmetService;
 
     @Autowired
@@ -429,21 +432,15 @@ public class DocumentStepService {
 
                                         oDocumentStepSubjectRight_To.setsDate(null);
                                         oDocumentStepSubjectRight_To.setsDateECP(null);
+                                        oDocumentStepSubjectRight_To.setDocumentStepSubjectRightFields(oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields());
+                                        oDocumentStepSubjectRight_To = oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
                                         
-                                        List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField_New = new LinkedList();
-
                                         for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_From
                                                 : oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields()) {
-                                            DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
-                                            oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField_From.getbWrite());
-                                            oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField_From.getsMask_FieldID());
-                                            oDocumentStepSubjectRightField_New.setDocumentStepSubjectRight(oDocumentStepSubjectRight_To);
-                                            aDocumentStepSubjectRightField_New.add(oDocumentStepSubjectRightField_New);
+                                            oDocumentStepSubjectRightField_From.setDocumentStepSubjectRight(oDocumentStepSubjectRight_To);
+                                            oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField_From);
                                         }
                                         
-                                        oDocumentStepSubjectRight_To.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField_New);
-                                        
-                                        oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
                                         break;
                                     }
                                 }
