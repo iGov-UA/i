@@ -772,7 +772,7 @@
         };
 
         $scope.isFormInvalid = false;
-        $scope.submitTask = function (form, bNotShowSuccessModal) {
+        $scope.submitTask = function (form) {
           $scope.validateForm(form);
           if(form.$invalid){
             $scope.isFormInvalid = true;
@@ -861,11 +861,9 @@
 
                   $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
-                  if(!bNotShowSuccessModal){
-                    Modal.inform.success(function (result) {
-                      $scope.lightweightRefreshAfterSubmit();
-                    })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
-                  }
+                  Modal.inform.success(function (result) {
+                    $scope.lightweightRefreshAfterSubmit();
+                  })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
 
                   $scope.$emit('task-submitted', $scope.selectedTask);
                 }
@@ -1452,7 +1450,7 @@
 
           tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
             .then(function (result) {
-              $scope.submitTask(form, true);
+              $scope.submitTask(form);
             })
             .catch(defaultErrorHandler);
         };
