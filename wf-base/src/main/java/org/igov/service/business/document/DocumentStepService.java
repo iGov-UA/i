@@ -433,19 +433,24 @@ public class DocumentStepService {
                                         oDocumentStepSubjectRight_To.setsDate(null);
                                         oDocumentStepSubjectRight_To.setsDateECP(null);
                                         
-                                        oDocumentStepSubjectRight_To = oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
-                                        
-                                        /*List<DocumentStepSubjectRightField> aDocumentStepSubjectRight_New = 
+                                        List<DocumentStepSubjectRightField> aDocumentStepSubjectRight_New = 
                                                 oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields();
                                         
-                                        for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_From
-                                                : aDocumentStepSubjectRight_New) {
+                                        //осторожно! ужасный код! 2 часа ночи, потом переделаю
+                                        for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_From : aDocumentStepSubjectRight_New) {
                                             
-                                            oDocumentStepSubjectRightField_From.setDocumentStepSubjectRight(oDocumentStepSubjectRight_To);
-                                            oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField_From);
-                                        }*/
+                                            if (oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0).getbWrite() == true){
+                                                
+                                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0).setbWrite(oDocumentStepSubjectRightField_From.getbWrite());
+                                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0).setsMask_FieldID(oDocumentStepSubjectRightField_From.getsMask_FieldID());
+                                            }
+                                            else{
+                                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1).setbWrite(oDocumentStepSubjectRightField_From.getbWrite());
+                                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1).setsMask_FieldID(oDocumentStepSubjectRightField_From.getsMask_FieldID());
+                                            }
+                                        }
                                         
-                                        
+                                        oDocumentStepSubjectRight_To = oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
                                         
                                         break;
                                     }
