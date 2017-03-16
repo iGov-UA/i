@@ -40,6 +40,7 @@ import org.igov.util.Tool;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Component;
 
 @Component("documentStepService")
@@ -469,9 +470,11 @@ public class DocumentStepService {
         LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sID_Field={}, sKey_Step_Document={}",
                 sKey_GroupPostfix, snID_Process_Activiti, sID_Field, sKey_Step_Document_To);
 
+        JSONParser parser = new JSONParser();
         List<DocumentStepSubjectRight> resultList = new ArrayList<>();
 
-        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) runtimeService.getVariable(snID_Process_Activiti, sID_Field);
+        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(
+                (String)runtimeService.getVariable(snID_Process_Activiti, sID_Field));
 
         LOG.info("oJSONObject in cloneDocumentStepFromTable is {}", oJSONObject.toJSONString());
 
