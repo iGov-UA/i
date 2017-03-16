@@ -400,7 +400,7 @@ public class DocumentStepService {
 
             LOG.info("aDocumentStepSubjectRight_From is {}", aDocumentStepSubjectRight_From);
             LOG.info("aDocumentStepSubjectRight_To is {}", aDocumentStepSubjectRight_To);
-
+            
             for (String sResultGroup : asResultGroup) {
 
                 LOG.info("oDocumentStep_From rights is {}", oDocumentStep_From.getRights());
@@ -416,7 +416,29 @@ public class DocumentStepService {
 
                         } else {
                             
-                            
+                            if(oDocumentStepSubjectRight_From.getsDate() != null){
+                                
+                                LOG.info("DocumentStepSubjectRight_From when sDate isn't null: "
+                                        + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight_From.getsKey_GroupPostfix());
+                                
+                                for(int i = 0; i < aDocumentStepSubjectRight_To.size(); i++)
+                                {
+                                    DocumentStepSubjectRight oDocumentStepSubjectRight_To = aDocumentStepSubjectRight_To.get(i);
+                                 
+                                    if(oDocumentStepSubjectRight_To.getsKey_GroupPostfix().
+                                            equals(oDocumentStepSubjectRight_From.getsKey_GroupPostfix()))
+                                    {
+                                        LOG.info("DocumentStepSubjectRight_To equals _From with date {}: "
+                                        + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight_To.getsKey_GroupPostfix());
+                                        
+                                        oDocumentStepSubjectRight_To.setsDate(null);
+                                        oDocumentStepSubjectRight_To.setsDateECP(null);
+                                        oDocumentStepSubjectRight_To.setDocumentStepSubjectRightFields(oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields());
+                                        aDocumentStepSubjectRight_To.set(i, oDocumentStepSubjectRight_To);
+                                        break;
+                                    }
+                                }
+                            }
                             
                             LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}",
                                     sKey_GroupPostfix_New, oDocumentStep_To.getsKey_Step());
