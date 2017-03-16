@@ -68,10 +68,10 @@ public class SubjectGroupTreeService {
     private IdentityService identityService;
 
     @Autowired
-    private SubjectHumanDao SubjectHumanDao;
+    private SubjectHumanDao subjectHumanDao;
 
     @Autowired
-    private SubjectOrganDao SubjectOrganDao;
+    private SubjectOrganDao subjectOrganDao;
 
     @Autowired
     @Qualifier("subjectGroupDao")
@@ -89,11 +89,6 @@ public class SubjectGroupTreeService {
         List<Long> resSubjectTypeList = new ArrayList<>();
         List<SubjectGroup> aChildResult = new ArrayList<>();
         List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
-        LOG.info("subjectGroupRelationsssssssssss  " + subjectGroupRelations);
-        
-        String subjectType  = getSubjectType(sID_Group_Activiti);
-        
-        LOG.info("subjectTypeeeeeeeeeeeeeeeee  " + subjectGroupRelations);
         
         SubjectGroupResultTree processSubjectResultTree = new SubjectGroupResultTree();
         if (!subjectGroupRelations.isEmpty()) {
@@ -103,18 +98,30 @@ public class SubjectGroupTreeService {
             Map<String, Long> mapGroupActiviti = new HashMap<>();
             VSubjectGroupParentNode parentSubjectGroup = null;
             Set<Long> idParentList = new LinkedHashSet<>();
-            List<SubjectHuman> subjectHumans = null;
-            List<SubjectOrgan> subjectOrgans = null;
+            List<SubjectHuman> subjectHumans = new ArrayList<>();
+            List<SubjectOrgan> subjectOrgans = new ArrayList<>();
 
             if (HUMAN.equals(sSubjectType)) {
-                subjectHumans = new ArrayList<>(baseEntityDao.findAll(SubjectHuman.class));
-                LOG.info("HUMANNNNNNNNNNNNNNNNNNNN " + subjectHumans);
+               // subjectHumans = new ArrayList<>(baseEntityDao.findAll(SubjectHuman.class));
+                //LOG.info("HUMANNNNNNNNNNNNNNNNNNNN " + subjectHumans);
+            	 SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+                 Subject oSubject = oSubjectGroup.getoSubject();
+                 SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(oSubject);
+                 subjectHumans.add(subjectHuman);
+                 LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
+                 LOG.info("subjectHumannnnnnnnnn is " + subjectHuman);
                 isSubjectType = true;
             }
 
             if (ORGAN.equals(sSubjectType)) {
-                subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
-                LOG.info("ORGANNNNNNNNNNNNNNNNNNNNNNN  " + subjectHumans);
+               // subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
+                //LOG.info("ORGANNNNNNNNNNNNNNNNNNNNNNN  " + subjectHumans);
+            	SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+                Subject oSubject = oSubjectGroup.getoSubject();
+                SubjectOrgan subjectOrgan = subjectOrganDao.getSubjectOrgan(oSubject);
+                subjectOrgans.add(subjectOrgan);
+                LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
+                LOG.info("SubjectOrgannnnnn is " + subjectOrgan);
                 isSubjectType = true;
             }
             if (subjectHumans != null && !subjectHumans.isEmpty()) {
@@ -491,13 +498,13 @@ public class SubjectGroupTreeService {
             Subject oSubject = oSubjectGroup.getoSubject();
             LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
 
-            Optional<SubjectHuman> oSubjectHuman = SubjectHumanDao.findBy("oSubject", oSubject);
+            Optional<SubjectHuman> oSubjectHuman = subjectHumanDao.findBy("oSubject", oSubject);
             LOG.info("sID_Group_Activiti: {} oSubjectHuman isPresent: {}", sID_Group_Activiti, oSubjectHuman.isPresent());
 
             if (oSubjectHuman.isPresent()) {
                 return HUMAN;
             } else {
-                Optional<SubjectOrgan> oSubjectOrgan = SubjectOrganDao.findBy("oSubject", oSubject);
+                Optional<SubjectOrgan> oSubjectOrgan = subjectOrganDao.findBy("oSubject", oSubject);
                 LOG.info("sID_Group_Activiti: {} oSubjectOrgan isPresent: {}", sID_Group_Activiti, oSubjectOrgan.isPresent());
                 if (oSubjectOrgan.isPresent()) {
                     return ORGAN;
