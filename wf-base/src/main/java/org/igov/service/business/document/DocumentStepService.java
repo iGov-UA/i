@@ -429,10 +429,22 @@ public class DocumentStepService {
 
                                         LOG.info("DocumentStepSubjectRight_To equals _From with date {}: "
                                                 + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight_To.getsKey_GroupPostfix());
-
+                                        
                                         oDocumentStepSubjectRight_To.setsDate(null);
                                         oDocumentStepSubjectRight_To.setsDateECP(null);
                                         oDocumentStepSubjectRight_To = oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
+                                        
+                                        List<DocumentStepSubjectRightField> aDocumentStepSubjectRight_New = 
+                                                oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields();
+                                        
+                                        for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_From
+                                                : aDocumentStepSubjectRight_New) {
+                                            
+                                            oDocumentStepSubjectRightField_From.setDocumentStepSubjectRight(oDocumentStepSubjectRight_To);
+                                            oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField_From);
+                                        }
+                                        
+                                        
                                         
                                         break;
                                     }
