@@ -30,12 +30,16 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.task.IdentityLink;
+import org.apache.commons.io.IOUtils;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.model.document.DocumentStepSubjectRightFieldDao;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.service.business.subject.SubjectGroupTreeService;
+import org.igov.service.conf.AttachmetService;
+import org.igov.service.exception.CRCInvalidException;
 import org.igov.util.Tool;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -58,6 +62,9 @@ public class DocumentStepService {
     private DocumentStepDao oDocumentStepDao;*/
     @Autowired
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
+    
+    @Autowired
+    private AttachmetService oAttachmetService;
 
     @Autowired
     private TaskService oTaskService;
@@ -466,7 +473,7 @@ public class DocumentStepService {
     }
 
     public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti, String sKey_GroupPostfix, String sID_Field,
-            String sKey_Step_Document_To) throws ParseException {//JSONObject //Map<String, Object>
+            String sKey_Step_Document_To) throws ParseException, IOException, RecordInmemoryException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {//JSONObject //Map<String, Object>
         LOG.info("cloneDocumentStepSubject started...");
         LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sID_Field={}, sKey_Step_Document={}",
                 sKey_GroupPostfix, snID_Process_Activiti, sID_Field, sKey_Step_Document_To);
@@ -474,8 +481,13 @@ public class DocumentStepService {
         JSONParser parser = new JSONParser();
         List<DocumentStepSubjectRight> resultList = new ArrayList<>();
 
-        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(
+        org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(
                 (String)runtimeService.getVariable(snID_Process_Activiti, sID_Field));
+        
+       org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(
+               IOUtils.toString(oAttachmetService.getAttachment(null, null, 
+                    (String)oTableJSONObject.get("sKey"), (String)oTableJSONObject.get("sID_StorageType")).getInputStream(), "UTF-8"));
+                LOG.info("oTableJSONObject in listener: " + oJSONObject.toJSONString());
 
         LOG.info("oJSONObject in cloneDocumentStepFromTable is {}", oJSONObject.toJSONString());
 
