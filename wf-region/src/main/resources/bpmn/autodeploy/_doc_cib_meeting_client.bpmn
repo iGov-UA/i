@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_doc_cib_meeting_client" name="CIB - встреча с клиентом" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="email" name="email для уведомлений" type="string"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <scriptTask id="scripttask1" name="получение ИД процесса" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+		var processInstanceId= execution.getProcessInstanceId()
+		execution.setVariable('processInstanceId', processInstanceId)
+	</script>
+    </scriptTask>
+    <userTask id="usertask1" name="Задача">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="Автор задачи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="email" name="email для уведомлений" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameClient" name="Фамилия и Имя клиента" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Название компании" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asTypeTask" name="Выберите статус задачи" type="enum" required="true">
+          <activiti:value id="sEnum1" name="встреча с клиентом назначена"></activiti:value>
+          <activiti:value id="sEnum2" name="встреча с клиентом уже состоялась"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateExecution" name="Дата встречи" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Внесите отчет по результатам встречи" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asUrgently" name="Поставьте галочку если решение необходимо принять срочно; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" default="sEnumNotUrgentDoc">
+          <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
+          <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Якщо состоялась" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sContent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnum2'&quot;}}}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_CIB]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="scripttask2" name="Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_2'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав
+var sKey_GroupPostfix = '_default_CIB'
+var sKey_GroupPostfix_New = 'CIB_Top2_Exec1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+// ФИО заявителя
+var sLoginAuthor = execution.getVariable('sLoginAuthor')
+var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
+execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
+</script>
+    </scriptTask>
+    <userTask id="usertask2" name="принятие решения по результатам отчета">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="Автор задачи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameClient" name="Фамилия и Имя клиента" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Название компании" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateExecution" name="Дата встречи" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Oтчет по результатам встречи" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asUrgently" name="Срочное рассмотрение; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
+          <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
+          <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asDecision" name="Принятие решения по результатам отчета" type="enum" required="true">
+          <activiti:value id="sEnum1" name="утверждение"></activiti:value>
+          <activiti:value id="sEnum2" name="отказ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sComent" name="Комментарий" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow28" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow41" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="exclusivegateway1" targetRef="scripttask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asTypeTask == 'sEnum2'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask3" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_3'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав
+var sKey_GroupPostfix = '_default_CIB'
+var sKey_GroupPostfix_New = 'CIB_Top1_Exec1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
+    <sequenceFlow id="flow43" sourceRef="exclusivegateway1" targetRef="usertask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asTypeTask == 'sEnum1'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask3" name="внесение итогового отчета">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="Автор задачи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameClient" name="Фамилия и Имя клиента" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Название компании" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateExecution" name="Дата встречи" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComent" name="Комментарий" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Итоговый отчет" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/CIB/meeting_client_print.html]" type="invisible" default="Бланк отчета" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/iDoc/CIB/meeting_client_print.html" type="file"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow46" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Письмо отделу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Новый отчет о встрече с клиентом]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+        body {margin: 0; padding: 0;}
+        #mailer-body {font: 400 18px/20px 'Calibri';}
+        #mailer-body div,
+        #mailer-body p,
+        #mailer-body span,
+        #mailer-body strong,
+        #mailer-body b,
+        #mailer-body em,
+        #mailer-body i,
+        #mailer-body a,
+        #mailer-body li,
+        #mailer-body td {-webkit-text-size-adjust: none;}
+        #mailer-body a {color: #2F70AF; text-decoration: none;}
+        #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
+        #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
+        #mailer-body p > label {width: 40px;}
+        #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
+        #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
+        #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
+        #mailer-body label input[type='radio']:checked + span:before {background: url(http://shots.jotform.com/elton/radio_flat.png) left -22px no-repeat;}
+        #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
+        #mailer-body textarea:focus {outline: 0;}
+        #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
+    </style>
+</head>
+<body>
+<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body">
+    <tbody>
+    <tr>
+        <td align="center">
+            <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                <!--header line statrs-->
+                <tr>
+                    <td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"><b style="font-size: 24px;">iDoc</b><br />Система електроного документообігу</td>
+                </tr>
+                <!--header line end-->
+                <!--content statrs-->
+                <tr>
+                    <td style="padding: 35px 120px;">
+
+Уважаемый коллега!<br /><br />
+Поступил <a href="https://alpha-old.test.region.igov.org.ua/" target="_blank">новый отчет</a> о встрече с клиентом: ${sNameClient}.<br />
+<br />]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow47" sourceRef="scripttask2" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow48" sourceRef="servicetask1" targetRef="usertask2"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Письмо руководителю" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Новый отчет о встрече с клиентом]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+        body {margin: 0; padding: 0;}
+        #mailer-body {font: 400 18px/20px 'Calibri';}
+        #mailer-body div,
+        #mailer-body p,
+        #mailer-body span,
+        #mailer-body strong,
+        #mailer-body b,
+        #mailer-body em,
+        #mailer-body i,
+        #mailer-body a,
+        #mailer-body li,
+        #mailer-body td {-webkit-text-size-adjust: none;}
+        #mailer-body a {color: #2F70AF; text-decoration: none;}
+        #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
+        #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
+        #mailer-body p > label {width: 40px;}
+        #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
+        #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
+        #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
+        #mailer-body label input[type='radio']:checked + span:before {background: url(http://shots.jotform.com/elton/radio_flat.png) left -22px no-repeat;}
+        #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
+        #mailer-body textarea:focus {outline: 0;}
+        #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
+    </style>
+</head>
+<body>
+<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body">
+    <tbody>
+    <tr>
+        <td align="center">
+            <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                <!--header line statrs-->
+                <tr>
+                    <td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"><b style="font-size: 24px;">iDoc</b><br />Система електроного документообігу</td>
+                </tr>
+                <!--header line end-->
+                <!--content statrs-->
+                <tr>
+                    <td style="padding: 35px 120px;">
+
+Уважаемый коллега!<br /><br />
+Поступил итоговый отчет о встрече с клиентом ${sNameClient}.<br />
+Файл находится в приложении к письму.<br />
+Автор отчета ${sAuthorName}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow50" sourceRef="exclusivegateway2" targetRef="endevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision =='sEnum2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow51" sourceRef="exclusivegateway2" targetRef="scripttask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision =='sEnum1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow53" sourceRef="usertask3" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow54" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_cib_meeting_client">
+    <bpmndi:BPMNPlane bpmnElement="_doc_cib_meeting_client" id="BPMNPlane__doc_cib_meeting_client">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="128.0" y="78.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="68.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="329.0" y="68.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="520.0" y="68.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="820.0" y="68.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="459.0" y="75.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="714.0" y="166.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="560.0" y="166.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="852.0" y="173.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="68.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="410.0" y="166.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="340.0" y="176.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="937.0" y="176.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="305.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="329.0" y="95.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="163.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="95.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="434.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="459.0" y="95.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="499.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="95.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="479.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="478.0" y="32.0"></omgdi:waypoint>
+        <omgdi:waypoint x="381.0" y="32.0"></omgdi:waypoint>
+        <omgdi:waypoint x="381.0" y="68.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="872.0" y="123.0"></omgdi:waypoint>
+        <omgdi:waypoint x="872.0" y="173.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
+        <omgdi:waypoint x="625.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="95.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="765.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="820.0" y="95.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="892.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="937.0" y="193.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="852.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="819.0" y="193.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="714.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="665.0" y="193.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="560.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="515.0" y="193.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
+        <omgdi:waypoint x="410.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="375.0" y="193.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
