@@ -283,6 +283,12 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sBody_2" name="[pattern/print/iDoc/OE/_doc_oe_premium_order_print.html]" type="invisible" default="Наказ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Службова на доплату;Службова на доплату;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Наказ на доплату;Наказ на доплату;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_order_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sSignedDir" name="Підписано директором напрямку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSignedPers" name="Підписано директором персоналу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSignedPK" name="Підписано профспілковий комітет" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSignedFin" name="Підписано фінансовим директором" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSignedHead" name="Підписано головою правління" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFileScan" name="Скан-копія наказу; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -346,7 +352,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         </activiti:formProperty>
         <activiti:formProperty id="sText" name="Текст ініціативного листа" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер наказу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSignedDir" name="Підписано директором напрямку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSignedPers" name="Підписано директором персоналу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSignedPK" name="Підписано профспілковим комітетом" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSignedFin" name="Підписано фінансовим директором" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSignedHead" name="Підписано головою правління" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileScan" name="Скан-копія наказу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="bVerificationSignatures" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
@@ -431,7 +443,6 @@ var sKey_GroupPostfix = '_default_Chief'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
     </scriptTask>
-    <sequenceFlow id="flow31" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
     <scriptTask id="scripttask4" name="step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
@@ -547,6 +558,24 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     <sequenceFlow id="flow45" sourceRef="exclusivegateway6" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocCreate == 'sEnumCreateDeny'}]]></conditionExpression>
     </sequenceFlow>
+    <serviceTask id="servicetask3" name="Лист Директору персоналу">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Службова на доплату]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[Шановний Колего! Нова службова на доплату!]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow46" sourceRef="scripttask3" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow47" sourceRef="servicetask3" targetRef="usertask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_oe_premium">
     <bpmndi:BPMNPlane bpmnElement="_doc_oe_premium" id="BPMNPlane__doc_oe_premium">
@@ -637,6 +666,9 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="463.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="71.0" width="105.0" x="810.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="55.0" y="65.0"></omgdi:waypoint>
         <omgdi:waypoint x="80.0" y="65.0"></omgdi:waypoint>
@@ -711,10 +743,6 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdi:waypoint x="615.0" y="65.0"></omgdi:waypoint>
         <omgdi:waypoint x="635.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="700.0" y="208.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="223.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
         <omgdi:waypoint x="700.0" y="418.0"></omgdi:waypoint>
         <omgdi:waypoint x="700.0" y="437.0"></omgdi:waypoint>
@@ -773,6 +801,14 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
         <omgdi:waypoint x="500.0" y="65.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="36.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="753.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="810.0" y="215.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
+        <omgdi:waypoint x="810.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="766.0" y="258.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
