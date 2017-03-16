@@ -954,7 +954,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         if ($scope.isFormDataEmpty()) {
           return false;
         } else {
-          return BankIDAccount.customer.isAuthTypeFromBankID;
+          return BankIDAccount.customer.sUsedAuthType === 'bankid' || BankIDAccount.customer.sUsedAuthType === 'bankid-nbu';
         }
       };
 
