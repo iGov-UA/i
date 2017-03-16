@@ -802,11 +802,12 @@
               if (unpopulatedFields.length == 1) {
 
                 var nameToAdd = unpopulatedFields[0].name;
+                var idToAdd = unpopulatedFields[0].id;
                 if (nameToAdd.length > 50) {
                   nameToAdd = nameToAdd.substr(0, 50) + "...";
                 }
 
-                errorMessage = "Будь ласка, заповніть полe '" + nameToAdd + "'";
+                errorMessage = "Будь ласка, заповніть полe '" + nameToAdd + "' (id поля: '" + idToAdd + "')";
               }
               else {
                 unpopulatedFields.forEach(function (field) {
@@ -820,7 +821,7 @@
                 var comaIndex = errorMessage.lastIndexOf(',');
                 errorMessage = errorMessage.substr(0, comaIndex);
               }
-              console.error(errorMessage);
+              Modal.inform.error()(errorMessage);
               setTimeout(function () {
                 angular.element('.submitted').first().focus();
               },100);
