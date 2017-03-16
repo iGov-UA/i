@@ -480,7 +480,7 @@ public class DocumentStepService {
                 oDocumentStep_To.setRights(aDocumentStepSubjectRight_To);
                 //documentStepDao.saveOrUpdate(oDocumentStep_To);
                 resultList.add(oDocumentStepSubjectRight_New);
-
+                LOG.info("aDocumentStepSubjectRight_To before saving is {} ", aDocumentStepSubjectRight_To);
                 documentStepDao.saveOrUpdate(oDocumentStep_To);
                 n++;
             }
