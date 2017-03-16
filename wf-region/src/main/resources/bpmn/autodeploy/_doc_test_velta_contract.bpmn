@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_velta_contract" name="Роспорядження про створення контракту" isExecutable="true">
+  <process id="_doc_test_velta_contract" name="Тестовий - Роспорядження про створення контракту" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Роспорядження про створення контракту"></activiti:formProperty>
@@ -31,7 +31,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="3"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст контракту" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asTypical" name="Типовий контракт; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" default="sEnumNotTypical" required="true">
+        <activiti:formProperty id="asTypical" name="Типовий контракт; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" default="sEnumNotTypical" required="false">
           <activiti:value id="sEnumTypical" name="типовий"></activiti:value>
           <activiti:value id="sEnumNotTypical" name="не типовий"></activiti:value>
         </activiti:formProperty>
@@ -254,34 +254,13 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_2'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав 2-й шаг
+// клонирование прав на юр.отдел
 
-var sKey_GroupPostfix_New = 'Velta_Justice_Head'
+var sKey_GroupPostfix_New = 'Velta_Justice'
 var sKey_GroupPostfix = '_default_Velta_Justice'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Justice', oResult)
-
-var sKey_GroupPostfix_New = 'Velta_Justice_Spec1'
-var sKey_GroupPostfix = '_default_Velta_Justice'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-
-var sKey_GroupPostfix_New = 'Velta_Finance_Head'
-sKey_GroupPostfix = '_default_Finance_Justice'
-oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Finance', oResult)
-
-var sKey_GroupPostfix_New = 'Velta_Finance_Spec1'
-sKey_GroupPostfix = '_default_Finance_Justice'
-oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-
-var sKey_GroupPostfix_New = 'Velta_Tech_Head'
-sKey_GroupPostfix = '_default_Tech_Justice'
-oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Tech', oResult)
-
-var sKey_GroupPostfix_New = 'Velta_Tech_Spec1'
-sKey_GroupPostfix = '_default_Tech_Justice'
-oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+</script>
     </scriptTask>
     <sequenceFlow id="flow49" sourceRef="scripttask4" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -299,9 +278,9 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_3'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав на 3-й шаг
+// клонирование прав на согласующего и утверждающего
 
-var sKey_GroupPostfix_New = 'Velta_Justice_Head'
+var sKey_GroupPostfix_New = 'Velta_Justice'
 var sKey_GroupPostfix = '_default_Velta_Justice'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Justice', oResult)</script>
@@ -314,43 +293,30 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_4'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав на 4-й шаг
+// клонирование прав на возврат на доработку
 
-var sKey_GroupPostfix_New = 'Velta_Finance_Head'
+var sKey_GroupPostfix_New = 'Velta_Finance'
 sKey_GroupPostfix = '_default_Velta_Finance'
 oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Finance', oResult)
-
-var sKey_GroupPostfix_New = 'Velta_Finance_Spec1'
-sKey_GroupPostfix = '_default_Velta_Finance'
-oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-
-var sKey_GroupPostfix_New = 'Velta_Tech_Head'
-sKey_GroupPostfix = '_default_Velta_Tech'
-oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Tech', oResult)
-
-
-var sKey_GroupPostfix_New = 'Velta_Tech_Spec1'
-sKey_GroupPostfix = '_default_Velta_Tech'
-oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+</script>
     </scriptTask>
     <sequenceFlow id="flow56" sourceRef="scripttask6" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask2" targetRef="scripttask6"></sequenceFlow>
     <scriptTask id="scripttask7" name="переключение степа на 5" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//переключение степа
+      <script>
+//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_5'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав на утверждающего
+// клонирование прав на  утверждающего
 
 var sKey_GroupPostfix_New = 'Velta_Head'
 var sKey_GroupPostfix = '_default_Velta_head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Head', oResult)
-</script>
+execution.setVariable('sCloningOfLaw_Head', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow58" sourceRef="scripttask7" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
@@ -362,8 +328,8 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     </scriptTask>
     <sequenceFlow id="flow60" sourceRef="scripttask8" targetRef="exclusivegateway3"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_velta_contract">
-    <bpmndi:BPMNPlane bpmnElement="_doc_velta_contract" id="BPMNPlane__doc_velta_contract">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_velta_contract">
+    <bpmndi:BPMNPlane bpmnElement="_doc_test_velta_contract" id="BPMNPlane__doc_test_velta_contract">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="48.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

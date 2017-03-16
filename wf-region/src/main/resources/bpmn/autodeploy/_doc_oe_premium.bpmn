@@ -283,12 +283,16 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sBody_2" name="[pattern/print/iDoc/OE/_doc_oe_premium_order_print.html]" type="invisible" default="Наказ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Службова на доплату;Службова на доплату;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Наказ на доплату;Наказ на доплату;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_order_print.html" type="file"></activiti:formProperty>
+
         <activiti:formProperty id="sSignedDir" name="Підписано директором напрямку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSignedPers" name="Підписано директором персоналу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSignedPK" name="Підписано профспілковий комітет" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSignedFin" name="Підписано фінансовим директором" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSignedHead" name="Підписано головою правління" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFileScan" name="Скан-копія наказу; ;bNew=true" type="file"></activiti:formProperty>
+
+        <activiti:formProperty id="sDateOrder" name="Дата наказу" type="date" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
