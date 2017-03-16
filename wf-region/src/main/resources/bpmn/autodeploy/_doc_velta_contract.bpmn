@@ -11,8 +11,8 @@
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="4 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//3. получение ИД текущего процесса
+    <scriptTask id="scripttask1" name="получение ИД текущего процесса" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>// получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 
@@ -254,22 +254,34 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_2'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав на согласующего и утверждающего
+// клонирование прав 2-й шаг
 
-var sKey_GroupPostfix_New = 'Velta_Justice'
+var sKey_GroupPostfix_New = 'Velta_Justice_Head'
 var sKey_GroupPostfix = '_default_Velta_Justice'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Justice', oResult)
 
-var sKey_GroupPostfix_New = 'Velta_Finance'
+var sKey_GroupPostfix_New = 'Velta_Justice_Spec1'
+var sKey_GroupPostfix = '_default_Velta_Justice'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+var sKey_GroupPostfix_New = 'Velta_Finance_Head'
 sKey_GroupPostfix = '_default_Finance_Justice'
 oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Finance', oResult)
 
-var sKey_GroupPostfix_New = 'Velta_Tech'
+var sKey_GroupPostfix_New = 'Velta_Finance_Spec1'
+sKey_GroupPostfix = '_default_Finance_Justice'
+oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+var sKey_GroupPostfix_New = 'Velta_Tech_Head'
 sKey_GroupPostfix = '_default_Tech_Justice'
 oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Tech', oResult)</script>
+execution.setVariable('sCloningOfLaw_Tech', oResult)
+
+var sKey_GroupPostfix_New = 'Velta_Tech_Spec1'
+sKey_GroupPostfix = '_default_Tech_Justice'
+oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow49" sourceRef="scripttask4" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -287,9 +299,9 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_3'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав на согласующего и утверждающего
+// клонирование прав на 3-й шаг
 
-var sKey_GroupPostfix_New = 'Velta_Justice'
+var sKey_GroupPostfix_New = 'Velta_Justice_Head'
 var sKey_GroupPostfix = '_default_Velta_Justice'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Justice', oResult)</script>
@@ -302,34 +314,43 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_4'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав на согласующего и утверждающего
+// клонирование прав на 4-й шаг
 
-var sKey_GroupPostfix_New = 'Velta_Finance'
+var sKey_GroupPostfix_New = 'Velta_Finance_Head'
 sKey_GroupPostfix = '_default_Velta_Finance'
 oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Finance', oResult)
 
-var sKey_GroupPostfix_New = 'Velta_Tech'
+var sKey_GroupPostfix_New = 'Velta_Finance_Spec1'
+sKey_GroupPostfix = '_default_Velta_Finance'
+oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+var sKey_GroupPostfix_New = 'Velta_Tech_Head'
 sKey_GroupPostfix = '_default_Velta_Tech'
 oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Tech', oResult)</script>
+execution.setVariable('sCloningOfLaw_Tech', oResult)
+
+
+var sKey_GroupPostfix_New = 'Velta_Tech_Spec1'
+sKey_GroupPostfix = '_default_Velta_Tech'
+oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow56" sourceRef="scripttask6" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask2" targetRef="scripttask6"></sequenceFlow>
     <scriptTask id="scripttask7" name="переключение степа на 5" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-//переключение степа
+      <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_5'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав на согласующего и утверждающего
+// клонирование прав на утверждающего
 
 var sKey_GroupPostfix_New = 'Velta_Head'
 var sKey_GroupPostfix = '_default_Velta_head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Head', oResult)</script>
+execution.setVariable('sCloningOfLaw_Head', oResult)
+</script>
     </scriptTask>
     <sequenceFlow id="flow58" sourceRef="scripttask7" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
@@ -466,9 +487,9 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdi:waypoint x="382.0" y="793.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="382.0" y="956.0"></omgdi:waypoint>
-        <omgdi:waypoint x="275.0" y="867.0"></omgdi:waypoint>
-        <omgdi:waypoint x="275.0" y="890.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="983.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="983.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="925.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
         <omgdi:waypoint x="382.0" y="308.0"></omgdi:waypoint>

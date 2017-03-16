@@ -11,8 +11,8 @@
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="4 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//3. получение ИД текущего процесса
+    <scriptTask id="scripttask1" name="получение ИД текущего процесса" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>// получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 
@@ -31,7 +31,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="3"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст контракту" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asTypical" name="Типовий контракт; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" default="sEnumNotTypical" required="true">
+        <activiti:formProperty id="asTypical" name="Типовий контракт; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" default="sEnumNotTypical" required="false">
           <activiti:value id="sEnumTypical" name="типовий"></activiti:value>
           <activiti:value id="sEnumNotTypical" name="не типовий"></activiti:value>
         </activiti:formProperty>
@@ -254,22 +254,13 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_2'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав на согласующего и утверждающего
+// клонирование прав на юр.отдел
 
 var sKey_GroupPostfix_New = 'Velta_Justice'
 var sKey_GroupPostfix = '_default_Velta_Justice'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Justice', oResult)
-
-var sKey_GroupPostfix_New = 'Velta_Finance'
-sKey_GroupPostfix = '_default_Finance_Justice'
-oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Finance', oResult)
-
-var sKey_GroupPostfix_New = 'Velta_Tech'
-sKey_GroupPostfix = '_default_Tech_Justice'
-oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Tech', oResult)</script>
+</script>
     </scriptTask>
     <sequenceFlow id="flow49" sourceRef="scripttask4" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -302,17 +293,13 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_4'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав на согласующего и утверждающего
+// клонирование прав на возврат на доработку
 
 var sKey_GroupPostfix_New = 'Velta_Finance'
 sKey_GroupPostfix = '_default_Velta_Finance'
 oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Finance', oResult)
-
-var sKey_GroupPostfix_New = 'Velta_Tech'
-sKey_GroupPostfix = '_default_Velta_Tech'
-oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Tech', oResult)</script>
+</script>
     </scriptTask>
     <sequenceFlow id="flow56" sourceRef="scripttask6" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask2" targetRef="scripttask6"></sequenceFlow>
@@ -324,7 +311,7 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_5'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав на согласующего и утверждающего
+// клонирование прав на  утверждающего
 
 var sKey_GroupPostfix_New = 'Velta_Head'
 var sKey_GroupPostfix = '_default_Velta_head'
