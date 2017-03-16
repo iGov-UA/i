@@ -90,6 +90,11 @@ public class SubjectGroupTreeService {
         List<SubjectGroup> aChildResult = new ArrayList<>();
         List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
         LOG.info("subjectGroupRelationsssssssssss  " + subjectGroupRelations);
+        
+        String subjectType  = getSubjectType(sID_Group_Activiti);
+        
+        LOG.info("subjectTypeeeeeeeeeeeeeeeee  " + subjectGroupRelations);
+        
         SubjectGroupResultTree processSubjectResultTree = new SubjectGroupResultTree();
         if (!subjectGroupRelations.isEmpty()) {
             List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
