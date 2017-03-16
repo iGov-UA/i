@@ -102,26 +102,26 @@ public class SubjectGroupTreeService {
             List<SubjectOrgan> subjectOrgans = new ArrayList<>();
 
             if (HUMAN.equals(sSubjectType)) {
-               // subjectHumans = new ArrayList<>(baseEntityDao.findAll(SubjectHuman.class));
-                //LOG.info("HUMANNNNNNNNNNNNNNNNNNNN " + subjectHumans);
-            	 SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+                subjectHumans = new ArrayList<>(baseEntityDao.findAll(SubjectHuman.class));
+                LOG.info("HUMANNNNNNNNNNNNNNNNNNNN " + subjectHumans);
+            	/* SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
                  Subject oSubject = oSubjectGroup.getoSubject();
                  SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(oSubject);
                  subjectHumans.add(subjectHuman);
                  LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
-                 LOG.info("subjectHumannnnnnnnnn is " + subjectHuman);
+                 LOG.info("subjectHumannnnnnnnnn is " + subjectHuman);*/
                 isSubjectType = true;
             }
 
             if (ORGAN.equals(sSubjectType)) {
-               // subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
-                //LOG.info("ORGANNNNNNNNNNNNNNNNNNNNNNN  " + subjectHumans);
-            	SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+                subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
+                LOG.info("ORGANNNNNNNNNNNNNNNNNNNNNNN  " + subjectHumans);
+            	/*SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
                 Subject oSubject = oSubjectGroup.getoSubject();
                 SubjectOrgan subjectOrgan = subjectOrganDao.getSubjectOrgan(oSubject);
                 subjectOrgans.add(subjectOrgan);
                 LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
-                LOG.info("SubjectOrgannnnnn is " + subjectOrgan);
+                LOG.info("SubjectOrgannnnnn is " + subjectOrgan);*/
                 isSubjectType = true;
             }
             if (subjectHumans != null && !subjectHumans.isEmpty()) {
