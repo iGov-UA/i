@@ -63,26 +63,31 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст контракту" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNubmber" name="Номер контракту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocCity" name="Місто підписання контракту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateDoc" name="Дата створення контракту" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDoc" name="Дата створення контракту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCompName" name="Повна назва контрагента" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEdrpouInn" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCompAdress" name="Юридична адреса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPosition" name="Посада відповідальної особи контрагента" type="string"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA3" name="Прізвище відповідальної особи контрагента" type="string"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA3" name="Ім'я відповідальної особи контрагента" type="string"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA3" name="По батькові відповідальної особи контрагента" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTaxType" name="Тип платнику податку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBase" name="Підстава, на якій діє контрагент" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="privatePhone" name="Телефон контрагента" type="string" default="+380"></activiti:formProperty>
-        <activiti:formProperty id="privateMail" name="E-mail контрагента" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateEnd" name="Термін дії контракту" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGoodType" name="Товар, який потрібно поставити" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGoodConditions" name="Умови поставки товару" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGoodCity" name="Місто зберігання товару" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGoodStorage" name="Склад зберігання товару" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
+        <activiti:formProperty id="sEdrpouInn" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCompAdress" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPosition" name="Посада відповідальної особи контрагента" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA3" name="Прізвище відповідальної особи контрагента" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA3" name="Ім'я відповідальної особи контрагента" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA3" name="По батькові відповідальної особи контрагента" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTaxType" name="Тип платнику податку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBase" name="Підстава, на якій діє контрагент" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон контрагента" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="privateMail" name="E-mail контрагента" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateEnd" name="Термін дії контракту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sGoodType" name="Товар, який потрібно поставити" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sGoodConditions" name="Умови поставки товару" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sGoodCity" name="Місто зберігання товару" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sGoodStorage" name="Склад зберігання товару" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTypical" name="Типовий контракт; ;sID_CheckboxTrue=sEnumTypical" type="enum" writable="false">
+          <activiti:value id="sEnumTypical" name="типовий"></activiti:value>
+          <activiti:value id="sEnumNotTypical" name="не типовий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
@@ -105,26 +110,27 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст контракту" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocCity" name="Місто підписання контракту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateDoc" name="Дата створення контракту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCompName" name="Повна назва контрагента" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEdrpouInn" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCompAdress" name="Юридична адреса" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosition" name="Посада відповідальної особи контрагента" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA3" name="Прізвище відповідальної особи контрагента" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA3" name="Ім'я відповідальної особи контрагента" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA3" name="По батькові відповідальної особи контрагента" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTaxType" name="Тип платнику податку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBase" name="Підстава, на якій діє контрагент" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="privatePhone" name="Телефон контрагента" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="privateMail" name="E-mail контрагента" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateEnd" name="Термін дії контракту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGoodType" name="Товар, який потрібно поставити" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGoodConditions" name="Умови поставки товару" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGoodCity" name="Місто зберігання товару" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGoodStorage" name="Склад зберігання товару" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asReady" name="Ступінь готовності контратку" type="enum">
+        <activiti:formProperty id="sDocNubmber" name="Номер контракту" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDocCity" name="Місто підписання контракту" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDoc" name="Дата створення контракту" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCompName" name="Повна назва контрагента" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEdrpouInn" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCompAdress" name="Юридична адреса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosition" name="Посада відповідальної особи контрагента" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA3" name="Прізвище відповідальної особи контрагента" type="string"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA3" name="Ім'я відповідальної особи контрагента" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA3" name="По батькові відповідальної особи контрагента" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTaxType" name="Тип платнику податку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBase" name="Підстава, на якій діє контрагент" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон контрагента" type="string"></activiti:formProperty>
+        <activiti:formProperty id="privateMail" name="E-mail контрагента" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateEnd" name="Термін дії контракту" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGoodType" name="Товар, який потрібно поставити" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGoodConditions" name="Умови поставки товару" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGoodCity" name="Місто зберігання товару" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGoodStorage" name="Склад зберігання товару" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asReady" name="Ступінь готовності контратку" type="enum" required="true">
           <activiti:value id="sGood" name="контракт готовий, передати на затвердження"></activiti:value>
           <activiti:value id="sMistake" name="потрібно виправити помилку"></activiti:value>
         </activiti:formProperty>
@@ -170,6 +176,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDocNubmber" name="Номер контракту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocCity" name="Місто підписання контракту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата створення контракту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCompName" name="Повна назва контрагента" type="string" writable="false"></activiti:formProperty>
@@ -189,13 +196,13 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sGoodConditions" name="Умови поставки товару" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sGoodCity" name="Місто зберігання товару" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sGoodStorage" name="Склад зберігання товару" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asDone" name="Дія стосовно контракту" type="enum">
+        <activiti:formProperty id="asDone" name="Дія стосовно контракту" type="enum" required="true">
           <activiti:value id="sSend" name="відправити на погодження контрагенту"></activiti:value>
           <activiti:value id="sPrint" name="роздрукувати для підпису"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/velta/velta_contract.html]" type="invisible" default="Стандартний контракт" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=[pattern/print/iDoc/velta/velta_contract.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/iDoc/velta/velta_contract.html" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
