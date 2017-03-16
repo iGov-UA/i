@@ -562,7 +562,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     <sequenceFlow id="flow45" sourceRef="exclusivegateway6" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocCreate == 'sEnumCreateDeny'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask3" name="Лист Директору персоналу">
+    <serviceTask id="servicetask3" name="Лист Директору персоналу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -574,7 +574,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
           <activiti:string><![CDATA[Службова на доплату]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Шановний Колего! Нова службова на доплату!]]></activiti:expression>
+          <activiti:expression><![CDATA[Службова узгоджена. Наказ створено.]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
