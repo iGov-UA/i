@@ -102,11 +102,13 @@ public class SubjectGroupTreeService {
 
             if (HUMAN.equals(sSubjectType)) {
                 subjectHumans = new ArrayList<>(baseEntityDao.findAll(SubjectHuman.class));
+                LOG.info("HUMANNNNNNNNNNNNNNNNNNNN " + subjectHumans);
                 isSubjectType = true;
             }
 
             if (ORGAN.equals(sSubjectType)) {
                 subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
+                LOG.info("ORGANNNNNNNNNNNNNNNNNNNNNNN  " + subjectHumans);
                 isSubjectType = true;
             }
             if (subjectHumans != null && !subjectHumans.isEmpty()) {
@@ -117,6 +119,8 @@ public class SubjectGroupTreeService {
                                 return subjectHuman.getoSubject().getId();
                             }
                         }));
+                
+                LOG.info("subjectHumansIdSubj  " + subjectHumansIdSubj);
                 subjectGroupRelations = Lists
                         .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
                             @Override
@@ -129,6 +133,8 @@ public class SubjectGroupTreeService {
                                         && subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
                             }
                         }));
+                
+                LOG.info("subjectGroupRelations  " + subjectGroupRelations);
 
                 resSubjectTypeList.addAll(subjectHumansIdSubj);
             }
