@@ -419,8 +419,7 @@ public class DocumentStepService {
                             for (int i = 0; i < aDocumentStepSubjectRight_To.size(); i++) {
                                 DocumentStepSubjectRight oDocumentStepSubjectRight_To = aDocumentStepSubjectRight_To.get(i);
 
-                                if (oDocumentStepSubjectRight_To.getsKey_GroupPostfix().
-                                        equals(oDocumentStepSubjectRight_From.getsKey_GroupPostfix())) {
+                                if (oDocumentStepSubjectRight_To.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
                                     if (oDocumentStepSubjectRight_To.getsDate() != null) {
                                         LOG.info("DocumentStepSubjectRight_From when sDate isn't null: "
                                                 + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight_From.getsKey_GroupPostfix());
@@ -432,6 +431,8 @@ public class DocumentStepService {
                                         oDocumentStepSubjectRight_To.setsDateECP(null);
                                         oDocumentStepSubjectRight_To.setDocumentStepSubjectRightFields(oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields());
                                         aDocumentStepSubjectRight_To.set(i, oDocumentStepSubjectRight_To);
+                                        //aDocumentStepSubjectRight.add(oDocumentStepSubjectRight_To);
+                                        oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
                                         break;
                                     }
                                 }
