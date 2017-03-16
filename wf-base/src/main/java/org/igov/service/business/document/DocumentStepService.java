@@ -474,7 +474,7 @@ public class DocumentStepService {
 
     public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti, String sKey_GroupPostfix, String sID_Field,
             String sKey_Step_Document_To) throws ParseException, IOException, RecordInmemoryException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {//JSONObject //Map<String, Object>
-        LOG.info("cloneDocumentStepSubject started...");
+        LOG.info("cloneDocumentStepFromTable started...");
         LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sID_Field={}, sKey_Step_Document={}",
                 sKey_GroupPostfix, snID_Process_Activiti, sID_Field, sKey_Step_Document_To);
 
@@ -509,13 +509,16 @@ public class DocumentStepService {
                                 LOG.info("oJsonMap in cloneDocumentStepFromTable is {}", oJsonMap);
                                 if (oJsonMap != null) {
                                     Object oId = oJsonMap.get("id");
-                                    Object oValue = oJsonMap.get("value");
-                                    if (oValue != null) {
-                                        LOG.info("oValue in cloneDocumentStepFromTable is {}", oValue);
-                                        resultList.addAll(cloneDocumentStepSubject(snID_Process_Activiti,
-                                                sKey_GroupPostfix, (String) oValue, sKey_Step_Document_To));
-                                    } else {
-                                        LOG.info("oValue in cloneDocumentStepFromTable is null");
+                                    if(((String)oId).equals("sLogin_isExecute"))
+                                    {
+                                        Object oValue = oJsonMap.get("value");
+                                        if (oValue != null) {
+                                            LOG.info("oValue in cloneDocumentStepFromTable is {}", oValue);
+                                            resultList.addAll(cloneDocumentStepSubject(snID_Process_Activiti,
+                                                    sKey_GroupPostfix, (String) oValue, sKey_Step_Document_To));
+                                        } else {
+                                            LOG.info("oValue in cloneDocumentStepFromTable is null");
+                                        }
                                     }
                                 }
                             }
