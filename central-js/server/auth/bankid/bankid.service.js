@@ -29,8 +29,7 @@ module.exports.decryptCallback = function (callback) {
 };
 
 module.exports.convertToCanonical = function (customer) {
-  // сохранение признака для отображения надписи о необходимости проверки регистрационных данных, переданых от BankID
-  customer.isAuthTypeFromBankID = true;
+
   return customer;
 };
 
