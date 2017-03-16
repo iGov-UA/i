@@ -110,45 +110,13 @@
                  ng-class="{'central-igov-okpo-block':isOKPOAutocompleteFields(property.id) === 'okpo_field' || isOKPOAutocompleteFields(property.id) === 'okpo_autocomplete'}">
 
               <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
-                <table style="width: 100%; margin-bottom: 5px">
-                  <tr ng-if="insertSeparator(property.id).sText.length > 0" style="width: 100%">
-                    <!--<td style="width: 30%; display: table-cell">
-                      <table style="width: 100%">
-                        <tr>
-                          <td style="width: 100%; margin-top: 30px; margin-bottom: 30px; height: 1px; display: block;
-                            background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                            background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                            background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                            background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));">
-                          </td>
-                        </tr>
-                      </table>
-                    </td>-->
-                    <td style="max-width: 40%; margin-top: 30px; margin-bottom: 30px; padding: 0 15px 0 15px">
-                      <span style="position: relative"><b>{{insertSeparator(property.id).sText}}</b></span>
-                    </td>
-                    <td style="width: 58%; display: table-cell">
-                      <table style="width: 100%">
-                        <tr>
-                          <td style="width: 100%; margin-top: 30px; margin-bottom: 30px; height: 1px; display: block;
-                          background-image: -webkit-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                          background-image:    -moz-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                          background-image:     -ms-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                          background-image:      -o-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));">
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                  <tr ng-if="insertSeparator(property.id).sText.length == 0" style="width: 100%">
-                    <td style="width: 100%; margin-top: 30px; margin-bottom: 30px; height: 1px; display: block;
-                                background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
-                                background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
-                                background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
-                                background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));">
-                    </td>
-                  </tr>
-                </table>
+                <div ng-if="insertSeparator(property.id).sText.length > 0" class="flex-hr wrap-hr" style="width: 100%">
+                  <div><b>{{insertSeparator(property.id).sText}}</b></div>
+                  <div class="line-separator"></div>
+                </div>
+                <div ng-if="insertSeparator(property.id).sText.length == 0" style="width: 100%">
+                  <div class="line-separator-full"></div>
+                </div>
               </div>
 
               <div id="label-{{property.id}}" class="col-md-5"
