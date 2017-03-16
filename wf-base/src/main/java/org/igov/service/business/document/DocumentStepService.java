@@ -41,6 +41,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 
 @Component("documentStepService")
@@ -465,7 +466,7 @@ public class DocumentStepService {
     }
 
     public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti, String sKey_GroupPostfix, String sID_Field,
-            String sKey_Step_Document_To) {//JSONObject //Map<String, Object>
+            String sKey_Step_Document_To) throws ParseException {//JSONObject //Map<String, Object>
         LOG.info("cloneDocumentStepSubject started...");
         LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sID_Field={}, sKey_Step_Document={}",
                 sKey_GroupPostfix, snID_Process_Activiti, sID_Field, sKey_Step_Document_To);
