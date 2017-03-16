@@ -415,22 +415,19 @@ public class DocumentStepService {
                             asResultGroup_Selected.add(sResultGroup);
 
                         } else {
-                            
-                            if(oDocumentStepSubjectRight_From.getsDate() != null){
-                                
-                                LOG.info("DocumentStepSubjectRight_From when sDate isn't null: "
-                                        + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight_From.getsKey_GroupPostfix());
-                                
-                                for(int i = 0; i < aDocumentStepSubjectRight_To.size(); i++)
-                                {
-                                    DocumentStepSubjectRight oDocumentStepSubjectRight_To = aDocumentStepSubjectRight_To.get(i);
-                                 
-                                    if(oDocumentStepSubjectRight_To.getsKey_GroupPostfix().
-                                            equals(oDocumentStepSubjectRight_From.getsKey_GroupPostfix()))
-                                    {
+
+                            for (int i = 0; i < aDocumentStepSubjectRight_To.size(); i++) {
+                                DocumentStepSubjectRight oDocumentStepSubjectRight_To = aDocumentStepSubjectRight_To.get(i);
+
+                                if (oDocumentStepSubjectRight_To.getsKey_GroupPostfix().
+                                        equals(oDocumentStepSubjectRight_From.getsKey_GroupPostfix())) {
+                                    if (oDocumentStepSubjectRight_To.getsDate() != null) {
+                                        LOG.info("DocumentStepSubjectRight_From when sDate isn't null: "
+                                                + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight_From.getsKey_GroupPostfix());
+
                                         LOG.info("DocumentStepSubjectRight_To equals _From with date {}: "
-                                        + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight_To.getsKey_GroupPostfix());
-                                        
+                                                + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight_To.getsKey_GroupPostfix());
+
                                         oDocumentStepSubjectRight_To.setsDate(null);
                                         oDocumentStepSubjectRight_To.setsDateECP(null);
                                         oDocumentStepSubjectRight_To.setDocumentStepSubjectRightFields(oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields());
@@ -439,6 +436,7 @@ public class DocumentStepService {
                                     }
                                 }
                             }
+                        
                             
                             LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}",
                                     sKey_GroupPostfix_New, oDocumentStep_To.getsKey_Step());
