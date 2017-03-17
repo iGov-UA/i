@@ -3056,6 +3056,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> mReturn = new HashMap<>();
                 
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
+        List<Task> tasks = taskService.createTaskQuery().processInstanceId(oProcessInstanceChild.getId()).active().list();
+        if (tasks != null && tasks.size() > 0){
+        	LOG.info("Found " + tasks.size() + " active tasks for the process instance " + oProcessInstanceChild.getProcessInstanceId());
+        	mReturn.put("nID_Task", tasks.get(0).getId());
+        } else {
+        	LOG.warn("There are no active tasks for process instance " + oProcessInstanceChild.getId());
+        }
         LOG.info("mReturn={}", mReturn);
         
         return mReturn;

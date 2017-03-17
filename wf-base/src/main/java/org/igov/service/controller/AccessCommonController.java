@@ -16,7 +16,6 @@ import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.HandlerBeanValidationException;
 import org.igov.service.exchange.SubjectCover;
 import org.igov.util.JSON.JsonRestUtils;
-import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,25 +76,8 @@ public class AccessCommonController {
     LoginResponseI login(
             @ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String login,
             @ApiParam(value = "Строка пароль пользователя", required = true) @RequestParam(value = "sPassword") String password,
-            @ApiParam(value = "JSON-строка с параметрами sLogin - Строка логин пользователя; sPassword - Строка пароль пользователя") @RequestBody(required = false) String body,
             HttpServletRequest request)
             throws AccessServiceException {
-        if(body != null){
-            Map<String, Object> mBody;
-            try {
-                mBody = (Map<String, Object>) JSONValue.parse(body);
-            } catch (Exception e){
-                throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
-            }
-            if(mBody != null){
-                if (mBody.containsKey("sLogin")) {
-                    login = (String) mBody.get("sLogin");
-                }
-                if (mBody.containsKey("sPassword")) {
-                    password = (String) mBody.get("sPassword");
-                }
-            }
-        }
         if (ProcessEngines.getDefaultProcessEngine().getIdentityService().checkPassword(login, password)) {
             request.getSession(true);
             return new LoginResponse(Boolean.TRUE.toString());

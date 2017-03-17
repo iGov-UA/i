@@ -29,12 +29,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectHumanDao;
+import org.igov.model.subject.organ.SubjectOrganDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -53,7 +57,8 @@ public class SubjectGroupTreeService {
      * флаг определяющий, что на вход был конкрентный тип ORGAN или HUMAN
      */
     private static boolean isSubjectType = false;
-    private static final Log LOG = LogFactory.getLog(SubjectGroupTreeService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SubjectGroupTreeService.class);
+
     private static final long FAKE_ROOT_SUBJECT_ID = 0;
 
     @Autowired
@@ -61,14 +66,17 @@ public class SubjectGroupTreeService {
 
     @Autowired
     private IdentityService identityService;
-    
+
     @Autowired
     private SubjectHumanDao SubjectHumanDao;
 
     @Autowired
+    private SubjectOrganDao SubjectOrganDao;
+
+    @Autowired
     @Qualifier("subjectGroupDao")
     private GenericEntityDao<Long, SubjectGroup> subjectGroupDao;
-        
+
     //Мапа для укладывания ид родителя и его детей в методе получения иерархии  getChildrenTree
     Map<Long, List<SubjectGroup>> getChildrenTreeRes = new HashMap<>();
 
@@ -148,7 +156,7 @@ public class SubjectGroupTreeService {
             }
             for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 
-                final SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
+                SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
 
                 if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
                     parentSubjectGroup = new VSubjectGroupParentNode();
@@ -242,12 +250,16 @@ public class SubjectGroupTreeService {
              * пустой с ид Subject органа или хьманов, лист содержит groupFiltr
              * возвращаем ответ, иначе ничего не возвращаем
              */
-            if (isSubjectType && !resSubjectTypeList.isEmpty() && resSubjectTypeList.contains(groupFiltr)) {
-                return processSubjectResultTree;
-            } else {
-                SubjectGroupResultTree processSubjectResultTreeRes = new SubjectGroupResultTree();
-                return processSubjectResultTreeRes;
-            }
+            if(isSubjectType && !resSubjectTypeList.isEmpty() && resSubjectTypeList.contains(groupFiltr)) {
+	        	LOG.info("processSubjectResultTree isSubjectType " + processSubjectResultTree);
+	        	return processSubjectResultTree;
+			}else if(!isSubjectType){
+				LOG.info("processSubjectResultTree !isSubjectType " + processSubjectResultTree);
+				return processSubjectResultTree;
+			}else {
+				SubjectGroupResultTree processSubjectResultTreeRes = new SubjectGroupResultTree();
+				 return processSubjectResultTreeRes;
+			}
         }
 
         return processSubjectResultTree;
@@ -464,35 +476,34 @@ public class SubjectGroupTreeService {
         }
         return rootElement;
     }
-    
-    public String getSubjectType(String sID_Group_Activiti) 
-    {
-        try{
+
+    public String getSubjectType(String sID_Group_Activiti) {
+        try {
             SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
             Subject oSubject = oSubjectGroup.getoSubject();
             LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
 
-            SubjectHuman oSubjectHuman = null;
+            Optional<SubjectHuman> oSubjectHuman = SubjectHumanDao.findBy("oSubject", oSubject);
+            LOG.info("sID_Group_Activiti: {} oSubjectHuman isPresent: {}", sID_Group_Activiti, oSubjectHuman.isPresent());
 
-            try{
-                oSubjectHuman = SubjectHumanDao.findByExpected("oSubject", oSubject);
-            LOG.info("oSubjectHuman in getSubjectType is " + oSubjectHuman.getName());
-            }catch(Exception ex){
-                LOG.info("oSubjectHuman not found");
-            }
-
-            if (oSubjectHuman != null) {
+            if (oSubjectHuman.isPresent()) {
                 return HUMAN;
             } else {
-                return ORGAN;
+                Optional<SubjectOrgan> oSubjectOrgan = SubjectOrganDao.findBy("oSubject", oSubject);
+                LOG.info("sID_Group_Activiti: {} oSubjectOrgan isPresent: {}", sID_Group_Activiti, oSubjectOrgan.isPresent());
+                if (oSubjectOrgan.isPresent()) {
+                    return ORGAN;
+                } else {
+                    throw new RuntimeException("Can't find any SubjectHuman or SubjectOrgan for sID_Group_Activiti = "
+                            + sID_Group_Activiti + " Subject = " + oSubject.getId());
+
+                }
             }
-        }catch(Exception oException){
-            LOG.error("ERROR:"+oException.getMessage()+" (sID_Group_Activiti="+sID_Group_Activiti+")");
-            LOG.error("ERROR: ",oException);
+        } catch (Exception oException) {
+            LOG.error("ERROR:" + oException.getMessage() + " (sID_Group_Activiti=" + sID_Group_Activiti + ")");
+            LOG.error("ERROR: ", oException);
             throw oException;
         }
     }
-
-
 
 }
