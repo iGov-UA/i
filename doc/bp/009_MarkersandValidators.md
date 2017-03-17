@@ -1,15 +1,14 @@
 Маркеры и Валидаторы позволяют работать с уже существующими полями и расширяют их возможности.
 
-Маркеры группы motion
-Маркеры группы validate
-Маркеры группы attributes
+[Маркеры группы motion](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-motion)  
+[Маркеры группы validate](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-validate)  
+[Маркеры группы attributes](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-attributes)  
 
-Маркеры группы motion
-
-ShowFieldsOnCondition
-
+## Маркеры группы motion
+### ShowFieldsOnCondition  
 показывают скрытое поле (при выполнении условий)
 
+```java
 {
   "motion": {
     "ShowFieldsOnCondition_1": {
@@ -23,10 +22,13 @@ ShowFieldsOnCondition
     }
   }
 }
-ShowFieldsOnNotEmpty
+```
 
+***
+
+### ShowFieldsOnNotEmpty
 показать доп поля, если заполнено конкретное поле
-
+```java
 {
   "motion": {
     "ShowFieldsOnNotEmpty_1": {
@@ -37,10 +39,13 @@ ShowFieldsOnNotEmpty
     }
   }
 }
-RequiredFieldsOnCondition
+```
 
+***
+
+### RequiredFieldsOnCondition
 делают обязательным заполнение поля (при выполнении условий)
-
+```java
 {
   "motion": {
     "RequiredFieldsOnCondition_1": {
@@ -55,12 +60,15 @@ RequiredFieldsOnCondition
     }
   }
 }
-ShowElementsOnTrue
+```
 
-Issues 816
-маркер для принтформы
-показывает блок с конкретным идшником html кода принтформы
+***
 
+### ShowElementsOnTrue  
+[Issues 816](https://github.com/e-government-ua/i/issues/816)  
+маркер для принтформы  
+показывает блок с конкретным идшником html кода принтформы  
+```java
 {
   "motion": {
     "ShowElementsOnTrue_12": {
@@ -75,12 +83,15 @@ Issues 816
     }
   }
 }
-ValuesFieldsOnCondition
+```
 
-присваивает определенному полю определенные значения (при выполнении условий)
-Issues 829
-Issues 1362
+***
 
+### ValuesFieldsOnCondition
+присваивает определенному полю определенные значения (при выполнении условий)  
+[Issues 829](https://github.com/e-government-ua/i/issues/829)   
+[Issues 1362](https://github.com/e-government-ua/i/issues/1362)  
+```java
 {
   "motion": {
     "ValuesFieldsOnCondition_1": {
@@ -101,10 +112,13 @@ Issues 1362
     }
   }
 }
-WritableFieldsOnCondition
+```
 
-нерадактируемое поле становится редактируемым (при выполнении условий)
+***
 
+### WritableFieldsOnCondition
+нерадактируемое поле становится редактируемым (при выполнении условий)  
+```java
 {
   "motion": {
     "WritableFieldsOnCondition_1": {
@@ -119,8 +133,12 @@ WritableFieldsOnCondition
     }
   }
 }
-SplitTextHalf_1 - разделение значения по знаку разделителя
+```
+     
 
+***
+### SplitTextHalf_1 - разделение значения по  знаку разделителя
+```java
 {
   "motion": {
     "SplitTextHalf_1": {
@@ -131,21 +149,30 @@ SplitTextHalf_1 - разделение значения по знаку разд
     }
   }
 }
-Для использования маркеров из внешнего файла, указываем путь к файлу:
-Issues 840
+```
 
+***
+
+
+
+***
+
+Для использования  маркеров из внешнего файла, указываем путь к файлу:  
+[Issues 840](https://github.com/e-government-ua/i/issues/840)  
+```xml
 <activiti:formProperty id="markers2" name="extended_marker" type="markers"   
 default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProperty>
-Допускается использование вложенных подпапок
-default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
+```
+Допускается использование вложенных подпапок  
+```default="${markerService.loadFromFile('folder_name/testmarkers.json')}" ```  
 Маркеры хранятся в папке /wf-region/src/main/resources/bpmn/markers/motion
 
-Маркеры группы validate
+****
 
-CustomFormat_1 - номеров
-
-Issues 934
-
+## Маркеры группы validate
+### CustomFormat_1 - номеров
+[Issues 934 ](https://github.com/e-government-ua/i/issues/934)  
+```java
 {
   "validate": {
     "CustomFormat_1": {
@@ -157,10 +184,13 @@ Issues 934
     }
   }
 }
-расширений
+```
 
-Issues 1258
+***
 
+### расширений
+[Issues 1258](https://github.com/e-government-ua/i/issues/1258)
+```java
 {
   "validate": {
     "[FileExtensions_1": {
@@ -173,8 +203,12 @@ Issues 1258
     }
   }
 }
-NumberBetween - принадлежность значения диапазону значений (целочисленные)
+```
 
+***
+
+### NumberBetween - принадлежность значения  диапазону значений  (целочисленные)
+```java
 {
   "NumberBetween": {
     "aField_ID": [
@@ -185,8 +219,12 @@ NumberBetween - принадлежность значения диапазону
     "sMessage": "Перевірте правильність заповнення - число поверхів складається максимум з трьох цифр"
   }
 }
-NumberFractionalBetween - принадлежность значения диапазону значений (дробные)
+```
 
+***
+
+### NumberFractionalBetween - принадлежность значения  диапазону значений (дробные)
+```java
 {
   "NumberFractionalBetween": {
     "aField_ID": [
@@ -197,10 +235,13 @@ NumberFractionalBetween - принадлежность значения диап
     "sMessage": "Перевірте правильність заповнення поля - площа приміщення може складатися максимум з 8 цифр"
   }
 }
-Numbers_Accounts - номерных значений
+```
 
+***
+
+### Numbers_Accounts - номерных значений  
 (разрешены цифры и дефисы, буквы любые запрещены )
-
+```java
 {
   "Numbers_Accounts": {
     "aField_ID": [
@@ -210,10 +251,13 @@ Numbers_Accounts - номерных значений
     "sMessage": "Перевірте правильність введеного номеру (літери не дозволені до заповнення)"
   }
 }
-FileSign - Валидатор ЕЦП
+```
 
-Issues 921
+***
 
+### FileSign - Валидатор ЕЦП
+[Issues 921](https://github.com/e-government-ua/i/issues/921)  
+```java
 {
   "validate": {
     "FileSign": {
@@ -225,11 +269,11 @@ Issues 921
     }
   }
 }
-Алгоритм Луна
-
-Применяется для поля, в которое пользователь должен будет внести вручную номер заявки
-Issues 1513
-
+```
+### Алгоритм Луна
+Применяется для поля, в которое пользователь должен будет внести вручную номер заявки  
+[Issues 1513](https://github.com/e-government-ua/i/issues/1513)  
+```java
 {
   "validate": {
     "OrderValue1": {
@@ -239,12 +283,11 @@ Issues 1513
     }
   }
 }
-Маркеры группы attributes
-
-Line
-
+```
+## Маркеры группы attributes
+### Line
 для отрисовки линии (группирующей/отсекающей) одни поля от других
-
+```java
 {
   "attributes": {
     "Line_1": {
@@ -255,10 +298,11 @@ Line
     }
   }
 }
-Style
-
+```
+***
+### Style
 Для внедрения стилей css на страницу с услугой с целью изменения стандартного отображения элементов на форме
-
+```java
 {
    "attributes" : { 
       "Style_1" : {
@@ -277,12 +321,14 @@ Style
       } 
    }
 }
-Маркер анализирует правила в свойствах aElement_ID и aSelectors и добавляет стили перечисленный из свойства oCommonStyle в блок <head> в виде отдельного стиля. Причем стилями можно влиять не только на элементы формы но на всю страницу.
+```
+Маркер анализирует правила в свойствах aElement_ID и aSelectors и добавляет стили перечисленный из свойства oCommonStyle в блок ```<head>``` в виде отдельного стиля. Причем стилями можно влиять не только на элементы формы но на всю страницу.
 
-Свойства маркера aElement_ID и aSelectors работают параллельно и может быть задан только один из них. подробное описание
+Свойства маркера aElement_ID и aSelectors работают параллельно и **может быть задан только один из них**. 
+[подробное описание](https://docs.google.com/document/d/1EE7q2EEBgHW6QMRJEsPXGNE0cU9GuXT2Z3KUYNceF88/edit)  
 
-атрибут маркера sNote
-
+### атрибут маркера sNote
+```java
 {
   "motion": {
     "ShowFieldsOnCondition_1": {
@@ -299,3 +345,4 @@ Style
     }
   }
 }
+```
