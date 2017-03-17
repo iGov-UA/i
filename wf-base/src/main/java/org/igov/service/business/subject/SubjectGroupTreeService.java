@@ -102,11 +102,13 @@ public class SubjectGroupTreeService {
 
             if (HUMAN.equals(sSubjectType)) {
                 subjectHumans = new ArrayList<>(baseEntityDao.findAll(SubjectHuman.class));
+                LOG.info("HUMANNNNNNNNNNNNNN " + subjectHumans);
                 isSubjectType = true;
             }
 
             if (ORGAN.equals(sSubjectType)) {
                 subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
+                LOG.info("ORGANNNNNNNNNNNNNNNNNNN " + subjectOrgans);
                 isSubjectType = true;
             }
             if (subjectHumans != null && !subjectHumans.isEmpty()) {
@@ -131,6 +133,8 @@ public class SubjectGroupTreeService {
                         }));
 
                 resSubjectTypeList.addAll(subjectHumansIdSubj);
+                
+                LOG.info("subjectGroupRelations HUMAN" + subjectGroupRelations);
             }
             if (subjectOrgans != null && !subjectOrgans.isEmpty()) {
                 List<Long> subjectOrgansIdSubj = Lists
@@ -153,10 +157,14 @@ public class SubjectGroupTreeService {
                             }
                         }));
                 resSubjectTypeList.addAll(subjectOrgansIdSubj);
+                
+                LOG.info("subjectGroupRelations ORGAN" + subjectGroupRelations);
             }
             for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 
                 SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
+                
+                LOG.info("parenttttttttttttttttttttttt" + parent);
 
                 if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
                     parentSubjectGroup = new VSubjectGroupParentNode();
@@ -221,10 +229,12 @@ public class SubjectGroupTreeService {
                         }));
                 aChildResult.addAll(children);
                 hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
-
+                LOG.info("hierarchyProcessSubject" + hierarchyProcessSubject);
             }
 
             List<SubjectGroup> aChildResultByUser = filtrChildResultByUser(sFind, aChildResult);
+            
+            LOG.info("aChildResultByUser" + aChildResultByUser);
 
             List<SubjectGroup> resultTree = new ArrayList<>();
             if (sFind != null && !sFind.isEmpty()) {
@@ -244,6 +254,8 @@ public class SubjectGroupTreeService {
             } else {
                 processSubjectResultTree.setaSubjectGroupTree(resultTree);
             }
+            
+            LOG.info("processSubjectResultTree" + processSubjectResultTree);
 
             /**
              * isSubjectType =true- был на вход тип орган или хьман, лист не
