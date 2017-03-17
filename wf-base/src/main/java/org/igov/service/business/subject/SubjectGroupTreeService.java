@@ -494,7 +494,7 @@ public class SubjectGroupTreeService {
 	
     public String getSubjectType(String sID_Group_Activiti) {
         try {
-/*            SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+            SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
             Subject oSubject = oSubjectGroup.getoSubject();
             LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
 
@@ -511,13 +511,12 @@ public class SubjectGroupTreeService {
                             + sID_Group_Activiti + " Subject = " + oSubject.getId());
 
                 }
-            }*/
+            }
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (sID_Group_Activiti=" + sID_Group_Activiti + ")");
             LOG.error("ERROR: ", oException);
             throw oException;
         }
-        return HUMAN;
     }
 
 }
