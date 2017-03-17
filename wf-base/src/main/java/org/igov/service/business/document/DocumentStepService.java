@@ -64,6 +64,9 @@ public class DocumentStepService {
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
     
     @Autowired
+    private DocumentStepSubjectRightFieldDao oDocumentStepSubjectRightFieldDao;
+    
+    @Autowired
     private AttachmetService oAttachmetService;
 
     @Autowired
@@ -426,24 +429,29 @@ public class DocumentStepService {
 
                                         LOG.info("DocumentStepSubjectRight_To equals _From with date {}: "
                                                 + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight_To.getsKey_GroupPostfix());
-
+                                        
                                         oDocumentStepSubjectRight_To.setsDate(null);
                                         oDocumentStepSubjectRight_To.setsDateECP(null);
                                         
-                                        List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField_New = new LinkedList();
-
-                                        for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_From
-                                                : oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields()) {
-                                            DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
-                                            oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField_From.getbWrite());
-                                            oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField_From.getsMask_FieldID());
-                                            oDocumentStepSubjectRightField_New.setDocumentStepSubjectRight(oDocumentStepSubjectRight_To);
-                                            aDocumentStepSubjectRightField_New.add(oDocumentStepSubjectRightField_New);
+                                        List<DocumentStepSubjectRightField> aDocumentStepSubjectRight_New = 
+                                                oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields();
+                                        
+                                        //осторожно! ужасный код! 2 часа ночи, потом переделаю
+                                        for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_From : aDocumentStepSubjectRight_New) {
+                                            
+                                            if (oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0).getbWrite() == true){
+                                                
+                                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0).setbWrite(oDocumentStepSubjectRightField_From.getbWrite());
+                                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0).setsMask_FieldID(oDocumentStepSubjectRightField_From.getsMask_FieldID());
+                                            }
+                                            else{
+                                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1).setbWrite(oDocumentStepSubjectRightField_From.getbWrite());
+                                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1).setsMask_FieldID(oDocumentStepSubjectRightField_From.getsMask_FieldID());
+                                            }
                                         }
                                         
-                                        oDocumentStepSubjectRight_To.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField_New);
+                                        oDocumentStepSubjectRight_To = oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
                                         
-                                        oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
                                         break;
                                     }
                                 }

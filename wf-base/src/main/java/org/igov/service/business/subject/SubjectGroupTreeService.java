@@ -115,7 +115,7 @@ public class SubjectGroupTreeService {
 
             if (ORGAN.equals(sSubjectType)) {
                 subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
-                LOG.info("ORGANNNNNNNNNNNNNNNNNNNNNNN  " + subjectHumans);
+                LOG.info("ORGANNNNNNNNNNNNNNNNNNNNNNN  " + subjectOrgans);
             	/*SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
                 Subject oSubject = oSubjectGroup.getoSubject();
                 SubjectOrgan subjectOrgan = subjectOrganDao.getSubjectOrgan(oSubject);
@@ -269,6 +269,7 @@ public class SubjectGroupTreeService {
              * пустой с ид Subject органа или хьманов, лист содержит groupFiltr
              * возвращаем ответ, иначе ничего не возвращаем
              */
+            LOG.info("isSubjectTypeeeeeeeeeeeeeee  " + isSubjectType);
             if (isSubjectType && !resSubjectTypeList.isEmpty() && resSubjectTypeList.contains(groupFiltr)) {
                 return processSubjectResultTree;
             } else {
@@ -276,7 +277,7 @@ public class SubjectGroupTreeService {
                 return processSubjectResultTreeRes;
             }
         }
-
+        LOG.info("processSubjectResultTreeeeeeeeeeeeeeeeeeee  " + processSubjectResultTree);
         return processSubjectResultTree;
 
     }
