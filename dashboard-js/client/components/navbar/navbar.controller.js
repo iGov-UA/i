@@ -163,14 +163,14 @@
 
       tasks.assignTask(id, Auth.getCurrentUser().id)
         .then(function (result) {
-          Modal.assignDocument(function (event) {
+          /*Modal.assignDocument(function (event) {
 
-          }, 'Документ успiшно створено');
+          }, 'Документ успiшно створено');*/
         })
         .catch(function (e) {
-          Modal.assignDocument(function (event) {
+          /*Modal.assignDocument(function (event) {
 
-          }, 'Документ успiшно створено');
+          }, 'Документ успiшно створено');*/
         });
     };
 

@@ -235,6 +235,20 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       }
 
+      function fixTableFiles(formProperties) {
+        angular.forEach(formProperties, function (prop) {
+          if(prop.type === 'table') {
+            angular.forEach(prop.aRow, function (row) {
+              angular.forEach(row.aField, function (field, key, obj) {
+                if(field.type === 'file' && 'value' in field && field.value.id) {
+                  obj[key].value = field.value.id;
+                }
+              })
+            })
+          }
+        })
+      }
+
       iGovMarkers.validateMarkers(formFieldIDs);
       //save values for each property
       $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
@@ -502,6 +516,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           form.$setSubmitted();
         }
 
+        fixTableFiles(aFormProperties);
         $scope.fixForm(form, aFormProperties);
         var aReservedSlotsDMS = [];
         var aQueueOfIGov = [];
@@ -939,7 +954,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         if ($scope.isFormDataEmpty()) {
           return false;
         } else {
-          return BankIDAccount.customer.isAuthTypeFromBankID;
+          return BankIDAccount.customer.sUsedAuthType === 'bankid' || BankIDAccount.customer.sUsedAuthType === 'bankid-nbu';
         }
       };
 

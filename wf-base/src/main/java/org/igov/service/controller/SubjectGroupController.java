@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.igov.service.business.subject.SubjectGroupTreeService_new;
 
 @Controller
 @Api(tags = {"SubjectGroupController — Организационная иерархия"})
@@ -39,6 +40,8 @@ public class SubjectGroupController {
     @Autowired
     private SubjectGroupTreeService subjectGroupTreeService;
     
+    @Autowired
+    private SubjectGroupTreeService_new subjectGroupTreeService_new;
 		
 	@Autowired
 	SubjectRightBPService subjectRightBPService;
@@ -97,6 +100,25 @@ public class SubjectGroupController {
     	SubjectGroupResultTree subjectGroupResultTree = null;
     	try {
     		subjectGroupResultTree = subjectGroupTreeService.getCatalogSubjectGroupsTree(sID_Group_Activiti,nDeepLevel,sFind,bIncludeRoot,nDeepLevelWidth,sSubjectType);
+    		
+    	} catch (Exception e) {
+    		 LOG.error("FAIL: ", e);
+        }
+		return subjectGroupResultTree;
+    }
+    
+    @RequestMapping(value = "/getSubjectGroupsTreeNew", method = RequestMethod.GET)
+    @ResponseBody
+    public SubjectGroupResultTree getSubjectGroupsTreeNew(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
+    		 @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
+    		 @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind,
+    		 @ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (true-отоборажаем, false-нет, по умолчанию Y)", required = false) @RequestParam(value = "bIncludeRoot", required = false) Boolean bIncludeRoot,
+             @ApiParam(value = "Ширина выборки", required = false) @RequestParam(value = "nDeepLevelWidth", required = false) Long nDeepLevelWidth,
+             @ApiParam(value = "Тип выборки: Organ- иерархия в разрезе органы,  Human -иерархия в разрезе людей, * - иерархия органы+люди", required = false) @RequestParam(value = "sSubjectType", required = false) String sSubjectType)
+            throws Exception  {
+    	SubjectGroupResultTree subjectGroupResultTree = null;
+    	try {
+    		subjectGroupResultTree = subjectGroupTreeService_new.getCatalogSubjectGroupsTree(sID_Group_Activiti,nDeepLevel,sFind,bIncludeRoot,nDeepLevelWidth,sSubjectType);
     		
     	} catch (Exception e) {
     		 LOG.error("FAIL: ", e);

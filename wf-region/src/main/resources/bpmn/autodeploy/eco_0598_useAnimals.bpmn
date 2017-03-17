@@ -39,8 +39,8 @@
         <activiti:formProperty id="sAdressDelivery" name="Адреса, за якою надіслати оригінал документу" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="requiredFields1" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sListDocument" name="Список документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListPogodgennya" name="Список документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocument" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListPogodgennya" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення чиновнику про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -121,9 +121,9 @@
           <activiti:value id="sEnumFailure" name="Відмовити заявнику"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentReject" name="Якщо ви відмовляєте у прийнятті документів, обов'язково вкажіть підставу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0598_useAnimals_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sListDocument" name="Список документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListPogodgennya" name="Список документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0598_useAnimals_print.html]; ;bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sListDocument" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListPogodgennya" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="requiredFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_4.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
