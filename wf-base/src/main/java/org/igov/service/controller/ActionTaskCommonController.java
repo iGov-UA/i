@@ -2296,8 +2296,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      *
      * @param sLogin - Строка логин пользователя, меняющего пароль
-     * @param sPasswordOld - Строка старый пароль
-     * @param sPasswordNew - Строка новый пароль
+     * //@param sPasswordOld - Строка старый пароль
+     * //@param sPasswordNew - Строка новый пароль
      * @return
      * @throws CommonServiceException
      * @throws RuntimeException
@@ -2350,15 +2350,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     String changePassword(
             @ApiParam(value = "Строка логин пользователя, меняющего пароль", required = true) @RequestParam(value = "sLoginOwner", required = true) String sLogin,
             @ApiParam(value = "JSON-cnрока с двумя параметрами: sPasswordOld - Строка старый пароль; sPasswordNew - Строка новый пароль", required = true) @RequestBody (required = true) String sPasswords
-    ) throws CommonServiceException, RuntimeException {
+    ) throws Exception {
 
         String sPasswordOld = null;
         String sPasswordNew = null;
 
         if(sPasswords != null){
-            Map<String, String> mBody;
+            Map<String, Object> mBody;
             try {
-                mBody = JsonRestUtils.readObject(sPasswords, Map.class);
+                mBody = (Map<String, Object>) JSONValue.parse(sPasswords);
             } catch (Exception e){
                 throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
             }
@@ -2366,20 +2366,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 if (mBody.containsKey("sPasswordOld")) {
                     sPasswordOld = (String) mBody.get("sPasswordOld");
                 } else {
-                    throw new CommonServiceException(
-                            ExceptionCommonController.BUSINESS_ERROR_CODE,
-                            "Error! The sPasswordOld is undefined in request body",
-                            HttpStatus.FORBIDDEN
-                    );
+                    throw new Exception("The sPasswordOld in RequestBody is not defined");
                 }
                 if (mBody.containsKey("sPasswordNew")) {
                     sPasswordNew = (String) mBody.get("sPasswordNew");
                 } else {
-                    throw new CommonServiceException(
-                            ExceptionCommonController.BUSINESS_ERROR_CODE,
-                            "Error! The sPasswordNew is undefined in request body",
-                            HttpStatus.FORBIDDEN
-                    );
+                    throw new Exception("The sPasswordNew in RequestBody is not defined");
                 }
             }
         }

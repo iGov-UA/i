@@ -110,10 +110,10 @@ module.exports.setUser = function (req, res) {
     } else {
       var jsonRes = result ? result : {
         sLogin: req.query.sLogin,
-        sPassword: req.query.sPassword,
-        sName: req.query.sName,
-        sDescription: req.query.sDescription,
-        sEmail: req.query.sEmail
+        sPassword: req.body.sPassword,
+        sName: req.body.sName,
+        sDescription: req.body.sDescription,
+        sEmail: req.body.sEmail
       };
       res.status(statusCode).json(jsonRes);
     }
@@ -121,10 +121,10 @@ module.exports.setUser = function (req, res) {
 
   service.setUser({
       sLogin: req.query.sLogin,
-      sPassword: req.query.sPassword,
-      sName: req.query.sName,
-      sDescription: req.query.sDescription,
-      sEmail: req.query.sEmail
+      sPassword: req.body.sPassword,
+      sName: req.body.sName,
+      sDescription: req.body.sDescription,
+      sEmail: req.body.sEmail
     },
     callback);
 };
