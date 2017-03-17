@@ -79,7 +79,6 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон контрагента" type="string"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="E-mail контрагента" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sGoodType" name="Товар, який потрібно поставити" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodConditions" name="Умови поставки товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodCity" name="Місто зберігання товару" type="string"></activiti:formProperty>
@@ -127,12 +126,11 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон контрагента" type="string"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="E-mail контрагента" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sGoodType" name="Товар, який потрібно поставити" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodConditions" name="Умови поставки товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodCity" name="Місто зберігання товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodStorage" name="Склад зберігання товару" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asReady" name="Ступінь готовності контратку" type="enum" required="true">
+        <activiti:formProperty id="asReady" name="Ступінь готовності контратку" type="enum">
           <activiti:value id="sGood" name="контракт готовий, передати на затвердження"></activiti:value>
           <activiti:value id="sMistake" name="потрібно виправити помилку"></activiti:value>
         </activiti:formProperty>
@@ -229,16 +227,14 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Погодження контракту]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-Шановні Колеги<br>
+          <activiti:expression><![CDATA[Шановні Колеги<br>
 Направляємо Вам на погодження контракт на поставку ${sGoodType}<br>
 Якщо будуть питання - з радістю відповімо.<br>
 <br>
 --
 ТОВ ВКФ «ВЕЛТА»<br>
 Тел./факс: (056) 370-93-93, 732-04-04<br>
-e-mail: office@velta-ua.com<br>          
-          ]]></activiti:expression>
+e-mail: office@velta-ua.com<br>]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
@@ -301,7 +297,7 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 // клонирование прав на 3-й шаг
 
 var sKey_GroupPostfix_New = 'Velta_Justice_Head'
-var sKey_GroupPostfix = '_default_Velta_Justice'
+var sKey_GroupPostfix = '_default_Velta_Justice_step5'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 		</script>
     </scriptTask>

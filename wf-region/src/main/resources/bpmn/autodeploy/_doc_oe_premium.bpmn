@@ -383,7 +383,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecideDirection == 'sEnumDirAccept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow8" sourceRef="exclusivegateway2" targetRef="endevent3">
+    <sequenceFlow id="flow8" sourceRef="exclusivegateway2" targetRef="scripttask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecidePersonnel == 'sEnumPersAccept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="exclusivegateway3" targetRef="scripttask7">
@@ -393,7 +393,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <sequenceFlow id="flow14" sourceRef="exclusivegateway1" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecideDirection =='sEnumDirDeny'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="exclusivegateway2" targetRef="scripttask2">
+    <sequenceFlow id="flow15" sourceRef="exclusivegateway2" targetRef="scripttask11">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecidePersonnel == 'sEnumPersDeny'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="exclusivegateway3" targetRef="scripttask3">
@@ -548,7 +548,21 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     <sequenceFlow id="flow45" sourceRef="exclusivegateway6" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocCreate == 'sEnumCreateDeny'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent3" name="End"></endEvent>
+    <scriptTask id="scripttask11" name="step2_new" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_2'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав на согласующего и утверждающего
+
+var sKey_GroupPostfix_New = 'OE_Direction_Top'
+var sKey_GroupPostfix = '_default_Chief_New'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
+    </scriptTask>
+    <sequenceFlow id="flow46" sourceRef="scripttask11" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_oe_premium">
     <bpmndi:BPMNPlane bpmnElement="_doc_oe_premium" id="BPMNPlane__doc_oe_premium">
@@ -639,8 +653,8 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="463.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="630.0" y="315.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
+        <omgdc:Bounds height="55.0" width="105.0" x="800.0" y="123.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="55.0" y="65.0"></omgdi:waypoint>
@@ -668,7 +682,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="680.0" y="333.0"></omgdi:waypoint>
-        <omgdi:waypoint x="665.0" y="332.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="363.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="810.0" y="646.0"></omgdi:waypoint>
@@ -686,9 +700,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="720.0" y="333.0"></omgdi:waypoint>
         <omgdi:waypoint x="784.0" y="332.0"></omgdi:waypoint>
-        <omgdi:waypoint x="784.0" y="19.0"></omgdi:waypoint>
-        <omgdi:waypoint x="559.0" y="19.0"></omgdi:waypoint>
-        <omgdi:waypoint x="562.0" y="38.0"></omgdi:waypoint>
+        <omgdi:waypoint x="852.0" y="178.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="770.0" y="646.0"></omgdi:waypoint>
@@ -778,6 +790,10 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
         <omgdi:waypoint x="500.0" y="65.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="36.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="852.0" y="123.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="96.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
