@@ -79,7 +79,6 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон контрагента" type="string"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="E-mail контрагента" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sGoodType" name="Товар, який потрібно поставити" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodConditions" name="Умови поставки товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodCity" name="Місто зберігання товару" type="string"></activiti:formProperty>
@@ -127,7 +126,6 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон контрагента" type="string"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="E-mail контрагента" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sGoodType" name="Товар, який потрібно поставити" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodConditions" name="Умови поставки товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodCity" name="Місто зберігання товару" type="string"></activiti:formProperty>
@@ -229,16 +227,14 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Погодження контракту]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-Шановні Колеги<br>
+          <activiti:expression><![CDATA[Шановні Колеги<br>
 Направляємо Вам на погодження контракт на поставку ${sGoodType}<br>
 Якщо будуть питання - з радістю відповімо.<br>
 <br>
 --
 ТОВ ВКФ «ВЕЛТА»<br>
 Тел./факс: (056) 370-93-93, 732-04-04<br>
-e-mail: office@velta-ua.com<br>          
-          ]]></activiti:expression>
+e-mail: office@velta-ua.com<br>]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
@@ -306,11 +302,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 		</script>
     </scriptTask>
     <sequenceFlow id="flow53" sourceRef="scripttask5" targetRef="usertask5"></sequenceFlow>
-    <scriptTask id="scripttask6" name="переключение степа на 4" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask6" name="переключение степа на 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_4'
+var sKey_Step= 'step_2'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав на 4-й шаг
