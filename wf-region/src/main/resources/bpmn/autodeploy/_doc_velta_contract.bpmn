@@ -25,7 +25,7 @@ execution.setVariable('processInstanceId', processInstanceId)
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
@@ -57,7 +57,7 @@ execution.setVariable('processInstanceId', processInstanceId)
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
@@ -104,7 +104,7 @@ execution.setVariable('processInstanceId', processInstanceId)
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
@@ -130,7 +130,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sGoodConditions" name="Умови поставки товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodCity" name="Місто зберігання товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodStorage" name="Склад зберігання товару" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asReady" name="Ступінь готовності контратку" type="enum" required="true">
+        <activiti:formProperty id="asReady" name="Ступінь готовності контратку" type="enum">
           <activiti:value id="sGood" name="контракт готовий, передати на затвердження"></activiti:value>
           <activiti:value id="sMistake" name="потрібно виправити помилку"></activiti:value>
         </activiti:formProperty>
@@ -171,7 +171,7 @@ execution.setVariable('processInstanceId', processInstanceId)
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Роспорядження про створення контракту" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
@@ -297,7 +297,7 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 // клонирование прав на 3-й шаг
 
 var sKey_GroupPostfix_New = 'Velta_Justice_Head'
-var sKey_GroupPostfix = '_default_Velta_Justice'
+var sKey_GroupPostfix = '_default_Velta_Justice_step5'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 		</script>
     </scriptTask>
