@@ -383,7 +383,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecideDirection == 'sEnumDirAccept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow8" sourceRef="exclusivegateway2" targetRef="endevent3">
+    <sequenceFlow id="flow8" sourceRef="exclusivegateway2" targetRef="scripttask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecidePersonnel == 'sEnumPersAccept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="exclusivegateway3" targetRef="scripttask7">
@@ -548,7 +548,6 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     <sequenceFlow id="flow45" sourceRef="exclusivegateway6" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocCreate == 'sEnumCreateDeny'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent3" name="End"></endEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_oe_premium">
     <bpmndi:BPMNPlane bpmnElement="_doc_oe_premium" id="BPMNPlane__doc_oe_premium">
@@ -639,9 +638,6 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="463.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="630.0" y="315.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="55.0" y="65.0"></omgdi:waypoint>
         <omgdi:waypoint x="80.0" y="65.0"></omgdi:waypoint>
@@ -668,7 +664,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="680.0" y="333.0"></omgdi:waypoint>
-        <omgdi:waypoint x="665.0" y="332.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="363.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="810.0" y="646.0"></omgdi:waypoint>
