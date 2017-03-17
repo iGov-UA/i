@@ -115,7 +115,7 @@ public class SubjectGroupTreeService {
 
             if (ORGAN.equals(sSubjectType)) {
                 subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
-                LOG.info("ORGANNNNNNNNNNNNNNNNNNNNNNN  " + subjectHumans);
+                LOG.info("ORGANNNNNNNNNNNNNNNNNNNNNNN  " + subjectOrgans);
             	/*SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
                 Subject oSubject = oSubjectGroup.getoSubject();
                 SubjectOrgan subjectOrgan = subjectOrganDao.getSubjectOrgan(oSubject);
