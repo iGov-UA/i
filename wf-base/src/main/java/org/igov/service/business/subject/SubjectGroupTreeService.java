@@ -18,17 +18,23 @@ import org.activiti.engine.identity.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.BaseEntityDao;
+import org.igov.model.core.GenericEntityDao;
+import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.model.subject.SubjectGroupTree;
 import org.igov.model.subject.SubjectHuman;
+import org.igov.model.subject.SubjectHumanDao;
 import org.igov.model.subject.SubjectUser;
 import org.igov.model.subject.VSubjectGroupParentNode;
 import org.igov.model.subject.organ.SubjectOrgan;
+import org.igov.model.subject.organ.SubjectOrganDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -55,6 +61,16 @@ public class SubjectGroupTreeService {
 
 	@Autowired
 	private IdentityService identityService;
+	
+    @Autowired
+    private SubjectHumanDao subjectHumanDao;
+
+    @Autowired
+    private SubjectOrganDao subjectOrganDao;
+    
+    @Autowired
+    @Qualifier("subjectGroupDao")
+    private GenericEntityDao<Long, SubjectGroup> subjectGroupDao;
 	
 	//Мапа для укладывания ид родителя и его детей в методе получения иерархии  getChildrenTree
     Map<Long, List<SubjectGroup>> getChildrenTreeRes = new HashMap<>();
@@ -475,5 +491,33 @@ public class SubjectGroupTreeService {
 		}
 		return rootElement;
 	}
+	
+    public String getSubjectType(String sID_Group_Activiti) {
+        try {
+/*            SubjectGroup oSubjectGroup = subjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+            Subject oSubject = oSubjectGroup.getoSubject();
+            LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
+
+            Optional<SubjectHuman> oSubjectHuman = subjectHumanDao.findBy("oSubject", oSubject);
+
+            if (oSubjectHuman.isPresent()) {
+                return HUMAN;
+            } else {
+                Optional<SubjectOrgan> oSubjectOrgan = subjectOrganDao.findBy("oSubject", oSubject);
+                if (oSubjectOrgan.isPresent()) {
+                    return ORGAN;
+                } else {
+                    throw new RuntimeException("Can't find any SubjectHuman or SubjectOrgan for sID_Group_Activiti = "
+                            + sID_Group_Activiti + " Subject = " + oSubject.getId());
+
+                }
+            }*/
+        } catch (Exception oException) {
+            LOG.error("ERROR:" + oException.getMessage() + " (sID_Group_Activiti=" + sID_Group_Activiti + ")");
+            LOG.error("ERROR: ", oException);
+            throw oException;
+        }
+        return HUMAN;
+    }
 
 }
