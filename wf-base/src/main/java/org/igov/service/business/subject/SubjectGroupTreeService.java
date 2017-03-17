@@ -89,6 +89,7 @@ public class SubjectGroupTreeService {
         List<Long> resSubjectTypeList = new ArrayList<>();
         List<SubjectGroup> aChildResult = new ArrayList<>();
         List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
+        LOG.info("subjectGroupRelations.size: " + subjectGroupRelations.size());
         SubjectGroupResultTree processSubjectResultTree = new SubjectGroupResultTree();
         if (!subjectGroupRelations.isEmpty()) {
             List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
@@ -102,13 +103,13 @@ public class SubjectGroupTreeService {
 
             if (HUMAN.equals(sSubjectType)) {
                 subjectHumans = new ArrayList<>(baseEntityDao.findAll(SubjectHuman.class));
-                LOG.info("HUMANNNNNNNNNNNNNN " + subjectHumans);
+                LOG.info("subjectHumans.size: " + subjectHumans.size());
                 isSubjectType = true;
             }
 
             if (ORGAN.equals(sSubjectType)) {
                 subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
-                LOG.info("ORGANNNNNNNNNNNNNNNNNNN " + subjectOrgans);
+                LOG.info("subjectOrgans.size: " + subjectOrgans.size());
                 isSubjectType = true;
             }
             if (subjectHumans != null && !subjectHumans.isEmpty()) {
@@ -119,6 +120,8 @@ public class SubjectGroupTreeService {
                                 return subjectHuman.getoSubject().getId();
                             }
                         }));
+                LOG.info("subjectHumansIdSubj.size: " + subjectHumansIdSubj.size());
+                
                 subjectGroupRelations = Lists
                         .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
                             @Override
@@ -131,11 +134,12 @@ public class SubjectGroupTreeService {
                                         && subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
                             }
                         }));
-
-                resSubjectTypeList.addAll(subjectHumansIdSubj);
+                LOG.info("subjectGroupRelations.size: " + subjectGroupRelations.size());
                 
-                LOG.info("subjectGroupRelations HUMAN" + subjectGroupRelations);
+                resSubjectTypeList.addAll(subjectHumansIdSubj);
+                LOG.info("resSubjectTypeList.size HUMAN: " + resSubjectTypeList.size());
             }
+            
             if (subjectOrgans != null && !subjectOrgans.isEmpty()) {
                 List<Long> subjectOrgansIdSubj = Lists
                         .newArrayList(Collections2.transform(subjectOrgans, new Function<SubjectOrgan, Long>() {
@@ -144,6 +148,8 @@ public class SubjectGroupTreeService {
                                 return subjectOrgan.getoSubject().getId();
                             }
                         }));
+                LOG.info("subjectOrgansIdSubj.size: " + subjectOrgansIdSubj.size());
+                
                 subjectGroupRelations = Lists
                         .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
                             @Override
@@ -157,18 +163,20 @@ public class SubjectGroupTreeService {
                             }
                         }));
                 resSubjectTypeList.addAll(subjectOrgansIdSubj);
-                
-                LOG.info("subjectGroupRelations ORGAN" + subjectGroupRelations);
+                LOG.info("subjectGroupRelations.size ORGAN: " + subjectGroupRelations.size());
             }
+            
             for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 
                 SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
-                
-                LOG.info("parenttttttttttttttttttttttt" + parent);
+                LOG.info("SubjectGroup parent" + parent);
 
                 if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
+                    LOG.info("SubjectGroup parent" + parent.getsID_Group_Activiti());
                     parentSubjectGroup = new VSubjectGroupParentNode();
                     final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
+                    LOG.info("SubjectGroup parent" + parent.getsID_Group_Activiti()
+                    + " child: " + subjectGroupRelation.getoSubjectGroup_Child());
                     if (!idParentList.contains(parent.getId())) {
                         idParentList.add(parent.getId());
                         // устанавливаем парентов
@@ -181,6 +189,8 @@ public class SubjectGroupTreeService {
                         parentChildren.put(parent, parentSubjectGroup.getChildren());
                         // мапа группа-ид парента
                         mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId());
+                        LOG.info("!add mapGroupActiviti: " + parent.getsID_Group_Activiti() 
+                                    + "nID parent: " + parent.getId());
                     } else {
                         for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
                             // убираем дубликаты
@@ -193,6 +203,8 @@ public class SubjectGroupTreeService {
                                 parentChildren.put(parent, parentSubjectGroup.getChildren());
                                 // мапа группа-ид парента
                                 mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId());
+                                LOG.info("!!add mapGroupActiviti: " + parent.getsID_Group_Activiti() 
+                                    + "nID parent: " + parent.getId());
                             }
                         }
                     }
@@ -203,6 +215,7 @@ public class SubjectGroupTreeService {
             // Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
             // достаем ид sID_Group_Activiti которое на вход
             Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti);
+            LOG.info("sID_Group_Activiti index: " + groupFiltr);
             // детей его детей
             List<SubjectGroup> children = new ArrayList<>();
 
@@ -214,7 +227,7 @@ public class SubjectGroupTreeService {
                 // детей его детей
                 children = subjToNodeMap.get(groupFiltr);
             }
-
+            LOG.info("children.size: " + children.size() );
             Map<Long, List<SubjectGroup>> hierarchyProcessSubject = new HashMap<>();
             // children полный список первого уровня
             if (children != null && !children.isEmpty()) {
@@ -228,6 +241,7 @@ public class SubjectGroupTreeService {
                             }
                         }));
                 aChildResult.addAll(children);
+                LOG.info("idChildren.size: " + idChildren.size() );
                 hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
                 LOG.info("hierarchyProcessSubject" + hierarchyProcessSubject);
             }
@@ -243,6 +257,8 @@ public class SubjectGroupTreeService {
             } else {
                 resultTree = getSubjectGroupTree(hierarchyProcessSubject, aChildResult);
             }
+            LOG.info("resultTree: " + resultTree);
+            
             if (isDisplayRootElement(bIncludeRoot)) {
                 if (checkDeepLevelWidth(deepLevelWidth) < resultTree.size()) {
                     if (resultTree != null && !resultTree.isEmpty()) {
